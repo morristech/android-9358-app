@@ -20,7 +20,6 @@ public class RequestConstant {
     public static final String URL_EDIT_INFO = BASE_URL + "/v1/profile/tech/editInfo";
     public static final String URL_UPDATE_TECH_INFO = BASE_URL + "/v1/profile/tech";
     public static final String URL_CURRENT_INFO = BASE_URL + "/v1/profile/tech/current";
-    public static final String URL_COMMENT_LIST = BASE_URL + "/v1/profile/tech/comments";
     public static final String URL_TECH_PERSONAL_DATA = BASE_URL + "/v2/tech/profile/notice";
     public static final String URL_MODIFY_PASSWORD = BASE_URL + "/v1/profile/tech/modifyPassword";
     public static final String URL_RESET_PASSWORD = BASE_URL + "/v1/tech/resetPassword";
@@ -70,7 +69,7 @@ public class RequestConstant {
     public static final String URL_GET_CREDIT_USER_RECORDS = BASE_URL + "/v2/credit/user/records";
     public static final String URL_GET_CREDIT_USER_ACCOUNT = BASE_URL + "/v2/credit/user/account";
     public static final String URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS = BASE_URL + "/v2/credit/user/exchange/applications";
-    public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
+ //   public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
     public static final String URL_INTRODUCE_BIND = "/spa-manager/follow9358/index.html";
 
     public static final String URL_SAVE_CONTACT_MARK_CHATTO_USER = BASE_URL + "/v1/emchat/markchattouser";
@@ -167,14 +166,6 @@ public class RequestConstant {
     /**
      * --------------------------------------> 聊天黑名单 <----------------------------------------
      */
-    // 将联系人加入黑名单
-    public static final String URL_ADD_TO_BLACKLIST = BASE_URL + "/v2/tech/customer/add/emchat/blacklist";
-    // 将联系人移出黑名单
-    public static final String URL_REMOVE_FROM_BLACKLIST = BASE_URL + "/v2/tech/customer/remove/emchat/blacklist";
-    // 联系人是否在黑名单中
-    public static final String URL_IN_BLACKLIST = BASE_URL + "/v2/tech/customer/in/emchat/blacklist";
-    // 获取技师黑名单列表
-    public static final String URL_GET_TECH_BLACKLIST = BASE_URL + "/v2/tech/customer/emchat/blacklist";
     // 技师是否在联系人黑名单中
     public static final String URL_IN_USER_BLACKLIST = BASE_URL + "/v2/tech/customer/in/user/blacklist";
 
@@ -191,7 +182,7 @@ public class RequestConstant {
     //技师拓客联系人
     public static final String URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST = BASE_URL + "/v2/tech/customer/user/register/list";
     //本店同事列表
-    public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2/tech/colleague/list";
+ //   public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2/tech/colleague/list";
     //最近访客
     public static final String URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST = BASE_URL + "/v2/tech/customer/user/recent/list";
     //本店同事详情

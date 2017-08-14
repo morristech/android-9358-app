@@ -10,7 +10,6 @@ import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
-import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
@@ -21,7 +20,6 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.ActivityListResult;
-import com.xmd.technician.http.gson.AddToBlacklistResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
@@ -29,9 +27,7 @@ import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.ClubEmployeeDetailResult;
-import com.xmd.technician.http.gson.ClubEmployeeListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
-import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.ContactAllListResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
@@ -50,7 +46,6 @@ import com.xmd.technician.http.gson.HelloReplyResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
-import com.xmd.technician.http.gson.InBlacklistResult;
 import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
@@ -71,7 +66,6 @@ import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
-import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.http.gson.RolePermissionListResult;
@@ -79,7 +73,6 @@ import com.xmd.technician.http.gson.SaveTechPosterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
-import com.xmd.technician.http.gson.TechBlacklistResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -180,14 +173,6 @@ public interface SpaService {
     Call<UpdateTechInfoResult> updateTechInfo(@Field(RequestConstant.KEY_USER) String user,
                                               @Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_COMMENT_LIST)
-    Call<CommentResult> getCommentList(@Field(RequestConstant.KEY_PAGE) String pageNumber,
-                                       @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                       @Field(RequestConstant.KEY_SORT_TYPE) String sortType,
-                                       @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                       @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_TECH_PERSONAL_DATA)
@@ -468,14 +453,6 @@ public interface SpaService {
                                                            @Field(RequestConstant.KEY_STATUS) String status,
                                                            @Field(RequestConstant.KEY_PAGE) String page,
                                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize
-    );
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CONTACT_MARK)
-    Call<MarkResult> getContactMark(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                    @Field(RequestConstant.KEY_TAG_TYPE) String tagType,
-                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
     );
 
     @FormUrlEncoded
@@ -839,24 +816,6 @@ public interface SpaService {
                                                         @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     // ------------------------------------------> 聊天黑名单 <----------------------------------------
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_ADD_TO_BLACKLIST)
-    Call<AddToBlacklistResult> addToBlacklist(@Field(RequestConstant.KEY_FRIEND_ID) String id,
-                                              @Field(RequestConstant.KEY_TOKEN) String userToken);
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_REMOVE_FROM_BLACKLIST)
-    Call<RemoveFromBlacklistResult> removeFromBlacklist(@Field(RequestConstant.KEY_FRIEND_ID) String id,
-                                                        @Field(RequestConstant.KEY_TOKEN) String userToken);
-
-    @GET(RequestConstant.URL_IN_BLACKLIST)
-    Call<InBlacklistResult> inBlacklist(@Query(RequestConstant.KEY_FRIEND_ID) String id,
-                                        @Query(RequestConstant.KEY_TOKEN) String userToken);
-
-    @GET(RequestConstant.URL_GET_TECH_BLACKLIST)
-    Call<TechBlacklistResult> getBlacklist(@Query(RequestConstant.KEY_PAGE) String page,
-                                           @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                           @Query(RequestConstant.KEY_TOKEN) String userToken);
 
     @GET(RequestConstant.URL_IN_USER_BLACKLIST)
     Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
@@ -894,8 +853,6 @@ public interface SpaService {
                                                              @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
                                                              @Field(RequestConstant.KEY_USER_NAME) String userName);
 
-    @GET(RequestConstant.URL_GET_CLUB_EMPLOYEE_LIST)
-    Call<ClubEmployeeListResult> clubEmployeeList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     @GET(RequestConstant.URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST)
     Call<CustomerUserRecentListResult> clubCustomerUserRecentList(@Query(RequestConstant.KEY_TOKEN) String userToken);
@@ -946,7 +903,4 @@ public interface SpaService {
     Observable<BaseBean<SayHiResult>> sayHiToUser(@Path("customerId") String customerId,
                                                   @Field("templateId") long templateId);
 
-
-    @GET(RequestConstant.URL_GET_TECH_INFO)
-    Observable<TechInfoResult> doGetTechInfo(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }

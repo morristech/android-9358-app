@@ -102,7 +102,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_DYNAMIC_COMMENT_ITEM = 7;
     private static final int TYPE_DYNAMIC_COLLECT_ITEM = 8;
     private static final int TYPE_DYNAMIC_COUPON_ITEM = 9;
-//    private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
     private static final int TYPE_LIMIT_GRAB_ITEM = 15;
@@ -115,8 +114,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 23;
     private static final int TYPE_TECH_PERSONAL_RANKING = 24;
     private static final int TYPE_TECH_BLACKLIST = 25;
-    private static final int TYPE_TECH_CONTACT_ALL_AND_REGISTER = 26;
-    private static final int TYPE_TECH_CONTACT_RECENT_ITEM = 27;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -207,10 +204,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PERSONAL_RANKING;
             } else if (mData.get(position) instanceof CustomerInfo) {
                 return TYPE_TECH_BLACKLIST;
-            } else if (mData.get(position) instanceof ContactAllBean) {
-                return TYPE_TECH_CONTACT_ALL_AND_REGISTER;
-            } else if (mData.get(position) instanceof UserRecentBean) {
-                return TYPE_TECH_CONTACT_RECENT_ITEM;
             } else {
                 return TYPE_FOOTER;
             }
@@ -281,12 +274,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_TECH_BLACKLIST:
                 View emchatBlasklist = LayoutInflater.from(parent.getContext()).inflate(R.layout.emchat_blacklist_item, parent, false);
                 return new EmchatBlacklistListItemViewHolder(emchatBlasklist);
-            case TYPE_TECH_CONTACT_ALL_AND_REGISTER:
-                View contactView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tech_contact_item, parent, false);
-                return new ContactListItemViewHolder(contactView);
-            case TYPE_TECH_CONTACT_RECENT_ITEM:
-                View recentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tech_contact_recent_item, parent, false);
-                return new ContactRecentListItemViewHolder(recentView);
             default:
                 View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
                 return new ListFooterHolder(viewDefault);
@@ -965,158 +952,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
             });
         }
-        if (holder instanceof ContactListItemViewHolder) {
-            Object obj = mData.get(position);
-            if (!(obj instanceof ContactAllBean)) {
-                return;
-            }
-            final ContactAllBean contactBean = (ContactAllBean) obj;
-            ContactListItemViewHolder viewHolder = (ContactListItemViewHolder) holder;
-            viewHolder.contactName.setText(Utils.isNotEmpty(contactBean.userNoteName) ? contactBean.userNoteName : contactBean.name);
-            Glide.with(mContext).load(contactBean.avatarUrl).into(viewHolder.contactAvatar);
-            if (contactBean.isService) {
-                viewHolder.contactServiceTime.setVisibility(View.VISIBLE);
-                if (position == 0) {
-                    viewHolder.contactServiceTime.setVisibility(View.VISIBLE);
-                    if (contactBean.createTime.substring(0, 10).equals(DateUtil.getCurrentDate())) {
-                        viewHolder.contactServiceTime.setText("今天新增");
-                    } else if (contactBean.createTime.substring(0, 10).equals(DateUtil.getYestData())) {
-                        viewHolder.contactServiceTime.setText("昨天新增");
-                    } else {
-                        viewHolder.contactServiceTime.setText(String.format("%s新增", contactBean.createTime.substring(5, 10)));
-                    }
-                } else {
-                    if (Utils.StrSubstring(10, contactBean.createTime, false).equals(Utils.StrSubstring(10, ((ContactAllBean) mData.get(position - 1)).createTime, false))) {
-                        viewHolder.contactServiceTime.setVisibility(View.GONE);
-                    } else {
-                        viewHolder.contactServiceTime.setVisibility(View.VISIBLE);
-                        if (contactBean.createTime.substring(0, 10).equals(DateUtil.getYestData())) {
-                            viewHolder.contactServiceTime.setText("昨天新增");
-                        } else {
-                            viewHolder.contactServiceTime.setText(String.format("%s新增", contactBean.createTime.substring(5, 10)));
-                        }
-                    }
-                }
-            } else {
-                viewHolder.contactServiceTime.setVisibility(View.GONE);
-            }
-            if (Utils.isNotEmpty(contactBean.remark)) {
-                viewHolder.contactTypeView.setVisibility(View.VISIBLE);
-                viewHolder.contactTypeView.setTechCustomerType(contactBean.remark);
-            } else {
-                viewHolder.contactTypeView.setVisibility(View.INVISIBLE);
-            }
 
-            if (contactBean.customerType.equals(Constant.USER_FANS)) {
-                viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
-                viewHolder.ivContactTypeWx.setVisibility(View.GONE);
-            } else if (contactBean.customerType.equals(Constant.USER_WX)) {
-                viewHolder.ivContactTypeFans.setVisibility(View.GONE);
-                viewHolder.ivContactTypeWx.setVisibility(View.VISIBLE);
-            } else if (contactBean.customerType.equals(Constant.USER_FANS_WX)) {
-                viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
-                viewHolder.ivContactTypeWx.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.ivContactTypeFans.setVisibility(View.GONE);
-                viewHolder.ivContactTypeWx.setVisibility(View.GONE);
-            }
-            viewHolder.itemView.setOnClickListener(v -> {
-                try {
-                    mCallback.onItemClicked(contactBean);
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            });
-            return;
-        }
-        if (holder instanceof ContactRecentListItemViewHolder) {
-            Object obj = mData.get(position);
-            if (!(obj instanceof UserRecentBean)) {
-                return;
-            }
-            final UserRecentBean userRecent = (UserRecentBean) obj;
-            userRecent.intListPosition = position;
-            ContactRecentListItemViewHolder viewHolder = (ContactRecentListItemViewHolder) holder;
-            if (Utils.isNotEmpty(userRecent.userId)) {
-                if (!userRecent.userId.equals("-1")) {
-                    viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.userNoteName) ? userRecent.userNoteName : userRecent.name);
-                    viewHolder.visitorToChat.setVisibility(View.VISIBLE);
-                } else {
-                    viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.name) ? userRecent.name : ResourceUtils.getString(R.string.contact_recent_default_name));
-                    viewHolder.visitorToChat.setVisibility(View.INVISIBLE);
-                }
-            } else {
-                viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.name) ? userRecent.name : ResourceUtils.getString(R.string.contact_recent_default_name));
-                viewHolder.visitorToChat.setVisibility(View.INVISIBLE);
-            }
-
-            Glide.with(mContext).load(userRecent.avatarUrl).into(viewHolder.contactRecentAvatar);
-            if (Utils.isNotEmpty(userRecent.remark)) {
-                viewHolder.contactRecentRemark.setText(userRecent.remark);
-            } else {
-                viewHolder.contactRecentRemark.setText("访问了我");
-            }
-
-            switch (userRecent.visitType) {
-                case Constant.CONTACT_RECENT_TYPE_NORMAL:
-                    Glide.with(mContext).load(R.drawable.icon_visit_visit).into(viewHolder.ivContactRecentVisitType);
-                    break;
-                case Constant.CONTACT_RECENT_TYPE_COMMENT:
-                    Glide.with(mContext).load(R.drawable.icon_visit_comments).into(viewHolder.ivContactRecentVisitType);
-                    break;
-                case Constant.CONTACT_RECENT_TYPE_COLLECTION:
-                    Glide.with(mContext).load(R.drawable.icon_visit_collect).into(viewHolder.ivContactRecentVisitType);
-                    break;
-                case Constant.CONTACT_RECENT_TYPE_COUPON:
-                    Glide.with(mContext).load(R.drawable.icon_visit_ticket).into(viewHolder.ivContactRecentVisitType);
-                    break;
-                case Constant.CONTACT_RECENT_TYPE_PAID_COUPON:
-                    Glide.with(mContext).load(R.drawable.icon_visit_ticket).into(viewHolder.ivContactRecentVisitType);
-                    break;
-                case Constant.CONTACT_RECENT_TYPE_REWARD:
-                    Glide.with(mContext).load(R.drawable.icon_visit_reward).into(viewHolder.ivContactRecentVisitType);
-                    break;
-                default:
-                    Glide.with(mContext).load(R.drawable.icon_visit_visit).into(viewHolder.ivContactRecentVisitType);
-            }
-            if (userRecent.visitType == Constant.CONTACT_RECENT_TYPE_NORMAL) {
-                if (userRecent.canSayHello.equals("Y")) {
-                    viewHolder.visitorToChat.setText(ResourceUtils.getString(R.string.to_say_hi));
-                    viewHolder.visitorToChat.setEnabled(true);
-                } else {
-                    viewHolder.visitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
-                    viewHolder.visitorToChat.setEnabled(false);
-                }
-                viewHolder.llContactVisitorToChat.setOnClickListener(v -> mCallback.onNegativeButtonClicked(userRecent));//打招呼
-            } else {
-                viewHolder.visitorToChat.setEnabled(true);
-                viewHolder.visitorToChat.setText(ResourceUtils.getString(R.string.recent_status_btn_text));
-                viewHolder.llContactVisitorToChat.setOnClickListener(v -> mCallback.onPositiveButtonClicked(userRecent));//感谢
-            }
-            if (userRecent.customerType.equals(Constant.USER_FANS)) {
-                viewHolder.ivContactRecentTypeFans.setVisibility(View.VISIBLE);
-                viewHolder.ivContactRecentTypeWx.setVisibility(View.GONE);
-            } else if (userRecent.customerType.equals(Constant.USER_WX)) {
-                viewHolder.ivContactRecentTypeFans.setVisibility(View.GONE);
-                viewHolder.ivContactRecentTypeWx.setVisibility(View.VISIBLE);
-            } else if (userRecent.customerType.equals(Constant.USER_FANS_WX)) {
-                viewHolder.ivContactRecentTypeFans.setVisibility(View.VISIBLE);
-                viewHolder.ivContactRecentTypeWx.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.ivContactRecentTypeFans.setVisibility(View.GONE);
-                viewHolder.ivContactRecentTypeWx.setVisibility(View.GONE);
-            }
-            viewHolder.contactVisitorTime.setText(DateUtils.getTimestampString(DateUtil.stringToDateMinute(userRecent.createTime)));
-       //   viewHolder.contactVisitorTime.setText(RelativeDateFormatUtil.format(DateUtil.stringDateToLong(userRecent.createTime)));
-            viewHolder.itemView.setOnClickListener(v -> {
-                try {
-                    mCallback.onItemClicked(userRecent);
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            });
-
-        }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = "";
@@ -1535,52 +1371,5 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    static class ContactListItemViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.contact_avatar)
-        CircleImageView contactAvatar;
-        @BindView(R.id.contact_name)
-        TextView contactName;
-        @BindView(R.id.iv_contact_type_fans)
-        ImageView ivContactTypeFans;
-        @BindView(R.id.iv_contact_type_wx)
-        ImageView ivContactTypeWx;
-        @BindView(R.id.contact_type_view)
-        TechCustomerTypeView contactTypeView;
-        @BindView(R.id.contact_service_time)
-        TextView contactServiceTime;
-
-        ContactListItemViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    static class ContactRecentListItemViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.contact_recent_avatar)
-        CircleImageView contactRecentAvatar;
-        @BindView(R.id.contact_recent_name)
-        TextView contactRecentName;
-        @BindView(R.id.iv_contact_recent_type_fans)
-        ImageView ivContactRecentTypeFans;
-        @BindView(R.id.iv_contact_recent_type_wx)
-        ImageView ivContactRecentTypeWx;
-        @BindView(R.id.iv_contact_recent_visit_type)
-        ImageView ivContactRecentVisitType;
-        @BindView(R.id.contact_recent_remark)
-        TextView contactRecentRemark;
-        @BindView(R.id.contact_visitor_to_chat)
-        TextView visitorToChat;
-        @BindView(R.id.contact_visitor_time)
-        TextView contactVisitorTime;
-        @BindView(R.id.ll_contact_visitor_to_chat)
-        LinearLayout llContactVisitorToChat;
-
-
-        ContactRecentListItemViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
 
 }
