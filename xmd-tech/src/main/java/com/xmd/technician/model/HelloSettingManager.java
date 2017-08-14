@@ -9,7 +9,7 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
@@ -174,12 +174,12 @@ public class HelloSettingManager {
                 // 招呼文本
                 ChatMessage chatMessage = ChatMessage.createTextMessage(user.getChatId(), templateContentText.replace("[客户昵称]", user.getName()));
                 chatMessage.addTag(ChatMessage.MSG_TAG_HELLO);
-                MessageManager.getInstance().sendMessage(chatMessage);
+                ChatMessageManager.getInstance().sendMessage(chatMessage);
                 if (!TextUtils.isEmpty(templateImageCachePath)) {
                     // 招呼图片
                     ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath);
                     imgMessage.addTag(ChatMessage.MSG_TAG_HELLO);
-                    MessageManager.getInstance().sendMessage(imgMessage);
+                    ChatMessageManager.getInstance().sendMessage(imgMessage);
                 }
                 callback.onResponse(result.getRespData(), null);
             }

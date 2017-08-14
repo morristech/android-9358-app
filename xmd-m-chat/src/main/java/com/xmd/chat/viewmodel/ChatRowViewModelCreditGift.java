@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.CreditGift;
 import com.xmd.chat.databinding.ChatRowCreditGiftBinding;
@@ -63,7 +63,7 @@ public class ChatRowViewModelCreditGift extends ChatRowViewModel {
             view.setImageResource(R.drawable.message_credit_gift_default);
             return;
         }
-        CreditGift creditGift = MessageManager.getInstance().getGift(giftId);
+        CreditGift creditGift = ChatMessageManager.getInstance().getGift(giftId);
         if (creditGift == null) {
             view.setImageResource(R.drawable.message_credit_gift_default);
             return;

@@ -24,7 +24,7 @@ import com.xmd.app.BaseViewModel;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.event.EventDeleteMessage;
@@ -148,7 +148,7 @@ public abstract class ChatRowViewModel extends BaseViewModel {
     public void reSend() {
         error.set(false);
         progress.set(true);
-        MessageManager.getInstance().resendMessage(chatMessage);
+        ChatMessageManager.getInstance().resendMessage(chatMessage);
     }
 
     public boolean isReceiveMessage() {
@@ -189,7 +189,7 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            MessageManager.getInstance().removeMessage(chatMessage);
+                            ChatMessageManager.getInstance().removeMessage(chatMessage);
                             EventBus.getDefault().post(new EventDeleteMessage(ChatRowViewModel.this));
                         }
                     })

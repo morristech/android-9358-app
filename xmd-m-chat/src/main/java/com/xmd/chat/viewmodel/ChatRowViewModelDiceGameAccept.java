@@ -14,7 +14,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.ChatAccountManager;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameResult;
@@ -109,12 +109,12 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                     refuseMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
                         @Override
                         public void onSuccess() {
-                            MessageManager.getInstance().removeMessage(refuseMessage);
+                            ChatMessageManager.getInstance().removeMessage(refuseMessage);
                         }
 
                         @Override
                         public void onError(int i, String s) {
-                            MessageManager.getInstance().removeMessage(refuseMessage);
+                            ChatMessageManager.getInstance().removeMessage(refuseMessage);
                         }
 
                         @Override
@@ -122,7 +122,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
 
                         }
                     });
-                    MessageManager.getInstance().sendMessage(refuseMessage, false);
+                    ChatMessageManager.getInstance().sendMessage(refuseMessage, false);
                 }
             }
 
@@ -167,12 +167,12 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                     acceptMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
                         @Override
                         public void onSuccess() {
-                            MessageManager.getInstance().removeMessage(acceptMessage);
+                            ChatMessageManager.getInstance().removeMessage(acceptMessage);
                         }
 
                         @Override
                         public void onError(int i, String s) {
-                            MessageManager.getInstance().removeMessage(acceptMessage);
+                            ChatMessageManager.getInstance().removeMessage(acceptMessage);
                         }
 
                         @Override
@@ -180,7 +180,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
 
                         }
                     });
-                    MessageManager.getInstance().sendMessage(acceptMessage, false);
+                    ChatMessageManager.getInstance().sendMessage(acceptMessage, false);
 
                     //发送游戏结果
                     DiceGameChatMessage resultMessage = DiceGameChatMessage.createMessage(
@@ -191,7 +191,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                             Integer.parseInt(message.getCredit()),
                             result.getRespData().getSrcPoint(),
                             result.getRespData().getDstPoint());
-                    MessageManager.getInstance().sendMessage(resultMessage);
+                    ChatMessageManager.getInstance().sendMessage(resultMessage);
                 }
             }
 

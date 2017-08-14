@@ -57,7 +57,7 @@ public class XmdChat {
 
         ChatAccountManager.getInstance().init();
         ConversationManager.getInstance().init();
-        MessageManager.getInstance().init();
+        ChatMessageManager.getInstance().init();
         setMenuFactory(menuFactory);
 
 

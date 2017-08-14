@@ -14,8 +14,8 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.ChatSettingManager;
-import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameResult;
@@ -140,7 +140,7 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
-                    MessageManager.getInstance().sendMessage(cancelMessage);
+                    ChatMessageManager.getInstance().sendMessage(cancelMessage);
                     message.setInnerProcessed(DiceGameChatMessage.getStatusText(DiceGameChatMessage.STATUS_CANCEL));
                     binding.setData(ChatRowViewModelDiceGameInvite.this);
                     binding.executePendingBindings();

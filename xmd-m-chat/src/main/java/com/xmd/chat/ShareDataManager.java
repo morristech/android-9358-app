@@ -92,7 +92,7 @@ public class ShareDataManager {
                     journal.journalId,
                     String.valueOf(journal.templateId),
                     journal.title);
-            MessageManager.getInstance().sendMessage(message);
+            ChatMessageManager.getInstance().sendMessage(message);
         }
     }
 
@@ -100,7 +100,7 @@ public class ShareDataManager {
     private void shareOnceCardList(String chatId, List<OnceCard> shareData) {
         for (OnceCard data : shareData) {
             ShareChatMessage message = ShareChatMessage.createOnceCardMessage(chatId, data);
-            MessageManager.getInstance().sendMessage(message);
+            ChatMessageManager.getInstance().sendMessage(message);
         }
     }
 
@@ -120,7 +120,7 @@ public class ShareDataManager {
                     break;
             }
             if (message != null) {
-                MessageManager.getInstance().sendMessage(message);
+                ChatMessageManager.getInstance().sendMessage(message);
             }
         }
     }
