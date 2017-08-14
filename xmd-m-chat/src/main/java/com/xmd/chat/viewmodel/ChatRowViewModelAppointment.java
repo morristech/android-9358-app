@@ -20,7 +20,7 @@ import com.xmd.appointment.AppointmentEvent;
 import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.ChatAccountManager;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowAppointmentBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -156,7 +156,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     }
 
     private void sendMessage(String msgType) {
-        MessageManager.getInstance().sendMessage(OrderChatMessage.create(chatMessage.getRemoteChatId(), msgType, mAppointmentData));
+        ChatMessageManager.getInstance().sendMessage(OrderChatMessage.create(chatMessage.getRemoteChatId(), msgType, mAppointmentData));
     }
 
     //显示或者隐藏按钮

@@ -18,7 +18,7 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowDiceGameResultBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -120,7 +120,7 @@ public class ChatRowViewModelDiceGameResult extends ChatRowViewModel {
                         //发送再来一局消息
                         String msg = (data.message.getMyPoint() > data.message.getRemotePoint() ? "获得" : "消费") + data.getCredit() + "积分，再玩一局";
                         TipChatMessage tipChatMessage = TipChatMessage.create(data.message.getRemoteChatId(), msg, TipChatMessage.TIP_TYPE_PLAY_DICE);
-                        MessageManager.getInstance().sendTipMessage(tipChatMessage);
+                        ChatMessageManager.getInstance().sendTipMessage(tipChatMessage);
                     }
                     data.inProcess.set(false);
                     data.chatMessage.setInnerProcessed("show");

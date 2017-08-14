@@ -33,8 +33,9 @@ android {
         // 1.6.4Pk分组，修复已知bug
         //1.6.8 聊天优化,黑名单
         //1.7.8技师海报
-        versionCode 51
-        versionName "1.8.3"
+        //1.8.4 fixbug
+        versionCode 52
+        versionName "1.8.4"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",

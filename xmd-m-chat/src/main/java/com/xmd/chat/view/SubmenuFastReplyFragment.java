@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.chat.BR;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentSubmenuFastReplyBinding;
 import com.xmd.chat.viewmodel.SubMenuFastReplyViewModel;
@@ -43,7 +43,7 @@ public class SubmenuFastReplyFragment extends BaseFragment {
             dataList.add(new SubMenuFastReplyViewModel(s, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MessageManager.getInstance().sendTextMessage(remoteChatId, s);
+                    ChatMessageManager.getInstance().sendTextMessage(remoteChatId, s);
                 }
             }));
         }

@@ -4,17 +4,25 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.CommonNetService;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventChatLoginSuccess;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-6-28.
@@ -38,6 +46,21 @@ public class ChatAccountManager {
 
     public void init() {
         deviceId = DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext());
+
+        EMClient.getInstance().addConnectionListener(new EMConnectionListener() {
+            @Override
+            public void onConnected() {
+                XLogger.d(XmdChat.TAG, "--connected--");
+            }
+
+            @Override
+            public void onDisconnected(int i) {
+                XLogger.d(XmdChat.TAG, "--disconnected--" + i);
+                if (i == 206) {
+                    loopLogin();
+                }
+            }
+        });
     }
 
     public void login(EventLogin eventLogin) {
@@ -71,27 +94,32 @@ public class ChatAccountManager {
     };
 
     private void login() {
-//        if (!isRunLogin) {
-//            return;
-//        }
-//        XLogger.i(XmdChat.TAG, "check token --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
-//        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
-//                .reportAlive(token, deviceId);
-//        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-//            @Override
-//            public void onCallbackSuccess(BaseBean result) {
-//                chatLogin();
-//            }
-//
-//            @Override
-//            public void onCallbackError(Throwable e) {
-//                XLogger.e(e.getMessage());
-//                Message message = new Message();
-//                message.what = 1;
-//                mHandler.sendMessageDelayed(message, 1000);
-//            }
-//        });
-        chatLogin();
+        if (!isRunLogin) {
+            return;
+        }
+        User user = userInfoService.getCurrentUser();
+        if (user == null) {
+            XToast.show("无法登录聊天账号，未找到用户信息");
+            XLogger.e("无法登录聊天账号，未找到用户信息");
+            return;
+        }
+        XLogger.i(XmdChat.TAG, "check token --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
+                .reportAlive(token, deviceId);
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                chatLogin();
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(e.getMessage());
+                Message message = new Message();
+                message.what = 1;
+                mHandler.sendMessageDelayed(message, 1000);
+            }
+        });
     }
 
     private void chatLogin() {

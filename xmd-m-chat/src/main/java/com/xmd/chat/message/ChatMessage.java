@@ -11,7 +11,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.user.User;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 
 import java.util.Calendar;
 
@@ -345,7 +345,7 @@ public class ChatMessage {
 
     public void setInnerProcessed(String processedDesc) {
         setAttr(ATTR_INNER_PROCESSED, processedDesc);
-        MessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
+        ChatMessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
     }
 
     public EMConversation getConversation() {
