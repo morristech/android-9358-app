@@ -242,6 +242,18 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_member_pay_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="会员账户余额不足！"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/font_size_16"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/btn_member_pay"
         style="@style/AppTheme.Button"

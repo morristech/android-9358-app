@@ -133,7 +133,7 @@ public class MemberRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     break;
                 case AppConstants.MEMBER_TRADE_TYPE_PAY:
                     itemViewHolder.mAmount.setText("- " + Utils.moneyToStringEx(info.amount));
-                    itemViewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorMemberPayFailed));
+                    itemViewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorRed));
                     break;
                 default:
                     itemViewHolder.mAmount.setText(Utils.moneyToStringEx(info.amount));

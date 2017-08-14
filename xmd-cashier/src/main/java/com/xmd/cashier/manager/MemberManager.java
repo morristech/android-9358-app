@@ -339,7 +339,8 @@ public class MemberManager {
                         String.valueOf(mRechargeProcess.getMemberId()),
                         packageId,
                         mRechargeProcess.getTechInfo().id,
-                        password);
+                        password,
+                        RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberUrlResult>() {
             @Override
             public void onCallbackSuccess(MemberUrlResult result) {

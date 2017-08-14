@@ -289,6 +289,9 @@ public class NotifyManager {
                     case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
                         mPos.printText("预约抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
                         break;
+                    case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                        mPos.printText("会员优惠", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        break;
                     default:
                         mPos.printText("其他抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
                         break;
