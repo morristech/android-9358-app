@@ -171,10 +171,10 @@ public class ConversationManager {
                     return 1;
                 }
                 if (o1.getTime() > o2.getTime()) {
-                    return 1;
+                    return -1;
                 }
                 if (o2.getTime() > o1.getTime()) {
-                    return -1;
+                    return 1;
                 }
                 return 0;
             }
