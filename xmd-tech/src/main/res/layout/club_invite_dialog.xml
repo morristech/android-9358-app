@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="data"
+            type="com.xmd.technician.clubinvite.beans.ClubInvite" />
+
+        <variable
+            name="handler"
+            type="com.xmd.technician.clubinvite.ClubInviteDialogFragment" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:background="@android:color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="54dp"
+                android:gravity="center"
+                android:text="@{data.clubName,default=小摩豆会所}"
+                android:textColor="#000000"
+                android:textSize="@dimen/fontHeadline" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/club_invite_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="工号："
+                    android:textColor="#4d4d4d"
+                    android:textSize="@dimen/fontSubheading" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:text='@{"["+data.serialNo+"]",default="[A008]"}'
+                    android:textColor="#ff8a00"
+                    android:textSize="@dimen/fontSubheading" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="职位："
+                    android:textColor="#4d4d4d"
+                    android:textSize="@dimen/fontSubheading" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:text='@{data.positionName,default="技师"}'
+                    android:textSize="@dimen/fontSubheading" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="right"
+                android:layout_margin="16dp"
+                android:onClick="@{()->handler.onCall(data)}"
+                android:src="@drawable/btn_phone_red" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请时间：" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="2017.07.10 12:00:00"
+                    app:time="@{data.createTime}" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#ff8888" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{()->handler.onRefuse(data)}"
+                    android:text="拒绝"
+                    android:textColor="#ff8888"
+                    android:textSize="@dimen/fontSubheading" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#ff8888"
+                    android:gravity="center"
+                    android:onClick="@{()->handler.onAccept(data)}"
+                    android:text="授受"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fontSubheading" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            app:circle_image="@{data.clubLogo}" />
+    </FrameLayout>
+</layout>
+

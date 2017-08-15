@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.technician.clubinvite.beans.ClubInvite" />
+
+        <variable
+            name="handler"
+            type="com.xmd.technician.clubinvite.ClubInviteActivity" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:circle_image="@{data.clubLogo}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@{data.clubName,default=小摩豆会所}"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/fontSubheading" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/line2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="工      号："
+                    android:textColor="#4d4d4d" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text='@{"["+data.serialNo+"]",default="[A008]"}'
+                    android:textColor="#ff8a00" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line2"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请职位："
+                    android:textColor="#4d4d4d" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text='@{data.positionName,default="技师"}' />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/btn_phone_red"
+                android:onClick="@{()->handler.onCall(data)}"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivide"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="2017.07.10 12:00:00"
+                android:drawableLeft="@drawable/icon_time"
+                android:drawablePadding="4dp"
+                app:time="@{data.createTime}"/>
+
+            <TextView
+                android:visibility="@{data.showOperateButton?View.VISIBLE:View.GONE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="拒绝"
+                android:textColor="#ff8888"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:background="@drawable/shape_r4_stoke_red"
+                android:onClick="@{()->handler.onRefuse(data)}"/>
+
+            <TextView
+                android:visibility="@{data.showOperateButton?View.VISIBLE:View.GONE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="接受"
+                android:textColor="#ffffff"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:background="@drawable/shape_r4_solid_red"
+                android:onClick="@{()->handler.onAccept(data)}"/>
+
+            <TextView
+                android:visibility="@{data.showOperateButton?View.GONE:View.VISIBLE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@{data.statusString,default=已拒绝}"
+                android:textColor="#212121"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>
+

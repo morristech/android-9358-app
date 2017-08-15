@@ -112,6 +112,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         EventBusSafeRegister.register(this);
 
         XmdChat.getInstance().loadConversation();
+
+        UINavigation.gotoPositionInvite(this);
     }
 
     @TargetApi(23)

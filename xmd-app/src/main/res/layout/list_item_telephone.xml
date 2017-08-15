@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="java.lang.String" />
+
+        <variable
+            name="handler"
+            type="com.xmd.app.widget.TelephoneDialogFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/shape_r4_stoke_gray_solid_white"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:text="AACCBB"
+            android:textColor="#ff8888"
+            android:textSize="@dimen/fontSubheading"/>
+    </LinearLayout>
+</layout>

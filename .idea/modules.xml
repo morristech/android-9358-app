@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/android-9358-app.iml" filepath="$PROJECT_DIR$/android-9358-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonlibrary/commonlibrary.iml" filepath="$PROJECT_DIR$/commonlibrary/commonlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/loading-view/loading-view.iml" filepath="$PROJECT_DIR$/loading-view/loading-view.iml" />
+      <module fileurl="file://$PROJECT_DIR$/permission-tool/permission-tool.iml" filepath="$PROJECT_DIR$/permission-tool/permission-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-app/xmd-app.iml" filepath="$PROJECT_DIR$/xmd-app/xmd-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-cashier/xmd-cashier.iml" filepath="$PROJECT_DIR$/xmd-cashier/xmd-cashier.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-appointment/xmd-m-appointment.iml" filepath="$PROJECT_DIR$/xmd-m-appointment/xmd-m-appointment.iml" />

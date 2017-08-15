@@ -187,3 +187,5 @@
 -keep class * {
     @com.xmd.permission.CheckBusinessPermission public <methods>;
 }
+
+-keep class com.xmd.**.beans.** { *; }
