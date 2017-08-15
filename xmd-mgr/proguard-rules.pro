@@ -178,6 +178,12 @@
 -dontwarn com.xmd.chat.**
 -keep class com.xmd.chat.** {*;}
 
+-dontwarn com.xmd.contact.**
+-keep class com.xmd.contact.** {*;}
+
+-dontwarn com.xmd.black.**
+-keep class com.xmd.black.** {*;}
+
 -keep public class ** {
     @org.greenrobot.eventbus.Subscribe public <methods>;
 }
