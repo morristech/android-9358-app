@@ -6,13 +6,22 @@ import java.io.Serializable;
  * Created by mo on 17-7-27.
  * 联系权联
  */
-
 public class ContactPermission implements Serializable {
-
+    private static final long serialVersionUID = 88750009432719L;
 
     private boolean hello;//打招呼
     private boolean echat;//网络聊天
     private boolean call;//打电话
+
+
+    public ContactPermission(boolean hello, boolean echat, boolean call) {
+        this.hello = hello;
+        this.echat = echat;
+        this.call = call;
+    }
+
+    public ContactPermission() {
+    }
 
     public boolean isHello() {
         return hello;
@@ -45,5 +54,17 @@ public class ContactPermission implements Serializable {
                 ", echat=" + echat +
                 ", call=" + call +
                 '}';
+    }
+
+    public boolean getHello() {
+        return this.hello;
+    }
+
+    public boolean getEchat() {
+        return this.echat;
+    }
+
+    public boolean getCall() {
+        return this.call;
     }
 }

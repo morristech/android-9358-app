@@ -3,6 +3,8 @@ package com.xmd.app.user;
 import com.shidou.commonlibrary.Callback;
 import com.xmd.app.IFunctionInit;
 
+import java.util.List;
+
 /**
  * Created by heyangya on 17-6-5.
  * 用户信息模块服务接口
@@ -34,4 +36,7 @@ public interface UserInfoService extends IFunctionInit {
 
     //获取token值
     String getCurrentToken();
+
+    List<User> getAllUsers();
+
 }

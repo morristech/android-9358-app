@@ -4,10 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.Callback;
-import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.CommonNetService;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.SpConstants;
+import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.BaseBean;
@@ -16,12 +17,9 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.greendao.database.Database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 
@@ -42,59 +40,37 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     }
 
-    private List<String> mUserIdList;
-    private Map<String, User> mChatIdMap;
-    private Map<String, User> mUserIdMap;
-
-    private static final String USER_CURRENT_USER = "user_current_user";
-    private static final String USER_ID_LIST = "user_id_list";
-
     private User currentUser;
     private String currentToken;
 
+    private DaoSession daoSession;
+
     @Override
     public void init(Context context) {
-        if (!DiskCacheManager.isInit()) {
-            throw new RuntimeException("dependency DiskCacheManager, but not init");
-        }
-        mChatIdMap = new HashMap<>();
-        mUserIdMap = new HashMap<>();
-
-        currentUser = (User) DiskCacheManager.getInstance().get(USER_CURRENT_USER);
-        XLogger.i("get current user=" + currentUser);
-
-        mUserIdList = (List<String>) DiskCacheManager.getInstance().get(USER_ID_LIST);
-        if (mUserIdList == null) {
-            mUserIdList = new ArrayList<>();
-        } else {
-            Iterator<String> userIdIterator = mUserIdList.iterator();
-            while (userIdIterator.hasNext()) {
-                String userId = userIdIterator.next();
-                User user = (User) DiskCacheManager.getInstance().get(userId);
-                if (user == null) {
-                    userIdIterator.remove();
-                    continue;
-                }
-                mUserIdMap.put(userId, user);
-                if (!TextUtils.isEmpty(user.getChatId())) {
-                    mChatIdMap.put(user.getChatId(), user);
-                }
-
-                XLogger.d(TAG, "find user: " + user);
-            }
-        }
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "xmd-db-user");
+        Database db = helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
 
         EventBusSafeRegister.register(this);
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return daoSession.getUserDao().loadAll();
+    }
+
+    @Override
     public User getUserByChatId(String chatId) {
-        return mChatIdMap.get(chatId);
+        return daoSession.getUserDao().queryBuilder()
+                .where(UserDao.Properties.ChatId.eq(chatId))
+                .unique();
     }
 
     @Override
     public User getUserByUserId(String userId) {
-        return mUserIdMap.get(userId);
+        return daoSession.getUserDao().queryBuilder()
+                .where(UserDao.Properties.UserId.eq(userId))
+                .unique();
     }
 
     @Override
@@ -103,7 +79,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             XLogger.e("无法保存用户：" + user);
             return;
         }
-        User old = mUserIdMap.get(user.getId());
+        User old = getUserByUserId(user.getUserId());
 
         if (old == null || !user.equals(old)) {
             //保存信息
@@ -111,28 +87,36 @@ public class UserInfoServiceImpl implements UserInfoService {
                 user = old.update(user);
             }
             XLogger.i(TAG, "save user: " + user);
-            DiskCacheManager.getInstance().put(user.getId(), user);
-            if (!mUserIdList.contains(user.getId())) {
-                mUserIdList.add(user.getId());
-                DiskCacheManager.getInstance().put(USER_ID_LIST, mUserIdList);
+            if (getUserByUserId(user.getId()) != null) {
+                daoSession.getUserDao().update(user);
+            } else {
+                daoSession.getUserDao().insert(user);
             }
-        }
-
-        mUserIdMap.put(user.getId(), user);
-        if (!TextUtils.isEmpty(user.getChatId())) {
-            mChatIdMap.put(user.getChatId(), user);
         }
     }
 
     @Override
     public User getCurrentUser() {
+        if (currentUser == null) {
+            String id = XmdApp.getInstance().getSp().getString(SpConstants.KEY_CURRENT_USER_ID, null);
+            if (id != null) {
+                currentUser = getUserByUserId(id);
+            }
+        }
         return currentUser;
     }
 
     @Override
     public void saveCurrentUser(User user) {
-        currentUser = user;
-        DiskCacheManager.getInstance().put(USER_CURRENT_USER, user);
+        if (user != null) {
+            saveUser(user);
+            currentUser = getUserByUserId(user.getId());
+            XmdApp.getInstance().getSp().edit().putString(SpConstants.KEY_CURRENT_USER_ID, user.getId()).apply();
+        } else {
+            daoSession.getUserDao().delete(currentUser);
+            XmdApp.getInstance().getSp().edit().remove(SpConstants.KEY_CURRENT_USER_ID).apply();
+            currentUser = null;
+        }
     }
 
     @Override
