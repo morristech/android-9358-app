@@ -2,13 +2,18 @@ package com.xmd.app.user;
 
 import android.text.TextUtils;
 
+import org.greenrobot.greendao.annotation.Convert;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.io.Serializable;
 
 /**
  * Created by heyangya on 17-6-5.
  * 用户信息
  */
-
+@Entity
 public class User implements Serializable {
     private static final long serialVersionUID = 88750009432718L;
 
@@ -21,8 +26,10 @@ public class User implements Serializable {
     public final static String USER_TYPE_TECH = "tech";
     public final static String USER_TYPE_MANAGER = "manager";
 
+    @Id
     private String userId; //用户ID
     private String chatId; //用户聊天ID
+
     private String avatar; //用户头像
     private String avatarId; //用户头像ID
     private String noteName; //用户备注名
@@ -30,6 +37,7 @@ public class User implements Serializable {
     private String userType;
     private String userRoles;
     private String telephone;
+    @Convert(converter = ContactPermissionConverter.class, columnType = String.class)
     private ContactPermission contactPermission;
 
     private String clubId;
@@ -50,8 +58,38 @@ public class User implements Serializable {
         this.userId = id;
     }
 
+    @Generated(hash = 548463602)
+    public User(String userId, String chatId, String avatar, String avatarId, String noteName,
+                String name, String userType, String userRoles, String telephone,
+                ContactPermission contactPermission, String clubId, String clubName, String techId,
+                String techNo, String chatPassword) {
+        this.userId = userId;
+        this.chatId = chatId;
+        this.avatar = avatar;
+        this.avatarId = avatarId;
+        this.noteName = noteName;
+        this.name = name;
+        this.userType = userType;
+        this.userRoles = userRoles;
+        this.telephone = telephone;
+        this.contactPermission = contactPermission;
+        this.clubId = clubId;
+        this.clubName = clubName;
+        this.techId = techId;
+        this.techNo = techNo;
+        this.chatPassword = chatPassword;
+    }
+
+    @Generated(hash = 586692638)
+    public User() {
+    }
+
     public String getId() {
         return userId;
+    }
+
+    public void setId(String id) {
+        this.userId = id;
     }
 
     public String getUserId() {
@@ -62,9 +100,6 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public void setId(String id) {
-        this.userId = id;
-    }
 
     public String getAvatar() {
         return avatar;

@@ -117,7 +117,7 @@ public class ChatAccountManager {
                 XLogger.e(e.getMessage());
                 Message message = new Message();
                 message.what = 1;
-                mHandler.sendMessageDelayed(message, 1000);
+                mHandler.sendMessageDelayed(message, 3000);
             }
         });
     }

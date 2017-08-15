@@ -200,4 +200,6 @@ dependencies {
 
     // for multidex
     compile 'com.android.support:multidex:1.0.1'
+
+    compile 'org.greenrobot:greendao:3.2.2'
 }
