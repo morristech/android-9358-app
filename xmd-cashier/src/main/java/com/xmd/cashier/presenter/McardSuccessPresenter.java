@@ -29,7 +29,7 @@ public class McardSuccessPresenter implements McardSuccessContract.Presenter {
     public void onCreate() {
         info = MemberManager.getInstance().getCardMemberInfo();
         mView.showInfo(info);
-        mView.showStepView(MemberManager.getInstance().getmCardMode());
+        mView.showStepView(MemberManager.getInstance().getCardMode());
     }
 
     @Override

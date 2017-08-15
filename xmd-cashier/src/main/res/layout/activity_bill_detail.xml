@@ -11,7 +11,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="@dimen/activity_horizontal_margin">
 
         <TableRow>
 
@@ -21,17 +21,17 @@
                 android:gravity="left"
                 android:text="订单金额"
                 android:textColor="@color/colorText2"
-                android:textSize="20sp" />
+                android:textSize="@dimen/medium_font_size" />
 
             <TextView
                 android:id="@+id/tv_origin_money"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#4d4d4d"
-                android:textSize="31sp" />
+                android:textColor="@color/colorText5"
+                android:textSize="@dimen/medium_font_size" />
         </TableRow>
 
-        <TableRow android:layout_marginTop="16dp">
+        <TableRow android:layout_marginTop="@dimen/activity_small_margin">
 
             <TextView
                 android:layout_gravity="center_vertical"
@@ -39,19 +39,19 @@
                 android:gravity="left"
                 android:text="减免金额"
                 android:textColor="@color/colorText2"
-                android:textSize="20sp" />
+                android:textSize="@dimen/medium_font_size" />
 
             <TextView
                 android:id="@+id/tv_cut_money"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#4d4d4d"
-                android:textSize="31sp" />
+                android:textColor="@color/colorText5"
+                android:textSize="@dimen/medium_font_size" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tr_other_discount_row"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/activity_little_margin"
             android:visibility="gone">
 
             <TextView
@@ -59,19 +59,19 @@
                 android:gravity="center_horizontal"
                 android:text="其他优惠"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_other_discount_money"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tr_coupon_discount_row"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/activity_little_margin"
             android:visibility="gone">
 
             <TextView
@@ -79,19 +79,19 @@
                 android:gravity="center_horizontal"
                 android:text="优惠金额"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_coupon_discount_money"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tr_user_discount_row"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/activity_little_margin"
             android:visibility="gone">
 
             <TextView
@@ -99,34 +99,34 @@
                 android:gravity="center_horizontal"
                 android:text="手动减免"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_user_discount_money"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
         </TableRow>
 
-        <TableRow android:layout_marginTop="10dp">
+        <TableRow android:layout_marginTop="@dimen/activity_little_margin">
 
             <TextView
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="会员折扣"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_member_discount_money"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
         </TableRow>
 
-        <TableRow android:layout_marginTop="16dp">
+        <TableRow android:layout_marginTop="@dimen/activity_small_margin">
 
             <TextView
                 android:layout_gravity="center_vertical"
@@ -134,17 +134,17 @@
                 android:gravity="left"
                 android:text="实收金额"
                 android:textColor="@color/colorText2"
-                android:textSize="20sp" />
+                android:textSize="@dimen/medium_font_size" />
 
             <TextView
                 android:id="@+id/tv_pay_money"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#4d4d4d"
-                android:textSize="31sp" />
+                android:textColor="@color/colorText5"
+                android:textSize="@dimen/medium_font_size" />
         </TableRow>
 
-        <TableRow android:layout_marginTop="10dp">
+        <TableRow android:layout_marginTop="@dimen/activity_little_margin">
 
             <TextView
                 android:id="@+id/tv_pos_pay_type"
@@ -152,31 +152,31 @@
                 android:gravity="center_horizontal"
                 android:text="其他支付"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_pos_pay_money"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
         </TableRow>
 
-        <TableRow android:layout_marginTop="10dp">
+        <TableRow android:layout_marginTop="@dimen/activity_little_margin">
 
             <TextView
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="会员支付"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_member_pay_money"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_size_16" />
         </TableRow>
 
         <TableRow
@@ -190,21 +190,21 @@
                 android:gravity="left"
                 android:text="退款金额"
                 android:textColor="@color/colorText2"
-                android:textSize="15sp" />
+                android:textSize="@dimen/medium_font_size" />
 
             <TextView
                 android:id="@+id/tv_refund_money"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#4d4d4d"
-                android:textSize="31sp" />
+                android:textColor="@color/colorText5"
+                android:textSize="@dimen/medium_font_size" />
         </TableRow>
     </TableLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc" />
+        android:background="@color/colorStoke" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -215,7 +215,7 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/activity_horizontal_margin">
 
             <TableRow>
 
@@ -224,70 +224,70 @@
                     android:gravity="left"
                     android:text="交易号"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_trade_no"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="@dimen/activity_little_margin">
 
                 <TextView
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="收款方式"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_pay_type"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="@dimen/activity_little_margin">
 
                 <TextView
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="创建时间"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_pay_time"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="@dimen/activity_little_margin">
 
                 <TextView
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="收款人员"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_pay_operator"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
 
             <TableRow
                 android:id="@+id/row_refund_no"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/activity_normal_margin"
                 android:visibility="gone">
 
                 <TextView
@@ -295,19 +295,19 @@
                     android:gravity="left"
                     android:text="退款单号"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_refund_no"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
 
             <TableRow
                 android:id="@+id/row_refund_time"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/activity_little_margin"
                 android:visibility="gone">
 
                 <TextView
@@ -315,19 +315,19 @@
                     android:gravity="left"
                     android:text="退款时间"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_refund_time"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
 
             <TableRow
                 android:id="@+id/row_refund_operator"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/activity_little_margin"
                 android:visibility="gone">
 
                 <TextView
@@ -335,14 +335,14 @@
                     android:gravity="left"
                     android:text="退款人员"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
 
                 <TextView
                     android:id="@+id/tv_refund_operator"
                     android:layout_weight="2"
                     android:gravity="left"
                     android:textColor="@color/colorText2"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_16" />
             </TableRow>
         </TableLayout>
     </ScrollView>
@@ -361,5 +361,5 @@
         android:paddingTop="16dp"
         android:text="交易成功"
         android:textColor="@color/colorText2"
-        android:textSize="30sp" />
+        android:textSize="@dimen/medium_font_size" />
 </LinearLayout>

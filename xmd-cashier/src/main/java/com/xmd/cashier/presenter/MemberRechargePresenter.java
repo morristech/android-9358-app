@@ -277,8 +277,13 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     public void onRecharge(int type) {
         switch (type) {
             case AppConstants.CASHIER_TYPE_POS:
-                // Pos银联和现金支付：需要输入收银员密码
-                doInputPassword(type);
+                if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getVerificationSwitch())) {
+                    // Pos银联和现金支付：需要输入收银员密码
+                    doInputPassword(type);
+                } else {
+                    // 无需校验密码
+                    doRechargeRequest(type, null);
+                }
                 break;
             case AppConstants.CASHIER_TYPE_XMD_ONLINE:
                 doRechargeRequest(type, null);

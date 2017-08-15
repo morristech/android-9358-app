@@ -27,8 +27,8 @@
 
                 <com.xmd.cashier.widget.CircleImageView
                     android:id="@+id/img_detail_avatar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="@dimen/activity_normal_margin"
                     android:src="@drawable/ic_avatar" />
 

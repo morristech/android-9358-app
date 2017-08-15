@@ -29,7 +29,7 @@ public class McardInfoPresenter implements McardInfoContract.Presenter {
 
     @Override
     public void onCreate() {
-        mView.showStepView(MemberManager.getInstance().getmCardMode());
+        mView.showStepView(MemberManager.getInstance().getCardMode());
         mView.showInfo(MemberManager.getInstance().getPhone(), MemberManager.getInstance().getName());
     }
 
@@ -56,7 +56,7 @@ public class McardInfoPresenter implements McardInfoContract.Presenter {
             return;
         }
 
-        switch (MemberManager.getInstance().getmCardMode()) {
+        switch (MemberManager.getInstance().getCardMode()) {
             case AppConstants.MEMBER_CARD_MODEL_NORMAL:
                 UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_CARD);
                 mView.showEnterAnim();

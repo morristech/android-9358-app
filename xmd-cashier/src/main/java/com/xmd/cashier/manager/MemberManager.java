@@ -81,17 +81,22 @@ public class MemberManager {
     private int mCardMode = 2;  //默认只发电子卡
     private String mRechargeMode = null;    //默认不支持Pos充值
     private String mMemberSwitch = AppConstants.APP_REQUEST_NO; //默认会员功能关闭
+    private String mVerificationSwitch = AppConstants.APP_REQUEST_YES;  //默认需要输入交易验证密码
 
-    public int getmCardMode() {
+    public int getCardMode() {
         return mCardMode;
     }
 
-    public String getmRechargeMode() {
+    public String getRechargeMode() {
         return mRechargeMode;
     }
 
-    public String getmMemberSwitch() {
+    public String getMemberSwitch() {
         return mMemberSwitch;
+    }
+
+    public String getVerificationSwitch() {
+        return mVerificationSwitch;
     }
 
     private Call<MemberSettingResult> callMemberSetting;
@@ -128,6 +133,7 @@ public class MemberManager {
                     mCardMode = result.getRespData().cardMode;
                     mRechargeMode = result.getRespData().rechargeMode;
                     mMemberSwitch = result.getRespData().memberSwitch;
+                    mVerificationSwitch = result.getRespData().verificationSwitch;
                 }
                 resultMemberSetting = true;
             }

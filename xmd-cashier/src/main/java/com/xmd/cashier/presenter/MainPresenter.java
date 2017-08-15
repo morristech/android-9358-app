@@ -128,7 +128,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onMemberLayoutClick() {
-        if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getmMemberSwitch())) {
+        if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getMemberSwitch())) {
             UiNavigation.gotoMemberNavigationActivity(mContext);
         } else {
             mView.showError("会所会员功能未开通!");

@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
-    android:paddingBottom="12dp"
-    android:paddingLeft="40dp"
-    android:paddingRight="16dp"
-    android:paddingTop="12dp"
-    android:background="@color/colorWhite">
+    android:paddingBottom="@dimen/activity_normal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_normal_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,41 +19,41 @@
             android:layout_height="wrap_content"
             android:text="交易号: "
             android:textColor="@color/colorText2"
-            android:textSize="14sp" />
+            android:textSize="@dimen/font_size_16" />
 
         <TextView
             android:id="@+id/tv_bill_trade_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorText2"
-            android:textSize="14sp" />
+            android:textSize="@dimen/font_size_16" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/activity_little_margin">
 
         <TextView
             android:id="@+id/tv_bill_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#4d4d4d"
-            android:textSize="18sp" />
+            android:textColor="@color/colorText5"
+            android:textSize="@dimen/small_font_size" />
 
         <TextView
             android:id="@+id/tv_bill_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textColor="#4d4d4d"
-            android:textSize="17sp" />
+            android:textColor="@color/colorText5"
+            android:textSize="@dimen/small_font_size" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/activity_little_margin">
 
         <TextView
             android:id="@+id/tv_pay_type"
@@ -62,7 +62,7 @@
             android:layout_alignParentLeft="true"
             android:text="交易类型: "
             android:textColor="@color/colorText2"
-            android:textSize="14sp" />
+            android:textSize="@dimen/font_size_14" />
 
         <TextView
             android:id="@+id/tv_bill_pay_type"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_pay_type"
             android:textColor="@color/colorText2"
-            android:textSize="14sp" />
+            android:textSize="@dimen/font_size_14" />
 
         <TextView
             android:id="@+id/tv_bill_time"
@@ -78,6 +78,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorText3"
-            android:textSize="13sp" />
+            android:textSize="@dimen/font_size_14" />
     </RelativeLayout>
 </LinearLayout>
