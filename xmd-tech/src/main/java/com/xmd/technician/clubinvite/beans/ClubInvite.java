@@ -14,7 +14,7 @@ import java.util.Date;
  * 会所邀请
  */
 
-public class ClubInvite extends BaseViewModel implements Serializable{
+public class ClubInvite extends BaseViewModel implements Serializable {
     public static final String STATUS_INVITING = "inviting";
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
@@ -166,16 +166,6 @@ public class ClubInvite extends BaseViewModel implements Serializable{
 
     public boolean getShowOperateButton() {
         return STATUS_INVITING.equals(getStatus());
-    }
-
-    public String getStatusString(){
-        switch (getStatus()){
-            case STATUS_SUCCESS:
-                return "已接受";
-            case STATUS_FAILED:
-                return "已拒绝";
-        }
-        return "";
     }
 
 

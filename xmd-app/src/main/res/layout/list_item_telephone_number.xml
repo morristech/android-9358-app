@@ -24,8 +24,9 @@
             android:background="@drawable/shape_r4_stoke_gray_solid_white"
             android:gravity="center_horizontal"
             android:padding="8dp"
-            android:text="AACCBB"
+            android:text="@{data}"
             android:textColor="#ff8888"
-            android:textSize="@dimen/fontSubheading"/>
+            android:textSize="@dimen/fontSubheading"
+            android:onClick="@{()->handler.onCall(data)}" />
     </LinearLayout>
 </layout>

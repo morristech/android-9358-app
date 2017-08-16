@@ -112,8 +112,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         EventBusSafeRegister.register(this);
 
         XmdChat.getInstance().loadConversation();
-
-        UINavigation.gotoPositionInvite(this);
     }
 
     @TargetApi(23)
@@ -347,7 +345,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     mHomeFragment.doUpdateTechInfoSuccess();
                 }
             }
+            return;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

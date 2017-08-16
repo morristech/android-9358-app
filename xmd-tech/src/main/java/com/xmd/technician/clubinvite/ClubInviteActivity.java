@@ -54,7 +54,7 @@ public class ClubInviteActivity extends BaseActivity {
 
         setTitle("入职邀请");
 
-        page = 0;
+        page = 1;
         pageSize = 10;
         loadData();
     }
@@ -63,14 +63,14 @@ public class ClubInviteActivity extends BaseActivity {
         Observable<BaseBean<List<ClubInvite>>> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
                 .listInvite(page, pageSize);
-        if (page == 0) {
+        if (page == 1) {
             showLoading();
         }
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<List<ClubInvite>>>() {
             @Override
             public void onCallbackSuccess(BaseBean<List<ClubInvite>> result) {
                 hideLoading();
-                if (page == 0) {
+                if (page == 1) {
                     dataList.clear();
                 }
                 dataList.addAll(result.getRespData());
@@ -131,7 +131,7 @@ public class ClubInviteActivity extends BaseActivity {
     }
 
     public void onCall(ClubInvite invite) {
-        String[] telephones = invite.getClubTelephone().split(",");
+        String[] telephones = invite.getClubTelephone().split(",|，");
         if (telephones.length > 0) {
             ArrayList<String> phoneList = new ArrayList<>();
             phoneList.addAll(Arrays.asList(telephones));

@@ -949,4 +949,7 @@ public interface SpaService {
 
     @GET(RequestConstant.URL_GET_TECH_INFO)
     Observable<TechInfoResult> doGetTechInfo(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET("/spa-manager/api/v2/tech/club/position/invite/count")
+    Observable<BaseBean<Integer>> getClubInviteCount(@Query("status") String status);
 }

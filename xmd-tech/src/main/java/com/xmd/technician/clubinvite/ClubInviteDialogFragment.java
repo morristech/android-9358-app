@@ -71,11 +71,11 @@ public class ClubInviteDialogFragment extends DialogFragment {
         Observable<BaseBean<ClubInvite>> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
                 .acceptOrRefuseInvite(invite.getId(), operate);
-        ((BaseActivity)getActivity()).showLoading();
+        ((BaseActivity) getActivity()).showLoading();
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<ClubInvite>>() {
             @Override
             public void onCallbackSuccess(BaseBean<ClubInvite> result) {
-                ((BaseActivity)getActivity()).hideLoading();
+                ((BaseActivity) getActivity()).hideLoading();
                 if (operate.equals("accept")) {
                     EventBus.getDefault().post(new EventRequestSyncPermission());
                 }
@@ -84,19 +84,19 @@ public class ClubInviteDialogFragment extends DialogFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
-                ((BaseActivity)getActivity()).hideLoading();
-                ((BaseActivity)getActivity()).showToast("操作失败：" + e.getMessage());
+                ((BaseActivity) getActivity()).hideLoading();
+                ((BaseActivity) getActivity()).showToast("操作失败：" + e.getMessage());
             }
         });
     }
 
     public void onCall(ClubInvite invite) {
-        String[] telephones=invite.getClubTelephone().split(",");
-        if(telephones.length>0) {
-            ArrayList<String> phoneList=new ArrayList<>();
+        String[] telephones = invite.getClubTelephone().split(",");
+        if (telephones.length > 0) {
+            ArrayList<String> phoneList = new ArrayList<>();
             phoneList.addAll(Arrays.asList(telephones));
             TelephoneDialogFragment fragment = TelephoneDialogFragment.newInstance(phoneList);
-            fragment.show(getFragmentManager().beginTransaction(),TelephoneDialogFragment.class.getName());
+            fragment.show(getFragmentManager().beginTransaction(), TelephoneDialogFragment.class.getName());
         } else {
             XToast.show("会所没有设置电话!");
         }
@@ -105,8 +105,8 @@ public class ClubInviteDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        WindowManager.LayoutParams lp=getDialog().getWindow().getAttributes();
-        lp.width= ScreenUtils.getScreenWidth();
+        WindowManager.LayoutParams lp = getDialog().getWindow().getAttributes();
+        lp.width = ScreenUtils.getScreenWidth();
         lp.flags |= WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
         getDialog().getWindow().setAttributes(lp);
 

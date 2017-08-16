@@ -8,8 +8,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".alive.AliveReportService" />
-
-        <activity android:name=".share.JournalShareActivity"></activity>
     </application>
 
 </manifest>

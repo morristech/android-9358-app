@@ -20,6 +20,7 @@ import rx.Observable;
 public interface NetService {
     /**
      * 查询邀请列表
+     *
      * @param page
      * @param pageSize
      * @return
@@ -29,6 +30,7 @@ public interface NetService {
 
     /**
      * 接受或者拒绝邀请
+     *
      * @param inviteId
      * @param operate
      * @return
