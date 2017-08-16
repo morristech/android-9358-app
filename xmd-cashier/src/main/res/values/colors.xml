@@ -30,10 +30,9 @@
 
     <color name="colorStoke">#E0E0E0</color>
 
-    <color name="colorVerificationFailed">#E53939</color>
+    <color name="colorRed">#E53939</color>
 
     <color name="colorMemberPaySuccess">#4CAF50</color>
-    <color name="colorMemberPayFailed">#E53939</color>
 
     <color name="colorPink">#ff6666</color>
 

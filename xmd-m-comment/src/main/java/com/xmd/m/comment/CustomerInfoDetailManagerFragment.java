@@ -1,13 +1,11 @@
 package com.xmd.m.comment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.utils.Utils;
+import com.xmd.app.widget.FlowLayout;
 import com.xmd.app.widget.RoundImageView;
+import com.xmd.app.widget.StationaryScrollView;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.m.R;
 import com.xmd.m.R2;
 import com.xmd.m.comment.bean.AllGroupListBean;
@@ -84,7 +86,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     @BindView(R2.id.ll_customer_group)
     LinearLayout llCustomerGroup;
     @BindView(R2.id.customer_type_label)
-    LinearLayout customerTypeLabel;
+    FlowLayout customerTypeLabel;
     @BindView(R2.id.img_customer_type_label)
     ImageView imgCustomerTypeLabel;
     @BindView(R2.id.ll_customer_type_label)
@@ -173,8 +175,8 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     LinearLayout llCardView;
     @BindView(R2.id.ll_credit_view)
     LinearLayout llCreditView;
-//    @BindView(R2.id.main_scroll_view)
-//    ScrollView mainScrollView;
+    @BindView(R2.id.stationary_scroll_view)
+    StationaryScrollView scrollView;
 
     Unbinder unbinder;
     private String userId;
@@ -198,11 +200,11 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer_info_detail_manager, container, false);
+        unbinder = ButterKnife.bind(this, view);
         userId = getArguments().getString(CustomerInfoDetailActivity.CURRENT_USER_ID);
         initGroupData();
         initConsumeView();
         getUserInfo();
-        unbinder = ButterKnife.bind(this, view);
         EventBusSafeRegister.register(this);
         return view;
     }
@@ -271,6 +273,15 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         mFragment.setArguments(bundle);
         ft.replace(R.id.frame_consume_manager, mFragment);
         ft.commit();
+        final View view = scrollView;
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                ViewGroup.LayoutParams containerParams = scrollView.getLayoutParams();
+                containerParams.height = scrollView.getHeight();
+                frameConsumeManager.setLayoutParams(containerParams);
+            }
+        });
     }
 
     public void getUserInfo() {
@@ -318,6 +329,8 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_WX)) {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_wx);
+            }else if(userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_TEMP)){
+                imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_tech_add);
             }
@@ -377,20 +390,11 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         if (userTagList == null || userTagList.size() == 0) {
             return;
         }
-        customerTypeLabel.removeAllViews();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(10, 0, 0, 0);
+        List<String> mList = new ArrayList<>();
         for (ManagerUserTagListBean bean : userTagList) {
-            TextView tv = new TextView(getActivity());
-            tv.setText(bean.tagName);
-            tv.setBackgroundResource(R.drawable.bg_contact_mark);
-            tv.setTextSize(14);
-            tv.setTextColor(Color.parseColor("#ff8909"));
-            tv.setPadding(14, 0, 14, 0);
-            tv.setGravity(Gravity.CENTER);
-            tv.setLayoutParams(lp);
-            customerTypeLabel.addView(tv);
+            mList.add(bean.tagName);
         }
+        customerTypeLabel.initChildViews(mList);
     }
 
     private void initMemberShipView(ManagerMemberInfoBean memberInfo, boolean memberSwitchOn) {
@@ -412,7 +416,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         tvCustomerCardCreateTime.setText(memberInfo.createTime);
         tvCustomerCardNumber.setText(memberInfo.cardNo);
         //生日
-        tvCustomerCardUserBirthday.setText(TextUtils.isEmpty(memberInfo.birth)?"-":memberInfo.birth);
+        tvCustomerCardUserBirthday.setText(TextUtils.isEmpty(memberInfo.birth) ? "-" : memberInfo.birth);
         //开卡
         tvCustomerCardHandler.setText(TextUtils.isEmpty(memberInfo.creatorName) ? "会所" : memberInfo.creatorName);
         //累计充值
@@ -420,9 +424,9 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         //累计赠送
         ivCustomerCardRewardTotal.setText(String.format("%1.2f", memberInfo.giveAmount / 100f));
         //次均消费d
-        if(memberInfo.consumeCount>0){
+        if (memberInfo.consumeCount > 0) {
             ivCustomerCardConsumeTotal.setText(String.format("%1.2f", memberInfo.consumeAmount / (100f * memberInfo.consumeCount)));
-        }else{
+        } else {
             ivCustomerCardConsumeTotal.setText("-");
         }
 
@@ -499,6 +503,19 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     @OnClick(R2.id.rl_customer_comment)
     public void onCommentClicked() {
         CommentSearchActivity.startCommentSearchActivity(getActivity(), true, false, "", "", customerId);
+    }
+
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        if (TextUtils.isEmpty(event.remarkName)) {
+            llCustomerNickName.setVisibility(View.INVISIBLE);
+            tvCustomerName.setText(TextUtils.isEmpty(event.userName) ? "匿名用户" : event.userName);
+        } else {
+            llCustomerNickName.setVisibility(View.VISIBLE);
+            tvCustomerName.setText(event.remarkName);
+            tvCustomerNickName.setText(event.userName);
+        }
+        tvCustomerMark.setText(TextUtils.isEmpty(event.remarkMessage) ? "您尚未为该用户添加备注信息" : event.remarkMessage);
     }
 
     @Override

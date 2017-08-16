@@ -6,12 +6,12 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.ThreadManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -209,7 +209,7 @@ public class CashierManager {
         private PayCallback<Object> mPayCallback = new PayCallback<Object>() {
             @Override
             public void onResult(final String error, final Object o) {
-                ThreadManager.postToUI(new Runnable() {
+                ThreadPoolManager.postToUI(new Runnable() {
                     @Override
                     public void run() {
                         mPayInfo.context = null;//释放资源

@@ -53,6 +53,10 @@ public class OnlinePayDiscountAdapter extends RecyclerView.Adapter<OnlinePayDisc
                 holder.mDiscountType.setText("预约抵扣");
                 holder.mDiscountCoupon.setVisibility(View.GONE);
                 break;
+            case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                holder.mDiscountType.setText("会员优惠");
+                holder.mDiscountCoupon.setVisibility(View.GONE);
+                break;
             default:
                 holder.mDiscountType.setText("其他抵扣");
                 holder.mDiscountCoupon.setVisibility(View.GONE);

@@ -61,8 +61,8 @@ android {
         // 3.7.2 : mainPage data show,Tech Pk,verification by telephone,evaluation label
         // 3.7.4 : add verify by phone number
         // 3.8.4 : fix bug
-        versionCode 56
-        versionName "3.8.4"
+        versionCode 57
+        versionName "3.8.5"
 
         multiDexEnabled true
 
@@ -167,6 +167,7 @@ dependencies {
     compile project(':xmd-m-notify')
     compile project(':xmd-m-comment')
     compile project(':xmd-m-chat')
+    compile project(':xmd-m-contact')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
     compile(name: 'xmd-image-selector-1.0', ext: 'aar')
     compile(name: 'xmd-image-tool-1.0', ext: 'aar')

@@ -2,6 +2,7 @@ package com.shidou.commonlibrary.widget;
 
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,9 @@ public class XToast {
     }
 
     public static void show(String message) {
+        if(TextUtils.isEmpty(message)){
+            return;
+        }
         showInUI(Toast.LENGTH_SHORT, Gravity.CENTER, 0, 0, message);
     }
 

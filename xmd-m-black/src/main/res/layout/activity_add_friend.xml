@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <include layout="@layout/layout_toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="联系人"
+                android:textColor="#999999"
+                android:textSize="16sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <Button
+                    android:id="@+id/btn_search_telephone"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/contact_phone_bg"
+                    android:gravity="center"
+                    android:text="联系人"
+                    android:textColor="#ff6666"/>
+
+                <com.xmd.app.widget.ClearableEditText
+                    android:id="@+id/et_customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/btn_search_telephone"
+                    android:background="@color/white"
+                    android:hint="请输入姓名(必填)"
+                    android:maxLength="10"
+                    android:padding="10dp"
+                    android:textColor="#222222"
+                    android:textColorHint="#E0E0E0"
+                    android:textSize="18sp"/>
+
+                <com.xmd.app.widget.ClearableEditText
+                    android:id="@+id/et_customer_telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/et_customer_name"
+                    android:layout_toLeftOf="@id/btn_search_telephone"
+                    android:background="@color/white"
+                    android:hint="请输入手机号（必填）"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:padding="10dp"
+                    android:textColorHint="#E0E0E0"
+                    android:textSize="18sp"/>
+
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="备注"
+                android:textColor="#999999"
+                android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:paddingTop="15dp">
+                <LinearLayout
+                    android:id="@+id/ll_flow_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <com.xmd.app.widget.FlowLayout
+                        android:id="@+id/limit_project_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:visibility="visible"/>
+
+                    <View
+                        style="@style/horizontal_divider_line"
+                        android:layout_marginTop="6dp"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"/>
+                </LinearLayout>
+                <com.xmd.app.widget.ClearableEditText
+                    android:id="@+id/et_customer_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="可添加描述信息"
+                    android:maxLength="30"
+                    android:padding="10dp"
+                    android:textColorHint="#E0E0E0"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_remark_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="12dp"
+                    android:text="30"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_save_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/save_contact_btn_selector"
+                    android:enabled="false"
+                    android:text="保存"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

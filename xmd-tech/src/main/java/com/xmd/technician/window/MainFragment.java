@@ -33,6 +33,7 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
+import com.xmd.contact.event.SwitchTableToContactRecentEvent;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.network.BaseBean;
@@ -83,6 +84,8 @@ import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
 import com.xmd.technician.widget.SwitchButton;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -917,10 +920,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.main_tech_who_care_all:
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(2);
-                Map<String, Integer> params = new HashMap<String, Integer>();
-                params.put(Constant.SWITCH_FRAGMENT_INDEX, 2);
-                params.put(Constant.SWITCH_FRAGMENT_ITEM_INDEX, 2);
-                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, params);
+                EventBus.getDefault().post(new SwitchTableToContactRecentEvent());
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -1211,17 +1211,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             } else {
                 UINavigation.gotoCustomerDetailActivity(getActivity(), bean.userId, ConstantResources.INTENT_TYPE_TECH, false);
             }
-//            if (Long.parseLong(bean.userId) > 0) {
-//                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-//                intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-//                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(RequestConstant.KEY_CONTACT_PERMISSION_INFO, result.respData);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//            } else {
-//
-//            }
         }
     }
 

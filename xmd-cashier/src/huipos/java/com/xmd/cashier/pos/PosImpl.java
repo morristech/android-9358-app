@@ -24,12 +24,12 @@ import com.iboxpay.print.model.CharacterParams;
 import com.iboxpay.print.model.GraphParams;
 import com.iboxpay.print.model.PrintItemJobInfo;
 import com.iboxpay.print.model.PrintJobInfo;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.ThreadManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.PayCallback;
 
@@ -84,7 +84,7 @@ public class PosImpl implements IPos {
                 public void onAuthSuccess() {
                     XLogger.i("init pos env ok");
                     mIsInited = true;
-                    ThreadManager.postToUI(new Runnable() {
+                    ThreadPoolManager.postToUI(new Runnable() {
                         @Override
                         public void run() {
                             callback.onSuccess(null);
@@ -95,7 +95,7 @@ public class PosImpl implements IPos {
                 @Override
                 public void onAuthFail(final ErrorMsg errorMsg) {
                     XLogger.i("init pos env failed:" + errorMsg.getErrorMsg());
-                    ThreadManager.postToUI(new Runnable() {
+                    ThreadPoolManager.postToUI(new Runnable() {
                         @Override
                         public void run() {
                             callback.onError(errorMsg.getErrorCode() + "," + errorMsg.getErrorMsg());
@@ -105,7 +105,7 @@ public class PosImpl implements IPos {
             });
         } catch (final Exception e) {
             XLogger.i("init pos env failed:" + e.getLocalizedMessage());
-            ThreadManager.postToUI(new Runnable() {
+            ThreadPoolManager.postToUI(new Runnable() {
                 @Override
                 public void run() {
                     callback.onError(e.getLocalizedMessage());
@@ -158,7 +158,7 @@ public class PosImpl implements IPos {
                     tradeNo, transactionId, SignType.TYPE_MD5, sign, parcelableMap, new ITradeCallback() {
                         @Override
                         public void onTradeSuccess(final ParcelableMap parcelableMap) {
-                            ThreadManager.postToUI(new Runnable() {
+                            ThreadPoolManager.postToUI(new Runnable() {
                                 @Override
                                 public void run() {
                                     callback.onResult(null, parcelableMap);
@@ -168,7 +168,7 @@ public class PosImpl implements IPos {
 
                         @Override
                         public void onTradeSuccessWithSign(final ParcelableMap parcelableMap, ParcelableBitmap parcelableBitmap) {
-                            ThreadManager.postToUI(new Runnable() {
+                            ThreadPoolManager.postToUI(new Runnable() {
                                 @Override
                                 public void run() {
                                     callback.onResult(null, parcelableMap);
@@ -178,7 +178,7 @@ public class PosImpl implements IPos {
 
                         @Override
                         public void onTradeFail(final ErrorMsg errorMsg) {
-                            ThreadManager.postToUI(new Runnable() {
+                            ThreadPoolManager.postToUI(new Runnable() {
                                 @Override
                                 public void run() {
                                     callback.onResult(errorMsg.getErrorMsg(), errorMsg);

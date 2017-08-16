@@ -31,7 +31,7 @@ public class McardPhonePresenter implements Presenter {
 
     @Override
     public void onCreate() {
-        mView.showStepView(MemberManager.getInstance().getmCardMode());
+        mView.showStepView(MemberManager.getInstance().getCardMode());
     }
 
     @Override

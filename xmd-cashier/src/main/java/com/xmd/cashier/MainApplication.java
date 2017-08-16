@@ -15,7 +15,6 @@ import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.activity.BaseActivity;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.ThreadManager;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
@@ -41,6 +40,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import okhttp3.Request;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainApplication extends Application implements CrashHandler.Callback {
     private final Object mActivityListObject = new Object();
@@ -74,7 +77,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);
         ThreadPoolManager.init(this);
-        ThreadManager.init(this);
 
         DataReportManager.getInstance().startMonitor();
 
@@ -95,9 +97,20 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                 // 按照指定格式处理消息
                 switch (message.getBusinessType()) {
                     case AppConstants.PUSH_TAG_MEMBER_PRINT:
-                        MemberRecordInfo info = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
-                        MemberManager.getInstance().printInfo(info, false, true, null);
-                        MemberManager.getInstance().printInfo(info, false, false, null);
+                        final MemberRecordInfo info = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
+                        Observable
+                                .create(new Observable.OnSubscribe<Void>() {
+                                    @Override
+                                    public void call(Subscriber<? super Void> subscriber) {
+                                        MemberManager.getInstance().printInfo(info, false, true, null);
+                                        MemberManager.getInstance().printInfo(info, false, false, null);
+                                        subscriber.onNext(null);
+                                        subscriber.onCompleted();
+                                    }
+                                })
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
                         break;
                     default:
                         break;

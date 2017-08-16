@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAppBackground">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorAppBackground">
 
     <com.xmd.app.widget.StationaryScrollView
+        android:id="@+id/stationary_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -13,102 +14,102 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:orientation="horizontal"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp">
-
                 <com.xmd.app.widget.RoundImageView
                     android:id="@+id/img_customer_head"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/img_default_avatar"/>
-
-                <TextView
-                    android:id="@+id/tv_customer_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@id/img_customer_head"
-                    android:textColor="#111111"
-                    android:textSize="17sp"
-                    tools:text="王先生"/>
-
-                <ImageView
-                    android:id="@+id/img_customer_type_01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_customer_name"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/tv_customer_name"
-                    android:src="@drawable/icon_contact_fans"/>
-
-                <ImageView
-                    android:id="@+id/img_customer_type_02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_customer_name"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/img_customer_type_01"
-                    android:src="@drawable/icon_contact_wx"/>
-
                 <LinearLayout
-                    android:id="@+id/ll_customer_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_customer_name"
-                    android:layout_below="@id/tv_customer_name"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="手机号："
-                        android:textColor="#818181"
-                        android:textSize="14sp"/>
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_customer_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#111111"
+                            android:textSize="17sp"
+                            tools:text="王先生"/>
 
-                    <TextView
-                        android:id="@+id/tv_customer_phone"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/img_customer_type_01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/icon_contact_fans"/>
+
+                        <ImageView
+                            android:id="@+id/img_customer_type_02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/icon_contact_wx"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_customer_phone"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="#818181"
-                        android:textSize="14sp"
-                        tools:text="13137558109"/>
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="手机号："
+                            android:textColor="#818181"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_customer_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#818181"
+                            android:textSize="14sp"
+                            tools:text="13137558109"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_customer_nick_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="昵称："
+                            android:textColor="#818181"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_customer_nick_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#818181"
+                            android:textSize="14sp"
+                            tools:text="符号"/>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_customer_nick_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_customer_name"
-                    android:layout_below="@+id/ll_customer_phone"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="昵称："
-                        android:textColor="#818181"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_customer_nick_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="#818181"
-                        android:textSize="14sp"
-                        tools:text="符号"/>
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -192,7 +193,9 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="80dp"
@@ -201,7 +204,7 @@
                     android:textColor="#666666"
                     android:textSize="15sp"/>
 
-                <LinearLayout
+                <com.xmd.app.widget.FlowLayout
                     android:id="@+id/customer_type_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -369,4 +372,4 @@
     </com.xmd.app.widget.StationaryScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>

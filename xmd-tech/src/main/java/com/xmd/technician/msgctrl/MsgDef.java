@@ -118,7 +118,7 @@ public class MsgDef {
     public static final int MSG_DEF_GET_CREDIT_STATUS = 0x0051;
     public static final int MSG_DEF_GET_CREDIT_ACCOUNT = 0x0052;
     public static final int MSG_DEF_DO_CREDIT_EXCHANGE = 0x0053;
-    public static final int MSG_DEF_GET_CONTACT_MARK = 0x0054;
+    //public static final int MSG_DEF_GET_CONTACT_MARK = 0x0054;
     public static final int MSG_DEF_DO_INITIATE_GAME = 0x0055;
     public static final int MSG_DEF_DO_GAME_ACCEPT_OR_REJECT = 0x0056;
     public static final int MSG_DEF_GET_CREDIT_APPLICATIONS = 0x0057;
@@ -184,10 +184,6 @@ public class MsgDef {
 
 
     //------------------------------------------> 聊天黑名单 <-----------------------------------------
-    public static final int MSG_DEF_IN_BLACKLIST = 0x0110;
-    public static final int MSG_DEF_ADD_TO_BLACKLIST = 0x0111;
-    public static final int MSG_DEF_REMOVE_FROM_BLACKLIST = 0x0112;
-    public static final int MSG_DEF_GET_TECH_BLACKLIST = 0x0113;
     public static final int MSG_DEF_IN_USER_BLACKLIST = 0x0114;
     //获取聊天定位
     public static final int MSG_DEF_MARK_CHAT_TO_USER = 0x0115;

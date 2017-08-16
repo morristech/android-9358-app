@@ -170,6 +170,12 @@
     @org.greenrobot.eventbus.Subscribe public <methods>;
 }
 
+-dontwarn com.xmd.contact.**
+-keep class com.xmd.contact.** {*;}
+
+-dontwarn com.xmd.black.**
+-keep class com.xmd.black.** {*;}
+
 -dontwarn com.xmd.m.**
 -keep class com.xmd.m.** {*;}
 

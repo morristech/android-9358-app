@@ -101,9 +101,6 @@
             android:name=".window.BrowserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.CommentActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".window.FeedbackActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -242,10 +239,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".window.TechPersonalRankingDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".window.EmchatBlacklistActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".window.ClubJournalChatShareActivity"
             android:screenOrientation="portrait" />

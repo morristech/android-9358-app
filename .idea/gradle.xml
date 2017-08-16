@@ -14,8 +14,10 @@
             <option value="$PROJECT_DIR$/xmd-app" />
             <option value="$PROJECT_DIR$/xmd-cashier" />
             <option value="$PROJECT_DIR$/xmd-m-appointment" />
+            <option value="$PROJECT_DIR$/xmd-m-black" />
             <option value="$PROJECT_DIR$/xmd-m-chat" />
             <option value="$PROJECT_DIR$/xmd-m-comment" />
+            <option value="$PROJECT_DIR$/xmd-m-contact" />
             <option value="$PROJECT_DIR$/xmd-m-network" />
             <option value="$PROJECT_DIR$/xmd-m-notify" />
             <option value="$PROJECT_DIR$/xmd-m-permission" />

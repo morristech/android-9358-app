@@ -92,7 +92,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     // 会员支付
     @Override
     public void onClickMemberPay() {
-        if (AppConstants.APP_REQUEST_YES.equals(mMemberManager.getmMemberSwitch())) {
+        if (AppConstants.APP_REQUEST_YES.equals(mMemberManager.getMemberSwitch())) {
             UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
             mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_MEMBER;
         } else {

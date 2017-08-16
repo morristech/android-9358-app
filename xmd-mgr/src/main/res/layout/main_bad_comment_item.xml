@@ -215,9 +215,9 @@
             android:background="@drawable/btn_return_visit_selector"
             android:gravity="center"
             android:text="已回访"
-            android:textColor="@color/white"
+            android:textColor="#ff6666"
             android:textSize="14dp"/>
     </LinearLayout>
 </LinearLayout>
 
-    <!--<TextView--><!--android:id="@+id/comment_return_visit"--><!--android:layout_width="match_parent"--><!--android:layout_height="@dimen/chat_activity_item_size"--><!--android:layout_alignParentBottom="true"--><!--android:background="@drawable/btn_return_visit_selector"--><!--android:focusable="false"--><!--android:gravity="center"--><!--android:text="@string/return_visit"--><!--android:textColor="@color/white"--><!--android:textSize="@dimen/fontCaption" />-->
+

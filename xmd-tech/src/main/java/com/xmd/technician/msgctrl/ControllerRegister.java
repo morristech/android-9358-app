@@ -44,7 +44,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_USER_COUPON_VIEW,
                 MsgDef.MSG_DEF_GET_COUPON_USE_DATA,
                 MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST,
-                MsgDef.MSG_DEF_GET_COMMENT_LIST,
                 MsgDef.MSG_DEF_JOIN_CLUB,
                 MsgDef.MSG_DEF_GET_ICODE,
                 MsgDef.MSG_DEF_REGISTER,
@@ -75,7 +74,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CREDIT_STATUS,
                 MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT,
                 MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE,
-                MsgDef.MSG_DEF_GET_CONTACT_MARK,
                 MsgDef.MSG_DEF_DO_INITIATE_GAME,
                 MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT,
                 MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS,
@@ -127,11 +125,9 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST,
                 MsgDef.MSG_DEF_TECH_RANKING_LIST,
                 //-------------------------------------> 聊天黑名单 <---------------------------------
-                MsgDef.MSG_DEF_ADD_TO_BLACKLIST,
-                MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST,
-                MsgDef.MSG_DEF_IN_BLACKLIST,
+
                 MsgDef.MSG_DEF_IN_USER_BLACKLIST,
-                MsgDef.MSG_DEF_GET_TECH_BLACKLIST,
+
                 //---------聊天优化---
                 MsgDef.MSG_DEF_MARK_CHAT_TO_USER,
                 MsgDef.MSG_DEF_GET_CHAT_CATEGORY_LIST,
@@ -139,7 +135,7 @@ public class ControllerRegister {
                 //-------------------------------------> 联系人列表优化 <---------------------------------
                 MsgDef.MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST,
                 MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST,
-                MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
+             //   MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
                 MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST,
                 MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL,
                 //-------------------------------------> 技师海报 <---------------------------------

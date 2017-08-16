@@ -15,11 +15,16 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.black.event.ToBlackCustomerInfoDetailActivityEvent;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
+import com.xmd.contact.ContactFragment;
+import com.xmd.contact.event.ThanksToChatEvent;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.comment.event.UserInfoEvent;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.m.notify.push.PushMessageDataOrder;
 import com.xmd.m.notify.push.XmdPushManager;
@@ -200,8 +205,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
     @CheckBusinessPermission(PermissionConstants.MG_TAB_CUSTOMER)
     public void initPageCustomerManager() {
-        mPageFragmentPagerAdapter.addFragment(new CustomerManagementFragment());
-        tabTexts.add("客户");
+        mPageFragmentPagerAdapter.addFragment(ContactFragment.newInstance(com.xmd.contact.httprequest.ConstantResources.APP_TYPE_MANAGER));
+        // mPageFragmentPagerAdapter.addFragment(new CustomerManagementFragment());
+        // tabTexts.add("客户");
+        tabTexts.add("联系人");
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_customer_management));
         sTabCustomerManagement = tabTexts.size() - 1;
     }
@@ -353,6 +360,14 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
             }
         }
+    }
+    @Subscribe
+    public void contactToChatThanks(ThanksToChatEvent event) {
+        EventBus.getDefault().post(new EventStartChatActivity(event.emChatId));
+    }
+    @Subscribe
+    public void toBlaclCustomerInfoDetailActivity(ToBlackCustomerInfoDetailActivityEvent event) {
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(MainActivity.this, event.userId, ConstantResources.INTENT_TYPE_MANAGER, false);
     }
 
     private XmdPushMessageListener xmdPushMessageListener = new XmdPushMessageListener() {

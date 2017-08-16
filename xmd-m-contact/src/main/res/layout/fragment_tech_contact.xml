@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/layout_search_view"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+        <TextView
+            android:id="@+id/tv_customer_all"
+            style="@style/ContactTypeTextStyle"
+            android:drawableTop="@drawable/selector_contact_all"
+            android:text="全部客户"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_customer_register"
+            style="@style/ContactTypeTextStyle"
+            android:drawableTop="@drawable/selector_contact_register"
+            android:text="我的拓客"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_customer_visitor"
+            style="@style/ContactTypeTextStyle"
+            android:drawableTop="@drawable/selector_contact_visitor"
+            android:text="最近访客"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_customer_technician"
+            style="@style/ContactTypeTextStyle"
+            android:drawableTop="@drawable/selector_contact_technician"
+            android:text="本店同事"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/contact_fragment_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/tech_img_screen_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/image_screen_all"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -7,7 +7,6 @@ import com.hyphenate.chat.EMConversation;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.bean.AddOrEditResult;
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditApplicationsResult;
@@ -19,7 +18,6 @@ import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
-import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
@@ -31,7 +29,6 @@ import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.ActivityListResult;
-import com.xmd.technician.http.gson.AddToBlacklistResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -39,9 +36,7 @@ import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.ClubEmployeeDetailResult;
-import com.xmd.technician.http.gson.ClubEmployeeListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
-import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.ContactAllListResult;
 import com.xmd.technician.http.gson.ContactPermissionChatResult;
@@ -60,7 +55,6 @@ import com.xmd.technician.http.gson.HelloRecordListResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
-import com.xmd.technician.http.gson.InBlacklistResult;
 import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
@@ -83,7 +77,6 @@ import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
-import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.RoleListResult;
@@ -92,7 +85,6 @@ import com.xmd.technician.http.gson.SaveTechPosterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
-import com.xmd.technician.http.gson.TechBlacklistResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -164,9 +156,6 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_HIDE_ORDER:
                 hideOrder(msg.obj.toString());
-                break;
-            case MsgDef.MSG_DEF_GET_COMMENT_LIST:
-                getCommentList((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID:
                 doBindGetuiClientId();
@@ -257,19 +246,6 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL:
                 doGetCustomerInfoDetail((Map<String, String>) msg.obj);
                 break;
-//            case MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL:
-//                doGetTechInfoDetail((Map<String, String>) msg.obj);
-//                break;
-//            case MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL:
-//                doGetManagerInfoDetail((Map<String, String>) msg.obj);
-//                break;
-//            case MsgDef.MSG_DEF_GET_CLUB_LIST:
-//                doGetClubList();
-//                break;
-            case MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER:
-                doAddOrEditCustomer((Map<String, String>) msg.obj);
-                break;
-
             case MsgDef.MSG_DEF_DELETE_CONTACT:
                 doDeleteContact((Map<String, String>) msg.obj);
                 break;
@@ -288,9 +264,7 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS:
                 getExchangeApplications((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_CONTACT_MARK:
-                doGetContactMark();
-                break;
+
             case MsgDef.MSG_DEF_DO_INITIATE_GAME:
                 doDiceGameSubmit((Map<String, String>) msg.obj);
                 break;
@@ -434,18 +408,7 @@ public class RequestController extends AbstractController {
                 getTechPersonalList((Map<String, String>) msg.obj);
                 break;
             // --------------------------------------> 聊天黑名单 <------------------------------------
-            case MsgDef.MSG_DEF_ADD_TO_BLACKLIST:
-                addToBlacklist(msg.obj.toString());
-                break;
-            case MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST:
-                removeFromBlacklist(msg.obj.toString());
-                break;
-            case MsgDef.MSG_DEF_IN_BLACKLIST:
-                inBlacklist(msg.obj.toString());
-                break;
-            case MsgDef.MSG_DEF_GET_TECH_BLACKLIST:
-                getBlacklist((Map<String, String>) msg.obj);
-                break;
+
             case MsgDef.MSG_DEF_IN_USER_BLACKLIST:
                 inUserBlacklist(msg.obj.toString());
                 break;
@@ -466,16 +429,13 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST:
                 getTechCustomerRegisterList((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST:
-                getClubEmployeeList();
-                break;
             case MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST:
                 getClubCustomerRecentList();
                 break;
             case MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL:
                 getCLubEmployeeDetail(msg.obj.toString());
                 break;
-            // --------------------------------------> 联系人列表优化 <------------------------------------
+            // --------------------------------------> 技师海报 <------------------------------------
             case MsgDef.MSG_DEF_TECH_POSTER_SAVE:
                 doSaveTechPoster((Map<String, String>) msg.obj);
                 break;
@@ -702,27 +662,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getCommentList(Map<String, String> params) {
-        Call<CommentResult> call;
-        if (params != null) {
-            call = getSpaService().getCommentList(params.get(RequestConstant.KEY_PAGE),
-                    params.get(RequestConstant.KEY_PAGE_SIZE),
-                    params.get(RequestConstant.KEY_SORT_TYPE),
-                    RequestConstant.SESSION_TYPE,
-                    LoginTechnician.getInstance().getToken());
-        } else {
-            call = getSpaService().getCommentList(null, null, null,
-                    RequestConstant.SESSION_TYPE,
-                    LoginTechnician.getInstance().getToken());
-        }
 
-        call.enqueue(new TokenCheckedCallback<CommentResult>() {
-            @Override
-            protected void postResult(CommentResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
 
     /**
      * Update the order's status
@@ -1153,33 +1093,7 @@ public class RequestController extends AbstractController {
 //        });
     }
 
-    /**
-     * 添加联系人
-     *
-     * @param params
-     */
-    private void doAddOrEditCustomer(Map<String, String> params) {
-        if (TextUtils.isEmpty(params.get(RequestConstant.KEY_ID))) {
-            Call<BaseResult> call = getSpaService().addCustomer(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(),
-                    params.get(RequestConstant.KEY_PHONE_NUMBER), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_NOTE_NAME), params.get(RequestConstant.KEY_MARK_IMPRESSION));
-            call.enqueue(new TokenCheckedCallback<BaseResult>() {
-                @Override
-                protected void postResult(BaseResult result) {
-                    RxBus.getInstance().post(new AddOrEditResult(result.msg, result.statusCode));
-                }
-            });
-        } else {
-            Call<BaseResult> call = getSpaService().editCustomer(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_ID),
-                    params.get(RequestConstant.KEY_PHONE_NUMBER), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_NOTE_NAME), params.get(RequestConstant.KEY_MARK_IMPRESSION));
-            call.enqueue(new TokenCheckedCallback<BaseResult>() {
-                @Override
-                protected void postResult(BaseResult result) {
-                    RxBus.getInstance().post(new AddOrEditResult(result.msg, result.statusCode));
-                }
-            });
 
-        }
-    }
 
     /**
      * 获取联系人列表
@@ -1337,20 +1251,6 @@ public class RequestController extends AbstractController {
             }
         });
 
-    }
-
-    /**
-     * 获取联系人备注
-     */
-    private void doGetContactMark() {
-        Call<MarkResult> call = getSpaService().getContactMark(RequestConstant.USER_TYPE_TECH, RequestConstant.TECH_CUSTOMER,
-                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
-        call.enqueue(new TokenCheckedCallback<MarkResult>() {
-            @Override
-            protected void postResult(MarkResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
     }
 
     /**
@@ -2098,49 +1998,6 @@ public class RequestController extends AbstractController {
     }
 
     // -----------------------------------------> 聊天黑名单 <-----------------------------------------
-    //将联系人加入聊天黑名单
-    private void addToBlacklist(String friendId) {
-        Call<AddToBlacklistResult> call = getSpaService().addToBlacklist(friendId, LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<AddToBlacklistResult>() {
-            @Override
-            protected void postResult(AddToBlacklistResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //将联系人移出聊天黑名单
-    private void removeFromBlacklist(String friendId) {
-        Call<RemoveFromBlacklistResult> call = getSpaService().removeFromBlacklist(friendId, LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<RemoveFromBlacklistResult>() {
-            @Override
-            protected void postResult(RemoveFromBlacklistResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //联系人是否在聊天黑名单中
-    private void inBlacklist(String friendId) {
-        Call<InBlacklistResult> call = getSpaService().inBlacklist(friendId, LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<InBlacklistResult>() {
-            @Override
-            protected void postResult(InBlacklistResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //获取技师聊天黑名单
-    private void getBlacklist(Map<String, String> params) {
-        Call<TechBlacklistResult> call = getSpaService().getBlacklist(params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE), LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<TechBlacklistResult>() {
-            @Override
-            protected void postResult(TechBlacklistResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
 
     //技师是否在联系人聊天黑名单中
     private void inUserBlacklist(String friendChatId) {
@@ -2205,17 +2062,6 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<ContactRegisterListResult>() {
             @Override
             protected void postResult(ContactRegisterListResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //获取会所联系人
-    private void getClubEmployeeList() {
-        Call<ClubEmployeeListResult> call = getSpaService().clubEmployeeList(LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<ClubEmployeeListResult>() {
-            @Override
-            protected void postResult(ClubEmployeeListResult result) {
                 RxBus.getInstance().post(result);
             }
         });

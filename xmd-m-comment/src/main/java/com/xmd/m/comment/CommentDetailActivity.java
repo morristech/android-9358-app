@@ -284,7 +284,11 @@ public class CommentDetailActivity extends BaseActivity {
         }
         clubAverageScore = totalClubScore / 20f;
         float max = clubAverageScore / mCommentBean.commentRateList.size();
-        tvCommentScoreNumber.setText(String.format("%1.1f", max));
+        if (mCommentBean.commentRateList.size() > 0) {
+            tvCommentScoreNumber.setText(String.format("%1.1f", max));
+        } else {
+            tvCommentScoreNumber.setText("");
+        }
         starBar.setStarMark(max);
     }
 

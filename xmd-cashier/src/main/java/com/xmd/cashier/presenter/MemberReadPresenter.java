@@ -144,7 +144,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
             @Override
             public void onSuccess(MemberInfo o) {
                 mView.hideLoading();
-                if (o.userId == null) {
+                if (TextUtils.isEmpty(o.userId)) {
                     // 当前会员未绑定手机号
                     doBindTelephone(o);
                 } else {

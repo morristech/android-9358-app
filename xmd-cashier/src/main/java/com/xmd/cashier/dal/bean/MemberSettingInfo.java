@@ -10,4 +10,5 @@ public class MemberSettingInfo {
     public String commissionSwitch;
     public String rechargeMode;
     public String memberSwitch;
+    public String verificationSwitch;
 }

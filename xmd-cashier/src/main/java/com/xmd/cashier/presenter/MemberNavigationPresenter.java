@@ -29,8 +29,8 @@ public class MemberNavigationPresenter implements MemberNavigationContract.Prese
 
     @Override
     public void onStart() {
-        if (!TextUtils.isEmpty(MemberManager.getInstance().getmRechargeMode())) {
-            mView.enterRecharge(MemberManager.getInstance().getmRechargeMode().contains(AppConstants.MEMBER_RECHARGE_MODEL_POS));
+        if (!TextUtils.isEmpty(MemberManager.getInstance().getRechargeMode())) {
+            mView.enterRecharge(MemberManager.getInstance().getRechargeMode().contains(AppConstants.MEMBER_RECHARGE_MODEL_POS));
         }
     }
 

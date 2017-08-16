@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +52,41 @@ public class Utils {
             return "";
         }
 
+    }
+
+//    public static List<String> stringToList(String s,String delimiter){
+//        List<String> list = new ArrayList<>();
+//        if(TextUtils.isEmpty(s)){
+//            return list;
+//        }
+//        list = Arrays.asList(s.split(delimiter));
+//        return list;
+//
+//    }
+
+    public static List<String> StringToList(String textString, String delimiter) {
+        List<String> strings = new ArrayList<>();
+        strings.clear();
+        if(TextUtils.isEmpty(textString)){
+            return strings;
+        }
+        String[] arrayString = textString.split(delimiter);
+        return Arrays.asList(arrayString);
+
+
+
+    }
+
+    public static String list2String(List<String> list,String delimiter){
+                if (list.size() > 0) {
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < list.size(); i++) {
+                buffer.append(list.get(i) + delimiter);
+            }
+            return buffer.toString().substring(0, buffer.length() - 1);
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -125,4 +162,6 @@ public class Utils {
         }
         return stringBuffer.toString();
     }
+
+
 }

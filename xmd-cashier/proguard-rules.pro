@@ -163,3 +163,9 @@
 -keep interface android.support.annotation.** { *;}
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
+
+-dontwarn com.xmd.m.notify.**
+-keep class com.xmd.m.notify.** {*;}
+
+-dontwarn com.xmd.m.network.**
+-keep class com.xmd.m.network.** {*;}

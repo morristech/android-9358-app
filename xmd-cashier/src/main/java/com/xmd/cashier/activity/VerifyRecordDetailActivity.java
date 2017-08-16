@@ -15,6 +15,7 @@ import com.xmd.cashier.dal.bean.VerifyRecordInfo;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.presenter.VerifyRecordDetailPresenter;
 import com.xmd.cashier.widget.CircleImageView;
+import com.xmd.cashier.widget.CustomRecycleViewDecoration;
 import com.xmd.cashier.widget.FullyGridLayoutManager;
 
 /**
@@ -63,6 +64,7 @@ public class VerifyRecordDetailActivity extends BaseActivity implements VerifyRe
         mAdapter = new VerifyRecordDetailAdapter(this);
         mRecyclerDetail.setHasFixedSize(true);
         mRecyclerDetail.setLayoutManager(new FullyGridLayoutManager(this, 1));
+        mRecyclerDetail.addItemDecoration(new CustomRecycleViewDecoration(16));
         mRecyclerDetail.setAdapter(mAdapter);
     }
 

@@ -67,7 +67,12 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         switch (method) {
             case AppConstants.MEMBER_PAY_METHOD_CODE:
                 // 接口
-                doInputPassword(method);
+                if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getVerificationSwitch())) {
+                    doInputPassword(method);
+                } else {
+                    // 无需校验密码
+                    doMemberPay(method, null);
+                }
                 break;
             case AppConstants.MEMBER_PAY_METHOD_SCAN:
                 // 二维码

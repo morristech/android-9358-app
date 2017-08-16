@@ -34,8 +34,8 @@ android {
         //1.6.8 聊天优化,黑名单
         //1.7.8技师海报
         //1.8.4 fixbug
-        versionCode 52
-        versionName "1.8.4"
+        versionCode 53
+        versionName "1.8.5"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
@@ -151,6 +151,8 @@ dependencies {
     compile project(':xmd-m-chat')
     compile project(':xmd-m-notify')
     compile project(':xmd-m-comment')
+    compile project(':xmd-m-black')
+    compile project(':xmd-m-contact')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'permission-tool-1.0', ext: 'aar')
     compile(name: 'xmd-image-tool-1.0', ext: 'aar')

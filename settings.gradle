@@ -1,1 +1,1 @@
-include ':xmd-tech', ':commonlibrary', ':xmd-app', ':loading-view', ':xmd-cashier', ':xmd-mgr', ':xmd-m-appointment', ':xmd-m-chat', ':xmd-m-network', ':xmd-m-notify', ':xmd-m-permission', ':xmd-m-comment', ':permission-tool'
+include ':xmd-tech', ':commonlibrary', ':xmd-app', ':loading-view', ':xmd-cashier', ':xmd-mgr', ':xmd-m-appointment', ':xmd-m-chat', ':xmd-m-network', ':xmd-m-notify', ':xmd-m-permission', ':xmd-m-comment', ':permission-tool',':xmd-m-black', ':xmd-m-contact'

@@ -32,6 +32,7 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
     private TextView mDiscountRate;
     private TextView mDiscountAmount;
     private TextView mNeedAmount;
+    private TextView mMemberPayDesc;
 
     private Button mMemberPayBtn;
 
@@ -57,6 +58,7 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
         mDiscountRate = (TextView) findViewById(R.id.tv_member_discount);
         mDiscountAmount = (TextView) findViewById(R.id.tv_member_discount_amount);
         mNeedAmount = (TextView) findViewById(R.id.tv_member_need_amount);
+        mMemberPayDesc = (TextView) findViewById(R.id.tv_member_pay_desc);
 
         mMemberPayBtn = (Button) findViewById(R.id.btn_member_pay);
 
@@ -82,6 +84,7 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
     @Override
     public void showButton(boolean enable) {
         mMemberPayBtn.setEnabled(enable);
+        mMemberPayDesc.setVisibility(enable ? View.GONE : View.VISIBLE);
     }
 
     @Override

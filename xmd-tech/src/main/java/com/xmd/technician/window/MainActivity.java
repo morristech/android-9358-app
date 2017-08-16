@@ -13,15 +13,24 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.XmdChat;
+import com.xmd.black.event.ToBlackCustomerInfoDetailActivityEvent;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.event.EventTotalUnreadCount;
-import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.contact.ContactFragment;
+import com.xmd.contact.event.SayHiSuccessEvent;
+import com.xmd.contact.event.SayHiToChatEvent;
+import com.xmd.contact.event.SwitchTableToMarketingEvent;
+import com.xmd.contact.event.ThanksToChatEvent;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.comment.event.UserInfoEvent;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
@@ -43,6 +52,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.LinkedList;
@@ -60,13 +70,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     private List<Fragment> mFragmentList = new LinkedList<>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
-
     private MainFragment mHomeFragment;
-
     private int mCurrentTabIndex = -1;
     private Subscription mGetUserIsBindWXSubscription;
 
-    private String contactPhone;
 
     @BindView(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
@@ -177,7 +184,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
     public void addFragmentContacts() {
-        addFragment(R.id.main_button_contacts, ContactsSummaryFragment.class);
+        addFragment(R.id.main_button_contacts, ContactFragment.class);
     }
 
     @CheckBusinessPermission(PermissionConstants.MARKETING)
@@ -194,6 +201,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 try {
                     if (clazz.equals(TechChatConversationListFragment.class)) {
                         fragment = TechChatConversationListFragment.newInstance("消息");
+                    } else if (clazz.equals(ContactFragment.class)) {
+                        fragment = ContactFragment.newInstance(com.xmd.contact.httprequest.ConstantResources.APP_TYPE_TECH);
                     } else {
                         fragment = (Fragment) clazz.newInstance();
                     }
@@ -205,9 +214,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             }
             ft.hide(fragment);
             ft.commit();
-
             mFragmentList.add(fragment);
-
             view.setVisibility(View.VISIBLE);
             mBottomBarButtonList.add(view);
             final int index = mFragmentList.size() - 1;
@@ -311,26 +318,49 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                         this.makeShortToast("打招呼失败，缺少客户信息");
                         return;
                     }
-                    sayHello(event.bean);
+                    sayHello(event.bean.emChatId, 9999);
                     break;
             }
         }
 
     }
 
+    @Subscribe
+    public void toBlackCustomerInfoDetailActivity(ToBlackCustomerInfoDetailActivityEvent event) {
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(MainActivity.this, event.userId, ConstantResources.INTENT_TYPE_TECH, false);
+    }
+
+    @Subscribe
+    public void switchTableToMarketingFragment(SwitchTableToMarketingEvent event) {
+        switchFragment(getFragmentSize() - 1);
+    }
+
+    @Subscribe
+    public void contactToChatSayHi(SayHiToChatEvent event) {
+        //打招呼
+        sayHello(event.emChatId, event.position);
+    }
+
+    @Subscribe
+    public void contactToChatThanks(ThanksToChatEvent event) {
+        XLogger.i(">>>","mainActivity");
+        EventBus.getDefault().post(new EventStartChatActivity(event.emChatId));
+    }
+
     // 打招呼
-    private void sayHello(UserInfoBean bean) {
+    private void sayHello(String emChatId, int position) {
         if (!EMClient.getInstance().isConnected()) {
             showToast("当前已经离线，请重新登录!");
             return;
         }
-        HelloSettingManager.getInstance().sendHelloTemplate(bean.emChatId, new Callback<SayHiResult>() {
+        HelloSettingManager.getInstance().sendHelloTemplate(emChatId, new Callback<SayHiResult>() {
             @Override
             public void onResponse(SayHiResult result, Throwable error) {
                 if (error != null) {
                     XToast.show("打招呼失败：" + error.getMessage());
                 } else {
                     XToast.show("打招呼成功！");
+                    EventBus.getDefault().post(new SayHiSuccessEvent(position));
                 }
             }
         });

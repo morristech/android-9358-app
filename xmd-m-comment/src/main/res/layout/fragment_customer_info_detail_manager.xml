@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAppBackground">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorAppBackground"
+              android:orientation="vertical">
 
     <com.xmd.app.widget.StationaryScrollView
-        android:id="@+id/main_scroll_view"
+        android:id="@+id/stationary_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,110 +16,113 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp">
-
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
                 <com.xmd.app.widget.RoundImageView
                     android:id="@+id/img_customer_head"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/img_default_avatar"/>
-
-                <TextView
-                    android:id="@+id/tv_customer_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@id/img_customer_head"
-                    android:textColor="#111111"
-                    android:textSize="17sp"
-                    tools:text="王先生"/>
-
-                <ImageView
-                    android:id="@+id/img_customer_type_01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_customer_name"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/tv_customer_name"
-                    android:src="@drawable/icon_contact_fans"
-                    android:visibility="gone"/>
-
-                <ImageView
-                    android:id="@+id/img_customer_type_02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_customer_name"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/img_customer_type_01"
-                    android:src="@drawable/icon_contact_wx"
-                    android:visibility="gone"/>
-
                 <LinearLayout
-                    android:id="@+id/ll_customer_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_customer_name"
-                    android:layout_below="@id/tv_customer_name"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="手机号："
-                        android:textColor="#818181"
-                        android:textSize="14sp"/>
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_customer_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#111111"
+                            android:textSize="17sp"
+                            tools:text="王先生"/>
 
-                    <TextView
-                        android:id="@+id/tv_customer_phone"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/img_customer_type_01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/icon_contact_fans"/>
+
+                        <ImageView
+                            android:id="@+id/img_customer_type_02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/icon_contact_wx"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_customer_phone"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="#818181"
-                        android:textSize="14sp"
-                        tools:text="13137558109"/>
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="手机号："
+                            android:textColor="#818181"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_customer_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#818181"
+                            android:textSize="14sp"
+                            tools:text="13137558109"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_customer_nick_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="昵称："
+                            android:textColor="#818181"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_customer_nick_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#818181"
+                            android:textSize="14sp"
+                            tools:text="符号"/>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_customer_nick_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_customer_name"
-                    android:layout_below="@id/ll_customer_phone"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    android:visibility="invisible">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="昵称："
-                        android:textColor="#818181"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_customer_nick_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="#818181"
-                        android:textSize="14sp"
-                        tools:text="符号"/>
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="#d9d9d9"/>
-
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="8sp"
+                android:background="#d9d9d9"/>
             <LinearLayout
                 android:id="@+id/ll_customer_mark"
                 android:layout_width="match_parent"
@@ -126,8 +130,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:visibility="gone">
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -149,12 +152,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="8sp"
                 android:background="#d9d9d9"/>
 
             <LinearLayout
@@ -211,13 +208,12 @@
                     style="@style/CustomerDetailTextStyle"
                     android:text="标签"/>
 
-                <LinearLayout
+                <com.xmd.app.widget.FlowLayout
                     android:id="@+id/customer_type_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-
                 />
 
                 <ImageView
@@ -250,9 +246,9 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp"
+                    android:paddingLeft="24dp"
 
-                    android:paddingLeft="24dp">
+                    android:paddingTop="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -271,9 +267,9 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp"
+                    android:paddingLeft="24dp"
 
-                    android:paddingLeft="24dp">
+                    android:paddingTop="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -293,9 +289,9 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="24dp">
+                    android:paddingLeft="24dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -387,11 +383,11 @@
                     <TextView
                         android:id="@+id/tv_customer_membership_grade"
                         android:layout_width="wrap_content"
-                        android:maxWidth="200dp"
-                        android:lines="1"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:lines="1"
+                        android:maxWidth="200dp"
                         android:textColor="#666666"
+                        android:textSize="15sp"
                         tools:text="金卡会员"/>
 
                     <TextView
@@ -399,9 +395,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingLeft="20dp"
                         android:textColor="#616161"
                         android:textSize="14sp"
-                        android:paddingLeft="20dp"
                         tools:text="余额　201111.77元"/>
 
                     <ImageView
@@ -796,4 +792,4 @@
     </com.xmd.app.widget.StationaryScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>

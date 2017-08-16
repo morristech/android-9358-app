@@ -6,6 +6,8 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -75,6 +77,44 @@ public class ClearableEditText extends EditText {
 
         // 默认设置隐藏图标
         setClearIconVisible(false);
+        /**
+         * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
+         *
+         * @param visible
+         */
+        this.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (hasFoucs) {
+                    setClearIconVisible(s.length() > 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        /**
+         * 当ClearEditText焦点发生变化的时候，判断里面字符串长度设置清除图标的显示与隐藏
+         */
+        this.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                hasFoucs = hasFocus;
+                if (hasFocus) {
+                    setClearIconVisible(getText().length() > 0);
+                } else {
+                    setClearIconVisible(false);
+                }
+            }
+        });
+
 
     }
 
@@ -98,37 +138,12 @@ public class ClearableEditText extends EditText {
     }
 
 
-    /**
-     * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
-     *
-     * @param visible
-     */
     protected void setClearIconVisible(boolean visible) {
         Drawable right = visible ? delImg : null;
         setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
     }
 
-    /**
-     * 当ClearEditText焦点发生变化的时候，判断里面字符串长度设置清除图标的显示与隐藏
-     */
-    // @OnFocusChange
-    public void onFocusChange(View v, boolean hasFocus) {
-        this.hasFoucs = hasFocus;
-        if (hasFocus) {
-            setClearIconVisible(getText().length() > 0);
-        } else {
-            setClearIconVisible(false);
-        }
-    }
 
-    /**
-     * 当输入框里面内容发生变化的时候回调的方法
-     */
-    //  @OnTextChanged
-    public void onTextChanged(CharSequence s, int start, int count, int after) {
-        if (hasFoucs) {
-            setClearIconVisible(s.length() > 0);
-        }
-    }
+
 
 }

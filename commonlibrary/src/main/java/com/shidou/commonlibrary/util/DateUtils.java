@@ -1,9 +1,12 @@
 package com.shidou.commonlibrary.util;
 
+import android.text.TextUtils;
+
 import com.shidou.commonlibrary.helper.TimeProvider;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -204,5 +207,49 @@ public class DateUtils {
             return result;
         }
         return -1;
+    }
+
+    public static Date StringToDate(String var0, String var1) {
+        SimpleDateFormat var2 = new SimpleDateFormat(var1);
+        Date var3 = null;
+
+        try {
+            var3 = var2.parse(var0);
+        } catch (ParseException var5) {
+            var5.printStackTrace();
+        }
+
+        return var3;
+    }
+
+    public static String getYestData() {
+        long time = System.currentTimeMillis();
+
+        return longToDate(time - 24 * 60 * 60 * 1000);
+    }
+
+    /**
+     * 毫秒值转换成日期
+     */
+    public static String longToDate(Long date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        return format.format(calendar.getTime());
+    }
+
+    public static Long stringDateToLong(String date) {
+
+        SimpleDateFormat format = new SimpleDateFormat(DF_JUST_DAY);
+        if (TextUtils.isEmpty(date)) {
+            date = "1970-01-01 00:00:00";
+        }
+        try {
+            Date mDate = format.parse(date);
+            return mDate.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0L;
     }
 }

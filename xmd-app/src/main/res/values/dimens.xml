@@ -36,6 +36,7 @@
     <dimen name="tab_notice_margin_right">28dp</dimen>
     <dimen name="tab_indicator_indicator_height">2dp</dimen>
     <dimen name="tiny_space">3dp</dimen>
+    <dimen name="spinner_item_text_size">8dp</dimen>
 
     <!-- toolbar 标题栏样式 -->
     <dimen name="toolbarTitleSize">@dimen/fontTitle</dimen>
