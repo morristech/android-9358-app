@@ -3,6 +3,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-    <include layout="@layout/layout_contact_view"/>
+    <include layout="@layout/layout_tech_contact_view"/>
 
 </LinearLayout>

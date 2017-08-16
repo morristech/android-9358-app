@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.DropDownMenuDialog;
+import com.xmd.app.widget.RoundImageView;
 import com.xmd.black.AddFriendActivity;
 import com.xmd.black.BlackListActivity;
 import com.xmd.contact.httprequest.ConstantResources;
@@ -37,6 +40,7 @@ public class ContactFragment extends BaseFragment {
     private TechContactFragment mTechContactFragment;
     private ManagerContactFragment mManagerContactFragment;
     private View view;
+    private RoundImageView mRoundImageHead;
 
     @Nullable
     @Override
@@ -44,6 +48,7 @@ public class ContactFragment extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_contact, container, false);
         isFromManager = getArguments().getString(ConstantResources.INTENT_APP_TYPE).equals(ConstantResources.APP_TYPE_MANAGER) ? true : false;
         rlRightMore = (RelativeLayout) view.findViewById(R.id.rl_toolbar_right);
+        mRoundImageHead = (RoundImageView) view.findViewById(R.id.img_toolbar_right_back);
         return view;
     }
 
@@ -57,6 +62,9 @@ public class ContactFragment extends BaseFragment {
         setTitle("联系人");
         setBackVisible(false);
         setRightVisible(true, R.drawable.contact_icon_more);
+        if(!isFromManager){
+            Glide.with(getActivity()).load(UserInfoServiceImpl.getInstance().getCurrentUser().getAvatar()).into(mRoundImageHead);
+        }
         initFragmentView();
     }
 

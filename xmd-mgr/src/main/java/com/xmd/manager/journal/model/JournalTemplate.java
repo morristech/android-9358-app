@@ -1,5 +1,7 @@
 package com.xmd.manager.journal.model;
 
+import com.xmd.manager.beans.JournalTemplateImageArticleBean;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,12 +19,14 @@ public class JournalTemplate {
     private String mImageUrl;
     private List<JournalContentType> mRecommendContentTypes;
     private List<JournalContentType> mContentTypes;
+    private List<JournalTemplateImageArticleBean> mTemplateImages;
     private Map<JournalContentType, Integer> mSubContentCountMap; //并且指定了内容项中子内容的数量
     private String mPreviewUrl;
 
     public JournalTemplate() {
         mRecommendContentTypes = new ArrayList<>();
         mContentTypes = new ArrayList<>();
+        mTemplateImages = new ArrayList<>();
         mSubContentCountMap = new HashMap<>();
     }
 
@@ -39,6 +43,27 @@ public class JournalTemplate {
 
     public int getContentTypeSize() {
         return mContentTypes.size();
+    }
+
+    public void addTemplateImages(JournalTemplateImageArticleBean bean) {
+        if (!mTemplateImages.contains(bean)) {
+            mTemplateImages.add(bean);
+        }
+    }
+
+    public List<JournalTemplateImageArticleBean> getTemplateIamges() {
+        return mTemplateImages;
+    }
+
+    public JournalTemplateImageArticleBean getImageArticleByTemplateById(String templateId) {
+        if (mTemplateImages.size() > 0) {
+            for (int i = 0; i < mTemplateImages.size(); i++) {
+                if (mTemplateImages.get(i).id.equals(templateId)) {
+                    return mTemplateImages.get(i);
+                }
+            }
+        }
+        return null;
     }
 
     public Iterator<JournalContentType> getContentTypeIterator() {

@@ -238,16 +238,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
     @Subscribe
     public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
-        if (TextUtils.isEmpty(event.remarkName)) {
-            llCustomerNickName.setVisibility(View.INVISIBLE);
-            tvCustomerName.setText(TextUtils.isEmpty(event.userName) ? "匿名用户" : event.userName);
-        } else {
-            llCustomerNickName.setVisibility(View.VISIBLE);
-            tvCustomerName.setText(event.remarkName);
-            tvCustomerNickName.setText(event.userName);
-        }
-        tvCustomerLabel.setText(TextUtils.isEmpty(event.remarkImpression) ? "您尚未为该用户添加标签" : event.remarkImpression);
-        tvCustomerMark.setText(TextUtils.isEmpty(event.remarkMessage) ? "您尚未为该用户添加备注信息" : event.remarkMessage);
+        getUserInfo();
     }
 
     @Override

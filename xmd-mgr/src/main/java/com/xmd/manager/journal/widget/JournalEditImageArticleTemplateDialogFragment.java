@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.BR;
 import com.xmd.manager.R;
 import com.xmd.manager.common.CommonRecyclerViewAdapter;
@@ -20,7 +21,7 @@ import com.xmd.manager.common.ImageTool;
 import com.xmd.manager.common.ScreenUtils;
 import com.xmd.manager.databinding.JournalFragmentImageArticleTemplateBinding;
 import com.xmd.manager.journal.contract.JournalContentImageArticleContract;
-import com.xmd.manager.journal.model.ImageArticleTemplate;
+import com.xmd.manager.beans.JournalTemplateImageArticleBean;
 import com.xmd.manager.journal.presenter.JournalContentImageArticlePresenter;
 
 import java.util.ArrayList;
@@ -36,12 +37,13 @@ public class JournalEditImageArticleTemplateDialogFragment extends DialogFragmen
     private JournalFragmentImageArticleTemplateBinding mBinding;
     private CommonRecyclerViewAdapter<ImageArticleTemplateWrapper> mAdapter;
     private int mTitleHeight = 0;
-
+    private String mTemplateId;
     public static JournalEditImageArticleTemplateDialogFragment newInstance(String templateId) {
         JournalEditImageArticleTemplateDialogFragment fragment = new JournalEditImageArticleTemplateDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("templateId", templateId);
         fragment.setArguments(bundle);
+        XLogger.i(">>>","FragmentTemplateId>>"+templateId);
         return fragment;
     }
 
@@ -52,6 +54,7 @@ public class JournalEditImageArticleTemplateDialogFragment extends DialogFragmen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mTemplateId = getArguments().getString("templateId");
         mBinding = JournalFragmentImageArticleTemplateBinding.inflate(inflater, container, false);
         mBinding.recycleview.setLayoutManager(new GridLayoutManager(inflater.getContext(), 2));
         mBinding.recycleview.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -73,7 +76,7 @@ public class JournalEditImageArticleTemplateDialogFragment extends DialogFragmen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.onTemplateViewCreate();
+        mPresenter.onTemplateViewCreate(mTemplateId);
     }
 
     @Override
@@ -90,9 +93,9 @@ public class JournalEditImageArticleTemplateDialogFragment extends DialogFragmen
     }
 
     @Override
-    public void showLoadTemplateSuccess(List<ImageArticleTemplate> data, ImageArticleTemplate selected) {
+    public void showLoadTemplateSuccess(List<JournalTemplateImageArticleBean> data, JournalTemplateImageArticleBean selected) {
         List<ImageArticleTemplateWrapper> showData = new ArrayList<>();
-        for (ImageArticleTemplate template : data) {
+        for (JournalTemplateImageArticleBean template : data) {
             showData.add(new ImageArticleTemplateWrapper(template));
         }
         mAdapter.setData(R.layout.journal_item_image_article_template, BR.templateWrapper, showData);
@@ -112,9 +115,9 @@ public class JournalEditImageArticleTemplateDialogFragment extends DialogFragmen
     }
 
     public static class ImageArticleTemplateWrapper {
-        public ImageArticleTemplate template;
+        public JournalTemplateImageArticleBean template;
 
-        public ImageArticleTemplateWrapper(ImageArticleTemplate template) {
+        public ImageArticleTemplateWrapper(JournalTemplateImageArticleBean template) {
             this.template = template;
         }
 

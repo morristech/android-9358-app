@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.black.event.AddOrRemoveBlackEvent;
@@ -28,7 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 /**
@@ -37,8 +40,8 @@ import butterknife.OnClick;
 
 public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implements SwipeRefreshLayout.OnRefreshListener {
 
+    Unbinder unbinder;
     private View view;
-    private String mCustomerName;
     private List<ContactAllBean> mContacts;
     private String mCustomerLevel;
     private String mCustomerType;
@@ -47,18 +50,20 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     private String mCustomerUserGroup;
     private String mCustomerUserName;
     private Map<String, String> params;
-    private boolean hasContacts;
+    private boolean isSearchOrFilter = false;
+    protected LinearLayout mLlContactNone;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_contact_all, container, false);
+        mLlContactNone = (LinearLayout) view.findViewById(R.id.ll_contact_none);
         initView();
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     private void initView() {
-        mCustomerName = "";
         mContacts = new ArrayList<>();
         params = new HashMap<>();
         resetData();
@@ -102,14 +107,19 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         if (result.getRespData() == null || result.getRespData().userList == null) {
             return;
         }
-        if ( TextUtils.isEmpty(mCustomerName) && result.getRespData().userList.size() == 0) {
-            //所有用户为0
-            mLlContactNone.setVisibility(View.VISIBLE);
-            hasContacts = false;
+        if (result.getRespData().userList.size() == 0) {
+            if (isSearchOrFilter) {
+                XToast.show("未查到相关联系人");
+                mSwipeRefreshLayout.setRefreshing(false);
+                mLlContactNone.setVisibility(View.GONE);
+                return;
+            } else {
+                mLlContactNone.setVisibility(View.VISIBLE);
+            }
         } else {
             mLlContactNone.setVisibility(View.GONE);
-            hasContacts = true;
         }
+
         mContacts.clear();
         if (!TextUtils.isEmpty(result.getRespData().serviceStatus) && result.getRespData().serviceStatus.equals("Y")) {
             for (int i = 0; i < result.getRespData().userList.size(); i++) {
@@ -123,6 +133,12 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     }
 
     public void filterOrSearchCustomer(String searchText, String tagName, String userGroup, String customerLevel, String customerType, String serialNo) {
+        if (TextUtils.isEmpty(searchText) && TextUtils.isEmpty(tagName) && TextUtils.isEmpty(userGroup) && TextUtils.isEmpty(customerLevel)
+                && TextUtils.isEmpty(customerType) && TextUtils.isEmpty(serialNo)) {
+            isSearchOrFilter = false;
+        } else {
+            isSearchOrFilter = true;
+        }
         resetData();
         mCustomerUserName = searchText;
         mCustomerLevel = customerLevel;
@@ -136,6 +152,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -151,11 +168,6 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
 
     }
 
-    @OnClick(R2.id.btn_nearby_people)
-    public void onNearbyPeopleClicked() {
-        EventBus.getDefault().post(new SwitchTableToMarketingEvent());
-    }
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -164,10 +176,11 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
 
     @Subscribe
     public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
-        if(event.success){
+        if (event.success) {
             onRefresh();
         }
     }
+
     @Subscribe
     public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
         onRefresh();
@@ -176,5 +189,10 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     @Override
     public void onRefresh() {
         super.onRefresh();
+    }
+
+    @OnClick(R2.id.btn_nearby_people)
+    public void onNearbyPeopleClicked() {
+        EventBus.getDefault().post(new SwitchTableToMarketingEvent());
     }
 }

@@ -305,6 +305,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 SharedPreferenceHelper.setUserAvatar(clubInfo.imageUrl);
                 SharedPreferenceHelper.setCurrentClubName(clubInfo.name);
                 SharedPreferenceHelper.setCurrentClubCreateTime(Utils.StrSubstring(10, clubInfo.createTime, false));
+                SharedPreferenceHelper.setClubId(clubInfo.clubId);
             });
         }
     }

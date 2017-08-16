@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.beans.ServiceItem;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.journal.activity.ClubServiceChoiceActivity;
@@ -29,6 +30,7 @@ public class UINavigation {
     public static final String EXTRA_PARCELABLE_SELECTED_SERVICE_ITEMS = "extra_integer_list_forbidden_project_id";
     public static final String EXTRA_STRING_TECHNICIAN_ID = "extra_string_technician_no";
     public static final String EXTRA_INT_MAX_SIZE = "extra_int_max_size";
+    public static final String EXTRA_INT_TEMPLATE_ID = "extra_int_template_id";
 
     public static final int REQUEST_CODE_CHOICE_TECHNICIAN = 1;
     public static final int REQUEST_CODE_CHOICE_SERVICE = 2;
@@ -43,9 +45,10 @@ public class UINavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoContentEditActivity(Context context, int journalId) {
+    public static void gotoContentEditActivity(Context context, int journalId, int templateId) {
         Intent intent = new Intent(context, JournalContentEditActivity.class);
         intent.putExtra(EXTRA_INT_JOURNAL_ID, journalId);
+        intent.putExtra(EXTRA_INT_TEMPLATE_ID, String.valueOf(templateId));
         context.startActivity(intent);
     }
 

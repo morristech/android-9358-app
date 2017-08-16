@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.black.event.AddOrRemoveBlackEvent;
@@ -26,7 +27,9 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by Lhj on 17-7-26.
@@ -34,10 +37,9 @@ import butterknife.OnClick;
 
 public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
 
+    Unbinder unbinder;
     private View view;
-    private String mCurrentFilterType;
-    private String mCustomerName;
-    private boolean hasContacts;
+
     private String mCustomerLevel;
     private String mCustomerType;
     private String mCustomerRemark;
@@ -45,18 +47,20 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     private String mCustomerUserGroup;
     private String mCustomerUserName;
     private Map<String, String> params;
+    private boolean isSearchOrFilter = false;
+    protected LinearLayout mLlContactNone;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_contact_register, container, false);
+        mLlContactNone = (LinearLayout) view.findViewById(R.id.ll_contact_none);
         initView();
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     private void initView() {
-        mCustomerName = "";
-        mCurrentFilterType = "";
         params = new HashMap<>();
         resetData();
     }
@@ -99,20 +103,29 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         if (result.getRespData() == null) {
             return;
         }
-        if (TextUtils.isEmpty(mCurrentFilterType) && TextUtils.isEmpty(mCustomerName) && result.getRespData().userList.size() == 0) {
-            //所有用户为0
-            mLlContactNone.setVisibility(View.VISIBLE);
-            hasContacts = false;
-
+        if (result.getRespData().userList.size() == 0) {
+            if (isSearchOrFilter) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                XToast.show("未查到相关联系人");
+                mLlContactNone.setVisibility(View.GONE);
+                return;
+            } else {
+                mLlContactNone.setVisibility(View.VISIBLE);
+            }
         } else {
             mLlContactNone.setVisibility(View.GONE);
-            hasContacts = true;
         }
         onGetListSucceeded(result.getPageCount(), result.getRespData().userList, false);
     }
 
 
     public void filterOrSearchCustomer(String searchText, String tagName, String userGroup, String customerLevel, String customerType, String serialNo) {
+        if (TextUtils.isEmpty(searchText) && TextUtils.isEmpty(tagName) && TextUtils.isEmpty(userGroup) && TextUtils.isEmpty(customerLevel)
+                && TextUtils.isEmpty(customerType) && TextUtils.isEmpty(serialNo)) {
+            isSearchOrFilter = false;
+        } else {
+            isSearchOrFilter = true;
+        }
         resetData();
         mCustomerUserName = searchText;
         mCustomerLevel = customerLevel;
@@ -139,9 +152,10 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         EventBus.getDefault().post(new SwitchTableToMarketingEvent());
     }
 
+
     @Subscribe
     public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
-        if(event.success){
+        if (event.success) {
             onRefresh();
         }
     }
@@ -156,4 +170,12 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         super.onHiddenChanged(hidden);
         ((TechContactFragment) getParentFragment()).showOrHideFilterButton(true);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
 }

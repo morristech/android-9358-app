@@ -332,7 +332,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @Subscribe
     public void switchTableToMarketingFragment(SwitchTableToMarketingEvent event) {
-        switchFragment(getFragmentSize() - 1);
+        XLogger.i(">>>","此处跳转");
+        switchFragment(getFragmentSize()-1);
     }
 
     @Subscribe

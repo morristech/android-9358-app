@@ -258,11 +258,9 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
             XToast.show("备注信息不可超过30个字符");
             btnSaveEdit.setEnabled(false);
         } else {
+            btnSaveEdit.setEnabled(true);
             if ((30 - s.length()) > 0) {
                 textRemarkNum.setText(30 - s.length() + "");
-            }
-            if (!TextUtils.isEmpty(etRemarkName.getText().toString())) {
-                btnSaveEdit.setEnabled(true);
             }
         }
     }

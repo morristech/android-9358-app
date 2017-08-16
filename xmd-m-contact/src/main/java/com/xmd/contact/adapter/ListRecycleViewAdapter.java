@@ -139,6 +139,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return;
             }
             final ContactAllBean contactBean = (ContactAllBean) obj;
+            if(TextUtils.isEmpty(contactBean.createTime)){
+                return;
+            }
             ContactAllViewHolder viewHolder = (ContactAllViewHolder) holder;
             viewHolder.contactName.setText(TextUtils.isEmpty(contactBean.userNoteName) ? contactBean.name : contactBean.userNoteName);
             Glide.with(mContext).load(contactBean.avatarUrl).into(viewHolder.contactAvatar);
@@ -168,18 +171,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.contactServiceTime.setVisibility(View.GONE);
             }
-//            if (TextUtils.isEmpty(contactBean.remark)) {
-//                viewHolder.llContactTypeView.setVisibility(View.INVISIBLE);
-//            } else {
-//                viewHolder.llContactTypeView.setVisibility(View.VISIBLE);
-//                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.remark, ","));
-//            }
-            if (TextUtils.isEmpty(contactBean.tagName)) {
+            if (TextUtils.isEmpty(contactBean.remark)) {
                 viewHolder.llContactTypeView.setVisibility(View.INVISIBLE);
             } else {
                 viewHolder.llContactTypeView.setVisibility(View.VISIBLE);
-                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.tagName, ","));
+                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.remark, ","));
             }
+//            if (TextUtils.isEmpty(contactBean.tagName)) {
+//                viewHolder.llContactTypeView.setVisibility(View.INVISIBLE);
+//            } else {
+//                viewHolder.llContactTypeView.setVisibility(View.VISIBLE);
+//                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.tagName, ","));
+//            }
 
 
             if (contactBean.customerType.equals(ConstantResources.USER_FANS)) {

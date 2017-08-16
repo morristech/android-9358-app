@@ -128,18 +128,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         if (!customerIsTech) {
             setRightVisible(true, R.drawable.contact_icon_more);
         }
-
-//        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD) || fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || customerIsTech) {
-//            showButton();
-//        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH) && !customerIsTech) {
-//
-//            llOperation.setVisibility(View.VISIBLE);
-//        }
-//        if(!fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)){
-//            loadPermissionInfo();
-//        }else{
-//            showButton();
-//        }
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
             showButton();
         }else{
@@ -344,40 +332,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             layoutOperationButtons.setVisibility(View.VISIBLE);
             return;
         }
-//        if (customerIsTech) {//本店成员
-//            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) { //管理者
-//                btnEmHello.setVisibility(View.GONE);
-//                btnEmChat.setVisibility(View.VISIBLE);
-//                btnCallPhone.setVisibility(View.VISIBLE);
-//                btnChat.setVisibility(View.VISIBLE);
-//                layoutOperationButtons.setAlpha(1.0f);
-//                layoutOperationButtons.setVisibility(View.GONE);
-//                btnOperation.setVisibility(View.VISIBLE);
-//            } else { //技师
-//                btnEmHello.setVisibility(View.GONE);
-//                btnOperation.setVisibility(View.GONE);
-//                btnEmChat.setVisibility(View.VISIBLE);
-//                btnCallPhone.setVisibility(View.GONE);
-//                btnChat.setVisibility(View.GONE);
-//                layoutOperationButtons.setAlpha(1.0f);
-//                layoutOperationButtons.setVisibility(View.VISIBLE);
-//
-//            }
-//            return;
-//        }
-//
-//
-//        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-//            btnEmHello.setVisibility(View.GONE);
-//            btnOperation.setVisibility(View.GONE);
-//            btnEmChat.setVisibility(View.VISIBLE);
-//            btnCallPhone.setVisibility(View.VISIBLE);
-//            btnChat.setVisibility(View.VISIBLE);
-//            layoutOperationButtons.setAlpha(1.0f);
-//            layoutOperationButtons.setVisibility(View.GONE);
-//            btnOperation.setVisibility(View.VISIBLE);
-//            return;
-//        }
 
         if (permissionInfo != null) {
             boolean showOperation = permissionInfo.call || permissionInfo.hello || permissionInfo.sms || permissionInfo.echat;

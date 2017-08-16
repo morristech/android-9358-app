@@ -25,6 +25,7 @@ public class JournalContentEditActivity extends BaseActivity implements JournalC
     private JournalContentEditContract.Presenter mPresenter;
     private JournalContentEditAdapter mAdapter;
     private RecyclerView recyclerView;
+    private String mTemplateId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class JournalContentEditActivity extends BaseActivity implements JournalC
         mPresenter = new JournalContentEditPresenter(this, this);
 
         setTitle(getString(R.string.journal_title_edit_content));
-
+        mTemplateId = getIntent().getStringExtra(UINavigation.EXTRA_INT_TEMPLATE_ID);
         ScreenUtils.initScreenSize(getWindowManager());
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -49,7 +50,7 @@ public class JournalContentEditActivity extends BaseActivity implements JournalC
                 }
             }
         });
-        mAdapter = new JournalContentEditAdapter(mPresenter);
+        mAdapter = new JournalContentEditAdapter(mPresenter, mTemplateId);
         recyclerView.setAdapter(mAdapter);
         setLeftVisible(true, R.drawable.actionbar_back, new View.OnClickListener() {
             @Override

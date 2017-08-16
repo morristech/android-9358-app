@@ -12,6 +12,7 @@ import com.xmd.app.BaseFragment;
 import com.xmd.contact.adapter.ListRecycleViewAdapter;
 
 
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mListView;
-    protected LinearLayout mLlContactNone;
+
 
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
@@ -45,9 +46,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         super.onActivityCreated(savedInstanceState);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(swipe_refresh_widget);
         mListView = (RecyclerView) getView().findViewById(R.id.contact_list);
-        mLlContactNone = (LinearLayout) getView().findViewById(R.id.ll_contact_none);
-        initContent();
 
+        initContent();
+        EventBus.getDefault().register(this);
     }
 
     private void initContent() {

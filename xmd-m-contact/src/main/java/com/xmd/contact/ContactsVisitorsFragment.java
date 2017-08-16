@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.CharacterParser;
@@ -43,14 +44,13 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
     private List<ContactRecentBean> mFilterVisitors;
     private String mUserName;
     private CharacterParser characterParser;
-    private boolean hasContacts;
-
+    protected LinearLayout mLlContactNone;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_contact_visitor, container, false);
+        mLlContactNone = (LinearLayout) view.findViewById(R.id.ll_contact_none);
         initView();
-        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -107,9 +107,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
         mVisitors.clear();
         if (result.getRespData().userList.size() == 0 && TextUtils.isEmpty(mUserName)) {
             mLlContactNone.setVisibility(View.VISIBLE);
-            hasContacts = false;
         } else {
-            hasContacts = true;
             mLlContactNone.setVisibility(View.GONE);
         }
         if (result.getRespData().userList.size() > 0) {

@@ -16,10 +16,12 @@ import com.xmd.manager.journal.contract.JournalContentImageArticleContract;
 import com.xmd.manager.journal.manager.ImageArticleManager;
 import com.xmd.manager.journal.manager.ImageManager;
 import com.xmd.manager.journal.model.AlbumPhoto;
-import com.xmd.manager.journal.model.ImageArticleTemplate;
+
 import com.xmd.manager.journal.model.JournalContent;
 import com.xmd.manager.journal.model.JournalItemImageArticle;
+import com.xmd.manager.beans.JournalTemplateImageArticleBean;
 import com.xmd.manager.journal.widget.JournalEditImageArticleTemplateDialogFragment;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,21 +48,24 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
     public ObservableBoolean mShowLoadingTemplate = new ObservableBoolean();
     public ObservableField<String> mLoadTemplateError = new ObservableField<>();
     private FragmentManager mFragmentManager;
-    public ImageArticleTemplate mSelectedTemplate;
+    public JournalTemplateImageArticleBean mSelectedTemplate;
 
-    private Subscription mLoadTemplateSubscription;
+
     private Subscription mLoadImageUrlSubscription;
 
     private boolean mIsUploadingImage;
+    private String mTemplateId;
     private List<ImageManager.UploadTask> mImageUploadTasks;
     private AtomicInteger mUploadCount = new AtomicInteger(0);
 
     public JournalContentImageArticlePresenter(Context context, JournalContentImageArticleContract.View view,
-                                               JournalImageArticleBinding binding, JournalContent content) {
+                                               JournalImageArticleBinding binding, JournalContent content, String templateId) {
         mContext = context;
         mView = view;
         mBinding = binding;
         mContent = content;
+        mTemplateId = templateId;
+
     }
 
     @Override
@@ -75,10 +80,6 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
     }
 
     private void clearNetworkAccess() {
-        if (mLoadTemplateSubscription != null) {
-            mLoadTemplateSubscription.unsubscribe();
-            mLoadTemplateSubscription = null;
-        }
         if (mLoadImageUrlSubscription != null) {
             mLoadImageUrlSubscription.unsubscribe();
             mLoadImageUrlSubscription = null;
@@ -91,7 +92,12 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
 
     @Override
     public void onClickSelectTemplate() {
-        openTemplateWindow(null);
+        openTemplateWindow(mTemplateId);
+    }
+
+    @Override
+    public void onTemplateViewCreate(String templateId) {
+        loadTemplates(templateId);
     }
 
     private void openTemplateWindow(String templateId) {
@@ -109,12 +115,7 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
     }
 
     @Override
-    public void onTemplateViewCreate() {
-        loadTemplates();
-    }
-
-    @Override
-    public void onSelectTemplate(ImageArticleTemplate template) {
+    public void onSelectTemplate(JournalTemplateImageArticleBean template) {
         mTemplateView.dismiss();
         if (mSelectedTemplate != null && mSelectedTemplate.id.equals(template.id)) {
             return;
@@ -127,7 +128,7 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
         mContentImageArticle = new JournalItemImageArticle(null);
         mContentImageArticle.templateId = template.id;
         if (template.articles != null && template.articles.size() > 0) {
-            for (ImageArticleTemplate.Article article : template.articles) {
+            for (JournalTemplateImageArticleBean.Article article : template.articles) {
                 mContentImageArticle.articleList.add(article.content);
             }
         }
@@ -140,57 +141,36 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
         mView.createView(template);
     }
 
-    private void loadTemplates() {
+    private void loadTemplates(String templateId) {
         //加载模版数据
         mShowLoadingTemplate.set(true);
         mLoadTemplateError.set(null);
-        if (mLoadTemplateSubscription != null) {
-            mLoadTemplateSubscription.unsubscribe();
-        }
-        mLoadTemplateSubscription = ImageArticleManager.getInstance().getTemplates(new Callback<List<ImageArticleTemplate>>() {
-            @Override
-            public void onResult(Throwable error, List<ImageArticleTemplate> result) {
-                mLoadTemplateSubscription = null;
-                mShowLoadingTemplate.set(false);
-                if (error == null) {
-                    mTemplateView.showLoadTemplateSuccess(result, mSelectedTemplate);
-                } else {
-                    mLoadTemplateError.set(error.getLocalizedMessage());
-                }
-            }
-        });
+        mTemplateView.showLoadTemplateSuccess(ImageArticleManager.getInstance().getTemplates(Integer.parseInt(templateId)), mSelectedTemplate);
+        mShowLoadingTemplate.set(false);
     }
 
     private void loadData() {
         mShowLoadingData.set(true);
         mLoadDataError.set(null);
-        if (mLoadTemplateSubscription != null) {
-            mLoadTemplateSubscription.unsubscribe();
-        }
-        mLoadTemplateSubscription = ImageArticleManager.getInstance().getTemplates(new Callback<List<ImageArticleTemplate>>() {
-            @Override
-            public void onResult(Throwable error, List<ImageArticleTemplate> result) {
-                mLoadTemplateSubscription = null;
-                if (error == null) {
-                    for (ImageArticleTemplate template : result) {
-                        if (template.id.equals(mContentImageArticle.templateId)) {
-                            mSelectedTemplate = template;
-                            break;
-                        }
-                    }
-                    if (mContentImageArticle.imageList.size() > 0) {
-                        //转换ID为URL
-                        loadImageUrl();
-                    } else {
-                        mShowLoadingData.set(false);
-                        showData();
-                    }
-                } else {
-                    mShowLoadingData.set(false);
-                    mLoadDataError.set(error.getLocalizedMessage());
+
+        if (ImageArticleManager.getInstance().getTemplates(Integer.parseInt(mTemplateId)) == null) {
+            for (JournalTemplateImageArticleBean template : ImageArticleManager.getInstance().getTemplates(Integer.parseInt(mTemplateId))) {
+                if (template.id.equals(mContentImageArticle.templateId)) {
+                    mSelectedTemplate = template;
+                    break;
                 }
             }
-        });
+            if (mContentImageArticle.imageList.size() > 0) {
+                //转换ID为URL
+                loadImageUrl();
+            } else {
+                mShowLoadingData.set(false);
+                showData();
+            }
+        } else {
+            mShowLoadingData.set(false);
+            //  mLoadDataError.set(error.getLocalizedMessage());
+        }
     }
 
     private void loadImageUrl() {
@@ -212,7 +192,7 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
     }
 
     private void showData() {
-        ImageArticleTemplate template = ImageArticleManager.getInstance().getTemplateById(mContentImageArticle.templateId);
+        JournalTemplateImageArticleBean template = ImageArticleManager.getInstance().getTemplateById(mContentImageArticle.templateId);
         if (template != null) {
             mView.createView(template);
             mView.showData(mContentImageArticle);
@@ -277,7 +257,7 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
 
     @Override
     public void onClickChangeTemplate() {
-        openTemplateWindow(mSelectedTemplate.id);
+        openTemplateWindow(mTemplateId);
     }
 
     private void checkNeedShowUploadButton() {

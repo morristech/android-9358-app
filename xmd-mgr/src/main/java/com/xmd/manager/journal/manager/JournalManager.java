@@ -4,6 +4,9 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xmd.manager.SharedPreferenceHelper;
+import com.xmd.manager.beans.JournalTemplateBean;
+import com.xmd.manager.beans.JournalTemplateImageArticleBean;
+import com.xmd.manager.beans.NewsTemplateListBean;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.journal.Callback;
 import com.xmd.manager.journal.model.Journal;
@@ -70,6 +73,7 @@ public class JournalManager extends Observable {
         return mJournalTemplates;
     }
 
+
     //使用key获取内容类型
     private JournalContentType getJournalContentTypeByKey(String key) {
         for (int i = 0; i < mJournalContentTypes.size(); i++) {
@@ -80,7 +84,7 @@ public class JournalManager extends Observable {
         return null;
     }
 
-    private JournalTemplate getTemplateById(int id) {
+    public JournalTemplate getTemplateById(int id) {
         for (JournalTemplate template : mJournalTemplates) {
             if (template.getId() == id) {
                 return template;
@@ -174,7 +178,7 @@ public class JournalManager extends Observable {
                     public void onResult(Throwable error, JournalTemplateListResult result) {
                         if (error == null) {
                             mJournalTemplates.clear();
-                            for (JournalTemplateListResult.Item item : result.respData) {
+                            for (JournalTemplateBean item : result.respData) {
                                 JournalTemplate journalTemplate = new JournalTemplate();
                                 journalTemplate.setId(item.id);
                                 journalTemplate.setName(item.name);
@@ -205,6 +209,22 @@ public class JournalManager extends Observable {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                //图文混排模板
+                                for (NewsTemplateListBean newsBean : item.newsTemplateList) {
+                                    JournalTemplateImageArticleBean imageArticle = new JournalTemplateImageArticleBean();
+                                    imageArticle.id = newsBean.templateId;
+                                    imageArticle.imageCount = Integer.parseInt(newsBean.templateImageCount);
+                                    imageArticle.coverUrl = newsBean.templateUrl;
+                                    if (newsBean.templateArticles != null) {
+                                        for (String article : newsBean.templateArticles) {
+                                            JournalTemplateImageArticleBean.Article a = new JournalTemplateImageArticleBean.Article();
+                                            a.wordsLimit = Integer.parseInt(article);
+                                            imageArticle.articles.add(a);
+                                        }
+                                    }
+                                    journalTemplate.addTemplateImages(imageArticle);
+                                }
+
                                 mJournalTemplates.add(journalTemplate);
                             }
                         }

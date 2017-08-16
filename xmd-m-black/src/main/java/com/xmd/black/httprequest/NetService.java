@@ -45,7 +45,7 @@ public interface NetService {
     Observable<InUserBlacklistResult> inUserBlacklist(@Query("friendChatId") String friendChatId);
 
     @GET(RequestConstant.URL_GET_CONTACT_MARK)
-    Observable<MarkResult> getContactMark();
+    Observable<MarkResult> getContactMark(@Query("tagType") String tagType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_ADD_CUSTOMER)

@@ -60,7 +60,7 @@ public class DataManager {
     }
 
     public void getImpressionDetail(NetworkSubscriber<MarkResult> listener) {
-        mLoadImpression = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getContactMark(), listener);
+        mLoadImpression = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getContactMark("tech_customer"), listener);
     }
 
     public void doCreateCustomer(String noteName, String phoneNum, String impression, String remark, NetworkSubscriber<CreateCustomerResult> listener) {

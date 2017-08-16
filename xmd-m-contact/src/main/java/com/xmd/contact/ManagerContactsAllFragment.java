@@ -43,7 +43,7 @@ public class ManagerContactsAllFragment extends BaseListFragment<ManagerContactA
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_contact_all, container, false);
+        view = inflater.inflate(R.layout.fragment_manager_contact_all, container, false);
         initView();
         return view;
     }
@@ -91,7 +91,6 @@ public class ManagerContactsAllFragment extends BaseListFragment<ManagerContactA
         if (result.getRespData() == null) {
             return;
         }
-        mLlContactNone.setVisibility(View.GONE);
         onGetListSucceeded(result.getPageCount(), result.getRespData().userList, true);
     }
 
