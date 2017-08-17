@@ -117,6 +117,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     private String userName;
     private UserInfoBean userBean;
     private String userHeadUrl;
+    List<String> mList ;
 
 
     @Nullable
@@ -175,11 +176,17 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
 
     private void initTypeLabelView(List<ManagerUserTagListBean> userTagList) {
-        List<String> mList = new ArrayList<>();
+
+        if(mList == null){
+            mList = new ArrayList<>();
+        }else {
+            mList.clear();
+        }
+
         for (ManagerUserTagListBean bean : userTagList) {
             mList.add(bean.tagName);
         }
-
+        customerTypeLabel.removeAllViews();
         customerTypeLabel.initChildViews(mList);
     }
 

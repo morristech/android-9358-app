@@ -190,27 +190,6 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
-    public void initChildRemarkViews(String remark,String delimiter) {
-        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.rightMargin = 18;
-        lp.bottomMargin = 18;
-        String[] remarkArray = remark.split(delimiter);
-        XLogger.i(">>>","remark>>"+remark);
-        for (int i = 0; i < remarkArray.length; i++) {
-            final TextView view = new TextView(mContext);
-            view.setPadding(18, 5, 18, 5);
-            view.setText(remarkArray[i]);
-            view.setTextSize(14);
-            if (remarkArray[i].equals("通讯录")) {
-                view.setTextColor(Color.parseColor("#4d98df"));
-                view.setBackgroundResource(R.drawable.bg_contact_tech_add_mark);
-            } else {
-                view.setBackgroundResource(R.drawable.bg_contact_mark);
-                view.setTextColor(Color.parseColor("#ff8909"));
-            }
-            this.addView(view, lp);
-        }
-    }
+
 }
 
