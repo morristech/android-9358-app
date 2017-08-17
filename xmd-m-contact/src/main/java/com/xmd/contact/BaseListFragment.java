@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import com.xmd.app.BaseFragment;
 import com.xmd.contact.adapter.ListRecycleViewAdapter;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +127,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     }
 
     @Override
-    public void onPositiveButtonClicked(T bean, int position,boolean isThanks) {
+    public void onPositiveButtonClicked(T bean, int position, boolean isThanks) {
 
     }
 

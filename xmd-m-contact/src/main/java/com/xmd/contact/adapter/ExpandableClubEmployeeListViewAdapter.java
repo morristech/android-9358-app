@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
-
 import com.xmd.contact.R;
 import com.xmd.contact.bean.ClubRoleBean;
 import com.xmd.contact.bean.ClubUserListBean;

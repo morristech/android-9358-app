@@ -9,7 +9,7 @@ public class PhoneContact {
     public String telephone;
     public String sortLetters;
 
-    public PhoneContact(String name, String telephone){
+    public PhoneContact(String name, String telephone) {
         this.name = name;
         this.telephone = telephone;
     }

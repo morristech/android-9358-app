@@ -107,8 +107,8 @@ public class ClubInviteDialogFragment extends DialogFragment {
         super.onResume();
         WindowManager.LayoutParams lp = getDialog().getWindow().getAttributes();
         lp.width = ScreenUtils.getScreenWidth();
-        lp.flags |= WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
         getDialog().getWindow().setAttributes(lp);
+        getDialog().getWindow().getDecorView().setBackgroundColor(0x00000000);
 
     }
 }

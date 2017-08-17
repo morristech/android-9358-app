@@ -3,8 +3,8 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/selector_bg_white"
-              android:orientation="vertical">
+    android:background="@drawable/selector_bg_white"
+    android:orientation="vertical">
     <TextView
         android:id="@+id/contact_service_time"
         android:layout_width="match_parent"
@@ -14,30 +14,28 @@
         android:paddingLeft="12dp"
         android:paddingTop="5dp"
         android:text="今天新增"
-        android:textColor="#999999"/>
+        android:textColor="#999999" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-    >
+        android:paddingRight="12dp">
 
         <com.xmd.app.widget.RoundImageView
             android:id="@+id/contact_all_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/img_default_avatar"/>
+            android:background="@drawable/img_default_avatar" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:orientation="vertical"
-        >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,12 +66,13 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="5dp"
                     android:src="@drawable/icon_contact_wx"/>
+
                 <ImageView
                     android:id="@+id/iv_contact_type_zfb"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/icon_contact_zf"/>
+                    android:src="@drawable/icon_contact_zf" />
 
             </LinearLayout>
 
@@ -82,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5sp"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal" />
         </LinearLayout>
 
     </LinearLayout>

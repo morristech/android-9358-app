@@ -32,15 +32,15 @@ public class TagListAdapter extends RecyclerView.Adapter {
         this.mTagLists = tagLists;
     }
 
-    public interface TagChildrenItemClickedListener{
+    public interface TagChildrenItemClickedListener {
         void itemClicked(TagBean treatedTag, int childrenPosition);
     }
 
-    public void setOnTagChildrenItemClickedListener(TagChildrenItemClickedListener listener){
+    public void setOnTagChildrenItemClickedListener(TagChildrenItemClickedListener listener) {
         this.mClickedListener = listener;
     }
 
-    public void setData(List<TreatedTagList> data){
+    public void setData(List<TreatedTagList> data) {
         this.mTagLists = data;
         notifyDataSetChanged();
     }
@@ -67,35 +67,35 @@ public class TagListAdapter extends RecyclerView.Adapter {
         viewHolder.llTagTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(bean.isOpen.equals("1")){
-                   bean.isOpen = "0";
-               } else{
-                   bean.isOpen = "1";
-               }
+                if (bean.isOpen.equals("1")) {
+                    bean.isOpen = "0";
+                } else {
+                    bean.isOpen = "1";
+                }
                 notifyItemChanged(position);
             }
         });
-        if(bean.list.size()>0){
-            final TagBeanAdapter adapter = new TagBeanAdapter(mContext,bean.list);
-            viewHolder.recyclerTagList.setLayoutManager(new GridLayoutManager(mContext,3));
+        if (bean.list.size() > 0) {
+            final TagBeanAdapter adapter = new TagBeanAdapter(mContext, bean.list);
+            viewHolder.recyclerTagList.setLayoutManager(new GridLayoutManager(mContext, 3));
             viewHolder.recyclerTagList.setAdapter(adapter);
             adapter.setOnItemCLickedListener(new TagBeanAdapter.TagItemCLickedListener() {
                 @Override
                 public void onTagItemClicked(TagBean tagbean, int position) {
-                    if(mClickedListener != null){
-                        mClickedListener.itemClicked(tagbean,position);
+                    if (mClickedListener != null) {
+                        mClickedListener.itemClicked(tagbean, position);
                     }
-                    if(position == 0){
+                    if (position == 0) {
                         for (int i = 0; i < bean.list.size(); i++) {
                             bean.list.get(i).isSelected = false;
                         }
                         bean.list.get(0).isSelected = true;
                         adapter.setTagBeanData(bean.list);
-                    }else{
+                    } else {
                         bean.list.get(0).isSelected = false;
-                        if(tagbean.isSelected){
+                        if (tagbean.isSelected) {
                             tagbean.isSelected = false;
-                        }else{
+                        } else {
                             tagbean.isSelected = true;
                         }
                         adapter.notifyItemChanged(0);

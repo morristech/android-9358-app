@@ -52,7 +52,7 @@ public class XToast {
     }
 
     public static void show(String message) {
-        if(TextUtils.isEmpty(message)){
+        if (TextUtils.isEmpty(message)) {
             return;
         }
         showInUI(Toast.LENGTH_SHORT, Gravity.CENTER, 0, 0, message);

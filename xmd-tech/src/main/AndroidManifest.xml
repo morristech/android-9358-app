@@ -239,7 +239,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".window.TechPersonalRankingDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".window.ClubJournalChatShareActivity"

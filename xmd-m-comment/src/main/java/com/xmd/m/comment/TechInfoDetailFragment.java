@@ -3,7 +3,6 @@ package com.xmd.m.comment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.Callback;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -114,7 +112,7 @@ public class TechInfoDetailFragment extends BaseFragment {
         if (!TextUtils.isEmpty(respData.telephone)) {
             tvTechPhone.setText(respData.telephone);
             mTelephone = respData.telephone;
-        }else {
+        } else {
             mTelephone = "";
         }
         if (respData.roles.equals("tech")) {

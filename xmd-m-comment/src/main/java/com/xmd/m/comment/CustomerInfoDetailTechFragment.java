@@ -29,7 +29,6 @@ import com.xmd.m.comment.bean.ManagerUserTagListBean;
 import com.xmd.m.comment.bean.TechUserDetailModelBean;
 import com.xmd.m.comment.bean.TechUserDetailResult;
 import com.xmd.m.comment.bean.UserInfoBean;
-
 import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;

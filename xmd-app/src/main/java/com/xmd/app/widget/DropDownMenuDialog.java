@@ -1,8 +1,6 @@
 package com.xmd.app.widget;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +53,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         }
         for (int i = 0; i < items.length; i++) {
             String item = items[i];
-           TextView textView = (TextView) inflater.inflate(R.layout.drop_down_menu_item, contentView, false);
+            TextView textView = (TextView) inflater.inflate(R.layout.drop_down_menu_item, contentView, false);
             textView.setText(item);
             textView.setTag(i);
             textView.setOnClickListener(this);

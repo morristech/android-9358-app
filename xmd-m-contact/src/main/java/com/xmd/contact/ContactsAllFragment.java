@@ -102,7 +102,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         if (result.getRespData() == null || result.getRespData().userList == null) {
             return;
         }
-        if ( TextUtils.isEmpty(mCustomerName) && result.getRespData().userList.size() == 0) {
+        if (TextUtils.isEmpty(mCustomerName) && result.getRespData().userList.size() == 0) {
             //所有用户为0
             mLlContactNone.setVisibility(View.VISIBLE);
             hasContacts = false;
@@ -164,10 +164,11 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
 
     @Subscribe
     public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
-        if(event.success){
+        if (event.success) {
             onRefresh();
         }
     }
+
     @Subscribe
     public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
         onRefresh();

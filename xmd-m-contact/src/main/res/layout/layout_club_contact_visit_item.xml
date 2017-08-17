@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@drawable/selector_bg_white"
-              android:orientation="vertical"
-              android:paddingLeft="12dp"
-              android:paddingRight="12dp"
-              android:paddingTop="12dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_bg_white"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:id="@+id/contact_visit_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/img_default_avatar"/>
+            android:background="@drawable/img_default_avatar" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -41,36 +41,38 @@
                     android:paddingLeft="5dp"
                     android:textColor="#212121"
                     android:textSize="18sp"
-                    tools:text="黄小姐"/>
+                    tools:text="黄小姐" />
 
                 <ImageView
                     android:id="@+id/iv_contact_visit_type_fans"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/icon_contact_fans"/>
+                    android:src="@drawable/icon_contact_fans" />
 
                 <ImageView
                     android:id="@+id/iv_contact_visit_type_wx"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/icon_contact_wx"/>
+                    android:src="@drawable/icon_contact_wx" />
+
                 <ImageView
                     android:id="@+id/iv_contact_visit_type_zf"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/icon_contact_zf"/>
+                    android:src="@drawable/icon_contact_zf" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_customer_type_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5sp"
                 android:minHeight="16dp"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,7 +86,7 @@
                     android:layout_width="17dp"
                     android:layout_height="17dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"/>
+                    android:layout_marginLeft="5dp" />
 
                 <TextView
                     android:id="@+id/contact_visit_remark"
@@ -94,7 +96,8 @@
                     android:paddingLeft="5dp"
                     android:textColor="#777777"
                     android:textSize="@dimen/fontBody"
-                    tools:text="访问了我"/>
+                    tools:text="访问了我" />
+
                 <TextView
                     android:id="@+id/contact_visit_time"
                     android:layout_width="wrap_content"
@@ -105,7 +108,7 @@
                     android:gravity="bottom"
                     android:textColor="#777777"
                     android:textSize="12sp"
-                    tools:text="昨天16：15"/>
+                    tools:text="昨天16：15" />
 
             </LinearLayout>
 
@@ -133,8 +136,9 @@
                     android:paddingTop="6dp"
                     android:text="感谢"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/contact_visit_distance"
                 android:layout_width="wrap_content"
@@ -144,12 +148,13 @@
                 android:paddingRight="5dp"
                 android:textColor="#777777"
                 android:textSize="12sp"
-                tools:text="800m"/>
+                tools:text="800m" />
 
         </LinearLayout>
 
     </LinearLayout>
+
     <View
         style="@style/horizontal_divider_line"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp" />
 </LinearLayout>

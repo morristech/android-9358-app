@@ -5,7 +5,7 @@ package com.xmd.contact.event;
  */
 
 public class SwitchTableToContactRecentEvent {
-    public SwitchTableToContactRecentEvent(){
+    public SwitchTableToContactRecentEvent() {
 
     }
 }

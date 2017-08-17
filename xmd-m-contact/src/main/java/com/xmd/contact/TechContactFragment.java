@@ -163,7 +163,7 @@ public class TechContactFragment extends BaseFragment {
                 ((ContactsAllFragment) (getChildFragmentManager().getFragments().get(mCurrentFragmentIndex))).filterOrSearchCustomer(searchText, mTagName, mUserGroup, mCustomerLevel, mCustomerType, mSerialNo);
                 break;
             case ConstantResources.CONTACT_REGISTER_INDEX:
-                  ((ContactsRegisterFragment) (getChildFragmentManager().getFragments().get(mCurrentFragmentIndex))).filterOrSearchCustomer(searchText, mTagName, mUserGroup, mCustomerLevel, mCustomerType, mSerialNo);
+                ((ContactsRegisterFragment) (getChildFragmentManager().getFragments().get(mCurrentFragmentIndex))).filterOrSearchCustomer(searchText, mTagName, mUserGroup, mCustomerLevel, mCustomerType, mSerialNo);
                 break;
             case ConstantResources.CONTACT_VISITOR_INDEX:
                 ((ContactsVisitorsFragment) (getChildFragmentManager().getFragments().get(mCurrentFragmentIndex))).filterOrSearchCustomer(searchText);

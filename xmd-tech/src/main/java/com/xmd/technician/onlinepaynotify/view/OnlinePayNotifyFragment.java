@@ -236,7 +236,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
             SharedPreferenceHelper.setPayNotifyIsFirstHide(false);
         }
         int position = 0;
-        if(mAdapter == null ||mAdapter.getDataList() == null){
+        if (mAdapter == null || mAdapter.getDataList() == null) {
             return;
         }
         for (; position < mAdapter.getDataList().size(); position++) {

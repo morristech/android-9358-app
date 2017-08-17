@@ -200,9 +200,9 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
 
     @Override
     public void onChildrenClickedListener(ClubUserListBean bean) {
-        if(isFromManager){
+        if (isFromManager) {
             CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.id, ConstantResources.APP_TYPE_MANAGER, true);
-        }else{
+        } else {
             CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.id, ConstantResources.APP_TYPE_TECH, true);
         }
 
@@ -211,9 +211,9 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(isFromManager){
+        if (isFromManager) {
             ((ManagerContactFragment) getParentFragment()).showOrHideFilterButton(false);
-        }else{
+        } else {
             ((TechContactFragment) getParentFragment()).showOrHideFilterButton(false);
         }
 

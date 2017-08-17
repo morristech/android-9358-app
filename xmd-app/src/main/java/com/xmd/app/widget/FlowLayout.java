@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.R;
-import com.xmd.app.utils.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,13 +189,13 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
-    public void initChildRemarkViews(String remark,String delimiter) {
+    public void initChildRemarkViews(String remark, String delimiter) {
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.rightMargin = 18;
         lp.bottomMargin = 18;
         String[] remarkArray = remark.split(delimiter);
-        XLogger.i(">>>","remark>>"+remark);
+        XLogger.i(">>>", "remark>>" + remark);
         for (int i = 0; i < remarkArray.length; i++) {
             final TextView view = new TextView(mContext);
             view.setPadding(18, 5, 18, 5);

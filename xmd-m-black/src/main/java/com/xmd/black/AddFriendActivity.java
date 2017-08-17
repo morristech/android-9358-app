@@ -104,9 +104,9 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         etCustomerRemark.addTextChangedListener(this);
         etCustomerTelephone.addTextChangedListener(this);
         getImpressionData();
-        if(isFromManager){
+        if (isFromManager) {
             llFlowLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             llFlowLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -174,7 +174,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
     @OnClick(R2.id.btn_save_customer)
     public void onBtnSaveCustomerClicked() {
         //保存添加
-        if(!Utils.matchPhoneNumFormat(customerPhone)){
+        if (!Utils.matchPhoneNumFormat(customerPhone)) {
             XToast.show("请输入正确的手机号");
             return;
         }
@@ -189,7 +189,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
                 }
             }
             impression = impression + markSelectList.get(markSelectList.size() - 1);
-        }else{
+        } else {
             impression = "";
         }
         saveCreateCustomer();
@@ -206,7 +206,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XToast.show("添加失败"+e.getLocalizedMessage());
+                XToast.show("添加失败" + e.getLocalizedMessage());
             }
         });
     }

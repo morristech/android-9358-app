@@ -141,7 +141,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
 
     @Subscribe
     public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
-        if(event.success){
+        if (event.success) {
             onRefresh();
         }
     }

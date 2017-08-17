@@ -69,7 +69,7 @@ public class RequestConstant {
     public static final String URL_GET_CREDIT_USER_RECORDS = BASE_URL + "/v2/credit/user/records";
     public static final String URL_GET_CREDIT_USER_ACCOUNT = BASE_URL + "/v2/credit/user/account";
     public static final String URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS = BASE_URL + "/v2/credit/user/exchange/applications";
- //   public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
+    //   public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
     public static final String URL_INTRODUCE_BIND = "/spa-manager/follow9358/index.html";
 
     public static final String URL_SAVE_CONTACT_MARK_CHATTO_USER = BASE_URL + "/v1/emchat/markchattouser";
@@ -182,7 +182,7 @@ public class RequestConstant {
     //技师拓客联系人
     public static final String URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST = BASE_URL + "/v2/tech/customer/user/register/list";
     //本店同事列表
- //   public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2/tech/colleague/list";
+    //   public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2/tech/colleague/list";
     //最近访客
     public static final String URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST = BASE_URL + "/v2/tech/customer/user/recent/list";
     //本店同事详情

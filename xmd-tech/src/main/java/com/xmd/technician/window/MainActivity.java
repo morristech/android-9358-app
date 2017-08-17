@@ -19,8 +19,8 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.XmdChat;
 import com.xmd.black.event.ToBlackCustomerInfoDetailActivityEvent;
+import com.xmd.chat.XmdChat;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.contact.ContactFragment;
@@ -343,7 +343,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @Subscribe
     public void contactToChatThanks(ThanksToChatEvent event) {
-        XLogger.i(">>>","mainActivity");
+        XLogger.i(">>>", "mainActivity");
         EventBus.getDefault().post(new EventStartChatActivity(event.emChatId));
     }
 
