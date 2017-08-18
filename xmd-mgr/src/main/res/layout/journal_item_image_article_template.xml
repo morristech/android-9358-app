@@ -5,7 +5,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.xmd.manager.journal.model.ImageArticleTemplate" />
+        <import type="com.xmd.manager.beans.JournalTemplateImageArticleBean " />
 
         <variable
             name="templateWrapper"

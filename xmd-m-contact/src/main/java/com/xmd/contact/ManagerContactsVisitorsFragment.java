@@ -42,7 +42,7 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_contact_visitor, container, false);
+        view = inflater.inflate(R.layout.fragment_manager_contact_visitor, container, false);
         initView();
         return view;
     }
@@ -98,8 +98,6 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
     private void handlerRecentUserList(ManagerContactRecentListResult result) {
         mSwipeRefreshLayout.setRefreshing(false);
         mVisitors.clear();
-        mLlContactNone.setVisibility(View.GONE);
-
         if (result.getRespData().userList.size() > 0) {
             mVisitors.addAll(result.getRespData().userList);
             onGetListSucceeded(1, mVisitors, true);

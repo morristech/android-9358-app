@@ -131,7 +131,7 @@ public class JournalListPresenter implements JournalListContract.Presenter, Obse
 
         //加载图文样式
         ImageArticleManager.getInstance().clear();
-        ImageArticleManager.getInstance().getTemplates(null);
+        //ImageArticleManager.getInstance().getTemplates(1);
     }
 
     @Override

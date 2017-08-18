@@ -14,8 +14,9 @@ public class BaseFragment extends Fragment {
 
     public void setBackVisible(boolean visible) {
         RelativeLayout rlBack = (RelativeLayout) getView().findViewById(R.id.rl_toolbar_back);
-        if (rlBack != null) {
-            rlBack.setVisibility(visible ? View.VISIBLE : View.GONE);
+        ImageView imageBack = (ImageView) getView().findViewById(R.id.img_toolbar_back);
+        if (imageBack != null) {
+            imageBack.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
 
     }

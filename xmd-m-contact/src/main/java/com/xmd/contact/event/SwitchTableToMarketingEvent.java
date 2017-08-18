@@ -6,6 +6,5 @@ package com.xmd.contact.event;
 
 public class SwitchTableToMarketingEvent {
     public SwitchTableToMarketingEvent() {
-
     }
 }

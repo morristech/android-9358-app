@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -160,6 +162,7 @@ public class JournalEditActivityView extends LinearLayout {
 
     private void showDatePickerView(String initTime, DatePicker.OnDateChangedListener listener) {
         DatePicker datePicker = new DatePicker(getContext());
+        AlertDialog dialog;
         int y, m, d;
         Calendar calendar = Calendar.getInstance();
         y = calendar.get(Calendar.YEAR);
@@ -179,7 +182,7 @@ public class JournalEditActivityView extends LinearLayout {
         }
         datePicker.setCalendarViewShown(false);
         datePicker.init(y, m, d, null);
-        new AlertDialog.Builder(getContext())
+        dialog = new AlertDialog.Builder(getContext())
                 .setView(datePicker)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -192,8 +195,12 @@ public class JournalEditActivityView extends LinearLayout {
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                })
-                .create()
-                .show();
+                }).show();
+        Button buttonPositive = dialog.getButton(DialogInterface.BUTTON1);
+        Button buttonNegative = dialog.getButton(DialogInterface.BUTTON2);
+        buttonPositive.setTextColor(Color.parseColor("#12DA10"));
+        buttonNegative.setTextColor(Color.parseColor("#04b6b6"));
+                //.create()
+
     }
 }

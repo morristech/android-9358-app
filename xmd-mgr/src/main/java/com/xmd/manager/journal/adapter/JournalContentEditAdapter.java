@@ -28,13 +28,15 @@ public class JournalContentEditAdapter extends RecyclerView.Adapter<JournalConte
     private JournalContentEditContract.Presenter mPresenter;
     private Journal mJournal;
     private List<JournalContent> mDeletedContents;
+    private String templateId;
 
     public static final int ITEM_VIEW_TYPE_HEADER = 0;
     public static final int ITEM_VIEW_TYPE_NORMAL = 1;
     public static final int ITEM_VIEW_TYPE_DELETED = 2;
 
-    public JournalContentEditAdapter(JournalContentEditContract.Presenter presenter) {
+    public JournalContentEditAdapter(JournalContentEditContract.Presenter presenter, String templateId) {
         mPresenter = presenter;
+        this.templateId = templateId;
     }
 
     public void setData(Journal journal, List<JournalContent> deletedContents) {
@@ -64,7 +66,7 @@ public class JournalContentEditAdapter extends RecyclerView.Adapter<JournalConte
                 holder.bind(mJournal.getTitle(), mJournal.getSubTitle());
             } else if (viewType == ITEM_VIEW_TYPE_NORMAL) {
                 int realPos = position - 1;
-                holder.bind(mJournal.getContent(realPos), realPos != 0, position);
+                holder.bind(mJournal.getContent(realPos), realPos != 0, position, templateId);
             } else if (viewType == ITEM_VIEW_TYPE_DELETED) {
                 int realPos = position - mJournal.getContentSize() - 1;
                 holder.bind(mDeletedContents.get(realPos), realPos == 0);
@@ -144,7 +146,7 @@ public class JournalContentEditAdapter extends RecyclerView.Adapter<JournalConte
             mPresenter = presenter;
         }
 
-        public void bind(JournalContent content, boolean showMoveUp, int position) {
+        public void bind(JournalContent content, boolean showMoveUp, int position, String templateId) {
             mContent = content;
             mTitleTextView.setText(content.getType().getName());
             if (showMoveUp) {
@@ -172,7 +174,7 @@ public class JournalContentEditAdapter extends RecyclerView.Adapter<JournalConte
                     mDividerCopyDelete.setVisibility(View.GONE);
                     break;
             }
-            JournalContentEditViewHelper.setupContentView(itemView.getContext(), mContentViewLayout, mContent, mPresenter, position);
+            JournalContentEditViewHelper.setupContentView(itemView.getContext(), mContentViewLayout, mContent, mPresenter, position, templateId);
         }
 
         public void bind(JournalContent content, boolean showTitle) {

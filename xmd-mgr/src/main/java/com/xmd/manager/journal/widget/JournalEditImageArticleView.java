@@ -21,9 +21,9 @@ import com.xmd.manager.databinding.JournalImageArticleBinding;
 import com.xmd.manager.journal.contract.JournalContentEditContract;
 import com.xmd.manager.journal.contract.JournalContentImageArticleContract;
 import com.xmd.manager.journal.model.AlbumPhoto;
-import com.xmd.manager.journal.model.ImageArticleTemplate;
 import com.xmd.manager.journal.model.JournalContent;
 import com.xmd.manager.journal.model.JournalItemImageArticle;
+import com.xmd.manager.beans.JournalTemplateImageArticleBean;
 import com.xmd.manager.journal.presenter.JournalContentImageArticlePresenter;
 
 import java.util.ArrayList;
@@ -43,14 +43,14 @@ public class JournalEditImageArticleView extends LinearLayout implements Journal
     private TextView mUploadButton;
     private boolean mIsUploading;
 
-    public JournalEditImageArticleView(Context context, JournalContent content, JournalContentEditContract.Presenter presenter) {
+    public JournalEditImageArticleView(Context context, JournalContent content, JournalContentEditContract.Presenter presenter,String templateId) {
         super(context);
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
         ScreenUtils.initScreenSize(((Activity) context).getWindowManager());
         mContent = content;
         mBinding = JournalImageArticleBinding.inflate(LayoutInflater.from(getContext()), this, true);
-        mPresenter = new JournalContentImageArticlePresenter(getContext(), this, mBinding, mContent);
+        mPresenter = new JournalContentImageArticlePresenter(getContext(), this, mBinding, mContent,templateId);
         mContent.setView(mViewUpdater);
         mContentPresenter = presenter;
 
@@ -88,7 +88,7 @@ public class JournalEditImageArticleView extends LinearLayout implements Journal
     };
 
     @Override
-    public void createView(ImageArticleTemplate template) {
+    public void createView(JournalTemplateImageArticleBean template) {
         removeAllViews();
         mImageViews.clear();
         mArticleViews.clear();

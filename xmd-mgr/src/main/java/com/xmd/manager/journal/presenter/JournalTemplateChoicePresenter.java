@@ -216,7 +216,7 @@ public class JournalTemplateChoicePresenter implements JournalTemplateChoiceCont
             //新建期刊,设置原始期刊数据
             mJournalManager.setOriginJournal(mJournal.clone());
         }
-        UINavigation.gotoContentEditActivity(mContext, mJournal.getId());
+        UINavigation.gotoContentEditActivity(mContext, mJournal.getId(), mJournal.getTemplate().getId());
         mView.finishSelf();
     }
 

@@ -18,6 +18,8 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.db.DBManager;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaOkHttp;
@@ -97,13 +99,43 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                 // 按照指定格式处理消息
                 switch (message.getBusinessType()) {
                     case AppConstants.PUSH_TAG_MEMBER_PRINT:
-                        final MemberRecordInfo info = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
+                        final MemberRecordInfo memberRecordInfo = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
                         Observable
                                 .create(new Observable.OnSubscribe<Void>() {
                                     @Override
                                     public void call(Subscriber<? super Void> subscriber) {
-                                        MemberManager.getInstance().printInfo(info, false, true, null);
-                                        MemberManager.getInstance().printInfo(info, false, false, null);
+                                        MemberManager.getInstance().printInfo(memberRecordInfo, false, true, null);
+                                        MemberManager.getInstance().printInfo(memberRecordInfo, false, false, null);
+                                        subscriber.onNext(null);
+                                        subscriber.onCompleted();
+                                    }
+                                })
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+                        break;
+                    case AppConstants.PUSH_TAG_ORDER_PRINT:
+                        final OrderRecordInfo orderRecordInfo = new Gson().fromJson(message.getData(), OrderRecordInfo.class);
+                        Observable
+                                .create(new Observable.OnSubscribe<Void>() {
+                                    @Override
+                                    public void call(Subscriber<? super Void> subscriber) {
+                                        NotifyManager.getInstance().print(orderRecordInfo, false);
+                                        subscriber.onNext(null);
+                                        subscriber.onCompleted();
+                                    }
+                                })
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+                        break;
+                    case AppConstants.PUSH_TAG_FASTPAY_PRINT:
+                        final OnlinePayInfo onlinePayInfo = new Gson().fromJson(message.getData(), OnlinePayInfo.class);
+                        Observable
+                                .create(new Observable.OnSubscribe<Void>() {
+                                    @Override
+                                    public void call(Subscriber<? super Void> subscriber) {
+                                        NotifyManager.getInstance().print(onlinePayInfo, false);
                                         subscriber.onNext(null);
                                         subscriber.onCompleted();
                                     }

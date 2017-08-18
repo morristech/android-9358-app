@@ -23,7 +23,7 @@ import com.xmd.manager.journal.widget.JournalEditVideoView;
  */
 
 public class JournalContentEditViewHelper {
-    public static void setupContentView(Context context, ViewGroup parent, JournalContent content, JournalContentEditContract.Presenter presenter, int viewPosition) {
+    public static void setupContentView(Context context, ViewGroup parent, JournalContent content, JournalContentEditContract.Presenter presenter, int viewPosition, String templateId) {
         View view = null;
         if (content.getViewHolder() != null) {
             view = content.getViewHolder().getView();
@@ -56,7 +56,7 @@ public class JournalContentEditViewHelper {
                     view = new JournalEditActivityView(context, content, presenter);
                     break;
                 case JournalContentType.CONTENT_KEY_IMAGE_ARTICLE:
-                    view = new JournalEditImageArticleView(context, content, presenter);
+                    view = new JournalEditImageArticleView(context, content, presenter, templateId);
                     break;
             }
         }

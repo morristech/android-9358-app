@@ -1,7 +1,7 @@
 package com.xmd.manager.journal.contract;
 
+import com.xmd.manager.beans.JournalTemplateImageArticleBean;
 import com.xmd.manager.journal.BasePresenter;
-import com.xmd.manager.journal.model.ImageArticleTemplate;
 import com.xmd.manager.journal.model.JournalItemImageArticle;
 
 import java.util.List;
@@ -14,9 +14,9 @@ public class JournalContentImageArticleContract {
     public interface Presenter extends BasePresenter {
         void onClickSelectTemplate();
 
-        void onTemplateViewCreate();
+        void onTemplateViewCreate(String templateId);
 
-        void onSelectTemplate(ImageArticleTemplate template);
+        void onSelectTemplate(JournalTemplateImageArticleBean template);
 
         void onDataSetChanged();
 
@@ -32,7 +32,7 @@ public class JournalContentImageArticleContract {
     }
 
     public interface View {
-        void createView(ImageArticleTemplate template);
+        void createView(JournalTemplateImageArticleBean template);
 
         void showData(JournalItemImageArticle data);
 
@@ -56,6 +56,6 @@ public class JournalContentImageArticleContract {
     public interface TemplateView {
         void setPresenter(Presenter presenter);
 
-        void showLoadTemplateSuccess(List<ImageArticleTemplate> data, ImageArticleTemplate selected);
+        void showLoadTemplateSuccess(List<JournalTemplateImageArticleBean> data, JournalTemplateImageArticleBean selected);
     }
 }

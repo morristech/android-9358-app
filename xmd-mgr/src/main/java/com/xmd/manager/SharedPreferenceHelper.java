@@ -32,6 +32,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_UPDATE_SERVER = "EB8329FF8AAC026D206E3C0A811D0D96";//updateServer
     private static final String KEY_CURRENT_CLUB_NAME = "EB8329FF8AAC026A306E3C0A811D0D96";//updateServer
     private static final String KEY_CURRENT_CLUB_CreateTime = "EB8329FF8AAC03A306E3C0A811D0D96";//createTime
+    private static final String KEY_CLUB_ID = "EB832AF8AAC026D20cE3C0A811D0D96";
     /**
      * Last time to check the upgrade automatically
      */
@@ -286,4 +287,11 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putInt(KEY_LAST_VIEW_FAST_PAY_VALUE, count).apply();
     }
 
+    public static void setClubId(String clubId){
+        mSettingPreference.edit().putString(KEY_CLUB_ID,clubId).apply();
+    }
+
+    public static String getClubId(){
+       return mSettingPreference.getString(KEY_CLUB_ID,"");
+    }
 }

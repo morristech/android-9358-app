@@ -197,7 +197,6 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
                 DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
             @Override
-            //tech_poster_save_alter_message
             public void onConfirmClick() {
                 super.onConfirmClick();
                 if (mDialog != null) {
