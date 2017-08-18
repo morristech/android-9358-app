@@ -18,6 +18,7 @@ public class XmdPushMessage {
     public static final String BUSINESS_TYPE_ORDER = "order";
     public static final String BUSINESS_TYPE_NEW_CUSTOMER = "new_customer";
     public static final String BUSINESS_TYPE_COMMENT = "comment";
+    public static final String BUSINESS_TYPE_POSITION_INVITE = "position_invite";
 
     private String businessType; //业务类型
     private List<XmdDisplay> displayList; //展示详情

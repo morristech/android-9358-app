@@ -8,7 +8,7 @@ public class SayHiToChatEvent {
     public String emChatId;
     public int position;
 
-    public SayHiToChatEvent(String emChatId,int position) {
+    public SayHiToChatEvent(String emChatId, int position) {
         this.emChatId = emChatId;
         this.position = position;
     }

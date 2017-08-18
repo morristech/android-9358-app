@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.Callback;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
@@ -362,10 +361,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
             }
         }
     }
+
     @Subscribe
     public void contactToChatThanks(ThanksToChatEvent event) {
         EventBus.getDefault().post(new EventStartChatActivity(event.emChatId));
     }
+
     @Subscribe
     public void toBlaclCustomerInfoDetailActivity(ToBlackCustomerInfoDetailActivityEvent event) {
         CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(MainActivity.this, event.userId, ConstantResources.INTENT_TYPE_MANAGER, false);

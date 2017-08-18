@@ -83,11 +83,11 @@ public class ContactFragment extends BaseFragment {
 
     @Override
     protected void onRightImageClickedListener() {
-        final String[] items  = new String[2];
-        if(isFromManager){
+        final String[] items = new String[2];
+        if (isFromManager) {
             items[0] = "黑名单管理";
             items[1] = "分组管理";
-        }else{
+        } else {
             items[0] = "添加客户";
             items[1] = "黑名单管理";
         }
@@ -96,21 +96,21 @@ public class ContactFragment extends BaseFragment {
             public void onItemClick(int index) {
                 switch (index) {
                     case 0:
-                        if(isFromManager){
-                            BlackListActivity.startBlackListActivity(getActivity(),isFromManager);
-                        }else{
-                            AddFriendActivity.startAddFriendActivity(getActivity(),isFromManager);
+                        if (isFromManager) {
+                            BlackListActivity.startBlackListActivity(getActivity(), isFromManager);
+                        } else {
+                            AddFriendActivity.startAddFriendActivity(getActivity(), isFromManager);
                         }
 
                         break;
                     case 1:
-                        if(isFromManager){
+                        if (isFromManager) {
                             //分组管理
                             Intent intent = new Intent();
-                            intent.setClassName(getActivity(),"com.xmd.manager.window.CustomerGroupListActivity");
+                            intent.setClassName(getActivity(), "com.xmd.manager.window.CustomerGroupListActivity");
                             startActivity(intent);
-                        }else {
-                            BlackListActivity.startBlackListActivity(getActivity(),isFromManager);
+                        } else {
+                            BlackListActivity.startBlackListActivity(getActivity(), isFromManager);
                         }
 
                         break;

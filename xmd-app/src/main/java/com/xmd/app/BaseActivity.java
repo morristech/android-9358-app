@@ -133,11 +133,16 @@ public class BaseActivity extends AppCompatActivity {
         finish();
     }
 
-    public void showLoading() {
+    public void showLoading(String message) {
         if (progressDialog == null) {
             progressDialog = new XProgressDialog(this);
         }
+        progressDialog.setTitle(message);
         progressDialog.show();
+    }
+
+    public void showLoading() {
+        showLoading("");
     }
 
     public void hideLoading() {

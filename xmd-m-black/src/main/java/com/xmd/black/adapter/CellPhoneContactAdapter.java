@@ -39,7 +39,7 @@ public class CellPhoneContactAdapter extends RecyclerView.Adapter<CellPhoneConta
         mCharacterParser = CharacterParser.getInstance();
     }
 
-    public void setData(List<PhoneContact> data){
+    public void setData(List<PhoneContact> data) {
         this.mData = data;
         notifyDataSetChanged();
     }
@@ -70,11 +70,11 @@ public class CellPhoneContactAdapter extends RecyclerView.Adapter<CellPhoneConta
                 }
             }
             holder.mName.setText("姓名：" + contact.name);
-            holder.mTelephone.setText("电话："+ contact.telephone);
+            holder.mTelephone.setText("电话：" + contact.telephone);
             holder.mBtnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.addToContact(contact.name,contact.telephone);
+                    mListener.addToContact(contact.name, contact.telephone);
                 }
             });
         }

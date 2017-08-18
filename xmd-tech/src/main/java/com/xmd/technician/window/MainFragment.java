@@ -36,6 +36,9 @@ import com.xmd.chat.XmdChat;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.PermissionConstants;
@@ -50,12 +53,14 @@ import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.clubinvite.ClubInviteActivity;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.SpaService;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
@@ -91,6 +96,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -226,7 +232,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @BindView(R.id.view_transparent)
     View mViewTransparent;
 
+    @BindView(R.id.menu_club_invite)
+    View mMenuClubInvite;
+    @BindView(R.id.menu_club_invite_count)
+    TextView mMenuClubInviteCount;
+
     private OnlinePayNotifyFragment mPayNotifyFragment;
+
+    private final static int REQUEST_CODE_CLUB_POSITION_INVITE = 100;
 
 
     private ImageView imageLeft, imageRight;
@@ -279,9 +292,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initWorkStatus();
         initNearbyUser();
         showHeadView();
-    //    HeartBeatTimer.getInstance().start(60, mTask);
+        //    HeartBeatTimer.getInstance().start(60, mTask);
         initPkRanking();
-        isInitNormalRanking = false;
+        initClubInvite();
+
         sendDataRequest();
         return mRootView;
     }
@@ -296,7 +310,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onDestroy() {
         super.onDestroy();
 
-    //    HeartBeatTimer.getInstance().shutdown();
+        //    HeartBeatTimer.getInstance().shutdown();
 
         RxBus.getInstance().unsubscribe(
                 mGetTechCurrentInfoSubscription,
@@ -351,7 +365,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         loadMomentData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);// 技师登录进入首页后,获取打招呼内容
         loadRankingData();
-
+        getClubInviteCount();
     }
 
 
@@ -536,6 +550,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
                 techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
         );
+        isInitNormalRanking = false;
     }
 
 
@@ -571,6 +586,42 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         // 附近的人:订阅会所附近客户数量的事件监听
         mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
                 this::handleNearbyStatus);
+    }
+
+    /*******************************
+     * 入职邀请
+     */
+    public void initClubInvite() {
+        if (!LoginTechnician.getInstance().isActiveStatus()) {
+            mMenuClubInvite.setVisibility(View.VISIBLE);
+        } else {
+            mMenuClubInvite.setVisibility(View.GONE);
+        }
+    }
+
+    private void getClubInviteCount() {
+        if (LoginTechnician.getInstance().isActiveStatus()) {
+            return;
+        }
+        mMenuClubInviteCount.setVisibility(View.GONE);
+        Observable<BaseBean<Integer>> observable = XmdNetwork.getInstance()
+                .getService(SpaService.class)
+                .getClubInviteCount("inviting");
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<Integer>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<Integer> result) {
+                Integer count = result.getRespData();
+                if (count != null && count > 0) {
+                    mMenuClubInviteCount.setVisibility(View.VISIBLE);
+                    mMenuClubInviteCount.setText(String.valueOf(count));
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+
+            }
+        });
     }
 
 
@@ -776,7 +827,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_hello_setting, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
-            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent, R.id.menu_fast_reply})
+            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent, R.id.menu_fast_reply, R.id.menu_club_invite})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
@@ -835,6 +886,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.view_transparent:
                 mMainSlidingLayout.closeMenu();
+                break;
+            case R.id.menu_club_invite:
+                Intent clubInviteIntent = new Intent(getContext(), ClubInviteActivity.class);
+                startActivityForResult(clubInviteIntent, REQUEST_CODE_CLUB_POSITION_INVITE);
                 break;
         }
     }
@@ -1308,4 +1363,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_CLUB_POSITION_INVITE) {
+            getClubInviteCount();
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

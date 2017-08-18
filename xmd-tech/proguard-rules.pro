@@ -178,3 +178,5 @@
 
 -dontwarn com.xmd.m.**
 -keep class com.xmd.m.** {*;}
+
+-keep class com.xmd.**.beans.** { *; }

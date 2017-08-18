@@ -11,7 +11,7 @@ public class TreatedTagList {
     public String title;
     public String type;
     public List<TagBean> list;
-//    public boolean isOpen;
+    //    public boolean isOpen;
 //
 //    public TreatedTagList(String title, String type, List<TagBean> list, boolean isOpen) {
 //
@@ -20,7 +20,7 @@ public class TreatedTagList {
 //        this.list = list;
 //        this.isOpen = isOpen;
 //    }
-public String isOpen;//0关，1开
+    public String isOpen;//0关，1开
 
     public TreatedTagList(String title, String type, List<TagBean> list, String isOpen) {
 

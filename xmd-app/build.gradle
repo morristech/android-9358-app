@@ -13,12 +13,7 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    repositories {
 
-        flatDir {
-            dirs 'libs'
-        }
-    }
     buildTypes {
         release {
             minifyEnabled false
@@ -27,13 +22,14 @@ android {
     }
 
     dataBinding {
-        enabled true
+        enabled = true
     }
 }
 
 dependencies {
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
+    compile project(':permission-tool')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'org.greenrobot:greendao:3.2.2'
 

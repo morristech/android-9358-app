@@ -17,6 +17,7 @@ public class XmdDisplay implements Serializable {
     public static final String ACTION_VIEW_COMMENT = "viewComment";
     public static final String ACTION_VIEW_COMMENT_DETAIL = "viewBadCommentDetail";
     public static final String ACTION_VIEW_CREDIT_CENTER = "viewCreditCenter";
+    public static final String ACTION_VIEW_POSITION_INVITE = "viewPositionInvite";
 
     public static final int SCENE_FG = 1;
     public static final int SCENE_BG = 2;

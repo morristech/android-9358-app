@@ -23,30 +23,30 @@ public class RelativeDateFormatUtils {
         String var2 = Locale.getDefault().getLanguage();
         boolean var3 = var2.startsWith("zh");
         long var4 = var0.getTime();
-        if(isSameDay(var4)) {
-            if(var3) {
+        if (isSameDay(var4)) {
+            if (var3) {
                 var1 = "HH:MM";
             } else {
                 var1 = "HH:MM";
             }
-        } else if(isYesterday(var4)) {
-            if(!var3) {
+        } else if (isYesterday(var4)) {
+            if (!var3) {
                 return "Yesterday " + (new SimpleDateFormat("HH:mm ", Locale.ENGLISH)).format(var0);
             }
 
             var1 = "昨天 HH:mm";
-        } else if(var3) {
+        } else if (var3) {
             var1 = "M月d日 HH:mm";
         } else {
             var1 = "MMM dd HH:mm ";
         }
 
-        return var3?(new SimpleDateFormat(var1, Locale.CHINESE)).format(var0):(new SimpleDateFormat(var1, Locale.ENGLISH)).format(var0);
+        return var3 ? (new SimpleDateFormat(var1, Locale.CHINESE)).format(var0) : (new SimpleDateFormat(var1, Locale.ENGLISH)).format(var0);
     }
 
     public static boolean isCloseEnough(long var0, long var2) {
         long var4 = var0 - var2;
-        if(var4 < 0L) {
+        if (var4 < 0L) {
             var4 = -var4;
         }
 
@@ -82,7 +82,7 @@ public class RelativeDateFormatUtils {
         var0 /= 1000;
         int var1 = var0 / 60;
         boolean var2 = false;
-        if(var1 >= 60) {
+        if (var1 >= 60) {
             int var4 = var1 / 60;
             var1 %= 60;
         }
@@ -95,7 +95,7 @@ public class RelativeDateFormatUtils {
     public static String toTimeBySecond(int var0) {
         int var1 = var0 / 60;
         boolean var2 = false;
-        if(var1 >= 60) {
+        if (var1 >= 60) {
             int var4 = var1 / 60;
             var1 %= 60;
         }

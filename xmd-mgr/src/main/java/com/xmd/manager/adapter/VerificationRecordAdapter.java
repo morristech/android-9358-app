@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.xmd.app.utils.Utils;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.VerificationDetailBean;
 import com.xmd.manager.common.ResourceUtils;
@@ -122,7 +121,7 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(recordBean.avatarUrl).into(viewHolder.mRecordHead);
             viewHolder.mRecordUserName.setText(recordBean.userName);
             viewHolder.mRecordPhone.setText(recordBean.telephone);
-            if(!TextUtils.isEmpty(recordBean.verifyTime)&&recordBean.verifyTime.length()>=16){
+            if (!TextUtils.isEmpty(recordBean.verifyTime) && recordBean.verifyTime.length() >= 16) {
                 viewHolder.mRecordTime.setText(recordBean.verifyTime.substring(5, 16));
             }
             viewHolder.mRecordCouponName.setText(recordBean.description);

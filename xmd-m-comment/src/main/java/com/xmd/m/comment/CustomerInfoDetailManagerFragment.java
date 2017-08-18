@@ -329,7 +329,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_WX)) {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_wx);
-            }else if(userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_TEMP)){
+            } else if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_TEMP)) {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_tech_add);

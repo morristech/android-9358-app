@@ -228,7 +228,7 @@ public class ManagerContactFragment extends BaseFragment {
         if (mFragmentController != null) {
             FragmentController.destroyController();
         }
-        if(contactFilter!=null){
+        if (contactFilter != null) {
             contactFilter = null;
         }
         //EventBus.getDefault().unregister(this);
@@ -242,6 +242,7 @@ public class ManagerContactFragment extends BaseFragment {
                 mTreatedTagLists.clear();
                 mTreatedTagLists.addAll(mHelp.getTreatedTagList());
             }
+
             @Override
             public void onCallbackError(Throwable e) {
 

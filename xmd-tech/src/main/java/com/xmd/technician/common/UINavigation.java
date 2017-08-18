@@ -13,6 +13,7 @@ import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.clubinvite.ClubInviteActivity;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.DynamicDetailActivity;
@@ -126,6 +127,12 @@ public class UINavigation {
         context.startActivity(intent);
     }
 
+    public static void gotoPositionInvite(Context context) {
+        Intent intent = new Intent(context, ClubInviteActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     public static XmdActionFactory xmdActionFactory = new XmdActionFactory() {
         @Override
         public PendingIntent create(XmdDisplay display) {
@@ -157,6 +164,9 @@ public class UINavigation {
                 break;
             case XmdDisplay.ACTION_VIEW_CREDIT_CENTER:
                 gotoCreditCenter(context);
+                break;
+            case XmdDisplay.ACTION_VIEW_POSITION_INVITE:
+                gotoPositionInvite(context);
                 break;
             default:
                 break;

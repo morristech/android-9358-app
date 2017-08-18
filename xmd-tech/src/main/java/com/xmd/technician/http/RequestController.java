@@ -1004,6 +1004,14 @@ public class RequestController extends AbstractController {
             protected void postResult(QuitClubResult result) {
                 RxBus.getInstance().post(result);
             }
+
+            @Override
+            protected void postError(String errorMsg) {
+                QuitClubResult result = new QuitClubResult();
+                result.statusCode = 400;
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
         });
     }
 

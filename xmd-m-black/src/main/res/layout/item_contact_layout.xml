@@ -11,36 +11,32 @@
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:textColor="#212121"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp"
-    >
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-        >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fontTitle"
-            />
+                android:textSize="@dimen/fontTitle" />
 
             <TextView
                 android:id="@+id/contact_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fontBody"
-            />
+                android:textSize="@dimen/fontBody" />
         </LinearLayout>
 
         <Button
@@ -51,8 +47,7 @@
             android:background="@drawable/add_contact_btn_selector_bg"
             android:text="添加"
             android:textColor="@color/white"
-            android:textSize="18sp"
-        />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

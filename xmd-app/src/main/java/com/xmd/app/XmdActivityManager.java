@@ -1,6 +1,7 @@
 package com.xmd.app;
 
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.Stack;
 
@@ -21,19 +22,19 @@ public class XmdActivityManager {
     private XmdActivityManager() {
     }
 
-    private static Stack<Activity> activities = new Stack<>();
+    private static Stack<AppCompatActivity> activities = new Stack<>();
 
     //获得当前栈顶Activity
-    public Activity getCurrentActivity() {
+    public AppCompatActivity getCurrentActivity() {
         return !activities.empty() ? activities.lastElement() : null;
     }
 
     //将当前Activity推入栈中
-    public void addActivity(Activity activity) {
+    public void addActivity(AppCompatActivity activity) {
         activities.push(activity);
     }
 
-    public void removeActivity(Activity activity) {
+    public void removeActivity(AppCompatActivity activity) {
         activities.remove(activity);
     }
 

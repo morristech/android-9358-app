@@ -903,4 +903,7 @@ public interface SpaService {
     Observable<BaseBean<SayHiResult>> sayHiToUser(@Path("customerId") String customerId,
                                                   @Field("templateId") long templateId);
 
+
+    @GET("/spa-manager/api/v2/tech/club/position/invite/count")
+    Observable<BaseBean<Integer>> getClubInviteCount(@Query("status") String status);
 }

@@ -31,7 +31,6 @@ import com.xmd.black.httprequest.ConstantResource;
 import com.xmd.black.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
 
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -274,15 +273,15 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
         mRemarkPhoneNum = mCustomerPhone;
         mRemarkMessage = edRemarkMessage.getText().toString();
         mRemarkImpression = Utils.listToString(markSelectList, "、");
-        if(mCustomerFromType.equals(ConstantResource.INTENT_TYPE_MANAGER)){
+        if (mCustomerFromType.equals(ConstantResource.INTENT_TYPE_MANAGER)) {
             managerEditMark();
-        }else{
+        } else {
             techEditMark();
         }
 
     }
 
-    private void techEditMark(){
+    private void techEditMark() {
         DataManager.getInstance().SaveCustomerRemark(mUserId, mCustomerId, mRemarkPhoneNum, mRemarkMessage, mRemarkNoteName, mRemarkImpression, new NetworkSubscriber<EditCustomerResult>() {
             @Override
             public void onCallbackSuccess(EditCustomerResult result) {
@@ -302,8 +301,9 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
             }
         });
     }
-    private void managerEditMark(){
-        DataManager.getInstance().managerEditRemark(mCustomerId, mRemarkNoteName,mCustomerPhone, mRemarkMessage, new NetworkSubscriber<ManagerEditCustomerResult>() {
+
+    private void managerEditMark() {
+        DataManager.getInstance().managerEditRemark(mCustomerId, mRemarkNoteName, mCustomerPhone, mRemarkMessage, new NetworkSubscriber<ManagerEditCustomerResult>() {
             @Override
             public void onCallbackSuccess(ManagerEditCustomerResult result) {
                 XToast.show("保存成功");

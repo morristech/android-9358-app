@@ -8,5 +8,5 @@ import java.util.List;
  * Created by Lhj on 17-7-22.
  */
 
-public class BlackListResult extends BaseBean<List<CustomerInfo>>{
+public class BlackListResult extends BaseBean<List<CustomerInfo>> {
 }

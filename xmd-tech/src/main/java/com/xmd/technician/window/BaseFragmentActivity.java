@@ -152,14 +152,6 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
                 .show();
     }
 
-    public void showLoading(String message) {
-        showProgressDialog(message);
-    }
-
-    public void hideLoading() {
-        dismissProgressDialogIfShowing();
-    }
-
     protected void showProgressDialog(String message) {
         mProgressDialog = getSpinnerProgressDialog(this, message);
         mProgressDialog.show();

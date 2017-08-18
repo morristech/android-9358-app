@@ -29,18 +29,19 @@ public class TagBeanAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public void setOnItemCLickedListener(TagItemCLickedListener listener){
+    public void setOnItemCLickedListener(TagItemCLickedListener listener) {
         this.mItemCLickedListener = listener;
     }
 
-    public interface TagItemCLickedListener{
-        void onTagItemClicked(TagBean bean,int position);
+    public interface TagItemCLickedListener {
+        void onTagItemClicked(TagBean bean, int position);
     }
 
-    public void setTagBeanData(List<TagBean> list){
+    public void setTagBeanData(List<TagBean> list) {
         this.mTagLists = list;
         notifyDataSetChanged();
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View tagView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tag_bean_item, parent, false);
@@ -52,20 +53,20 @@ public class TagBeanAdapter extends RecyclerView.Adapter {
         final TagListViewHolder viewHolder = (TagListViewHolder) holder;
         final TagBean bean = mTagLists.get(position);
         viewHolder.tvTagTitle.setText(bean.tagString);
-        if(bean.isSelected){
+        if (bean.isSelected) {
             viewHolder.itemView.setSelected(true);
-        }else {
+        } else {
             viewHolder.itemView.setSelected(false);
         }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mItemCLickedListener != null){
-                    mItemCLickedListener.onTagItemClicked(bean,position);
+                if (mItemCLickedListener != null) {
+                    mItemCLickedListener.onTagItemClicked(bean, position);
                 }
-                if(viewHolder.itemView.isSelected()){
+                if (viewHolder.itemView.isSelected()) {
                     viewHolder.itemView.setSelected(false);
-                }else{
+                } else {
                     viewHolder.itemView.setSelected(true);
                 }
             }

@@ -6,7 +6,6 @@ import com.xmd.contact.bean.TagBean;
 import com.xmd.contact.bean.TagListBean;
 import com.xmd.contact.bean.TreatedTagList;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

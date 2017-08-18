@@ -71,7 +71,7 @@ public class DataManager {
         mEditOrAddCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).addOrEditCustomer(userId, id, phoneNum, remark, noteName, impression), listener);
     }
 
-    public void managerEditRemark(String id, String noteName, String phoneNum,String remark, NetworkSubscriber<ManagerEditCustomerResult> listener) {
-        mManagerEditCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).managerEditCustomer(id,noteName,phoneNum,remark), listener);
+    public void managerEditRemark(String id, String noteName, String phoneNum, String remark, NetworkSubscriber<ManagerEditCustomerResult> listener) {
+        mManagerEditCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).managerEditCustomer(id, noteName, phoneNum, remark), listener);
     }
 }

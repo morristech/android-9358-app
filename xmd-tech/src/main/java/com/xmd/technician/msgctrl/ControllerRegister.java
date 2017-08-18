@@ -135,7 +135,7 @@ public class ControllerRegister {
                 //-------------------------------------> 联系人列表优化 <---------------------------------
                 MsgDef.MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST,
                 MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST,
-             //   MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
+                //   MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
                 MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST,
                 MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL,
                 //-------------------------------------> 技师海报 <---------------------------------

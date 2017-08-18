@@ -135,7 +135,7 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
 
     @Subscribe
     public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
-        if(event.success){
+        if (event.success) {
             onRefresh();
         }
     }

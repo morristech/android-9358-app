@@ -6,5 +6,5 @@ import com.xmd.m.network.BaseBean;
  * Created by Lhj on 17-7-28.
  */
 
-public class ManagerContactAllListResult extends BaseBean<ManagerContactAllList>{
+public class ManagerContactAllListResult extends BaseBean<ManagerContactAllList> {
 }

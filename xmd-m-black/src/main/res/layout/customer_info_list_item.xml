@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:background="@color/white"
->
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp">
+
         <com.xmd.app.widget.RoundImageView
             android:id="@+id/customer_head"
             android:layout_width="36dp"
@@ -19,6 +20,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/img_default_avatar" />
+
         <TextView
             android:id="@+id/customer_name"
             android:layout_width="wrap_content"
@@ -28,15 +30,13 @@
             android:textColor="#212121"
             android:layout_toRightOf="@id/customer_head"
             android:gravity="center_vertical"
-            android:textSize="18sp"
-        />
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#eeeeee"
-    ></View>
+        android:background="#eeeeee"></View>
 
 
 </LinearLayout>

@@ -130,7 +130,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         }
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
             showButton();
-        }else{
+        } else {
             loadPermissionInfo();
         }
         BlackListManager.getInstance().isInBlackList(userId);
@@ -250,24 +250,24 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
     @Subscribe
     public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
-        if(event.isAdd){
+        if (event.isAdd) {
             inBlackList = true;
-            if(event.success){
+            if (event.success) {
                 XToast.show("已成功加入黑名单");
                 CustomerInfoDetailActivity.this.finish();
-            }else {
+            } else {
                 Toast.makeText(CustomerInfoDetailActivity.this, event.msg, Toast.LENGTH_SHORT).show();
             }
 
-        }else {
+        } else {
             inBlackList = false;
-            if(event.success){
-                if(fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)){
+            if (event.success) {
+                if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
                     showButton();
-                }else {
+                } else {
                     loadPermissionInfo();
                 }
-            }else {
+            } else {
                 XToast.show(event.msg);
             }
 

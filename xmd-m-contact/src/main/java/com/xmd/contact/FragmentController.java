@@ -62,7 +62,9 @@ public class FragmentController {
         mFragments.add(new ManagerContactsVisitorsFragment());
     }
 
-    public void addClubTechnician() {mFragments.add(new ContactsTechnicianFragment(true));}
+    public void addClubTechnician() {
+        mFragments.add(new ContactsTechnicianFragment(true));
+    }
 
     //全部客户
     @CheckBusinessPermission(PermissionConstants.CONTACTS_CUSTOMER)

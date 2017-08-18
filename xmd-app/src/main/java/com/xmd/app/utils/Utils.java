@@ -67,18 +67,17 @@ public class Utils {
     public static List<String> StringToList(String textString, String delimiter) {
         List<String> strings = new ArrayList<>();
         strings.clear();
-        if(TextUtils.isEmpty(textString)){
+        if (TextUtils.isEmpty(textString)) {
             return strings;
         }
         String[] arrayString = textString.split(delimiter);
         return Arrays.asList(arrayString);
 
 
-
     }
 
-    public static String list2String(List<String> list,String delimiter){
-                if (list.size() > 0) {
+    public static String list2String(List<String> list, String delimiter) {
+        if (list.size() > 0) {
             StringBuffer buffer = new StringBuffer();
             for (int i = 0; i < list.size(); i++) {
                 buffer.append(list.get(i) + delimiter);

@@ -32,12 +32,12 @@ public class BlackListManager {
         DataManager.getInstance().addToBlackList(friendId, new NetworkSubscriber<AddToBlacklistResult>() {
             @Override
             public void onCallbackSuccess(AddToBlacklistResult result) {
-                EventBus.getDefault().post(new AddOrRemoveBlackEvent(true,true,result.getMsg()));
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(true, true, result.getMsg()));
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                EventBus.getDefault().post(new AddOrRemoveBlackEvent(false,true,e.getLocalizedMessage()));
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(false, true, e.getLocalizedMessage()));
             }
         });
     }
@@ -46,12 +46,12 @@ public class BlackListManager {
         DataManager.getInstance().removeFromBlackList(friendId, new NetworkSubscriber<RemoveFromBlacklistResult>() {
             @Override
             public void onCallbackSuccess(RemoveFromBlacklistResult result) {
-                EventBus.getDefault().post(new AddOrRemoveBlackEvent(true,false,result.getMsg()));
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(true, false, result.getMsg()));
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                EventBus.getDefault().post(new AddOrRemoveBlackEvent(false,false,e.getLocalizedMessage()));
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(false, false, e.getLocalizedMessage()));
             }
         });
     }

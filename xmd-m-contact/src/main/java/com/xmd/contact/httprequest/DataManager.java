@@ -8,7 +8,6 @@ import com.xmd.contact.bean.ContactRegisterListResult;
 import com.xmd.contact.bean.ManagerContactAllListResult;
 import com.xmd.contact.bean.ManagerContactRecentListResult;
 import com.xmd.contact.bean.NearbyCusCountResult;
-
 import com.xmd.contact.bean.TagListResult;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -83,6 +82,7 @@ public class DataManager {
     public void loadClubRecentCustomer(NetworkSubscriber<ManagerContactRecentListResult> listener) {
         mLoadClubRecentVisitorCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getManagerRecentContactList(), listener);
     }
+
     //搜索标签
     public void loadAllTags(NetworkSubscriber<TagListResult> listener) {
         mLoadAllTags = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getTagList(), listener);
