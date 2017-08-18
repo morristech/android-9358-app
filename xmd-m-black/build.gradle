@@ -47,7 +47,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:adapter-rxjava:${rootProject.ext.retrofitVersion}"
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile(name: 'permission-tool-1.0', ext: 'aar')
+    compile project(':permission-tool')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:support-v4:${rootProject.ext.supportLibraryVersion}"

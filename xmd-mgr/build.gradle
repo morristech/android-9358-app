@@ -168,10 +168,10 @@ dependencies {
     compile project(':xmd-m-comment')
     compile project(':xmd-m-chat')
     compile project(':xmd-m-contact')
-    compile(name: 'xmd-image-crop-1.0', ext: 'aar')
-    compile(name: 'xmd-image-selector-1.0', ext: 'aar')
-    compile(name: 'xmd-image-tool-1.0', ext: 'aar')
-    compile(name: 'permission-tool-1.0', ext: 'aar')
+    compile project(':permission-tool')
+    compile project(':image-crop')
+    compile project(':image-selector')
+    compile project(':image-tool')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"

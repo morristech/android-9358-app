@@ -44,7 +44,7 @@ dependencies {
     compile project(':xmd-m-network')
     compile project(':xmd-m-black')
     compile project(':xmd-m-permission')
-    compile(name: 'permission-tool-1.0', ext: 'aar')
+    compile project(':permission-tool')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"

@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-9358-app.iml" filepath="$PROJECT_DIR$/android-9358-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonlibrary/commonlibrary.iml" filepath="$PROJECT_DIR$/commonlibrary/commonlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/image-crop/image-crop.iml" filepath="$PROJECT_DIR$/image-crop/image-crop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/image-selector/image-selector.iml" filepath="$PROJECT_DIR$/image-selector/image-selector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/image-tool/image-tool.iml" filepath="$PROJECT_DIR$/image-tool/image-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/loading-view/loading-view.iml" filepath="$PROJECT_DIR$/loading-view/loading-view.iml" />
       <module fileurl="file://$PROJECT_DIR$/permission-tool/permission-tool.iml" filepath="$PROJECT_DIR$/permission-tool/permission-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-app/xmd-app.iml" filepath="$PROJECT_DIR$/xmd-app/xmd-app.iml" />
