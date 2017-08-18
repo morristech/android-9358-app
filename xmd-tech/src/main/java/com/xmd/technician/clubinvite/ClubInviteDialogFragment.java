@@ -91,7 +91,7 @@ public class ClubInviteDialogFragment extends DialogFragment {
     }
 
     public void onCall(ClubInvite invite) {
-        String[] telephones = invite.getClubTelephone().split(",");
+        String[] telephones = invite.getClubTelephone().split(",|，");
         if (telephones.length > 0) {
             ArrayList<String> phoneList = new ArrayList<>();
             phoneList.addAll(Arrays.asList(telephones));
