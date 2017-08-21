@@ -2,6 +2,7 @@ package com.xmd.technician.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -70,7 +71,7 @@ public class TechPosterDialog extends Dialog {
 
         void posterEdit();
 
-        void posterShare();
+        void posterShare(View view,View dismiss);
 
     }
 
@@ -92,7 +93,7 @@ public class TechPosterDialog extends Dialog {
         super(context, cancelable, cancelListener);
     }
 
-    public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, String image, String imageUrl) {
+    public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, Bitmap image, String imageUrl) {
 
         if (Utils.isNotEmpty(primaryTitle)) {
             if (style == Constant.TECH_POSTER_SQUARE_MODEL) {
@@ -135,14 +136,11 @@ public class TechPosterDialog extends Dialog {
         } else {
             tvPosterClubName.setText("");
         }
-
-        if (Utils.isNotEmpty(image)) {
-            Glide.with(mContext).load(image).into(imgPosterTechPhoto);
-        } else {
+        if(image != null){
+            imgPosterTechPhoto.setImageBitmap(image);
+        }else{
             Glide.with(mContext).load(imageUrl).into(imgPosterTechPhoto);
-
         }
-
     }
 
     @Override
@@ -210,7 +208,7 @@ public class TechPosterDialog extends Dialog {
             case R.id.ll_poster_share:
                 this.dismiss();
                 if (posterListener != null) {
-                    posterListener.posterShare();
+                    posterListener.posterShare(rlView, imgPosterDismiss);
                 }
                 break;
             case R.id.tv_poster_save:
@@ -223,7 +221,7 @@ public class TechPosterDialog extends Dialog {
             case R.id.tv_share_poster:
                 this.dismiss();
                 if (posterListener != null) {
-                    posterListener.posterShare();
+                    posterListener.posterShare(rlView, imgPosterDismiss);
                 }
                 break;
 

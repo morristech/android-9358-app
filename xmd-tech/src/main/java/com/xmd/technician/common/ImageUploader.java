@@ -87,6 +87,31 @@ public class ImageUploader {
         });
     }
 
+    public void uploadBitmap(int type, Bitmap bitmap) {
+        ThreadPoolManager.run(new Runnable() {
+            @Override
+            public void run() {
+                switch (type) {
+                    case TYPE_TECH_POSTER:
+                        try {
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                            String mImageFile = Util.bytes2base64(bos.toByteArray());
+                            Map<String, String> params = new HashMap<>();
+                            params.put(RequestConstant.KEY_POSTER_IMAGE_CATEGORY, Constant.TECH_POSTER_CATEGORY_TYPE);
+                            params.put(RequestConstant.KEY_POSTER_IMAGE_IMG_FILE, mImageFile);
+                            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_POSTER_IMAGE_UPLOAD, params);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            RxBus.getInstance().post(new Throwable("图片解析异常，请重新上传"));
+                        }
+
+                        break;
+                }
+            }
+        });
+    }
+
     public static String encodeFileToBase64(String path) throws IOException {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -97,7 +122,6 @@ public class ImageUploader {
         }
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-        Logger.i(">>>", "image size:" + bitmap.getWidth() + "x" + bitmap.getHeight());
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         bitmap.recycle();

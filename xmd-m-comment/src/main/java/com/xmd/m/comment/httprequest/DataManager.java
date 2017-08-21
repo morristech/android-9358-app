@@ -86,7 +86,7 @@ public class DataManager {
     }
 
     public void loadTechUserDetail(String userId, NetworkSubscriber<TechUserDetailResult> listener) {
-        mTechUserDetail = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getTechUserDetail(userId, userId), listener);
+        mTechUserDetail = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getTechUserDetail(userId), listener);
     }
 
     public void loadTechConsumeList(String page, String pageSize, String userId, NetworkSubscriber<TechConsumeListResult> listener) {

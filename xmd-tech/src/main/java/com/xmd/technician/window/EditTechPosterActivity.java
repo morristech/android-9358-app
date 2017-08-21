@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -135,9 +136,9 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
                 if (null == ((TechPosterEditPosterFragment) mFragments.get(1)).getPosterInfo()) {
                     return;
                 }
-                if (Utils.isNotEmpty(getImageUrl())) {
+                if (getImageBitmap() != null) {
                     showLoading("正在上传照片...");
-                    ImageUploader.getInstance().uploadByUrl(ImageUploader.TYPE_TECH_POSTER, getImageUrl());
+                    ImageUploader.getInstance().uploadBitmap(ImageUploader.TYPE_TECH_POSTER,getImageBitmap());
                 } else if (Utils.isNotEmpty(selectedImageId)) {
                     creditSave();
                 } else {
@@ -170,8 +171,8 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
         ((TechPosterEditPosterFragment) mFragments.get(1)).setModel((model));
     }
 
-    public String getImageUrl() {
-        return ((TechPosterEditPosterFragment) mFragments.get(1)).getImageUrl();
+    public Bitmap getImageBitmap() {
+        return ((TechPosterEditPosterFragment) mFragments.get(1)).getBitmap();
     }
 
     @Override

@@ -1,13 +1,24 @@
 package com.xmd.technician.share;
 
-import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xmd.technician.TechApplication;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+
+import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xmd.technician.TechApplication;
+import com.xmd.technician.common.FileUtils;
+import com.xmd.technician.http.gson.RolePermissionListResult;
+
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -16,7 +27,7 @@ import java.util.Map;
 public class WXShareUtil extends BaseShareUtil {
 
     private IWXAPI mWxApi;
-
+    private static final int THUMB_SIZE = 150;
     private static class InstanceHolder {
         private static WXShareUtil sInstance = new WXShareUtil();
     }
@@ -36,6 +47,14 @@ public class WXShareUtil extends BaseShareUtil {
 
     public void shareToFriends(Map<String, Object> params) {
         shareToWeiXin(params, ShareConstant.SHARE_TO_FRIEND);
+    }
+
+    public void shareImageToTimeLine(String localImageUrl){
+        shareToWeiXinImage(localImageUrl,ShareConstant.SHARE_TO_TIMELINE);
+    }
+
+    public void shareImageToFriends(String localImageUrl){
+        shareToWeiXinImage(localImageUrl,ShareConstant.SHARE_TO_FRIEND);
     }
 
     private void shareToWeiXin(Map<String, Object> params, int flag) {
@@ -62,6 +81,31 @@ public class WXShareUtil extends BaseShareUtil {
         req.scene = flag == ShareConstant.SHARE_TO_FRIEND ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
         mWxApi.sendReq(req);
 
+    }
+
+    private void shareToWeiXinImage(String imagePath,int flag){
+        XLogger.i(">>>","imgagePath"+imagePath);
+        File file = new File(imagePath);
+        if(!file.exists()){
+            String tip = "文件不存在";
+            XToast.show(tip+"path= "+ imagePath);
+            return;
+        }
+        WXImageObject imgObj = new WXImageObject();
+        imgObj.setImagePath(imagePath);
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = imgObj;
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Bitmap thumBmp = Bitmap.createScaledBitmap(bitmap,THUMB_SIZE,THUMB_SIZE,true);
+        bitmap.recycle();
+        msg.thumbData = FileUtils.bmpToByteArray(thumBmp,true);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis());
+        req.message = msg;
+        req.scene = flag == ShareConstant.SHARE_TO_FRIEND ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+        mWxApi.sendReq(req);
     }
 
     public void loginWX() {

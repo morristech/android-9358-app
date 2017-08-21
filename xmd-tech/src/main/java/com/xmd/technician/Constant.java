@@ -29,7 +29,7 @@ public class Constant {
 
     public static final int AVATAR_MAX_SIZE = 512;
     public static final int ALBUM_MAX_SIZE = 1024;
-    public static final int POSTER_MAX_SIZE = 2048;
+    public static final int POSTER_MAX_SIZE = 1024;
 
     public static final String ROLE_TECH = "tech";
     public static final String ROLE_CUSTOMER_SERVICE = "customer_service";
@@ -228,7 +228,7 @@ public class Constant {
     public static final String PARAM_SHARE_DESCRIPTION = "p_share_desc";
     public static final String PARAM_SHARE_TYPE = "p_share_type";
     public static final String PARAM_SHARE_DIALOG_TITLE = "dialog_title";
-
+    public static final String PARAM_SHARE_LOCAL_IMAGE = "local_image_url";
     public static final String APP_BROWSER_USER_AGENT = "9358.tech.android.browser";
 
     public static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";

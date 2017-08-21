@@ -27,10 +27,13 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 public class ImageTool {
     private ResultListener listener;
-
+//    String ASPECT_X = "aspect_x";
+//    String ASPECT_Y = "aspect_y";
     private int maxWidth = 0;
     private int maxHeight = 0;
     private int maxSize = 0;
+    private int mAspect_X = 1;
+    private int mAspect_Y = 1;
     private boolean onlyPick = false;
     private static final int REQUEST_CODE_PERMISSION = 0x8531;
     private static final int REQUEST_CODE_PICK = 0x8532;
@@ -67,6 +70,11 @@ public class ImageTool {
         this.maxSize = maxSize;
         this.maxWidth = maxSize;
         this.maxHeight = maxSize;
+        return this;
+    }
+    public ImageTool setAspectX_Y(int aspectX,int aspect_y){
+        this.mAspect_X = aspectX;
+        this.mAspect_Y = aspect_y;
         return this;
     }
 
@@ -151,7 +159,7 @@ public class ImageTool {
     //裁剪图片
     private void doCropImage(Uri uri) {
         EventBus.getDefault().register(this);
-        Crop crop = Crop.of(uri, null).onlyBitmap(true);
+        Crop crop = Crop.of(uri, null).onlyBitmap(true).withAspect(mAspect_X,mAspect_Y);
         if (maxSize > 0) {
             crop.withMaxSize(maxWidth, maxHeight).onlyBitmap(true);
         }

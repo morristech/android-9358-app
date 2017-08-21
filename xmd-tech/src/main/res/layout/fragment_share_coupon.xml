@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical"
+>
 
     <include layout="@layout/toolbar"/>
 
@@ -15,16 +17,17 @@
         android:layout_marginLeft="@dimen/inter_space"
         android:layout_marginRight="@dimen/inter_space"
         android:layout_marginTop="@dimen/inter_space"
-        android:background="@color/color_white"
+        android:background="@drawable/default_button_background_selector"
         android:orientation="horizontal"
         android:padding="@dimen/inter_space">
 
-        <ImageView
+        <com.xmd.technician.widget.RoundImageView
             android:id="@+id/img_tech_head"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_poster"
-            />
+            android:src="@drawable/img_default_square"
+            app:type="round"
+        />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -34,7 +37,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingLeft="@dimen/inter_space"
-            >
+        >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,8 +59,76 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/right_arrow"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/right_arrow"/>
+
+        <!--<Button-->
+        <!--android:id="@+id/btn_share_user_card"-->
+        <!--style="@style/share_btn_style"-->
+        <!--/>-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_share_tech_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_marginTop="@dimen/inter_space"
+        android:background="@drawable/default_button_background_selector"
+        android:orientation="horizontal"
+        android:padding="@dimen/inter_space">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_poster"
+        />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/inter_space"
+        >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_share_poster"
+                android:textColor="@color/colorHead"
+                android:textSize="@dimen/fontOrderName"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="@dimen/small_space"
+                          android:gravity="center_vertical"
+                          android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="在线海报："
+                    android:textColor="@color/colorHead"
+                    android:textSize="@dimen/fontBody"/>
+
+                <TextView
+                    android:id="@+id/tv_poster_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_yellow"
+                    android:textSize="@dimen/fontBody"
+                    tools:text="2"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/right_arrow"/>
 
         <!--<Button-->
         <!--android:id="@+id/btn_share_user_card"-->
@@ -84,10 +155,10 @@
 
                 <com.xmd.technician.widget.EmptyView
                     android:id="@+id/share_empty"
-                    android:layout_marginTop="@dimen/margin_10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_10"
                     android:visibility="gone"/>
 
                 <LinearLayout
@@ -321,13 +392,13 @@
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/icon_indiana_" />
+                                android:src="@drawable/icon_indiana_"/>
 
                             <TextView
                                 android:id="@+id/pay_for_me_name"
                                 style="@style/coupon_type_style"
                                 android:layout_toRightOf="@id/img_pay_for_me"
-                                android:text="夺宝" />
+                                android:text="夺宝"/>
 
                             <TextView
                                 android:id="@+id/pay_for_me_text"

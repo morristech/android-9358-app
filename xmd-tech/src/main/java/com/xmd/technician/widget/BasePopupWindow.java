@@ -35,6 +35,8 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
         mScreenHeight = wm.getDefaultDisplay().getHeight();
     }
 
+
+
     protected void initPopupWindow(View contentView, int width, int height) {
         mPopupWindow = new PopupWindow(contentView, width, height);
         mPopupWindow.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.shape_popup_window));

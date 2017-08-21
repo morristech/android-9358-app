@@ -202,4 +202,8 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_POSTER_IMAGE_UPLOAD = 0x126;
     public static final int MSG_DEF_TECH_POSTER_LIST = 0x127;
     public static final int MSG_DEF_TECH_POSTER_DETAIL = 0x128;
+    //分享图片到微信
+    public static final int MSG_DEF_SHARE_IMAGE_TO_TIMELINE = 0x129;
+    public static final int MSG_DEF_SHARE_IMAGE_TO_FRIENDS = 0x130;
+
 }

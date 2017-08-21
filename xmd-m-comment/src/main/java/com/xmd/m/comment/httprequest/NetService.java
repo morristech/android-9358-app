@@ -83,7 +83,6 @@ public interface NetService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_TECH_CUSTOMER_DETAIL)
     Observable<TechUserDetailResult> getTechUserDetail(
-            @Field("userId") String userId,
             @Field("id") String id
     );
 

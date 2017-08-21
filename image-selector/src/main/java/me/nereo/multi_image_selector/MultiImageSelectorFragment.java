@@ -2,6 +2,7 @@ package me.nereo.multi_image_selector;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -316,8 +317,18 @@ public class MultiImageSelectorFragment extends Fragment implements ImageAction 
                     e.printStackTrace();
                 }
                 if (mTmpFile != null && mTmpFile.exists()) {
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
-                    startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                    int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+                    if(currentApiVersion < 24){
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
+                        startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                    }else{
+                        ContentValues contentValues = new ContentValues(1);
+                        contentValues.put(MediaStore.Images.Media.DATA, mTmpFile.getAbsolutePath());
+                        Uri uri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                        startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                    }
+
                 } else {
                     Toast.makeText(getActivity(), R.string.mis_error_image_not_exist, Toast.LENGTH_SHORT).show();
                 }

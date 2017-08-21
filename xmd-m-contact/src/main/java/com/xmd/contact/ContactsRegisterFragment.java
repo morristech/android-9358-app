@@ -144,7 +144,11 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     @Override
     public void onItemClicked(ContactAllBean bean, String type) {
         super.onItemClicked(bean, type);
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), TextUtils.isEmpty(bean.userId) ? bean.id : bean.userId, ConstantResources.APP_TYPE_TECH, false);
+        if (TextUtils.isEmpty(bean.userId) && TextUtils.isEmpty(bean.id)) {
+            XToast.show("该用户无详情信息");
+        } else {
+            CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), TextUtils.isEmpty(bean.userId) ? bean.id : bean.userId, ConstantResources.APP_TYPE_TECH, false);
+        }
     }
 
     @OnClick(R2.id.btn_nearby_people)

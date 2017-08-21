@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -80,6 +81,9 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     private PosterBean mPosterBean;
     private int mCurrentModel;
     private TechPosterDialog mDialog;
+    private Bitmap mSelectBitmap;
+    private int mAspect_X = 1;
+    private int mAspect_Y = 1;
 
     @Nullable
     @Override
@@ -171,14 +175,20 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 case Constant.TECH_POSTER_CIRCULAR_MODEL:
                     Glide.with(getActivity()).load(R.drawable.img_poster_circular_small).into(imgPosterPreview);
                     posterStyle = Constant.TECH_POSTER_TYPE_CIRCULAR;
+                    mAspect_X = 1;
+                    mAspect_Y = 1;
                     break;
                 case Constant.TECH_POSTER_FLOWER_MODEL:
                     posterStyle = Constant.TECH_POSTER_TYPE_FLOWER;
                     Glide.with(getActivity()).load(R.drawable.img_poster_flower_small).into(imgPosterPreview);
+                    mAspect_X = 5;
+                    mAspect_Y = 7;
                     break;
                 case Constant.TECH_POSTER_SQUARE_MODEL:
                     posterStyle = Constant.TECH_POSTER_TYPE_SQUARE;
                     Glide.with(getActivity()).load(R.drawable.img_poster_square_small).into(imgPosterPreview);
+                    mAspect_X = 5;
+                    mAspect_Y = 7;
                     break;
                 default:
                     posterStyle = Constant.TECH_POSTER_TYPE_FLOWER;
@@ -194,13 +204,16 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_poster_select_img:
-                mImageTool.reset().maxSize(Constant.POSTER_MAX_SIZE).onlyPick(true).start(this, (s, uri, bitmap) -> {
-                    if (s == null && uri != null) {
-                        imageUrl = uri.getPath();
-                        Glide.with(getActivity()).load(imageUrl).into(imgPosterSelectImg);
+                mImageTool.reset().maxSize(Constant.POSTER_MAX_SIZE).setAspectX_Y(mAspect_X,mAspect_Y).start(this, (s, uri, bitmap) -> {
+                    if (bitmap != null) {
+                        mSelectBitmap = bitmap;
+                    }
+                    if (mSelectBitmap != null) {
+                        imgPosterSelectImg.setImageBitmap(bitmap);
+                    } else {
+                        imgPosterSelectImg.setImageResource(R.drawable.img_group_add_img);
                     }
                 });
-
                 break;
             case R.id.rl_poster_preview:
 
@@ -237,7 +250,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
                 mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true, false);
                 mDialog.show();
-                mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, imageUrl, mPosterImageUrl);
+                mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mSelectBitmap, mPosterImageUrl);
                 mDialog.setCanceledOnTouchOutside(true);
                 mDialog.setPosterListener(this);
                 break;
@@ -279,12 +292,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         }
     }
 
-    public String getImageUrl() {
-        if (Utils.isNotEmpty(imageUrl)) {
-            return imageUrl;
-        } else {
-            return "";
-        }
+    public Bitmap getBitmap() {
+      return mSelectBitmap;
     }
 
     public Map<String, String> getPosterInfo() {
@@ -370,8 +379,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         File picFile = new File(file, name);
         try {
             bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 45));
-            FileOutputStream fout = new FileOutputStream(picFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
+            FileOutputStream fos = new FileOutputStream(picFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             saveImageToGallery(picFile);
             return file.toString();
 
@@ -380,6 +389,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         } finally {
             view.destroyDrawingCache();
         }
+
 
         return null;
     }
@@ -428,7 +438,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     }
 
     @Override
-    public void posterShare() {
+    public void posterShare(View view, View dismiss) {
 
     }
+
 }

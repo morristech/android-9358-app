@@ -147,6 +147,10 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     @Override
     public void itemClicked(PosterBean bean) {
         mPosterBean = bean;
+        showShareWindow(bean);
+    }
+
+    private void showShareWindow(PosterBean bean) {
 
         int mCurrentModel = Constant.TECH_POSTER_FLOWER_MODEL;
         switch (bean.style) {
@@ -162,10 +166,9 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
         }
         mDialog = new TechPosterDialog(this, mCurrentModel, true, true);
         mDialog.show();
-        mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, "", bean.imageUrl);
+        mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, null, bean.imageUrl);
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.setPosterListener(this);
-
     }
 
     @Override
@@ -188,7 +191,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     @Override
     public void shareClicked(PosterBean bean) {
         mPosterBean = bean;
-        posterShare();
+        showShareWindow(bean);
     }
 
     @Override
@@ -202,7 +205,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
                 if (mDialog != null) {
                     mDialog.dismiss();
                     dismiss.setVisibility(View.GONE);
-                    saveImage(view);
+                    saveImage(view,true);
                 }
 
             }
@@ -215,21 +218,21 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     }
 
     @Override
-    public void posterShare() {
-        StringBuilder url;
-        if (Utils.isEmpty(mPosterBean.shareUrl)) {
-            url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-            url.append(String.format("/spa-manager/tech-poster/#/%s?id=%s", mPosterBean.style, mPosterBean.id));
-        } else {
-            url = new StringBuilder(mPosterBean.shareUrl);
+    public void posterShare(View view, View dismiss) {
+
+        if (mDialog != null) {
+            mDialog.dismiss();
+            dismiss.setVisibility(View.GONE);
+            String localFile = saveImage(view,false);
+            ShareController.doShareImage(localFile);
         }
-        ShareController.doShare(mPosterBean.imageUrl, url.toString(), mPosterBean.title, mPosterBean.subTitle, Constant.SHARE_TYPE_TECH_POSTER, "");
+
     }
 
-    private String saveImage(View v) {
+    private String saveImage(View v,boolean saveToGallery) {
         Bitmap bitmap;
         String name = "技师海报.png";
-        File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + "技师海报.png");
+        File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + "技师海报");
         if (!file.exists()) {
             file.mkdir();
         }
@@ -245,10 +248,12 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
         File picFile = new File(file, name);
         try {
             bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(this, 45));
-            FileOutputStream fout = new FileOutputStream(picFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
-            saveImageToGallery(picFile);
-            return file.toString();
+            FileOutputStream fo = new FileOutputStream(picFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fo);
+            if(saveToGallery){
+                saveImageToGallery(picFile);
+            }
+            return picFile.toString();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

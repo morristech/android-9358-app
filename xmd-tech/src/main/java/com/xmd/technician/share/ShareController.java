@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Message;
 
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.superrtc.call.VideoRenderer;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ImageLoader;
@@ -44,6 +45,12 @@ public class ShareController extends AbstractController {
             case MsgDef.MSG_DEG_SHARE_QR_CODE:
                 showShareDialog((Map<String, Object>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_SHARE_IMAGE_TO_TIMELINE:
+                shareImageToTimeline((Map<String, Object>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_SHARE_IMAGE_TO_FRIENDS:
+                shareImageToFriends((Map<String, Object>) msg.obj);
+                break;
         }
 
         return true;
@@ -75,18 +82,21 @@ public class ShareController extends AbstractController {
         });
     }
 
+    public static void doShareImage(String localImageUrl){
+        Map<String, String> params = new HashMap<>();
+        params.put(Constant.PARAM_SHARE_LOCAL_IMAGE,localImageUrl);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
+    }
+
     private void showPlatformWindow(Map<String, String> params) {
         SharePlatformPopupWindow popupWindow = new SharePlatformPopupWindow(params);
         popupWindow.showAtBottom();
     }
 
     private void showShareDialog(Map<String, Object> params) {
-
         ShareCouponDialog dialog = new ShareCouponDialog((Context) params.get("context"), params);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-
-
     }
 
     /**
@@ -112,6 +122,24 @@ public class ShareController extends AbstractController {
      */
     private void shareToFriends(Map<String, Object> params) {
         WXShareUtil.getInstance().shareToFriends(params);
+    }
+
+    /**
+     * 分享到朋友圈
+     *
+     * @param params
+     */
+    private void shareImageToTimeline(Map<String, Object> params) {
+        WXShareUtil.getInstance().shareImageToTimeLine((String)params.get(Constant.PARAM_SHARE_LOCAL_IMAGE));
+    }
+
+    /**
+     * 分享给朋友
+     *
+     * @param params
+     */
+    private void shareImageToFriends(Map<String, Object> params) {
+        WXShareUtil.getInstance().shareImageToFriends((String)params.get(Constant.PARAM_SHARE_LOCAL_IMAGE));
     }
 
 }

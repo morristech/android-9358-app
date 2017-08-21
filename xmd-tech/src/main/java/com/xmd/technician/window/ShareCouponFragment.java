@@ -18,9 +18,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -28,10 +30,12 @@ import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPosterListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.EmptyView;
+import com.xmd.technician.widget.RoundImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,9 +117,11 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     @BindView(R.id.ll_share_tech_card)
     LinearLayout mShareTechCard;
     @BindView(R.id.img_tech_head)
-    ImageView mImgTechHead;
+    RoundImageView mImgTechHead;
     @BindView(R.id.user_name)
     TextView mUserName;
+    @BindView(R.id.tv_poster_total)
+    TextView mTvPosterTotal;
 //    @BindView(R.id.btn_share_user_card)
 //    Button mBtnShareUserCard;
 
@@ -131,6 +137,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private boolean isFirst;
     private String emptyViewDes;
     private TechInfo mTechInfo;
+    private Subscription mPosterListSubscription;
 
     @Nullable
     @Override
@@ -162,9 +169,13 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         mSharePropagandaViewSubscription = RxBus.getInstance().toObservable(PropagandaListResult.class).subscribe(
                 propagandaListResult -> handlePropagandaList(propagandaListResult)
         );
+        mPosterListSubscription = RxBus.getInstance().toObservable(TechPosterListResult.class).subscribe(
+                result -> handlerTechPosterListResult(result)
+        );
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMainBtn));
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_POSTER_LIST);
         onRefresh();
 
     }
@@ -181,6 +192,16 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 mUserName.setText(userInfo);
             }
             mTechInfo = techCurrentResult.respData;
+        }
+    }
+
+    private void handlerTechPosterListResult(TechPosterListResult result) {
+        if (result.statusCode == 200) {
+            if (null == result.respData || result.respData.list.size() == 0) {
+                mTvPosterTotal.setText("0");
+            }else {
+                mTvPosterTotal.setText(String.valueOf(result.respData.list.size()));
+            }
         }
     }
 
@@ -296,7 +317,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_view, R.id.ll_share_tech_card})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_tech_card,R.id.ll_share_tech_poster})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -320,7 +341,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
             case R.id.rl_publication:
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString(), mClubJournalAmount);
                 break;
-            case R.id.ll_share_view:
+
+            case R.id.ll_share_tech_card:
                 if (mTechInfo != null) {
                     Boolean canShare = true;
                     if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
@@ -341,12 +363,10 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                     intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
                     intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
                     intent.putExtra(Constant.TECH_CAN_SHARE, canShare);
-
                     startActivity(intent);
                 }
-
                 break;
-            case R.id.ll_share_tech_card:
+            case R.id.ll_share_tech_poster:
                 Intent intentPoster = new Intent(getActivity(), TechPersonalPosterActivity.class);
                 startActivity(intentPoster);
                 break;
@@ -358,7 +378,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription, mGetTechCurrentInfoSubscription);
+        RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription, mGetTechCurrentInfoSubscription,mPosterListSubscription);
     }
 
     private void setCardViewSate(CardShareListResult cardShareListResult) {
