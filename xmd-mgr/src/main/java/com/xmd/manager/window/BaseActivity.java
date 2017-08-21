@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.ClubData;
@@ -287,12 +286,5 @@ public class BaseActivity extends com.xmd.app.BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-    }
-
-    protected void showLoading(String message) {
-        if (progressDialog == null) {
-            progressDialog = new XProgressDialog(this);
-        }
-        progressDialog.show(message);
     }
 }
