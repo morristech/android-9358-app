@@ -28,7 +28,7 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
     private TextView mDiscountText;
     private TextView mPaidText;
     private ImageView mQRCodeImg;
-    private TextView mScanTipText;
+    private ImageView mScanTipText;
     private RelativeLayout mScanStatusLayout;
     private TextView mCancelText;
 
@@ -69,7 +69,7 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
             }
         });
 
-        mScanTipText = (TextView) findViewById(R.id.tv_scan_tip);
+        mScanTipText = (ImageView) findViewById(R.id.tv_scan_tip);
         mScanStatusLayout = (RelativeLayout) findViewById(R.id.ly_scan_status);
         mCancelText = (TextView) findViewById(R.id.tv_cancel);
         mCancelText.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
