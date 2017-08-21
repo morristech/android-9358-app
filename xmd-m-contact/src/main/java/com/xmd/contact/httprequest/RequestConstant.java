@@ -32,5 +32,6 @@ public class RequestConstant {
     public static final String KEY_TECH_NO = "serialNo";
     public static final String KEY_USER_GROUP = "userGroup";
     public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_TECH_ID = "techId";
 
 }

@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
@@ -332,7 +331,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @Subscribe
     public void switchTableToMarketingFragment(SwitchTableToMarketingEvent event) {
-        XLogger.i(">>>","此处跳转");
         switchFragment(getFragmentSize()-1);
     }
 
@@ -344,7 +342,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @Subscribe
     public void contactToChatThanks(ThanksToChatEvent event) {
-        XLogger.i(">>>", "mainActivity");
         EventBus.getDefault().post(new EventStartChatActivity(event.emChatId));
     }
 

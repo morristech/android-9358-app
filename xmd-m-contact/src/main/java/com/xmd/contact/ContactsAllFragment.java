@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ContactAllBean;
@@ -53,6 +54,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     private boolean isSearchOrFilter = false;
     protected LinearLayout mLlContactNone;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,7 +88,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         params.put(RequestConstant.KEY_CUSTOMER_LEVEL, mCustomerLevel);
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, mCustomerType);
         params.put(RequestConstant.KEY_REMARK, mCustomerRemark);
-        params.put(RequestConstant.KEY_TECH_NO, mCustomerTechId);
+        params.put(RequestConstant.KEY_TECH_ID, mCustomerTechId);
         params.put(RequestConstant.KEY_USER_GROUP, mCustomerUserGroup);
         params.put(RequestConstant.KEY_USER_NAME, mCustomerUserName);
         DataManager.getInstance().loadAllCustomer(params, new NetworkSubscriber<ContactAllListResult>() {
@@ -110,13 +112,21 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         if (result.getRespData().userList.size() == 0) {
             if (isSearchOrFilter) {
                 XToast.show("未查到相关联系人");
+                ((TechContactFragment) getParentFragment()).showOrHideFilterButton(true);
                 mSwipeRefreshLayout.setRefreshing(false);
                 mLlContactNone.setVisibility(View.GONE);
                 return;
             } else {
-                mLlContactNone.setVisibility(View.VISIBLE);
+                ((TechContactFragment) getParentFragment()).showOrHideFilterButton(false);
+                if (TextUtils.isEmpty(UserInfoServiceImpl.getInstance().getCurrentUser().getClubId())) {
+                    mLlContactNone.setVisibility(View.GONE); //尚未加入会所，在联系人为0时不显示拓客页面
+                } else {
+                    mLlContactNone.setVisibility(View.VISIBLE);
+                }
+
             }
         } else {
+            ((TechContactFragment) getParentFragment()).showOrHideFilterButton(true);
             mLlContactNone.setVisibility(View.GONE);
         }
 
