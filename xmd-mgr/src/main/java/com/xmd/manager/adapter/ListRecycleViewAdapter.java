@@ -407,7 +407,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         boolean isPaidOrder = Constant.ORDER_TYPE_PAID.equals(order.orderType);
         OrderListItemViewHolder itemHolder = (OrderListItemViewHolder) holder;
         Glide.with(mContext).load(order.headImgUrl).error(R.drawable.icon22).into(itemHolder.avatar);
-        itemHolder.avatar.setUserInfo(UserInfoServiceImpl.getInstance().getUserByChatId(order.emchatId));
         itemHolder.customerName.setText(Utils.briefString(order.customerName, 7));
         itemHolder.customerPhone.setText(order.phoneNum);
         itemHolder.bookTime.setText(order.createdAt);

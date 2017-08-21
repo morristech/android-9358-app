@@ -289,7 +289,7 @@ public class BaseActivity extends com.xmd.app.BaseActivity {
         MobclickAgent.onPause(this);
     }
 
-    protected void showLoading(String message) {
+    public void showLoading(String message) {
         if (progressDialog == null) {
             progressDialog = new XProgressDialog(this);
         }
