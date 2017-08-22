@@ -155,7 +155,6 @@ public class RequestConstant {
     public static final String KEY_MEMBER_TOKEN = "memberToken";
     public static final String KEY_MEMBER_CAN_DISCOUNT = "canDiscount";
 
-    public static final String KEY_PHONE = "phone";
     public static final String KEY_AMOUNT = "amount";
 
     public static final String KEY_PAY_DATE = "payDate";
