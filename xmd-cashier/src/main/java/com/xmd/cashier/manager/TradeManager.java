@@ -11,7 +11,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.android.MyQrEncoder;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
-import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
@@ -241,13 +240,8 @@ public class TradeManager {
                                 break;
                             case AppConstants.CASHIER_TYPE_POS: //Pos支付
                                 reportTradeDataSync(tradeStatus);   //汇报流水
-                                if (mTrade.posPoints > 0) {
-                                    // 如果送积分
-                                    UiNavigation.gotoPointsPhoneActivity(context);
-                                } else {
-                                    print();
-                                    newTrade();
-                                }
+                                print();
+                                newTrade();
                                 break;
                             default:
                                 newTrade();
