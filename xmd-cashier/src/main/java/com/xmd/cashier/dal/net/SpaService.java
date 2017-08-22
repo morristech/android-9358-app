@@ -148,23 +148,6 @@ public interface SpaService {
                                              @Field(RequestConstant.KEY_SIGN) String requestSign);
 
     /**
-     * 现金消费增加积分
-     *
-     * @param userToken
-     * @param tradeNo
-     * @param phone
-     * @param requestSign
-     * @return
-     */
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GAIN_POINTS)
-    Observable<BaseBean> gainPoints(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                    @Field(RequestConstant.KEY_PHONE) String phone,
-                                    @Field(RequestConstant.KEY_SIGN) String requestSign);
-
-    /**
      * 获取交易流水记录
      *
      * @param userToken  用户标识

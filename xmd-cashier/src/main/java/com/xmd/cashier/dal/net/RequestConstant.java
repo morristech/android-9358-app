@@ -27,8 +27,6 @@ public class RequestConstant {
     public static final String URL_REPORT_TRADE_DATA = SPA_SERVICE_BASE + "/v2/manager/payreport/save";
     // 订单编号生成
     public static final String URL_GET_TRADE_NO = SPA_SERVICE_BASE + "/v2/manager/pospaydeal/tradeno";
-    // 给用户赠送积分
-    public static final String URL_GAIN_POINTS = SPA_SERVICE_BASE + "/v2/manager/pospaydeal/delivery/credit";
     // POS机送积分微信二维码
     public static final String URL_TRADE_QR_CODE = SPA_SERVICE_BASE + "/v1/wx/pos/order_qrcode";
 

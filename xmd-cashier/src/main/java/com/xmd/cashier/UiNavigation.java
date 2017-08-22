@@ -28,7 +28,6 @@ import com.xmd.cashier.activity.MemberScanActivity;
 import com.xmd.cashier.activity.OnlinePayActivity;
 import com.xmd.cashier.activity.OrderRecordActivity;
 import com.xmd.cashier.activity.PayTypeChoiceActivity;
-import com.xmd.cashier.activity.PointsPhoneActivity;
 import com.xmd.cashier.activity.RecordNavigationActivity;
 import com.xmd.cashier.activity.ScanPayActivity;
 import com.xmd.cashier.activity.ScanPayResultActivity;
@@ -88,12 +87,6 @@ public class UiNavigation {
 
     public static void gotoMemberCashierActivity(Context context) {
         Intent intent = new Intent(context, MemberCashierActivity.class);
-
-        context.startActivity(intent);
-    }
-
-    public static void gotoPointsPhoneActivity(Context context) {
-        Intent intent = new Intent(context, PointsPhoneActivity.class);
         context.startActivity(intent);
     }
 

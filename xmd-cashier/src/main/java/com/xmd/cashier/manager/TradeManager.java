@@ -261,23 +261,6 @@ public class TradeManager {
                 });
     }
 
-    // 支付成功汇报手机号获得积分
-    public Subscription gainPoints(String phone, final Callback<Void> callback) {
-        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .gainPoints(AccountManager.getInstance().getToken(), mTrade.tradeNo, phone, RequestConstant.DEFAULT_SIGN_VALUE);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-            @Override
-            public void onCallbackSuccess(BaseBean result) {
-                callback.onSuccess(null);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
     /*******************************************二维码相关******************************************/
     public byte[] getQRCodeSync() {
         if (mTrade.posMoney > 0 && mTrade.posPoints > 0 && TextUtils.isEmpty(mTrade.posPointsPhone)) {
