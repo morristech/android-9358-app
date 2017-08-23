@@ -113,6 +113,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             currentUser = getUserByUserId(user.getId());
             XmdApp.getInstance().getSp().edit().putString(SpConstants.KEY_CURRENT_USER_ID, user.getId()).apply();
         } else {
+            if(currentUser == null){
+                return;
+            }
             daoSession.getUserDao().delete(currentUser);
             XmdApp.getInstance().getSp().edit().remove(SpConstants.KEY_CURRENT_USER_ID).apply();
             currentUser = null;

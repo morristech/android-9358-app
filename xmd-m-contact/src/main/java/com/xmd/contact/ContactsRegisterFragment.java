@@ -12,7 +12,8 @@ import android.widget.LinearLayout;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
-import com.xmd.contact.bean.ContactAllBean;
+import com.xmd.contact.bean.ContactRegister;
+import com.xmd.contact.bean.ContactRegister;
 import com.xmd.contact.bean.ContactRegisterListResult;
 import com.xmd.contact.event.SwitchTableToMarketingEvent;
 import com.xmd.contact.httprequest.ConstantResources;
@@ -35,7 +36,7 @@ import butterknife.Unbinder;
  * Created by Lhj on 17-7-26.
  */
 
-public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
+public class ContactsRegisterFragment extends BaseListFragment<ContactRegister> {
 
     Unbinder unbinder;
     private View view;
@@ -142,7 +143,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     }
 
     @Override
-    public void onItemClicked(ContactAllBean bean, String type) {
+    public void onItemClicked(ContactRegister bean, String type) {
         super.onItemClicked(bean, type);
         if (TextUtils.isEmpty(bean.userId) && TextUtils.isEmpty(bean.id)) {
             XToast.show("该用户无详情信息");

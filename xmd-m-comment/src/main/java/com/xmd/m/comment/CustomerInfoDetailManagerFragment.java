@@ -315,7 +315,8 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
             tvCustomerName.setText(TextUtils.isEmpty(userDetailModel.userName) ? "匿名用户" : userDetailModel.userName);
         } else {
             tvCustomerName.setText(TextUtils.isEmpty(userDetailModel.userNoteName) ? userDetailModel.userName : userDetailModel.userNoteName);
-            tvCustomerNickName.setText(userDetailModel.userNoteName);
+            llCustomerNickName.setVisibility(View.VISIBLE);
+            tvCustomerNickName.setText(TextUtils.isEmpty(userDetailModel.userName) ? "匿名用户" : userDetailModel.userName);
         }
         if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_FANS_WX)) {
             imgCustomerType01.setVisibility(View.VISIBLE);
@@ -394,6 +395,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         for (ManagerUserTagListBean bean : userTagList) {
             mList.add(bean.tagName);
         }
+        customerTypeLabel.removeAllViews();
         customerTypeLabel.initChildViews(mList);
     }
 

@@ -21,6 +21,8 @@ import com.xmd.app.widget.RoundImageView;
 import com.xmd.contact.R;
 import com.xmd.contact.bean.ContactAllBean;
 import com.xmd.contact.bean.ContactRecentBean;
+import com.xmd.contact.bean.ContactRecentList;
+import com.xmd.contact.bean.ContactRegister;
 import com.xmd.contact.bean.ManagerContactAllBean;
 import com.xmd.contact.bean.ManagerContactRecentBean;
 import com.xmd.contact.httprequest.ConstantResources;
@@ -43,9 +45,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     private static final int TYPE_CONTACT_ALL_ITEM = 1;
-    private static final int TYPE_CONTACT_VISITOR_ITEM = 2;
-    private static final int TYPE_CLUB_CONTACT_ALL_ITEM = 3;
-    private static final int TYPE_CLUB_CONTACT_VISITOR_ITEM = 4;
+    private static final int TYPE_CONTACT_REGISTER_ITEM = 2;
+    private static final int TYPE_CONTACT_VISITOR_ITEM = 3;
+    private static final int TYPE_CLUB_CONTACT_ALL_ITEM = 4;
+    private static final int TYPE_CLUB_CONTACT_VISITOR_ITEM = 5;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -86,6 +89,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             return TYPE_FOOTER;
         } else if (mData.get(position) instanceof ContactAllBean) {
             return TYPE_CONTACT_ALL_ITEM;
+        } else if (mData.get(position) instanceof ContactRegister) {
+            return TYPE_CONTACT_REGISTER_ITEM;
         } else if (mData.get(position) instanceof ContactRecentBean) {
             return TYPE_CONTACT_VISITOR_ITEM;
         } else if (mData.get(position) instanceof ManagerContactRecentBean) {
@@ -112,6 +117,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_CONTACT_ALL_ITEM:
                 View contactAllView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_all_item, parent, false);
                 return new ContactAllViewHolder(contactAllView);
+            case TYPE_CONTACT_REGISTER_ITEM:
+                View contactRegister = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_register_item, parent, false);
+                return new ContactRegisterViewHolder(contactRegister);
             case TYPE_CONTACT_VISITOR_ITEM:
                 View contactVisitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_visit_item, parent, false);
                 return new ContactVisitorListItemViewHolder(contactVisitView);
@@ -138,7 +146,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return;
             }
             final ContactAllBean contactBean = (ContactAllBean) obj;
-            if(TextUtils.isEmpty(contactBean.createTime)){
+            if (TextUtils.isEmpty(contactBean.createTime)) {
                 return;
             }
             ContactAllViewHolder viewHolder = (ContactAllViewHolder) holder;
@@ -213,6 +221,69 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             });
             return;
         }
+
+        if (holder instanceof ContactRegisterViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof ContactRegister)) {
+                return;
+            }
+            final ContactRegister contactBean = (ContactRegister) obj;
+
+
+            ContactRegisterViewHolder viewHolder = (ContactRegisterViewHolder) holder;
+            viewHolder.contactName.setText(TextUtils.isEmpty(contactBean.userNoteName) ? contactBean.name : contactBean.userNoteName);
+            Glide.with(mContext).load(contactBean.avatarUrl).into(viewHolder.contactAvatar);
+            if (mData.size() > 0 ) {
+                if (position == 0 && !contactBean.clubId.equals(((ContactRegister) mData.get(1)).id)) {
+                    viewHolder.contactServiceClub.setVisibility(View.GONE);
+                } else {
+                    final ContactRegister lastContactBean = (ContactRegister) mData.get(position - 1);
+                    if (lastContactBean.clubId.equals(contactBean.clubId)) {
+                        viewHolder.contactServiceClub.setVisibility(View.GONE);
+                    } else {
+                        viewHolder.contactServiceClub.setVisibility(View.VISIBLE);
+                        viewHolder.contactServiceClub.setText(lastContactBean.clubName);
+                    }
+
+                }
+            }
+
+            if (TextUtils.isEmpty(contactBean.remark)) {
+                viewHolder.llContactTypeView.setVisibility(View.INVISIBLE);
+            } else {
+                viewHolder.llContactTypeView.setVisibility(View.VISIBLE);
+                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.remark, ","));
+            }
+            if (contactBean.customerType.equals(ConstantResources.USER_FANS)) {
+                viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
+                viewHolder.ivContactTypeWx.setVisibility(View.GONE);
+                viewHolder.ivContactTypeZFB.setVisibility(View.GONE);
+            } else if (contactBean.customerType.equals(ConstantResources.USER_WX)) {
+                viewHolder.ivContactTypeFans.setVisibility(View.GONE);
+                viewHolder.ivContactTypeWx.setVisibility(View.VISIBLE);
+                viewHolder.ivContactTypeZFB.setVisibility(View.GONE);
+            } else if (contactBean.customerType.equals(ConstantResources.USER_FANS_WX)) {
+                viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
+                viewHolder.ivContactTypeWx.setVisibility(View.VISIBLE);
+                viewHolder.ivContactTypeZFB.setVisibility(View.GONE);
+            } else if (contactBean.customerType.equals(ConstantResources.USER_ZFB)) {
+                viewHolder.ivContactTypeFans.setVisibility(View.GONE);
+                viewHolder.ivContactTypeWx.setVisibility(View.GONE);
+                viewHolder.ivContactTypeZFB.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.ivContactTypeFans.setVisibility(View.GONE);
+                viewHolder.ivContactTypeWx.setVisibility(View.GONE);
+                viewHolder.ivContactTypeZFB.setVisibility(View.GONE);
+            }
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onItemClicked(contactBean, "tech");
+                }
+            });
+            return;
+        }
+
         if (holder instanceof ContactVisitorListItemViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof ContactRecentBean)) {
@@ -539,6 +610,28 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             ivContactTypeZFB = (ImageView) contactAllView.findViewById(R.id.iv_contact_type_zfb);
             llContactTypeView = (LinearLayout) contactAllView.findViewById(R.id.ll_customer_type_view);
             contactServiceTime = (TextView) contactAllView.findViewById(R.id.contact_service_time);
+        }
+    }
+
+    //ContactRegisterViewHolder
+    static class ContactRegisterViewHolder extends RecyclerView.ViewHolder {
+        RoundImageView contactAvatar;
+        TextView contactName;
+        ImageView ivContactTypeFans;
+        ImageView ivContactTypeWx;
+        ImageView ivContactTypeZFB;
+        LinearLayout llContactTypeView;
+        TextView contactServiceClub;
+
+        public ContactRegisterViewHolder(View contactAllView) {
+            super(contactAllView);
+            contactAvatar = (RoundImageView) contactAllView.findViewById(R.id.img_contact_register_avatar);
+            contactName = (TextView) contactAllView.findViewById(R.id.tv_contact_register_name);
+            ivContactTypeFans = (ImageView) contactAllView.findViewById(R.id.img_contact_register_type_fans);
+            ivContactTypeWx = (ImageView) contactAllView.findViewById(R.id.img_contact_register_type_wx);
+            ivContactTypeZFB = (ImageView) contactAllView.findViewById(R.id.img_contact_register_type_zfb);
+            llContactTypeView = (LinearLayout) contactAllView.findViewById(R.id.ll_customer_register_type_view);
+            contactServiceClub = (TextView) contactAllView.findViewById(R.id.tv_contact_register_service_club);
         }
     }
 

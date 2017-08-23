@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ContactRegisterList {
 
-    public List<ContactAllBean> userList;
+    public List<ContactRegister> userList;
 
 
 }

@@ -34,7 +34,7 @@ public interface NetService {
                                                        @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
                                                        @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
                                                        @Field(RequestConstant.KEY_REMARK) String remark,
-                                                       @Field(RequestConstant.KEY_TECH_ID) String techId,
+                                                       @Field(RequestConstant.KEY_TECH_NO) String serialNo,
                                                        @Field(RequestConstant.KEY_USER_GROUP) String userGroup,
                                                        @Field(RequestConstant.KEY_USER_NAME) String userName);
 
@@ -70,12 +70,6 @@ public interface NetService {
                                                                      @Field(RequestConstant.KEY_USER_GROUP) String userGroup,
                                                                      @Field(RequestConstant.KEY_USER_NAME) String userName);
 
-    //    //会所全部最近访客
-//    @GET(RequestConstant.URL_GET_MANAGER_CUSTOMER_USER_RECENT_LIST)
-//    Observable<ManagerContactRecentListResult> getManagerRecentContactList(@Query(RequestConstant.KEY_PAGE) String page,
-//                                                                           @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-//                                                                           @Query(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
-//                                                                           @Query(RequestConstant.KEY_USER_NAME) String userName);
     @GET(RequestConstant.URL_GET_MANAGER_CUSTOMER_USER_RECENT_LIST)
     Observable<ManagerContactRecentListResult> getManagerRecentContactList();
 
