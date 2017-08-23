@@ -10,132 +10,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <LinearLayout
-        android:id="@+id/ll_share_tech_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/inter_space"
-        android:layout_marginRight="@dimen/inter_space"
-        android:layout_marginTop="@dimen/inter_space"
-        android:background="@drawable/default_button_background_selector"
-        android:orientation="horizontal"
-        android:padding="@dimen/inter_space">
 
-        <com.xmd.technician.widget.RoundImageView
-            android:id="@+id/img_tech_head"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/img_default_square"
-            app:type="round"
-        />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/inter_space"
-        >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/my_share_card"
-                android:textColor="@color/colorHead"
-                android:textSize="@dimen/fontOrderName"/>
-
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_space"
-                android:textColor="@color/colorHead"
-                android:textSize="@dimen/fontBody"
-                tools:text="郑美丽[088]"/>
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/right_arrow"/>
-
-        <!--<Button-->
-        <!--android:id="@+id/btn_share_user_card"-->
-        <!--style="@style/share_btn_style"-->
-        <!--/>-->
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_share_tech_poster"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/inter_space"
-        android:layout_marginRight="@dimen/inter_space"
-        android:layout_marginTop="@dimen/inter_space"
-        android:background="@drawable/default_button_background_selector"
-        android:orientation="horizontal"
-        android:padding="@dimen/inter_space">
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_poster"
-        />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/inter_space"
-        >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/my_share_poster"
-                android:textColor="@color/colorHead"
-                android:textSize="@dimen/fontOrderName"/>
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="@dimen/small_space"
-                          android:gravity="center_vertical"
-                          android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="在线海报："
-                    android:textColor="@color/colorHead"
-                    android:textSize="@dimen/fontBody"/>
-
-                <TextView
-                    android:id="@+id/tv_poster_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_yellow"
-                    android:textSize="@dimen/fontBody"
-                    tools:text="2"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/right_arrow"/>
-
-        <!--<Button-->
-        <!--android:id="@+id/btn_share_user_card"-->
-        <!--style="@style/share_btn_style"-->
-        <!--/>-->
-
-    </LinearLayout>
 
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -152,6 +27,149 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="@dimen/inter_space"
+                              android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/inter_space"
+
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/margin_2"
+                            android:background="@color/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_10"
+                            android:text="个人展示"
+                            android:textColor="@color/colorTitle"
+                            android:textSize="@dimen/fontTitle"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_share_tech_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginRight="@dimen/inter_space"
+                        android:layout_marginTop="@dimen/inter_space"
+                        android:background="@drawable/default_button_background_selector"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/inter_space">
+
+                        <com.xmd.technician.widget.RoundImageView
+                            android:id="@+id/img_tech_head"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/img_default_square"
+                            app:type="round"
+                        />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/inter_space"
+                        >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/my_share_card"
+                                android:textColor="@color/colorHead"
+                                android:textSize="@dimen/fontOrderName"/>
+
+                            <TextView
+                                android:id="@+id/user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/small_space"
+                                android:textColor="@color/colorHead"
+                                android:textSize="@dimen/fontBody"
+                                tools:text="郑美丽[088]"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/right_arrow"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_share_tech_poster"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginRight="@dimen/inter_space"
+                        android:layout_marginTop="@dimen/inter_space"
+                        android:background="@drawable/default_button_background_selector"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/inter_space">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_poster"
+                        />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/inter_space"
+                        >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/my_share_poster"
+                                android:textColor="@color/colorHead"
+                                android:textSize="@dimen/fontOrderName"/>
+                            <LinearLayout android:layout_width="match_parent"
+                                          android:layout_height="wrap_content"
+                                          android:layout_marginTop="@dimen/small_space"
+                                          android:gravity="center_vertical"
+                                          android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="在线海报："
+                                    android:textColor="@color/colorHead"
+                                    android:textSize="@dimen/fontBody"/>
+
+                                <TextView
+                                    android:id="@+id/tv_poster_total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/text_color_yellow"
+                                    android:textSize="@dimen/fontBody"
+                                    tools:text="2"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/right_arrow"/>
+
+                    </LinearLayout>
+                </LinearLayout>
 
                 <com.xmd.technician.widget.EmptyView
                     android:id="@+id/share_empty"
@@ -234,7 +252,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -272,7 +290,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -310,7 +328,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
                     </LinearLayout>
 
@@ -380,7 +398,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -418,7 +436,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -456,7 +474,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -495,7 +513,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
                     </LinearLayout>
 
@@ -565,7 +583,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_right"/>
+                                android:src="@drawable/right_arrow"/>
                         </RelativeLayout>
                     </LinearLayout>
 

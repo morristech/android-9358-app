@@ -204,9 +204,11 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_poster_select_img:
-                mImageTool.reset().maxSize(Constant.POSTER_MAX_SIZE).setAspectX_Y(mAspect_X,mAspect_Y).start(this, (s, uri, bitmap) -> {
+                mImageTool.reset().maxSize(Constant.POSTER_MAX_SIZE).setAspectX_Y(mAspect_X, mAspect_Y).start(this, (s, uri, bitmap) -> {
                     if (bitmap != null) {
                         mSelectBitmap = bitmap;
+                    } else {
+                        mSelectBitmap = null;
                     }
                     if (mSelectBitmap != null) {
                         imgPosterSelectImg.setImageBitmap(bitmap);
@@ -293,7 +295,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     }
 
     public Bitmap getBitmap() {
-      return mSelectBitmap;
+        return mSelectBitmap;
     }
 
     public Map<String, String> getPosterInfo() {

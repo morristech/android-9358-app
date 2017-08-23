@@ -182,7 +182,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
         if (techCurrentResult.respData != null) {
-            Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
+            Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).error(R.drawable.img_default_square).into(mImgTechHead);
             String userInfo;
             if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
                 userInfo = techCurrentResult.respData.userName + "[" + techCurrentResult.respData.serialNo + "]";
@@ -199,7 +199,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         if (result.statusCode == 200) {
             if (null == result.respData || result.respData.list.size() == 0) {
                 mTvPosterTotal.setText("0");
-            }else {
+            } else {
                 mTvPosterTotal.setText(String.valueOf(result.respData.list.size()));
             }
         }
@@ -317,7 +317,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_tech_card,R.id.ll_share_tech_poster})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_tech_card, R.id.ll_share_tech_poster})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -378,7 +378,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription, mGetTechCurrentInfoSubscription,mPosterListSubscription);
+        RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription, mGetTechCurrentInfoSubscription, mPosterListSubscription);
     }
 
     private void setCardViewSate(CardShareListResult cardShareListResult) {

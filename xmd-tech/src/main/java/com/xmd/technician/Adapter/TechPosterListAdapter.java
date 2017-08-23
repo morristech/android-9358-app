@@ -89,14 +89,16 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
                 nameMessage = bean.name;
             }
             viewHolder.tvPosterClubName.setVisibility(View.VISIBLE);
+            viewHolder.tvPosterTechName.setVisibility(View.VISIBLE);
             viewHolder.tvPosterTechName.setText(nameMessage);
         } else {
             if (Utils.isNotEmpty(bean.techNo)) {
                 viewHolder.tvPosterClubName.setVisibility(View.VISIBLE);
+                viewHolder.tvPosterTechName.setVisibility(View.VISIBLE);
                 viewHolder.tvPosterTechName.setText(bean.techNo);
             } else {
                 viewHolder.tvPosterClubName.setVisibility(View.GONE);
-                viewHolder.tvPosterClubName.setText("");
+                viewHolder.tvPosterTechName.setVisibility(View.GONE);
             }
         }
 

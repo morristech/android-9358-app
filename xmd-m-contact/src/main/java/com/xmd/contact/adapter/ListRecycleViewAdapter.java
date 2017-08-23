@@ -233,7 +233,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             ContactRegisterViewHolder viewHolder = (ContactRegisterViewHolder) holder;
             viewHolder.contactName.setText(TextUtils.isEmpty(contactBean.userNoteName) ? contactBean.name : contactBean.userNoteName);
             Glide.with(mContext).load(contactBean.avatarUrl).into(viewHolder.contactAvatar);
-            if (mData.size() > 0 ) {
+            if (mData.size() > 1 ) {
                 if (position == 0 && !contactBean.clubId.equals(((ContactRegister) mData.get(1)).id)) {
                     viewHolder.contactServiceClub.setVisibility(View.GONE);
                 } else {
@@ -242,10 +242,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         viewHolder.contactServiceClub.setVisibility(View.GONE);
                     } else {
                         viewHolder.contactServiceClub.setVisibility(View.VISIBLE);
-                        viewHolder.contactServiceClub.setText(lastContactBean.clubName);
+                        viewHolder.contactServiceClub.setText(contactBean.clubName);
                     }
 
                 }
+            }else{
+                viewHolder.contactServiceClub.setVisibility(View.GONE);
             }
 
             if (TextUtils.isEmpty(contactBean.remark)) {
