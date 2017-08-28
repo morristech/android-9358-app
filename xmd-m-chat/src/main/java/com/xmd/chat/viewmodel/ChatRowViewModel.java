@@ -138,7 +138,7 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
     @BindingAdapter("time")
     public static void bindTime(TextView textView, ChatRowViewModel data) {
-        textView.setText(data.getChatMessage().getFormatTime());
+        textView.setText(data.getChatMessage().getChatRelativeTime());
     }
 
     public ChatMessage getChatMessage() {

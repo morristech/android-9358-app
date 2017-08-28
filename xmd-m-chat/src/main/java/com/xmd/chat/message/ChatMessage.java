@@ -89,6 +89,8 @@ public class ChatMessage {
 
     private SpannableString contentText; //缓存emoji格式化后的数据
     protected String formatTime; //缓存格式化后的时间
+    protected String relativeTime;
+
 
     public ChatMessage(EMMessage emMessage) {
         this.emMessage = emMessage;
@@ -298,8 +300,41 @@ public class ChatMessage {
             } else {
                 formatTime = DateUtils.doLong2String(msgTime, "HH:mm");
             }
+
         }
         return formatTime;
+    }
+
+    public String getChatRelativeTime() {
+        if (relativeTime == null) {
+            long msgTime = emMessage.getMsgTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(msgTime);
+            int relativeHour = calendar.get(Calendar.HOUR_OF_DAY);
+            Calendar now = Calendar.getInstance();
+            String timeDistinguish = "";
+            if (0 <= relativeHour && relativeHour < 6) {
+                timeDistinguish = "凌晨";
+            } else if (6 <= relativeHour && relativeHour < 12) {
+                timeDistinguish = "早上";
+            } else if (12 <= relativeHour && relativeHour < 13) {
+                timeDistinguish = "中午";
+            } else if (12 <= relativeHour && relativeHour < 18) {
+                timeDistinguish = "下午";
+            } else if (18 <= relativeHour && relativeHour < 24) {
+                timeDistinguish = "晚上";
+            }
+            if (now.get(Calendar.YEAR) > calendar.get(Calendar.YEAR)
+                    || now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)) {
+                relativeTime = DateUtils.doLong2RelativeString(msgTime);
+            } else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
+                relativeTime = DateUtils.doLong2String(msgTime, "昨天 "+timeDistinguish+ "hh:mm");
+            } else {
+                relativeTime = DateUtils.doLong2String(msgTime, timeDistinguish+"hh:mm");
+            }
+
+        }
+        return relativeTime;
     }
 
     public String getSafeStringAttribute(String key) {

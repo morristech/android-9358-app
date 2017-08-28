@@ -130,6 +130,34 @@ public class DateUtils {
         return doDate2String(new Date(date));
     }
 
+    public static String doLong2RelativeString(long date){
+        String relativeTime = "";
+        String timeDistinguish = "";
+        Calendar calendar =  Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        if(calendar.get(Calendar.YEAR) < Calendar.getInstance().get(Calendar.YEAR)){
+            return doLong2String(date);
+        }else{
+            int relativeHour = calendar.get(Calendar.HOUR_OF_DAY);
+            if (0 <= relativeHour && relativeHour < 6) {
+                timeDistinguish = "凌晨";
+            } else if (6 <= relativeHour && relativeHour < 12) {
+                timeDistinguish = "早上";
+            } else if (12 <= relativeHour && relativeHour < 13) {
+                timeDistinguish = "中午";
+            } else if (12 <= relativeHour && relativeHour < 18) {
+                timeDistinguish = "下午";
+            } else if (18 <= relativeHour && relativeHour < 24) {
+                timeDistinguish = "晚上";
+            }
+            String time = doLong2String(date,"MM月dd日 HH:mm");
+            relativeTime = String.format("%s "+timeDistinguish+"%s",time.substring(0,6),time.substring(7,time.length()));
+
+        }
+        return relativeTime;
+
+    }
+
 
     /**********************************************
      * 字符串，一种格式到另外一种,失败返回null
