@@ -12,17 +12,15 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +32,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
+import com.xmd.contact.event.SwitchTableToContactRegisterEvent;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.network.BaseBean;
@@ -55,7 +54,6 @@ import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.clubinvite.ClubInviteActivity;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventRequestJoinClub;
@@ -136,7 +134,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @BindView(R.id.main_total_income_number)
     TextView mMainTotalIncomeNumber;
     @BindView(R.id.main_order_list)
-    ListView mMainOrderList;
+    RecyclerView mMainOrderList;
     @BindView(R.id.main_dynamic_avatar1)
     CircleAvatarView mMainDynamicAvatar1;
     @BindView(R.id.main_dynamic_name1)
@@ -474,6 +472,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.ORDER)
     public void initOrder() {
         mRootView.findViewById(R.id.order_layout).setVisibility(View.VISIBLE);
+        orderListAdapter = new MainPageTechOrderListAdapter(getActivity(), mTechOrderList);
+        mMainOrderList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mMainOrderList.setHasFixedSize(true);
+        mMainOrderList.setNestedScrollingEnabled(false);
+        mMainOrderList.setAdapter(orderListAdapter);
         mOrderManageSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 orderManageResult -> loadOrderListData());
         mGetTechOrderListSubscription = RxBus.getInstance().toObservable(OrderListResult.class).subscribe(
@@ -946,15 +949,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.main_too_keen:
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(2);
-                ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                    @Override
-                    public void run() {
-                        Map<String, Integer> params = new HashMap<String, Integer>();
-                        params.put(Constant.SWITCH_FRAGMENT_INDEX, 2);
-                        params.put(Constant.SWITCH_FRAGMENT_ITEM_INDEX, 1);
-                        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, params);
-                    }
-                }, 300);
+                EventBus.getDefault().post(new SwitchTableToContactRegisterEvent());
                 break;
             case R.id.main_send_coupon:
                 ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
@@ -1050,6 +1045,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void initOrderView(OrderListResult orderList) {
+        if (orderList.isIndexPage.equals("N")) {
+            return;
+        }
         if (orderList.respData != null && orderList.respData.size() > 0) {
             mAllTechOrderList.clear();
             for (int i = 0; i < orderList.respData.size(); i++) {
@@ -1073,25 +1071,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             } else {
                 mOrderFigureOut.setVisibility(View.VISIBLE);
             }
-            orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);
-            mMainOrderList.setAdapter(orderListAdapter);
-            setListViewHeightBasedOnChildren(mMainOrderList);
-            orderListAdapter.notifyDataSetChanged();
-            mMainOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            orderListAdapter.setData(mTechOrderList);
+            orderListAdapter.setOnItemClickedListener(new MainPageTechOrderListAdapter.ItemClickedInterface() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void itemClicked(Order bean) {
                     Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                    intent.putExtra(OrderDetailActivity.KEY_ORDER, mTechOrderList.get(position));
+                    intent.putExtra(OrderDetailActivity.KEY_ORDER, bean);
                     startActivity(intent);
                 }
             });
         } else {
             mOrderFigureOut.setVisibility(View.VISIBLE);
             mTechOrderList.clear();
-            setListViewHeightBasedOnChildren(mMainOrderList);
-            orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);
-            mMainOrderList.setAdapter(orderListAdapter);
-            orderListAdapter.notifyDataSetChanged();
+            orderListAdapter.setData(mTechOrderList);
         }
     }
 
@@ -1103,13 +1095,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mDynamicList.addAll(result.respData);
             if (mDynamicList.size() > 0) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                if (mDynamicList.get(0).userName.endsWith("**(匿名)")) {
+                if (Utils.isNotEmpty(mDynamicList.get(0).userName) && mDynamicList.get(0).userName.endsWith("**(匿名)")) {
                     mMainDynamicAvatar1.setImageResource(R.drawable.img_default_avatar);
                 } else {
                     mMainDynamicAvatar1.setUserInfo(mDynamicList.get(0).userId, Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl, false);
                 }
-
-                mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
+                mMainDynamicName1.setText(TextUtils.isEmpty(mDynamicList.get(0).userName) ? "匿名用户" : Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.GONE);
@@ -1117,25 +1108,25 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (mDynamicList.size() > 1) {
                 mMainDynamic2.setVisibility(View.VISIBLE);
-                if (mDynamicList.get(1).userName.endsWith("**(匿名)")) {
+                if (Utils.isNotEmpty(mDynamicList.get(1).userName) && mDynamicList.get(1).userName.endsWith("**(匿名)")) {
                     mMainDynamicAvatar2.setImageResource(R.drawable.img_default_avatar);
                 } else {
                     mMainDynamicAvatar2.setUserInfo(mDynamicList.get(1).userId, Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl, false);
                 }
 
-                mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
+                mMainDynamicName2.setText(TextUtils.isEmpty(mDynamicList.get(1).userName) ? "匿名用户" : Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.GONE);
             }
             if (mDynamicList.size() > 2) {
                 mMainDynamic3.setVisibility(View.VISIBLE);
-                if (mDynamicList.get(2).userName.endsWith("**(匿名)")) {
+                if (Utils.isNotEmpty(mDynamicList.get(2).userName) && mDynamicList.get(2).userName.endsWith("**(匿名)")) {
                     mMainDynamicAvatar2.setImageResource(R.drawable.img_default_avatar);
                 } else {
                     mMainDynamicAvatar3.setUserInfo(mDynamicList.get(2).userId, Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl, false);
                 }
-                mMainDynamicName3.setText(Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
+                mMainDynamicName3.setText(TextUtils.isEmpty(mDynamicList.get(2).userName) ? "匿名用户" : Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
             }
@@ -1272,24 +1263,24 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     };
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        if (listView == null) {
-            return;
-        }
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + listView.getDividerHeight() * (listAdapter.getCount() - 1);
-        listView.setLayoutParams(params);
-    }
+//    public static void setListViewHeightBasedOnChildren(ListView listView) {
+//        if (listView == null) {
+//            return;
+//        }
+//        ListAdapter listAdapter = listView.getAdapter();
+//        if (listAdapter == null) {
+//            return;
+//        }
+//        int totalHeight = 0;
+//        for (int i = 0; i < listAdapter.getCount(); i++) {
+//            View listItem = listAdapter.getView(i, null, listView);
+//            listItem.measure(0, 0);
+//            totalHeight += listItem.getMeasuredHeight();
+//        }
+//        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//        params.height = totalHeight + listView.getDividerHeight() * (listAdapter.getCount() - 1);
+//        listView.setLayoutParams(params);
+//    }
 
     @Override
     public void onDestroyView() {

@@ -601,12 +601,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
 
-            if (dynamicDetail.userName.endsWith("**(匿名)")) {
-
+            if (Utils.isNotEmpty(dynamicDetail.userName)&&dynamicDetail.userName.endsWith("**(匿名)")) {
+                viewHolder.dynamicItemAvatar.setImageResource(R.drawable.img_default_avatar);
             } else {
                 viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl, false);
             }
-            viewHolder.dynamicItemName.setText(Utils.StrSubstring(6, dynamicDetail.userName, true));
+            viewHolder.dynamicItemName.setText(TextUtils.isEmpty(dynamicDetail.userName)?"匿名用户":Utils.StrSubstring(6, dynamicDetail.userName, true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
                 viewHolder.btnThanks.setClickable(true);

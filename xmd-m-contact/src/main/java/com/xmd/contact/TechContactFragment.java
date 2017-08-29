@@ -16,6 +16,7 @@ import com.xmd.app.widget.ClearableEditText;
 import com.xmd.contact.bean.TagListResult;
 import com.xmd.contact.bean.TreatedTagList;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
+import com.xmd.contact.event.SwitchTableToContactRegisterEvent;
 import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.contact.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -134,6 +135,14 @@ public class TechContactFragment extends BaseFragment {
         if (mFragmentController.getFragment(2) != null) {
             mFragmentController.showFragment(2);
             changeViewState(ConstantResources.CONTACT_VISITOR_INDEX);
+        }
+    }
+    //首页拓客
+    @Subscribe
+    public void switchTableToRecent(SwitchTableToContactRegisterEvent event) {
+        if (mFragmentController.getFragment(1) != null) {
+            mFragmentController.showFragment(1);
+            changeViewState(ConstantResources.CONTACT_REGISTER_INDEX);
         }
     }
 

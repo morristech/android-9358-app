@@ -72,7 +72,7 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
                 if (!TextUtils.isEmpty(dynamic.id)) {
                     if (Utils.isNotEmpty(dynamic.userId)) {
                         mUser = new User(dynamic.userId);
-                        mUser.setName(dynamic.userName);
+                        mUser.setName(Utils.isEmpty(dynamic.userName) ? "匿名用户" : dynamic.userName);
                         mUser.setChatId(dynamic.userEmchatId);
                         mUser.setAvatar(dynamic.avatarUrl);
                         mUser.setNoteName("");
@@ -122,8 +122,6 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
     @Override
     public void onSayHiButtonClicked(DynamicDetail bean) {
         super.onSayHiButtonClicked(bean);
-//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.userEmchatId,
-//                bean.userName, bean.imageUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
         EventBus.getDefault().post(new EventStartChatActivity(bean.userEmchatId));
     }
 
