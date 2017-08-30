@@ -166,7 +166,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
         }
         mDialog = new TechPosterDialog(this, mCurrentModel, true, true);
         mDialog.show();
-        mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, null, bean.imageUrl);
+        mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, null, bean.imageUrl,bean.qrCodeUrl);
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.setPosterListener(this);
     }

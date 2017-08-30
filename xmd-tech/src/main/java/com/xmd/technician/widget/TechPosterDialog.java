@@ -93,7 +93,7 @@ public class TechPosterDialog extends Dialog {
         super(context, cancelable, cancelListener);
     }
 
-    public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, Bitmap image, String imageUrl) {
+    public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, Bitmap image, String imageUrl,String shareUrl) {
 
         if (Utils.isNotEmpty(primaryTitle)) {
             if (style == Constant.TECH_POSTER_SQUARE_MODEL) {
@@ -141,6 +141,12 @@ public class TechPosterDialog extends Dialog {
         }else{
             Glide.with(mContext).load(imageUrl).into(imgPosterTechPhoto);
         }
+        if(Utils.isNotEmpty(shareUrl)){
+            Glide.with(mContext).load(shareUrl).into(imgPosterQrCode);
+        }else{
+            Glide.with(mContext).load(LoginTechnician.getInstance().getQrCodeUrl()).into(imgPosterQrCode);
+        }
+
     }
 
     @Override
@@ -158,7 +164,7 @@ public class TechPosterDialog extends Dialog {
                 break;
         }
         ButterKnife.bind(this);
-        Glide.with(mContext).load(LoginTechnician.getInstance().getQrCodeUrl()).into(imgPosterQrCode);
+
         if (isSave) {
             if (isShare) {
                 rlPosterEditOrSave.setVisibility(View.GONE);

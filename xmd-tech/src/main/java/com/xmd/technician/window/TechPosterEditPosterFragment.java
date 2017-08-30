@@ -252,7 +252,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
                 mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true, false);
                 mDialog.show();
-                mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mSelectBitmap, mPosterImageUrl);
+                mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mSelectBitmap, mPosterImageUrl, "");
                 mDialog.setCanceledOnTouchOutside(true);
                 mDialog.setPosterListener(this);
                 break;
