@@ -130,6 +130,10 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
             XToast.show("该用户无详情信息");
             return;
         }
+        if (TextUtils.isEmpty(bean.name) && TextUtils.isEmpty(bean.emchatId)) {
+            XToast.show("该用户无详情信息");
+            return;
+        }
         CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, ConstantResources.APP_TYPE_MANAGER, false);
     }
 

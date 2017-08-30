@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,16 +28,16 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginLeft="@dimen/small_space"
-                    android:background="@color/operation_button_negative_bg_normal" />
+                    android:background="@color/operation_button_negative_bg_normal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/send_group_message"
                     android:layout_marginBottom="@dimen/margin_10"
-                    android:textSize="@dimen/fontTitle"
                     android:layout_marginLeft="@dimen/margin_10"
-                    android:textColor="@color/colorClubItemTitle" />
+                    android:text="@string/send_group_message"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/fontTitle"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -51,7 +51,7 @@
                     android:id="@+id/img_group_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_group_message" />
+                    android:background="@drawable/img_group_message"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -66,14 +66,14 @@
                         style="@style/marketing_name_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_group_message" />
+                        android:text="@string/club_group_message"/>
 
                     <TextView
                         android:id="@+id/marketing_group_message_text"
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_group_message" />
+                        tools:text="@string/club_group_message"/>
                 </LinearLayout>
 
                 <ImageView
@@ -81,31 +81,31 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/margin_10">
+                android:layout_marginTop="@dimen/margin_10"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginLeft="@dimen/small_space"
-                    android:background="@color/operation_button_negative_bg_normal" />
+                    android:background="@color/operation_button_negative_bg_normal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_manager"
                     android:layout_marginBottom="@dimen/margin_10"
-                    android:textSize="@dimen/fontTitle"
                     android:layout_marginLeft="@dimen/margin_10"
-                    android:textColor="@color/colorClubItemTitle" />
+                    android:text="@string/action_manager"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/fontTitle"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -119,7 +119,7 @@
                     android:id="@+id/img_journal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_journal" />
+                    android:background="@drawable/img_journal"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -134,14 +134,14 @@
                         style="@style/marketing_name_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_journal" />
+                        android:text="@string/club_journal"/>
 
                     <TextView
                         android:id="@+id/marketing_journal_text"
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_journal" />
+                        tools:text="@string/club_journal"/>
                 </LinearLayout>
 
                 <ImageView
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
@@ -167,7 +167,7 @@
                     android:id="@+id/img_reward"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_reward" />
+                    android:background="@drawable/img_reward"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -182,14 +182,14 @@
                         style="@style/marketing_name_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_reward" />
+                        android:text="@string/club_reward"/>
 
                     <TextView
                         android:id="@+id/marketing_reward_text"
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_journal" />
+                        android:text="@string/club_journal"/>
                 </LinearLayout>
 
                 <ImageView
@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
@@ -214,7 +214,7 @@
                     android:id="@+id/img_deprive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_deprive" />
+                    android:background="@drawable/img_deprive"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -229,14 +229,14 @@
                         style="@style/marketing_name_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_deprive" />
+                        android:text="@string/club_deprive"/>
 
                     <TextView
                         android:id="@+id/marketing_deprive_text"
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_journal" />
+                        android:text="@string/club_journal"/>
                 </LinearLayout>
 
                 <ImageView
@@ -244,7 +244,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
@@ -261,7 +261,7 @@
                     android:id="@+id/img_purchase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_purchase" />
+                    android:background="@drawable/img_purchase"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -276,14 +276,14 @@
                         style="@style/marketing_name_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_purchase" />
+                        android:text="@string/club_purchase"/>
 
                     <TextView
                         android:id="@+id/marketing_purchase_text"
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_journal" />
+                        android:text="@string/club_journal"/>
                 </LinearLayout>
 
                 <ImageView
@@ -291,7 +291,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
@@ -309,7 +309,7 @@
                     android:id="@+id/img_credit_shopping"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_credit_shopping" />
+                    android:background="@drawable/img_credit_shopping"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -324,14 +324,14 @@
                         style="@style/marketing_name_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_credit_shopping" />
+                        android:text="@string/club_credit_shopping"/>
 
                     <TextView
                         android:id="@+id/marketing_credit_shopping_text"
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_journal" />
+                        android:text="@string/club_journal"/>
                 </LinearLayout>
 
                 <ImageView
@@ -339,7 +339,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
@@ -356,7 +356,7 @@
                     android:id="@+id/img_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_coupon" />
+                    android:background="@drawable/img_coupon"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -376,14 +376,14 @@
                             style="@style/marketing_name_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/club_coupon" />
+                            android:text="@string/club_coupon"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/small_space"
                             android:text="@string/club_contain_paid_coupon"
-                            android:textSize="@dimen/fontBody" />
+                            android:textSize="@dimen/fontBody"/>
                     </LinearLayout>
 
                     <TextView
@@ -391,7 +391,7 @@
                         style="@style/marketing_detail_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_coupon" />
+                        tools:text="@string/club_coupon"/>
                 </LinearLayout>
 
                 <ImageView
@@ -399,7 +399,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_right" />
+                    android:background="@drawable/arrow_right"/>
 
             </RelativeLayout>
 
@@ -414,7 +414,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/club_bottom_alert" />
+                    android:text="@string/club_bottom_alert"/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

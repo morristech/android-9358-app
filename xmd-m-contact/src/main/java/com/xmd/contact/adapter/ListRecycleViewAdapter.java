@@ -233,7 +233,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             ContactRegisterViewHolder viewHolder = (ContactRegisterViewHolder) holder;
             viewHolder.contactName.setText(TextUtils.isEmpty(contactBean.userNoteName) ? contactBean.name : contactBean.userNoteName);
             Glide.with(mContext).load(contactBean.avatarUrl).into(viewHolder.contactAvatar);
-            if (mData.size() > 1 ) {
+            if (mData.size() > 1) {
                 if (position == 0 && !contactBean.clubId.equals(((ContactRegister) mData.get(1)).id)) {
                     viewHolder.contactServiceClub.setVisibility(View.GONE);
                 } else {
@@ -246,7 +246,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     }
 
                 }
-            }else{
+            } else {
                 viewHolder.contactServiceClub.setVisibility(View.GONE);
             }
 
@@ -475,11 +475,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(managerRecent.avatarUrl).into(viewHolder.contactVisitAvatar);
             if ((!TextUtils.isEmpty(managerRecent.userId) && !managerRecent.userId.equals("-1"))) {
                 if (TextUtils.isEmpty(managerRecent.userNoteName) && TextUtils.isEmpty(managerRecent.name)) {
-                    viewHolder.contactVisitName.setText("匿名用户");
+                    viewHolder.contactVisitName.setText(TextUtils.isEmpty(managerRecent.emchatId) ? "游客" : "匿名用户");
                 } else {
                     viewHolder.contactVisitName.setText(TextUtils.isEmpty(managerRecent.userNoteName) ? managerRecent.name : managerRecent.userNoteName);
                 }
-                viewHolder.llContactVisitChat.setVisibility(View.VISIBLE);
+
             } else {
                 viewHolder.contactVisitName.setText("游客");
                 viewHolder.llContactVisitChat.setVisibility(View.INVISIBLE);
