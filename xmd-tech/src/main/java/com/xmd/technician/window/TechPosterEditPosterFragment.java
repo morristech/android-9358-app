@@ -76,7 +76,6 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     private boolean primaryTitleIsSelected, minorTitleIsSelected, nickNameIsSelected, techNumberIsSelected, clubNameIsSelect;
     private String mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mPosterImageUrl;
     private ImageTool mImageTool = new ImageTool();
-    private String imageUrl;
     private String posterStyle;
     private PosterBean mPosterBean;
     private int mCurrentModel;
@@ -84,6 +83,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     private Bitmap mSelectBitmap;
     private int mAspect_X = 1;
     private int mAspect_Y = 1;
+    private String mQrUrl;
 
     @Nullable
     @Override
@@ -96,6 +96,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
     private void initView() {
         mPosterBean = (PosterBean) getArguments().get(Constant.KEY_CURRENT_POSTER);
+        mQrUrl = getArguments().getString(Constant.KEY_QR_CODE_URL);
         if (mPosterBean.id > 0) {//编辑
             if (Utils.isNotEmpty(mPosterBean.title)) {
                 editPosterPrimaryTitle.setText(mPosterBean.title);
@@ -252,7 +253,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
                 mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true, false);
                 mDialog.show();
-                mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mSelectBitmap, mPosterImageUrl, "");
+                mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mSelectBitmap, mPosterImageUrl, mQrUrl);
                 mDialog.setCanceledOnTouchOutside(true);
                 mDialog.setPosterListener(this);
                 break;

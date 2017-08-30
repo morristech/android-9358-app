@@ -359,6 +359,7 @@ public class Constant {
     public static final int TECH_POSTER_CIRCULAR_MODEL = 2;
     public static final int TECH_POSTER_FLOWER_MODEL = 3;
     public static final String KEY_CURRENT_POSTER = "currentPoster";
+    public static final String KEY_QR_CODE_URL = "qrCodeUrl";
 
 
     //小红点

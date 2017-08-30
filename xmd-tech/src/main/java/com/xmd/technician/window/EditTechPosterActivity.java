@@ -54,6 +54,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
     private Subscription mTechPosterSaveSubscription;
     private String selectedImageId;
     private PosterBean mPosterBean;
+    private String mQrCodeUrl;
 
 
     @Override
@@ -67,6 +68,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
     private void initView() {
         setBackVisible(true);
         mPosterBean = (PosterBean) getIntent().getParcelableExtra(Constant.KEY_CURRENT_POSTER);
+        mQrCodeUrl = getIntent().getStringExtra(Constant.KEY_QR_CODE_URL);
         initializationFragment();
         if (Utils.isNotEmpty(mPosterBean.style)) {
             btnBeforeStepEdit.setVisibility(View.GONE);
@@ -92,6 +94,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
         }
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constant.KEY_CURRENT_POSTER, (Parcelable) mPosterBean);
+        bundle.putString(Constant.KEY_QR_CODE_URL,mQrCodeUrl);
         mFragments.get(1).setArguments(bundle);
 
         if (null != mPosterBean && mPosterBean.id > 0) {

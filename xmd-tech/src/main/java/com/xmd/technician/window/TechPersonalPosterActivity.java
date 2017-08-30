@@ -60,6 +60,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     private Subscription mPosterDeleterSubscription;
     private PosterBean mPosterBean;
     private TechPosterDialog mDialog;
+    private String mQrCodeUrl;
     private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
 
     @Override
@@ -100,6 +101,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             }
 
             mPosterBeanList.clear();
+            mQrCodeUrl = result.respData.qrCodeUrl;
             for (PosterBean bean : result.respData.list) {
                 bean.qrCodeUrl = result.respData.qrCodeUrl;
                 mPosterBeanList.add(bean);
@@ -135,6 +137,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             mPosterBean = new PosterBean();
         }
         createPosterIntent.putExtra(Constant.KEY_CURRENT_POSTER, mPosterBean);
+        createPosterIntent.putExtra(Constant.KEY_QR_CODE_URL, Utils.isNotEmpty(mQrCodeUrl)?mQrCodeUrl:"");
         startActivity(createPosterIntent);
     }
 
