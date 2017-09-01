@@ -34,8 +34,8 @@ android {
         //1.6.8 聊天优化,黑名单
         //1.7.8技师海报
         //1.8.4 fixbug
-        versionCode 54
-        versionName "1.8.6"
+        versionCode 56
+        versionName "1.8.8"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
