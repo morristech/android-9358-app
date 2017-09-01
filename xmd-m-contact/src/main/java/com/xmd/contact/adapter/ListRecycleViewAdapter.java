@@ -16,12 +16,12 @@ import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.utils.RelativeDateFormatUtils;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.contact.R;
 import com.xmd.contact.bean.ContactAllBean;
 import com.xmd.contact.bean.ContactRecentBean;
-import com.xmd.contact.bean.ContactRecentList;
 import com.xmd.contact.bean.ContactRegister;
 import com.xmd.contact.bean.ManagerContactAllBean;
 import com.xmd.contact.bean.ManagerContactRecentBean;
@@ -44,11 +44,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         boolean isPaged();
     }
 
-    private static final int TYPE_CONTACT_ALL_ITEM = 1;
-    private static final int TYPE_CONTACT_REGISTER_ITEM = 2;
-    private static final int TYPE_CONTACT_VISITOR_ITEM = 3;
-    private static final int TYPE_CLUB_CONTACT_ALL_ITEM = 4;
-    private static final int TYPE_CLUB_CONTACT_VISITOR_ITEM = 5;
+    private static final int TYPE_TECH_CONTACT_ALL_ITEM = 1;
+    private static final int TYPE_TECH_CONTACT_REGISTER_ITEM = 2;
+    private static final int TYPE_TECH_CONTACT_VISITOR_ITEM = 3;
+    private static final int TYPE_MANAGER_CLUB_CONTACT_ALL_ITEM = 4;
+    private static final int TYPE_MANAGER_CLUB_CONTACT_VISITOR_ITEM = 5;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -88,15 +88,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         if (mCallback.isPaged() && position + 1 == getItemCount()) {
             return TYPE_FOOTER;
         } else if (mData.get(position) instanceof ContactAllBean) {
-            return TYPE_CONTACT_ALL_ITEM;
+            return TYPE_TECH_CONTACT_ALL_ITEM;
         } else if (mData.get(position) instanceof ContactRegister) {
-            return TYPE_CONTACT_REGISTER_ITEM;
+            return TYPE_TECH_CONTACT_REGISTER_ITEM;
         } else if (mData.get(position) instanceof ContactRecentBean) {
-            return TYPE_CONTACT_VISITOR_ITEM;
+            return TYPE_TECH_CONTACT_VISITOR_ITEM;
         } else if (mData.get(position) instanceof ManagerContactRecentBean) {
-            return TYPE_CLUB_CONTACT_VISITOR_ITEM;
+            return TYPE_MANAGER_CLUB_CONTACT_VISITOR_ITEM;
         } else if (mData.get(position) instanceof ManagerContactAllBean) {
-            return TYPE_CLUB_CONTACT_ALL_ITEM;
+            return TYPE_MANAGER_CLUB_CONTACT_ALL_ITEM;
         }
         return TYPE_FOOTER;
     }
@@ -114,19 +114,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_CONTACT_ALL_ITEM:
+            case TYPE_TECH_CONTACT_ALL_ITEM:
                 View contactAllView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_all_item, parent, false);
                 return new ContactAllViewHolder(contactAllView);
-            case TYPE_CONTACT_REGISTER_ITEM:
+            case TYPE_TECH_CONTACT_REGISTER_ITEM:
                 View contactRegister = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_register_item, parent, false);
                 return new ContactRegisterViewHolder(contactRegister);
-            case TYPE_CONTACT_VISITOR_ITEM:
+            case TYPE_TECH_CONTACT_VISITOR_ITEM:
                 View contactVisitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_visit_item, parent, false);
                 return new ContactVisitorListItemViewHolder(contactVisitView);
-            case TYPE_CLUB_CONTACT_ALL_ITEM:
+            case TYPE_MANAGER_CLUB_CONTACT_ALL_ITEM:
                 View clubContactAllView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_club_contact_all_item, parent, false);
                 return new ClubContactAllViewHolder(clubContactAllView);
-            case TYPE_CLUB_CONTACT_VISITOR_ITEM:
+            case TYPE_MANAGER_CLUB_CONTACT_VISITOR_ITEM:
                 View clubVisitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_club_contact_visit_item, parent, false);
                 return new ClubContactVisitorListItemViewHolder(clubVisitView);
             case TYPE_FOOTER:
@@ -294,16 +294,20 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final ContactRecentBean userRecent = (ContactRecentBean) obj;
             userRecent.intListPosition = position;
             ContactVisitorListItemViewHolder viewHolder = (ContactVisitorListItemViewHolder) holder;
-            if (TextUtils.isEmpty(userRecent.userId) && TextUtils.isEmpty(userRecent.id)) {
+
+            if(!TextUtils.isEmpty(userRecent.userId) && !userRecent.userId.equals("-1")){
+                if (TextUtils.isEmpty(userRecent.userNoteName) && TextUtils.isEmpty(userRecent.name)) {
+                    viewHolder.contactRecentName.setText("游客");
+                    viewHolder.llContactVisitorToChat.setVisibility(View.INVISIBLE);
+                } else {
+                    viewHolder.contactRecentName.setText(TextUtils.isEmpty(userRecent.userNoteName) ? userRecent.name : userRecent.userNoteName);
+                    viewHolder.llContactVisitorToChat.setVisibility(View.VISIBLE);
+                }
+            }else{
                 viewHolder.contactRecentName.setText("游客");
                 viewHolder.llContactVisitorToChat.setVisibility(View.INVISIBLE);
-            } else if (userRecent.userId.equals("-1")) {
-                viewHolder.contactRecentName.setText("游客");
-                viewHolder.llContactVisitorToChat.setVisibility(View.INVISIBLE);
-            } else {
-                viewHolder.contactRecentName.setText(TextUtils.isEmpty(userRecent.userNoteName) ? userRecent.name : userRecent.userNoteName);
-                viewHolder.llContactVisitorToChat.setVisibility(View.VISIBLE);
             }
+
 
             Glide.with(mContext).load(userRecent.avatarUrl).into(viewHolder.contactRecentAvatar);
             viewHolder.contactRecentRemark.setText(TextUtils.isEmpty(userRecent.remark) ? "访问了我" : userRecent.remark);
@@ -336,8 +340,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 default:
                     Glide.with(mContext).load(R.drawable.icon_recent_visit).into(viewHolder.ivContactRecentVisitType);
             }
-            if (userRecent.visitType == ConstantResources.CONTACT_RECENT_TYPE_NORMAL) {
-                if (userRecent.canSayHello.equals("Y")) {
+            if (userRecent.visitType == ConstantResources.CONTACT_RECENT_TYPE_NORMAL || userRecent.visitType == ConstantResources.CONTACT_RECENT_TYPE_VISIT_CLUB) {
+                if (!TextUtils.isEmpty(userRecent.canSayHello) && userRecent.canSayHello.equals("Y")) {
                     viewHolder.visitorToChat.setText("打招呼");
                     viewHolder.visitorToChat.setEnabled(true);
                 } else {
@@ -361,7 +365,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.tvRecentDistance.setText(userRecent.distance + "m");
                 }
             } else {
-                viewHolder.tvRecentDistance.setText("");
+                viewHolder.tvRecentDistance.setText("--");
             }
 
 
@@ -396,7 +400,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.visitorToChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCallback.onPositiveButtonClicked(userRecent, position, userRecent.visitType != ConstantResources.CONTACT_RECENT_TYPE_NORMAL);
+                    mCallback.onPositiveButtonClicked(userRecent, position, (userRecent.visitType != ConstantResources.CONTACT_RECENT_TYPE_NORMAL && userRecent.visitType != ConstantResources.CONTACT_RECENT_TYPE_VISIT_CLUB));
                 }
             });
         }

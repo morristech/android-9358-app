@@ -182,6 +182,10 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
     @Override
     public void onItemClicked(ContactRecentBean bean, String type) {
         super.onItemClicked(bean, type);
+        if ((TextUtils.isEmpty(bean.userNoteName) && TextUtils.isEmpty(bean.name))) {
+            XToast.show("该用户无详情信息");
+            return;
+        }
         if ((TextUtils.isEmpty(bean.userId) && TextUtils.isEmpty(bean.id) || bean.userId.equals("-1"))) {
             XToast.show("该用户无详情信息");
             return;
