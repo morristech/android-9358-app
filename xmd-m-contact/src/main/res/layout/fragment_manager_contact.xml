@@ -18,22 +18,19 @@
             android:id="@+id/tv_customer_all"
             style="@style/ContactTypeTextStyle"
             android:drawableTop="@drawable/selector_contact_all"
-            android:text="全部客户"
-            android:visibility="gone" />
+            android:text="全部客户"/>
 
         <TextView
             android:id="@+id/tv_customer_visitor"
             style="@style/ContactTypeTextStyle"
             android:drawableTop="@drawable/selector_contact_visitor"
-            android:text="最近访客"
-            android:visibility="gone" />
+            android:text="最近访客"/>
 
         <TextView
             android:id="@+id/tv_customer_technician"
             style="@style/ContactTypeTextStyle"
             android:drawableTop="@drawable/selector_contact_technician"
-            android:text="本店同事"
-            android:visibility="gone" />
+            android:text="本店同事"/>
 
     </LinearLayout>
 

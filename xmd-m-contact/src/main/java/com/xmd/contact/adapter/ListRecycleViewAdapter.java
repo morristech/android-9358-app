@@ -521,7 +521,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.ivContactVisitType.setImageResource(R.drawable.icon_recent_club);
             }
             viewHolder.contactVisitRemark.setText(managerRecent.remark);
-            viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
+        //    viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
+            if(TextUtils.isEmpty(managerRecent.createTime)){
+                viewHolder.contactVisitTime.setText("");
+            }else{
+                viewHolder.contactVisitTime.setText(managerRecent.createTime.substring(0,managerRecent.createTime.length()-3));
+            }
             if (managerRecent.distance > 0) {
                 if (managerRecent.distance > 1000) {
                     viewHolder.contactVisitDistance.setText(String.format("%1.1fkm", managerRecent.distance / 1000f));

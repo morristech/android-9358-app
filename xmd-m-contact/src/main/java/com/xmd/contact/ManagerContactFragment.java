@@ -42,7 +42,7 @@ public class ManagerContactFragment extends BaseFragment {
     TextView tvCustomerTechnician;
     @BindView(R2.id.img_screen_contact)
     ImageView imgScreenContact;
-    Unbinder unbinder;
+
 
     private BottomContactFilterPopupWindow contactFilter;
     private List<View> tableViews;
@@ -62,7 +62,7 @@ public class ManagerContactFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_manager_contact, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         initView();
         getAllTags();
         return view;
@@ -95,17 +95,14 @@ public class ManagerContactFragment extends BaseFragment {
 
     public void tableViewsAddCustomer() {
         tableViews.add(tvCustomerAll);
-        tvCustomerAll.setVisibility(View.VISIBLE);
     }
 
     public void tableViewsAddVisitor() {
         tableViews.add(tvCustomerVisitor);
-        tvCustomerVisitor.setVisibility(View.VISIBLE);
     }
 
     public void tableViewsAddTechnician() {
         tableViews.add(tvCustomerTechnician);
-        tvCustomerTechnician.setVisibility(View.VISIBLE);
     }
 
     private void initPopupWindow() {
@@ -146,7 +143,6 @@ public class ManagerContactFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @OnClick(R2.id.img_btn_search)
@@ -231,7 +227,6 @@ public class ManagerContactFragment extends BaseFragment {
         if (contactFilter != null) {
             contactFilter = null;
         }
-        //EventBus.getDefault().unregister(this);
     }
 
     public void getAllTags() {

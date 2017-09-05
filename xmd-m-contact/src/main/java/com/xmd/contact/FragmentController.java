@@ -69,31 +69,19 @@ public class FragmentController {
     //全部客户
     @CheckBusinessPermission(PermissionConstants.CONTACTS_CUSTOMER)
     public void addContactsAllFragment() {
-        if (isFromManager) {
-            mFragments.add(new ManagerContactsAllFragment());
-        } else {
             mFragments.add(new ContactsAllFragment());
-        }
-
     }
 
     //我的拓客
     @CheckBusinessPermission(PermissionConstants.CONTACTS_MY_CUSTOMER)
     public void addRegisterFragment() {
-        if (!isFromManager) {
-            mFragments.add(new ContactsRegisterFragment());
-        }
+        mFragments.add(new ContactsRegisterFragment());
     }
 
     //最近访客
     @CheckBusinessPermission(PermissionConstants.CONTACTS_VISITOR)
     public void addVisitorFragment() {
-        if (isFromManager) {
-            mFragments.add(new ManagerContactsVisitorsFragment());
-        } else {
-            mFragments.add(new ContactsVisitorsFragment());
-        }
-
+        mFragments.add(new ContactsVisitorsFragment());
     }
 
     //本店
