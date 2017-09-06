@@ -2,25 +2,14 @@ package com.xmd.manager;
 
 import android.content.Context;
 
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
-import com.xmd.manager.beans.EmchatMsgResult;
-import com.xmd.manager.chat.EmchatConstant;
-import com.xmd.manager.chat.EmchatUser;
-import com.xmd.manager.chat.SimpleEMMessageListener;
 import com.xmd.manager.common.ThreadManager;
-import com.xmd.manager.database.EmchatUserDao;
 import com.xmd.manager.msgctrl.ControllerRegister;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
-import com.xmd.manager.msgctrl.RxBus;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 /**
  * Created by sdcm on 15-10-22.
@@ -32,36 +21,36 @@ public class Manager {
 
     private Context mAppContext;
 
-    private EMMessageListener mMessageListener = new SimpleEMMessageListener() {
-        @Override
-        public void onMessageReceived(List<EMMessage> list) {
-            for (EMMessage message : list) {
-                try {
-                    String name = message.getStringAttribute(EmchatConstant.KEY_NAME);
-                    String head = message.getStringAttribute(EmchatConstant.KEY_HEADER);
-                    String userName = message.getUserName();
-                    EmchatUser user = new EmchatUser(userName, name, head);
-                    EmchatUserDao mEmchatUserDao = new EmchatUserDao(ManagerApplication.getAppContext());
-                    mEmchatUserDao.saveOrUpdate(user);
-
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> RxBus.getInstance().post(new EmchatMsgResult(list)));
-        }
-
-        @Override
-        public void onMessageRead(List<EMMessage> list) {
-
-        }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> list) {
-
-        }
-    };
+//    private EMMessageListener mMessageListener = new SimpleEMMessageListener() {
+//        @Override
+//        public void onMessageReceived(List<EMMessage> list) {
+//            for (EMMessage message : list) {
+//                try {
+//                    String name = message.getStringAttribute(EmchatConstant.KEY_NAME);
+//                    String head = message.getStringAttribute(EmchatConstant.KEY_HEADER);
+//                    String userName = message.getUserName();
+//                    EmchatUser user = new EmchatUser(userName, name, head);
+//                    EmchatUserDao mEmchatUserDao = new EmchatUserDao(ManagerApplication.getAppContext());
+//                    mEmchatUserDao.saveOrUpdate(user);
+//
+//                } catch (HyphenateException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> RxBus.getInstance().post(new EmchatMsgResult(list)));
+//        }
+//
+//        @Override
+//        public void onMessageRead(List<EMMessage> list) {
+//
+//        }
+//
+//        @Override
+//        public void onMessageDelivered(List<EMMessage> list) {
+//
+//        }
+//    };
 
     private Manager() {
     }

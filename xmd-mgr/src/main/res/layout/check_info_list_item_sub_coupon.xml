@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="@{data.typeName}"
+                    android:text="@{((VerificationCouponDetailBean)data.info).useTypeName}"
                     android:textColor="@color/colorClubItemTitle"
                     android:textSize="@dimen/coupon_list_item_sub_title_text_size" />
             </RelativeLayout>

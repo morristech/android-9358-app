@@ -106,7 +106,7 @@
 
 
         <RelativeLayout
-            android:layout_width="@dimen/main_order_btn_width"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_gravity="right">
 
@@ -127,7 +127,11 @@
                 android:text="@string/recent_status_btn_text"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontBody" />
+                android:textSize="@dimen/fontBody"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="40dp"
+            />
+
         </RelativeLayout>
     </LinearLayout>
 

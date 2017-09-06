@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/online_pay_notify_title"
-                android:textColor="@color/colorHead"
+                android:textColor="@color/white"
                 android:textSize="@dimen/fontTitle2" />
 
             <TextView
@@ -34,10 +34,10 @@
                 android:layout_gravity="end"
                 android:layout_marginRight="@dimen/common_h_margin"
                 android:drawablePadding="4dp"
-                android:drawableRight="@drawable/icon_filter"
+                android:drawableRight="@drawable/ic_record_filter"
                 android:onClick="onClickFilterMenu"
                 android:text="全部"
-                android:textColor="@color/colorHead"
+                android:textColor="@color/white"
                 android:textSize="@dimen/fontSubheading" />
         </android.support.v7.widget.Toolbar>
 

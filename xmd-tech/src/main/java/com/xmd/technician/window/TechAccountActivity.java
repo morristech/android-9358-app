@@ -33,6 +33,7 @@ public class TechAccountActivity extends BaseActivity {
     private Subscription mTechAccountListSubscription;
     private TechAccountListAdapter mTechAccountListAdapter;
     private List<TechAccountBean> mTechAccountList;
+    private String mWithdrawal = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +58,13 @@ public class TechAccountActivity extends BaseActivity {
         viewRecycler.setAdapter(mTechAccountListAdapter);
         mTechAccountListAdapter.setOnWithDrawClickedListener(new TechAccountListAdapter.CallBack() {
             @Override
-            public void onWithDrawClicked(String type) {
-                showDrawMoneyView();
+            public void onWithDrawClicked(TechAccountBean bean) {
+                if(mWithdrawal.equals("Y") && bean.status.equals("normal")){
+                    showDrawMoneyView();
+                }else{
+                    makeShortToast("不可提现");
+                }
+
             }
 
             @Override
@@ -72,6 +78,7 @@ public class TechAccountActivity extends BaseActivity {
         if (result.statusCode == 200) {
             mTechAccountList.clear();
             mTechAccountList.addAll(result.respData.accountList);
+            mWithdrawal = result.respData.withdrawal;
             mTechAccountListAdapter.setData(mTechAccountList, result.respData.withdrawal);
         } else {
             makeShortToast(result.msg);

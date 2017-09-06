@@ -179,9 +179,6 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
                     String date = mRecordBeanList.get(mFirstVisibleItem).currentMonth.substring(0, 4) + "年" + mRecordBeanList.get(mFirstVisibleItem).currentMonth.substring(5, 7) + "月";
                     mRlRecordTotal.setVisibility(View.VISIBLE);
                     mRecordMonth.setText(date);
-                    //
-                    XLogger.i(">>>", "date>" + date);
-                    XLogger.i(">>>", "lastDate>" + mLastDate);
                     if (date.equals(mLastDate)) {
                         mRecordTotal.setText(String.format("核销数： %s", Math.max(mRecordBeanList.get(mFirstVisibleItem).currentMonthTotal, mLastCount)));
                         mRecordBeanList.get(mFirstVisibleItem).currentMonthTotal = Math.max(mRecordBeanList.get(mFirstVisibleItem).currentMonthTotal, mLastCount);

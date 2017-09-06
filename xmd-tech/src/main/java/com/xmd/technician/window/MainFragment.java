@@ -1020,7 +1020,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (!TextUtils.isEmpty(mTech.getAvatarUrl())) {
             Glide.with(mContext).load(mTech.getAvatarUrl()).error(R.drawable.icon22).into(mMainHeadAvatar);
         }
-        mMainHeadTechName.setText(mTech.getNickName());
+        mMainHeadTechName.setText(Utils.StrSubstring(10,mTech.getNickName(),true));
         showTechStatus(mTech.getStatus());
     }
 

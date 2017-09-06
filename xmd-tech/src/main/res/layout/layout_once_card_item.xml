@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -28,7 +28,8 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/img_default_square"
+            android:src="@drawable/img_default_square"
+            app:type="round"
             />
 
 
@@ -91,8 +92,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    expandableTextView:animAlphaStart="1"
-                    expandableTextView:maxCollapsedLines="1">
+                    app:animAlphaStart="1"
+                    app:maxCollapsedLines="1">
 
                     <TextView
                         android:id="@id/expandable_text"
@@ -134,7 +135,7 @@
                     android:textColor="@color/colorBtnChecked"
                     android:textSize="@dimen/fontBiggerThanNormal"
                     android:visibility="visible"
-                    android:paddingLeft="@dimen/small_space"
+
                     tools:text="提成：1元、5元"/>
                 <Button
                     android:id="@+id/once_card_share"

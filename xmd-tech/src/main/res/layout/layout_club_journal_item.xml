@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
               android:background="@color/color_white"
               android:orientation="vertical"
-    >
+>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,11 +13,23 @@
         android:orientation="horizontal"
         android:padding="@dimen/inter_space">
 
-        <com.xmd.technician.widget.CircleImageView
-            android:id="@+id/journal_head"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:background="@drawable/img_default_roundness"/>
+        <FrameLayout android:layout_width="55dp"
+                     android:layout_height="55dp">
+            <com.xmd.technician.widget.CircleImageView
+                android:id="@+id/journal_head"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/img_default_roundness"/>
+            <TextView
+                android:id="@+id/tv_journal_no"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                tools:text="sss"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+            />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"

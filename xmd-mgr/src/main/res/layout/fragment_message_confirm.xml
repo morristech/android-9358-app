@@ -367,7 +367,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/margin_10"
-                        android:text="消息内容"
+                        android:text="发送内容"
                         android:textColor="@color/colorFont1"
                         android:textSize="@dimen/large_text_size" />
                 </LinearLayout>

@@ -97,7 +97,7 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
             } else {
                 cardItemViewHolder.tvShowCodeText.setText(ResourceUtils.getString(R.string.scan_code_to_buy));
             }
-            Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);
+            Glide.with(mContext).load(onceCard.imageUrl).error(R.drawable.img_default_square).into(cardItemViewHolder.mOnceCardHead);
             cardItemViewHolder.mOnceCardTitle.setText(onceCard.name);
             cardItemViewHolder.expandTextView.setText(onceCard.comboDescription);
 

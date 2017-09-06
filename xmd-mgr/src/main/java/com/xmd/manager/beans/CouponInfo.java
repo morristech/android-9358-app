@@ -59,7 +59,7 @@ public class CouponInfo implements Parcelable, Cloneable {
     public String consumeMoneyDescription;
     public String useTypeName;
     public String couponTypeName;
-    public int isSelected; //1,可被选中且未被选中，2，可被选中且已被选中，3，不可被选中
+    public int isSelected; //0,可被选中且未被选中，1，可被选中且已被选中，2，不可被选中
 
     public CouponInfo(String actTitle, String actId) {
         this.actTitle = actTitle;

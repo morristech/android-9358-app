@@ -85,7 +85,13 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
             selectCouponHint.setText(ResourceUtils.getString(R.string.text_no_activity_selected));
         } else {
             FavourableActivityBean bean = couponChildList.get(checkedGroupPosition).get(checkedChildPosition);
-            selectCouponHint.setText(Utils.changeColor(String.format("已选择【%s】%s", Constant.MESSAGE_ACTIVITY_LABELS.get(bean.msgType), bean.name),
+            String couponType = "";
+            if(bean.msgType.equals(Constant.MSG_TYPE_COUPON)){
+                couponType = bean.actTypeName;
+            }else {
+                couponType = Constant.MESSAGE_ACTIVITY_LABELS.get(bean.msgType);
+            }
+            selectCouponHint.setText(Utils.changeColor(String.format("已选择【%s】%s", couponType, bean.name),
                     ResourceUtils.getColor(R.color.colorMain), 4, Constant.MESSAGE_ACTIVITY_LABELS.get(bean.msgType).length() + 4));
         }
     }

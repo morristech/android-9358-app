@@ -19,9 +19,9 @@
 
         <ImageView
             android:id="@+id/img_account_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/icon30"/>
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icon30"/>
 
         <TextView
             android:id="@+id/account_name"
@@ -62,7 +62,6 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="@dimen/personal_padding"
         android:layout_marginRight="@dimen/search_margin"
-        android:background="@drawable/account_button_selector_bg"
         android:gravity="center"
         android:text="@string/consume"
         android:textColor="@color/button_press_bg"

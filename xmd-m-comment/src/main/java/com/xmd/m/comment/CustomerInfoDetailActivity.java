@@ -174,6 +174,22 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @Override
     public void onRightImageClickedListener() {
         super.onRightImageClickedListener();
+        if (inBlackList) {
+            final String[] handlerItems = new String[1];
+            handlerItems[0] = "移除黑名单";
+            DropDownMenuDialog dialog = DropDownMenuDialog.getDropDownMenuDialog(this, handlerItems, new DropDownMenuDialog.OnItemClickListener() {
+                @Override
+                public void onItemClick(int index) {
+                    switch (index) {
+                        case 0:
+                            BlackListManager.getInstance().removeUserFromBlackList(userId);
+                            break;
+                    }
+                }
+            });
+            dialog.show(rlRightMore);
+            return;
+        }
         final String[] items = new String[2];
         items[0] = "修改备注";
         if (fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
@@ -367,15 +383,15 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         TransitionDrawable drawable = (TransitionDrawable) btnOperation.getDrawable();
         if (!showOperationButtons) {
             ObjectAnimator animator = ObjectAnimator.ofFloat(layoutOperationButtons, "alpha", 1.0f);
-            animator.setDuration(500);
+            animator.setDuration(200);
             animator.start();
-            drawable.startTransition(500);
+            drawable.startTransition(200);
             layoutOperationButtons.setVisibility(View.VISIBLE);
         } else {
             ObjectAnimator animator = ObjectAnimator.ofFloat(layoutOperationButtons, "alpha", 0.0f);
-            animator.setDuration(500);
+            animator.setDuration(200);
             animator.start();
-            drawable.reverseTransition(500);
+            drawable.reverseTransition(200);
             layoutOperationButtons.setVisibility(View.GONE);
         }
         showOperationButtons = !showOperationButtons;

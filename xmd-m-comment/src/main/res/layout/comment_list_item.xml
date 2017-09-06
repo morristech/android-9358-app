@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#616161"
                     android:textSize="14sp"
-                    android:text="投诉：" />
+                    android:text="投诉：" android:id="@+id/textView"/>
 
                 <TextView
                     android:id="@+id/comment_complaint_detail"

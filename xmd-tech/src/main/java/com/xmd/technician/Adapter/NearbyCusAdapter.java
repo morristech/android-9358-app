@@ -18,6 +18,7 @@ import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 
@@ -79,7 +80,11 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         mHelper.onBindViewHolder(holder.itemView, position, getItemCount());
         NearbyCusInfo info = getItem(position);
-        holder.mPosition.setText(info.userPosition);    // 位置
+        if (Utils.isNotEmpty(info.userPosition) && !info.userPosition.equals("nullnull")) {
+            holder.mPosition.setText(info.userPosition);    // 位置
+        } else {
+            holder.mPosition.setText("未定位");
+        }
         holder.mDistance.setText("距离" + Math.round(info.userClubDistance) + "m");   // 距离
         holder.mAvatar.setUserInfo(info.userId, info.userAvatar, false);
         holder.mNickName.setText(info.userName);    // 名称
@@ -149,6 +154,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
             drawable = mContext.getResources().getDrawable(R.drawable.ic_hi_white);
             holder.mLayoutSayHello.setOnClickListener(v -> mCallback.onBtnClick(info, position));
         }
+        holder.itemView.setOnClickListener(v -> mCallback.onItemClick(info));
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         holder.mSayHello.setCompoundDrawables(drawable, null, null, null);
     }
@@ -195,6 +201,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
 
     public interface OnItemCallBack {
         void onBtnClick(NearbyCusInfo info, int position);
+        void onItemClick(NearbyCusInfo info);
     }
 
 

@@ -60,6 +60,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
     }
 
     private void initWebView() {
+        setTitle("提现说明");
         ll_layout = (LinearLayout) findViewById(R.id.ll_layout);
         mCustomWebView = new CustomWebView(this, this);
         mIntruduceUrl = SharedPreferenceHelper.getServerHost() + RequestConstant.URL_INTRODUCE_BIND;

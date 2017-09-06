@@ -13,27 +13,31 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.CircleAvatarView;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.SpaService;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
-import com.xmd.technician.widget.CircleImageView;
+
+
 import com.xmd.technician.widget.StepView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +59,7 @@ public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.order_steps)
     StepView mOrderSteps;
     @BindView(R.id.avatar)
-    CircleImageView mAvatar;
+    CircleAvatarView mAvatar;
     @BindView(R.id.customer_name)
     TextView mCustomerName;
     @BindView(R.id.telephone)
@@ -172,11 +176,7 @@ public class OrderDetailActivity extends BaseActivity {
             mUser.setNoteName(Utils.isEmpty(mOrder.customerName) ? mOrder.userName : mOrder.customerName);
             userService.saveUser(mUser);
         }
-
-        //Avatar
-        Glide.with(this).load(mOrder.headImgUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(mAvatar);
-        mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
+        mAvatar.setUserInfo(mUser);
         mCustomerName.setText(mOrder.customerName);
         mTelephone.setText(mOrder.phoneNum);
         mRemainTime.setText(mOrder.remainTime.contains("-") ? "0" : mOrder.remainTime);
@@ -266,7 +266,6 @@ public class OrderDetailActivity extends BaseActivity {
                 } else if (Constant.ORDER_STATUS_ACCEPT.equals(mOrder.status)) {
                     doManageOrder(Constant.ORDER_STATUS_COMPLETE, mOrder, "");
                 } else {
-                    //doNegativeOrder(ResourceUtils.getString(R.string.order_detail_delete_order_confirm), Constant.ORDER_STATUS_DELETE, mOrder, "");
                     doHideOrder(ResourceUtils.getString(R.string.order_detail_delete_order_confirm), mOrder);
                 }
                 break;
@@ -274,7 +273,11 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+                if(TextUtils.isEmpty(mOrder.emchatId)){
+                    XToast.show("缺少用户聊天信息，无法聊天");
+                }else{
+                EventBus.getDefault().post(new EventStartChatActivity(mOrder.emchatId));
+            }
                 break;
         }
     }
@@ -351,5 +354,11 @@ public class OrderDetailActivity extends BaseActivity {
                 makeShortToast("请允许本应用调用你的打电话功能");
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unsubscribe(getOrderRequest);
     }
 }

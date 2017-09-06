@@ -1,6 +1,7 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.icu.text.RelativeDateTimeFormatter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -104,7 +105,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_REWARD_ACTIVITY_ITEM = 16;
     private static final int TYPE_CLUB_JOURNAL_ITEM = 17;
     private static final int TYPE_COUPON_PAID_ITEM = 18; //点钟券
-    private static final int TYPE_COUPON_CASH_ITEM = 19;//现金券
     private static final int TYPE_COUPON_FAVORABLE_ITEM = 20;//优惠券
     private static final int TYPE_COUPON_PAY_FOR_ME_ITEM = 22;
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 23;
@@ -185,9 +185,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else if (mData.get(position) instanceof ClubJournalBean) {
                 return TYPE_CLUB_JOURNAL_ITEM;
             } else if (mData.get(position) instanceof ShareCouponBean) {
-                if (((ShareCouponBean) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.cash_coupon))) {
-                    return TYPE_COUPON_CASH_ITEM;
-                } else if (((ShareCouponBean) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
+                if (((ShareCouponBean) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
                     return TYPE_COUPON_PAID_ITEM;
                 } else {
                     return TYPE_COUPON_FAVORABLE_ITEM;
@@ -252,9 +250,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_COUPON_PAID_ITEM:
                 View viewPaidCoupon = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_delivery_item, parent, false);
                 return new ShareCouponListItemViewHolder(viewPaidCoupon);
-            case TYPE_COUPON_CASH_ITEM:
-                View viewCashCoupon = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_cush_item, parent, false);
-                return new ShareCouponListItemViewHolder(viewCashCoupon);
             case TYPE_COUPON_FAVORABLE_ITEM:
                 View viewFavorableCoupon = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_favorable_item, parent, false);
                 return new ShareCouponListItemViewHolder(viewFavorableCoupon);
@@ -633,12 +628,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.dynamicItemCommentDetail.setText(textDescription);
                 } else {
                     viewHolder.dynamicItemCommentDetail.setVisibility(View.INVISIBLE);
+                    viewHolder.dynamicItemCommentDetail.setText("");
                 }
                 if (Utils.isNotEmpty(textRemark)) {
                     viewHolder.dynamicItemRemark.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemRemark.setText("#" + textRemark.replaceAll("、", " #"));
                 } else {
                     viewHolder.dynamicItemRemark.setVisibility(View.GONE);
+                    viewHolder.dynamicItemRemark.setText("");
                 }
                 if (commentScore > 0) {
                     viewHolder.dynamicItemCommentStarts.setVisibility(View.VISIBLE);
@@ -788,6 +785,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             });
             Glide.with(mContext).load(clubJournal.image).into(clubJournalHolder.mJournalHead);
             clubJournalHolder.mJournalName.setText(clubJournal.title);
+            clubJournalHolder.mTvJournalNo.setText(String.format("No %s",String.valueOf(clubJournal.sequenceNo)));
             clubJournalHolder.mJournalReleaseTime.setText(String.format("发布时间：%s", clubJournal.modifyDate.substring(0, 10)));
             return;
         }
@@ -1280,6 +1278,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mJournalReleaseTime;
         @BindView(R.id.journal_share)
         Button mJournalShare;
+        @BindView(R.id.tv_journal_no)
+        TextView mTvJournalNo;
 
         public ClubJournalItemViewHolder(View view) {
             super(view);

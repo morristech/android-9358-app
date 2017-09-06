@@ -36,6 +36,9 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:onClick="onClickPreview"
+            android:background="@drawable/shape_r4_stoke_red"
+            android:textColor="#ff6666"
+            android:gravity="center"
             android:text="效果预览" />
 
         <Button

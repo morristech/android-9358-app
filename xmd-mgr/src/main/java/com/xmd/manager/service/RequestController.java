@@ -327,9 +327,7 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_MARKETING_ITEMS:
                 getMarketingItems();
                 break;
-            case MsgDef.MSG_DEF_GET_BAD_COMMENT_LIST:
-                getBadCommentList((Map<String, String>) msg.obj);
-                break;
+
             case MsgDef.MSG_DEF_BAD_COMMENT_DETAIL:
                 getBadCommentDetail((Map<String, String>) msg.obj);
                 break;

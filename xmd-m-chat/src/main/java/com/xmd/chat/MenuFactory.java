@@ -405,14 +405,14 @@ public class MenuFactory {
     }
 
     //创建更多-营销活动菜单
-//    @CheckBusinessPermission(PermissionConstants.MESSAGE_PLAY_CREDIT_GAME)
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_PLAY_CREDIT_GAME)
     public void createMoreDiceGameMenu(final BaseActivity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu(activity, "积分游戏", R.drawable.chat_menu_game, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playDiceGame(activity.getSupportFragmentManager(), remoteUser.getId());
-            }
-        }, null));
+//        moreMenus.add(new ChatMenu(activity, "积分游戏", R.drawable.chat_menu_game, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                playDiceGame(activity.getSupportFragmentManager(), remoteUser.getId());
+//            }
+//        }, null));
     }
 
     public void playDiceGame(FragmentManager fm, String remoteUserId) {

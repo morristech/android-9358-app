@@ -129,10 +129,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     TextView mBtnConsume;
     @BindView(R.id.ll_verify)
     LinearLayout mVerifyLayout;
-
     @BindView(R.id.main_bad_comment)
     RelativeLayout mMainBadComment;
-
     @BindView(R.id.bad_comment_finish)
     ImageView mBadCommentFinish;
     @BindView(R.id.main_ranking)
@@ -171,7 +169,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     NestedScrollView mMainPageScroll;
     @BindView(R.id.sliding_menu)
     SlidingMenu mSlidingMenu;
-
     @BindView(R.id.layout_statistics)
     LinearLayout mStatisticsLayout;
     @BindView(R.id.layout_obtain_client)
@@ -330,7 +327,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     private ImageView imageLeft;
     private View view;
-    private RelativeLayout mRlToolbar;
+ //   private RelativeLayout mRlToolbar;
     private String mPhoneNoOrCouponNo;
     private String mQrNo;
     private String mRid;
@@ -394,21 +391,21 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        mMainPageScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                onScrollChanged(scrollX, scrollY);
-            }
-        });
+//        mMainPageScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                onScrollChanged(scrollX, scrollY);
+//            }
+//        });
     }
 
-    private void onScrollChanged(int scrollX, int scrollY) {
-//        if (scrollY > Utils.dip2px(getActivity(), 100)) {
-//            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.toolbarBackground));
-//        } else {
-//            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
-//        }
-    }
+//    private void onScrollChanged(int scrollX, int scrollY) {
+////        if (scrollY > Utils.dip2px(getActivity(), 100)) {
+////            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.toolbarBackground));
+////        } else {
+////            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
+////        }
+//    }
 
     @Override
     public void onStop() {
@@ -450,11 +447,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void isOpen(boolean isOpen) {
                 if (isOpen) {
-                    XLogger.i(">>>", "open");
-
                     mViewTransparent.setVisibility(View.VISIBLE);
                 } else {
-                    XLogger.i(">>>", "close");
                     mViewTransparent.setVisibility(View.GONE);
                 }
             }
@@ -831,7 +825,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initTitleView(View view) {
-        mRlToolbar = (RelativeLayout) view.findViewById(R.id.rl_toolbar);
+     //   mRlToolbar = (RelativeLayout) view.findViewById(R.id.rl_toolbar);
         imageLeft = (ImageView) view.findViewById(R.id.toolbar_left);
         imageLeft.setImageResource(R.drawable.mainpage_imgleft_selected);
         imageLeft.setVisibility(View.VISIBLE);

@@ -17,7 +17,7 @@ import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.adapter.DeliveryCouponListAdapter;
 import com.xmd.manager.beans.CouponInfo;
 import com.xmd.manager.beans.Customer;
-import com.xmd.manager.chat.CommonUtils;
+import com.xmd.manager.common.CommonUtils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
@@ -94,7 +94,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
         if (result.statusCode == 200) {
             mCoupons.clear();
             for (int i = 0; i < result.respData.size(); i++) {
-                result.respData.get(i).isSelected = 1;
+                result.respData.get(i).isSelected = 0;
                 if (result.respData.get(i).actStatus.equals("online")) {
                     if (!result.respData.get(i).couponType.equals(Constant.COUPON_TYPE_PAID)) {
                         mCoupons.add(result.respData.get(i));
@@ -205,18 +205,19 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
     @Override
     public void onSelectedItemClicked(CouponInfo couponInfo, Integer position, boolean isSelected) {
         if (isSelected) {
+            couponInfo.isSelected = 1;
+            mCoupons.set(position, couponInfo);
+            mSelectedCouponList.add(couponInfo);
+        } else {
             for (int i = 0; i < mSelectedCouponList.size(); i++) {
                 if (mSelectedCouponList.get(i).actId.equals(couponInfo.actId)) {
                     mSelectedCouponList.remove(mSelectedCouponList.get(i));
                     break;
                 }
             }
-            couponInfo.isSelected = 1;
+            couponInfo.isSelected = 0;
             mCoupons.set(position, couponInfo);
-        } else {
-            couponInfo.isSelected = 2;
-            mCoupons.set(position, couponInfo);
-            mSelectedCouponList.add(couponInfo);
+
         }
         mCouponListAdapter.notifyItemChanged(position);
     }

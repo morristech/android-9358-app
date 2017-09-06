@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.TechAccountBean;
 import com.xmd.technician.common.Utils;
@@ -28,7 +29,7 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     private String mWithdrawal = "";
 
     public interface CallBack {
-        void onWithDrawClicked(String type);
+        void onWithDrawClicked(TechAccountBean bean);
 
         void onItemClicked(TechAccountBean bean);
     }
@@ -62,13 +63,15 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
         holder.accountName.setText(bean.name);
         holder.rewardAmount.setText(Utils.getFloat2Str(String.valueOf(bean.amount / 100f)));
         if (mWithdrawal.equals("Y") && bean.status.equals("normal")) {
-            holder.accountConsume.setEnabled(true);
+            holder.accountConsume.setBackgroundResource(R.drawable.account_button_selector_bg);
+            holder.accountConsume.setTextColor(ResourceUtils.getColor(R.color.colorBtnSelector));
         } else {
-            holder.accountConsume.setEnabled(false);
+            holder.accountConsume.setBackgroundResource(R.drawable.account_button_none_selector_bg);
+            holder.accountConsume.setTextColor(ResourceUtils.getColor(R.color.colorBody));
         }
-        Glide.with(mContext).load(bean.imageUrl).into(holder.imgAccountHead);
+        Glide.with(mContext).load(bean.imageUrl).error(R.drawable.icon30).into(holder.imgAccountHead);
         holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean));
-        holder.accountConsume.setOnClickListener(v -> mCallBack.onWithDrawClicked(bean.accountType));
+        holder.accountConsume.setOnClickListener(v -> mCallBack.onWithDrawClicked(bean));
     }
 
     @Override

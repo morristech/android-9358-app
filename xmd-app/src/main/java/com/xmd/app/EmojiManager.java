@@ -96,7 +96,7 @@ public class EmojiManager {
 
     public SpannableString getEmojiSpannableString(String emojiKey) {
         SpannableString s = new SpannableString(emojiKey);
-        s.setSpan(new ImageSpan(context, emojiMap.get(emojiKey)), 0, emojiKey.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+       s.setSpan(new ImageSpan(context, emojiMap.get(emojiKey)), 0, emojiKey.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return s;
     }
 }

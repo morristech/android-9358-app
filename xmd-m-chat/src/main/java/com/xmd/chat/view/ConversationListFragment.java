@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.BaseViewModel;
 import com.xmd.app.CommonRecyclerViewAdapter;
@@ -124,7 +125,12 @@ public class ConversationListFragment extends BaseFragment {
                 showLoading.set(false);
                 conversationViewModelList = result;
                 mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationViewModelList);
-                mAdapter.notifyDataSetChanged();
+                ThreadPoolManager.postToUI(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
     }

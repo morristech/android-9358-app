@@ -32,8 +32,8 @@ public class ImageTool {
     private int maxWidth = 0;
     private int maxHeight = 0;
     private int maxSize = 0;
-    private int mAspect_X = 1;
-    private int mAspect_Y = 1;
+    private int mAspect_X = 5;
+    private int mAspect_Y = 7;
     private boolean onlyPick = false;
     private static final int REQUEST_CODE_PERMISSION = 0x8531;
     private static final int REQUEST_CODE_PICK = 0x8532;

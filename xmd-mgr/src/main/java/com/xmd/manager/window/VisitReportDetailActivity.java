@@ -53,7 +53,7 @@ public class VisitReportDetailActivity extends BaseListActivity<VisitInfo, Visit
     protected void initOtherViews() {
         super.initOtherViews();
         setRightVisible(false, -1, null);
-        setTitle(ResourceUtils.getString(R.string.statistics_fragment_visit_detail));
+        setTitle(ResourceUtils.getString(R.string.right_btn_visit_detail));
         initView();
     }
 

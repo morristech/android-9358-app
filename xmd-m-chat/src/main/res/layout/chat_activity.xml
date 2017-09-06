@@ -89,6 +89,7 @@
                 android:background="@drawable/shape_r4_stoke_gray_solid_white"
                 android:inputType="textMultiLine"
                 android:maxLines="5"
+                android:hint="在此输入..."
                 android:onTouch="@{(v,e)->data.onTouchEditText(v,e)}"
                 android:text="@{data.textMessageContent}"
                 android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
@@ -99,9 +100,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_margin="1dp"
+                android:paddingLeft="5dp"
+                android:drawableLeft="@drawable/fas"
                 android:enabled='@{!TextUtils.isEmpty(data.textMessageContent.get())}'
                 android:minHeight="32dp"
-                android:minWidth="56dp"
+                android:minWidth="65dp"
                 android:onClick="@{()->data.sendTextMessage()}"
                 android:text="发送"
                 android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />

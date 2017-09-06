@@ -13,6 +13,6 @@
     android:drawablePadding="@dimen/small_space"
     android:layerType="software"
     android:clickable="true"
-    android:text="@string/create_group"
+    android:text="@string/new_add_group"
     android:textColor="@color/gmessage_create_group_text"
     android:textSize="@dimen/fontCoupon" />

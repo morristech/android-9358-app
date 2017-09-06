@@ -521,7 +521,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.ivContactVisitType.setImageResource(R.drawable.icon_recent_club);
             }
             viewHolder.contactVisitRemark.setText(managerRecent.remark);
-        //    viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
+            //    viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
             if(TextUtils.isEmpty(managerRecent.createTime)){
                 viewHolder.contactVisitTime.setText("");
             }else{
@@ -561,7 +561,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mIsEmpty) {
                 viewHolder.textView.setText("----------还没有数据哦----------");
             } else if (mIsNoMore) {
-                viewHolder.textView.setText("----------所有数据已加载完成----------");
+                viewHolder.textView.setText(ResourceUtils.getString(R.string.all_data_load_finish));
             } else {
                 viewHolder.textView.setText("----------上拉加载更多----------");
             }

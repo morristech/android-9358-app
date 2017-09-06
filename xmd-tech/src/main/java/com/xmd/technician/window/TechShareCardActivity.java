@@ -89,7 +89,7 @@ public class TechShareCardActivity extends BaseActivity {
         userCanShare = intent.getBooleanExtra(Constant.TECH_CAN_SHARE, false);
         codeUrl = intent.getStringExtra(Constant.TECH_ShARE_CODE_IMG);
 
-        Glide.with(this).load(userHead).into(mCardHead);
+        Glide.with(this).load(userHead).error(R.drawable.img_default_square).into(mCardHead);
         mCardName.setText(userName);
         mCardClub.setText(userClubName);
 
@@ -104,7 +104,7 @@ public class TechShareCardActivity extends BaseActivity {
             mTechCode.setVisibility(View.GONE);
         }
         if (Utils.isNotEmpty(codeUrl)) {
-            Glide.with(TechShareCardActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(mUserShareCode);
+            Glide.with(TechShareCardActivity.this).load(codeUrl).into(mUserShareCode);
         } else {
             mUserShareCode.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override

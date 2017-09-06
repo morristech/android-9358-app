@@ -116,9 +116,6 @@
             android:name=".window.ServiceItemActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.ClipPictureActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".window.ResetPasswordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -241,12 +238,8 @@
             android:name=".window.TechPersonalRankingDetailActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".window.ClubJournalChatShareActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".window.MallDiscountChatShareActivity"
-            android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".window.MarketingChatShareActivity"
             android:screenOrientation="portrait" />

@@ -12,12 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.R;
 import com.xmd.m.R2;
+
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.ConsumeBean;
 import com.xmd.m.comment.bean.RewardBean;
@@ -150,7 +151,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
                 String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
-                viewHolder.commentName.setText(Utils.StrSubstring(7, commentUserName, true));
+                viewHolder.commentName.setText(Utils.StrSubstring(8, commentUserName, true));
                 viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
             }
 
@@ -305,7 +306,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mIsEmpty) {
                 viewHolder.textView.setText("----------还没有数据哦----------");
             } else if (mIsNoMore) {
-                viewHolder.textView.setText("----------所有数据已加载完成----------");
+                viewHolder.textView.setText(ResourceUtils.getString(R.string.all_data_load_finish));
             } else {
                 viewHolder.textView.setText("----------上拉加载更多----------");
             }

@@ -23,12 +23,15 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/inter_space"
             android:paddingRight="@dimen/inter_space"
+            android:paddingLeft="@dimen/margin_10"
             android:paddingTop="@dimen/inter_space">
 
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                style="@style/customerCheckboxTheme"
                 android:checked="@{data.selected}"
                 android:enabled="@{data.valid}"
                 android:onCheckedChanged="@{(view,isChecked)->handler.onItemChecked(isChecked,data)}" />

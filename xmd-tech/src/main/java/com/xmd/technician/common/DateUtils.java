@@ -38,7 +38,7 @@ public class DateUtils extends com.hyphenate.util.DateUtils {
 
             var1 = "昨天 " + (new SimpleDateFormat("HH:mm", Locale.ENGLISH)).format(var0);
         } else if (var3) {
-            var1 = "M月d日" + (new SimpleDateFormat("HH:mm", Locale.ENGLISH)).format(var0);
+            var1 = "MM月d日" + (new SimpleDateFormat("HH:mm", Locale.ENGLISH)).format(var0);
         } else {
             var1 = "MMM dd HH:mm";
         }

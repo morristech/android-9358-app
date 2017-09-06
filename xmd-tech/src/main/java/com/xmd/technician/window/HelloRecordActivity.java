@@ -10,6 +10,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.HelloRecordInfo;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -104,7 +105,8 @@ public class HelloRecordActivity extends BaseActivity {
 
     private void handleItemClick(HelloRecordInfo info) {
         // 聊天
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(info.receiverEmChatId, info.receiverName, info.receiverAvatar, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+       // MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(info.receiverEmChatId, info.receiverName, info.receiverAvatar, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+        UINavigation.gotoChatActivity(this, info.receiverEmChatId);
     }
 
     private void handleHelloRecordResult(HelloRecordListResult result) {

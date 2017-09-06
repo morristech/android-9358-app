@@ -12,6 +12,8 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.Adapter.NearbyCusAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -97,33 +99,42 @@ public class NearbyActivity extends BaseActivity {
 
         mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
-        mCusAdapter.setCallback((info, position) -> {
-            if (HelloSettingManager.getInstance().getTemplateId() <= 3) {
-                Intent intent = new Intent(NearbyActivity.this, HelloSettingActivity.class);
-                startActivity(intent);
-                XToast.show("请先设置打招呼模板！");
-                return;
-            }
-            // 打招呼
-            mSayHiNearbySubscription = HelloSettingManager.getInstance().sendHelloTemplate(info.userEmchatId, new Callback<SayHiResult>() {
-                @Override
-                public void onResponse(SayHiResult result, Throwable error) {
-                    if (error != null) {
-                        XToast.show("打招呼失败：" + error.getMessage());
-                        return;
-                    }
-                    //刷新打招呼次数
-                    updateHelloLeftCount(result.technicianLeft);
-                    //更新列表状态
-                    mAdapterList.get(position).userLeftHelloCount = result.customerLeft;
-                    mAdapterList.get(position).techHelloRecently = true;
-                    String cusSayHiTime = formatter.format(new Date());
-                    mAdapterList.get(position).lastTechHelloTime = cusSayHiTime;
-                    mCusAdapter.updateCurrentItem(position, result.customerLeft, cusSayHiTime);
-                    // 成功提示
-                    showToast("打招呼成功");
+        mCusAdapter.setCallback(new NearbyCusAdapter.OnItemCallBack() {
+            @Override
+            public void onBtnClick(NearbyCusInfo info, int position) {
+
+                if (HelloSettingManager.getInstance().getTemplateId() <= 3) {
+                    Intent intent = new Intent(NearbyActivity.this, HelloSettingActivity.class);
+                    startActivity(intent);
+                    XToast.show("请先设置打招呼模板！");
+                    return;
                 }
-            });
+                // 打招呼
+                mSayHiNearbySubscription = HelloSettingManager.getInstance().sendHelloTemplate(info.userEmchatId, new Callback<SayHiResult>() {
+                    @Override
+                    public void onResponse(SayHiResult result, Throwable error) {
+                        if (error != null) {
+                            XToast.show("打招呼失败：" + error.getMessage());
+                            return;
+                        }
+                        //刷新打招呼次数
+                        updateHelloLeftCount(result.technicianLeft);
+                        //更新列表状态
+                        mAdapterList.get(position).userLeftHelloCount = result.customerLeft;
+                        mAdapterList.get(position).techHelloRecently = true;
+                        String cusSayHiTime = formatter.format(new Date());
+                        mAdapterList.get(position).lastTechHelloTime = cusSayHiTime;
+                        mCusAdapter.updateCurrentItem(position, result.customerLeft, cusSayHiTime);
+                        // 成功提示
+                        showToast("打招呼成功");
+                    }
+                });
+            }
+
+            @Override
+            public void onItemClick(NearbyCusInfo info) {
+                CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(NearbyActivity.this, info.userId, ConstantResources.INTENT_TYPE_TECH, false);
+            }
         });
         mCusRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mCusRecyclerView.setAdapter(mCusAdapter);

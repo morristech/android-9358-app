@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.black.R;
 import com.xmd.black.bean.CustomerInfo;
@@ -106,7 +107,7 @@ public class ListRecycleViewAdapter extends RecyclerView.Adapter {
             if (mIsEmpty) {
                 viewHolder.textView.setText("----------还没有数据哦----------");
             } else if (mIsNoMore) {
-                viewHolder.textView.setText("----------所有数据已加载完成----------");
+                viewHolder.textView.setText(ResourceUtils.getString(R.string.all_data_load_finish));
             } else {
                 viewHolder.textView.setText("----------上拉加载更多----------");
             }

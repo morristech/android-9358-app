@@ -72,7 +72,6 @@ public class VerificationListActivity extends BaseActivity implements Verificati
     private int verificationSuccess = 0;
     private int verificationFail = 0;
     private int verificationCount = 0;
-    //  private boolean mVerifying;
     private VerificationAlertDialog mVerificationDialog;
     private List<VerificationCouponDetailBean> discountList;
     private List<VerificationCouponDetailBean> normalCouponList;
@@ -287,9 +286,6 @@ public class VerificationListActivity extends BaseActivity implements Verificati
 
     @Override
     public void onItemClicked(CheckInfo checkInfo) {
-//        if (mVerifying) {
-//            return;
-//        }
         Intent intent = new Intent(this, VerificationActivity.class);
         intent.putExtra(VerificationActivity.EXTRA_DATA, checkInfo);
         startActivityForResult(intent, REQUEST_CODE_DETAIL);
@@ -297,10 +293,6 @@ public class VerificationListActivity extends BaseActivity implements Verificati
 
     @Override
     public void onItemChecked(boolean isChecked, CheckInfo checkInfo) {
-//        if (mVerifying) {
-//            return;
-//        }
-
         if (isChecked) {
             mSelectedVerificationList.add(checkInfo);
         } else {

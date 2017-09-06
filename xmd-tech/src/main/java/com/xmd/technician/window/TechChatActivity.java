@@ -336,8 +336,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void sendJournalClicked() {
-                Intent journalIntent = new Intent(TechChatActivity.this, ClubJournalChatShareActivity.class);
-                startActivityForResult(journalIntent, GET_JOURNAL_CODE);
+            //    Intent journalIntent = new Intent(TechChatActivity.this, ClubJournalChatShareActivity.class);
+            //    startActivityForResult(journalIntent, GET_JOURNAL_CODE);
             }
 
             @Override
@@ -347,8 +347,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onSendMallInfoClicked() {
-                Intent journalIntent = new Intent(TechChatActivity.this, MallDiscountChatShareActivity.class);
-                startActivityForResult(journalIntent, GET_PREFERENTIAL_CODE);
+//                Intent journalIntent = new Intent(TechChatActivity.this, MallDiscountChatShareActivity.class);
+//                startActivityForResult(journalIntent, GET_PREFERENTIAL_CODE);
             }
 
             @Override

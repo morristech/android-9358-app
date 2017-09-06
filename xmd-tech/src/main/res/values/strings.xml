@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">9358服务</string>
-    <string name="app_version_code">v1.7.1</string>
+    <string name="app_version_code">v1.8.1</string>
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
     <string name="login_activity_input_username">请输入账号</string>
     <string name="login_activity_input_password">请输入密码</string>
@@ -24,7 +24,7 @@
     <string name="company_name">深圳市小摩豆网络科技有限公司</string>
     <string name="amount_unit_yuan">元</string>
     <string name="list_item_loading">点击或者上拉，加载更多</string>
-    <string name="list_item_no_more"> ^_^, 没有更多数据</string>
+    <string name="list_item_no_more"> ----------已经全部加载完毕----------</string>
     <string name="list_item_empty">=_=!!, 还没有数据哦</string>
     <string name="register_password_hint">请输入6-20位新密码，仅限字母和数字</string>
     <string name="login_password_hint">请输入6-20位密码，仅限字母和数字</string>
@@ -204,7 +204,7 @@
     <string name="accepted_order">已接受</string>
     <string name="completed_order">已完成</string>
     <string name="order_list_item_loading">点击或者上拉，加载更多数据</string>
-    <string name="order_list_item_no_more"> ^_^, 没有更多数据</string>
+    <string name="order_list_item_no_more">----------已经全部加载完毕----------</string>
     <string name="order_list_item_empty">=_=!!, 还没有数据哦</string>
 
     <string name="order_status_operation_accept">接受</string>
@@ -267,8 +267,8 @@
     <string name="paid_coupon_detail_user_detail">购买详情</string>
     <string name="paid_coupon_detail_share">分享</string>
     <string name="paid_coupon_detail_tips">注：</string>
-    <string name="paid_coupon_detail_tips_expire">客户的点钟券过期后，您将获得 %1$s 元打赏。</string>
-    <string name="paid_coupon_detail_tips_verified">客户购买点钟券后，您将获得 %1$s 元打赏。</string>
+    <string name="paid_coupon_detail_tips_expire">客户的点钟券过期后，您将获得 %1$s 元提成。</string>
+    <string name="paid_coupon_detail_tips_verified">客户购买点钟券后，您将获得 %1$s 元提成。</string>
 
     <string name="paid_coupon_user_detail_activity_header_user">用户</string>
     <string name="paid_coupon_user_detail_activity_header_status">全部状态</string>
@@ -421,7 +421,7 @@
     <string name="main_free">闲</string>
     <string name="main_busy">忙</string>
     <string name="main_holiday">休</string>
-    <string name="layout_technician_ranking_title">本周技师排行榜</string>
+    <string name="layout_technician_ranking_title">排行榜</string>
     <string name="layout_technician_ranking_check_all">全部</string>
     <string name="layout_technician_star_register_user">拓客之星</string>
     <string name="layout_technician_star_sales">销售之星</string>
@@ -490,7 +490,7 @@
 
     <!-- 买单列表 -->
     <string name="online_pay_notify">买单通知</string>
-    <string name="online_pay_notify_title">买单列表</string>
+    <string name="online_pay_notify_title">买单通知明细</string>
     <string name="online_pay_notify_archive_button">知道了</string>
     <string name="money_rmb">￥</string>
     <string name="online_pay_notify_status_unverified">待确认</string>

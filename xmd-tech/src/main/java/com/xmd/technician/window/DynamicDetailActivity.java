@@ -55,7 +55,7 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
     protected void initView() {
         setTitle(ResourceUtils.getString(R.string.all_recent_status_activity));
         setBackVisible(true);
-        toolbarRightImg.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_filter));
+        toolbarRightImg.setImageDrawable(ResourceUtils.getDrawable(R.drawable.ic_record_filter));
         toolbarMore.setVisibility(View.VISIBLE);
 
         mGetRecentlyStatusListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(

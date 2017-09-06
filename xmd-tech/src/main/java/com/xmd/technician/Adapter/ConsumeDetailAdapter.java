@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.xmd.app.user.User;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ConsumeInfo;
@@ -70,7 +71,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             return TYPE_FOOTER;
         }
         ConsumeInfo consumeInfo = mConsumeList.get(position);
-        if (consumeInfo.consumeChannel.equals("user_reward")) {
+        if (consumeInfo.consumeChannel.equals("tech_fee")) {
             return USER_REWARD;
         } else if (consumeInfo.consumeChannel.equals("red_commission")) {
             return COUPON_REWARD;
@@ -145,14 +146,16 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             } else if (viewType == OUT_CLUB) {
                 viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
                 viewHolder.mAmount.setText(String.format("%1.2f", info.amount) + "元");
-                viewHolder.mAvatar.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.icon46));
+                viewHolder.mAvatar.setImageResource(R.drawable.icon46);
             } else {
-                viewHolder.mAmount.setText(String.format("%1.2f", info.amount) + "元");
+                viewHolder.mAmount.setText(String.format("+%1.2f", info.amount) + "元");
                 if (viewType == COUPON_REWARD) {
-                    viewHolder.mAvatar.setVisibility(View.GONE);
+                    viewHolder.mAvatar.setImageResource(R.drawable.img_default_avatar);
                 } else {
+                    User user = new User(info.userId);
+                    user.setAvatar(info.headImgUrl);
                     viewHolder.mAvatar.setVisibility(View.VISIBLE);
-                    viewHolder.mAvatar.setUserInfo(info.userId, info.headImgUrl, false);
+                    viewHolder.mAvatar.setUserInfo(user);
                 }
             }
         } else if (holder instanceof FooterViewHolder) {
@@ -162,7 +165,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
                 desc = mContext.getResources().getString(R.string.list_item_empty);
                 footerHolder.itemFooter.setOnClickListener(null);
             } else if (mIsNoMore) {
-                desc = mContext.getResources().getString(R.string.list_item_no_more);
+                desc = mContext.getResources().getString(R.string.all_data_load_finish);
                 footerHolder.itemFooter.setOnClickListener(null);
             } else {
                 footerHolder.itemFooter.setOnClickListener(v -> {

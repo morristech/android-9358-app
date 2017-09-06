@@ -6,6 +6,7 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 
 import rx.Observable;
 import rx.Subscription;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;

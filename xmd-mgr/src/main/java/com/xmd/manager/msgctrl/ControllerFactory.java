@@ -1,7 +1,6 @@
 package com.xmd.manager.msgctrl;
 
 import com.xmd.manager.ManagerApplication;
-import com.xmd.manager.chat.ChatController;
 import com.xmd.manager.service.RequestController;
 import com.xmd.manager.share.ShareController;
 import com.xmd.manager.stat.StatController;
@@ -16,7 +15,7 @@ public class ControllerFactory {
     private static RequestController sRequestController;
     private static ShareController sShareController;
     private static StatController sStatController;
-    private static ChatController sChatController;
+
 
     public static AbstractController createController(int controllerId) {
         switch (controllerId) {
@@ -42,11 +41,6 @@ public class ControllerFactory {
                     sStatController = new StatController();
                 }
                 return sStatController;
-            case ControllerId.CHAT_CONTROLLER:
-                if (sChatController == null) {
-                    sChatController = new ChatController();
-                }
-                return sChatController;
         }
         return null;
     }

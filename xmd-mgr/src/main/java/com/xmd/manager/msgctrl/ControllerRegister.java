@@ -84,7 +84,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_MARKETING_ITEMS,
                 MsgDef.MSG_DEF_GET_SERVICE_ITEMS_LIST,
                 MsgDef.MSG_DEF_GET_ClUB_FAVOURABLE_ACTIVITY,
-                MsgDef.MSG_DEF_GET_BAD_COMMENT_LIST,
                 MsgDef.MSG_DEF_BAD_COMMENT_DETAIL,
                 MsgDef.MSG_DEF_CHANGE_COMMENT_STATUS,
                 MsgDef.MSG_DEF_TECH_BAD_COMMENT,
@@ -151,7 +150,6 @@ public class ControllerRegister {
 
     private static void initChatController() {
         initController(ControllerId.CHAT_CONTROLLER, new int[]{
-                MsgDef.MSG_DEF_START_CHAT,
                 MsgDef.MSG_DEF_SAVE_CHAT_USER,
                 MsgDef.MSG_DEF_GET_CONVERSATION_LIST,
                 MsgDef.MSG_DEF_GET_CHAT_USER,

@@ -685,7 +685,7 @@
 
     <style name="verification_record_title_type">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1.2</item>
+        <item name="android:layout_weight">1.5</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/light_gray</item>
         <item name="android:textSize">@dimen/fontBody</item>
@@ -751,6 +751,10 @@
         <item name="android:paddingRight">6dp</item>
         <item name="android:paddingLeft">6dp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="text_bold">
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

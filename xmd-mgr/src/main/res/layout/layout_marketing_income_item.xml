@@ -42,7 +42,7 @@
                 android:drawablePadding="@dimen/small_space"
                 android:textColor="@color/colorVisitFromText"
                 android:textSize="@dimen/fontCaption"
-                tools:text="累计：" />
+                android:text="累计：" />
 
             <TextView
                 android:id="@+id/tv_income_total_money"

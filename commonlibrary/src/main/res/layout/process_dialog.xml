@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/body"
@@ -29,6 +30,6 @@
             android:gravity="center"
             android:text="正在加载，稍等哒～"
             android:textSize="16sp"
-            android:textColor="#ffffffff" />
+            android:textColor="#cccccc" />
     </LinearLayout>
 </FrameLayout>

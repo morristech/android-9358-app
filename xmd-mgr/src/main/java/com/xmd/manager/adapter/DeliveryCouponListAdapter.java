@@ -2,15 +2,22 @@ package com.xmd.manager.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.CouponInfo;
+import com.xmd.manager.common.ResourceUtils;
+import com.xmd.manager.common.Utils;
 
 import java.util.List;
 
@@ -54,31 +61,53 @@ public class DeliveryCouponListAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DeliveryCouponItemViewHolder) {
             final CouponInfo couponInfo = mCouponInfoList.get(position);
-            DeliveryCouponItemViewHolder itemHolder = (DeliveryCouponItemViewHolder) holder;
-
-            itemHolder.mCouponName.setText(couponInfo.actTitle);
-            itemHolder.mCouponType.setText(couponInfo.useTypeName);
-            if (couponInfo.couponType.equals(Constant.COUPON_TYPE_GIFT)) {
-                itemHolder.mCouponDesc.setText(couponInfo.actSubTitle);
+            DeliveryCouponItemViewHolder chatCouponViewHolder = (DeliveryCouponItemViewHolder) holder;
+            ;
+            chatCouponViewHolder.tvCouponTitle.setText(Utils.StrSubstring(8, couponInfo.actTitle, true));
+            chatCouponViewHolder.couponType.setVisibility(View.VISIBLE);
+            chatCouponViewHolder.couponType.setText(Utils.isNotEmpty(couponInfo.couponTypeName) ? String.format("(%s)", couponInfo.couponTypeName) : couponInfo.couponTypeName);
+            chatCouponViewHolder.tvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
+            chatCouponViewHolder.tvCouponPeriod.setText("有效时间：" + Utils.StrSubstring(18, couponInfo.couponPeriod, true));
+            if (Float.parseFloat(couponInfo.commission) > 0) {
+                chatCouponViewHolder.tvCouponReward.setVisibility(View.VISIBLE);
+                String money = couponInfo.commission;
+                String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
+                SpannableString spannableString = new SpannableString(text);
+                spannableString.setSpan(new TextAppearanceSpan(mContext, R.style.text_bold), 3, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                chatCouponViewHolder.tvCouponReward.setText(spannableString);
             } else {
-                itemHolder.mCouponDesc.setText(couponInfo.consumeMoneyDescription);
+                chatCouponViewHolder.tvCouponReward.setVisibility(View.GONE);
             }
-            itemHolder.mCouponDuration.setText(couponInfo.couponPeriod);
+            if (couponInfo.couponType.equals("discount")) {
+                chatCouponViewHolder.imgMoneyMark.setVisibility(View.GONE);
+                chatCouponViewHolder.couponEmptyView.setVisibility(View.VISIBLE);
+                chatCouponViewHolder.couponAmount.setText(String.format("%1.1f折", couponInfo.actValue / 100f));
+            } else if (couponInfo.couponType.equals("gift")) {
+                chatCouponViewHolder.couponEmptyView.setVisibility(View.VISIBLE);
+                chatCouponViewHolder.imgMoneyMark.setVisibility(View.GONE);
+                chatCouponViewHolder.couponAmount.setText(TextUtils.isEmpty(couponInfo.actSubTitle) ? couponInfo.actTitle : couponInfo.actSubTitle);
+            } else {
+                chatCouponViewHolder.couponEmptyView.setVisibility(View.GONE);
+                chatCouponViewHolder.imgMoneyMark.setVisibility(View.VISIBLE);
+                if (Utils.isNotEmpty(couponInfo.consumeMoneyDescription)) {
+                    chatCouponViewHolder.couponAmount.setText(String.valueOf(couponInfo.actValue));
+                }
+            }
             if (couponInfo.isSelected == 1) {
-                itemHolder.mImgCouponDelected.setSelected(false);
+                chatCouponViewHolder.couponSelect.setSelected(true);
             } else {
-                itemHolder.mImgCouponDelected.setSelected(true);
+                chatCouponViewHolder.couponSelect.setSelected(false);
             }
-
-            itemHolder.itemView.setOnClickListener(v -> {
-                if (couponInfo.isSelected == 1) {
-                    itemHolder.mImgCouponDelected.setSelected(true);
-                    mCallBackListener.onSelectedItemClicked(couponInfo, position, false);
-                } else if (couponInfo.isSelected == 2) {
-                    itemHolder.mImgCouponDelected.setSelected(false);
+            chatCouponViewHolder.itemView.setOnClickListener(v -> {
+                if (couponInfo.isSelected == 0) {
+                 //   chatCouponViewHolder.couponSelect.setSelected(true);
                     mCallBackListener.onSelectedItemClicked(couponInfo, position, true);
+                } else if (couponInfo.isSelected == 1) {
+                //    chatCouponViewHolder.couponSelect.setSelected(true);
+                    mCallBackListener.onSelectedItemClicked(couponInfo, position, false);
                 }
             });
+
 
         }
     }
@@ -89,22 +118,32 @@ public class DeliveryCouponListAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     static class DeliveryCouponItemViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.coupon_name)
-        TextView mCouponName;
+        @BindView(R.id.tv_coupon_title)
+        TextView tvCouponTitle;
         @BindView(R.id.coupon_type)
-        TextView mCouponType;
-        @BindView(R.id.coupon_desc)
-        TextView mCouponDesc;
-        @BindView(R.id.coupon_duration)
-        TextView mCouponDuration;
-        @BindView(R.id.img_coupon_selected)
-        ImageView mImgCouponDelected;
+        TextView couponType;
+        @BindView(R.id.tv_coupon_reward)
+        TextView tvCouponReward;
+        @BindView(R.id.coupon_empty_view)
+        View couponEmptyView;
+        @BindView(R.id.img_money_mark)
+        ImageView imgMoneyMark;
+        @BindView(R.id.coupon_amount)
+        TextView couponAmount;
+        @BindView(R.id.tv_consume_money_description)
+        TextView tvConsumeMoneyDescription;
+        @BindView(R.id.tv_coupon_period)
+        TextView tvCouponPeriod;
+        @BindView(R.id.coupon_select)
+        TextView couponSelect;
+        @BindView(R.id.ll_view)
+        LinearLayout llView;
 
-        DeliveryCouponItemViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+        DeliveryCouponItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
     }
+
 
 }

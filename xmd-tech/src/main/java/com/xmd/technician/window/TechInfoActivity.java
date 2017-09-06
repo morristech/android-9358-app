@@ -100,7 +100,7 @@ public class TechInfoActivity extends BaseActivity {
         mAdapter = new AlbumAdapter(this, new AlbumAdapter.OnItemClickListener() {
             @Override
             public void onAddAlbum() {
-                mImageTool.reset().maxSize(Constant.ALBUM_MAX_SIZE).start(TechInfoActivity.this, new ImageTool.ResultListener() {
+                mImageTool.reset().maxSize(Constant.ALBUM_MAX_SIZE).setAspectX_Y(5, 7).start(TechInfoActivity.this, new ImageTool.ResultListener() {
                     @Override
                     public void onResult(String s, Uri uri, Bitmap bitmap) {
                         if (s != null) {
@@ -219,7 +219,7 @@ public class TechInfoActivity extends BaseActivity {
 
     @OnClick(R.id.change_avatar_txt)
     public void changeAvatarClick() {
-        mImageTool.reset().maxSize(Constant.AVATAR_MAX_SIZE).start(this, new ImageTool.ResultListener() {
+        mImageTool.reset().maxSize(Constant.AVATAR_MAX_SIZE).setAspectX_Y(1, 1).start(this, new ImageTool.ResultListener() {
             @Override
             public void onResult(String s, Uri uri, Bitmap bitmap) {
                 if (s != null) {

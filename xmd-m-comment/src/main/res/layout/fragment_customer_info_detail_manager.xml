@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorAppBackground"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorAppBackground"
+              android:orientation="vertical">
 
     <com.xmd.app.widget.StationaryScrollView
         android:id="@+id/stationary_scroll_view"
@@ -48,7 +48,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="#111111"
                             android:textSize="17sp"
-                            tools:text="王先生" />
+                            tools:text="王先生"/>
 
                         <ImageView
                             android:id="@+id/img_customer_type_01"
@@ -57,7 +57,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dp"
                             android:src="@drawable/icon_contact_fans"
-                        android:visibility="gone"/>
+                            android:visibility="gone"/>
 
                         <ImageView
                             android:id="@+id/img_customer_type_02"
@@ -66,7 +66,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dp"
                             android:src="@drawable/icon_contact_wx"
-                        android:visibility="gone"/>
+                            android:visibility="gone"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -82,7 +82,7 @@
                             android:layout_height="wrap_content"
                             android:text="手机号："
                             android:textColor="#818181"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
                         <TextView
                             android:id="@+id/tv_customer_phone"
@@ -91,21 +91,22 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="#818181"
                             android:textSize="14sp"
-                            tools:text="13137558109" />
+                            tools:text="13137558109"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_customer_nick_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="昵称："
                             android:textColor="#818181"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
                         <TextView
                             android:id="@+id/tv_customer_nick_name"
@@ -114,7 +115,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="#818181"
                             android:textSize="14sp"
-                            tools:text="符号" />
+                            tools:text="符号"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -130,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="8sp"
-                android:background="#d9d9d9" />
+                android:background="#d9d9d9"/>
             <LinearLayout
                 android:id="@+id/ll_customer_mark"
                 android:layout_width="match_parent"
@@ -219,8 +220,8 @@
                 <com.xmd.app.widget.FlowLayout
                     android:id="@+id/customer_type_label"
                     android:layout_width="0dp"
-                    android:layout_marginTop="3dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
                 />

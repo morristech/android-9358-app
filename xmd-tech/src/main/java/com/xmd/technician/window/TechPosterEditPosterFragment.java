@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;

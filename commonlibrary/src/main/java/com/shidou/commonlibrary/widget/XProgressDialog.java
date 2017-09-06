@@ -55,6 +55,6 @@ public class XProgressDialog extends Dialog {
     @Override
     public void show() {
         super.show();
-        mTextView.setVisibility(View.GONE);
+    //    mTextView.setVisibility(View.GONE);
     }
 }

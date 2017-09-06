@@ -16,7 +16,7 @@ import com.xmd.technician.R;
  */
 public class StepView extends View {
 
-    private static final int DEFAULT_TEXTSIZE = 14;
+    private static final int DEFAULT_TEXT_SIZE = 14;
     private static final int DEFAULT_RADIUS = 16;
     private static final int DEFAULT_STEPS = 3;
     private static final int PADDING = 5;
@@ -26,8 +26,8 @@ public class StepView extends View {
     private Paint mTextPaint;
 
     //default steps
-    private int mTotolStep;
-    private int mTotolPath;
+    private int mTotalStep;
+    private int mTotalPath;
 
     private int mStepRadius;
     private int mTodoColor;
@@ -60,12 +60,12 @@ public class StepView extends View {
         mStepRadius = a.getDimensionPixelSize(R.styleable.StepView_stepRadius,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_RADIUS, getResources().getDisplayMetrics()));
         mTextSize = a.getDimensionPixelSize(R.styleable.StepView_textSize,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXTSIZE, getResources().getDisplayMetrics()));
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXT_SIZE, getResources().getDisplayMetrics()));
         mTodoColor = a.getColor(R.styleable.StepView_todoColor, Color.GRAY);
         mDoneColor = a.getColor(R.styleable.StepView_doneColor, Color.RED);
         mTextColor = a.getColor(R.styleable.StepView_textColor, Color.BLACK);
-        mTotolStep = a.getInt(R.styleable.StepView_totalSteps, DEFAULT_STEPS);
-        mTotolPath = mTotolStep - 1;
+        mTotalStep = a.getInt(R.styleable.StepView_totalSteps, DEFAULT_STEPS);
+        mTotalPath = mTotalStep - 1;
         a.recycle();
 
         mTodoPaint = new Paint();
@@ -95,7 +95,7 @@ public class StepView extends View {
 
     public void setStepDescriptions(String[] descriptions) {
         mDescriptions = descriptions;
-        if (mDescriptions == null || mDescriptions.length != mTotolStep) {
+        if (mDescriptions == null || mDescriptions.length != mTotalStep) {
             throw new RuntimeException("The descriptions doesn't match the steps");
         }
         invalidate();
@@ -122,11 +122,11 @@ public class StepView extends View {
         height -= paddingTop + paddingBottom;
         width -= paddingLeft + paddingRight;
 
-        boolean withDesc = mDescriptions != null && mDescriptions.length == mTotolStep;
+        boolean withDesc = mDescriptions != null && mDescriptions.length == mTotalStep;
         float dotY = (withDesc ? height / 3 : height / 2) + paddingTop;
         float textY = dotY + mStepRadius + mTextSize + PADDING;
 
-        if (mTotolStep == 1) {
+        if (mTotalStep == 1) {
             float dotX = width / 2 + paddingLeft;
             canvas.drawCircle(dotX, dotY, mStepRadius, mCurrentStep >= 0 ? mDonePaint : mTodoPaint);
             if (withDesc) {
@@ -142,15 +142,15 @@ public class StepView extends View {
                 int leftMargin = firstStepDesc.length() * mTextSize / 2;
                 leftMargin = leftMargin > mStepRadius ? leftMargin : 0;
 
-                String lastStepDesc = mDescriptions[mTotolStep - 1];
+                String lastStepDesc = mDescriptions[mTotalStep - 1];
                 int rightMargin = lastStepDesc.length() * mTextSize / 2;
                 rightMargin = rightMargin > mStepRadius ? rightMargin : 0;
 
                 float dotX = leftMargin + paddingLeft;
                 // we should draw the dot up in the center of the description
                 // the vertical center where to draw
-                int pathLength = (width - (mTotolStep * 2 * mStepRadius) - leftMargin - rightMargin) / mTotolPath;
-                for (int i = 0; i < mTotolStep; i++) {
+                int pathLength = (width - (mTotalStep * 2 * mStepRadius) - leftMargin - rightMargin) / mTotalPath;
+                for (int i = 0; i < mTotalStep; i++) {
                     canvas.drawCircle(dotX, dotY, mStepRadius, mCurrentStep >= i ? mDonePaint : mTodoPaint);
                     String text = mDescriptions[i];
                     int textLen = text.length() * mTextSize;
@@ -158,7 +158,7 @@ public class StepView extends View {
                     mTodoPaint.setTextSize(mTextSize);
                     canvas.drawText(text, textStartX, textY, mTextPaint);
                     dotX += mStepRadius;
-                    if (i < mTotolStep - 1) {
+                    if (i < mTotalStep - 1) {
                         canvas.drawLine(dotX, dotY, dotX + pathLength, dotY, mCurrentStep > i ? mDonePaint : mTodoPaint);
                         dotX += pathLength + mStepRadius;
                     }
@@ -166,12 +166,12 @@ public class StepView extends View {
             } else {
                 float xPos = mStepRadius + paddingLeft;
                 // compute the length of the path line
-                int pathLength = (width - (mTotolStep * 2 * mStepRadius)) / mTotolPath;
+                int pathLength = (width - (mTotalStep * 2 * mStepRadius)) / mTotalPath;
 
-                for (int i = 0; i < mTotolStep; i++) {
+                for (int i = 0; i < mTotalStep; i++) {
                     canvas.drawCircle(xPos, dotY, mStepRadius, mCurrentStep >= i ? mDonePaint : mTodoPaint);
                     xPos += mStepRadius;
-                    if (i < mTotolStep - 1) {
+                    if (i < mTotalStep - 1) {
                         canvas.drawLine(xPos, dotY, xPos + pathLength, dotY, mCurrentStep > i ? mDonePaint : mTodoPaint);
                         xPos += pathLength + mStepRadius;
                     }

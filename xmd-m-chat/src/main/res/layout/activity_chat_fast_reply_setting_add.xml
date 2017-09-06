@@ -62,7 +62,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/shape_r4_stoke_white"
                     android:gravity="center"
                     android:minHeight="28dp"
                     android:minWidth="64dp"

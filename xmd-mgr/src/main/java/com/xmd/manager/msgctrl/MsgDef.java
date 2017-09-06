@@ -68,7 +68,7 @@ public class MsgDef {
     /**
      * ChatController, start to chat with someone
      */
-    public static final int MSG_DEF_START_CHAT = 0x0024;
+
     public static final int MSG_DEF_SAVE_CHAT_USER = 0x0241;
     public static final int MSG_DEF_GET_CONVERSATION_LIST = 0x0242;
     public static final int MSG_DEF_GET_CHAT_USER = 0x0243;
@@ -139,7 +139,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_MARKETING_ITEMS = 0x0067;
     public static final int MSG_DEF_GET_SERVICE_ITEMS_LIST = 0x0068;
     public static final int MSG_DEF_MODIFY_PASSWORD = 0x0069;
-    public static final int MSG_DEF_GET_BAD_COMMENT_LIST = 0x0070;
     public static final int MSG_DEF_BAD_COMMENT_DETAIL = 0x0071;
     public static final int MSG_DEF_CHANGE_COMMENT_STATUS = 0x0072;
     public static final int MSG_DEF_TECH_BAD_COMMENT = 0x0073;

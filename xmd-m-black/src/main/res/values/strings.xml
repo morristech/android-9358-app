@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">xmd-m-black</string>
+    <string name="all_data_load_finish">----------已经全部加载完毕----------</string>
 </resources>

@@ -20,7 +20,7 @@
             android:layout_width="@dimen/search_view_height"
             android:layout_height="@dimen/search_view_height"
             android:layout_marginRight="@dimen/margin_10"
-            android:background="@drawable/icon22"/>
+            android:src="@drawable/icon22"/>
 
         <LinearLayout
             android:layout_width="0dp"

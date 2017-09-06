@@ -51,8 +51,8 @@ public class AllTechBadCommentActivity extends BaseActivity {
         endTime = DateUtil.getCurrentDate();
         currentSortType = RequestConstant.COMMENT_SORT_COUNT;
 
-        setRightVisible(true, "周", ResourceUtils.getDrawable(R.drawable.allow_down_icon), view -> {
-            final String[] items = new String[]{"日", "周", "月", "季", "年", "累计"};
+        setRightVisible(true, "本周", ResourceUtils.getDrawable(R.drawable.allow_down_icon), view -> {
+            final String[] items = new String[]{"今天", "本周", "本月", "本季", "本年", "累计"};
             DropDownMenuDialog.getDropDownMenuDialog(AllTechBadCommentActivity.this, items, (index -> {
                 switch (index) {
                     case 0:

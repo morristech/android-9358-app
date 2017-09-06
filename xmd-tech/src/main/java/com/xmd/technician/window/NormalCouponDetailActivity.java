@@ -146,7 +146,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
             mTvCommission.setText(String.valueOf(couponInfo.actValue));
         }
 
-        mTvCouponDuration.setText(couponInfo.useTimePeriod);
+        mTvCouponDuration.setText(couponInfo.useTimePeriod+"\n"+couponInfo.couponPeriod+"\n"+(couponInfo.userGetCount==0?"不限领取数量":String.format("每人限领%s张",String.valueOf(couponInfo.userGetCount))));
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);

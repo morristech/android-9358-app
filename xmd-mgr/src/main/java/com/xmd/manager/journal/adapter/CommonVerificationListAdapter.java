@@ -14,7 +14,8 @@ import com.xmd.manager.R;
 import com.xmd.manager.beans.CheckInfo;
 import com.xmd.manager.beans.PayOrderDetailBean;
 import com.xmd.manager.beans.VerificationCouponDetailBean;
-import com.xmd.manager.chat.CommonUtils;
+
+import com.xmd.manager.common.CommonUtils;
 import com.xmd.manager.databinding.CheckInfoListItemBinding;
 import com.xmd.manager.verification.VerificationListListener;
 

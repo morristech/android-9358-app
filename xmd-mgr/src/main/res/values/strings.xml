@@ -164,12 +164,12 @@
 
     <string name="order_list_item_not_decided">到店选择</string>
     <string name="order_list_item_loading">点击或者上拉，加载更多数据</string>
-    <string name="order_list_item_no_more"> ^_^, 没有更多数据</string>
+    <string name="order_list_item_no_more">----------已经全部加载完毕----------</string>
     <string name="order_list_item_empty">=_=!!, 还没有数据哦</string>
 
     <string name="verification_record_list_item_loading">点击或者上拉，加载更多数据</string>
     <string name="verification_record_list_item_next_month">点击或者上拉，加载下个月数据</string>
-    <string name="verification_record_list_item_no_more"> ^_^, 核销记录已加载完毕</string>
+    <string name="verification_record_list_item_no_more">----------已经全部加载完毕----------</string>
     <string name="verification_record_list_item_empty">=_=!!, 还没有数据哦</string>
 
     <string name="order_detail_delete_order_confirm">确认删除订单</string>
@@ -276,7 +276,7 @@
     <string name="layout_order_title">订单</string>
     <string name="layout_order_check_detail">查看详情</string>
 
-    <string name="layout_technician_ranking_title">本周排行榜</string>
+    <string name="layout_technician_ranking_title">排行榜</string>
     <string name="layout_technician_ranking_check_all">全部</string>
     <string name="layout_technician_star_register_user">拓客之星</string>
     <string name="layout_technician_star_sales">销售之星</string>
@@ -372,6 +372,7 @@
     <string name="deliver_coupon_activity_title">发券</string>
     <string name="deliver_coupon_activity_select_tips">请选择优惠券</string>
     <string name="search_customer_activity_search_hint">请输入用户名称或者手机号码</string>
+    <string name="search_pay_activity_search_hint">输入客户手机或技师编号</string>
     <string name="search_club_activity_search_hint">按名称搜索会所</string>
     <string name="alert_tips_title">温馨提示</string>
     <string name="alert_top_no_data">你尚未拥有优惠券</string>
@@ -415,7 +416,7 @@
     <string name="active_customer">活跃客户</string>
     <string name="valid_customer">有效客户</string>
     <string name="group_by_behavior">按客户行为</string>
-    <string name="group_by_tech">按拓客技师</string>
+    <string name="group_by_tech">按拓客者</string>
     <string name="group_by_customize">自定义分组</string>
     <string name="select_customize">选择客户</string>
     <string name="select_activity">选择活动</string>
@@ -562,6 +563,7 @@
     <string name="group_introduce_text">暂无分组\n\n您可以通过给客户添加分组来进行分类\n分组用户可用于群发消息</string>
     <string name="new_create">新建</string>
     <string name="create_group">新建分组</string>
+    <string name="new_add_group">添加分组</string>
     <string name="group_list">分组列表</string>
     <string name="edit_group">编辑分组</string>
     <string name="delete_group">删除分组</string>
@@ -672,4 +674,8 @@
     <string name="personal_ranking_toker">拓客之星</string>
     <string name="personal_ranking_sale">销售之星</string>
     <string name="personal_ranking_service">服务之星</string>
+    <string name="coupon_code_item">(优惠券)</string>
+    <!--优化-->
+    <string name="all_data_load_finish">----------已经全部加载完毕----------</string>
+    <string name="coupon_fragment_coupon_reward">提成 %s元</string>
 </resources>

@@ -50,9 +50,6 @@ import com.xmd.manager.beans.RegisterInfo;
 import com.xmd.manager.beans.TechBadComment;
 import com.xmd.manager.beans.TechRankingBean;
 import com.xmd.manager.beans.VisitInfo;
-import com.xmd.manager.chat.CommonUtils;
-import com.xmd.manager.chat.EmchatConstant;
-import com.xmd.manager.chat.SmileUtils;
 import com.xmd.manager.common.DescribeMesaageUtil;
 import com.xmd.manager.common.ItemSlideHelper;
 import com.xmd.manager.common.Logger;
@@ -348,13 +345,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
                 bindCustomerHeaderListItemViewHolder(holder, obj);
 
-            } else if (holder instanceof ConversationListItemViewHolder) {
-
-                if (!(obj instanceof EMConversation)) {
-                    return;
-                }
-                bindConversationListItemViewHolder(holder, obj);
-
             } else if (holder instanceof CouponItemViewHolder) {
 
                 if (!(obj instanceof CouponInfo)) {
@@ -389,9 +379,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else if (holder instanceof TechPersonalRankingListItemViewHolder) {
                 bindTechPersonalRankingViewHolder(holder, obj, position);
             }
-        } else {
-            bindDataisEmptyItemViewHolder(holder);
         }
+//        else {
+//            bindDataisEmptyItemViewHolder(holder);
+//        }
 
     }
 
@@ -535,61 +526,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         viewHolder.mTvGroupCount.setText(String.format(ResourceUtils.getString(R.string.person_unit_format), customer.groupCount));
     }
 
-    /**
-     * 聊天联系人
-     *
-     * @param holder
-     * @param obj
-     */
-    private void bindConversationListItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
-        final EMConversation conversation = (EMConversation) obj;
-
-        ConversationListItemViewHolder conversationHolder = (ConversationListItemViewHolder) holder;
-        conversationHolder.itemView.scrollTo(0, 0);
-//        conversationHolder.mName.setText(Utils.briefString(conversation.getUserName(), 6));
-        if (conversation.getUnreadMsgCount() > 0) {
-            conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
-            conversationHolder.mUnread.setVisibility(View.VISIBLE);
-        } else {
-            conversationHolder.mUnread.setVisibility(View.INVISIBLE);
-        }
-
-        if (conversation.getAllMsgCount() != 0) {
-            // 把最后一条消息的内容作为item的message内容
-            EMMessage lastMessage = conversation.getLastMessage();
-            Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
-            conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
-            conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-            try {
-                if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
-                    String nickname = "";
-                    try {
-                        nickname = lastMessage.getStringAttribute(EmchatConstant.KEY_NAME);
-                    } catch (Exception e) {
-                        nickname = "匿名用户";
-                    }
-                    String header = "";
-                    try {
-                        header = lastMessage.getStringAttribute(EmchatConstant.KEY_HEADER);
-                    } catch (Exception e) {
-//                        Logger.v("nickname: " + nickname + " -> " + e.getMessage());
-                    }
-//                    EmchatUserHelper.saveUser(conversation.getUserName(), nickname, header);
-                }
-//                EmchatUserHelper.setUserAvatarAndNick(mContext, conversation.getUserName(), conversationHolder.mAvatar, conversationHolder.mName);
-            } catch (NullPointerException e) {
-                Logger.e(e.getMessage());
-            }
-        }
-        conversationHolder.isOperationVisible = true;
-
-        conversationHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(conversation));
-        conversationHolder.itemView.setOnLongClickListener(v -> {
-            mCallback.onLongClicked(conversation);
-            return false;
-        });
-    }
-
     private void bindUserCommentListItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
         final CommentDetailBean commentBean = (CommentDetailBean) obj;
         UserCommentListItemViewHolder viewHolder = (UserCommentListItemViewHolder) holder;
@@ -685,10 +621,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
 
-    private void bindDataisEmptyItemViewHolder(RecyclerView.ViewHolder holder) {
-        DataisEmptyViewHolder mHolder = (DataisEmptyViewHolder) holder;
-        ((DataisEmptyViewHolder) holder).mAlertText.setText("您尚未拥有可用优惠券/现金券");
-    }
+//    private void bindDataisEmptyItemViewHolder(RecyclerView.ViewHolder holder) {
+//        DataisEmptyViewHolder mHolder = (DataisEmptyViewHolder) holder;
+//        ((DataisEmptyViewHolder) holder).mAlertText.setText("您尚未拥有可用优惠券/现金券");
+//    }
 
     private void bindClubItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
         ClubListItemViewHolder clubHolder = (ClubListItemViewHolder) holder;
@@ -1034,7 +970,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         OnlinePayBean onLinePay = (OnlinePayBean) obj;
         Glide.with(mContext).load(onLinePay.avatarUrl).into(viewHolder.customerHead);
         if (Utils.isNotEmpty(onLinePay.userName)) {
-            viewHolder.tvCustomerName.setText(onLinePay.userName);
+            viewHolder.tvCustomerName.setText(Utils.StrSubstring(8,onLinePay.userName,true));
         } else {
             viewHolder.tvCustomerName.setText("匿名用户");
         }
@@ -1098,6 +1034,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         String total = String.format("%1.2f", bean.totalAmount / 100f);
         Spannable ss = new SpannableString(total);
         ss.setSpan(new TextAppearanceSpan(mContext, R.style.text_float), total.length() - 2, total.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        viewHolder.tvIncomeTotalMoney.setText(ss);
         viewHolder.tvOnceCardIncome.setText(String.format("%1.2f", bean.itemCardAmount / 100f));
         viewHolder.tvGrabIncome.setText(String.format("%1.2f", bean.paidServiceItemAmount / 100f));
         viewHolder.tvPaidIncome.setText(String.format("%1.2f", bean.paidCouponAmount / 100f));
@@ -1346,15 +1283,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
 
-    static class DataisEmptyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.data_is_empty)
-        TextView mAlertText;
-
-        DataisEmptyViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
+//    static class DataisEmptyViewHolder extends RecyclerView.ViewHolder {
+//        @BindView(R.id.data_is_empty)
+//        TextView mAlertText;
+//
+//        DataisEmptyViewHolder(View itemView) {
+//            super(itemView);
+//            ButterKnife.bind(this, itemView);
+//        }
+//    }
 
     static class ClubListItemViewHolder extends RecyclerView.ViewHolder {
 

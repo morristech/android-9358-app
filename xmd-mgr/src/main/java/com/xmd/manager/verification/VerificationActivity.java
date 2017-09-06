@@ -19,7 +19,7 @@ import com.xmd.manager.beans.CheckInfo;
 import com.xmd.manager.beans.PayOrderDetailBean;
 import com.xmd.manager.beans.VerificationCouponDetailBean;
 import com.xmd.manager.beans.VerificationSomeBean;
-import com.xmd.manager.chat.CommonUtils;
+import com.xmd.manager.common.CommonUtils;
 import com.xmd.manager.databinding.ActivityVerificationBinding;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;

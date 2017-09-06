@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_page_head"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/main_head_height"
-    android:background="@color/colorPrimary">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/main_page_head"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_head_height"
+                android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:id="@+id/rl_main_head_tech_rest"
@@ -19,81 +20,93 @@
             android:id="@+id/main_head_avatar"
             android:layout_width="@dimen/main_head_avatar_height"
             android:layout_height="@dimen/main_head_avatar_height"
-            android:src="@drawable/icon22" />
+            android:src="@drawable/icon22"/>
 
     </RelativeLayout>
 
-
-    <TextView
-        android:id="@+id/main_head_tech_name"
-        android:layout_width="@dimen/coupon_item_detail_height"
+    <LinearLayout
+        android:id="@+id/ll_tech_info"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/rl_main_head_tech_rest"
         android:layout_marginTop="@dimen/margin_10"
         android:layout_toRightOf="@id/rl_main_head_tech_rest"
-        android:enabled="true"
-        android:singleLine="true"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/fontHead" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/main_head_tech_name"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontHead"
+            tools:text="张三里斯王无马子拉大"/>
 
-    <TextView
-        android:id="@+id/main_head_tech_serial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/main_head_tech_name"
-        android:layout_below="@id/main_head_tech_name"
-        android:layout_marginTop="@dimen/margin_5"
-        android:background="@drawable/bg_main_tech_serial"
-        android:gravity="center"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="A0001"
-        android:textColor="@color/color_white"
-        android:textSize="13sp"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/main_head_tech_serial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/main_head_tech_name"
+            android:layout_below="@id/main_head_tech_name"
+            android:layout_marginTop="@dimen/margin_5"
+            android:background="@drawable/bg_main_tech_serial"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/color_white"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:text="A0001"/>
 
-    <TextView
-        android:id="@+id/main_head_tech_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/main_head_tech_name"
-        android:layout_below="@id/main_head_tech_serial"
-        android:layout_marginTop="@dimen/margin_5"
-        android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/fontNormal" />
+        <TextView
+            android:id="@+id/main_head_tech_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/main_head_tech_name"
+            android:layout_below="@id/main_head_tech_serial"
+            android:layout_marginTop="@dimen/margin_5"
+            android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontNormal"
+            tools:text="aaaa"/>
 
-    <ImageView
-        android:id="@+id/btn_main_tech_rest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/main_head_tech_name"
-        android:layout_marginRight="@dimen/margin_15"
-        android:src="@drawable/btn_main_rest_default"
-        android:visibility="gone" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/work_status_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/btn_main_tech_rest"
-        android:visibility="gone">
-
+        android:layout_alignTop="@id/ll_tech_info"
+        android:visibility="visible">
         <ImageView
-            android:id="@+id/btn_main_tech_busy"
+            android:id="@+id/btn_main_tech_rest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_10"
-            android:src="@drawable/btn_main_busy_default" />
+            android:layout_alignParentRight="true"
+
+            android:layout_marginRight="@dimen/margin_15"
+            android:src="@drawable/btn_main_rest_default"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/btn_main_tech_free"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_10"
-            android:src="@drawable/btn_main_free_selected" />
+            android:src="@drawable/btn_main_free_selected"/>
+
+        <ImageView
+            android:id="@+id/btn_main_tech_busy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_10"
+            android:src="@drawable/btn_main_busy_default"/>
+
+
     </LinearLayout>
 
 
@@ -105,6 +118,6 @@
         android:layout_below="@+id/work_status_layout"
         android:layout_marginTop="@dimen/margin_20"
         android:src="@drawable/image_main_integral"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>
