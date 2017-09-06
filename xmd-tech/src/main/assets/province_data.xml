@@ -1,0 +1,409 @@
+<root>
+    <province name="安徽省" code="340000">
+        <city name="安庆市" code="340800" />
+        <city name="蚌埠市" code="340300" />
+        <city name="亳州市" code="341600" />
+        <city name="巢湖市" code="341400" />
+        <city name="池州市" code="341700" />
+        <city name="滁州市" code="341100" />
+        <city name="阜阳市" code="341200" />
+        <city name="合肥市" code="340100" />
+        <city name="淮北市" code="340600" />
+        <city name="淮南市" code="340400" />
+        <city name="黄山市" code="341000" />
+        <city name="六安市" code="341500" />
+        <city name="马鞍山市" code="340500" />
+        <city name="宿州市" code="341300" />
+        <city name="铜陵市" code="340700" />
+        <city name="芜湖市" code="340200" />
+        <city name="宣城市" code="341800" />
+    </province>
+    <province name="北京市" code="110000">
+        <city name="市辖区" code="110100" />
+        <city name="县" code="110200" />
+    </province>
+    <province name="福建省" code="350000">
+        <city name="福州市" code="350100" />
+        <city name="龙岩市" code="350800" />
+        <city name="南平市" code="350700" />
+        <city name="宁德市" code="350900" />
+        <city name="莆田市" code="350300" />
+        <city name="泉州市" code="350500" />
+        <city name="三明市" code="350400" />
+        <city name="厦门市" code="350200" />
+        <city name="漳州市" code="350600" />
+    </province>
+    <province name="甘肃省" code="620000">
+        <city name="白银市" code="620400" />
+        <city name="定西市" code="621100" />
+        <city name="甘南藏族自治州" code="623000" />
+        <city name="嘉峪关市" code="620200" />
+        <city name="金昌市" code="620300" />
+        <city name="酒泉市" code="620900" />
+        <city name="兰州市" code="620100" />
+        <city name="临夏回族自治州" code="622900" />
+        <city name="陇南市" code="621200" />
+        <city name="平凉市" code="620800" />
+        <city name="庆阳市" code="621000" />
+        <city name="天水市" code="620500" />
+        <city name="武威市" code="620600" />
+        <city name="张掖市" code="620700" />
+    </province>
+    <province name="广东省" code="440000">
+        <city name="潮州市" code="445100" />
+        <city name="东莞市" code="441900" />
+        <city name="佛山市" code="440600" />
+        <city name="广州市" code="440100" />
+        <city name="河源市" code="441600" />
+        <city name="惠州市" code="441300" />
+        <city name="江门市" code="440700" />
+        <city name="揭阳市" code="445200" />
+        <city name="茂名市" code="440900" />
+        <city name="梅州市" code="441400" />
+        <city name="清远市" code="441800" />
+        <city name="汕头市" code="440500" />
+        <city name="汕尾市" code="441500" />
+        <city name="韶关市" code="440200" />
+        <city name="深圳市" code="440300" />
+        <city name="阳江市" code="441700" />
+        <city name="云浮市" code="445300" />
+        <city name="湛江市" code="440800" />
+        <city name="肇庆市" code="441200" />
+        <city name="中山市" code="442000" />
+        <city name="珠海市" code="440400" />
+    </province>
+    <province name="广西壮族自治区" code="450000">
+        <city name="百色市" code="451000" />
+        <city name="北海市" code="450500" />
+        <city name="崇左市" code="451400" />
+        <city name="防城港市" code="450600" />
+        <city name="贵港市" code="450800" />
+        <city name="桂林市" code="450300" />
+        <city name="河池市" code="451200" />
+        <city name="贺州市" code="451100" />
+        <city name="来宾市" code="451300" />
+        <city name="柳州市" code="450200" />
+        <city name="南宁市" code="450100" />
+        <city name="钦州市" code="450700" />
+        <city name="梧州市" code="450400" />
+        <city name="玉林市" code="450900" />
+    </province>
+    <province name="贵州省" code="520000">
+        <city name="安顺市" code="520400" />
+        <city name="毕节地区" code="522400" />
+        <city name="贵阳市" code="520100" />
+        <city name="六盘水市" code="520200" />
+        <city name="黔东南苗族侗族自治州" code="522600" />
+        <city name="黔南布依族苗族自治州" code="522700" />
+        <city name="黔西南布依族苗族自治州" code="522300" />
+        <city name="铜仁地区" code="522200" />
+        <city name="遵义市" code="520300" />
+    </province>
+    <province name="海南省" code="460000">
+        <city name="三亚市" code="460200" />
+        <city name="海口市" code="460100" />
+        <city name="省直辖县级行政单位" code="469000" />
+    </province>
+    <province name="河北省" code="130000">
+        <city name="保定市" code="130600" />
+        <city name="沧州市" code="130900" />
+        <city name="承德市" code="130800" />
+        <city name="邯郸市" code="130400" />
+        <city name="衡水市" code="131100" />
+        <city name="廊坊市" code="131000" />
+        <city name="秦皇岛市" code="130300" />
+        <city name="石家庄市" code="130100" />
+        <city name="唐山市" code="130200" />
+        <city name="邢台市" code="130500" />
+        <city name="张家口市" code="130700" />
+    </province>
+    <province name="河南省" code="410000">
+        <city name="安阳市" code="410500" />
+        <city name="鹤壁市" code="410600" />
+        <city name="焦作市" code="410800" />
+        <city name="开封市" code="410200" />
+        <city name="洛阳市" code="410300" />
+        <city name="漯河市" code="411100" />
+        <city name="南阳市" code="411300" />
+        <city name="平顶山市" code="410400" />
+        <city name="濮阳市" code="410900" />
+        <city name="三门峡市" code="411200" />
+        <city name="商丘市" code="411400" />
+        <city name="新乡市" code="410700" />
+        <city name="信阳市" code="411500" />
+        <city name="许昌市" code="411000" />
+        <city name="郑州市" code="410100" />
+        <city name="周口市" code="411600" />
+        <city name="驻马店市" code="411700" />
+    </province>
+    <province name="黑龙江省" code="230000">
+        <city name="大庆市" code="230600" />
+        <city name="大兴安岭地区" code="232700" />
+        <city name="哈尔滨市" code="230100" />
+        <city name="鹤岗市" code="230400" />
+        <city name="黑河市" code="231100" />
+        <city name="鸡西市" code="230300" />
+        <city name="佳木斯市" code="230800" />
+        <city name="牡丹江市" code="231000" />
+        <city name="七台河市" code="230900" />
+        <city name="齐齐哈尔市" code="230200" />
+        <city name="双鸭山市" code="230500" />
+        <city name="绥化市" code="231200" />
+        <city name="伊春市" code="230700" />
+    </province>
+    <province name="湖北省" code="420000">
+        <city name="鄂州市" code="420700" />
+        <city name="恩施土家族苗族自治州" code="422800" />
+        <city name="黄冈市" code="421100" />
+        <city name="黄石市" code="420200" />
+        <city name="荆门市" code="420800" />
+        <city name="荆州市" code="421000" />
+        <city name="十堰市" code="420300" />
+        <city name="省直辖行政单位" code="429000" />
+        <city name="随州市" code="421300" />
+        <city name="武汉市" code="420100" />
+        <city name="咸宁市" code="421200" />
+        <city name="襄樊市" code="420600" />
+        <city name="孝感市" code="420900" />
+        <city name="宜昌市" code="420500" />
+    </province>
+    <province name="湖南省" code="430000">
+        <city name="长沙市" code="430100" />
+        <city name="常德市" code="430700" />
+        <city name="郴州市" code="431000" />
+        <city name="衡阳市" code="430400" />
+        <city name="怀化市" code="431200" />
+        <city name="娄底市" code="431300" />
+        <city name="邵阳市" code="430500" />
+        <city name="湘潭市" code="430300" />
+        <city name="湘西土家族苗族自治州" code="433100" />
+        <city name="益阳市" code="430900" />
+        <city name="永州市" code="431100" />
+        <city name="岳阳市" code="430600" />
+        <city name="张家界市" code="430800" />
+        <city name="株洲市" code="430200" />
+    </province>
+    <province name="吉林省" code="220000">
+        <city name="白城市" code="220800" />
+        <city name="白山市" code="220600" />
+        <city name="长春市" code="220100" />
+        <city name="吉林市" code="220200" />
+        <city name="辽源市" code="220400" />
+        <city name="四平市" code="220300" />
+        <city name="松原市" code="220700" />
+        <city name="通化市" code="220500" />
+        <city name="延边朝鲜族自治州" code="222400" />
+    </province>
+    <province name="江苏省" code="320000">
+        <city name="常州市" code="320400" />
+        <city name="淮安市" code="320800" />
+        <city name="连云港市" code="320700" />
+        <city name="南京市" code="320100" />
+        <city name="南通市" code="320600" />
+        <city name="苏州市" code="320500" />
+        <city name="宿迁市" code="321300" />
+        <city name="泰州市" code="321200" />
+        <city name="无锡市" code="320200" />
+        <city name="徐州市" code="320300" />
+        <city name="盐城市" code="320900" />
+        <city name="扬州市" code="321000" />
+        <city name="镇江市" code="321100" />
+    </province>
+    <province name="江西省" code="360000">
+        <city name="抚州市" code="361000" />
+        <city name="赣州市" code="360700" />
+        <city name="吉安市" code="360800" />
+        <city name="景德镇市" code="360200" />
+        <city name="九江市" code="360400" />
+        <city name="南昌市" code="360100" />
+        <city name="萍乡市" code="360300" />
+        <city name="上饶市" code="361100" />
+        <city name="新余市" code="360500" />
+        <city name="宜春市" code="360900" />
+        <city name="鹰潭市" code="360600" />
+    </province>
+    <province name="辽宁省" code="210000">
+        <city name="鞍山市" code="210300" />
+        <city name="本溪市" code="210500" />
+        <city name="朝阳市" code="211300" />
+        <city name="大连市" code="210200" />
+        <city name="丹东市" code="210600" />
+        <city name="抚顺市" code="210400" />
+        <city name="阜新市" code="210900" />
+        <city name="葫芦岛市" code="211400" />
+        <city name="锦州市" code="210700" />
+        <city name="辽阳市" code="211000" />
+        <city name="盘锦市" code="211100" />
+        <city name="沈阳市" code="210100" />
+        <city name="铁岭市" code="211200" />
+        <city name="营口市" code="210800" />
+    </province>
+    <province name="内蒙古自治区" code="150000">
+        <city name="阿拉善盟" code="152900" />
+        <city name="巴彦淖尔市" code="150800" />
+        <city name="包头市" code="150200" />
+        <city name="赤峰市" code="150400" />
+        <city name="鄂尔多斯市" code="150600" />
+        <city name="呼和浩特市" code="150100" />
+        <city name="呼伦贝尔市" code="150700" />
+        <city name="通辽市" code="150500" />
+        <city name="乌海市" code="150300" />
+        <city name="乌兰察布市" code="150900" />
+        <city name="锡林郭勒盟" code="152500" />
+        <city name="兴安盟" code="152200" />
+    </province>
+    <province name="宁夏回族自治区" code="640000">
+        <city name="固原市" code="640400" />
+        <city name="石嘴山市" code="640200" />
+        <city name="吴忠市" code="640300" />
+        <city name="银川市" code="640100" />
+        <city name="中卫市" code="640500" />
+    </province>
+    <province name="青海省" code="630000">
+        <city name="果洛藏族自治州" code="632600" />
+        <city name="海北藏族自治州" code="632200" />
+        <city name="海东地区" code="632100" />
+        <city name="海南藏族自治州" code="632500" />
+        <city name="海西蒙古族藏族自治州" code="632800" />
+        <city name="黄南藏族自治州" code="632300" />
+        <city name="西宁市" code="630100" />
+        <city name="玉树藏族自治州" code="632700" />
+    </province>
+    <province name="山东省" code="370000">
+        <city name="滨州市" code="371600" />
+        <city name="德州市" code="371400" />
+        <city name="东营市" code="370500" />
+        <city name="菏泽市" code="371700" />
+        <city name="济南市" code="370100" />
+        <city name="济宁市" code="370800" />
+        <city name="莱芜市" code="371200" />
+        <city name="聊城市" code="371500" />
+        <city name="临沂市" code="371300" />
+        <city name="青岛市" code="370200" />
+        <city name="日照市" code="371100" />
+        <city name="泰安市" code="370900" />
+        <city name="威海市" code="371000" />
+        <city name="潍坊市" code="370700" />
+        <city name="烟台市" code="370600" />
+        <city name="枣庄市" code="370400" />
+        <city name="淄博市" code="370300" />
+    </province>
+    <province name="山西省" code="140000">
+        <city name="长治市" code="140400" />
+        <city name="大同市" code="140200" />
+        <city name="晋城市" code="140500" />
+        <city name="晋中市" code="140700" />
+        <city name="临汾市" code="141000" />
+        <city name="吕梁市" code="141100" />
+        <city name="朔州市" code="140600" />
+        <city name="太原市" code="140100" />
+        <city name="忻州市" code="140900" />
+        <city name="阳泉市" code="140300" />
+        <city name="运城市" code="140800" />
+    </province>
+    <province name="陕西省" code="610000">
+        <city name="安康市" code="610900" />
+        <city name="宝鸡市" code="610300" />
+        <city name="汉中市" code="610700" />
+        <city name="商洛市" code="611000" />
+        <city name="铜川市" code="610200" />
+        <city name="渭南市" code="610500" />
+        <city name="西安市" code="610100" />
+        <city name="咸阳市" code="610400" />
+        <city name="延安市" code="610600" />
+        <city name="榆林市" code="610800" />
+    </province>
+    <province name="上海市" code="310000">
+        <city name="市辖区" code="310100" />
+        <city name="县" code="310200" />
+    </province>
+    <province name="四川省" code="510000">
+        <city name="阿坝藏族羌族自治州" code="513200" />
+        <city name="巴中市" code="511900" />
+        <city name="成都市" code="510100" />
+        <city name="达州市" code="511700" />
+        <city name="德阳市" code="510600" />
+        <city name="甘孜藏族自治州" code="513300" />
+        <city name="广安市" code="511600" />
+        <city name="广元市" code="510800" />
+        <city name="乐山市" code="511100" />
+        <city name="凉山彝族自治州" code="513400" />
+        <city name="眉山市" code="511400" />
+        <city name="绵阳市" code="510700" />
+        <city name="南充市" code="511300" />
+        <city name="内江市" code="511000" />
+        <city name="攀枝花市" code="510400" />
+        <city name="遂宁市" code="510900" />
+        <city name="雅安市" code="511800" />
+        <city name="宜宾市" code="511500" />
+        <city name="资阳市" code="512000" />
+        <city name="自贡市" code="510300" />
+        <city name="泸州市" code="510500" />
+    </province>
+    <province name="天津市" code="120000">
+        <city name="市辖区" code="120100" />
+        <city name="县" code="120200" />
+    </province>
+    <province name="西藏自治区" code="540000">
+        <city name="阿里地区" code="542500" />
+        <city name="昌都地区" code="542100" />
+        <city name="拉萨市" code="540100" />
+        <city name="林芝地区" code="542600" />
+        <city name="那曲地区" code="542400" />
+        <city name="日喀则地区" code="542300" />
+        <city name="山南地区" code="542200" />
+    </province>
+    <province name="新疆维吾尔自治区" code="650000">
+        <city name="阿克苏地区" code="652900" />
+        <city name="阿勒泰地区" code="654300" />
+        <city name="巴音郭楞蒙古自治州" code="652800" />
+        <city name="博尔塔拉蒙古自治州" code="652700" />
+        <city name="昌吉回族自治州" code="652300" />
+        <city name="哈密地区" code="652200" />
+        <city name="和田地区" code="653200" />
+        <city name="喀什地区" code="653100" />
+        <city name="克拉玛依市" code="650200" />
+        <city name="克孜勒苏柯尔克孜自治州" code="653000" />
+        <city name="省直辖行政单位" code="659000" />
+        <city name="石河子市" code="650300" />
+        <city name="塔城地区" code="654200" />
+        <city name="吐鲁番地区" code="652100" />
+        <city name="乌鲁木齐市" code="650100" />
+        <city name="伊犁哈萨克自治州" code="654000" />
+    </province>
+    <province name="云南省" code="530000">
+        <city name="保山市" code="530500" />
+        <city name="楚雄彝族自治州" code="532300" />
+        <city name="大理白族自治州" code="532900" />
+        <city name="德宏傣族景颇族自治州" code="533100" />
+        <city name="迪庆藏族自治州" code="533400" />
+        <city name="红河哈尼族彝族自治州" code="532500" />
+        <city name="昆明市" code="530100" />
+        <city name="丽江市" code="530700" />
+        <city name="临沧市" code="530900" />
+        <city name="怒江傈僳族自治州" code="533300" />
+        <city name="曲靖市" code="530300" />
+        <city name="思茅市" code="530800" />
+        <city name="文山壮族苗族自治州" code="532600" />
+        <city name="西双版纳傣族自治州" code="532800" />
+        <city name="玉溪市" code="530400" />
+        <city name="昭通市" code="530600" />
+    </province>
+    <province name="浙江省" code="330000">
+        <city name="杭州市" code="330100" />
+        <city name="湖州市" code="330500" />
+        <city name="嘉兴市" code="330400" />
+        <city name="金华市" code="330700" />
+        <city name="丽水市" code="331100" />
+        <city name="宁波市" code="330200" />
+        <city name="绍兴市" code="330600" />
+        <city name="台州市" code="331000" />
+        <city name="温州市" code="330300" />
+        <city name="舟山市" code="330900" />
+        <city name="衢州市" code="330800" />
+    </province>
+    <province name="重庆市" code="500000">
+        <city name="市辖区" code="500100" />
+        <city name="县" code="500200" />
+    </province>
+</root>
