@@ -128,12 +128,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_MARK_CHAT_TO_USER,
                 MsgDef.MSG_DEF_GET_CHAT_CATEGORY_LIST,
                 MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST,
-                //-------------------------------------> 联系人列表优化 <---------------------------------
-                MsgDef.MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST,
-                MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST,
-                //   MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
-                MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST,
-                MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL,
+
                 //-------------------------------------> 技师海报 <---------------------------------
                 MsgDef.MSG_DEF_TECH_POSTER_SAVE,
                 MsgDef.MSG_DEF_TECH_POSTER_DELETE,

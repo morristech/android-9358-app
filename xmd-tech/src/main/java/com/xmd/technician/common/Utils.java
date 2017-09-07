@@ -30,7 +30,6 @@ import com.xmd.app.XmdActivityManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.chat.ChatConstant;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -81,10 +80,10 @@ public class Utils {
      */
     public static Map<String, Object> wrapChatParams(String emchatId, String nickname, String avatar, String userType) {
         Map<String, Object> params = new HashMap<>();
-        params.put(ChatConstant.EMCHAT_ID, emchatId);
-        params.put(ChatConstant.EMCHAT_NICKNAME, nickname);
-        params.put(ChatConstant.EMCHAT_AVATAR, avatar);
-        params.put(ChatConstant.EMCHAT_IS_TECH, userType);
+        params.put("emchatId", emchatId);
+        params.put("emchatNickname", nickname);
+        params.put("emchatAvatar", avatar);
+        params.put("isTech", userType);
         return params;
     }
 

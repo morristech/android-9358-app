@@ -162,30 +162,11 @@ public class RequestConstant {
     // 上传打招呼图片
     public static final String URL_UPLOAD_HELLO_TEMPLATE_IMAGE = BASE_URL + "/v2/tech/hello/template/image";
 
-    /**
-     * --------------------------------------> 聊天黑名单 <----------------------------------------
-     */
-    // 技师是否在联系人黑名单中
- //   public static final String URL_IN_USER_BLACKLIST = BASE_URL + "/v2/tech/customer/in/user/blacklist";
 
     //获取会所位置
     public static final String URL_GET_MARK_CHAT_TO_USER = BASE_URL + "/v2/club/location/staticmap";
     public static final String URL_GET_TECH_CHAT_CATEGORY_LIST = BASE_URL + "/v2/tech/chat/category/list";
     public static final String URL_GET_TECH_MARKETING_ITEM_LIST = BASE_URL + "/v2/tech/marketing_item/list";
-
-    /**
-     * --------------------------------------> 联系人改版 <----------------------------------------
-     */
-    //技师全部联系人
-    public static final String URL_GET_TECH_CUSTOMER_USER_ALL_LIST = BASE_URL + "/v2/tech/customer/user/all/list";
-    //技师拓客联系人
-    public static final String URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST = BASE_URL + "/v2/tech/customer/user/register/list";
-    //本店同事列表
-    //   public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2/tech/colleague/list";
-    //最近访客
-    public static final String URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST = BASE_URL + "/v2/tech/customer/user/recent/list";
-    //本店同事详情
-    public static final String URL_CLUB_COLLEAGUE_DETAIL = BASE_URL + "/v2/tech/colleague/detail";
 
     /**
      * --------------------------------------> 技师海报 <----------------------------------------

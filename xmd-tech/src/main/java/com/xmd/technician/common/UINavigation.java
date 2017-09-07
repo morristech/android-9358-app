@@ -12,7 +12,6 @@ import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.clubinvite.ClubInviteActivity;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
@@ -22,7 +21,6 @@ import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.OrderDetailActivity;
 import com.xmd.technician.window.RegisterActivity;
-import com.xmd.technician.window.TechChatActivity;
 import com.xmd.technician.window.UserCreditCenterActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,10 +88,7 @@ public class UINavigation {
     }
 
     public static void gotoChatActivityFromService(Context context, String emChatId) {
-        Intent intent = new Intent(context, TechChatActivity.class);
-        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, emChatId);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        EventBus.getDefault().post(new EventStartChatActivity(emChatId));
     }
 
     public static void gotoOnlinePayNotifyList(Context context) {

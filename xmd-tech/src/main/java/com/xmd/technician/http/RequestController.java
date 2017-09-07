@@ -417,19 +417,6 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST:
                 getTechMarketingList();
                 break;
-            // --------------------------------------> 联系人列表优化 <------------------------------------
-            case MsgDef.MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST:
-                getTechCustomerAllList((Map<String, String>) msg.obj);
-                break;
-            case MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST:
-                getTechCustomerRegisterList((Map<String, String>) msg.obj);
-                break;
-            case MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST:
-                getClubCustomerRecentList();
-                break;
-            case MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL:
-                getCLubEmployeeDetail(msg.obj.toString());
-                break;
             // --------------------------------------> 技师海报 <------------------------------------
             case MsgDef.MSG_DEF_TECH_POSTER_SAVE:
                 doSaveTechPoster((Map<String, String>) msg.obj);
@@ -2045,53 +2032,6 @@ public class RequestController extends AbstractController {
             }
         });
     }
-
-    //获取技师所有联系人列表
-    private void getTechCustomerAllList(Map<String, String> params) {
-        Call<ContactAllListResult> call = getSpaService().techCustomerAllList(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_USER_NAME));
-        call.enqueue(new TokenCheckedCallback<ContactAllListResult>() {
-            @Override
-            protected void postResult(ContactAllListResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //获取技师拓客列表
-    private void getTechCustomerRegisterList(Map<String, String> params) {
-        Call<ContactRegisterListResult> call = getSpaService().techCustomerRegisterList(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_USER_NAME));
-        call.enqueue(new TokenCheckedCallback<ContactRegisterListResult>() {
-            @Override
-            protected void postResult(ContactRegisterListResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //最近访客列表clubCustomerUserRecentList
-    private void getClubCustomerRecentList() {
-        Call<CustomerUserRecentListResult> call = getSpaService().clubCustomerUserRecentList(LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<CustomerUserRecentListResult>() {
-            @Override
-            protected void postResult(CustomerUserRecentListResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    //本店联系人详情
-    private void getCLubEmployeeDetail(String param) {
-        Call<ClubEmployeeDetailResult> call = getSpaService().clubEmployeeDetail(LoginTechnician.getInstance().getToken(), param);
-        call.enqueue(new TokenCheckedCallback<ClubEmployeeDetailResult>() {
-            @Override
-            protected void postResult(ClubEmployeeDetailResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
 
     //保存技师海报
     private void doSaveTechPoster(Map<String, String> params) {

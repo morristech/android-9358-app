@@ -51,7 +51,6 @@ import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.UserRecentBean;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.clubinvite.ClubInviteActivity;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
@@ -1193,7 +1192,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (result.statusCode == 200 && result.respData.echat) {
             // 聊天
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.emchatId,
-                    Utils.isEmpty(bean.userNoteName) ? bean.userName : bean.userNoteName, bean.avatarUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+                    Utils.isEmpty(bean.userNoteName) ? bean.userName : bean.userNoteName, bean.avatarUrl, "customer"));
         } else {
             // 详情
             if (Utils.isEmpty(bean.userId) || Long.parseLong(bean.userId) <= 0) {
