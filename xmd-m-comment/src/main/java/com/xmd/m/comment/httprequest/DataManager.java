@@ -7,6 +7,7 @@ import com.xmd.m.comment.bean.CommentStatusResult;
 import com.xmd.m.comment.bean.ConsumeListResult;
 import com.xmd.m.comment.bean.ContactPermissionResult;
 import com.xmd.m.comment.bean.DeleteCustomerResult;
+import com.xmd.m.comment.bean.HelloCheckRecentlyResult;
 import com.xmd.m.comment.bean.ManagerUserDetailResult;
 import com.xmd.m.comment.bean.RewardListResult;
 import com.xmd.m.comment.bean.TechConsumeListResult;
@@ -53,6 +54,7 @@ public class DataManager {
     public Subscription mContactPermission;
     public Subscription mDeleteCustomer;
     public Subscription mEditUserGroup;
+    public Subscription mHelloStatus;
 
     //评论列表
     public void loadCommentList(Map<String, String> params, NetworkSubscriber<CommentListResult> listener) {
@@ -116,5 +118,9 @@ public class DataManager {
 
     public void editUserGroup(String userId, NetworkSubscriber<UserEditGroupResult> listener) {
         mEditUserGroup = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).userEditGroup(userId), listener);
+    }
+
+    public void getHelloStatus(String userId, NetworkSubscriber<HelloCheckRecentlyResult> listener){
+        mHelloStatus = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).checkHelloRecently(userId),listener);
     }
 }

@@ -41,12 +41,15 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.black.BlackListManager;
+import com.xmd.black.event.InCustomerBlackListEvent;
 import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMenu;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.ChatRowViewFactory;
+import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
 import com.xmd.chat.VoiceManager;
@@ -97,18 +100,19 @@ public class ChatActivity extends BaseActivity {
     private int softwareKeyboardHeight = 0;
 
     private AudioManager audioManager;
-
+    private  String chatId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.chat_activity);
 
-        final String chatId = getIntent().getStringExtra(EXTRA_CHAT_ID);
+        chatId = getIntent().getStringExtra(EXTRA_CHAT_ID);
         if (TextUtils.isEmpty(chatId)) {
             XToast.show("必须传入聊天ID!");
             finish();
             return;
         }
+        BlackListManager.getInstance().judgeInCustomerBlackList(chatId);
         ConversationManager.getInstance().markAllMessagesRead(chatId);
 
         mBinding.recyclerView.setOnSizeChangedListener(new ChatRecyclerView.OnSizeChangedListener() {
@@ -177,6 +181,7 @@ public class ChatActivity extends BaseActivity {
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -243,6 +248,8 @@ public class ChatActivity extends BaseActivity {
         mAdapter.setData(BR.data, mDataList);
         mAdapter.notifyDataSetChanged();
         mBinding.recyclerView.scrollToPosition(newDataList.size() - 1);
+
+
     }
 
     //聊天消息展示
@@ -339,6 +346,12 @@ public class ChatActivity extends BaseActivity {
     @Subscribe
     public void onAppointmentMessage(AppointmentEvent event) {
         XmdChat.getInstance().getMenuFactory().processAppointmentEvent(event);
+    }
+
+    @Subscribe
+    public void inCustomerBlackList(InCustomerBlackListEvent event){
+        ChatSettingManager.getInstance().judgeInCustomerBlack(chatId,event.isInCustomerBlackList);
+
     }
 
     /**

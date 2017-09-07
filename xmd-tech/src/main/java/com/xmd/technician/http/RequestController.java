@@ -407,11 +407,6 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_TECH_RANKING_LIST:
                 getTechPersonalList((Map<String, String>) msg.obj);
                 break;
-            // --------------------------------------> 聊天黑名单 <------------------------------------
-
-            case MsgDef.MSG_DEF_IN_USER_BLACKLIST:
-                inUserBlacklist(msg.obj.toString());
-                break;
             // --------------------------------------> 聊天优化 <------------------------------------
             case MsgDef.MSG_DEF_MARK_CHAT_TO_USER:
                 getMarkChatToUser();
@@ -2008,15 +2003,15 @@ public class RequestController extends AbstractController {
     // -----------------------------------------> 聊天黑名单 <-----------------------------------------
 
     //技师是否在联系人聊天黑名单中
-    private void inUserBlacklist(String friendChatId) {
-        Call<InUserBlacklistResult> call = getSpaService().inUserBlacklist(friendChatId, LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<InUserBlacklistResult>() {
-            @Override
-            protected void postResult(InUserBlacklistResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
+//    private void inUserBlacklist(String friendChatId) {
+//        Call<InUserBlacklistResult> call = getSpaService().inUserBlacklist(friendChatId, LoginTechnician.getInstance().getToken());
+//        call.enqueue(new TokenCheckedCallback<InUserBlacklistResult>() {
+//            @Override
+//            protected void postResult(InUserBlacklistResult result) {
+//                RxBus.getInstance().post(result);
+//            }
+//        });
+//    }
 
     //消息发送成功后回执
     private void getMarkChatToUser() {

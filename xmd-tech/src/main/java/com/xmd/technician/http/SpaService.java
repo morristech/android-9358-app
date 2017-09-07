@@ -726,10 +726,10 @@ public interface SpaService {
                                                    @Query(RequestConstant.KEY_PAGE) String page,
                                                    @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
-    // 查询近期是否打过招呼
-    @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
-    Call<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
-                                                      @Query(RequestConstant.KEY_TOKEN) String userToken);
+//    // 查询近期是否打过招呼
+//    @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
+//    Call<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
+//                                                      @Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 查询联系状态
     @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
@@ -817,9 +817,9 @@ public interface SpaService {
 
     // ------------------------------------------> 聊天黑名单 <----------------------------------------
 
-    @GET(RequestConstant.URL_IN_USER_BLACKLIST)
-    Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
-                                                @Query(RequestConstant.KEY_TOKEN) String userToken);
+//    @GET(RequestConstant.URL_IN_USER_BLACKLIST)
+//    Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
+//                                                @Query(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_MARK_CHAT_TO_USER)

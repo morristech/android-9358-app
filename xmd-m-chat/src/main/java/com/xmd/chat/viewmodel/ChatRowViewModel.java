@@ -25,6 +25,7 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ChatMessageManager;
+import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.event.EventDeleteMessage;
@@ -35,7 +36,6 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
-
 import rx.Observable;
 
 /**
@@ -94,9 +94,18 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
             @Override
             public void onError(int i, String s) {
-                XToast.show("发送失败：" + s);
-                progress.set(false);
-                error.set(true);
+               //当技师被用户拉入黑名单时不进行错误提示
+                if(i==210){
+                    ChatSettingManager.getInstance().judgeInCustomerBlack(chatMessage.getToChatId(),true);
+                    chatMessage.getEmMessage().setStatus(EMMessage.Status.SUCCESS);
+                    progress.set(false);
+                    error.set(false);
+                }else{
+                    XToast.show("发送失败：" + s);
+                    progress.set(false);
+                    error.set(true);
+                }
+
             }
 
             @Override
@@ -113,7 +122,12 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                 error.set(false);
                 break;
             case FAIL:
-                error.set(true);
+                if(ChatSettingManager.getInstance().isInCustomerBlackList(chatMessage.getToChatId())){
+                    error.set(false);
+                }else {
+                    error.set(true);
+                }
+
                 break;
             case CREATE:
             case INPROGRESS:

@@ -280,8 +280,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         );
         mInUserBlacklistSubscription = RxBus.getInstance().toObservable(InUserBlacklistResult.class).subscribe(
                 result -> handlerUserInBlacklist(result));
-
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_USER_BLACKLIST, toChatUserId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MARK_CHAT_TO_USER);
     }
 

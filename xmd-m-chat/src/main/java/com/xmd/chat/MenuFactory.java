@@ -332,6 +332,7 @@ public class MenuFactory {
                         ArrayList<String> dataTypeList = new ArrayList<>();
                         dataTypeList.add(ShareDataManager.DATA_TYPE_JOURNAL);
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
+                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE,"电子期刊");
                         activity.startActivity(intent);
                     }
 
@@ -363,6 +364,7 @@ public class MenuFactory {
                         dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_MIX);
                         dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_CREDIT);
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
+                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE,"特惠商城");
                         activity.startActivity(intent);
                     }
 
@@ -391,7 +393,9 @@ public class MenuFactory {
                         intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST,
                                 (ArrayList<String>) ShareDataManager.getInstance().getMarketingDataTypeList());
+                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE,"营销活动");
                         activity.startActivity(intent);
+
                     }
 
                     @Override

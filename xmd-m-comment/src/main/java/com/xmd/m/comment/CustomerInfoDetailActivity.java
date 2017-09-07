@@ -35,6 +35,7 @@ import com.xmd.m.R2;
 import com.xmd.m.comment.bean.ContactPermissionInfo;
 import com.xmd.m.comment.bean.ContactPermissionResult;
 import com.xmd.m.comment.bean.DeleteCustomerResult;
+import com.xmd.m.comment.bean.HelloCheckRecentlyResult;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.event.UserInfoEvent;
@@ -89,6 +90,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     private UserInfoBean mBean;
     private String contactPhone;
     private CustomerHeadDialog mCustomerHeadDialog;
+    private boolean hadHelloed = false;
 
 
     public static void StartCustomerInfoDetailActivity(Context context, String userId, String fromType, boolean customerIsTech) {
@@ -131,7 +133,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
             showButton();
         } else {
-            loadPermissionInfo();
+           getHelloStatus();
         }
         BlackListManager.getInstance().isInBlackList(userId);
     }
@@ -249,6 +251,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @Subscribe
     public void userInfo(UserInfoBean bean) {
         mBean = bean;
+  //      hideLoading();
     }
 
     @Subscribe
@@ -288,6 +291,26 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             }
 
         }
+    }
+
+    private void getHelloStatus(){
+        DataManager.getInstance().getHelloStatus(userId, new NetworkSubscriber<HelloCheckRecentlyResult>() {
+            @Override
+            public void onCallbackSuccess(HelloCheckRecentlyResult result) {
+                hadHelloed = result.getRespData().equals("Y");
+                if(hadHelloed){
+                    btnEmHello.setImageResource(R.drawable.btn_helloed);
+                }else{
+                    btnEmHello.setImageResource(R.drawable.btn_hello);
+                }
+                loadPermissionInfo();
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                loadPermissionInfo();
+            }
+        });
     }
 
     private void loadPermissionInfo() {
@@ -420,11 +443,15 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @OnClick(R2.id.btn_EmHello)
     public void onBtnEmHelloClicked() {
         if (null != mBean) {
-            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-                EventBus.getDefault().post(new UserInfoEvent(0, 3, mBean));
-            } else {
-                EventBus.getDefault().post(new UserInfoEvent(1, 3, mBean));
-            }
+         if(!hadHelloed){
+             if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
+                 EventBus.getDefault().post(new UserInfoEvent(0, 3, mBean));
+             } else {
+                 EventBus.getDefault().post(new UserInfoEvent(1, 3, mBean));
+             }
+             hadHelloed = true;
+             btnEmHello.setImageResource(R.drawable.btn_helloed);
+         }
         }
     }
 

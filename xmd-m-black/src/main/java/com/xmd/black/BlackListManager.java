@@ -80,7 +80,6 @@ public class BlackListManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                //        EventBus.getDefault().post(new InCustomerBlackListEvent(false, e.getLocalizedMessage()));
                 XToast.show(e.getLocalizedMessage());
             }
         });

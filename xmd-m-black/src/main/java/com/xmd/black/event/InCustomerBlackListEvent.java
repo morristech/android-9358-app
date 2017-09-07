@@ -5,8 +5,8 @@ package com.xmd.black.event;
  */
 
 public class InCustomerBlackListEvent {
-    boolean isInCustomerBlackList;
-    String msg;
+    public boolean isInCustomerBlackList;
+    public String msg;
 
     public InCustomerBlackListEvent(boolean isInCustomerBlackList, String message) {
         this.isInCustomerBlackList = isInCustomerBlackList;

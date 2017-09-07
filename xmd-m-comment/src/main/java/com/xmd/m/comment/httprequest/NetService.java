@@ -8,6 +8,7 @@ import com.xmd.m.comment.bean.CommentStatusResult;
 import com.xmd.m.comment.bean.ConsumeListResult;
 import com.xmd.m.comment.bean.ContactPermissionResult;
 import com.xmd.m.comment.bean.DeleteCustomerResult;
+import com.xmd.m.comment.bean.HelloCheckRecentlyResult;
 import com.xmd.m.comment.bean.ManagerUserDetailResult;
 import com.xmd.m.comment.bean.RewardListResult;
 import com.xmd.m.comment.bean.TechConsumeListResult;
@@ -125,4 +126,7 @@ public interface NetService {
 
     @GET("/spa-manager/api/v2/comment/{commentId}")
     Observable<BaseBean<CommentBean>> getCommentDetail(@Path("commentId") String commentId);
+    // 查询近期是否打过招呼
+    @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
+    Observable<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId);
 }

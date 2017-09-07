@@ -57,6 +57,7 @@ dependencies {
     compile project(':image-crop')
     compile project(':image-selector')
     compile project(':image-tool')
+    compile project(':xmd-m-black')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"

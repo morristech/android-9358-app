@@ -43,6 +43,7 @@ import java.util.Map;
 
 public class ShareListActivity extends BaseActivity {
     public static final String EXTRA_DATA_TYPE_LIST = "extra_data_type_list";
+    public static final String ACTIVITY_TITLE = "activity_title";
 
     private ChatShareListActivityBinding binding;
     private Map<String, List> selectResultMap = new HashMap<>();
@@ -67,6 +68,7 @@ public class ShareListActivity extends BaseActivity {
             finish();
             return;
         }
+        binding.tvTitle.setText(getIntent().getStringExtra(ACTIVITY_TITLE));
         recyclerViewList = new ArrayList<>();
         arrowViewList = new ArrayList<>();
         for (int i = 0; i < dataTypeList.size(); i++) {

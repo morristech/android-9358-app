@@ -32,6 +32,8 @@ public class RequestConstant {
     public static final String URL_EDIT_CUSTOMER = BASE_URL + "/v2/tech/customer/edit";
 
     public static final String URL_DO_GROUP_USER_EDIT_GROUP = BASE_URL + "/v2/manager/group/user/editGroup";
+    // 近期是否打过招呼
+    public static final String URL_CHECK_HELLO_RECENTLY = BASE_URL + "/v2/tech/hello/{customerId}/status";
 
     public static final String KEY_COMMENT_TYPE = "commentType";
     public static final String KEY_END_DATE = "endDate";
@@ -57,4 +59,5 @@ public class RequestConstant {
     public static final String CUSTOMER_TYPE_WX = "wx_user";
     public static final String CUSTOMER_TYPE_TEMP = "temp_user";
     public static final String KEY_EMP_ID = "empId";
+    public static final String KEY_NEW_CUSTOMER_ID = "customerId";
 }

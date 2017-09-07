@@ -53,7 +53,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dp"
-                            android:src="@drawable/icon_contact_fans" />
+                            android:src="@drawable/icon_contact_fans"
+                            android:visibility="gone"/>
 
                         <ImageView
                             android:id="@+id/img_customer_type_02"
@@ -61,7 +62,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dp"
-                            android:src="@drawable/icon_contact_wx" />
+                            android:src="@drawable/icon_contact_wx"
+                            android:visibility="gone"/>
                     </LinearLayout>
 
                     <LinearLayout

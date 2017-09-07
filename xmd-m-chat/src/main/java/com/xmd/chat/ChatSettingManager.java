@@ -140,4 +140,16 @@ public class ChatSettingManager {
             }
         });
     }
+
+    public void judgeInCustomerBlack(String customerChatId,boolean inBlack){
+        if(inBlack){
+            XmdChat.getInstance().getSp().edit().putBoolean(customerChatId,inBlack).apply();
+        }
+
+    }
+
+    public boolean isInCustomerBlackList(String emChatId){
+        return XmdChat.getInstance().getSp().getBoolean(emChatId,false);
+    }
+
 }

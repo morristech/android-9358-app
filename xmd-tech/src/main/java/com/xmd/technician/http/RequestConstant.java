@@ -146,8 +146,7 @@ public class RequestConstant {
     public static final String URL_GET_HELLO_LEFT_COUNT = BASE_URL + "/v2/tech/hello/number/left";
     // 获取技师打招呼列表
     public static final String URL_GET_HELLO_RECORD_LIST = BASE_URL + "/v2/tech/hello/list";
-    // 近期是否打过招呼
-    public static final String URL_CHECK_HELLO_RECENTLY = BASE_URL + "/v2/tech/hello/{customerId}/status";
+
     // 查询最新回复列表
     public static final String URL_CHECK_HELLO_REPLY = BASE_URL + "/v2/tech/hello/list/reply/new";
 
@@ -167,7 +166,7 @@ public class RequestConstant {
      * --------------------------------------> 聊天黑名单 <----------------------------------------
      */
     // 技师是否在联系人黑名单中
-    public static final String URL_IN_USER_BLACKLIST = BASE_URL + "/v2/tech/customer/in/user/blacklist";
+ //   public static final String URL_IN_USER_BLACKLIST = BASE_URL + "/v2/tech/customer/in/user/blacklist";
 
     //获取会所位置
     public static final String URL_GET_MARK_CHAT_TO_USER = BASE_URL + "/v2/club/location/staticmap";
