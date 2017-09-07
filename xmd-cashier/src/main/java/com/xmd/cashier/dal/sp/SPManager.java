@@ -37,15 +37,6 @@ public class SPManager {
         mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
 
-    // ---核销成功
-    public boolean getVerifySuccessSwitch() {
-        return mSharedPreferences.getBoolean(SPConstants.VERIFY_SUCCESS_PRINT_SWITCH, true);
-    }
-
-    public void setVerifySuccessSwitch(boolean status) {
-        mSharedPreferences.edit().putBoolean(SPConstants.VERIFY_SUCCESS_PRINT_SWITCH, status).apply();
-    }
-
     // ---订单接受
     public boolean getOrderAcceptSwitch() {
         return mSharedPreferences.getBoolean(SPConstants.ORDER_ACCEPT_PRINT_SWITCH, true);
@@ -82,7 +73,7 @@ public class SPManager {
         mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_UNPASS_PRINT_SWITCH, status).apply();
     }
 
-    // --微信买单
+    // --扫码买单
     public boolean getOnlinePaySwitch() {
         return mSharedPreferences.getBoolean(SPConstants.ONLINE_PAY_PRINT_SWITCH, true);
     }

@@ -1,6 +1,7 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
@@ -9,6 +10,7 @@ import com.xmd.cashier.contract.VerifyOrderContract;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.BaseBean;
 
 import rx.Observable;
@@ -67,8 +69,7 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
             public void onSuccess(BaseBean o) {
                 mView.hideLoading();
                 mView.showToast("核销成功");
-                printOrderInfoSync(info);
-                mView.finishSelf();
+                printStep(info);
             }
 
             @Override
@@ -79,18 +80,50 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
         });
     }
 
-    private void printOrderInfoSync(final OrderInfo orderInfo) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        VerifyManager.getInstance().printOrder(orderInfo);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+    private void printStep(final OrderInfo info) {
+        mView.showLoading();
+        VerifyManager.getInstance().printOrder(info, true, new Callback() {
+            @Override
+            public void onSuccess(Object o) {
+                mView.hideLoading();
+                new CustomAlertDialogBuilder(mContext)
+                        .setMessage("是否需要打印客户联小票?")
+                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Observable
+                                        .create(new Observable.OnSubscribe<Void>() {
+                                            @Override
+                                            public void call(Subscriber<? super Void> subscriber) {
+                                                VerifyManager.getInstance().printOrder(info, false, null);
+                                                subscriber.onNext(null);
+                                                subscriber.onCompleted();
+                                            }
+                                        })
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe();
+                                mView.finishSelf();
+                            }
+                        })
+                        .setNegativeButton("完成核销", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                mView.finishSelf();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showToast("打印异常:" + error);
+                mView.finishSelf();
+            }
+        });
     }
 }

@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import com.google.zxing.WriterException;
 import com.shidou.commonlibrary.helper.RetryPool;
@@ -14,6 +15,7 @@ import com.xmd.cashier.contract.MemberScanContract;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.AccountManager;
@@ -28,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -44,6 +47,8 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     private Call<MemberRecordResult> callDetailRecharge;
     private RetryPool.RetryRunnable mRetryDetailRecharge;
     private boolean resultDetailRecharge = false;
+
+    private Subscription mRechargeByCashSubscription;
 
     public void startDetailRecharge() {
         mRetryDetailRecharge = new RetryPool.RetryRunnable(5000, 1.0f, new RetryPool.RetryExecutor() {
@@ -74,7 +79,6 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                 success = true;
                 PosFactory.getCurrentCashier().textToSound("充值成功");
                 memberRecordInfo = result.getRespData();
-                memberRecordInfo.packageInfo = MemberManager.getInstance().getPackageInfo();
                 resultDetailRecharge = true;
                 EventBus.getDefault().post(new RechargeFinishEvent());
             }
@@ -96,29 +100,32 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
 
     @Override
     public void onCreate() {
-        switch (MemberManager.getInstance().getAmountType()) {
-            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
-                String amount = Utils.moneyToStringEx(MemberManager.getInstance().getAmount());
-                if (MemberManager.getInstance().getAmountGive() > 0) {
-                    String giveAmount = Utils.moneyToStringEx(MemberManager.getInstance().getAmountGive());
-                    mView.showScanInfo("会员充值", "充值金额", "充" + amount + "送" + giveAmount, amount);
-                } else {
-                    mView.showScanInfo("会员充值", "充值金额", amount + "元", amount);
-                }
-                break;
-            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                PackagePlanItem info = MemberManager.getInstance().getPackageInfo();
-                if (info != null) {
-                    String packageAmount = Utils.moneyToStringEx(info.amount);
-                    mView.showScanInfo("会员充值", "充值套餐", "套餐" + info.name, packageAmount);
-                }
-                break;
-            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
-            default:
-                XLogger.i("amount type exception");
-                break;
+        if (!showRechargeInfo()) {
+            mView.finishSelf();
+            return;
         }
 
+        if (TextUtils.isEmpty(mView.getCashierMethod())) {
+            mView.showToast("充值支付方式未知，请重试...");
+            return;
+        }
+
+        switch (mView.getCashierMethod()) {
+            case AppConstants.MEMBER_CASHIER_METHOD_CASH:
+                // 现金
+                mView.showCash();
+                break;
+            case AppConstants.MEMBER_CASHIER_METHOD_SCAN:
+                // 扫码
+                mView.showScan();
+                showBitMap();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void showBitMap() {
         Bitmap bitmap;
         try {
             bitmap = Utils.getQRBitmap(MemberManager.getInstance().getRechargeUrl());
@@ -133,6 +140,32 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
         }
     }
 
+    private boolean showRechargeInfo() {
+        // 显示充值内容
+        switch (MemberManager.getInstance().getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:    // 充值金额
+                String amount = Utils.moneyToStringEx(MemberManager.getInstance().getAmount());
+                if (MemberManager.getInstance().getAmountGive() > 0) {
+                    String giveAmount = Utils.moneyToStringEx(MemberManager.getInstance().getAmountGive());
+                    mView.showScanInfo("会员充值", "充值金额", "充" + amount + "送" + giveAmount, amount);
+                } else {
+                    mView.showScanInfo("会员充值", "充值金额", amount + "元", amount);
+                }
+                return true;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:  // 充值套餐
+                PackagePlanItem info = MemberManager.getInstance().getPackageInfo();
+                if (info != null) {
+                    String packageAmount = Utils.moneyToStringEx(info.amount);
+                    mView.showScanInfo("会员充值", "充值套餐", "套餐" + info.name, packageAmount);
+                }
+                return true;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
+            default:
+                mView.showToast("充值支付数据异常，请重试...");
+                return false;
+        }
+    }
+
     @Override
     public void onStart() {
 
@@ -141,12 +174,46 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     @Override
     public void onDestroy() {
         stopDetailRecharge();
+        if (mRechargeByCashSubscription != null) {
+            mRechargeByCashSubscription.unsubscribe();
+            mRechargeByCashSubscription = null;
+        }
     }
 
     @Override
-    public void printResult() {
+    public void rechargeByCash() {
         mView.showLoading();
-        MemberManager.getInstance().printInfo(memberRecordInfo, false, true, new Callback() {
+        mView.disableCash();
+        if (mRechargeByCashSubscription != null) {
+            mRechargeByCashSubscription.unsubscribe();
+        }
+        Observable<MemberRecordResult> reportCash = XmdNetwork.getInstance().getService(SpaService.class)
+                .doMemberRecharge(AccountManager.getInstance().getToken(), MemberManager.getInstance().getRechargeOrderId(), AppConstants.PAY_CHANNEL_CASH, null, RequestConstant.DEFAULT_SIGN_VALUE);
+        mRechargeByCashSubscription = XmdNetwork.getInstance().request(reportCash, new NetworkSubscriber<MemberRecordResult>() {
+            @Override
+            public void onCallbackSuccess(MemberRecordResult result) {
+                mView.enableCash();
+                mView.hideLoading();
+                mView.showSuccess();
+                success = true;
+                PosFactory.getCurrentCashier().textToSound("充值成功");
+                memberRecordInfo = result.getRespData();
+                EventBus.getDefault().post(new RechargeFinishEvent());
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                mView.hideLoading();
+                mView.enableCash();
+                mView.showToast("交易处理失败:" + e.getLocalizedMessage());
+            }
+        });
+    }
+
+    @Override
+    public void printStep() {
+        mView.showLoading();
+        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, new Callback() {
             @Override
             public void onSuccess(Object o) {
                 mView.hideLoading();
@@ -161,7 +228,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                                             @Override
                                             public void call(Subscriber<? super Void> subscriber) {
                                                 // 扫码充值
-                                                MemberManager.getInstance().printInfo(memberRecordInfo, false, false, null);
+                                                MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, false, null);
                                                 subscriber.onNext(null);
                                                 subscriber.onCompleted();
                                             }

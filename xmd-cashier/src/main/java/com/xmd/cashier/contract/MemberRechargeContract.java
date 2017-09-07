@@ -15,10 +15,6 @@ public interface MemberRechargeContract {
     interface Presenter extends BasePresenter {
         void loadPlanData();
 
-        void onRechargePos();
-
-        void onRechargeScan();
-
         void onRecharge(int type);
 
         void onTechClick();

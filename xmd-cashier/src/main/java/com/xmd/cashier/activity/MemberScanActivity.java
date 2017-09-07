@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.MemberScanContract;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.presenter.MemberScanPresenter;
@@ -20,7 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by zr on 17-7-11.
- * 微信 支付宝 收款
+ * 微信 支付宝 现金 收款
  */
 
 public class MemberScanActivity extends BaseActivity implements MemberScanContract.View {
@@ -33,34 +34,46 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     private LinearLayout mScanNormalLayout;
     private ImageView mScanQrcodeImg;
     private RelativeLayout mScanSuccessLayout;
+    private Button mScanCashBtn;
     private Button mScanPrintBtn;
+
+    private String mCashierMethod;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_scan);
+        mCashierMethod = getIntent().getStringExtra(AppConstants.EXTRA_MEMBER_CASHIER_METHOD);
         mPresenter = new MemberScanPresenter(this, this);
         initView();
         mPresenter.onCreate();
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, "扫码付款");
         mScanContentText = (TextView) findViewById(R.id.tv_scan_content);
         mScanDescText = (TextView) findViewById(R.id.tv_scan_desc);
         mScanPlanOrAmountText = (TextView) findViewById(R.id.tv_scan_plan_or_amount);
         mScanAmountText = (TextView) findViewById(R.id.tv_scan_amount);
 
+        mScanSuccessLayout = (RelativeLayout) findViewById(R.id.layout_scan_success);
         mScanNormalLayout = (LinearLayout) findViewById(R.id.layout_scan_normal);
         mScanQrcodeImg = (ImageView) findViewById(R.id.img_scan_qrcode);
-
-        mScanSuccessLayout = (RelativeLayout) findViewById(R.id.layout_scan_success);
         mScanPrintBtn = (Button) findViewById(R.id.btn_scan_print);
+        mScanCashBtn = (Button) findViewById(R.id.btn_scan_cash);
+
+        mScanCashBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //现金收款
+                mPresenter.rechargeByCash();
+            }
+        });
 
         mScanPrintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.printResult();
+                //处理打印结果
+                mPresenter.printStep();
             }
         });
     }
@@ -97,9 +110,43 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     }
 
     @Override
-    public void showScanSuccess() {
+    public void showScan() {
+        showToolbar(R.id.toolbar, "扫码付款");
+        mScanSuccessLayout.setVisibility(View.GONE);
+        mScanCashBtn.setVisibility(View.GONE);
+        mScanNormalLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void enableCash() {
+        mScanCashBtn.setEnabled(true);
+    }
+
+    @Override
+    public void disableCash() {
+        mScanCashBtn.setEnabled(false);
+    }
+
+    @Override
+    public void showCash() {
+        showToolbar(R.id.toolbar, "现金收款");
+        mScanSuccessLayout.setVisibility(View.GONE);
+        mScanNormalLayout.setVisibility(View.GONE);
+        mScanCashBtn.setVisibility(View.VISIBLE);
+        enableCash();
+    }
+
+
+    @Override
+    public void showSuccess() {
+        mScanCashBtn.setVisibility(View.GONE);
         mScanNormalLayout.setVisibility(View.GONE);
         mScanSuccessLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public String getCashierMethod() {
+        return mCashierMethod;
     }
 
     @Override
@@ -110,6 +157,6 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RechargeFinishEvent event) {
-        showScanSuccess();
+        showSuccess();
     }
 }

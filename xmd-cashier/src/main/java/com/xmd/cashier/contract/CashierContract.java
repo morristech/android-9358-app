@@ -19,6 +19,8 @@ public interface CashierContract {
 
         void onClickMemberPay();
 
+        void onClickCashPay();
+
         void onClickXMDOnlinePay();
 
         void doCashier();

@@ -118,6 +118,7 @@ public class VerifyConfirmActivity extends BaseActivity implements VerifyConfirm
     @Override
     public void setButtonText(int count) {
         mContinueBtn.setText("已选择" + count + "张，继续核销");
+        // 未选中时不可操作
         mContinueBtn.setEnabled(count > 0);
     }
 

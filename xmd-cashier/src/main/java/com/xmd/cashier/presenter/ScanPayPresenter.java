@@ -280,6 +280,11 @@ public class ScanPayPresenter implements Presenter {
         });
     }
 
+    @Override
+    public void onActivity() {
+        // TODO 买单活动详情
+    }
+
     private boolean isCodeExpire() {
         long current = new Date().getTime();
         long create = DateUtils.doString2Long(mTradeManager.getCurrentTrade().tradeTime);

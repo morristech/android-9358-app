@@ -243,7 +243,7 @@ public class OrderRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mData.get(position).status = status;
         if (AppConstants.ORDER_RECORD_STATUS_ACCEPT.equals(status)) {
             // 如果接受订单成功,暂时更新接单人信息为当前收银员
-            mData.get(position).receiverName = AccountManager.getInstance().getUser().userName;
+            mData.get(position).receiverName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
         }
         notifyItemChanged(position);
     }

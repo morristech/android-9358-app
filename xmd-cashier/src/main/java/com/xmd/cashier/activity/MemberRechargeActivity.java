@@ -302,7 +302,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     @Override
     public void showDialog() {
         ActionSheetDialog dialog = new ActionSheetDialog(MemberRechargeActivity.this);
-        dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_POS_TEXT});
+        dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_CASH_TEXT, AppConstants.CASHIER_TYPE_UNION_TEXT});
         dialog.setCancelText("取消");
         dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
             @Override
@@ -313,9 +313,13 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
                         // 扫码支付
                         type = AppConstants.CASHIER_TYPE_XMD_ONLINE;
                         break;
-                    case AppConstants.CASHIER_TYPE_POS_TEXT:
+                    case AppConstants.CASHIER_TYPE_UNION_TEXT:
                         // POS刷卡或者现金
                         type = AppConstants.CASHIER_TYPE_POS;
+                        break;
+                    case AppConstants.CASHIER_TYPE_CASH_TEXT:
+                        // 现金支付
+                        type = AppConstants.CASHIER_TYPE_CASH;
                         break;
                     default:
                         break;

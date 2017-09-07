@@ -11,7 +11,9 @@ import com.xmd.cashier.BaseView;
 
 public interface MemberScanContract {
     interface Presenter extends BasePresenter {
-        void printResult();
+        void rechargeByCash();
+
+        void printStep();
 
         void onKeyEventBack();
     }
@@ -21,6 +23,16 @@ public interface MemberScanContract {
 
         void showQrcode(Bitmap bitmap);
 
-        void showScanSuccess();
+        void showScan();
+
+        void enableCash();
+
+        void disableCash();
+
+        void showCash();
+
+        void showSuccess();
+
+        String getCashierMethod();
     }
 }

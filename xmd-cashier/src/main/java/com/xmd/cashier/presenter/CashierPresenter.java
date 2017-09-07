@@ -1,6 +1,7 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
@@ -16,6 +17,7 @@ import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
+import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 
 import java.util.List;
 
@@ -100,6 +102,12 @@ public class CashierPresenter implements CashierContract.Presenter {
         }
     }
 
+    @Override
+    public void onClickCashPay() {
+        mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_CASH;
+        processTradeNo();
+    }
+
     // 小摩豆买单
     @Override
     public void onClickXMDOnlinePay() {
@@ -125,14 +133,9 @@ public class CashierPresenter implements CashierContract.Presenter {
         mTradeManager.posPay(mContext, money, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
-                mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
-                        mView.hideLoading();
-                        mView.showToast("支付成功！");
-                        reset();//交易成功，重置界面
-                    }
-                });
+                mView.hideLoading();
+                mView.showToast("支付成功！");
+                printStep();
             }
 
             @Override
@@ -143,6 +146,52 @@ public class CashierPresenter implements CashierContract.Presenter {
                 } else {
                     UiNavigation.gotoConfirmActivity(mContext, "支付失败：" + error);
                 }
+            }
+        });
+    }
+
+    private void printStep() {
+        mView.showLoading();
+        TradeManager.getInstance().printPosPay(true, new Callback() {
+            @Override
+            public void onSuccess(Object o) {
+                mView.hideLoading();
+                new CustomAlertDialogBuilder(mContext)
+                        .setMessage("是否需要打印客户联小票?")
+                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                TradeManager.getInstance().getCurrentTrade().isClient = true;
+                                finishPosPay();
+                            }
+                        })
+                        .setNegativeButton("完成交易", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                TradeManager.getInstance().getCurrentTrade().isClient = false;
+                                finishPosPay();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showToast("打印异常:" + error);
+                finishPosPay();
+            }
+        });
+    }
+
+    private void finishPosPay() {
+        mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+            @Override
+            public void onFinished(Void result) {
+                reset();//交易成功，重置界面
             }
         });
     }
@@ -159,6 +208,13 @@ public class CashierPresenter implements CashierContract.Presenter {
      */
     private void payXMDOnline() {
         UiNavigation.gotoScanPayActivity(mContext);
+    }
+
+    /**
+     * 现金支付
+     */
+    private void payCash(int amount) {
+        UiNavigation.gotoCashPayActivity(mContext, amount);
     }
 
     /**
@@ -246,6 +302,11 @@ public class CashierPresenter implements CashierContract.Presenter {
             case AppConstants.CASHIER_TYPE_POS:
                 // pos收银
                 payCashier(needPayMoney);
+                break;
+            case AppConstants.CASHIER_TYPE_CASH:
+                // 现金
+                mView.hideLoading();
+                payCash(needPayMoney);
                 break;
             default:
                 XLogger.d("unknow cashier type");

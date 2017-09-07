@@ -14,6 +14,8 @@ public interface ScanPayContract {
         void onCancel();
 
         void getQrcode();
+
+        void onActivity();
     }
 
     interface View extends BaseView<Presenter> {

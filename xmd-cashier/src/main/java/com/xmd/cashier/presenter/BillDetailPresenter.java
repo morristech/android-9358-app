@@ -52,7 +52,8 @@ public class BillDetailPresenter implements BillDetailContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        BillManager.getInstance().print(info);
+                        BillManager.getInstance().printBillRecord(info, true);
+                        BillManager.getInstance().printBillRecord(info, false);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

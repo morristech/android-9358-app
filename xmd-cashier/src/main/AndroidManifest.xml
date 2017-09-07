@@ -113,6 +113,9 @@
         <activity
             android:name=".activity.VerifyRecordDetailActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.CashPayActivity"
+            android:launchMode="singleTask" />
 
         <activity
             android:name=".activity.ScanPayActivity"

@@ -296,6 +296,10 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
         mNFCManager = NFCManager.getInstance();
         mNFCManager.init(mContext);
         PosFactory.getCurrentCashier().textToSound("请刷会员卡");
+
+        if (AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT.equals(mView.getReadType())) {
+            mView.setInputContent(TradeManager.getInstance().getCurrentTrade().memberTempPhone);
+        }
     }
 
     @Override

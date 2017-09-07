@@ -170,7 +170,8 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().print(info, retry);
+                        NotifyManager.getInstance().printOnlinePayRecord(info, retry, true);
+                        NotifyManager.getInstance().printOnlinePayRecord(info, retry, false);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -216,7 +217,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_PASS, position);
                 mView.showToast("买单成功");
                 info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
-                info.operatorName = AccountManager.getInstance().getUser().userName;
+                info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlinePassSwitch()) {
                     print(info, false);
@@ -250,7 +251,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_UNPASS, position);
                 mView.showToast("已通知请到前台");
                 info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
-                info.operatorName = AccountManager.getInstance().getUser().userName;
+                info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlineUnpassSwitch()) {
                     print(info, false);

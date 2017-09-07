@@ -212,7 +212,7 @@ public class NotifyManager {
     }
 
     // 打印预约订单小票
-    public void print(OrderRecordInfo info, boolean retry) {
+    public void printOrderRecord(OrderRecordInfo info, boolean retry) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(预约订单)");
         if (retry) {
@@ -265,61 +265,47 @@ public class NotifyManager {
         if (!TextUtils.isEmpty(info.receiverName)) {
             mPos.printText("接单员: ", info.receiverName);
         }
-        mPos.printText("收银员: ", AccountManager.getInstance().getUser().userName);
+        mPos.printText("收银员: ", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printEnd();
     }
 
-    // 打印在线买单小票 带二维码
-    public void print(OnlinePayInfo info, boolean retry) {
+    // 打印在线买单记录
+    public void printOnlinePayRecord(OnlinePayInfo info, boolean retry, boolean keep) {
         byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(结账单)");
-        if (retry) {
-            mPos.printCenter("--补打小票--");
-        }
-
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
-        mPos.printText("消费金额", Utils.moneyToStringEx(info.originalAmount) + " 元");
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("手机号：" + (keep ? info.telephone : Utils.formatPhone(info.telephone)) + "(" + (keep ? info.userName : Utils.formatName(info.userName)) + ")");
+        mPos.printDivide();
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originalAmount));
         if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
             for (OnlinePayInfo.OnlinePayDiscountInfo discountInfo : info.orderDiscountList) {
                 switch (discountInfo.type) {
                     case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
-                        mPos.printText("用券抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                         break;
                     case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
-                        mPos.printText("预约抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                         break;
                     case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
-                        mPos.printText("会员优惠", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                         break;
                     default:
-                        mPos.printText("其他抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        mPos.printText("其他抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                         break;
                 }
             }
         } else {
-            mPos.printText("减免金额", Utils.moneyToStringEx(info.originalAmount - info.payAmount) + " 元");
+            mPos.printText("优惠金额：", "-￥ " + Utils.moneyToStringEx(info.originalAmount - info.payAmount));
         }
         mPos.printDivide();
-        mPos.printRight("实收 " + Utils.moneyToStringEx(info.payAmount) + " 元", true);
+        mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.payAmount) + " 元", true);
         mPos.printDivide();
-        mPos.printText("交易号: ", info.payId);
-        mPos.printText("付款方式: ", "小摩豆在线买单");
 
-        String channel = Utils.getPayChannel(info.payChannel);
-        mPos.printText("支付方式:", TextUtils.isEmpty(channel) ? "未知" : channel);
-
-        if (!TextUtils.isEmpty(info.techName)) {
-            mPos.printText("技师: ", TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo));
-        }
-        if (!TextUtils.isEmpty(info.otherTechNames)) {
-            String[] otherNames = info.otherTechNames.split(",|，");
-            for (String name : otherNames) {
-                mPos.printRight(name);
-            }
-        }
-        mPos.printText("交易时间: ", info.createTime);
-        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("交易号：" + info.payId);
+        mPos.printText("交易时间：" + info.createTime);
         String status = null;
         switch (info.status) {
             case AppConstants.ONLINE_PAY_STATUS_PAID:
@@ -335,14 +321,20 @@ public class NotifyManager {
                 break;
         }
         if (!TextUtils.isEmpty(status)) {
-            mPos.printText("买单状态: ", status);
+            mPos.printText("交易状态：" + status);
         }
-        mPos.printText("操作人: ", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
-        mPos.printBitmap(qrCodeBytes);
-        mPos.printCenter("--- 微信扫码，选技师，享优惠 ---");
+        mPos.printText("支付方式：" + Utils.getPayChannel(info.payChannel) + "(" + Utils.getQRPlatform(info.qrType) + ")");
+        if (!TextUtils.isEmpty(info.techName)) {
+            mPos.printText("服务技师：" + (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
+        }
+        mPos.printText("收款人员：" + (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        if (!keep) {
+            mPos.printBitmap(qrCodeBytes);
+            mPos.printCenter("微信扫码，选技师、抢优惠");
+        }
         mPos.printEnd();
     }
-
 
     /***************************买单****************************/
     private Call<OnlinePayListResult> callOnlinePay;

@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.MD5Utils;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
-import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.OkHttpUtil;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.TreeMap;
 

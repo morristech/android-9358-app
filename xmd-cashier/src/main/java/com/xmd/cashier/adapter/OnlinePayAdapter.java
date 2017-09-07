@@ -172,8 +172,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemViewHolder.mAddTechName.setText(info.otherTechNames);
             }
 
-            String payChannel = Utils.getPayChannel(info.payChannel);
-            itemViewHolder.mPayChannel.setText(TextUtils.isEmpty(payChannel) ? "未知" : payChannel);
+            itemViewHolder.mPayChannel.setText(Utils.getPayChannel(info.payChannel));
 
             if (TextUtils.isEmpty(info.techName)) {
                 itemViewHolder.mTechInfoRow.setVisibility(View.GONE);
@@ -260,7 +259,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void updateItemStatus(String status, int position) {
         // 更新状态和收银员
         mData.get(position).status = status;
-        mData.get(position).operatorName = AccountManager.getInstance().getUser().userName;
+        mData.get(position).operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
         notifyItemChanged(position);
     }
 

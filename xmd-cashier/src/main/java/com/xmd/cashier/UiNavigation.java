@@ -10,6 +10,7 @@ import com.google.zxing.client.android.Intents;
 import com.xmd.cashier.activity.BillDetailActivity;
 import com.xmd.cashier.activity.BillRecordActivity;
 import com.xmd.cashier.activity.BillSearchActivity;
+import com.xmd.cashier.activity.CashPayActivity;
 import com.xmd.cashier.activity.CashierActivity;
 import com.xmd.cashier.activity.ConfigurationActivity;
 import com.xmd.cashier.activity.ConfirmActivity;
@@ -260,8 +261,9 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoMemberScanActivity(Context context) {
+    public static void gotoMemberScanActivity(Context context, String channel) {
         Intent intent = new Intent(context, MemberScanActivity.class);
+        intent.putExtra(AppConstants.EXTRA_MEMBER_CASHIER_METHOD, channel);
         context.startActivity(intent);
     }
 
@@ -278,6 +280,12 @@ public class UiNavigation {
 
     public static void gotoConfigurationActivity(Context context) {
         Intent intent = new Intent(context, ConfigurationActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoCashPayActivity(Context context, int amount) {
+        Intent intent = new Intent(context, CashPayActivity.class);
+        intent.putExtra(AppConstants.EXTRA_CASH_AMOUNT, amount);
         context.startActivity(intent);
     }
 }

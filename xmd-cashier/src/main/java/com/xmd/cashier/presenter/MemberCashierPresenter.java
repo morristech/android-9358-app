@@ -9,7 +9,6 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberCashierContract;
-import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.Callback;
@@ -108,9 +107,9 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         });
     }
 
-    private void print(MemberRecordInfo info) {
+    private void printStep() {
         mView.showLoading();
-        MemberManager.getInstance().printInfo(info, false, true, new Callback() {
+        TradeManager.getInstance().printMemberPay(true, new Callback() {
             @Override
             public void onSuccess(Object o) {
                 mView.hideLoading();
@@ -120,7 +119,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                TradeManager.getInstance().getCurrentTrade().isMemberRemain = true;
+                                TradeManager.getInstance().getCurrentTrade().isClient = true;
                                 finishMemberPay();
                             }
                         })
@@ -128,7 +127,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                TradeManager.getInstance().getCurrentTrade().isMemberRemain = false;
+                                TradeManager.getInstance().getCurrentTrade().isClient = false;
                                 finishMemberPay();
                             }
                         })
@@ -169,7 +168,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
                 mView.hideLoading();
                 mView.showToast("会员支付成功，正在出票...");
                 TradeManager.getInstance().getCurrentTrade().memberRecordInfo = o.getRespData();
-                print(o.getRespData());
+                printStep();
             }
 
             @Override

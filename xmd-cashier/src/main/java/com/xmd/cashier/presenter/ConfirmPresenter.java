@@ -128,6 +128,10 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
             case AppConstants.CASHIER_TYPE_POS:
                 posPay(trade.getNeedPayMoney());
                 break;
+            case AppConstants.CASHIER_TYPE_CASH:
+                UiNavigation.gotoCashPayActivity(mContext, trade.getNeedPayMoney());
+                mView.finishSelf();
+                break;
             default:
                 break;
         }

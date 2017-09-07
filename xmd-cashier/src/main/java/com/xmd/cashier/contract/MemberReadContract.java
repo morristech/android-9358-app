@@ -32,5 +32,7 @@ public interface MemberReadContract {
         void showEnterAnim();
 
         void showExitAnim();
+
+        String getReadType();
     }
 }

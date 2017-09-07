@@ -46,8 +46,9 @@ public class AppConstants {
 
     public static final int CASHIER_TYPE_ERROR = -1;
     public static final int CASHIER_TYPE_MEMBER = 0;// 会员支付
-    public static final int CASHIER_TYPE_POS = 1;// 普通支付
+    public static final int CASHIER_TYPE_POS = 1;   // POS支付
     public static final int CASHIER_TYPE_XMD_ONLINE = 2;// 小摩豆在线买单
+    public static final int CASHIER_TYPE_CASH = 3;  //现金支付
 
     public static final int PAY_TYPE_UNKNOWN = 0;
     public static final int PAY_TYPE_CASH = 1;
@@ -95,8 +96,6 @@ public class AppConstants {
     public static final Map<String, Integer> PAY_TYPE_FILTERS = new LinkedHashMap<String, Integer>() {{
         put("全部", PAY_TYPE_UNKNOWN);
         put("现金", PAY_TYPE_CASH);
-        put("支付宝", PAY_TYPE_ALIPAY);
-        put("微信", PAY_TYPE_WECHART);
         put("银行卡", PAY_TYPE_CARD);
     }};
 
@@ -165,6 +164,7 @@ public class AppConstants {
         put(ORDER_RECORD_STATUS_OVERTIME_TEXT, ORDER_RECORD_STATUS_OVERTIME);
     }};
 
+    public static final String EXTRA_CASH_AMOUNT = "cash_amount";
     public static final String EXTRA_BILL_INFO = "extra_bill_info";
     public static final String EXTRA_PHONE_VERIFY = "extra_phone_verify";
     public static final String EXTRA_COUPON_VERIFY_INFO = "extra_coupon_info";
@@ -184,8 +184,13 @@ public class AppConstants {
     public static final String APP_REQUEST_NO = "N";
 
     public static final String CASHIER_TYPE_POS_TEXT = "银行卡或现金";
-    public static final String CASHIER_TYPE_MEMBER_TEXT = "会员支付";
     public static final String CASHIER_TYPE_XMD_ONLINE_TEXT = "微信或支付宝";
+    public static final String CASHIER_TYPE_MEMBER_TEXT = "会员支付";
+    public static final String CASHIER_TYPE_CASH_TEXT = "现金支付";
+    public static final String CASHIER_TYPE_WX_TEXT = "微信支付";
+    public static final String CASHIER_TYPE_ALI_TEXT = "支付宝支付";
+    public static final String CASHIER_TYPE_UNION_TEXT = "银行卡支付";
+    public static final String CASHIER_TYPE_OTHER_TEXT = "其他支付";
 
     public static final String TYPE_PAID_AMOUNT = "amount";
     public static final String TYPE_PAID_CREDITS = "credits";
@@ -197,9 +202,20 @@ public class AppConstants {
     public static final String PUSH_TAG_ORDER_PRINT = "order_print";    //订单记录打印
     public static final String PUSH_TAG_FASTPAY_PRINT = "fast_pay_print";   //买单记录打印
 
-    public static final String FAST_PAY_CHANNEL_WX = "wx";
-    public static final String FAST_PAY_CHANNEL_ALI = "ali";
-    public static final String FAST_PAY_CHANNEL_MEMBER = "account";
+    public static final String PAY_CHANNEL_WX = "wx";
+    public static final String PAY_CHANNEL_ALI = "ali";
+    public static final String PAY_CHANNEL_UNION = "union";
+    public static final String PAY_CHANNEL_CASH = "cash";
+    public static final String PAY_CHANNEL_ACCOUNT = "account";
+    public static final String PAY_CHANNEL_OTHER = "other";
+
+    public static final String PLATFORM_OFFLINE = "offline";
+    public static final String PLATFORM_ONLINE = "online";
+    public static final String PLATFORM_CASHIER = "cashier";
+
+    public static final String EXTRA_MEMBER_CASHIER_METHOD = "member_cashier_method";
+    public static final String MEMBER_CASHIER_METHOD_SCAN = "scan";
+    public static final String MEMBER_CASHIER_METHOD_CASH = "cash";
 
     public static final String EXTRA_MEMBER_BUSINESS_TYPE = "member_read_type";
     public static final String MEMBER_BUSINESS_TYPE_RECHARGE = "recharge";
@@ -252,4 +268,8 @@ public class AppConstants {
     public static final String ONLINE_PAY_DISCOUNT_MEMBER = "member";
 
     public static final String INPUT_DIGITS = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    public static final String QR_TYPE_POS = "pos";
+    public static final String QR_TYPE_CLUB = "club";
+    public static final String QR_TYPE_TECH = "tech";
 }

@@ -38,6 +38,8 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
     private TextView mQRCodeErrorText;
     private TextView mQRCodeExpireText;
 
+    private TextView mScanActivityText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,14 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
             @Override
             public void onClick(View v) {
                 mPresenter.onCancel();
+            }
+        });
+
+        mScanActivityText = (TextView) findViewById(R.id.tv_pay_activity);
+        mScanActivityText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onActivity();
             }
         });
     }

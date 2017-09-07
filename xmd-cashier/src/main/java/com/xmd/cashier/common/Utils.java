@@ -184,30 +184,30 @@ public class Utils {
     public static String getPayTypeString(int payType) {
         switch (payType) {
             case AppConstants.PAY_TYPE_CARD:
-                return "银行卡支付";
+                return AppConstants.CASHIER_TYPE_UNION_TEXT;
             case AppConstants.PAY_TYPE_WECHART:
-                return "微信支付";
+                return AppConstants.CASHIER_TYPE_WX_TEXT;
             case AppConstants.PAY_TYPE_ALIPAY:
-                return "支付宝支付";
+                return AppConstants.CASHIER_TYPE_ALI_TEXT;
             case AppConstants.PAY_TYPE_CASH:
-                return "现金支付";
+                return AppConstants.CASHIER_TYPE_CASH_TEXT;
             default:
-                return "其他支付";
+                return AppConstants.CASHIER_TYPE_OTHER_TEXT;
         }
     }
 
     public static String getPayTypeChannel(int payType) {
         switch (payType) {
             case AppConstants.PAY_TYPE_CARD:
-                return "union";
+                return AppConstants.PAY_CHANNEL_UNION;
             case AppConstants.PAY_TYPE_WECHART:
-                return "wx";
+                return AppConstants.PAY_CHANNEL_WX;
             case AppConstants.PAY_TYPE_ALIPAY:
-                return "ali";
+                return AppConstants.PAY_CHANNEL_ALI;
             case AppConstants.PAY_TYPE_CASH:
-                return "cash";
+                return AppConstants.PAY_CHANNEL_CASH;
             default:
-                return "other";
+                return AppConstants.PAY_CHANNEL_OTHER;
         }
     }
 
@@ -224,17 +224,49 @@ public class Utils {
 
     public static String getPayChannel(String channel) {
         if (TextUtils.isEmpty(channel)) {
-            return null;
+            return "未知";
         }
         switch (channel) {
-            case AppConstants.FAST_PAY_CHANNEL_ALI:
-                return "支付宝支付";
-            case AppConstants.FAST_PAY_CHANNEL_WX:
-                return "微信支付";
-            case AppConstants.FAST_PAY_CHANNEL_MEMBER:
-                return "会员支付";
+            case AppConstants.PAY_CHANNEL_ALI:
+                return AppConstants.CASHIER_TYPE_ALI_TEXT;
+            case AppConstants.PAY_CHANNEL_WX:
+                return AppConstants.CASHIER_TYPE_WX_TEXT;
+            case AppConstants.PAY_CHANNEL_ACCOUNT:
+                return AppConstants.CASHIER_TYPE_MEMBER_TEXT;
             default:
-                return null;
+                return "其他";
+        }
+    }
+
+    public static String getQRPlatform(String qrType) {
+        if (TextUtils.isEmpty(qrType)) {
+            return "未知";
+        }
+        switch (qrType) {
+            case AppConstants.QR_TYPE_POS:
+                return "POS机";
+            case AppConstants.QR_TYPE_CLUB:
+                return "会所二维码";
+            case AppConstants.QR_TYPE_TECH:
+                return "技师二维码";
+            default:
+                return "其他";
+        }
+    }
+
+    public static String getPlatform(String platform) {
+        if (TextUtils.isEmpty(platform)) {
+            return "未知平台";
+        }
+        switch (platform) {
+            case AppConstants.PLATFORM_OFFLINE:
+                return "管理者后台";
+            case AppConstants.PLATFORM_ONLINE:
+                return "线上充值";
+            case AppConstants.PLATFORM_CASHIER:
+                return "POS机";
+            default:
+                return "其他平台";
         }
     }
 
@@ -313,87 +345,6 @@ public class Utils {
         }
     }
 
-    public static boolean getCouponValid(String useStartDate, String useEndDate, String useTimePeriod) {
-        long now = System.currentTimeMillis();
-        if (useStartDate != null && useStartDate.length() != 0) {
-            long startDate = com.shidou.commonlibrary.util.DateUtils.doDate2Long(useStartDate);
-            if (now < startDate) {
-                return false;
-            }
-        }
-        if (useEndDate != null && useEndDate.length() != 0) {
-            long endDate = com.shidou.commonlibrary.util.DateUtils.doDate2Long(useEndDate);
-            if (now > endDate) {
-                return false;
-            }
-        }
-        if (useTimePeriod != null) {
-            if (useTimePeriod.equals("不限")) {
-                return true;
-            }
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(now);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-            if (!useTimePeriod.contains(getWeekInZh(dayOfWeek))) {
-                return false;
-            }
-            String[] times = useTimePeriod.split(" ");
-            String startTime = null;
-            String endTime = null;
-            for (String s : times) {
-                if (s.contains(":")) {
-                    if (startTime == null) {
-                        startTime = s;
-                    } else {
-                        endTime = s;
-                        break;
-                    }
-                }
-            }
-            if (startTime != null && endTime != null) {
-                int nowHour = calendar.get(Calendar.HOUR_OF_DAY);
-                int nowMinute = calendar.get(Calendar.MINUTE);
-                String nowHM = nowHour + ":" + nowMinute;
-                startTime = formatTime(startTime);
-                endTime = formatTime(endTime);
-                if (nowHM.compareTo(startTime) < 0 || nowHM.compareTo(endTime) > 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private static String formatTime(String time) {
-        if (time.contains(":")) {
-            String hh = time.substring(0, time.lastIndexOf(":"));
-            if (hh.length() < 2) {
-                return "0" + time;
-            }
-        }
-        return time;
-    }
-
-    private static String getWeekInZh(int dayOfWeek) {
-        switch (dayOfWeek) {
-            case Calendar.SUNDAY:
-                return "周日";
-            case Calendar.MONDAY:
-                return "周一";
-            case Calendar.TUESDAY:
-                return "周二";
-            case Calendar.WEDNESDAY:
-                return "周三";
-            case Calendar.THURSDAY:
-                return "周四";
-            case Calendar.FRIDAY:
-                return "周五";
-            case Calendar.SATURDAY:
-                return "周六";
-        }
-        return "错误";
-    }
-
     public static Bitmap getQRBitmap(String content) throws WriterException {
         if (TextUtils.isEmpty(content)) {
             return null;
@@ -436,6 +387,15 @@ public class Utils {
             return null;
         } else {
             return code.replaceAll("[A-Za-z0-9]*([A-Za-z0-9]{4})", "****$1");
+        }
+    }
+
+    // 保留前5位
+    public static String formatName(String name) {
+        if (TextUtils.isEmpty(name)) {
+            return null;
+        } else {
+            return name.replaceAll("([\\s\\S]{5})[\\s\\S]*", "$1****");
         }
     }
 }

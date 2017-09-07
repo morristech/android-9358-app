@@ -94,12 +94,24 @@
             android:textSize="@dimen/font_size_16" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_scan_cash"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@drawable/state_btn_oval"
+        android:text="已收现金"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/small_font_size"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/layout_scan_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/img_scan_qrcode"

@@ -309,10 +309,11 @@ public class CustomService extends Service {
                     public void call(Subscriber<? super Void> subscriber) {
                         switch (type) {
                             case AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY:
-                                NotifyManager.getInstance().print((OnlinePayInfo) object, false);
+                                NotifyManager.getInstance().printOnlinePayRecord((OnlinePayInfo) object, false, true);
+                                NotifyManager.getInstance().printOnlinePayRecord((OnlinePayInfo) object, false, false);
                                 break;
                             case AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD:
-                                NotifyManager.getInstance().print((OrderRecordInfo) object, false);
+                                NotifyManager.getInstance().printOrderRecord((OrderRecordInfo) object, false);
                                 break;
                             default:
                                 break;
@@ -370,7 +371,7 @@ public class CustomService extends Service {
                         Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
                         SPManager.getInstance().updateOrderPushTag();
                         info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
-                        info.receiverName = AccountManager.getInstance().getUser().userName;
+                        info.receiverName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
                         if (SPManager.getInstance().getOrderAcceptSwitch()) {
                             posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
                         }
@@ -485,7 +486,7 @@ public class CustomService extends Service {
                         Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
                         SPManager.getInstance().updateFastPayPushTag();
                         info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
-                        info.operatorName = AccountManager.getInstance().getUser().userName;
+                        info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
                         if (SPManager.getInstance().getOnlinePassSwitch()) {
                             posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
                         }
@@ -527,7 +528,7 @@ public class CustomService extends Service {
                         Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
                         SPManager.getInstance().updateFastPayPushTag();
                         info.status = AppConstants.ONLINE_PAY_STATUS_UNPASS;
-                        info.operatorName = AccountManager.getInstance().getUser().userName;
+                        info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
                         if (SPManager.getInstance().getOnlineUnpassSwitch()) {
                             posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
                         }

@@ -23,6 +23,7 @@ import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
+import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -627,6 +628,14 @@ public interface SpaService {
                                                   @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
                                                   @Field(RequestConstant.KEY_SIGN) String requestSign);
 
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE)
+    Observable<MemberRecordResult> doMemberRecharge(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                    @Field(RequestConstant.KEY_ORDER_ID) String orderId,
+                                                    @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                    @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                                    @Field(RequestConstant.KEY_SIGN) String requestSign);
+
     // 充值详情
     @GET(RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL)
     Call<MemberRecordResult> detailMemberRecharge(@Query(RequestConstant.KEY_TOKEN) String userToken,
@@ -654,4 +663,26 @@ public interface SpaService {
 
     @GET
     Call<ResponseBody> getClubQrcodeByWX(@Url String url);
+
+    // 现金收银汇报
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_REPORT_TRADE_DATA)
+    Observable<ReportTradeDataResult> reportCash(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Field(RequestConstant.KEY_USER_ID) String userId,
+                                                 @Field(RequestConstant.KEY_CLUB_ID) String clubId,
+                                                 @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                                 @Field(RequestConstant.KEY_STATUS) String tradeStatus,
+                                                 @Field(RequestConstant.KEY_ORIGIN_MONEY) String originMoney,
+                                                 @Field(RequestConstant.KEY_COUPON_LIST) String couponList,
+                                                 @Field(RequestConstant.KEY_COUPON_RESULT) String couponResult,
+                                                 @Field(RequestConstant.KEY_COUPON_MONEY) String couponMoney,
+                                                 @Field(RequestConstant.KEY_DISCOUNT_TYPE) String discountType,
+                                                 @Field(RequestConstant.KEY_COUPON_DISCOUNT_MONEY) String couponDiscountMoney,
+                                                 @Field(RequestConstant.KEY_USER_DISCOUNT_MONEY) String userDiscountMoney,
+                                                 @Field(RequestConstant.KEY_PAY_DATE) String payDate,
+                                                 @Field(RequestConstant.KEY_POS_PAY_MONEY) String posPayMoney,
+                                                 @Field(RequestConstant.KEY_POS_PAY_TYPE) String posPayType,
+                                                 @Field(RequestConstant.KEY_POS_PAY_RESULT) String posPayResult,
+                                                 @Field(RequestConstant.KEY_REPORT_TAG) String reportTag,
+                                                 @Field(RequestConstant.KEY_SIGN) String sign);
 }

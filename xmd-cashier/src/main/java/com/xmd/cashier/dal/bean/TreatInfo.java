@@ -19,7 +19,21 @@ public class TreatInfo implements Parcelable {
     public String userName;
     public String userPhone;
 
+    public String memberName;
+    public String memberCardNo;
+    public String memberPhone;
+    public int memberDiscount;
+    public String memberTypeName;
+
     public TreatInfo() {
+    }
+
+    public void setExtraMemberInfo(CommonVerifyInfo.ExtraMemberInfo info) {
+        this.memberName = info.memberName;
+        this.memberPhone = info.memberPhone;
+        this.memberCardNo = info.cardNo;
+        this.memberDiscount = info.discount;
+        this.memberTypeName = info.memberTypeName;
     }
 
     protected TreatInfo(Parcel in) {
@@ -28,6 +42,12 @@ public class TreatInfo implements Parcelable {
         useMoney = in.readInt();
         userName = in.readString();
         userPhone = in.readString();
+
+        memberName = in.readString();
+        memberCardNo = in.readString();
+        memberPhone = in.readString();
+        memberDiscount = in.readInt();
+        memberTypeName = in.readString();
     }
 
     public static final Creator<TreatInfo> CREATOR = new Creator<TreatInfo>() {
@@ -54,5 +74,11 @@ public class TreatInfo implements Parcelable {
         dest.writeInt(useMoney);
         dest.writeString(userName);
         dest.writeString(userPhone);
+
+        dest.writeString(memberName);
+        dest.writeString(memberPhone);
+        dest.writeString(memberCardNo);
+        dest.writeInt(memberDiscount);
+        dest.writeString(memberTypeName);
     }
 }

@@ -51,7 +51,6 @@ public class RequestConstant {
     public static final String URL_INFO_SERVICE_ITEM = SPA_SERVICE_BASE + "/v2/manager/checkinfo/service_item_coupon/detail";
     // 详情-默认
     public static final String URL_INFO_COMMON = SPA_SERVICE_BASE + "/v2/manager/checkinfo/common/detail";
-    // 详情-请客 = 根据授权码查询未使用的授权详情
 
     // 核销-优惠券
     public static final String URL_VERIFY_COUPON = SPA_SERVICE_BASE + "/v2/manager/checkinfo/coupon/save";
@@ -63,7 +62,6 @@ public class RequestConstant {
     public static final String URL_VERIFY_SERVICE_ITEM = SPA_SERVICE_BASE + "/v2/manager/checkinfo/service_item_coupon/save";
     // 核销-默认
     public static final String URL_VERIFY_COMMON = SPA_SERVICE_BASE + "/v2/manager/checkinfo/common/save";
-    // 核销-请客 = 核销-默认
 
     //******************************************* 接单提醒 ****************************************
     public static final String URL_GET_ONLINE_PAY_LIST = SPA_SERVICE_BASE + "/v2/manager/fastpay/order/list";   // 在线买单列表:全部|状态|搜索
@@ -201,6 +199,8 @@ public class RequestConstant {
     public static final String KEY_PAY_CHANNEL = "payChannel";
     public static final String KEY_ORDER_AMOUNT = "orderAmount";
     public static final String KEY_DISCOUNT_AMOUNT = "discountAmount";
+
+    public static final String KEY_REPORT_TAG = "reportTag";
 
 
     /*********************************************************************************************/

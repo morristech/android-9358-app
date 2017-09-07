@@ -33,6 +33,8 @@ public class CommonVerifyInfo implements Serializable {
         public String remark;
         // 列表单信息
         public List<CommonVerifyMsgItem> list;
+
+        public ExtraMemberInfo extra;
     }
 
     public class CommonVerifyMsgItem implements Serializable {
@@ -40,5 +42,14 @@ public class CommonVerifyInfo implements Serializable {
         public String text;
         // 项标题
         public String title;
+    }
+
+    public class ExtraMemberInfo implements Serializable{
+        public String cardNo;
+        public String memberTypeName;
+        public String memberName;
+        public int discount;
+        public String memberPhone;
+        public String telephone;
     }
 }

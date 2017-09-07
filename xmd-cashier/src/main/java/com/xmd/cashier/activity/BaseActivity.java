@@ -105,7 +105,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showLoading() {
-        progressDialog.show();
+        progressDialog.setCancelable(false);
+        progressDialog.show(null);
     }
 
     public void hideLoading() {

@@ -153,6 +153,11 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
     }
 
     @Override
+    public String getReadType() {
+        return mReadType;
+    }
+
+    @Override
     public void setPresenter(MemberReadContract.Presenter presenter) {
         mPresenter = presenter;
     }

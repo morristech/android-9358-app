@@ -162,7 +162,7 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().print(info, retry);
+                        NotifyManager.getInstance().printOrderRecord(info, retry);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -207,7 +207,7 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
                 mView.showToast("订单接受成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_ACCEPT, position);
                 info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
-                info.receiverName = AccountManager.getInstance().getUser().userName;
+                info.receiverName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOrderAcceptSwitch()) {
                     print(info, false);

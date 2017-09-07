@@ -31,4 +31,10 @@ public class VerifyRecordInfo {
     public String verifyTime;   //核销时间:yyyy-MM-dd HH:mm:ss
 
     public int currentCount;
+
+    // 用于打印
+    public String consumeMoneyDescription;  // 券使用说明
+    public String techDescription;  //预约技师
+    public String serviceItemName;  //预约项目
+    public String memberPhone;  //会员请客授权手机号
 }

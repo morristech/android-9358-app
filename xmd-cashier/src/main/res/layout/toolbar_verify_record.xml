@@ -20,14 +20,15 @@
         android:textSize="@dimen/medium_font_size" />
 
     <TextView
+        android:id="@+id/tv_print"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:layout_marginRight="@dimen/activity_normal_margin"
         android:clickable="true"
+        android:onClick="onClickPrint"
         android:gravity="center"
-        android:onClick="onClickOtherPay"
-        android:text="普通支付"
+        android:text="补打小票"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/font_size_16" />
 </com.xmd.cashier.widget.CustomToolbar>

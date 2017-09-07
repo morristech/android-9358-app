@@ -1,6 +1,7 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
@@ -11,6 +12,7 @@ import com.xmd.cashier.dal.bean.CommonVerifyInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.BaseBean;
 
 import rx.Observable;
@@ -51,6 +53,8 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
         mVerifyCommonSubscription = VerifyManager.getInstance().verifyWithMoney(Utils.stringToMoney(mView.getAmount()), mView.getCode(), mView.getType(), new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
+                mView.hideLoadingView();
+                mView.showToast("操作成功");
                 if (AppConstants.TYPE_PAY_FOR_OTHER.equals(info.type)) {
                     TreatInfo treatInfo = new TreatInfo();
                     treatInfo.userName = info.userName;
@@ -58,11 +62,11 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
                     treatInfo.amount = Integer.parseInt(info.info.amount);
                     treatInfo.useMoney = Utils.stringToMoney(mView.getAmount());
                     treatInfo.authorizeCode = info.code;
-                    printTreatInfoSync(treatInfo);
+                    treatInfo.setExtraMemberInfo(info.info.extra);
+                    printStep(treatInfo);
+                } else {
+                    mView.finishSelf();
                 }
-                mView.hideLoadingView();
-                mView.showToast("操作成功");
-                mView.finishSelf();
             }
 
             @Override
@@ -74,19 +78,51 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
         });
     }
 
-    private void printTreatInfoSync(final TreatInfo treatInfo) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        VerifyManager.getInstance().printTreatInfo(treatInfo);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+    private void printStep(final TreatInfo info) {
+        mView.showLoading();
+        VerifyManager.getInstance().printTreat(info, true, new Callback() {
+            @Override
+            public void onSuccess(Object o) {
+                mView.hideLoading();
+                new CustomAlertDialogBuilder(mContext)
+                        .setMessage("是否需要打印客户联小票?")
+                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Observable
+                                        .create(new Observable.OnSubscribe<Void>() {
+                                            @Override
+                                            public void call(Subscriber<? super Void> subscriber) {
+                                                VerifyManager.getInstance().printTreat(info, false, null);
+                                                subscriber.onNext(null);
+                                                subscriber.onCompleted();
+                                            }
+                                        })
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe();
+                                mView.finishSelf();
+                            }
+                        })
+                        .setNegativeButton("完成核销", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                mView.finishSelf();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showToast("打印异常:" + error);
+                mView.finishSelf();
+            }
+        });
     }
 
     @Override

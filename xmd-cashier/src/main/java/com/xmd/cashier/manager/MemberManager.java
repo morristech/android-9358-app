@@ -483,84 +483,67 @@ public class MemberManager {
         });
     }
 
-    public void printInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
+    public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
         byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.setPrintListener(callback);
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        if (retry) {
-            mPos.printCenter("--补打小票--");
-        } else {
-            mPos.printCenter(keep ? "商户存根" : "客户联");
-        }
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
-        mPos.printText("会员卡号  " + Utils.formatCode(info.cardNo));
-        mPos.printText("会员等级  " + info.memberTypeName);
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("会员卡号：" + (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + (keep ? info.name : Utils.formatName(info.name)) + ")");
+        mPos.printText("手机号码：" + (keep ? info.telephone : Utils.formatPhone(info.telephone)));
+        mPos.printText("会员等级：" + info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
+        mPos.printDivide();
+
         switch (info.tradeType) {
-            case AppConstants.MEMBER_TRADE_TYPE_INCOME:
-                // 充值:
-                if (info.packageId != null) {
-                    // 套餐:充XXX送XXX
-                    mPos.printText("充值套餐  " + "充" + Utils.moneyToString(info.orderAmount) + (info.discountAmount > 0 ? "送" + Utils.moneyToString(info.discountAmount) : ""));
-                } else {
-                    // 金额:指定金额XX元
-                    mPos.printText("充值金额  " + (info.discountAmount > 0 ? "充" + Utils.moneyToStringEx(info.orderAmount) + "送" + Utils.moneyToStringEx(info.discountAmount) : "指定金额" + Utils.moneyToStringEx(info.orderAmount) + "元"));
-                }
-                if (info.packageInfo != null && info.packageInfo.packageItems != null && !info.packageInfo.packageItems.isEmpty()) {
-                    mPos.printText("套餐优惠");
-                    for (PackagePlanItem.PackageItem item : info.packageInfo.packageItems) {
-                        switch (item.type) {
-                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_CREDIT:
-                                mPos.printText("|--" + item.name + "积分");
-                                break;
-                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
-                                mPos.printText("|--" + item.name + "元");
-                                break;
-                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_GIF:
-                                mPos.printText("|--" + item.name + " * " + item.itemCount, "礼品券");
-                                break;
-                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_COUPON:
-                                mPos.printText("|--" + item.name + " * " + item.itemCount, "优惠券");
-                                break;
-                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_SERVICE:
-                                mPos.printText("|--" + item.name + " * " + item.itemCount, "项目券");
-                                break;
-                            default:
-                                mPos.printText("|--" + item.name + " * " + item.itemCount);
-                                break;
-                        }
-                    }
-                }
+            case AppConstants.MEMBER_TRADE_TYPE_INCOME:     //充值
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.orderAmount));
+                mPos.printText("赠送金额：", "+￥ " + Utils.moneyToStringEx(info.discountAmount));
                 mPos.printDivide();
-                mPos.printText("支付金额  ", Utils.moneyToStringEx(info.orderAmount) + "元", true);
-                mPos.printText("账户余额  ", Utils.moneyToStringEx(info.accountAmount) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.orderAmount) + "元", true);
+                mPos.printRight("会员卡余额：" + "￥ " + Utils.moneyToStringEx(info.accountAmount));
                 mPos.printDivide();
+                if (keep) {
+                    mPos.printText("赠送详情");
+                    mPos.printText("[会员充值]" + (info.packageId != null ? (TextUtils.isEmpty(info.activityName) ? "充值套餐" : info.activityName) : "直接充值"));
+                    mPos.printText("    充" + Utils.moneyToString(info.orderAmount) + ((info.discountAmount > 0) ? "送" + Utils.moneyToString(info.discountAmount) : ""));
+                    mPos.printDivide();
+                }
+                mPos.printText("交易号：" + info.tradeNo);
+                mPos.printText("交易时间：" + info.createTime);
+                mPos.printText("支付方式：" + info.payChannelName + "(" + Utils.getPlatform(info.platform) + ")");
+                if (!TextUtils.isEmpty(info.techName)) {
+                    mPos.printText("营销人员：", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
+                }
+
+                mPos.printText("收款人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
+                mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
                 break;
-            case AppConstants.MEMBER_TRADE_TYPE_PAY:
-                // 消费:消费金额|折扣信息|实收金额|当前余额
-                mPos.printText("消费金额  " + Utils.moneyToStringEx(info.orderAmount) + "元");
-                mPos.printText("折扣金额  " + Utils.moneyToStringEx(info.discountAmount) + "元");
+            case AppConstants.MEMBER_TRADE_TYPE_PAY:        //消费
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.orderAmount));
+                mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(info.discountAmount));
                 mPos.printDivide();
-                mPos.printText("实收金额  ", Utils.moneyToStringEx(info.amount) + "元", true);
-                mPos.printText("账户余额  ", Utils.moneyToStringEx(info.accountAmount) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.amount) + "元", true);
+                mPos.printRight("会员卡余额：" + "￥ " + Utils.moneyToStringEx(info.accountAmount));
                 mPos.printDivide();
+                mPos.printText("交易号：" + info.tradeNo);
+                mPos.printText("交易时间：" + info.createTime);
+                mPos.printText("支付方式：" + "会员消费" + "(" + Utils.getPlatform(info.platform) + ")");
+                if (!TextUtils.isEmpty(info.techName)) {
+                    mPos.printText("服务技师：" + info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
+                }
+                mPos.printText("收款人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
+                mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
                 break;
             default:
                 break;
-        }
-
-        mPos.printText("交易号:", info.tradeNo);
-        mPos.printText("付款方式:", info.payChannelName);
-        mPos.printText("交易时间:", info.createTime);
-        mPos.printText("打印时间:", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
-        mPos.printText("收银人员:", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
-        if (!TextUtils.isEmpty(info.techName)) {
-            mPos.printText("营销人员:", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
         }
         if (!keep) {
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
             }
-            mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
+            mPos.printCenter("微信扫码，选技师、抢优惠");
         }
         mPos.printEnd();
     }

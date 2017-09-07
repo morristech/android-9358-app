@@ -99,13 +99,14 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                 // 按照指定格式处理消息
                 switch (message.getBusinessType()) {
                     case AppConstants.PUSH_TAG_MEMBER_PRINT:
+                        // 会员账户记录
                         final MemberRecordInfo memberRecordInfo = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
                         Observable
                                 .create(new Observable.OnSubscribe<Void>() {
                                     @Override
                                     public void call(Subscriber<? super Void> subscriber) {
-                                        MemberManager.getInstance().printInfo(memberRecordInfo, false, true, null);
-                                        MemberManager.getInstance().printInfo(memberRecordInfo, false, false, null);
+                                        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, null);
+                                        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, false, null);
                                         subscriber.onNext(null);
                                         subscriber.onCompleted();
                                     }
@@ -115,12 +116,13 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                                 .subscribe();
                         break;
                     case AppConstants.PUSH_TAG_ORDER_PRINT:
+                        // 预约订单
                         final OrderRecordInfo orderRecordInfo = new Gson().fromJson(message.getData(), OrderRecordInfo.class);
                         Observable
                                 .create(new Observable.OnSubscribe<Void>() {
                                     @Override
                                     public void call(Subscriber<? super Void> subscriber) {
-                                        NotifyManager.getInstance().print(orderRecordInfo, false);
+                                        NotifyManager.getInstance().printOrderRecord(orderRecordInfo, false);
                                         subscriber.onNext(null);
                                         subscriber.onCompleted();
                                     }
@@ -130,12 +132,14 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                                 .subscribe();
                         break;
                     case AppConstants.PUSH_TAG_FASTPAY_PRINT:
+                        // 在线买单
                         final OnlinePayInfo onlinePayInfo = new Gson().fromJson(message.getData(), OnlinePayInfo.class);
                         Observable
                                 .create(new Observable.OnSubscribe<Void>() {
                                     @Override
                                     public void call(Subscriber<? super Void> subscriber) {
-                                        NotifyManager.getInstance().print(onlinePayInfo, false);
+                                        NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, true);
+                                        NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, false);
                                         subscriber.onNext(null);
                                         subscriber.onCompleted();
                                     }

@@ -3,8 +3,6 @@ package com.xmd.cashier.manager;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.util.DateUtils;
-import com.xmd.cashier.MainApplication;
-import com.xmd.cashier.R;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
@@ -14,6 +12,8 @@ import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+
+import java.util.Date;
 
 import rx.Observable;
 import rx.Subscription;
@@ -71,53 +71,37 @@ public class BillManager {
         });
     }
 
-    public void print(BillInfo info) {
-        String format = MainApplication.getInstance().getString(R.string.cashier_money);
-
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(消费账单)");
-        mPos.printCenter("--补打小票--");
-
+    public void printBillRecord(BillInfo info, boolean keep) {
+        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
         mPos.printDivide();
-        mPos.printText("订单金额: ", String.format(format, Utils.moneyToStringEx(info.originMoney)), true);
-
-        mPos.printText("减免金额: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney + info.memberPayDiscountMoney + info.couponDiscountMoney)), true);
-        switch (info.discountType) {
-            case AppConstants.DISCOUNT_TYPE_COUPON:
-                mPos.printText("|--优惠金额: ", String.format(format, Utils.moneyToStringEx(info.couponDiscountMoney)));
-                break;
-            case AppConstants.DISCOUNT_TYPE_USER:
-                mPos.printText("|--手动减免: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney)));
-                break;
-            case AppConstants.DISCOUNT_TYPE_NONE:
-            default:
-                mPos.printText("|--其他优惠: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney + info.couponDiscountMoney)));
-                break;
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originMoney));
+        if (info.userDiscountMoney > 0) {
+            mPos.printText("手动减免：", "-￥ " + Utils.moneyToStringEx(info.userDiscountMoney));
         }
-        mPos.printText("|--会员折扣: ", String.format(format, Utils.moneyToStringEx(info.memberPayDiscountMoney)));
-
-        mPos.printText("实收金额: ", String.format(format, Utils.moneyToStringEx(info.memberPayMoney + info.posPayMoney)), true);
-        mPos.printText("|--" + Utils.getPayTypeString(info.posPayType) + ": ", String.format(format, Utils.moneyToStringEx(info.posPayMoney)));
-        mPos.printText("|--会员支付: ", String.format(format, Utils.moneyToStringEx(info.memberPayMoney)));
-
-        if (info.status == AppConstants.PAY_STATUS_REFUND) {
-            mPos.printText("退款金额: ", String.format(format, Utils.moneyToStringEx(info.refundMoney)));
+        if (info.memberPayDiscountMoney > 0) {
+            mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(info.memberPayDiscountMoney));
+        }
+        if (info.couponDiscountMoney > 0) {
+            mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(info.couponDiscountMoney));
         }
         mPos.printDivide();
-
-        mPos.printText("交易号: " + info.tradeNo);
-        mPos.printText("收款方式: " + Utils.getPayTypeString(info.posPayType));
-        mPos.printText("创建时间: " + DateUtils.doLong2String(Long.parseLong(info.payDate)));
-        mPos.printText("收款人: " + (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
-        mPos.printCenter("\n");
-
-        if (info.status == AppConstants.PAY_STATUS_REFUND) {
-            mPos.printText("退款单号: " + info.refundNo);
-            mPos.printText("退款时间: " + DateUtils.doLong2String(Long.parseLong(info.refundDate)));
-            mPos.printText("退款人: " + (TextUtils.isEmpty(info.refundOperator) ? "匿名" : info.refundOperator));
+        mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.memberPayMoney + info.posPayMoney) + " 元", true);
+        mPos.printDivide();
+        mPos.printText("交易号：" + info.tradeNo);
+        mPos.printText("交易时间：" + DateUtils.doLong2String(Long.parseLong(info.payDate)));
+        mPos.printText("支付方式：" + Utils.getPayTypeString(info.posPayType));
+        mPos.printText("收款人员：" + (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        if (!keep) {
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
         }
-        mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
-        mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
         mPos.printEnd();
     }
 }

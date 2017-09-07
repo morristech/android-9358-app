@@ -91,14 +91,31 @@
             android:background="@drawable/bg_line_dot"
             android:layerType="software" />
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_normal_margin"
-            android:gravity="left"
-            android:text="实收金额："
-            android:textColor="@color/colorText2"
-            android:textSize="@dimen/small_font_size" />
+            android:layout_marginBottom="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="实收金额："
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/small_font_size" />
+
+            <TextView
+                android:id="@+id/tv_pay_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="查看买单活动"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_14"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_pay_paid_money"
@@ -126,6 +143,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <ProgressBar
                     android:layout_width="25dp"
                     android:layout_height="25dp" />
@@ -151,8 +169,8 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:text="生成二维码失败"
-                    android:textSize="@dimen/font_size_14"
-                    android:textColor="@color/colorText3" />
+                    android:textColor="@color/colorText3"
+                    android:textSize="@dimen/font_size_14" />
 
                 <TextView
                     android:id="@+id/tv_qrcode_refresh"
@@ -183,7 +201,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/activity_normal_margin"
                 android:src="@drawable/ic_scan_method"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/ly_scan_status"

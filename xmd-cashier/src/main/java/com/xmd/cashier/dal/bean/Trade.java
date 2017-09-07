@@ -16,6 +16,7 @@ public class Trade {
     }
 
     public int currentCashier; //当前收银方式:会员支付 OR POS收银程序 OR 小摩豆微信在线买单;为error时表示不需要支付金额
+    public boolean isClient;    //用来控制打印是否要打印客户联小票
 
     //订单信息
     public String tradeNo; //订单号
@@ -44,7 +45,7 @@ public class Trade {
     public MemberInfo memberInfo;// 会员支付时的会员信息
     public String memberToken;  //会员二维码token
     public MemberRecordInfo memberRecordInfo;//会员支付信息
-    public boolean isMemberRemain;    //用来控制打印是否要打印存根
+    public String memberTempPhone;  //临时手机号
 
     /**
      * 扫码在线买单

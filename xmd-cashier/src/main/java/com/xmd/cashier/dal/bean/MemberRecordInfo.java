@@ -42,5 +42,5 @@ public class MemberRecordInfo {
     public String techNo;
 
     public Long packageId;
-    public PackagePlanItem packageInfo;
+    public String activityName;
 }

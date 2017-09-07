@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -79,6 +80,10 @@ public class VerifyRecordDetailActivity extends BaseActivity implements VerifyRe
     @Override
     public void setPresenter(VerifyRecordDetailContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    public void onClickPrint(View view) {
+        mPresenter.printVerifyRecord();
     }
 
     @Override

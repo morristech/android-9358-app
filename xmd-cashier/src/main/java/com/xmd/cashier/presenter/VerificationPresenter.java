@@ -214,6 +214,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             public void onSuccess(StringResult o) {
                 switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:
+                        TradeManager.getInstance().getCurrentTrade().memberTempPhone = number;
                         // 手机号
                         getList(number);
                         break;
@@ -379,6 +380,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                 info.amount = Integer.parseInt(o.getRespData().info.amount);
                 info.userName = o.getRespData().userName;
                 info.userPhone = o.getRespData().userPhone;
+                info.setExtraMemberInfo(o.getRespData().info.extra);
                 VerificationItem item = new VerificationItem();
                 item.code = info.authorizeCode;
                 item.type = type;

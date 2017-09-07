@@ -10,6 +10,8 @@ import com.google.gson.Gson;
  */
 
 public class CheckInfo implements Parcelable {
+    private String userName;
+    private String userPhone;
     private String typeName; //业务名称
     private String type; //业务类型,paid_coupon-点钟券,coupon-优惠券,service_item_coupon-项目券,order-付费预约
     private String title;
@@ -26,6 +28,8 @@ public class CheckInfo implements Parcelable {
     private String errorMsg;
 
     protected CheckInfo(Parcel in) {
+        userName = in.readString();
+        userPhone = in.readString();
         typeName = in.readString();
         type = in.readString();
         title = in.readString();
@@ -54,6 +58,22 @@ public class CheckInfo implements Parcelable {
             return new CheckInfo[size];
         }
     };
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
 
     public String getTypeName() {
         return typeName;
@@ -158,6 +178,8 @@ public class CheckInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(userName);
+        dest.writeString(userPhone);
         dest.writeString(typeName);
         dest.writeString(type);
         dest.writeString(title);

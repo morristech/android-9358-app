@@ -14,7 +14,6 @@ import com.xmd.cashier.dal.sp.SPManager;
 
 public class SettingActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
     private Switch mOnlinePaySwitch;
-    private Switch mVerifySuccessSwitch;
     private Switch mOrderAcceptSwitch;
     private Switch mOrderRejectSwitch;
     private Switch mOnlinePassSwitch;
@@ -32,21 +31,18 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
         mOnlinePaySwitch = (Switch) findViewById(R.id.sw_online_pay);
         mOnlinePassSwitch = (Switch) findViewById(R.id.sw_online_pass);
         mOnlineUnpassSwitch = (Switch) findViewById(R.id.sw_online_unpass);
-        mVerifySuccessSwitch = (Switch) findViewById(R.id.sw_verify_success);
         mOrderAcceptSwitch = (Switch) findViewById(R.id.sw_order_accept);
         mOrderRejectSwitch = (Switch) findViewById(R.id.sw_order_reject);
 
         mOnlinePaySwitch.setChecked(SPManager.getInstance().getOnlinePaySwitch());
         mOnlinePassSwitch.setChecked(SPManager.getInstance().getOnlinePassSwitch());
         mOnlineUnpassSwitch.setChecked(SPManager.getInstance().getOnlineUnpassSwitch());
-        mVerifySuccessSwitch.setChecked(SPManager.getInstance().getVerifySuccessSwitch());
         mOrderAcceptSwitch.setChecked(SPManager.getInstance().getOrderAcceptSwitch());
         mOrderRejectSwitch.setChecked(SPManager.getInstance().getOrderRejectSwitch());
 
         mOnlinePaySwitch.setOnCheckedChangeListener(this);
         mOnlinePassSwitch.setOnCheckedChangeListener(this);
         mOnlineUnpassSwitch.setOnCheckedChangeListener(this);
-        mVerifySuccessSwitch.setOnCheckedChangeListener(this);
         mOrderAcceptSwitch.setOnCheckedChangeListener(this);
         mOrderRejectSwitch.setOnCheckedChangeListener(this);
     }
@@ -67,9 +63,6 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
                 break;
             case R.id.sw_online_unpass:
                 SPManager.getInstance().setOnlineUnpassSwitch(isChecked);
-                break;
-            case R.id.sw_verify_success:
-                SPManager.getInstance().setVerifySuccessSwitch(isChecked);
                 break;
             case R.id.sw_order_accept:
                 SPManager.getInstance().setOrderAcceptSwitch(isChecked);

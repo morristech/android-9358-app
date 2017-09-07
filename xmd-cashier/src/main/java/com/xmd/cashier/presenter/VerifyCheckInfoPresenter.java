@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -18,11 +19,16 @@ import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.cashier.widget.VerifyDiscountDialog;
 
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,7 +37,9 @@ import static android.app.Activity.RESULT_OK;
  **/
 
 public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Presenter {
-    private final static int REQUEST_CODE_CONSUME = 1;
+    private final static int REQUEST_CODE_CONSUME_CHECKINFO = 1;
+    private final static int REQUEST_CODE_CONSUME_COUPON = 2;
+    private final static int REQUEST_CODE_CONSUME_ORDER = 3;
     private Context mContext;
     private VerifyCheckInfoContract.View mView;
 
@@ -81,16 +89,20 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
 
     @Override
     public void onActivityResult(Intent intent, int requestCode, int resultCode) {
-        switch (requestCode) {
-            case REQUEST_CODE_CONSUME:
-                //核销券成功后,更新券列表
-                if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_CONSUME_CHECKINFO:
+                    //核销结束
+                    printStep(VerifyManager.getInstance().getSuccessList());
+                    break;
+                case REQUEST_CODE_CONSUME_COUPON:
+                case REQUEST_CODE_CONSUME_ORDER:
                     resetList();
                     onLoad();
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -152,9 +164,7 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
                     gotoVerifyResultActivity(mContext);
                 } else {
                     mView.showError("全部核销成功");
-                    // 刷新列表
-                    resetList();
-                    onLoad();
+                    printStep(VerifyManager.getInstance().getSuccessList());
                 }
             }
 
@@ -198,23 +208,25 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
 
     private void gotoVerifyResultActivity(Context context) {
         Intent intent = new Intent(context, VerifyConfirmActivity.class);
-        ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE_CONSUME);
+        ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE_CONSUME_CHECKINFO);
     }
 
     @Override
     public void onItemClick(CheckInfo info) {
         switch (info.getInfoType()) {
             case AppConstants.CHECK_INFO_TYPE_COUPON:
+                // 券
                 Intent couponIntent = new Intent(mContext, VerifyCouponActivity.class);
                 couponIntent.putExtra(AppConstants.EXTRA_COUPON_VERIFY_INFO, (CouponInfo) info.getInfo());
                 couponIntent.putExtra(AppConstants.EXTRA_IS_SHOW, true);
-                ((Activity) mContext).startActivityForResult(couponIntent, REQUEST_CODE_CONSUME);
+                ((Activity) mContext).startActivityForResult(couponIntent, REQUEST_CODE_CONSUME_COUPON);
                 break;
             case AppConstants.CHECK_INFO_TYPE_ORDER:
+                // 付费预约
                 Intent orderIntent = new Intent(mContext, VerifyOrderActivity.class);
                 orderIntent.putExtra(AppConstants.EXTRA_ORDER_VERIFY_INFO, (OrderInfo) info.getInfo());
                 orderIntent.putExtra(AppConstants.EXTRA_IS_SHOW, true);
-                ((Activity) mContext).startActivityForResult(orderIntent, REQUEST_CODE_CONSUME);
+                ((Activity) mContext).startActivityForResult(orderIntent, REQUEST_CODE_CONSUME_ORDER);
                 break;
             default:
                 break;
@@ -230,5 +242,58 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
     @Override
     public void onItemSelectValid(CheckInfo info) {
         mView.showError("该券不在可用时间段内");
+    }
+
+    private void printStep(final List<CheckInfo> infos) {
+        mView.showLoading();
+        VerifyManager.getInstance().printCheckInfoList(infos, true, new Callback() {
+            @Override
+            public void onSuccess(Object o) {
+                mView.hideLoading();
+                new CustomAlertDialogBuilder(mContext)
+                        .setMessage("是否需要打印客户联小票?")
+                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Observable
+                                        .create(new Observable.OnSubscribe<Void>() {
+                                            @Override
+                                            public void call(Subscriber<? super Void> subscriber) {
+                                                VerifyManager.getInstance().printCheckInfoList(infos, false, null);
+                                                subscriber.onNext(null);
+                                                subscriber.onCompleted();
+                                            }
+                                        })
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe();
+                                // 刷新列表
+                                resetList();
+                                onLoad();
+                            }
+                        })
+                        .setNegativeButton("完成核销", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                // 刷新列表
+                                resetList();
+                                onLoad();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showToast("打印异常:" + error);
+                // 刷新列表
+                resetList();
+                onLoad();
+            }
+        });
     }
 }

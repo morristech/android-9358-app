@@ -105,8 +105,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         });
     }
 
-    @Override
-    public void onRechargePos() {
+    private void onRechargePos() {
         if (mGetTradeNoSubscription != null) {
             mGetTradeNoSubscription.unsubscribe();
         }
@@ -200,8 +199,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             public void onCallbackSuccess(MemberRecordResult result) {
                 resultReportRecharge = true;
                 MemberRecordInfo record = result.getRespData();
-                record.packageInfo = MemberManager.getInstance().getPackageInfo();
-                printClient(record);
+                printStep(record);
             }
 
             @Override
@@ -213,8 +211,8 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         return resultReportRecharge;
     }
 
-    private void printClient(final MemberRecordInfo info) {
-        MemberManager.getInstance().printInfo(info, false, true, new Callback() {
+    private void printStep(final MemberRecordInfo info) {
+        MemberManager.getInstance().printMemberRecordInfo(info, false, true, new Callback() {
             @Override
             public void onSuccess(Object o) {
                 mView.hideLoading();
@@ -229,7 +227,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                                             @Override
                                             public void call(Subscriber<? super Void> subscriber) {
                                                 // POS充值:银联|现金
-                                                MemberManager.getInstance().printInfo(info, false, false, null);
+                                                MemberManager.getInstance().printMemberRecordInfo(info, false, false, null);
                                                 subscriber.onNext(null);
                                                 subscriber.onCompleted();
                                             }
@@ -267,28 +265,32 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     // 扫码支付
-    @Override
-    public void onRechargeScan() {
-        // 跳转到扫码支付页面
-        UiNavigation.gotoMemberScanActivity(mContext);
+    private void onRechargeScan() {
+        UiNavigation.gotoMemberScanActivity(mContext, AppConstants.MEMBER_CASHIER_METHOD_SCAN);
+    }
+
+    // 现金支付
+    private void onRechargeCash() {
+        UiNavigation.gotoMemberScanActivity(mContext, AppConstants.MEMBER_CASHIER_METHOD_CASH);
     }
 
     @Override
     public void onRecharge(int type) {
         switch (type) {
-            case AppConstants.CASHIER_TYPE_POS:
+            case AppConstants.CASHIER_TYPE_POS: //Pos银联
+            case AppConstants.CASHIER_TYPE_XMD_ONLINE:  // 扫码买单
+                doRechargeRequest(type, null);
+                break;
+            case AppConstants.CASHIER_TYPE_CASH:    // 现金支付
                 if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getVerificationSwitch())) {
-                    // Pos银联和现金支付：需要输入收银员密码
+                    // 需要输入收银员密码
                     doInputPassword(type);
                 } else {
                     // 无需校验密码
                     doRechargeRequest(type, null);
                 }
                 break;
-            case AppConstants.CASHIER_TYPE_XMD_ONLINE:
-                doRechargeRequest(type, null);
-                break;
-            case AppConstants.CASHIER_TYPE_ERROR:
+            case AppConstants.CASHIER_TYPE_ERROR:   // 其他
             default:
                 mView.showToast("充值流程异常...");
                 break;
@@ -332,11 +334,14 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             public void onSuccess(MemberUrlResult o) {
                 mView.hideLoading();
                 switch (type) {
-                    case AppConstants.CASHIER_TYPE_POS:
+                    case AppConstants.CASHIER_TYPE_POS: //Pos支付
                         onRechargePos();
                         break;
-                    case AppConstants.CASHIER_TYPE_XMD_ONLINE:
+                    case AppConstants.CASHIER_TYPE_XMD_ONLINE:  //扫码支付
                         onRechargeScan();
+                        break;
+                    case AppConstants.CASHIER_TYPE_CASH:    //现金支付
+                        onRechargeCash();
                         break;
                     default:
                         break;

@@ -15,6 +15,7 @@ import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
+import com.xmd.cashier.dal.bean.VerifyRecordInfo;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
@@ -104,6 +105,16 @@ public class VerifyManager {
             }
         }
         return resultList;
+    }
+
+    public List<CheckInfo> getSuccessList() {
+        List<CheckInfo> successList = new ArrayList<>();
+        for (CheckInfo info : mVerifyList) {
+            if (info.getSelected() && info.getSuccess()) {
+                successList.add(info);
+            }
+        }
+        return successList;
     }
 
     public boolean hasFailed() {
@@ -492,7 +503,6 @@ public class VerifyManager {
                                     XmdNetwork.getInstance().requestSync(commonCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
-                                            VerifyManager.getInstance().printByVerifyType(info);
                                             info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -517,7 +527,6 @@ public class VerifyManager {
                                     XmdNetwork.getInstance().requestSync(discountCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
-                                            VerifyManager.getInstance().printByVerifyType(info);
                                             info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -541,7 +550,6 @@ public class VerifyManager {
                                     XmdNetwork.getInstance().requestSync(orderCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
-                                            VerifyManager.getInstance().printByVerifyType(info);
                                             info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -782,5 +790,369 @@ public class VerifyManager {
             default:
                 break;
         }
+    }
+
+    /**********************************************************************************************/
+    public void printCheckInfoList(List<CheckInfo> list, boolean keep, Callback<?> callback) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        mPos.setPrintListener(callback);
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter(keep ? "商户存根" : "客户联");
+        mPos.printDivide();
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        if (keep) {
+            mPos.printText("手机号码：" + list.get(0).getUserPhone() + "(" + list.get(0).getUserName() + ")");
+        } else {
+            mPos.printText("手机号码：" + Utils.formatPhone(list.get(0).getUserPhone()) + "(" + Utils.formatName(list.get(0).getUserName()) + ")");
+        }
+        mPos.printDivide();
+
+        int orderAmount = 0;
+        int couponAmount = 0;
+        int originAmount = 0;
+        for (CheckInfo info : list) {
+            switch (info.getInfoType()) {
+                case AppConstants.CHECK_INFO_TYPE_COUPON:
+                    CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                    couponAmount += couponInfo.getReallyCouponMoney();
+                    if (AppConstants.COUPON_TYPE_DISCOUNT.equals(couponInfo.couponType)) {
+                        originAmount = couponInfo.originAmount;
+                    }
+                    break;
+                case AppConstants.CHECK_INFO_TYPE_ORDER:
+                    orderAmount += ((OrderInfo) info.getInfo()).downPayment;
+                    break;
+                default:
+                    break;
+            }
+        }
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(originAmount));
+        mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
+        mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
+        mPos.printDivide();
+        mPos.printRight("实收金额：" + 0 + " 元");
+        mPos.printDivide();
+
+        mPos.printText("优惠详情");
+        for (CheckInfo info : list) {
+            switch (info.getType()) {
+                case AppConstants.TYPE_COUPON:
+                case AppConstants.TYPE_CASH_COUPON:
+                case AppConstants.TYPE_GIFT_COUPON:
+                case AppConstants.TYPE_DISCOUNT_COUPON:
+                case AppConstants.TYPE_PAID_COUPON:
+                    CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                    mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
+                    mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                    break;
+                case AppConstants.TYPE_SERVICE_ITEM_COUPON: //项目券
+                    CouponInfo serviceCouponInfo = (CouponInfo) info.getInfo();
+                    String items = null;
+                    if (serviceCouponInfo.itemNames != null && !serviceCouponInfo.itemNames.isEmpty()) {
+                        StringBuilder itemsBuild = new StringBuilder();
+                        for (String item : serviceCouponInfo.itemNames) {
+                            itemsBuild.append(item).append(",");
+                        }
+                        itemsBuild.setLength(itemsBuild.length() - 1);
+                        items = itemsBuild.toString();
+                    }
+                    mPos.printText("[" + serviceCouponInfo.couponTypeName + "]" + serviceCouponInfo.actSubTitle, "(-" + Utils.moneyToString(serviceCouponInfo.consumeAmount) + "元)");
+                    mPos.printText("    " + (TextUtils.isEmpty(items) ? "未指定" : items) + "/" + serviceCouponInfo.consumeMoneyDescription);
+                    mPos.printText("    " + serviceCouponInfo.couponNo + "/" + Utils.formatCode(serviceCouponInfo.userPhone));
+                    break;
+                case AppConstants.TYPE_ORDER:
+                    OrderInfo orderInfo = (OrderInfo) info.getInfo();
+                    mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo + "号"), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
+                    mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+                    break;
+                default:
+                    break;
+            }
+        }
+        mPos.printDivide();
+        mPos.printText("交易时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("核销终端：", "POS机");
+        mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        if (!keep) {    //客户联
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
+        }
+        mPos.printEnd();
+    }
+
+    // 券
+    public void printCoupon(CouponInfo couponInfo, boolean keep, Callback<?> callback) {
+        mPos.setPrintListener(callback);
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter(keep ? "商户存根" : "客户联");
+        mPos.printDivide();
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("手机号码：" + (keep ? couponInfo.userPhone : Utils.formatPhone(couponInfo.userPhone)) + "(" + (keep ? couponInfo.userName : Utils.formatName(couponInfo.userName)) + ")");
+        mPos.printDivide();
+
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(couponInfo.originAmount));
+        mPos.printText(couponInfo.couponTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(couponInfo.getReallyCouponMoney()));
+        mPos.printDivide();
+        mPos.printRight("实收金额：" + 0 + "元", true);
+        mPos.printDivide();
+        mPos.printText("优惠详情");
+        switch (couponInfo.couponType) {
+            case AppConstants.COUPON_TYPE_SERVICE_ITEM:
+                String items = null;
+                if (couponInfo.itemNames != null && !couponInfo.itemNames.isEmpty()) {
+                    StringBuilder itemsBuild = new StringBuilder();
+                    for (String item : couponInfo.itemNames) {
+                        itemsBuild.append(item).append(",");
+                    }
+                    itemsBuild.setLength(itemsBuild.length() - 1);
+                    items = itemsBuild.toString();
+                }
+                mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actSubTitle, "(-" + Utils.moneyToString(couponInfo.consumeAmount) + "元)");
+                mPos.printText("    " + (TextUtils.isEmpty(items) ? "未指定" : items) + "/" + couponInfo.consumeMoneyDescription);
+                mPos.printText("    " + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                break;
+            default:
+                mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
+                mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                break;
+        }
+        mPos.printDivide();
+
+        mPos.printText("交易时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("核销终端：", "POS机");
+        mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        if (!keep) {    //客户联
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
+        }
+        mPos.printEnd();
+    }
+
+    // 预约
+    public void printOrder(OrderInfo orderInfo, boolean keep, Callback<?> callback) {
+        mPos.setPrintListener(callback);
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter(keep ? "商户存根" : "客户联");
+        mPos.printDivide();
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("手机号码：" + (keep ? orderInfo.phoneNum : Utils.formatPhone(orderInfo.phoneNum)) + "(" + (keep ? orderInfo.customerName : Utils.formatName(orderInfo.customerName)) + ")");
+        mPos.printDivide();
+
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(orderInfo.downPayment));
+        mPos.printText("预约抵扣金额：", "-￥ " + Utils.moneyToStringEx(orderInfo.downPayment));
+        mPos.printDivide();
+        mPos.printRight("实收金额：" + 0 + "元", true);
+        mPos.printDivide();
+
+        mPos.printText("优惠详情");
+        mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
+        mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+        mPos.printDivide();
+
+        mPos.printText("交易时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("核销终端：", "POS机");
+        mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+
+        if (!keep) {    //客户联
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
+        }
+        mPos.printEnd();
+    }
+
+    // 奖品
+    public void printPrize(PrizeInfo prizeInfo, boolean keep, Callback<?> callback) {
+        mPos.setPrintListener(callback);
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter(keep ? "商户存根" : "客户联");
+        mPos.printDivide();
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("手机号码：" + (keep ? prizeInfo.telephone : Utils.formatPhone(prizeInfo.telephone)) + "(" + (keep ? prizeInfo.userName : Utils.formatName(prizeInfo.userName)) + ")");
+        mPos.printDivide();
+
+        mPos.printText("订单金额：", "￥ " + 0);
+        mPos.printText("抵扣金额：", "-￥ " + 0);
+        mPos.printDivide();
+        mPos.printRight("实收金额：" + 0 + "元", true);
+        mPos.printDivide();
+
+        mPos.printText("优惠详情");
+        mPos.printText("[奖品]" + prizeInfo.activityName);
+        mPos.printText("    " + "奖品：" + prizeInfo.prizeName);
+        mPos.printText("    " + prizeInfo.verifyCode + "/" + Utils.formatCode(prizeInfo.telephone));
+        mPos.printDivide();
+
+        mPos.printText("交易时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("核销终端：", "POS机");
+        mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+
+        if (!keep) {    //客户联
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
+        }
+        mPos.printEnd();
+    }
+
+    // 会员请客
+    public void printTreat(TreatInfo treatInfo, boolean keep, Callback<?> callback) {
+        mPos.setPrintListener(callback);
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter(keep ? "商户存根" : "客户联");
+        mPos.printDivide();
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("手机号码：" + (keep ? treatInfo.userPhone : Utils.formatPhone(treatInfo.userPhone)) + "(" + (keep ? treatInfo.userName : Utils.formatName(treatInfo.userName)) + ")");
+        mPos.printDivide();
+
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(treatInfo.useMoney));
+        mPos.printText("抵扣金额：", "-￥ " + Utils.moneyToStringEx((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)));
+        mPos.printDivide();
+        mPos.printRight("实收金额：" + Utils.moneyToStringEx((int) (treatInfo.useMoney * treatInfo.memberDiscount / 1000.0f)) + "元", true);
+        mPos.printDivide();
+
+        mPos.printText("优惠详情");
+        mPos.printText("[会员卡]" + treatInfo.memberTypeName + "," + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+        mPos.printDivide();
+
+        mPos.printText("交易时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("核销终端：", "POS机");
+        mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+
+        if (!keep) {    //客户联
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
+        }
+        mPos.printEnd();
+    }
+
+    // 核销记录
+    public void printRecord(VerifyRecordInfo recordInfo, boolean keep) {
+        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+        mPos.printCenter("小摩豆结账单");
+        mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
+        mPos.printDivide();
+        mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
+        mPos.printDivide();
+        mPos.printText("手机号码：" + (keep ? recordInfo.telephone : Utils.formatPhone(recordInfo.telephone)) + (TextUtils.isEmpty(recordInfo.userName) ? "" : "(" + (keep ? recordInfo.userName : Utils.formatName(recordInfo.userName)) + ")"));
+        mPos.printDivide();
+        switch (recordInfo.businessType) {
+            case AppConstants.TYPE_COUPON:
+            case AppConstants.TYPE_CASH_COUPON:
+            case AppConstants.TYPE_GIFT_COUPON:
+            case AppConstants.TYPE_DISCOUNT_COUPON:
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printDivide();
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
+                mPos.printText("    " + recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
+            case AppConstants.TYPE_PAID_COUPON:
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
+                mPos.printDivide();
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount) + "元)");
+                mPos.printText("    " + recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
+            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printDivide();
+                switch (recordInfo.paidType) {
+                    case AppConstants.TYPE_PAID_AMOUNT:
+                        mPos.printRight("实收：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
+                        break;
+                    case AppConstants.TYPE_PAID_CREDITS:
+                        mPos.printRight("实收：" + recordInfo.amount + "积分", true);
+                        break;
+                    case AppConstants.TYPE_PAID_FREE:
+                        mPos.printRight("实收：" + "免费", true);
+                        break;
+                    default:
+                        break;
+                }
+                mPos.printDivide();
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText("    " + recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
+            case AppConstants.TYPE_ORDER:
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printDivide();
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + (TextUtils.isEmpty(recordInfo.serviceItemName) ? "到店选择" : recordInfo.serviceItemName) + (TextUtils.isEmpty(recordInfo.techDescription) ? "" : "，" + recordInfo.techDescription), "(-" + Utils.moneyToStringEx(recordInfo.amount) + "元)");
+                mPos.printText("    " + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
+            case AppConstants.TYPE_PAY_FOR_OTHER:
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
+                mPos.printDivide();
+                // TODO 会员等级 + 会员折扣
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + "授权手机号:" + Utils.formatCode(recordInfo.memberPhone), "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printDivide();
+                break;
+            case AppConstants.TYPE_LUCKY_WHEEL:
+                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printDivide();
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText("    " + recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
+        }
+        mPos.printText("交易时间：" + recordInfo.verifyTime);
+        mPos.printText("核销终端：" + recordInfo.platformName);
+        mPos.printText("收款人员：" + recordInfo.operatorName);
+        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        if (!keep) {
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
+        }
+        mPos.printEnd();
     }
 }
