@@ -40,8 +40,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.SayHiResult;
-import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
-import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
@@ -111,7 +109,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 result -> handlerIsBindResult(result)
         );
 
-        requestPermissions();
+        //requestPermissions();
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
 
@@ -120,20 +118,20 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         XmdChat.getInstance().loadConversation();
     }
 
-    @TargetApi(23)
-    private void requestPermissions() {
-        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
-            @Override
-            public void onGranted() {
-
-            }
-
-            @Override
-            public void onDenied(String permission) {
-
-            }
-        });
-    }
+//    @TargetApi(23)
+//    private void requestPermissions() {
+//        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
+//            @Override
+//            public void onGranted() {
+//
+//            }
+//
+//            @Override
+//            public void onDenied(String permission) {
+//
+//            }
+//        });
+//    }
 
     @Override
     protected void onNewIntent(Intent intent) {

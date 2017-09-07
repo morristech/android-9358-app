@@ -15,9 +15,8 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CouponType;
 import com.xmd.technician.bean.UserGetCouponResult;
-import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -27,8 +26,10 @@ import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -189,15 +190,15 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.toolbar_right_share) {
             Intent resultIntent = new Intent();
-            resultIntent.putParcelableArrayListExtra(TechChatActivity.REQUEST_COUPON_TYPE, (ArrayList<? extends Parcelable>) mSelectedCouponInfo);
+            resultIntent.putParcelableArrayListExtra("coupon", (ArrayList<? extends Parcelable>) mSelectedCouponInfo);
 
             //先请求用户领取券
             successCount = 0;
             failedCount = 0;
             remainSendCount = mSelectedCouponInfo.size();
             for (CouponInfo couponInfo : mSelectedCouponInfo) {
-                if (!(ChatConstant.KEY_COUPON_PAID_TYPE).equals(couponInfo.couponType)) {
-                    EaseCommonUtils.userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId);
+                if (!("paid").equals(couponInfo.couponType)) {
+                userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId);
                 } else {
                     successCount++;
                     remainSendCount--;
@@ -214,11 +215,11 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
 
     private String getShareText(CouponInfo couponInfo) {
         switch (couponInfo.couponType) {
-            case ChatConstant.KEY_COUPON_PAID_TYPE:
+            case "paid":
                 return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
-            case ChatConstant.KEY_COUPON_TYPE_DISCOUNT:
+            case "discount":
                 return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
-            case ChatConstant.KEY_COUPON_TYPE_GIFT:
+            case "gift":
                 return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
             default:
                 return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
@@ -231,5 +232,14 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             XToast.show("发券成功" + successCount + "张" + (failedCount > 0 ? "失败" + failedCount + "张" : ""));
             finish();
         }
+    }
+
+    public void userGetCoupon(String content, String actId, String channel, String emchatId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(RequestConstant.KEY_COUPON_CONTENT, content);
+        params.put(RequestConstant.KEY_USER_COUPON_ACT_ID, actId);
+        params.put(RequestConstant.KEY_USER_COUPON_CHANEL, channel);
+        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, emchatId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON, params);
     }
 }

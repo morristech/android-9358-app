@@ -91,6 +91,7 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
             @Override
             public void onCallbackError(Throwable e) {
                 XToast.show(e.getLocalizedMessage());
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

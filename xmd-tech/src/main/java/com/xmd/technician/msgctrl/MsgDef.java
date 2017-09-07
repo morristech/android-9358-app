@@ -182,20 +182,12 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST = 0x0108;
     public static final int MSG_DEF_TECH_RANKING_LIST = 0x0109;
 
-
-    //------------------------------------------> 聊天黑名单 <-----------------------------------------
-    public static final int MSG_DEF_IN_USER_BLACKLIST = 0x0114;
     //获取聊天定位
     public static final int MSG_DEF_MARK_CHAT_TO_USER = 0x0115;
     public static final int MSG_DEF_LOGOUT_EMCHAT = 0x0116;
     public static final int MSG_DEF_GET_CHAT_CATEGORY_LIST = 0x0117;
     public static final int MSG_DEF_GET_TECH_MARKETING_LIST = 0x0118;
-    //------------------------------------------> 联系人列表优化 <-----------------------------------------
-    public static final int MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST = 0x0119;
-    public static final int MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST = 0x0120;
-    public static final int MSG_DEF_CLUB_EMPLOYEE_LIST = 0x0121;
-    public static final int MSG_DEF_CLUB_CUSTOMER_RECENT_LIST = 0x0122;
-    public static final int MSG_DEF_CLUB_EMPLOYEE_DETAIL = 0x0123;
+
     //------------------------------------------> 技师海报 <-----------------------------------------
     public static final int MSG_DEF_TECH_POSTER_SAVE = 0x124;
     public static final int MSG_DEF_TECH_POSTER_DELETE = 0x125;

@@ -726,11 +726,6 @@ public interface SpaService {
                                                    @Query(RequestConstant.KEY_PAGE) String page,
                                                    @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
-//    // 查询近期是否打过招呼
-//    @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
-//    Call<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
-//                                                      @Query(RequestConstant.KEY_TOKEN) String userToken);
-
     // 查询联系状态
     @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
     Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_ID) String id,
@@ -815,12 +810,6 @@ public interface SpaService {
                                                         @Query(RequestConstant.KEY_PAGE) String pager,
                                                         @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
-    // ------------------------------------------> 聊天黑名单 <----------------------------------------
-
-//    @GET(RequestConstant.URL_IN_USER_BLACKLIST)
-//    Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
-//                                                @Query(RequestConstant.KEY_TOKEN) String userToken);
-
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_MARK_CHAT_TO_USER)
     Call<MarkChatToUserResult> markChatToUser(@Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -835,32 +824,8 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_MARKETING_ITEM_LIST)
     Call<MarketingListResult> techMarketingList(@Field(RequestConstant.KEY_TOKEN) String userToken);
-    // ------------------------------------------> 联系人优化 <----------------------------------------
 
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_CUSTOMER_USER_ALL_LIST)
-    Call<ContactAllListResult> techCustomerAllList(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                   @Field(RequestConstant.KEY_PAGE) String page,
-                                                   @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                                   @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
-                                                   @Field(RequestConstant.KEY_USER_NAME) String userName);
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST)
-    Call<ContactRegisterListResult> techCustomerRegisterList(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                             @Field(RequestConstant.KEY_PAGE) String page,
-                                                             @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                                             @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
-                                                             @Field(RequestConstant.KEY_USER_NAME) String userName);
-
-
-    @GET(RequestConstant.URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST)
-    Call<CustomerUserRecentListResult> clubCustomerUserRecentList(@Query(RequestConstant.KEY_TOKEN) String userToken);
-    //clubEmployeeDetail
-
-    @GET(RequestConstant.URL_CLUB_COLLEAGUE_DETAIL)
-    Call<ClubEmployeeDetailResult> clubEmployeeDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                      @Query(RequestConstant.KEY_EMP_ID) String empId);
+    // ------------------------------------------> 技师海报 <----------------------------------------
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_TECH_POSTER_SAVE)

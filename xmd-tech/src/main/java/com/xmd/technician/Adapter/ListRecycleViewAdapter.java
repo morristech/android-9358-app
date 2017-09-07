@@ -38,7 +38,7 @@ import com.xmd.technician.bean.PayForMeBean;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.bean.ShareCouponBean;
 import com.xmd.technician.bean.TechRankingBean;
-import com.xmd.technician.chat.ChatConstant;
+
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
@@ -287,7 +287,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserHeadUrl.setOnClickListener(
-                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, "customer")));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
@@ -466,63 +466,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(paidCouponUserDetail.headImgUrl).into(itemHolder.mAvatar);
             itemHolder.mAvatar.setOnClickListener(
                     v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
+                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, "customer")));
             itemHolder.mTvCustomerName.setText(Utils.StrSubstring(8, paidCouponUserDetail.userName, true));
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
             itemHolder.mTvCouponStatusDescription.setText(paidCouponUserDetail.couponStatusDescription);
             return;
-        }
-        if (holder instanceof ConversationViewHolder) {
-//            Object obj = mData.get(position);
-//            if (!(obj instanceof EMConversation)) {
-//                return;
-//            }
-//            final EMConversation conversation = (EMConversation) obj;
-//            ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
-//
-//            if (conversation.getUnreadMsgCount() > 0) {
-//                conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
-//                conversationHolder.mUnread.setVisibility(View.VISIBLE);
-//            } else {
-//                conversationHolder.mUnread.setVisibility(View.INVISIBLE);
-//            }
-//
-//            if (conversation.getAllMsgCount() != 0) {
-//                // 把最后一条消息的内容作为item的message内容
-//                EMMessage lastMessage = conversation.getLastMessage();
-//                Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(lastMessage, mContext));
-//                conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
-//                conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-//                String remoteChatId = lastMessage.getFrom();
-//                if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
-//                    remoteChatId = lastMessage.getTo();
-//                }
-//                User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
-//                if (user != null) {
-//                    conversationHolder.mAvatar.setUserInfo(user.getId(), user.getAvatar());
-//                    conversationHolder.mName.setText(user.getShowName());
-//                } else {
-//                    conversationHolder.mAvatar.setUserInfo(null, null);
-//                    conversationHolder.mName.setText("匿名用户");
-//                }
-//            }
-//
-//            holder.itemView.setOnClickListener(v -> {
-//                try {
-//                    mCallback.onItemClicked(conversation);
-//                } catch (HyphenateException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    mCallback.onLongClicked(conversation);
-//                    return true;
-//                }
-//            });
-//            return;
         }
         if (holder instanceof CreditRecordViewHolder) {
             Object obj = mData.get(position);

@@ -88,16 +88,6 @@
             android:name=".window.ModifyPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.TechChatActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="com.xmd.technician.action.START_CHAT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".window.BrowserActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -123,9 +113,6 @@
             android:name=".window.OrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.ShowBigImageActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".window.PaidCouponDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -139,16 +126,6 @@
             android:exported="true"
             android:label="@string/wx_entry_activity_title"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".window.AddFriendActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".window.CellphoneContactListActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".window.SysNoticeListActivity" />
-        <activity
-            android:name=".window.EditContactInformation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".window.TechShareCardActivity"
@@ -238,11 +215,6 @@
             android:name=".window.TechPersonalRankingDetailActivity"
             android:screenOrientation="portrait" />
 
-
-
-        <activity
-            android:name=".window.MarketingChatShareActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".window.TechPersonalPosterActivity"
             android:label="@string/tech_poster_title"
