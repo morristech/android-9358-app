@@ -56,27 +56,27 @@ public class AllTechBadCommentActivity extends BaseActivity {
             DropDownMenuDialog.getDropDownMenuDialog(AllTechBadCommentActivity.this, items, (index -> {
                 switch (index) {
                     case 0:
-                        tvToolbarRight.setText("日");
+                        tvToolbarRight.setText("今天");
                         startTime = DateUtil.getCurrentDate();
                         getData();
                         break;
                     case 1:
-                        tvToolbarRight.setText("周");
+                        tvToolbarRight.setText("本周");
                         startTime = DateUtil.getMondayOfWeek();
                         getData();
                         break;
                     case 2:
-                        tvToolbarRight.setText("月");
+                        tvToolbarRight.setText("本月");
                         startTime = DateUtil.getFirstDayOfMonth();
                         getData();
                         break;
                     case 3:
-                        tvToolbarRight.setText("季");
+                        tvToolbarRight.setText("本季");
                         startTime = DateUtil.getFirstDayOfQuarterString(new Date());
                         getData();
                         break;
                     case 4:
-                        tvToolbarRight.setText("年");
+                        tvToolbarRight.setText("本年");
                         startTime = DateUtil.getFirstDayOfYear();
                         getData();
                         break;

@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         });
 
 
-        Manager.getInstance().checkUpgrade(true);
+  //      Manager.getInstance().checkUpgrade(true);
 
 //        mGetNewOrderCountSubscription = RxBus.getInstance().toObservable(NewOrderCountResult.class).subscribe(
 //                result -> {
