@@ -90,8 +90,7 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
 
             @Override
             public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
-                mSwipeRefreshLayout.setRefreshing(false);
+                onGetListFailed(e.getLocalizedMessage());
             }
         });
     }
@@ -148,5 +147,10 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
     @Subscribe
     public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
         onRefresh();
+    }
+
+    @Override
+    public boolean isPaged() {
+        return false;
     }
 }

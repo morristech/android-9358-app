@@ -81,8 +81,7 @@ public class ManagerContactsAllFragment extends BaseListFragment<ManagerContactA
 
             @Override
             public void onCallbackError(Throwable e) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                XToast.show(e.getLocalizedMessage());
+                onGetListFailed(e.getLocalizedMessage());
             }
         });
     }

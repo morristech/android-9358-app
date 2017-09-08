@@ -97,8 +97,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
 
             @Override
             public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
-                mSwipeRefreshLayout.setRefreshing(false);
+                onGetListFailed(e.getLocalizedMessage());
             }
         });
     }

@@ -3,5 +3,8 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <View android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#66c3c3c3"/>
     <include layout="@layout/layout_manager_contact_view"/>
 </LinearLayout>
