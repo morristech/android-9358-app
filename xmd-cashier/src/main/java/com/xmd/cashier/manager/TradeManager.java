@@ -692,15 +692,24 @@ public class TradeManager {
                 case AppConstants.TYPE_DISCOUNT_COUPON:
                 case AppConstants.TYPE_PAID_COUPON:
                     CouponInfo couponInfo = item.couponInfo;
-                    contacts.add(new TempUser(couponInfo.userPhone, couponInfo.userName));
+                    TempUser couponUser = new TempUser(couponInfo.userPhone, couponInfo.userName);
+                    if (!contacts.contains(couponUser)) {
+                        contacts.add(couponUser);
+                    }
                     break;
                 case AppConstants.TYPE_ORDER:
                     OrderInfo orderInfo = item.order;
-                    contacts.add(new TempUser(orderInfo.phoneNum, orderInfo.customerName));
+                    TempUser orderUser = new TempUser(orderInfo.phoneNum, orderInfo.customerName);
+                    if (!contacts.contains(orderUser)) {
+                        contacts.add(orderUser);
+                    }
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
                     TreatInfo treatInfo = item.treatInfo;
-                    contacts.add(new TempUser(treatInfo.userPhone, treatInfo.userName));
+                    TempUser treatUser = new TempUser(treatInfo.userPhone, treatInfo.userName);
+                    if (!contacts.contains(treatUser)) {
+                        contacts.add(treatUser);
+                    }
                     break;
                 default:
                     break;
