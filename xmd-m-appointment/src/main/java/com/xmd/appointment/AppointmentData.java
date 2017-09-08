@@ -181,7 +181,8 @@ public class AppointmentData implements Serializable {
     public void setAppointmentSetting(AppointmentSetting appointmentSetting) {
         this.appointmentSetting = appointmentSetting;
         if (appointmentSetting != null) {
-            if (appointmentSetting.getDownPayment() > 0) {
+            if (AppointmentSetting.APPOINT_TYPE_FONT.equals(appointmentSetting.getAppointType())
+                    && appointmentSetting.getDownPayment() != null) {
                 setFontMoney(appointmentSetting.getDownPayment() * 100);
             }
             if (customerPhone == null) {
