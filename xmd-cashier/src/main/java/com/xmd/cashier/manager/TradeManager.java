@@ -933,17 +933,13 @@ public class TradeManager {
         mPos.printText("会员等级：", mTrade.memberRecordInfo.memberTypeName + "(" + String.format("%.02f", mTrade.memberRecordInfo.discount / 100.0f) + "折)");
         List<TempUser> contacts = getTempContacts();
         if (contacts != null && !contacts.isEmpty()) {
-            boolean hasPrint = false;
             for (TempUser user : contacts) {
                 if (!(user.userName.equals(mTrade.memberRecordInfo.name) && user.userPhone.equals(mTrade.memberRecordInfo.telephone))) {
                     mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + (keep ? user.userName : Utils.formatName(user.userName)) + ")");
-                    hasPrint = true;
                 }
             }
-            if (hasPrint) {
-                mPos.printDivide();
-            }
         }
+        mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(mTrade.getOriginMoney()));
 
@@ -992,12 +988,12 @@ public class TradeManager {
                     case AppConstants.TYPE_PAID_COUPON:
                         CouponInfo couponInfo = item.couponInfo;
                         mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
-                        mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                        mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                         break;
                     case AppConstants.TYPE_ORDER:
                         OrderInfo orderInfo = item.order;
                         mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo + "号"), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
-                        mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+                        mPos.printText(orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         TreatInfo treatInfo = item.treatInfo;
@@ -1091,12 +1087,12 @@ public class TradeManager {
                     case AppConstants.TYPE_PAID_COUPON:
                         CouponInfo couponInfo = item.couponInfo;
                         mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
-                        mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                        mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                         break;
                     case AppConstants.TYPE_ORDER:
                         OrderInfo orderInfo = item.order;
                         mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo + "号"), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
-                        mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+                        mPos.printText(orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         TreatInfo treatInfo = item.treatInfo;
@@ -1187,12 +1183,12 @@ public class TradeManager {
                     case AppConstants.TYPE_PAID_COUPON:
                         CouponInfo couponInfo = item.couponInfo;
                         mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
-                        mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                        mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                         break;
                     case AppConstants.TYPE_ORDER:
                         OrderInfo orderInfo = item.order;
                         mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo + "号"), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
-                        mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+                        mPos.printText(orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         TreatInfo treatInfo = item.treatInfo;
@@ -1279,12 +1275,12 @@ public class TradeManager {
                 case AppConstants.TYPE_PAID_COUPON:
                     CouponInfo couponInfo = item.couponInfo;
                     mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
-                    mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                    mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                     break;
                 case AppConstants.TYPE_ORDER:
                     OrderInfo orderInfo = item.order;
                     mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo + "号"), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
-                    mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+                    mPos.printText(orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
                     TreatInfo treatInfo = item.treatInfo;

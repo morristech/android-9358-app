@@ -846,7 +846,7 @@ public class VerifyManager {
                 case AppConstants.TYPE_PAID_COUPON:
                     CouponInfo couponInfo = (CouponInfo) info.getInfo();
                     mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
-                    mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                    mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                     break;
                 case AppConstants.TYPE_SERVICE_ITEM_COUPON: //项目券
                     CouponInfo serviceCouponInfo = (CouponInfo) info.getInfo();
@@ -860,13 +860,13 @@ public class VerifyManager {
                         items = itemsBuild.toString();
                     }
                     mPos.printText("[" + serviceCouponInfo.couponTypeName + "]" + serviceCouponInfo.actSubTitle, "(-" + Utils.moneyToString(serviceCouponInfo.consumeAmount) + "元)");
-                    mPos.printText("    " + (TextUtils.isEmpty(items) ? "未指定" : items) + "/" + serviceCouponInfo.consumeMoneyDescription);
-                    mPos.printText("    " + serviceCouponInfo.couponNo + "/" + Utils.formatCode(serviceCouponInfo.userPhone));
+                    mPos.printText((TextUtils.isEmpty(items) ? "未指定" : items) + "/" + serviceCouponInfo.consumeMoneyDescription);
+                    mPos.printText(serviceCouponInfo.couponNo + "/" + Utils.formatCode(serviceCouponInfo.userPhone));
                     break;
                 case AppConstants.TYPE_ORDER:
                     OrderInfo orderInfo = (OrderInfo) info.getInfo();
                     mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo + "号"), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
-                    mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+                    mPos.printText(orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
                     break;
                 default:
                     break;
@@ -916,12 +916,12 @@ public class VerifyManager {
                     items = itemsBuild.toString();
                 }
                 mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actSubTitle, "(-" + Utils.moneyToString(couponInfo.consumeAmount) + "元)");
-                mPos.printText("    " + (TextUtils.isEmpty(items) ? "未指定" : items) + "/" + couponInfo.consumeMoneyDescription);
-                mPos.printText("    " + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                mPos.printText((TextUtils.isEmpty(items) ? "未指定" : items) + "/" + couponInfo.consumeMoneyDescription);
+                mPos.printText(couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                 break;
             default:
                 mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
-                mPos.printText("    " + couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                 break;
         }
         mPos.printDivide();
@@ -959,7 +959,7 @@ public class VerifyManager {
 
         mPos.printText("优惠详情");
         mPos.printText("[付费预约]" + (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName) + (TextUtils.isEmpty(orderInfo.techNo) ? "" : "，" + orderInfo.techNo), "(-" + Utils.moneyToString(orderInfo.downPayment) + "元)");
-        mPos.printText("    " + orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
+        mPos.printText(orderInfo.orderNo + "/" + Utils.formatCode(orderInfo.phoneNum));
         mPos.printDivide();
 
         mPos.printText("交易时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
@@ -996,8 +996,8 @@ public class VerifyManager {
 
         mPos.printText("优惠详情");
         mPos.printText("[奖品]" + prizeInfo.activityName);
-        mPos.printText("    " + "奖品：" + prizeInfo.prizeName);
-        mPos.printText("    " + prizeInfo.verifyCode + "/" + Utils.formatCode(prizeInfo.telephone));
+        mPos.printText("奖品：" + prizeInfo.prizeName);
+        mPos.printText(prizeInfo.verifyCode + "/" + Utils.formatCode(prizeInfo.telephone));
         mPos.printDivide();
 
         mPos.printText("交易时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
@@ -1073,7 +1073,7 @@ public class VerifyManager {
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
-                mPos.printText("    " + recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printText(recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_PAID_COUPON:
@@ -1084,7 +1084,7 @@ public class VerifyManager {
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount) + "元)");
-                mPos.printText("    " + recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printText(recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_SERVICE_ITEM_COUPON:
@@ -1107,7 +1107,7 @@ public class VerifyManager {
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
-                mPos.printText("    " + recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printText(recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_ORDER:
@@ -1117,7 +1117,7 @@ public class VerifyManager {
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
                 mPos.printDivide();
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + (TextUtils.isEmpty(recordInfo.serviceItemName) ? "到店选择" : recordInfo.serviceItemName) + (TextUtils.isEmpty(recordInfo.techDescription) ? "" : "，" + recordInfo.techDescription), "(-" + Utils.moneyToStringEx(recordInfo.amount) + "元)");
-                mPos.printText("    " + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printText(recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_PAY_FOR_OTHER:
@@ -1139,7 +1139,7 @@ public class VerifyManager {
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
-                mPos.printText("    " + recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printText(recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;
         }
