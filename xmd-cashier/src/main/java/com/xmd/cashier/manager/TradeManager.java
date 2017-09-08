@@ -266,9 +266,6 @@ public class TradeManager {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        printVerificationList(true);
-                        printVerificationList(false);
-
                         switch (mTrade.currentCashier) {
                             case AppConstants.CASHIER_TYPE_XMD_ONLINE:  //小摩豆买单支付
                                 if (tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
@@ -305,6 +302,11 @@ public class TradeManager {
                                     printPosPay(false, null);
                                 }
                                 newTrade();
+                            case AppConstants.CASHIER_TYPE_ERROR:
+                                printVerificationList(true);
+                                printVerificationList(false);
+                                newTrade();
+                                break;
                             default:
                                 newTrade();
                                 break;
