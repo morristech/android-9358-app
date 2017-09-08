@@ -49,7 +49,7 @@ public class XmdNetwork {
             init = true;
             sharedPreferences = context.getSharedPreferences("xmd-network", Context.MODE_PRIVATE);
             mServer = server;
-            OkHttpUtil.init(context.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 10000, 10000, 10000);
+            OkHttpUtil.init(context.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 20000, 20000, 20000);
             OkHttpUtil.getInstance().setCommonHeader("User-Agent", ua);
             RetrofitFactory.setBaseUrl(server);
             OkHttpUtil.getInstance().setCommonHeader(TOKEN, sharedPreferences.getString(TOKEN, null));

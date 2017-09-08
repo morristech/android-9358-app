@@ -6,8 +6,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.LinearLayout;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.contact.adapter.ListRecycleViewAdapter;
 
@@ -46,7 +46,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         super.onActivityCreated(savedInstanceState);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(swipe_refresh_widget);
         mListView = (RecyclerView) getView().findViewById(R.id.contact_list);
-
         initContent();
         EventBus.getDefault().register(this);
     }
@@ -83,6 +82,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     protected void onGetListSucceeded(int pageCount, List<T> list, boolean isManager) {
@@ -95,6 +95,11 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         mData.addAll(list);
         mListAdapter.setIsNoMore(mPages == mPageCount);
         mListAdapter.setContactData(mData, isManager);
+    }
+
+    protected void onGetListFailed(String error){
+        mSwipeRefreshLayout.setRefreshing(false);
+        XToast.show(error);
     }
 
     private void loadMore() {

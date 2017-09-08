@@ -99,8 +99,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
 
             @Override
             public void onCallbackError(Throwable e) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                XToast.show(e.getLocalizedMessage());
+                onGetListFailed(e.getLocalizedMessage());
             }
         });
     }
