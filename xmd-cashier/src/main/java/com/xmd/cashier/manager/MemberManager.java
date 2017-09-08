@@ -491,9 +491,9 @@ public class MemberManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("会员卡号：" + (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + (keep ? info.name : Utils.formatName(info.name)) + ")");
-        mPos.printText("手机号码：" + (keep ? info.telephone : Utils.formatPhone(info.telephone)));
-        mPos.printText("会员等级：" + info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
+        mPos.printText("会员卡号：", (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + (keep ? info.name : Utils.formatName(info.name)) + ")");
+        mPos.printText("手机号码：", (keep ? info.telephone : Utils.formatPhone(info.telephone)));
+        mPos.printText("会员等级：", info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
         mPos.printDivide();
 
         switch (info.tradeType) {
@@ -510,15 +510,15 @@ public class MemberManager {
                     mPos.printText("    充" + Utils.moneyToString(info.orderAmount) + ((info.discountAmount > 0) ? "送" + Utils.moneyToString(info.discountAmount) : ""));
                     mPos.printDivide();
                 }
-                mPos.printText("交易号：" + info.tradeNo);
-                mPos.printText("交易时间：" + info.createTime);
-                mPos.printText("支付方式：" + info.payChannelName + "(" + Utils.getPlatform(info.platform) + ")");
+                mPos.printText("交易号：", info.tradeNo);
+                mPos.printText("交易时间：", info.createTime);
+                mPos.printText("支付方式：", info.payChannelName + "(" + Utils.getPlatform(info.platform) + ")");
                 if (!TextUtils.isEmpty(info.techName)) {
                     mPos.printText("营销人员：", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
                 }
 
-                mPos.printText("收款人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
-                mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+                mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
+                mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
                 break;
             case AppConstants.MEMBER_TRADE_TYPE_PAY:        //消费
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.orderAmount));
@@ -527,14 +527,14 @@ public class MemberManager {
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.amount) + "元", true);
                 mPos.printRight("会员卡余额：" + "￥ " + Utils.moneyToStringEx(info.accountAmount));
                 mPos.printDivide();
-                mPos.printText("交易号：" + info.tradeNo);
-                mPos.printText("交易时间：" + info.createTime);
-                mPos.printText("支付方式：" + "会员消费" + "(" + Utils.getPlatform(info.platform) + ")");
+                mPos.printText("交易号：", info.tradeNo);
+                mPos.printText("交易时间：", info.createTime);
+                mPos.printText("支付方式：", "会员消费" + "(" + Utils.getPlatform(info.platform) + ")");
                 if (!TextUtils.isEmpty(info.techName)) {
-                    mPos.printText("服务技师：" + info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
+                    mPos.printText("服务技师：", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
                 }
-                mPos.printText("收款人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
-                mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+                mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
+                mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
                 break;
             default:
                 break;

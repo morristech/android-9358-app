@@ -277,7 +277,7 @@ public class NotifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号：" + (keep ? info.telephone : Utils.formatPhone(info.telephone)) + "(" + (keep ? info.userName : Utils.formatName(info.userName)) + ")");
+        mPos.printText("手机号：", (keep ? info.telephone : Utils.formatPhone(info.telephone)) + "(" + (keep ? info.userName : Utils.formatName(info.userName)) + ")");
         mPos.printDivide();
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originalAmount));
         if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
@@ -304,8 +304,8 @@ public class NotifyManager {
         mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.payAmount) + " 元", true);
         mPos.printDivide();
 
-        mPos.printText("交易号：" + info.payId);
-        mPos.printText("交易时间：" + info.createTime);
+        mPos.printText("交易号：", info.payId);
+        mPos.printText("交易时间：", info.createTime);
         String status = null;
         switch (info.status) {
             case AppConstants.ONLINE_PAY_STATUS_PAID:
@@ -321,14 +321,14 @@ public class NotifyManager {
                 break;
         }
         if (!TextUtils.isEmpty(status)) {
-            mPos.printText("交易状态：" + status);
+            mPos.printText("交易状态：", status);
         }
-        mPos.printText("支付方式：" + Utils.getPayChannel(info.payChannel) + "(" + Utils.getQRPlatform(info.qrType) + ")");
+        mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + "(" + Utils.getQRPlatform(info.qrType) + ")");
         if (!TextUtils.isEmpty(info.techName)) {
-            mPos.printText("服务技师：" + (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
+            mPos.printText("服务技师：", (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
         }
-        mPos.printText("收款人员：" + (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
-        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
+        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
             mPos.printBitmap(qrCodeBytes);
             mPos.printCenter("微信扫码，选技师、抢优惠");

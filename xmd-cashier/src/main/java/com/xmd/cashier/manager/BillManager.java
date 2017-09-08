@@ -91,11 +91,11 @@ public class BillManager {
         mPos.printDivide();
         mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.memberPayMoney + info.posPayMoney) + " 元", true);
         mPos.printDivide();
-        mPos.printText("交易号：" + info.tradeNo);
-        mPos.printText("交易时间：" + DateUtils.doLong2String(Long.parseLong(info.payDate)));
-        mPos.printText("支付方式：" + Utils.getPayTypeString(info.posPayType));
-        mPos.printText("收款人员：" + (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
-        mPos.printText("打印时间：" + Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("交易号：", info.tradeNo);
+        mPos.printText("交易时间：", DateUtils.doLong2String(Long.parseLong(info.payDate)));
+        mPos.printText("支付方式：", Utils.getPayTypeString(info.posPayType));
+        mPos.printText("收款人员：", (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
+        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
