@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/9358-co.iml" filepath="$PROJECT_DIR$/9358-co.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-9358-app.iml" filepath="$PROJECT_DIR$/android-9358-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonlibrary/commonlibrary.iml" filepath="$PROJECT_DIR$/commonlibrary/commonlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/image-crop/image-crop.iml" filepath="$PROJECT_DIR$/image-crop/image-crop.iml" />
       <module fileurl="file://$PROJECT_DIR$/image-selector/image-selector.iml" filepath="$PROJECT_DIR$/image-selector/image-selector.iml" />

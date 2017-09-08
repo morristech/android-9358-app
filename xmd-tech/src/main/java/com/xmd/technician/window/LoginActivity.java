@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,10 +14,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.crazyman.library.PermissionTool;
 import com.xmd.app.XmdActivityManager;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.BuildConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.contract.LoginContract;
@@ -117,6 +120,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         mPresenter.onCreate();
         mTvVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
+
+        if (BuildConfig.FLAVOR.equals("dev") || BuildConfig.BUILD_TYPE.equals("debug")) {
+            PermissionTool.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, new String[]{"需要访问存储器"}, 1);
+        }
     }
 
     @Override
