@@ -176,6 +176,10 @@
         <activity
             android:name=".activity.ConfigurationActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.GiftActActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogActivity" />
     </application>
 
 </manifest>

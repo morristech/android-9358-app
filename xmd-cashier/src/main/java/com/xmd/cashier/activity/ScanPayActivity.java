@@ -38,7 +38,7 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
     private TextView mQRCodeErrorText;
     private TextView mQRCodeExpireText;
 
-    private TextView mScanActivityText;
+    private TextView mGiftActivityText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,11 +83,11 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
             }
         });
 
-        mScanActivityText = (TextView) findViewById(R.id.tv_pay_activity);
-        mScanActivityText.setOnClickListener(new View.OnClickListener() {
+        mGiftActivityText = (TextView) findViewById(R.id.tv_pay_activity);
+        mGiftActivityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.onActivity();
+                mPresenter.onGiftActivity();
             }
         });
     }
@@ -157,6 +157,11 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
         mQRCodeErrorLayout.setVisibility(View.GONE);
         mQRCodeImg.setVisibility(View.VISIBLE);
         mQRCodeExpireText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showGiftActivity() {
+        mGiftActivityText.setVisibility(View.VISIBLE);
     }
 
     @Override

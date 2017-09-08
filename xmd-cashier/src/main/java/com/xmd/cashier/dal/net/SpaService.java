@@ -7,6 +7,7 @@ import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
+import com.xmd.cashier.dal.net.response.GiftActivityResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
@@ -685,4 +686,9 @@ public interface SpaService {
                                                  @Field(RequestConstant.KEY_POS_PAY_RESULT) String posPayResult,
                                                  @Field(RequestConstant.KEY_REPORT_TAG) String reportTag,
                                                  @Field(RequestConstant.KEY_SIGN) String sign);
+
+    // 买单有礼
+    @GET(RequestConstant.URL_GET_ONLINE_GIFT_ACTIVITY)
+    Observable<GiftActivityResult> getGiftActivity(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                   @Query(RequestConstant.KEY_CLUB_ID) String clubId);
 }

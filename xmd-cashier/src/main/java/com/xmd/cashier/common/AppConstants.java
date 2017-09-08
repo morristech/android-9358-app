@@ -179,6 +179,7 @@ public class AppConstants {
     public static final String EXTRA_RECORD_ID = "record_id";
     public static final String EXTRA_IS_SHOW = "is_show";
     public static final String EXTRA_COUPON_CODE = "coupon_code";
+    public static final String EXTRA_GIFT_ACTIVITY_INFO = "gift_act";
 
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
@@ -257,11 +258,11 @@ public class AppConstants {
     public static final String REPORT_DATA_BIZ_TRADE = "trade";
     public static final String REPORT_DATA_BIZ_MEMBER = "member";
 
-    public static final int MEMBER_PLAN_ITEM_TYPE_CREDIT = 0;
-    public static final int MEMBER_PLAN_ITEM_TYPE_GIF = 1;
-    public static final int MEMBER_PLAN_ITEM_TYPE_COUPON = 2;
-    public static final int MEMBER_PLAN_ITEM_TYPE_SERVICE = 3;
-    public static final int MEMBER_PLAN_ITEM_TYPE_MONEY = 4;
+    public static final int ITEM_TYPE_CREDIT = 0;   //积分
+    public static final int ITEM_TYPE_GIF = 1;      //礼品
+    public static final int ITEM_TYPE_COUPON = 2;   //优惠券
+    public static final int ITEM_TYPE_SERVICE = 3;  //项目
+    public static final int ITEM_TYPE_MONEY = 4;    //现金
 
     public static final String ONLINE_PAY_DISCOUNT_COUPON = "coupon";
     public static final String ONLINE_PAY_DISCOUNT_ORDER = "paid_order";

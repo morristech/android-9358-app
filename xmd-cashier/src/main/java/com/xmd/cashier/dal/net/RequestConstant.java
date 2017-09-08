@@ -104,6 +104,9 @@ public class RequestConstant {
     public static final String URL_REPORT_MEMBER_RECHARGE_TRADE = SPA_SERVICE_BASE + "/v2/manager/member/order/recharge/success";  //会员充值:汇报POS支付情况 需要签名
     public static final String URL_UPDATE_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/manager/member/update"; //更新会员信息
 
+    // ****************************************** 买单有礼 **************************************
+    public static final String URL_GET_ONLINE_GIFT_ACTIVITY = SPA_SERVICE_BASE + "/v2/user/fastpay/package/online/act";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/

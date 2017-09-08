@@ -15,6 +15,7 @@ import com.xmd.cashier.activity.CashierActivity;
 import com.xmd.cashier.activity.ConfigurationActivity;
 import com.xmd.cashier.activity.ConfirmActivity;
 import com.xmd.cashier.activity.DiscountCouponActivity;
+import com.xmd.cashier.activity.GiftActActivity;
 import com.xmd.cashier.activity.LoginActivity;
 import com.xmd.cashier.activity.MainActivity;
 import com.xmd.cashier.activity.McardInfoActivity;
@@ -49,6 +50,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.BillInfo;
 import com.xmd.cashier.dal.bean.CommonVerifyInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
+import com.xmd.cashier.dal.bean.GiftActivityInfo;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
@@ -286,6 +288,12 @@ public class UiNavigation {
     public static void gotoCashPayActivity(Context context, int amount) {
         Intent intent = new Intent(context, CashPayActivity.class);
         intent.putExtra(AppConstants.EXTRA_CASH_AMOUNT, amount);
+        context.startActivity(intent);
+    }
+
+    public static void gotoGiftActActivity(Context context, GiftActivityInfo info) {
+        Intent intent = new Intent(context, GiftActActivity.class);
+        intent.putExtra(AppConstants.EXTRA_GIFT_ACTIVITY_INFO, info);
         context.startActivity(intent);
     }
 }

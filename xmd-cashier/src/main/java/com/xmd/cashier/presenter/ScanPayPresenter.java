@@ -15,10 +15,12 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.ScanPayContract;
 import com.xmd.cashier.contract.ScanPayContract.Presenter;
+import com.xmd.cashier.dal.bean.GiftActivityInfo;
 import com.xmd.cashier.dal.bean.OnlinePayUrlInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
+import com.xmd.cashier.dal.net.response.GiftActivityResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -43,6 +45,9 @@ import rx.Subscription;
 public class ScanPayPresenter implements Presenter {
     private static final int INTERVAL = 5 * 1000;
     private static final int EXPIRE_INTERVAL = 60 * 60 * 1000; //前端二维码过期时间:1小时
+
+    private GiftActivityInfo mGiftActivityInfo;
+    private Subscription mGetGiftActivitySubscription;
 
     private Context mContext;
     private ScanPayContract.View mView;
@@ -161,6 +166,8 @@ public class ScanPayPresenter implements Presenter {
                 Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney() - mTradeManager.getCurrentTrade().getWillDiscountMoney())));
 
         getQrcode();
+
+        getGiftActivity();
     }
 
     @Override
@@ -181,6 +188,9 @@ public class ScanPayPresenter implements Presenter {
         }
         if (mDeleteXMDOnlineOrderIdSubscription != null) {
             mDeleteXMDOnlineOrderIdSubscription.unsubscribe();
+        }
+        if (mGetGiftActivitySubscription != null) {
+            mGetGiftActivitySubscription.unsubscribe();
         }
         mQRBitmap = null;
     }
@@ -237,6 +247,29 @@ public class ScanPayPresenter implements Presenter {
         });
     }
 
+    private void getGiftActivity() {
+        if (mGetGiftActivitySubscription != null) {
+            mGetGiftActivitySubscription.unsubscribe();
+        }
+        Observable<GiftActivityResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getGiftActivity(AccountManager.getInstance().getToken(), AccountManager.getInstance().getClubId());
+        mGetGiftActivitySubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GiftActivityResult>() {
+            @Override
+            public void onCallbackSuccess(GiftActivityResult result) {
+                if (result != null && result.getRespData() != null) {
+                    mGiftActivityInfo = result.getRespData();
+                    mView.showGiftActivity();
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.d("获取买单有礼活动失败:" + e.getLocalizedMessage());
+            }
+        });
+    }
+
+
     @Override
     public void getQrcode() {
         mView.showQrLoading();
@@ -281,8 +314,8 @@ public class ScanPayPresenter implements Presenter {
     }
 
     @Override
-    public void onActivity() {
-        // TODO 买单活动详情
+    public void onGiftActivity() {
+        UiNavigation.gotoGiftActActivity(mContext, mGiftActivityInfo);
     }
 
     private boolean isCodeExpire() {

@@ -15,7 +15,7 @@ public interface ScanPayContract {
 
         void getQrcode();
 
-        void onActivity();
+        void onGiftActivity();
     }
 
     interface View extends BaseView<Presenter> {
@@ -34,5 +34,7 @@ public interface ScanPayContract {
         void showQrError(String error);
 
         void showQrSuccess();
+
+        void showGiftActivity();
     }
 }

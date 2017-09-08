@@ -42,14 +42,14 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
     public void onBindViewHolder(PlanItemAdapter.ViewHolder holder, int position) {
         PackagePlanItem.PackageItem item = mData.get(position);
         switch (item.type) {
-            case AppConstants.MEMBER_PLAN_ITEM_TYPE_CREDIT:
+            case AppConstants.ITEM_TYPE_CREDIT:
                 // 积分
                 String credit = item.name + "积分";
                 holder.mContent.setText(credit);
                 holder.mPlus.setVisibility(View.GONE);
                 holder.mCount.setVisibility(View.GONE);
                 break;
-            case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
+            case AppConstants.ITEM_TYPE_MONEY:
                 // 现金
                 String money = item.name + "元";
                 holder.mContent.setText(money);

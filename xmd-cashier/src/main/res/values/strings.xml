@@ -80,4 +80,6 @@
     <string name="settle_other_cashier_people">收银员：%1$s</string>
     <string name="settle_other_js_people">结算人员：%1$s</string>
     <string name="settle_other_js_time">结算时间：%1$s</string>
+
+    <string name="activity_copy_right_text">%1$s保留对此次活动法律范围内的最终解释权。若有其他疑问，请咨询%2$s客服。</string>
 </resources>
