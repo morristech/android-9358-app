@@ -1259,7 +1259,7 @@ public class TradeManager {
                     break;
             }
         }
-        mPos.printText("订单金额：", "-￥ " + Utils.moneyToStringEx(mTrade.getOriginMoney()));
+        mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(mTrade.getOriginMoney()));
         if (couponAmount > 0) {
             mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
         }
