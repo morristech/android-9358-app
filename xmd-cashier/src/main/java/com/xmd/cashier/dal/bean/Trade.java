@@ -57,16 +57,11 @@ public class Trade {
      **/
     private String posTradeNo; //收银台订单号
     public String posPayTypeString; //收银台支付方式
+    public String posPayTypeChannel;
     public int posMoney; //收银台支付金额
     public int posPayResult; //收银台支付结果
     public Object posPayReturn;//收银台支付返回
     public int posPoints;//收银台收银获得积分
-    public String posPointsPhone;//收银台积分需要送到的手机号
-
-    /**
-     * 二维码
-     **/
-    public byte[] qrCodeBytes;
 
     //设置原始消费金额
     public void setOriginMoney(int originMoney) {
@@ -95,17 +90,6 @@ public class Trade {
 
     public void setWillDiscountMoney(int willDiscountMoney) {
         this.willDiscountMoney = willDiscountMoney;
-    }
-
-    //实际减免金额
-    public int getReallyDiscountMoney() {
-        switch (discountType) {
-            case AppConstants.DISCOUNT_TYPE_COUPON:
-                return couponDiscountMoney;
-            case AppConstants.DISCOUNT_TYPE_USER:
-                return userDiscountMoney;
-        }
-        return 0;
     }
 
     public int getDiscountType() {
@@ -177,6 +161,10 @@ public class Trade {
 
     public String getPosPayTypeString() {
         return posPayTypeString;
+    }
+
+    public String getPosPayTypeChannel() {
+        return posPayTypeChannel;
     }
 
 
