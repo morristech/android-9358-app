@@ -82,7 +82,7 @@ public class ScanPayResultPresenter implements ScanPayResultContract.Presenter {
     }
 
     private void finishOnlinePay() {
-        TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+        TradeManager.getInstance().finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
                 mView.finishSelf();

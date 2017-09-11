@@ -188,7 +188,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     }
 
     private void finishPosPay() {
-        mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+        mTradeManager.finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
                 reset();//交易成功，重置界面
@@ -281,7 +281,7 @@ public class CashierPresenter implements CashierContract.Presenter {
             mView.hideLoading();
             mView.showToast("支付成功！");
             mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_ERROR;
-            mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+            mTradeManager.finishPay(mContext, new Callback0<Void>() {
                 @Override
                 public void onFinished(Void result) {
                     reset();

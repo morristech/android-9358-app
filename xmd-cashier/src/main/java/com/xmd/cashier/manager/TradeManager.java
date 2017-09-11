@@ -107,9 +107,7 @@ public class TradeManager {
     }
 
     //汇报交易信息
-    public void reportTradeDataSync(int tradeStatus) {
-        mTrade.tradeStatus = tradeStatus;
-        mTrade.tradeTime = DateUtils.doDate2String(new Date());
+    public void reportTradeDataSync() {
         DataReportManager.getInstance().reportData(mTrade, AppConstants.REPORT_DATA_BIZ_TRADE);
     }
 
@@ -158,6 +156,7 @@ public class TradeManager {
         mTrade.posMoney = amount;
         mTrade.posPayTypeString = Utils.getPayTypeString(AppConstants.PAY_TYPE_CASH);
         mTrade.tradeTime = DateUtils.doDate2String(new Date());
+        mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
         mTrade.setCouponDiscountMoney(mTrade.getVerificationSuccessfulMoney());
         if (mTrade.getWillDiscountMoney() == 0) {
             mTrade.setDiscountType(AppConstants.DISCOUNT_TYPE_NONE);
@@ -244,6 +243,8 @@ public class TradeManager {
                 mInPosPay.set(false);
                 mTrade.posPayReturn = o;
                 if (error == null) {
+                    mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    mTrade.tradeTime = DateUtils.doDate2String(new Date());
                     mTrade.posMoney = money;
                     mTrade.posPayResult = AppConstants.PAY_RESULT_SUCCESS;
                     mTrade.posPayTypeString = Utils.getPayTypeString(CashierManager.getInstance().getPayType(o));
@@ -261,20 +262,20 @@ public class TradeManager {
     }
 
     // 完成支付,处理支付结果
-    public void finishPay(final Context context, final int tradeStatus, final Callback0<Void> callback) {
+    public void finishPay(final Context context, final Callback0<Void> callback) {
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         switch (mTrade.currentCashier) {
                             case AppConstants.CASHIER_TYPE_XMD_ONLINE:  //小摩豆买单支付
-                                if (tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
                                     printOnlinePay(false, null);
                                 }
                                 newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_MEMBER:  //会员支付
-                                if (tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
                                     printMemberPay(false, null);
                                 }
                                 newTrade();
@@ -291,14 +292,14 @@ public class TradeManager {
                                         mTrade.setDiscountType(AppConstants.DISCOUNT_TYPE_COUPON);
                                     }
                                 }
-                                reportTradeDataSync(tradeStatus);   //汇报流水
-                                if (tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
+                                reportTradeDataSync();   //汇报流水
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
                                     printPosPay(false, null);
                                 }
                                 newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_CASH:
-                                if (mTrade.isClient) {
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
                                     printPosPay(false, null);
                                 }
                                 newTrade();

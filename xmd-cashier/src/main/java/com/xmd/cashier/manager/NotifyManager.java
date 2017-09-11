@@ -323,7 +323,13 @@ public class NotifyManager {
         if (!TextUtils.isEmpty(status)) {
             mPos.printText("交易状态：", status);
         }
-        mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + "(" + Utils.getQRPlatform(info.qrType) + ")");
+        if (AppConstants.PAY_CHANNEL_ACCOUNT.equals(info.payChannel)) {
+            //会员
+            mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.platform) ? "" : "(" + Utils.getPlatform(info.platform) + ")"));
+        } else {
+            mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.qrType) ? "" : "(" + Utils.getQRPlatform(info.qrType) + ")"));
+        }
+
         if (!TextUtils.isEmpty(info.techName)) {
             mPos.printText("服务技师：", (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
         }

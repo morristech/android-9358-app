@@ -104,6 +104,12 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
                             if (detailInfo.title.contains("手机号")) {
                                 mInfo.memberPhone = detailInfo.text;
                             }
+                            if (detailInfo.title.contains("会员等级")) {
+                                mInfo.memberTypeName = detailInfo.text;
+                            }
+                            if (detailInfo.title.contains("会员折扣")) {
+                                mInfo.memberDiscountDesc = detailInfo.text;
+                            }
                         }
                         break;
                     default:

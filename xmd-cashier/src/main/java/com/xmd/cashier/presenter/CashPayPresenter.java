@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
-import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashPayContract;
 import com.xmd.cashier.manager.Callback;
@@ -114,7 +113,7 @@ public class CashPayPresenter implements CashPayContract.Presenter {
     }
 
     private void finishCashPay() {
-        TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+        TradeManager.getInstance().finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
                 mView.finishSelf();

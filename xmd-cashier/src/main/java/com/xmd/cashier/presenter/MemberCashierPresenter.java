@@ -145,7 +145,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
     }
 
     private void finishMemberPay() {
-        TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+        TradeManager.getInstance().finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
                 mView.finishSelf();
@@ -167,6 +167,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             public void onSuccess(MemberRecordResult o) {
                 mView.hideLoading();
                 mView.showToast("会员支付成功，正在出票...");
+                TradeManager.getInstance().getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                 TradeManager.getInstance().getCurrentTrade().memberRecordInfo = o.getRespData();
                 printStep();
             }
