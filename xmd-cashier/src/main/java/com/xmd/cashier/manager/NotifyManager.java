@@ -282,19 +282,21 @@ public class NotifyManager {
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originalAmount));
         if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
             for (OnlinePayInfo.OnlinePayDiscountInfo discountInfo : info.orderDiscountList) {
-                switch (discountInfo.type) {
-                    case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
-                        mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
-                    case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
-                        mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
-                    case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
-                        mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
-                    default:
-                        mPos.printText("其他抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
+                if (discountInfo.type != null) {
+                    switch (discountInfo.type) {
+                        case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
+                            mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                        case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
+                            mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                        case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                            mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                        default:
+                            mPos.printText("其他抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                    }
                 }
             }
         } else {
