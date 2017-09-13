@@ -36,7 +36,6 @@ import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.StringResult;
-import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
@@ -1230,14 +1229,10 @@ public class TradeManager {
             byte[] qrCodeBytes;
             switch (mTrade.currentCashier) {
                 case AppConstants.CASHIER_TYPE_POS: //Pos:可能包含现金和银联
-                    if (mTrade.posPoints > 0) {
-                        qrCodeBytes = getTempQrCode(mTrade.getPosPayTypeChannel());
-                    } else {
-                        qrCodeBytes = getClubQRCodeSync();
-                    }
+                    qrCodeBytes = (mTrade.posPoints > 0) ? getTempQrCode(mTrade.getPosPayTypeChannel()) : getClubQRCodeSync();
                     break;
                 case AppConstants.CASHIER_TYPE_CASH:    //现金
-                    qrCodeBytes = getTempQrCode(AppConstants.PAY_CHANNEL_CASH);
+                    qrCodeBytes = (mTrade.posPoints > 0) ? getTempQrCode(AppConstants.PAY_CHANNEL_CASH) : getClubQRCodeSync();
                     break;
                 default:
                     qrCodeBytes = getClubQRCodeSync();
