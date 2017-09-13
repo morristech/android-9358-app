@@ -73,15 +73,6 @@ public class SPManager {
         mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_UNPASS_PRINT_SWITCH, status).apply();
     }
 
-    // --扫码买单
-    public boolean getOnlinePaySwitch() {
-        return mSharedPreferences.getBoolean(SPConstants.ONLINE_PAY_PRINT_SWITCH, true);
-    }
-
-    public void setOnlinePaySwitch(boolean status) {
-        mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_PAY_PRINT_SWITCH, status).apply();
-    }
-
     public int getFastPayPushTag() {
         return mSharedPreferences.getInt(SPConstants.FASTPAY_PUSH_TAG, 0);
     }

@@ -475,7 +475,6 @@ public class MemberManager {
     }
 
     public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
@@ -531,6 +530,7 @@ public class MemberManager {
                 break;
         }
         if (!keep) {
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
             }

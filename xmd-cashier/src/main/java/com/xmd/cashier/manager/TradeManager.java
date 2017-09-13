@@ -351,7 +351,11 @@ public class TradeManager {
         XmdNetwork.getInstance().requestSync(callGetUrl, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
-                Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(result.getRespData());
+                String content = result.getRespData();
+                if (!TextUtils.isEmpty(content)) {
+                    XLogger.d("getClubQRCodeSync content:" + content);
+                }
+                Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(content);
                 XmdNetwork.getInstance().requestSync(callGetBytes, new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
@@ -411,6 +415,7 @@ public class TradeManager {
             public void onCallbackSuccess(StringResult result) {
                 String content = result.getRespData();
                 if (!TextUtils.isEmpty(content)) {
+                    XLogger.d("getTradeQRCodeSync content:" + content);
                     try {
                         Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
                         if (bitmap != null) {
@@ -932,7 +937,6 @@ public class TradeManager {
     // 会员消费
     public void printMemberPay(boolean keep, Callback<?> callback) {
         mPos.setPrintListener(callback);
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();    //会所活动二维码
         mPos.printCenter("小摩豆结帐单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -1025,6 +1029,7 @@ public class TradeManager {
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();    //会所活动二维码
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -1035,9 +1040,6 @@ public class TradeManager {
 
     // 小摩豆买单
     public void printOnlinePay(boolean keep, Callback<?> callback) {
-        if (!SPManager.getInstance().getOnlinePaySwitch()) {
-            return;
-        }
         List<TempUser> contacts = getTempContacts();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
@@ -1122,17 +1124,17 @@ public class TradeManager {
         }
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
-        byte[] qrCodeBytes;
-        switch (mTrade.onlinePayInfo.payChannel) {
-            case AppConstants.PAY_CHANNEL_ALI:
-                qrCodeBytes = getTempQrCode(mTrade.onlinePayInfo.payChannel);
-                break;
-            case AppConstants.PAY_CHANNEL_WX:
-            default:
-                qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
-                break;
-        }
         if (!keep) {
+            byte[] qrCodeBytes;
+            switch (mTrade.onlinePayInfo.payChannel) {
+                case AppConstants.PAY_CHANNEL_ALI:
+                    qrCodeBytes = getTempQrCode(mTrade.onlinePayInfo.payChannel);
+                    break;
+                case AppConstants.PAY_CHANNEL_WX:
+                default:
+                    qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+                    break;
+            }
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -1224,23 +1226,23 @@ public class TradeManager {
         mPos.printText("支付方式：", (TextUtils.isEmpty(mTrade.getPosPayTypeString()) ? "其他支付" : mTrade.getPosPayTypeString()) + "(POS机)");
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
-        byte[] qrCodeBytes;
-        switch (mTrade.currentCashier) {
-            case AppConstants.CASHIER_TYPE_POS: //Pos:可能包含现金和银联
-                if (mTrade.posPoints > 0) {
-                    qrCodeBytes = getTempQrCode(mTrade.getPosPayTypeChannel());
-                } else {
-                    qrCodeBytes = getClubQRCodeSync();
-                }
-                break;
-            case AppConstants.CASHIER_TYPE_CASH:    //现金
-                qrCodeBytes = getTempQrCode(AppConstants.PAY_CHANNEL_CASH);
-                break;
-            default:
-                qrCodeBytes = getClubQRCodeSync();
-                break;
-        }
         if (!keep) {
+            byte[] qrCodeBytes;
+            switch (mTrade.currentCashier) {
+                case AppConstants.CASHIER_TYPE_POS: //Pos:可能包含现金和银联
+                    if (mTrade.posPoints > 0) {
+                        qrCodeBytes = getTempQrCode(mTrade.getPosPayTypeChannel());
+                    } else {
+                        qrCodeBytes = getClubQRCodeSync();
+                    }
+                    break;
+                case AppConstants.CASHIER_TYPE_CASH:    //现金
+                    qrCodeBytes = getTempQrCode(AppConstants.PAY_CHANNEL_CASH);
+                    break;
+                default:
+                    qrCodeBytes = getClubQRCodeSync();
+                    break;
+            }
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");

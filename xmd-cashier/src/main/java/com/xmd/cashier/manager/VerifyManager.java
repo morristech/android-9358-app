@@ -1053,7 +1053,6 @@ public class VerifyManager {
 
     // 核销记录
     public void printRecord(VerifyRecordInfo recordInfo, boolean keep) {
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
         mPos.printDivide();
@@ -1157,6 +1156,7 @@ public class VerifyManager {
         mPos.printText("收款人员：", recordInfo.operatorName);
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
