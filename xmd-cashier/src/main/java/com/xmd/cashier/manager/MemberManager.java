@@ -158,10 +158,6 @@ public class MemberManager {
         mCardProcess = new MemberCardProcess();
     }
 
-    public MemberCardProcess getCurrentMemberCardProcess() {
-        return mCardProcess;
-    }
-
     public void setPhone(String phone) {
         mCardProcess.getMemberInfo().phoneNum = phone;
     }
@@ -247,10 +243,6 @@ public class MemberManager {
     //----------------充值-------------------    // 退出登录/完成一次充值后
     public void newRechargeProcess() {
         mRechargeProcess = new MemberRechargeProcess();
-    }
-
-    public MemberRechargeProcess getCurrentMemberRechargeProcess() {
-        return mRechargeProcess;
     }
 
     public void setRechargeTechInfo(TechInfo info) {
@@ -415,7 +407,6 @@ public class MemberManager {
                     mTrade.posPayResult = AppConstants.PAY_RESULT_SUCCESS;
                     mTrade.posPayTypeString = Utils.getPayTypeString(CashierManager.getInstance().getPayType(o));
                     mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-
                     callback.onSuccess(null);
                 } else {
                     if (CashierManager.getInstance().isUserCancel(o)) {
@@ -484,7 +475,6 @@ public class MemberManager {
     }
 
     public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
@@ -540,6 +530,7 @@ public class MemberManager {
                 break;
         }
         if (!keep) {
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
             }

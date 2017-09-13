@@ -13,7 +13,6 @@ import com.xmd.cashier.dal.sp.SPManager;
  */
 
 public class SettingActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
-    private Switch mOnlinePaySwitch;
     private Switch mOrderAcceptSwitch;
     private Switch mOrderRejectSwitch;
     private Switch mOnlinePassSwitch;
@@ -28,19 +27,16 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
 
     private void initView() {
         showToolbar(R.id.toolbar, "系统设置");
-        mOnlinePaySwitch = (Switch) findViewById(R.id.sw_online_pay);
         mOnlinePassSwitch = (Switch) findViewById(R.id.sw_online_pass);
         mOnlineUnpassSwitch = (Switch) findViewById(R.id.sw_online_unpass);
         mOrderAcceptSwitch = (Switch) findViewById(R.id.sw_order_accept);
         mOrderRejectSwitch = (Switch) findViewById(R.id.sw_order_reject);
 
-        mOnlinePaySwitch.setChecked(SPManager.getInstance().getOnlinePaySwitch());
         mOnlinePassSwitch.setChecked(SPManager.getInstance().getOnlinePassSwitch());
         mOnlineUnpassSwitch.setChecked(SPManager.getInstance().getOnlineUnpassSwitch());
         mOrderAcceptSwitch.setChecked(SPManager.getInstance().getOrderAcceptSwitch());
         mOrderRejectSwitch.setChecked(SPManager.getInstance().getOrderRejectSwitch());
 
-        mOnlinePaySwitch.setOnCheckedChangeListener(this);
         mOnlinePassSwitch.setOnCheckedChangeListener(this);
         mOnlineUnpassSwitch.setOnCheckedChangeListener(this);
         mOrderAcceptSwitch.setOnCheckedChangeListener(this);
@@ -55,9 +51,6 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.sw_online_pay:
-                SPManager.getInstance().setOnlinePaySwitch(isChecked);
-                break;
             case R.id.sw_online_pass:
                 SPManager.getInstance().setOnlinePassSwitch(isChecked);
                 break;

@@ -71,6 +71,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         mView.hideKeyboard();
         String message;
         Trade trade = mTradeManager.getCurrentTrade();
+        trade.tradeStatus = AppConstants.TRADE_STATUS_CANCEL;
         if (trade.getVerificationSuccessfulMoney() > 0) {
             message = "选择的优惠券已经核销无法再次使用，确定退出本次交易？";
         } else {
@@ -82,7 +83,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
                         //取消支付，汇报数据
-                        mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_CANCEL, new Callback0<Void>() {
+                        mTradeManager.finishPay(mContext, new Callback0<Void>() {
                             @Override
                             public void onFinished(Void result) {
                                 dialog.dismiss();
@@ -108,7 +109,8 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         if (trade.getNeedPayMoney() == 0) {
             //不需要支付
             mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_ERROR;
-            mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+            mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+            mTradeManager.finishPay(mContext, new Callback0<Void>() {
                 @Override
                 public void onFinished(Void result) {
                     mView.finishSelf();
@@ -144,7 +146,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         mTradeManager.posPay(mContext, money, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
-                mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+                mTradeManager.finishPay(mContext, new Callback0<Void>() {
                     @Override
                     public void onFinished(Void result) {
                         mView.finishSelf();

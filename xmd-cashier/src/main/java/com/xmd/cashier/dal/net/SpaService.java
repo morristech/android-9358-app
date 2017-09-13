@@ -528,10 +528,6 @@ public interface SpaService {
 
 
     /******************************************** Pos在线买单 **************************************/
-    //获取扫码买单ID
-    @GET(RequestConstant.URL_GET_XMD_ONLINE_ORDER_ID)
-    Observable<StringResult> getXMDOnlineOrderId(@Query(RequestConstant.KEY_TOKEN) String userToken);
-
     //查询买单扫码状态
     @GET(RequestConstant.URL_GET_XMD_ONLINE_SCAN_STATUS)
     Observable<StringResult> getXMDOnlineScanStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
@@ -660,6 +656,7 @@ public interface SpaService {
     @POST(RequestConstant.URL_TRADE_QR_CODE)
     Call<StringResult> getTradeQrcode(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                       @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                      @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
                                       @Field(RequestConstant.KEY_SIGN) String sign);
 
     @GET

@@ -121,6 +121,7 @@ public class ScanPayPresenter implements Presenter {
                 if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
                     // 支付成功
                     PosFactory.getCurrentCashier().textToSound("买单成功");
+                    mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                     mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
                     mTradeManager.getCurrentTrade().onlinePayInfo = result.getRespData();
                     UiNavigation.gotoScanPayResultActivity(mContext, result.getRespData());
@@ -325,7 +326,8 @@ public class ScanPayPresenter implements Presenter {
     }
 
     private void doCodeExpire() {
-        mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_CANCEL, new Callback0<Void>() {
+        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_CANCEL;
+        mTradeManager.finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
                 mView.showError("二维码已过期，请重新支付");
@@ -334,7 +336,8 @@ public class ScanPayPresenter implements Presenter {
     }
 
     private void doFinish() {
-        mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_CANCEL, new Callback0<Void>() {
+        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_CANCEL;
+        mTradeManager.finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
                 mView.finishSelf();

@@ -1053,7 +1053,6 @@ public class VerifyManager {
 
     // 核销记录
     public void printRecord(VerifyRecordInfo recordInfo, boolean keep) {
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
         mPos.printDivide();
@@ -1065,6 +1064,16 @@ public class VerifyManager {
             case AppConstants.TYPE_COUPON:
             case AppConstants.TYPE_CASH_COUPON:
             case AppConstants.TYPE_GIFT_COUPON:
+                mPos.printText("订单金额：", "￥ " + 0);
+                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printDivide();
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
+                mPos.printText(recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
             case AppConstants.TYPE_DISCOUNT_COUPON:
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
@@ -1077,7 +1086,7 @@ public class VerifyManager {
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_PAID_COUPON:
-                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText("订单金额：", "￥ " + 0);
                 mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
@@ -1088,7 +1097,7 @@ public class VerifyManager {
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_SERVICE_ITEM_COUPON:
-                mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText("订单金额：", "￥ " + 0);
                 mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printDivide();
                 switch (recordInfo.paidType) {
@@ -1126,9 +1135,8 @@ public class VerifyManager {
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
                 mPos.printDivide();
-                // TODO 会员等级 + 会员折扣
                 mPos.printText("优惠详情");
-                mPos.printText("[" + recordInfo.businessTypeName + "]" + "授权手机号:" + Utils.formatCode(recordInfo.memberPhone), "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.memberTypeName + (TextUtils.isEmpty(recordInfo.memberDiscountDesc) ? "" : "," + recordInfo.memberDiscountDesc) + "/" + Utils.formatCode(recordInfo.memberPhone), "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_LUCKY_WHEEL:
@@ -1148,6 +1156,7 @@ public class VerifyManager {
         mPos.printText("收款人员：", recordInfo.operatorName);
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");

@@ -81,7 +81,6 @@ public class RequestConstant {
     public static final String URL_GET_VERIFY_TYPE_LIST = SPA_SERVICE_BASE + "/v2/manager/checkinfo/type/list";     //获取核销码类型选择列表
 
     // ****************************************** POS在线买单 **************************************
-    public static final String URL_GET_XMD_ONLINE_ORDER_ID = SPA_SERVICE_BASE + "/v2/manager/order/id/get";
     public static final String URL_GET_XMD_ONLINE_ORDER_DETAIL = SPA_SERVICE_BASE + "/v2/manager/fastpay/order/detail";
     public static final String URL_GET_XMD_ONLINE_SCAN_STATUS = SPA_SERVICE_BASE + "/v2/manager/order/id/status";
     public static final String URL_GET_XMD_ONLINE_QRCODE_URL = SPA_SERVICE_BASE + "/v2/manager/fast_pay/url/get";
@@ -204,7 +203,6 @@ public class RequestConstant {
     public static final String KEY_DISCOUNT_AMOUNT = "discountAmount";
 
     public static final String KEY_REPORT_TAG = "reportTag";
-
 
     /*********************************************************************************************/
     /*                                        configs                                            */

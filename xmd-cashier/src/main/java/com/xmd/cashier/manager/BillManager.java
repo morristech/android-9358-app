@@ -72,7 +72,6 @@ public class BillManager {
     }
 
     public void printBillRecord(BillInfo info, boolean keep) {
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
         mPos.printDivide();
@@ -97,6 +96,7 @@ public class BillManager {
         mPos.printText("收款人员：", (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");

@@ -43,32 +43,34 @@ public class OnlinePayDiscountAdapter extends RecyclerView.Adapter<OnlinePayDisc
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final OnlinePayInfo.OnlinePayDiscountInfo info = mData.get(position);
-        switch (info.type) {
-            case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
-                holder.mDiscountType.setText("用券抵扣");
-                holder.mDiscountCoupon.setVisibility(View.VISIBLE);
-                holder.mDiscountCoupon.setText(info.bizName);
-                break;
-            case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
-                holder.mDiscountType.setText("预约抵扣");
-                holder.mDiscountCoupon.setVisibility(View.GONE);
-                break;
-            case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
-                holder.mDiscountType.setText("会员优惠");
-                holder.mDiscountCoupon.setVisibility(View.GONE);
-                break;
-            default:
-                holder.mDiscountType.setText("其他抵扣");
-                holder.mDiscountCoupon.setVisibility(View.GONE);
-                break;
-        }
-        holder.mDiscountAmount.setText("-￥" + Utils.moneyToStringEx(info.amount));
-        holder.mDiscountCoupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallBack.onItemClick(info);
+        if (info.type != null) {
+            switch (info.type) {
+                case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
+                    holder.mDiscountType.setText("用券抵扣");
+                    holder.mDiscountCoupon.setVisibility(View.VISIBLE);
+                    holder.mDiscountCoupon.setText(info.bizName);
+                    break;
+                case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
+                    holder.mDiscountType.setText("预约抵扣");
+                    holder.mDiscountCoupon.setVisibility(View.GONE);
+                    break;
+                case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                    holder.mDiscountType.setText("会员优惠");
+                    holder.mDiscountCoupon.setVisibility(View.GONE);
+                    break;
+                default:
+                    holder.mDiscountType.setText("其他抵扣");
+                    holder.mDiscountCoupon.setVisibility(View.GONE);
+                    break;
             }
-        });
+            holder.mDiscountAmount.setText("-￥" + Utils.moneyToStringEx(info.amount));
+            holder.mDiscountCoupon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallBack.onItemClick(info);
+                }
+            });
+        }
     }
 
     @Override

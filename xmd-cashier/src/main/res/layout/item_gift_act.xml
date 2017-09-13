@@ -9,7 +9,7 @@
         android:id="@+id/tv_gift_act_amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:padding="@dimen/activity_little_margin"
         android:text="满100元"
         android:textColor="@color/colorText2" />
@@ -27,6 +27,6 @@
         android:id="@+id/rv_gift_act_sub_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:visibility="gone" />
 </LinearLayout>

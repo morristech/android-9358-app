@@ -271,7 +271,6 @@ public class NotifyManager {
 
     // 打印在线买单记录
     public void printOnlinePayRecord(OnlinePayInfo info, boolean retry, boolean keep) {
-        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
@@ -282,19 +281,21 @@ public class NotifyManager {
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originalAmount));
         if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
             for (OnlinePayInfo.OnlinePayDiscountInfo discountInfo : info.orderDiscountList) {
-                switch (discountInfo.type) {
-                    case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
-                        mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
-                    case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
-                        mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
-                    case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
-                        mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
-                    default:
-                        mPos.printText("其他抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
-                        break;
+                if (discountInfo.type != null) {
+                    switch (discountInfo.type) {
+                        case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
+                            mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                        case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
+                            mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                        case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                            mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                        default:
+                            mPos.printText("其他抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
+                    }
                 }
             }
         } else {
@@ -323,15 +324,24 @@ public class NotifyManager {
         if (!TextUtils.isEmpty(status)) {
             mPos.printText("交易状态：", status);
         }
-        mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + "(" + Utils.getQRPlatform(info.qrType) + ")");
+        if (AppConstants.PAY_CHANNEL_ACCOUNT.equals(info.payChannel)) {
+            //会员
+            mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.platform) ? "" : "(" + Utils.getPlatform(info.platform) + ")"));
+        } else {
+            mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.qrType) ? "" : "(" + Utils.getQRPlatform(info.qrType) + ")"));
+        }
+
         if (!TextUtils.isEmpty(info.techName)) {
             mPos.printText("服务技师：", (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
         }
         mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
         mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         if (!keep) {
-            mPos.printBitmap(qrCodeBytes);
-            mPos.printCenter("微信扫码，选技师、抢优惠");
+            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
+            }
         }
         mPos.printEnd();
     }
