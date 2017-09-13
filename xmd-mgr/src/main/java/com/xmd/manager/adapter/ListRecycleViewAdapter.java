@@ -936,7 +936,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TechBadComment techComment = (TechBadComment) obj;
         techHolder.badCommentTechRank.setText(String.valueOf(holder.getLayoutPosition() + 1));
         Glide.with(mContext).load(techComment.avatarUrl).into(techHolder.badCommentTechHead);
-        techHolder.badCommentTechName.setText(techComment.name);
+        techHolder.badCommentTechName.setText(Utils.StrSubstring(6,techComment.name,true));
         if (Utils.isNotEmpty(techComment.techNo)) {
             String techNo = String.format("[%s]", techComment.techNo);
             techHolder.badCommentTechSerial.setText(Utils.changeColor(techNo, ResourceUtils.getColor(R.color.btn_background), 1, techNo.length() - 1));
@@ -1153,7 +1153,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     static class OrderListItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.avatar)
-        CircleAvatarView avatar;
+        CircleImageView avatar;
         @BindView(R.id.custom_name)
         TextView customerName;
         @BindView(R.id.custom_phone)

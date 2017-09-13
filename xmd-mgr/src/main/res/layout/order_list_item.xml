@@ -17,11 +17,11 @@
         android:paddingTop="@dimen/margin_10">
 
 
-        <com.xmd.app.widget.CircleAvatarView
+        <com.xmd.manager.widget.CircleImageView
             android:id="@+id/avatar"
             android:layout_width="@dimen/paid_consume_activity_avatar_size"
             android:layout_height="@dimen/paid_consume_activity_avatar_size"
-            android:src="@drawable/ic_tab_index_active" />
+            android:src="@drawable/img_default_avatar" />
 
         <LinearLayout
             android:layout_width="0dp"

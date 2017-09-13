@@ -68,7 +68,7 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
         String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
         viewHolder.commentName.setText(Utils.StrSubstring(7, commentUserName, true));
         viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
-        viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "技师" : commentBean.techName);
+        viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "技师" : com.xmd.manager.common.Utils.StrSubstring(6,commentBean.techName,true));
         viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
         viewHolder.commentTime.setText(com.shidou.commonlibrary.util.DateUtils.doLong2String(commentBean.createdAt, "MM-dd HH:mm"));
 
