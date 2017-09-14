@@ -170,14 +170,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        if (retry) {
-                            // 列表重打
-                            NotifyManager.getInstance().printOnlinePayRecord(info, retry, keep);
-                        } else {
-                            // 确认或者请到前台
-                            NotifyManager.getInstance().printOnlinePayRecord(info, retry, false);
-                            NotifyManager.getInstance().printOnlinePayRecord(info, retry, true);
-                        }
+                        NotifyManager.getInstance().printOnlinePayRecord(info, retry, keep);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -226,7 +219,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlinePassSwitch()) {
-                    print(info, false, false);  //keep字段可任意
+                    print(info, false, true);
                 }
             }
 
@@ -260,7 +253,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlineUnpassSwitch()) {
-                    print(info, false, false);  //keep字段可任意
+                    print(info, false, true);
                 }
             }
 

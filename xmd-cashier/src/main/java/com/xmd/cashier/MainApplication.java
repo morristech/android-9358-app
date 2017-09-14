@@ -106,7 +106,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                                     @Override
                                     public void call(Subscriber<? super Void> subscriber) {
                                         MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, null);
-                                        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, false, null);
                                         subscriber.onNext(null);
                                         subscriber.onCompleted();
                                     }
@@ -139,7 +138,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                                     @Override
                                     public void call(Subscriber<? super Void> subscriber) {
                                         NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, true);
-                                        NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, false);
                                         subscriber.onNext(null);
                                         subscriber.onCompleted();
                                     }
