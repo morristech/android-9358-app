@@ -803,11 +803,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        if (keep) {
-            mPos.printText("手机号码：", list.get(0).getUserPhone() + "(" + list.get(0).getUserName() + ")");
-        } else {
-            mPos.printText("手机号码：", Utils.formatPhone(list.get(0).getUserPhone()) + "(" + Utils.formatName(list.get(0).getUserName()) + ")");
-        }
+        mPos.printText("手机号码：", (keep ? list.get(0).getUserPhone() : Utils.formatPhone(list.get(0).getUserPhone())) + "(" + Utils.formatName(list.get(0).getUserName(), keep) + ")");
         mPos.printDivide();
 
         int orderAmount = 0;
@@ -895,7 +891,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号码：", (keep ? couponInfo.userPhone : Utils.formatPhone(couponInfo.userPhone)) + "(" + (keep ? couponInfo.userName : Utils.formatName(couponInfo.userName)) + ")");
+        mPos.printText("手机号码：", (keep ? couponInfo.userPhone : Utils.formatPhone(couponInfo.userPhone)) + "(" + Utils.formatName(couponInfo.userName, keep) + ")");
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(couponInfo.originAmount));
@@ -948,7 +944,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号码：", (keep ? orderInfo.phoneNum : Utils.formatPhone(orderInfo.phoneNum)) + "(" + (keep ? orderInfo.customerName : Utils.formatName(orderInfo.customerName)) + ")");
+        mPos.printText("手机号码：", (keep ? orderInfo.phoneNum : Utils.formatPhone(orderInfo.phoneNum)) + "(" + Utils.formatName(orderInfo.customerName, keep) + ")");
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(orderInfo.downPayment));
@@ -985,7 +981,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号码：", (keep ? prizeInfo.telephone : Utils.formatPhone(prizeInfo.telephone)) + "(" + (keep ? prizeInfo.userName : Utils.formatName(prizeInfo.userName)) + ")");
+        mPos.printText("手机号码：", (keep ? prizeInfo.telephone : Utils.formatPhone(prizeInfo.telephone)) + "(" + Utils.formatName(prizeInfo.userName, keep) + ")");
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + 0);
@@ -1023,7 +1019,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号码：", (keep ? treatInfo.userPhone : Utils.formatPhone(treatInfo.userPhone)) + "(" + (keep ? treatInfo.userName : Utils.formatName(treatInfo.userName)) + ")");
+        mPos.printText("手机号码：", (keep ? treatInfo.userPhone : Utils.formatPhone(treatInfo.userPhone)) + "(" + Utils.formatName(treatInfo.userName, keep) + ")");
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(treatInfo.useMoney));
@@ -1058,7 +1054,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号码：", (keep ? recordInfo.telephone : Utils.formatPhone(recordInfo.telephone)) + (TextUtils.isEmpty(recordInfo.userName) ? "" : "(" + (keep ? recordInfo.userName : Utils.formatName(recordInfo.userName)) + ")"));
+        mPos.printText("手机号码：", (keep ? recordInfo.telephone : Utils.formatPhone(recordInfo.telephone)) + (TextUtils.isEmpty(recordInfo.userName) ? "" : "(" + Utils.formatName(recordInfo.userName, keep) + ")"));
         mPos.printDivide();
         switch (recordInfo.businessType) {
             case AppConstants.TYPE_COUPON:

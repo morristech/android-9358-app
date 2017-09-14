@@ -481,7 +481,7 @@ public class MemberManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("会员卡号：", (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + (keep ? info.name : Utils.formatName(info.name)) + ")");
+        mPos.printText("会员卡号：", (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + Utils.formatName(info.name, keep) + ")");
         mPos.printText("手机号码：", (keep ? info.telephone : Utils.formatPhone(info.telephone)));
         mPos.printText("会员等级：", info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
         mPos.printDivide();

@@ -941,14 +941,14 @@ public class TradeManager {
         mPos.printDivide();
         mPos.printText("商户号：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("会员卡号：", (keep ? mTrade.memberRecordInfo.cardNo : Utils.formatCode(mTrade.memberRecordInfo.cardNo)) + "(" + (keep ? mTrade.memberRecordInfo.name : Utils.formatName(mTrade.memberRecordInfo.name)) + ")");
+        mPos.printText("会员卡号：", (keep ? mTrade.memberRecordInfo.cardNo : Utils.formatCode(mTrade.memberRecordInfo.cardNo)) + "(" + Utils.formatName(mTrade.memberRecordInfo.name, keep) + ")");
         mPos.printText("手机号码：", (keep ? mTrade.memberRecordInfo.telephone : Utils.formatPhone(mTrade.memberRecordInfo.telephone)));
         mPos.printText("会员等级：", mTrade.memberRecordInfo.memberTypeName + "(" + String.format("%.02f", mTrade.memberRecordInfo.discount / 100.0f) + "折)");
         List<TempUser> contacts = getTempContacts();
         if (contacts != null && !contacts.isEmpty()) {
             for (TempUser user : contacts) {
                 if (!(user.userName.equals(mTrade.memberRecordInfo.name) && user.userPhone.equals(mTrade.memberRecordInfo.telephone))) {
-                    mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + (keep ? user.userName : Utils.formatName(user.userName)) + ")");
+                    mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + Utils.formatName(user.userName, keep) + ")");
                 }
             }
         }
@@ -1048,7 +1048,7 @@ public class TradeManager {
         mPos.printDivide();
         if (contacts != null && !contacts.isEmpty()) {
             for (TempUser user : contacts) {
-                mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + (keep ? user.userName : Utils.formatName(user.userName)) + ")");
+                mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + Utils.formatName(user.userName, keep) + ")");
             }
             mPos.printDivide();
         }
@@ -1153,7 +1153,7 @@ public class TradeManager {
         mPos.printDivide();
         if (contacts != null && !contacts.isEmpty()) {
             for (TempUser user : contacts) {
-                mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + (keep ? user.userName : Utils.formatName(user.userName)) + ")");
+                mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + Utils.formatName(user.userName, keep) + ")");
             }
             mPos.printDivide();
         }
@@ -1261,7 +1261,7 @@ public class TradeManager {
         List<TempUser> contacts = getTempContacts();
         if (contacts != null && !contacts.isEmpty()) {
             for (TempUser user : contacts) {
-                mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + (keep ? user.userName : Utils.formatName(user.userName)) + ")");
+                mPos.printText("手机号码：", (keep ? user.userPhone : Utils.formatPhone(user.userPhone)) + "(" + Utils.formatName(user.userName, keep) + ")");
             }
         }
         mPos.printDivide();

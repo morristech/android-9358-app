@@ -276,7 +276,7 @@ public class NotifyManager {
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
-        mPos.printText("手机号：", (keep ? info.telephone : Utils.formatPhone(info.telephone)) + "(" + (keep ? info.userName : Utils.formatName(info.userName)) + ")");
+        mPos.printText("手机号：", (keep ? info.telephone : Utils.formatPhone(info.telephone)) + "(" + Utils.formatName(info.userName, keep) + ")");
         mPos.printDivide();
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originalAmount));
         if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {

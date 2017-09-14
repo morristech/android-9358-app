@@ -391,11 +391,15 @@ public class Utils {
     }
 
     // 保留前5位
-    public static String formatName(String name) {
+    public static String formatName(String name, boolean keep) {
         if (TextUtils.isEmpty(name)) {
             return null;
         } else {
-            return name.replaceAll("([\\s\\S]{1})[\\s\\S]*", "$1***");
+            if (keep) {
+                return name.replaceAll("([\\s\\S]{5})[\\s\\S]*", "$1***");
+            } else {
+                return name.replaceAll("([\\s\\S]{1})[\\s\\S]*", "$1***");
+            }
         }
     }
 }
