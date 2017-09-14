@@ -44,7 +44,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public interface OnlinePayCallBack {
         void onLoadMore();
 
-        void onPrint(OnlinePayInfo info);
+        void onPrintClient(OnlinePayInfo info);
+
+        void onPrintClub(OnlinePayInfo info);
 
         void onConfirm(OnlinePayInfo info, int position);
 
@@ -136,7 +138,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case AppConstants.ONLINE_PAY_STATUS_PAID:
                     // 已支付,待确认
                     itemViewHolder.mOperateLayout.setVisibility(View.VISIBLE);
-                    itemViewHolder.mPrintBtn.setVisibility(View.GONE);
+                    itemViewHolder.mPrintLayout.setVisibility(View.GONE);
                     itemViewHolder.mStatusIcon.setImageResource(R.drawable.ic_wait);
                     itemViewHolder.mStatusText.setText(AppConstants.ONLINE_PAY_STATUS_PAID_TEXT);
                     itemViewHolder.mStatusText.setTextColor(mContext.getResources().getColor(R.color.colorStatusYellow));
@@ -144,7 +146,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case AppConstants.ONLINE_PAY_STATUS_PASS:
                     // 确认
                     itemViewHolder.mOperateLayout.setVisibility(View.GONE);
-                    itemViewHolder.mPrintBtn.setVisibility(View.VISIBLE);
+                    itemViewHolder.mPrintLayout.setVisibility(View.VISIBLE);
                     itemViewHolder.mStatusIcon.setImageResource(R.drawable.ic_accept);
                     itemViewHolder.mStatusText.setText(AppConstants.ONLINE_PAY_STATUS_PASS_TEXT);
                     itemViewHolder.mStatusText.setTextColor(mContext.getResources().getColor(R.color.colorStatusGreen));
@@ -152,7 +154,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case AppConstants.ONLINE_PAY_STATUS_UNPASS:
                     // 请到前台
                     itemViewHolder.mOperateLayout.setVisibility(View.GONE);
-                    itemViewHolder.mPrintBtn.setVisibility(View.VISIBLE);
+                    itemViewHolder.mPrintLayout.setVisibility(View.VISIBLE);
                     itemViewHolder.mStatusIcon.setImageResource(R.drawable.ic_refuse);
                     itemViewHolder.mStatusText.setText(AppConstants.ONLINE_PAY_STATUS_UNPASS_TEXT);
                     itemViewHolder.mStatusText.setTextColor(mContext.getResources().getColor(R.color.colorStatusGray));
@@ -197,10 +199,17 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemViewHolder.mCashierMoney.setText(Utils.moneyToStringEx(info.payAmount) + "元");
             itemViewHolder.mTradeNo.setText(info.payId);
 
-            itemViewHolder.mPrintBtn.setOnClickListener(new View.OnClickListener() {
+            itemViewHolder.mPrintClient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCallBack.onPrint(info);
+                    mCallBack.onPrintClient(info);
+                }
+            });
+
+            itemViewHolder.mPrintClub.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallBack.onPrintClub(info);
                 }
             });
 
@@ -316,7 +325,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TextView mPayChannel;
         public TableRow mCashierMoneyLayout;
 
-        public Button mPrintBtn;
+        public LinearLayout mPrintLayout;
+        public Button mPrintClient;
+        public Button mPrintClub;
         public LinearLayout mOperateLayout;
         public Button mConfirmBtn;
         public Button mExceptionBtn;
@@ -344,7 +355,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mCashierNo = (TextView) itemView.findViewById(R.id.item_cashier_no);
             mCashierMoney = (TextView) itemView.findViewById(R.id.item_cashier_money);
             mTradeNo = (TextView) itemView.findViewById(R.id.item_trade_no);
-            mPrintBtn = (Button) itemView.findViewById(R.id.item_btn_print);
+            mPrintLayout = (LinearLayout) itemView.findViewById(R.id.item_layout_print);
+            mPrintClient = (Button) itemView.findViewById(R.id.item_print_client);
+            mPrintClub = (Button) itemView.findViewById(R.id.item_print_club);
             mOperateLayout = (LinearLayout) itemView.findViewById(R.id.item_layout_operate);
             mConfirmBtn = (Button) itemView.findViewById(R.id.item_btn_confirm);
             mExceptionBtn = (Button) itemView.findViewById(R.id.item_btn_exception);

@@ -335,17 +335,40 @@
             android:textColor="@color/colorText3"
             android:textSize="@dimen/font_size_14" />
 
-        <Button
-            android:id="@+id/item_btn_print"
-            android:layout_width="58dp"
-            android:layout_height="30dp"
+        <LinearLayout
+            android:id="@+id/item_layout_print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/state_btn_negative"
-            android:text="打印"
-            android:textColor="@color/colorButton"
-            android:textSize="@dimen/font_size_16"
-            android:visibility="visible" />
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/item_print_client"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="@dimen/activity_small_margin"
+                android:background="@drawable/state_btn_negative"
+                android:minWidth="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_small_margin"
+                android:paddingRight="@dimen/activity_small_margin"
+                android:text="客户联"
+                android:textColor="@color/colorButton"
+                android:textSize="@dimen/font_size_16" />
+
+            <Button
+                android:id="@+id/item_print_club"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/state_btn_negative"
+                android:minWidth="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_small_margin"
+                android:paddingRight="@dimen/activity_small_margin"
+                android:text="商户存根"
+                android:textColor="@color/colorButton"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/item_layout_operate"

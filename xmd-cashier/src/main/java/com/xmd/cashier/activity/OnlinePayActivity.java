@@ -117,9 +117,13 @@ public class OnlinePayActivity extends BaseActivity implements OnlinePayContract
             }
 
             @Override
-            public void onPrint(OnlinePayInfo info) {
-                // 打印
-                mPresenter.print(info, true);
+            public void onPrintClient(OnlinePayInfo info) {
+                mPresenter.print(info, true, false);
+            }
+
+            @Override
+            public void onPrintClub(OnlinePayInfo info) {
+                mPresenter.print(info, true, true);
             }
 
             @Override

@@ -164,14 +164,20 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     }
 
     @Override
-    public void print(final OnlinePayInfo info, final boolean retry) {
+    public void print(final OnlinePayInfo info, final boolean retry, final boolean keep) {
         // 打印
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().printOnlinePayRecord(info, retry, true);
-                        NotifyManager.getInstance().printOnlinePayRecord(info, retry, false);
+                        if (retry) {
+                            // 列表重打
+                            NotifyManager.getInstance().printOnlinePayRecord(info, retry, keep);
+                        } else {
+                            // 确认或者请到前台
+                            NotifyManager.getInstance().printOnlinePayRecord(info, retry, false);
+                            NotifyManager.getInstance().printOnlinePayRecord(info, retry, true);
+                        }
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -220,7 +226,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlinePassSwitch()) {
-                    print(info, false);
+                    print(info, false, false);  //keep字段可任意
                 }
             }
 
@@ -254,7 +260,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlineUnpassSwitch()) {
-                    print(info, false);
+                    print(info, false, false);  //keep字段可任意
                 }
             }
 

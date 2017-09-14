@@ -16,7 +16,7 @@ public interface OnlinePayContract {
 
         void loadMore();
 
-        void print(OnlinePayInfo info, boolean retry);
+        void print(OnlinePayInfo info, boolean retry, boolean keep);
 
         void pass(OnlinePayInfo info, int position);
 

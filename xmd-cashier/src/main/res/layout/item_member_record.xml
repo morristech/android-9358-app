@@ -28,7 +28,6 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:text="Mr Zhang"
             android:textColor="@color/colorText4"
             android:textSize="@dimen/small_font_size" />
 
@@ -36,7 +35,6 @@
             android:id="@+id/item_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="金卡"
             android:textColor="@color/colorSilver"
             android:textSize="@dimen/font_size_16" />
     </LinearLayout>
@@ -60,7 +58,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:text="18603036816"
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/small_font_size" />
         </TableRow>
@@ -79,7 +76,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:text="18603036816"
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/small_font_size" />
         </TableRow>
@@ -101,7 +97,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="100"
                     android:textSize="@dimen/small_font_size" />
 
                 <TextView
