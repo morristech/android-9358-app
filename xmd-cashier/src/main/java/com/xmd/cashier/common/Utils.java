@@ -246,7 +246,7 @@ public class Utils {
             case AppConstants.QR_TYPE_POS:
                 return "POS机";
             case AppConstants.QR_TYPE_CLUB:
-                return "会所二维码";
+                return "收银二维码";
             case AppConstants.QR_TYPE_TECH:
                 return "技师二维码";
             default:
@@ -262,7 +262,7 @@ public class Utils {
             case AppConstants.PLATFORM_OFFLINE:
                 return "管理者后台";
             case AppConstants.PLATFORM_ONLINE:
-                return "线上充值";
+                return "线上";
             case AppConstants.PLATFORM_CASHIER:
                 return "POS机";
             default:
@@ -395,7 +395,7 @@ public class Utils {
         if (TextUtils.isEmpty(name)) {
             return null;
         } else {
-            return name.replaceAll("([\\s\\S]{5})[\\s\\S]*", "$1****");
+            return name.replaceAll("([\\s\\S]{1})[\\s\\S]*", "$1***");
         }
     }
 }

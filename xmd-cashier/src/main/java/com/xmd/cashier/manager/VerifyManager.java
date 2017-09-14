@@ -899,7 +899,7 @@ public class VerifyManager {
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(couponInfo.originAmount));
-        mPos.printText(couponInfo.couponTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(couponInfo.getReallyCouponMoney()));
+        mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponInfo.getReallyCouponMoney()));
         mPos.printDivide();
         mPos.printRight("实收金额：" + 0 + "元", true);
         mPos.printDivide();
@@ -952,7 +952,7 @@ public class VerifyManager {
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(orderInfo.downPayment));
-        mPos.printText("预约抵扣金额：", "-￥ " + Utils.moneyToStringEx(orderInfo.downPayment));
+        mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderInfo.downPayment));
         mPos.printDivide();
         mPos.printRight("实收金额：" + 0 + "元", true);
         mPos.printDivide();
@@ -1027,7 +1027,7 @@ public class VerifyManager {
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(treatInfo.useMoney));
-        mPos.printText("抵扣金额：", "-￥ " + Utils.moneyToStringEx((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)));
+        mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)));
         mPos.printDivide();
         mPos.printRight("实收金额：" + Utils.moneyToStringEx((int) (treatInfo.useMoney * treatInfo.memberDiscount / 1000.0f)) + "元", true);
         mPos.printDivide();
@@ -1065,7 +1065,7 @@ public class VerifyManager {
             case AppConstants.TYPE_CASH_COUPON:
             case AppConstants.TYPE_GIFT_COUPON:
                 mPos.printText("订单金额：", "￥ " + 0);
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
                 mPos.printDivide();
@@ -1076,7 +1076,7 @@ public class VerifyManager {
                 break;
             case AppConstants.TYPE_DISCOUNT_COUPON:
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
                 mPos.printDivide();
@@ -1087,7 +1087,7 @@ public class VerifyManager {
                 break;
             case AppConstants.TYPE_PAID_COUPON:
                 mPos.printText("订单金额：", "￥ " + 0);
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
+                mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
                 mPos.printDivide();
@@ -1098,7 +1098,7 @@ public class VerifyManager {
                 break;
             case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                 mPos.printText("订单金额：", "￥ " + 0);
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
+                mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printDivide();
                 switch (recordInfo.paidType) {
                     case AppConstants.TYPE_PAID_AMOUNT:
@@ -1121,7 +1121,7 @@ public class VerifyManager {
                 break;
             case AppConstants.TYPE_ORDER:
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
                 mPos.printDivide();
@@ -1131,7 +1131,7 @@ public class VerifyManager {
                 break;
             case AppConstants.TYPE_PAY_FOR_OTHER:
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
+                mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
                 mPos.printDivide();
@@ -1141,7 +1141,7 @@ public class VerifyManager {
                 break;
             case AppConstants.TYPE_LUCKY_WHEEL:
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
-                mPos.printText(recordInfo.businessTypeName + "抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printText("抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
                 mPos.printDivide();
