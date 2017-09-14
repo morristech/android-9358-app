@@ -20,7 +20,7 @@ public interface MemberRecordContract {
 
         void setFilter(String filter);
 
-        void print(MemberRecordInfo info, boolean retry);
+        void print(MemberRecordInfo info, boolean retry, boolean keep);
     }
 
     interface View extends BaseView<Presenter> {

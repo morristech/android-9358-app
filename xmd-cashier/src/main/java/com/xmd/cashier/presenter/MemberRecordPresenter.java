@@ -162,13 +162,12 @@ public class MemberRecordPresenter implements MemberRecordContract.Presenter {
     }
 
     @Override
-    public void print(final MemberRecordInfo info, final boolean retry) {
+    public void print(final MemberRecordInfo info, final boolean retry, final boolean keep) {
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        MemberManager.getInstance().printMemberRecordInfo(info, retry, true, null);
-                        MemberManager.getInstance().printMemberRecordInfo(info, retry, false, null);
+                        MemberManager.getInstance().printMemberRecordInfo(info, retry, keep, null);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

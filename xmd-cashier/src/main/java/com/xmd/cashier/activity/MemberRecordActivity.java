@@ -114,8 +114,13 @@ public class MemberRecordActivity extends BaseActivity implements MemberRecordCo
             }
 
             @Override
-            public void onPrint(MemberRecordInfo info) {
-                mPresenter.print(info, true);
+            public void onPrintClient(MemberRecordInfo info) {
+                mPresenter.print(info, true, false);
+            }
+
+            @Override
+            public void onPrintClub(MemberRecordInfo info) {
+                mPresenter.print(info, true, true);
             }
         });
         mRecyclerList.setAdapter(mAdapter);

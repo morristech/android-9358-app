@@ -39,7 +39,9 @@ public class MemberRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public interface CallBack {
         void onLoadMore();
 
-        void onPrint(MemberRecordInfo info);
+        void onPrintClient(MemberRecordInfo info);
+
+        void onPrintClub(MemberRecordInfo info);
     }
 
     @IntDef({AppConstants.FOOTER_STATUS_SUCCESS, AppConstants.FOOTER_STATUS_ERROR, AppConstants.FOOTER_STATUS_NO_NETWORK, AppConstants.FOOTER_STATUS_NONE, AppConstants.FOOTER_STATUS_LOADING})
@@ -139,12 +141,19 @@ public class MemberRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     itemViewHolder.mAmount.setText(Utils.moneyToStringEx(info.amount));
                     break;
             }
-            itemViewHolder.mPrint.setOnClickListener(new View.OnClickListener() {
+            itemViewHolder.mPrintClub.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCallBack.onPrint(info);
+                    mCallBack.onPrintClub(info);
                 }
             });
+            itemViewHolder.mPrintClient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallBack.onPrintClient(info);
+                }
+            });
+
         }
     }
 
@@ -186,7 +195,8 @@ public class MemberRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView mCardNo;
         public TextView mAmount;
         public TextView mTime;
-        public Button mPrint;
+        public Button mPrintClub;
+        public Button mPrintClient;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -197,7 +207,8 @@ public class MemberRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             mCardNo = (TextView) itemView.findViewById(R.id.item_card_no);
             mAmount = (TextView) itemView.findViewById(R.id.item_amount);
             mTime = (TextView) itemView.findViewById(R.id.item_time);
-            mPrint = (Button) itemView.findViewById(R.id.item_print);
+            mPrintClub = (Button) itemView.findViewById(R.id.item_print_club);
+            mPrintClient = (Button) itemView.findViewById(R.id.item_print_client);
         }
     }
 
