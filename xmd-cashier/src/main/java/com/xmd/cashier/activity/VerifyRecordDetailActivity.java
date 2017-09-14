@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +37,9 @@ public class VerifyRecordDetailActivity extends BaseActivity implements VerifyRe
     private TextView mOperator;
     private TextView mCode;
 
+    private Button mBtnClient;
+    private Button mBtnClub;
+
     private RecyclerView mRecyclerDetail;
     private VerifyRecordDetailAdapter mAdapter;
 
@@ -61,12 +65,31 @@ public class VerifyRecordDetailActivity extends BaseActivity implements VerifyRe
         mOperator = (TextView) findViewById(R.id.tv_detail_operator);
         mCode = (TextView) findViewById(R.id.tv_detail_verify_code);
 
+        mBtnClient = (Button) findViewById(R.id.btn_print_client);
+        mBtnClub = (Button) findViewById(R.id.btn_print_club);
+
         mRecyclerDetail = (RecyclerView) findViewById(R.id.rv_detail_item);
         mAdapter = new VerifyRecordDetailAdapter(this);
         mRecyclerDetail.setHasFixedSize(true);
         mRecyclerDetail.setLayoutManager(new FullyGridLayoutManager(this, 1));
         mRecyclerDetail.addItemDecoration(new CustomRecycleViewDecoration(16));
         mRecyclerDetail.setAdapter(mAdapter);
+
+        // 打印客户联
+        mBtnClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.printVerifyRecord(false);
+            }
+        });
+
+        // 打印商户存根
+        mBtnClub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.printVerifyRecord(true);
+            }
+        });
     }
 
     @Override
@@ -80,10 +103,6 @@ public class VerifyRecordDetailActivity extends BaseActivity implements VerifyRe
     @Override
     public void setPresenter(VerifyRecordDetailContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    public void onClickPrint(View view) {
-        mPresenter.printVerifyRecord();
     }
 
     @Override

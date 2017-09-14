@@ -128,7 +128,7 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
     }
 
     @Override
-    public void printVerifyRecord() {
+    public void printVerifyRecord(final boolean keep) {
         if (mInfo == null) {
             mView.showToast("核销打印异常，请稍后重试...");
         }
@@ -136,8 +136,7 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        VerifyManager.getInstance().printRecord(mInfo, true);
-                        VerifyManager.getInstance().printRecord(mInfo, false);
+                        VerifyManager.getInstance().printRecord(mInfo, keep);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

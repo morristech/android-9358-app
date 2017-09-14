@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_verify_record" />
+    <include layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="none">
 
         <LinearLayout
@@ -172,4 +173,38 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_small_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_small_margin">
+
+        <Button
+            android:id="@+id/btn_print_client"
+            style="@style/AppTheme.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:layout_weight="1"
+            android:onClick="onConfirm"
+            android:text="客户联"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/small_font_size" />
+
+        <Button
+            android:id="@+id/btn_print_club"
+            style="@style/AppTheme.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_weight="1"
+            android:onClick="onConfirm"
+            android:text="商户存根"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/small_font_size" />
+    </LinearLayout>
 </LinearLayout>

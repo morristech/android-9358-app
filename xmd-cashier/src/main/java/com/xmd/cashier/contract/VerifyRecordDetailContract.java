@@ -2,7 +2,6 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
-import com.xmd.cashier.dal.bean.VerifyRecordInfo;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 
 /**
@@ -13,7 +12,7 @@ public interface VerifyRecordDetailContract {
     interface Presenter extends BasePresenter {
         void getVerifyDetailById(String recordId);
 
-        void printVerifyRecord();
+        void printVerifyRecord(boolean keep);
     }
 
     interface View extends BaseView<Presenter> {
