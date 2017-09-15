@@ -960,6 +960,7 @@ public class TradeManager {
         if (success != null && !success.isEmpty()) {
             int couponAmount = 0;
             int orderAmount = 0;
+            boolean hasOrder = false;
             for (VerificationItem item : success) {
                 switch (item.type) {
                     case AppConstants.TYPE_COUPON:
@@ -969,6 +970,7 @@ public class TradeManager {
                         couponAmount += item.couponInfo.getReallyCouponMoney();
                         break;
                     case AppConstants.TYPE_ORDER:
+                        hasOrder = true;
                         orderAmount += item.order.downPayment;
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
@@ -981,7 +983,7 @@ public class TradeManager {
             if (couponAmount > 0) {
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
             }
-            if (orderAmount > 0) {
+            if (hasOrder) {
                 mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
             }
         }
@@ -1058,6 +1060,7 @@ public class TradeManager {
         if (success != null && !success.isEmpty()) {
             int couponAmount = 0;
             int orderAmount = 0;
+            boolean hasOrder = false;
             for (VerificationItem item : success) {
                 switch (item.type) {
                     case AppConstants.TYPE_COUPON:
@@ -1067,6 +1070,7 @@ public class TradeManager {
                         couponAmount += item.couponInfo.getReallyCouponMoney();
                         break;
                     case AppConstants.TYPE_ORDER:
+                        hasOrder = true;
                         orderAmount += item.order.downPayment;
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
@@ -1079,7 +1083,7 @@ public class TradeManager {
             if (couponAmount > 0) {
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
             }
-            if (orderAmount > 0) {
+            if (hasOrder) {
                 mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
             }
         }
@@ -1163,6 +1167,7 @@ public class TradeManager {
         if (success != null && !success.isEmpty()) {
             int couponAmount = 0;
             int orderAmount = 0;
+            boolean hasOrder = false;
             for (VerificationItem item : success) {
                 switch (item.type) {
                     case AppConstants.TYPE_COUPON:
@@ -1172,6 +1177,7 @@ public class TradeManager {
                         couponAmount += item.couponInfo.getReallyCouponMoney();
                         break;
                     case AppConstants.TYPE_ORDER:
+                        hasOrder = true;
                         orderAmount += item.order.downPayment;
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
@@ -1184,7 +1190,7 @@ public class TradeManager {
             if (couponAmount > 0) {
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
             }
-            if (orderAmount > 0) {
+            if (hasOrder) {
                 mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
             }
         }
@@ -1268,6 +1274,7 @@ public class TradeManager {
 
         int couponAmount = 0;
         int orderAmount = 0;
+        boolean hasOrder = false;
         for (VerificationItem item : success) {
             switch (item.type) {
                 case AppConstants.TYPE_COUPON:
@@ -1277,6 +1284,7 @@ public class TradeManager {
                     couponAmount += item.couponInfo.getReallyCouponMoney();
                     break;
                 case AppConstants.TYPE_ORDER:
+                    hasOrder = true;
                     orderAmount += item.order.downPayment;
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
@@ -1290,7 +1298,7 @@ public class TradeManager {
         if (couponAmount > 0) {
             mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
         }
-        if (orderAmount > 0) {
+        if (hasOrder) {
             mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
         }
         mPos.printDivide();

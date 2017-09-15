@@ -807,6 +807,7 @@ public class VerifyManager {
         mPos.printDivide();
 
         int orderAmount = 0;
+        boolean hasOrder = false;
         int couponAmount = 0;
         int originAmount = 0;
         for (CheckInfo info : list) {
@@ -819,6 +820,7 @@ public class VerifyManager {
                     }
                     break;
                 case AppConstants.CHECK_INFO_TYPE_ORDER:
+                    hasOrder = true;
                     orderAmount += ((OrderInfo) info.getInfo()).downPayment;
                     break;
                 default:
@@ -827,7 +829,9 @@ public class VerifyManager {
         }
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(originAmount));
         mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponAmount));
-        mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
+        if (hasOrder) {
+            mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(orderAmount));
+        }
         mPos.printDivide();
         mPos.printRight("实收金额：" + 0 + " 元");
         mPos.printDivide();
@@ -837,12 +841,16 @@ public class VerifyManager {
             switch (info.getType()) {
                 case AppConstants.TYPE_COUPON:
                 case AppConstants.TYPE_CASH_COUPON:
-                case AppConstants.TYPE_GIFT_COUPON:
                 case AppConstants.TYPE_DISCOUNT_COUPON:
                 case AppConstants.TYPE_PAID_COUPON:
                     CouponInfo couponInfo = (CouponInfo) info.getInfo();
                     mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
                     mPos.printText(couponInfo.consumeMoneyDescription + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                    break;
+                case AppConstants.TYPE_GIFT_COUPON: //礼品券
+                    CouponInfo giftCouponInfo = (CouponInfo) info.getInfo();
+                    mPos.printText("[" + giftCouponInfo.couponTypeName + "]" + giftCouponInfo.actTitle, "(-" + Utils.moneyToString(giftCouponInfo.getReallyCouponMoney()) + "元)");
+                    mPos.printText(giftCouponInfo.actSubTitle + "/" + giftCouponInfo.couponNo + "/" + Utils.formatCode(giftCouponInfo.userPhone));
                     break;
                 case AppConstants.TYPE_SERVICE_ITEM_COUPON: //项目券
                     CouponInfo serviceCouponInfo = (CouponInfo) info.getInfo();
@@ -857,7 +865,7 @@ public class VerifyManager {
                     }
                     mPos.printText("[" + serviceCouponInfo.couponTypeName + "]" + serviceCouponInfo.actSubTitle, "(-" + Utils.moneyToString(serviceCouponInfo.consumeAmount) + "元)");
                     mPos.printText((TextUtils.isEmpty(items) ? "未指定" : items) + "/" + serviceCouponInfo.consumeMoneyDescription);
-                    mPos.printText(serviceCouponInfo.couponNo + "/" + Utils.formatCode(serviceCouponInfo.userPhone));
+                    mPos.printText(serviceCouponInfo.useTypeName + "/" + serviceCouponInfo.couponNo + "/" + Utils.formatCode(serviceCouponInfo.userPhone));
                     break;
                 case AppConstants.TYPE_ORDER:
                     OrderInfo orderInfo = (OrderInfo) info.getInfo();
@@ -901,7 +909,7 @@ public class VerifyManager {
         mPos.printDivide();
         mPos.printText("优惠详情");
         switch (couponInfo.couponType) {
-            case AppConstants.COUPON_TYPE_SERVICE_ITEM:
+            case AppConstants.COUPON_TYPE_SERVICE_ITEM: //项目券
                 String items = null;
                 if (couponInfo.itemNames != null && !couponInfo.itemNames.isEmpty()) {
                     StringBuilder itemsBuild = new StringBuilder();
@@ -913,7 +921,11 @@ public class VerifyManager {
                 }
                 mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actSubTitle, "(-" + Utils.moneyToString(couponInfo.consumeAmount) + "元)");
                 mPos.printText((TextUtils.isEmpty(items) ? "未指定" : items) + "/" + couponInfo.consumeMoneyDescription);
-                mPos.printText(couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                mPos.printText(couponInfo.useTypeName + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
+                break;
+            case AppConstants.TYPE_GIFT_COUPON: //礼品券
+                mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
+                mPos.printText(couponInfo.actSubTitle + "/" + couponInfo.couponNo + "/" + Utils.formatCode(couponInfo.userPhone));
                 break;
             default:
                 mPos.printText("[" + couponInfo.couponTypeName + "]" + couponInfo.actTitle, "(-" + Utils.moneyToString(couponInfo.getReallyCouponMoney()) + "元)");
@@ -993,7 +1005,7 @@ public class VerifyManager {
         mPos.printText("优惠详情");
         mPos.printText("[奖品]" + prizeInfo.activityName);
         mPos.printText("奖品：" + prizeInfo.prizeName);
-        mPos.printText(prizeInfo.verifyCode + "/" + Utils.formatCode(prizeInfo.telephone));
+        mPos.printText("大转盘/" + prizeInfo.verifyCode + "/" + Utils.formatCode(prizeInfo.telephone));
         mPos.printDivide();
 
         mPos.printText("交易时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
@@ -1059,7 +1071,6 @@ public class VerifyManager {
         switch (recordInfo.businessType) {
             case AppConstants.TYPE_COUPON:
             case AppConstants.TYPE_CASH_COUPON:
-            case AppConstants.TYPE_GIFT_COUPON:
                 mPos.printText("订单金额：", "￥ " + 0);
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
@@ -1068,6 +1079,17 @@ public class VerifyManager {
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
                 mPos.printText(recordInfo.consumeMoneyDescription + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
+                mPos.printDivide();
+                break;
+            case AppConstants.TYPE_GIFT_COUPON:
+                mPos.printText("订单金额：", "￥ " + 0);
+                mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
+                mPos.printDivide();
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printDivide();
+                mPos.printText("优惠详情");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.giftCouponName, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
+                mPos.printText(recordInfo.description + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_DISCOUNT_COUPON:
@@ -1142,7 +1164,8 @@ public class VerifyManager {
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
-                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.prizeActivityName);
+                mPos.printText("奖品：" + recordInfo.description);
                 mPos.printText(recordInfo.sourceTypeName + "/" + recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
                 mPos.printDivide();
                 break;

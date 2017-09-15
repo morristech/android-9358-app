@@ -80,8 +80,14 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
                 switch (mInfo.businessType) {
                     case AppConstants.TYPE_COUPON:
                     case AppConstants.TYPE_CASH_COUPON:
-                    case AppConstants.TYPE_GIFT_COUPON:
                     case AppConstants.TYPE_DISCOUNT_COUPON:
+                    case AppConstants.TYPE_GIFT_COUPON:
+                        for (VerifyRecordDetailInfo detailInfo : details) {
+                            if (detailInfo.title.contains("券名称")) {
+                                mInfo.giftCouponName = detailInfo.text;
+                            }
+                        }
+                        break;
                     case AppConstants.TYPE_PAID_COUPON:
                         for (VerifyRecordDetailInfo detailInfo : details) {
                             if (detailInfo.title.contains("券详情")) {
@@ -109,6 +115,13 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
                             }
                             if (detailInfo.title.contains("会员折扣")) {
                                 mInfo.memberDiscountDesc = detailInfo.text;
+                            }
+                        }
+                        break;
+                    case AppConstants.TYPE_LUCKY_WHEEL:
+                        for (VerifyRecordDetailInfo detailInfo : details) {
+                            if (detailInfo.title.contains("活动名称")) {
+                                mInfo.prizeActivityName = detailInfo.text;
                             }
                         }
                         break;

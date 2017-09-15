@@ -39,4 +39,6 @@ public class VerifyRecordInfo {
     public String memberPhone;  //会员请客授权手机号
     public String memberTypeName;   //会员等级描述
     public String memberDiscountDesc;   //会员折扣信息描述
+    public String giftCouponName;   //礼品券名称
+    public String prizeActivityName; //奖品活动名称
 }
