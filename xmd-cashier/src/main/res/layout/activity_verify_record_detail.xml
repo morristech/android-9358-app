@@ -191,9 +191,9 @@
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
             android:onClick="onConfirm"
-            android:text="客户联"
+            android:text="打印客户联"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/small_font_size" />
+            android:textSize="@dimen/font_size_16" />
 
         <Button
             android:id="@+id/btn_print_club"
@@ -203,8 +203,8 @@
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_weight="1"
             android:onClick="onConfirm"
-            android:text="商户存根"
+            android:text="打印商户存根"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/small_font_size" />
+            android:textSize="@dimen/font_size_16" />
     </LinearLayout>
 </LinearLayout>

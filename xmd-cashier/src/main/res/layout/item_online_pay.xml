@@ -211,6 +211,26 @@
         </TableRow>
 
         <TableRow
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易时间"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/item_cashier_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
             android:id="@+id/tr_cashier_layout"
             android:layout_marginTop="@dimen/activity_small_margin"
             android:gravity="center_vertical">
@@ -231,6 +251,13 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/font_size_16"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/item_img_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:src="@drawable/icon_down" />
         </TableRow>
     </TableLayout>
 
@@ -326,63 +353,64 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_small_margin">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/item_cashier_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:textColor="@color/colorText3"
-            android:textSize="@dimen/font_size_14" />
+            android:textSize="@dimen/font_size_14" />-->
 
         <LinearLayout
             android:id="@+id/item_layout_print"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:orientation="horizontal"
             android:visibility="visible">
 
             <Button
                 android:id="@+id/item_print_client"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="@dimen/activity_small_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
                 android:background="@drawable/state_btn_negative"
                 android:minWidth="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_small_margin"
                 android:paddingRight="@dimen/activity_small_margin"
-                android:text="客户联"
+                android:text="打印客户联"
                 android:textColor="@color/colorButton"
                 android:textSize="@dimen/font_size_16" />
 
             <Button
                 android:id="@+id/item_print_club"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
+                android:layout_weight="1"
                 android:background="@drawable/state_btn_negative"
                 android:minWidth="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_small_margin"
                 android:paddingRight="@dimen/activity_small_margin"
-                android:text="商户存根"
+                android:text="打印商户存根"
                 android:textColor="@color/colorButton"
                 android:textSize="@dimen/font_size_16" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/item_layout_operate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:orientation="horizontal"
             android:visibility="gone">
 
             <Button
                 android:id="@+id/item_btn_exception"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
+                android:layout_weight="1"
                 android:background="@drawable/state_btn_pink"
                 android:text="请到前台"
                 android:textColor="@color/colorWhite"
@@ -390,9 +418,10 @@
 
             <Button
                 android:id="@+id/item_btn_confirm"
-                android:layout_width="58dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
                 android:background="@drawable/state_btn_green"
                 android:text="确认"
                 android:textColor="@color/colorWhite"
