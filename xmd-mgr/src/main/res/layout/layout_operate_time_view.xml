@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+              android:background="#f9f9f9"
+              android:orientation="vertical">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/small_space"
+                    android:paddingTop="@dimen/small_space">
+        <TextView
+            android:id="@+id/tv_operate_time"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_round_corner_bg"
+            android:gravity="center"
+            android:padding="8dp"
+            tools:text="2017-08"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontSubheading"/>
+
+        <RelativeLayout
+            android:id="@+id/operate_time_add"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_operate_time"
+            android:padding="10dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_right"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/operate_time_reduce"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_operate_time"
+            android:gravity="right|center"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_left"/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
