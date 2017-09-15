@@ -37,5 +37,5 @@
         android:paddingTop="@dimen/chat_activity_item_size"
         android:scaleType="center"
         android:src="@drawable/img_bad_comment_default"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </LinearLayout>

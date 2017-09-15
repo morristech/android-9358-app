@@ -23,7 +23,7 @@
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar" />
+            <include layout="@layout/toolbar"/>
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_widget"

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.soundcloud.android.crop.Crop;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
@@ -36,6 +37,7 @@ import com.xmd.manager.journal.model.CouponActivity;
 import com.xmd.manager.journal.model.Journal;
 import com.xmd.manager.journal.model.JournalContent;
 import com.xmd.manager.journal.model.JournalContentType;
+import com.xmd.manager.journal.model.JournalItemActivity;
 import com.xmd.manager.journal.model.JournalItemBase;
 import com.xmd.manager.journal.model.JournalItemCoupon;
 import com.xmd.manager.journal.model.JournalItemImageArticle;
@@ -687,7 +689,8 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
     @Override
     public void onClearContent() {
         new AlertDialogBuilder(mContext)
-                .setMessage("确定清除所有数据？")
+                .setTitle("清空")
+                .setMessage("是否确定清空数据？")
                 .setPositiveButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -707,6 +710,7 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
                         Iterator<JournalContent> iterator = mJournal.getContentIterator();
                         while (iterator.hasNext()) {
                             JournalContent content = iterator.next();
+
                             if (content.getViewHolder() != null) {
                                 content.getViewHolder().clearData();
                             }
@@ -729,12 +733,21 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
                             JournalContent content = mJournal.getContent(i);
                             //排行榜不需要删除数据
                             if (!content.getType().getKey().equals(JournalContentType.CONTENT_KEY_TECHNICIAN_RANKING)) {
+                                if (content.getType().getKey().equals(JournalContentType.CONTENT_KEY_ACTIVITY)) {
+                                    XLogger.i(">>>", "size>>" + content.getDataSize());
+                                    XLogger.i(">>>", "优惠活动");
+//                                ((JournalItemActivity)content.getData(0)).setStartTime("");
+//                                ((JournalItemActivity)content.getData(0)).setEndTime("");
+//                                ((JournalItemActivity)content.getViewHolder()).setStartTime("");
+//                                ((JournalItemActivity)content.getViewHolder()).setEndTime("");
+                                }
                                 content.clearData();
                                 if (content.getViewHolder() != null) {
                                     content.getViewHolder().notifyDataChanged();
                                 }
+
                             }
-                            content.setTitle(content.getType().getName());
+                            content.setTitle("");
                         }
                         //刷新界面
                         mView.showJournal(mJournal, mDeletedContents);

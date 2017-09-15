@@ -16,7 +16,7 @@ public class VerificationRecordListResult extends BaseResult {
 
     public static class RespDataBean {
 
-        public int total;
+        public String total;
         public int remainderCount;
         public List<VerificationDetailBean> data;
     }

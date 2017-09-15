@@ -442,7 +442,7 @@
     <string name="main_order_had_finished">已完成</string>
     <string name="main_who_care_me">谁看了我</string>
     <string name="main_new_recent_status">最近动态</string>
-    <string name="main_bottom_text">—您已经到达页面底部—</string>
+    <string name="main_bottom_text">----------已经全部加载完毕----------</string>
     <string name="main_no_coupon_alert_message">暂无详细信息，敬请期待</string>
     <string name="main_new_recent_status_none">最近没人来，分享名片拉客吧～</string>
     <string name="main_nearby_title">附近的人</string>

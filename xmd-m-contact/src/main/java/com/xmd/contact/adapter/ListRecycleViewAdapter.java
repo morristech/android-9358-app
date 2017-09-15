@@ -295,7 +295,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             userRecent.intListPosition = position;
             ContactVisitorListItemViewHolder viewHolder = (ContactVisitorListItemViewHolder) holder;
 
-            if(!TextUtils.isEmpty(userRecent.userId) && !userRecent.userId.equals("-1")){
+            if (!TextUtils.isEmpty(userRecent.userId) && !userRecent.userId.equals("-1")) {
                 if (TextUtils.isEmpty(userRecent.userNoteName) && TextUtils.isEmpty(userRecent.name)) {
                     viewHolder.contactRecentName.setText("游客");
                     viewHolder.llContactVisitorToChat.setVisibility(View.INVISIBLE);
@@ -303,7 +303,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.contactRecentName.setText(TextUtils.isEmpty(userRecent.userNoteName) ? userRecent.name : userRecent.userNoteName);
                     viewHolder.llContactVisitorToChat.setVisibility(View.VISIBLE);
                 }
-            }else{
+            } else {
                 viewHolder.contactRecentName.setText("游客");
                 viewHolder.llContactVisitorToChat.setVisibility(View.INVISIBLE);
             }
@@ -340,7 +340,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 default:
                     Glide.with(mContext).load(R.drawable.icon_recent_visit).into(viewHolder.ivContactRecentVisitType);
             }
-            if (userRecent.visitType == ConstantResources.CONTACT_RECENT_TYPE_NORMAL || userRecent.visitType == ConstantResources.CONTACT_RECENT_TYPE_VISIT_CLUB) {
+            if (userRecent.status == 0) {//打招呼
                 if (!TextUtils.isEmpty(userRecent.canSayHello) && userRecent.canSayHello.equals("Y")) {
                     viewHolder.visitorToChat.setText("打招呼");
                     viewHolder.visitorToChat.setEnabled(true);
@@ -352,6 +352,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.visitorToChat.setEnabled(true);
                 viewHolder.visitorToChat.setText("感谢");
             }
+
             if (TextUtils.isEmpty(userRecent.tagName)) {
                 viewHolder.llRecentVisitTagType.setVisibility(View.INVISIBLE);
             } else {
@@ -400,7 +401,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.visitorToChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCallback.onPositiveButtonClicked(userRecent, position, (userRecent.visitType != ConstantResources.CONTACT_RECENT_TYPE_NORMAL && userRecent.visitType != ConstantResources.CONTACT_RECENT_TYPE_VISIT_CLUB));
+                    mCallback.onPositiveButtonClicked(userRecent, position, userRecent.status==1);
                 }
             });
         }
@@ -522,10 +523,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             viewHolder.contactVisitRemark.setText(managerRecent.remark);
             //    viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
-            if(TextUtils.isEmpty(managerRecent.createTime)){
+            if (TextUtils.isEmpty(managerRecent.createTime)) {
                 viewHolder.contactVisitTime.setText("");
-            }else{
-                viewHolder.contactVisitTime.setText(managerRecent.createTime.substring(0,managerRecent.createTime.length()-3));
+            } else {
+                viewHolder.contactVisitTime.setText(managerRecent.createTime.substring(0, managerRecent.createTime.length() - 3));
             }
             if (managerRecent.distance > 0) {
                 if (managerRecent.distance > 1000) {

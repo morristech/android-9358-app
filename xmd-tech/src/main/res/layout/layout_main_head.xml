@@ -4,7 +4,7 @@
                 android:id="@+id/main_page_head"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_head_height"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/bg_login">
 
     <RelativeLayout
         android:id="@+id/rl_main_head_tech_rest"

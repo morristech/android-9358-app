@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,14 +28,14 @@
                 android:gravity="center"
                 android:text="1"
                 android:textColor="@color/colorHead"
-                android:textSize="@dimen/inter_text_size" />
+                android:textSize="@dimen/inter_text_size"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_2"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/send_step_first"
-                android:background="@color/app_bg" />
+                android:background="@color/app_bg"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -46,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_2"
                 android:layout_centerVertical="true"
-                android:background="@color/app_bg" />
+                android:background="@color/app_bg"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +57,7 @@
                 android:gravity="center"
                 android:text="2"
                 android:textColor="@color/colorBody"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_2"
                 android:layout_centerVertical="true"
-                android:background="@color/app_bg" />
+                android:background="@color/app_bg"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,7 +79,7 @@
                 android:gravity="center"
                 android:text="3"
                 android:textColor="@color/colorBody"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -95,14 +96,14 @@
                 android:gravity="center"
                 android:text="4"
                 android:textColor="@color/colorBody"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_2"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/send_step_four"
-                android:background="@color/app_bg" />
+                android:background="@color/app_bg"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -123,7 +124,7 @@
             android:gravity="center"
             android:text="@string/select_customer"
             android:textColor="@color/colorTitle"
-            android:textSize="@dimen/inter_text_size" />
+            android:textSize="@dimen/inter_text_size"/>
 
         <TextView
             android:layout_width="0dp"
@@ -132,7 +133,7 @@
             android:gravity="center"
             android:text="@string/select_activity"
             android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontMiddle" />
+            android:textSize="@dimen/fontMiddle"/>
 
         <TextView
             android:layout_width="0dp"
@@ -141,7 +142,7 @@
             android:gravity="center"
             android:text="@string/edit_content"
             android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontMiddle" />
+            android:textSize="@dimen/fontMiddle"/>
 
         <TextView
             android:layout_width="0dp"
@@ -150,7 +151,7 @@
             android:gravity="center"
             android:text="@string/message_confirm"
             android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontMiddle" />
+            android:textSize="@dimen/fontMiddle"/>
     </LinearLayout>
 
     <LinearLayout
@@ -169,7 +170,7 @@
             android:paddingLeft="@dimen/inter_space"
             android:paddingTop="@dimen/small_space"
             android:textColor="@color/colorSurplusAmount"
-            android:textSize="@dimen/inter_text_size" />
+            android:textSize="@dimen/inter_text_size"/>
 
         <TextView
             android:id="@+id/total_send_time_limit"
@@ -180,7 +181,7 @@
             android:paddingLeft="@dimen/dialog_content_item_height"
             android:text="@string/text_send_group_time_limit"
             android:textColor="@color/colorTimeLimit"
-            android:textSize="@dimen/smaller_text_size" />
+            android:textSize="@dimen/smaller_text_size"/>
     </LinearLayout>
 
     <LinearLayout
@@ -196,7 +197,7 @@
         <TextView
             android:id="@+id/group_all"
             style="@style/select_customer_style"
-            android:text="@string/all_customer" />
+            android:text="@string/all_customer"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -205,7 +206,7 @@
             android:singleLine="true"
             android:text="@string/text_all_customer_hint"
             android:textColor="@color/text_color_hint"
-            android:textSize="@dimen/fontMiddle" />
+            android:textSize="@dimen/fontMiddle"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -216,13 +217,13 @@
             android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:orientation="horizontal"
+            android:paddingBottom="@dimen/small_space"
             android:paddingLeft="@dimen/inter_space"
             android:paddingRight="@dimen/inter_space"
-            android:paddingBottom="@dimen/small_space"
-            android:paddingTop="@dimen/small_space"
-            android:layout_alignParentBottom="true">
+            android:paddingTop="@dimen/small_space">
 
             <Button
                 android:id="@+id/btn_next_step"
@@ -231,39 +232,39 @@
                 android:background="@drawable/select_btn_send_bg"
                 android:text="@string/next_step"
                 android:textColor="@color/white"
-                android:textSize="@dimen/fontSubheading" />
+                android:textSize="@dimen/fontSubheading"/>
         </LinearLayout>
 
         <TextView
             android:id="@+id/select_customer_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_10"
             android:layout_above="@+id/button_container"
             android:background="@color/colorCustomerCountBg"
             android:drawableLeft="@drawable/dot_emojicon_unselected"
             android:drawablePadding="@dimen/margin_10"
+            android:padding="@dimen/margin_10"
             android:text="* 已选择80个客户"
-            android:textSize="@dimen/inter_text_size"
-            android:textColor="@color/colorCustomerCount" />
+            android:textColor="@color/colorCustomerCount"
+            android:textSize="@dimen/inter_text_size"/>
 
         <View
             style="@style/line"
-            android:layout_above="@+id/button_container" />
+            android:layout_above="@+id/button_container"/>
 
         <View
             style="@style/line"
-            android:layout_above="@+id/select_customer_count" />
+            android:layout_above="@+id/select_customer_count"/>
 
         <ExpandableListView
             android:id="@+id/group_customer_expand_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/select_customer_count"
             android:layout_marginLeft="@dimen/inter_space"
             android:layout_marginRight="@dimen/inter_space"
-            android:layout_above="@+id/select_customer_count"
-            android:dividerHeight="0dp"
-            android:divider="@null" />
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
 
     </RelativeLayout>
 

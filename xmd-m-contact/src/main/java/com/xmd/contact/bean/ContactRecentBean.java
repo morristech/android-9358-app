@@ -33,4 +33,5 @@ public class ContactRecentBean {
     public String tagName;//标签
     public int distance;//位置
     public int intListPosition; //在列表中的位置
+    public int status;
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.manager.R;
 import com.xmd.manager.journal.BaseActivity;
 import com.xmd.manager.journal.adapter.JournalListAdapter;
@@ -39,10 +40,10 @@ public class JournalListActivity extends BaseActivity implements JournalListCont
 
         mPresenter = new JournalListPresenter(this, this);
         mJournalListAdapter = new JournalListAdapter(mPresenter);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new CustomRecycleViewDecoration(32));
         mRecyclerView.setAdapter(mJournalListAdapter);
-
         setRightVisible(true, "新建", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +51,9 @@ public class JournalListActivity extends BaseActivity implements JournalListCont
             }
         });
 
+
         mPullRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.pull_refresh_layout);
+        mPullRefreshLayout.setColorSchemeResources(R.color.primary_color);
         mPullRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

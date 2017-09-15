@@ -105,7 +105,7 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
                 if (data.sendAnimationDrawable != null) {
                     data.sendAnimationDrawable.stop();
                 }
-                imageView.setBackgroundResource(R.drawable.message_voice_send);
+                imageView.setBackgroundResource(R.drawable.message_voice_send_default);
             }
         }
     }

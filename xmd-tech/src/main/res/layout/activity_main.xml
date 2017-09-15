@@ -111,38 +111,6 @@
                 android:visibility="invisible"/>
         </RelativeLayout>
 
-        <!--<RelativeLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:visibility="gone">-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/main_button_order"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@null"-->
-        <!--android:drawableTop="@drawable/home_order_bg"-->
-        <!--android:gravity="center"-->
-        <!--android:scaleType="centerInside"-->
-        <!--android:text="@string/main_order"-->
-        <!--android:textColor="@color/home_button_text_bg"-->
-        <!--android:textSize="@dimen/fontRemark" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/main_unread_order"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="@dimen/search_pic_height"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginRight="@dimen/personal_margin"-->
-        <!--android:background="@drawable/unread_count_bg"-->
-        <!--android:gravity="center"-->
-        <!--android:minWidth="@dimen/search_pic_height"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="@dimen/fontRemark"-->
-        <!--android:visibility="invisible"-->
-        <!--tools:text="11" />-->
-        <!--</RelativeLayout>-->
 
         <RelativeLayout
             android:id="@+id/main_button_marketing"

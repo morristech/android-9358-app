@@ -196,4 +196,6 @@ public class MarketingFragment extends BaseFragment {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mMarketingItemsSubscription, mSendGroupMessageResultSubscription);
     }
+
+
 }

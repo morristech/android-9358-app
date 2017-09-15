@@ -120,7 +120,7 @@ public class OnlinePaySearchFragment extends BaseListFragment<OnlinePayBean> {
 
                 mSearchUserName = mCetSearchWord.getText().toString();
                 if (Utils.isEmpty(mSearchUserName)) {
-                    Utils.makeShortToast(getActivity(), "请输入用户名称或者手机号码");
+                    Utils.makeShortToast(getActivity(), "输入客户手机或技师编号");
                     return;
                 }
                 isLoad = true;

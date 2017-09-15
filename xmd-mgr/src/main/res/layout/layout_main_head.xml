@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/main_page_title_height"
     android:background="@color/colorPrimary">
-
+<!--android:background="@drawable/main_page_head_bg"-->
     <LinearLayout
         android:id="@+id/ll_verify"
         android:layout_width="match_parent"

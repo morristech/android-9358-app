@@ -3,6 +3,8 @@ package com.xmd.technician.window;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.widget.CircleAvatarView;
@@ -367,6 +370,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void initTitleView(View view) {
+        view.findViewById(R.id.toolbar).setBackgroundColor(Color.parseColor("#FF826c"));
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
         view.findViewById(R.id.divide_line).setVisibility(View.GONE);
         mContactMore = (LinearLayout) view.findViewById(R.id.contact_more);
@@ -1019,7 +1023,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (!TextUtils.isEmpty(mTech.getAvatarUrl())) {
             Glide.with(mContext).load(mTech.getAvatarUrl()).error(R.drawable.icon22).into(mMainHeadAvatar);
         }
-        mMainHeadTechName.setText(Utils.StrSubstring(10,mTech.getNickName(),true));
+        mMainHeadTechName.setText(Utils.StrSubstring(10, mTech.getNickName(), true));
         showTechStatus(mTech.getStatus());
     }
 
@@ -1250,10 +1254,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-    }
+
 
     public Runnable mTask = new Runnable() {
         @Override
@@ -1360,5 +1361,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(hidden){
+                getActivity().getWindow().setStatusBarColor(ResourceUtils.getColor(R.color.colorPrimary));
+            }else{
+                getActivity().getWindow().setStatusBarColor(0xFFFF826c);
+            }
+        }
     }
 }

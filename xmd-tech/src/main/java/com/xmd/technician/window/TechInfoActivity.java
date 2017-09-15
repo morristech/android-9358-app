@@ -300,7 +300,8 @@ public class TechInfoActivity extends BaseActivity {
     }
 
     private void handleAlbumResult(AlbumResult result) {
-        dismissProgressDialogIfShowing();
+        // dismissProgressDialogIfShowing();
+        hideLoading();
         if (result.statusCode >= 200 && result.statusCode <= 299) {
             setResult(RESULT_OK);
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_EDIT_INFO);

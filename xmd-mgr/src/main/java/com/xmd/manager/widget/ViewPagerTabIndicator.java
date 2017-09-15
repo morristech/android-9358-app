@@ -145,6 +145,10 @@ public class ViewPagerTabIndicator extends FrameLayout {
         mPaint.setStyle(Paint.Style.FILL);
     }
 
+    public void setTextSize(int textSize){
+        this.mTextSize = textSize;
+    }
+
     public void setViewPager(ViewPager viewPager) {
         mViewPager = viewPager;
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -175,7 +179,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
             } else {
                 canvas.translate(mTranslationX, 0);
             }
-            canvas.drawRect((float) 0, (float) 0, (float) (getWidth() / mTabCount), (float) mIndicatorHeight, mPaint);
+            canvas.drawRect((float) 20, (float) 0, (float) (getWidth() / mTabCount)-20, (float) mIndicatorHeight, mPaint);
             canvas.restore();
         }
     }

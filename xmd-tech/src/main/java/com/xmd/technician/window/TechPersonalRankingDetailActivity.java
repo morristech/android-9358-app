@@ -123,7 +123,7 @@ public class TechPersonalRankingDetailActivity extends BaseActivity implements B
             pkDetailTimeFilter.setText(sTitle);
             mTimeFilterPopupWindow.setDataSet(new ArrayList<>(Constant.RANKING_TIME_FILTER_LABELS.keySet()), pkDetailTimeFilter.getText().toString());
 
-            if (pkDetailTimeFilter.getText().toString().equals("日")) {
+            if (pkDetailTimeFilter.getText().toString().equals("天")) {
                 llFilterSelectedTotal.setVisibility(View.GONE);
                 llFilterByDay.setVisibility(View.VISIBLE);
                 mTimeFilterType = 0;

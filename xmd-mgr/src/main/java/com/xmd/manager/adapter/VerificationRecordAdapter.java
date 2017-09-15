@@ -114,7 +114,7 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.mRecordMonth.setText(recordBean.currentMonth.substring(0, 4) + "年" + recordBean.currentMonth.substring(5, 7) + "月");
             viewHolder.mRecordTotal.setText(String.format("核销数： %s", recordBean.currentMonthTotal));
         }
-        if (recordBean.currentMonthTotal == 0) {
+        if (Integer.parseInt(recordBean.currentMonthTotal) == 0) {
             viewHolder.mLlRecordDetail.setVisibility(View.GONE);
         } else {
             viewHolder.mLlRecordDetail.setVisibility(View.VISIBLE);

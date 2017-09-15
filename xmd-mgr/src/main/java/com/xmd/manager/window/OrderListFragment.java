@@ -117,7 +117,7 @@ public class OrderListFragment extends BaseFragment {
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);
         mEndTime.setText(initEndDateTime);
-        mToolbarLeft.setVisibility(View.GONE);
+        mToolbarLeft.setVisibility(View.VISIBLE);
         mToolbarRightImage.setImageDrawable(ResourceUtils.getDrawable(R.drawable.ic_search_selector));
         mToolbarRightImage.setVisibility(View.VISIBLE);
         mToolbarCustomerFilterBtn.setVisibility(View.VISIBLE);
@@ -189,7 +189,7 @@ public class OrderListFragment extends BaseFragment {
         RxBus.getInstance().unsubscribe(mFilterOrderSubscription, mSwitchRangeSubscription);
     }
 
-    @OnClick({R.id.toolbar_customer_filter_btn, R.id.toolbar_right_image, R.id.startTime, R.id.endTime, R.id.btnSubmit})
+    @OnClick({R.id.toolbar_customer_filter_btn, R.id.toolbar_right_image, R.id.startTime, R.id.endTime, R.id.btnSubmit,R.id.toolbar_left})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_customer_filter_btn:
@@ -224,6 +224,9 @@ public class OrderListFragment extends BaseFragment {
                     ToastUtils.showToastShort(getActivity(), ResourceUtils.getString(R.string.time_select_alert));
                     return;
                 }
+                break;
+            case R.id.toolbar_left:
+                getActivity().finish();
                 break;
         }
     }

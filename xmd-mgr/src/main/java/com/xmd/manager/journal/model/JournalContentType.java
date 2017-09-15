@@ -8,15 +8,15 @@ import android.support.annotation.NonNull;
 
 public class JournalContentType {
 
-    public static final String CONTENT_KEY_TECHNICIAN = "01";
-    public static final String CONTENT_KEY_SERVICE = "02";
-    public static final String CONTENT_KEY_PHOTO_ALBUM = "03";
-    public static final String CONTENT_KEY_TECHNICIAN_RANKING = "04";
-    public static final String CONTENT_KEY_VIDEO = "05";
-    public static final String CONTENT_KEY_COUPON = "06";
-    public static final String CONTENT_KEY_ARTICLE = "07";
-    public static final String CONTENT_KEY_ACTIVITY = "08";
-    public static final String CONTENT_KEY_IMAGE_ARTICLE = "09";
+    public static final String CONTENT_KEY_TECHNICIAN = "01"; //技师
+    public static final String CONTENT_KEY_SERVICE = "02"; //项目
+    public static final String CONTENT_KEY_PHOTO_ALBUM = "03";//相册
+    public static final String CONTENT_KEY_TECHNICIAN_RANKING = "04";//服务之星
+    public static final String CONTENT_KEY_VIDEO = "05";//小视频
+    public static final String CONTENT_KEY_COUPON = "06";//优惠活动
+    public static final String CONTENT_KEY_ARTICLE = "07";//养生专栏
+    public static final String CONTENT_KEY_ACTIVITY = "08";//活动
+    public static final String CONTENT_KEY_IMAGE_ARTICLE = "09";//图文
 
     private int mId;
     private String mKey;

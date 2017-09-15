@@ -90,6 +90,7 @@ public class GroupMessageCustomerActivity extends BaseActivity {
     }
 
     private void initView() {
+        setTitle(ResourceUtils.getString(R.string.send_group_message));
         showFragment(CUSTOMER_FRAGMENT);
     }
 

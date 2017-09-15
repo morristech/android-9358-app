@@ -336,11 +336,15 @@ public class Constant {
      * 会所群发消息选择的参数: 按客户行为分组
      */
     public static final String USER_GROUP_TYPE_BEHAVIOR = "behavior";
-
+    /**
+     * 会所群发消息选择的参数: 按会员卡等级分组
+     */
+    public static final String USER_GROUP_TYPE_MEMBER = "member";
     public static final Map<String, String> USE_GROUP_LABELS = new LinkedHashMap<String, String>() {{
         put(USER_GROUP_TYPE_BEHAVIOR, ResourceUtils.getString(R.string.group_by_behavior));
         put(USER_GROUP_TYPE_TECH, ResourceUtils.getString(R.string.group_by_tech));
         put(USER_GROUP_TYPE_SPECIFIED, ResourceUtils.getString(R.string.group_by_customize));
+        put(USER_GROUP_TYPE_MEMBER, ResourceUtils.getString(R.string.group_by_member));
         put("", ResourceUtils.getString(R.string.all_customer));
     }};
 
@@ -361,5 +365,8 @@ public class Constant {
     }};
 
     public static final String RED_POINT_NEW_ORDER = "newOrder";
+
+    public static final String OPERATE_START_TIME = "startTime";
+    public static final String OPERATE_END_TIME = "endTime";
 }
 

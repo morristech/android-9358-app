@@ -50,9 +50,9 @@ public class VerificationDetailBean {
     public String avatarUrl;
     public String sourceTypeName;
     public String currentMonth;
-    public int currentMonthTotal;
+    public String currentMonthTotal;
 
-    public VerificationDetailBean(String currentMonth, int currentMonthTotal) {
+    public VerificationDetailBean(String currentMonth, String currentMonthTotal) {
         this.currentMonth = currentMonth;
         this.currentMonthTotal = currentMonthTotal;
     }

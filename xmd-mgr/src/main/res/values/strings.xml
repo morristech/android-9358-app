@@ -322,7 +322,7 @@
     <string name="cant_chat_with_yourself">不能和自己聊天</string>
     <string name="button_send">发送</string>
     <string name="search_hint">请输入昵称进行搜索</string>
-    <string name="search_phone_hint">请用户手机号进行搜索</string>
+    <string name="search_phone_hint">请输入用户手机号进行搜索</string>
     <string name="no_more_messages">没有更多的消息了</string>
     <string name="chat_activity_input_here">在此输入</string>
     <string name="messages_cannot_be_empty">发送内容不能为空，请重新输入</string>
@@ -418,6 +418,7 @@
     <string name="group_by_behavior">按客户行为</string>
     <string name="group_by_tech">按拓客者</string>
     <string name="group_by_customize">自定义分组</string>
+    <string name="group_by_member">会员类型</string>
     <string name="select_customize">选择客户</string>
     <string name="select_activity">选择活动</string>
     <string name="edit_content">编辑内容</string>
@@ -477,7 +478,7 @@
     <string name="club_purchase">限时抢购</string>
     <string name="club_deprive">1元夺</string>
     <string name="club_credit_shopping">积分商城</string>
-    <string name="club_bottom_alert">——您已经到达页面底部——</string>
+    <string name="club_bottom_alert">----------已经全部加载完毕----------</string>
     <string name="all_bad_comment">全部差评</string>
     <string name="bad_comment_detail">评论详情</string>
     <string name="bad_comment_manage">差评投诉</string>
@@ -678,4 +679,22 @@
     <!--优化-->
     <string name="all_data_load_finish">----------已经全部加载完毕----------</string>
     <string name="coupon_fragment_coupon_reward">提成 %s元</string>
+    <string name="edit_group_message_title">群发消息</string>
+    <!--经营数据-->
+    <string name="operate_data_title">经营数据</string>
+    <string name="operate_title">运营报表</string>
+    <string name="verification_title">核销记录</string>
+    <string name="online_order_title">在线预约</string>
+    <string name="operate_date_by_day">日报</string>
+    <string name="operate_date_by_month">月报</string>
+    <string name="operate_date_by_user">自定义</string>
+    <string name="new_add_operate_title">新增自定义报表</string>
+    <string name="new_add_operate_name">报表名称</string>
+    <string name="new_add_operate_edit_name_hint">请输入报表名称</string>
+    <string name="new_add_operate_time">统计起止时间</string>
+    <string name="new_add_operate_start_time_hint">开始时间</string>
+    <string name="new_add_operate_end_time_hint">结束时间</string>
+    <string name="operate_cycle_setting_title">报表周期设置</string>
+    <string name="has_none_new_data">已无更多数据</string>
+
 </resources>
