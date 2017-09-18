@@ -814,9 +814,13 @@ public class VerifyManager {
             switch (info.getInfoType()) {
                 case AppConstants.CHECK_INFO_TYPE_COUPON:
                     CouponInfo couponInfo = (CouponInfo) info.getInfo();
-                    couponAmount += couponInfo.getReallyCouponMoney();
                     if (AppConstants.COUPON_TYPE_DISCOUNT.equals(couponInfo.couponType)) {
                         originAmount = couponInfo.originAmount;
+                    }
+                    if (AppConstants.COUPON_TYPE_SERVICE_ITEM.equals(couponInfo.couponType)) {
+                        couponAmount += couponInfo.consumeAmount;
+                    } else {
+                        couponAmount += couponInfo.getReallyCouponMoney();
                     }
                     break;
                 case AppConstants.CHECK_INFO_TYPE_ORDER:
@@ -903,7 +907,11 @@ public class VerifyManager {
         mPos.printDivide();
 
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(couponInfo.originAmount));
-        mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponInfo.getReallyCouponMoney()));
+        if (AppConstants.COUPON_TYPE_SERVICE_ITEM.equals(couponInfo.couponType)) {
+            mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponInfo.consumeAmount));
+        } else {
+            mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponInfo.getReallyCouponMoney()));
+        }
         mPos.printDivide();
         mPos.printRight("实收金额：" + 0 + "元", true);
         mPos.printDivide();

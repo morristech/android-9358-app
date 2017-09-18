@@ -163,7 +163,7 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
                 if (VerifyManager.getInstance().hasFailed()) {
                     gotoVerifyResultActivity(mContext);
                 } else {
-                    mView.showError("全部核销成功");
+                    mView.showToast("全部核销成功");
                     printStep(VerifyManager.getInstance().getSuccessList());
                 }
             }
