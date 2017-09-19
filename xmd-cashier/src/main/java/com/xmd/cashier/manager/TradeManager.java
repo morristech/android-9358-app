@@ -1015,14 +1015,14 @@ public class TradeManager {
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         TreatInfo treatInfo = item.treatInfo;
-                        mPos.printText("[会员请客]" + treatInfo.memberTypeName + "," + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+                        mPos.printText("[会员请客]" + treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
                         break;
                     default:
                         break;
                 }
             }
         }
-        mPos.printText("[会员卡]" + mTrade.memberRecordInfo.memberTypeName + "," + String.format("%.02f", mTrade.memberRecordInfo.discount / 100.0f) + "折" + Utils.formatCode(mTrade.memberRecordInfo.telephone), "(-" + Utils.moneyToString(mTrade.memberRecordInfo.discountAmount) + "元)");
+        mPos.printText("[会员卡]" + mTrade.memberRecordInfo.memberTypeName + "，" + String.format("%.02f", mTrade.memberRecordInfo.discount / 100.0f) + "折/" + Utils.formatCode(mTrade.memberRecordInfo.telephone), "(-" + Utils.moneyToString(mTrade.memberRecordInfo.discountAmount) + "元)");
         mPos.printDivide();
 
         mPos.printText("交易号：", mTrade.memberRecordInfo.tradeNo);
@@ -1114,7 +1114,7 @@ public class TradeManager {
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         TreatInfo treatInfo = item.treatInfo;
-                        mPos.printText("[会员请客]" + treatInfo.memberTypeName + "," + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+                        mPos.printText("[会员请客]" + treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
                         break;
                     default:
                         break;
@@ -1221,7 +1221,7 @@ public class TradeManager {
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         TreatInfo treatInfo = item.treatInfo;
-                        mPos.printText("[会员请客]" + treatInfo.memberTypeName + "," + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+                        mPos.printText("[会员请客]" + treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
                         break;
                     default:
                         break;
@@ -1327,7 +1327,7 @@ public class TradeManager {
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
                     TreatInfo treatInfo = item.treatInfo;
-                    mPos.printText("[会员请客]" + treatInfo.memberTypeName + "," + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+                    mPos.printText("[会员请客]" + treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
                     break;
                 default:
                     break;

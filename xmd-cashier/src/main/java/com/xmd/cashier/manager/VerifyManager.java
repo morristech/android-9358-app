@@ -862,7 +862,7 @@ public class VerifyManager {
                     if (serviceCouponInfo.itemNames != null && !serviceCouponInfo.itemNames.isEmpty()) {
                         StringBuilder itemsBuild = new StringBuilder();
                         for (String item : serviceCouponInfo.itemNames) {
-                            itemsBuild.append(item).append(",");
+                            itemsBuild.append(item).append("，");
                         }
                         itemsBuild.setLength(itemsBuild.length() - 1);
                         items = itemsBuild.toString();
@@ -922,7 +922,7 @@ public class VerifyManager {
                 if (couponInfo.itemNames != null && !couponInfo.itemNames.isEmpty()) {
                     StringBuilder itemsBuild = new StringBuilder();
                     for (String item : couponInfo.itemNames) {
-                        itemsBuild.append(item).append(",");
+                        itemsBuild.append(item).append("，");
                     }
                     itemsBuild.setLength(itemsBuild.length() - 1);
                     items = itemsBuild.toString();
@@ -1049,7 +1049,7 @@ public class VerifyManager {
         mPos.printDivide();
 
         mPos.printText("优惠详情");
-        mPos.printText("[会员卡]" + treatInfo.memberTypeName + "," + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+        mPos.printText("[会员卡]" + treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
         mPos.printDivide();
 
         mPos.printText("交易时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
@@ -1162,7 +1162,7 @@ public class VerifyManager {
                 mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
-                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.memberTypeName + (TextUtils.isEmpty(recordInfo.memberDiscountDesc) ? "" : "," + recordInfo.memberDiscountDesc) + "/" + Utils.formatCode(recordInfo.memberPhone), "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.memberTypeName + (TextUtils.isEmpty(recordInfo.memberDiscountDesc) ? "" : "，" + recordInfo.memberDiscountDesc) + "/" + Utils.formatCode(recordInfo.memberPhone), "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_LUCKY_WHEEL:
