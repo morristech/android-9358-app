@@ -36,6 +36,7 @@ public class VerifyRecordInfo {
     public String consumeMoneyDescription;  // 券使用说明
     public String techDescription;  //预约技师
     public String serviceItemName;  //预约项目
+    public String memberCardNo; //会员卡号
     public String memberPhone;  //会员请客授权手机号
     public String memberTypeName;   //会员等级描述
     public String memberDiscountDesc;   //会员折扣信息描述

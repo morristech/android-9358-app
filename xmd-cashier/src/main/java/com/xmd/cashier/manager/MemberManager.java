@@ -483,7 +483,12 @@ public class MemberManager {
         mPos.printDivide();
         mPos.printText("会员卡号：", (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + Utils.formatName(info.name, keep) + ")");
         mPos.printText("手机号码：", (keep ? info.telephone : Utils.formatPhone(info.telephone)));
-        mPos.printText("会员等级：", info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
+        if (AppConstants.MEMBER_RECORD_TYPE_CONSUME.equals(info.businessCategory) || AppConstants.MEMBER_RECORD_TYPE_RECHARGE.equals(info.businessCategory)) {
+            mPos.printText("会员等级：", info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
+        } else {
+            mPos.printText("会员等级：", info.memberTypeName);
+        }
+
         mPos.printDivide();
 
         switch (info.tradeType) {
@@ -491,15 +496,25 @@ public class MemberManager {
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.orderAmount));
                 mPos.printText("赠送金额：", "+￥ " + Utils.moneyToStringEx(info.discountAmount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.orderAmount) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.orderAmount) + " 元", true);
                 mPos.printRight("会员卡余额：" + "￥ " + Utils.moneyToStringEx(info.accountAmount));
                 mPos.printDivide();
-                if (keep) {
-                    mPos.printText("赠送详情");
-                    mPos.printText("[会员充值]" + (info.packageId != null ? (TextUtils.isEmpty(info.activityName) ? "充值套餐" : info.activityName) : "直接充值"));
-                    mPos.printText("    充" + Utils.moneyToString(info.orderAmount) + ((info.discountAmount > 0) ? "送" + Utils.moneyToString(info.discountAmount) : ""));
-                    mPos.printDivide();
+
+                mPos.printText("赠送详情");
+                switch (info.businessCategory) {
+                    case AppConstants.MEMBER_RECORD_TYPE_RECHARGE:
+                        mPos.printText("[会员充值]" + (info.packageId != null ? (TextUtils.isEmpty(info.activityName) ? "活动充值" : "活动充值，" + info.activityName) : "直接充值"));
+                        mPos.printText("    充" + Utils.moneyToString(info.orderAmount) + ((info.discountAmount > 0) ? "送" + Utils.moneyToString(info.discountAmount) : ""));
+                        break;
+                    case AppConstants.MEMBER_RECORD_TYPE_REFUND:
+                    case AppConstants.MEMBER_RECORD_TYPE_OTHER:
+                    default:
+                        mPos.printText("[会员充值]" + info.businessCategoryName);
+                        mPos.printText("    充" + Utils.moneyToString(info.orderAmount));
+                        break;
                 }
+                mPos.printDivide();
+
                 mPos.printText("交易号：", info.tradeNo);
                 mPos.printText("交易时间：", info.createTime);
                 mPos.printText("支付方式：", info.payChannelName + "(" + Utils.getPlatform(info.platform) + ")");
@@ -514,9 +529,24 @@ public class MemberManager {
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.orderAmount));
                 mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(info.discountAmount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.amount) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.amount) + " 元", true);
                 mPos.printRight("会员卡余额：" + "￥ " + Utils.moneyToStringEx(info.accountAmount));
                 mPos.printDivide();
+
+                mPos.printText("优惠详情");
+                switch (info.businessCategory) {
+                    case AppConstants.MEMBER_RECORD_TYPE_CONSUME:   //消费支付
+                        mPos.printText("[会员消费]消费支付", "(-" + Utils.moneyToStringEx(info.discountAmount) + "元)");
+                        mPos.printText(info.memberTypeName + "，" + String.format("%.02f", info.discount / 100.0f) + "折/" + Utils.formatCode(info.cardNo));
+                        break;
+                    case AppConstants.MEMBER_RECORD_TYPE_SUBTRACT:  //错充扣回
+                    case AppConstants.MEMBER_RECORD_TYPE_OTHER:     //其他
+                    default:
+                        mPos.printText("[会员消费]" + info.businessCategoryName, "(-" + Utils.moneyToStringEx(info.orderAmount) + "元)");
+                        break;
+                }
+                mPos.printDivide();
+
                 mPos.printText("交易号：", info.tradeNo);
                 mPos.printText("交易时间：", info.createTime);
                 mPos.printText("支付方式：", "会员消费" + "(" + Utils.getPlatform(info.platform) + ")");

@@ -594,204 +594,6 @@ public class VerifyManager {
                 });
     }
 
-    // 体验券 现金券 礼品券 折扣券
-    private void printCouponInfo(CouponInfo info) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-        mPos.printText("客户:", info.userName);
-        mPos.printText("手机:", Utils.formatPhone(info.userPhone));
-        mPos.printText("核销类型:", "优惠券");
-        mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-        mPos.printText("核销码:", info.couponNo);
-        mPos.printDivide();
-        mPos.printText("优惠券名称:", info.actTitle);
-        mPos.printText("优惠券详情:", info.consumeMoneyDescription);
-        mPos.printText("优惠券类型:", info.useTypeName + "(" + info.useTypeName + ")");
-        mPos.printText("有效期:", info.couponPeriod);
-        mPos.printEnd();
-    }
-
-    // 点钟券
-    private void printPaidCouponInfo(CouponInfo paidCoupon) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-        mPos.printText("客户:", paidCoupon.userName);
-        mPos.printText("手机:", Utils.formatPhone(paidCoupon.userPhone));
-        mPos.printText("核销类型:", "点钟券");
-        mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-        mPos.printText("核销码:", paidCoupon.couponNo);
-        mPos.printDivide();
-        mPos.printText("点钟券名称:", paidCoupon.actTitle);
-        mPos.printText("点钟券详情:", paidCoupon.consumeMoneyDescription);
-        mPos.printText("有效期:", paidCoupon.couponPeriod);
-        mPos.printEnd();
-    }
-
-    // 项目券
-    private void printServiceItemCouponInfo(CouponInfo serviceCoupon) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-        mPos.printText("客户:", serviceCoupon.userName);
-        mPos.printText("手机:", Utils.formatPhone(serviceCoupon.userPhone));
-        mPos.printText("核销类型:", "项目券");
-        mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-        mPos.printText("核销码:", serviceCoupon.couponNo);
-        mPos.printDivide();
-        mPos.printText("活动名称:", serviceCoupon.actSubTitle);
-        if (serviceCoupon.itemNames != null && !serviceCoupon.itemNames.isEmpty()) {
-            StringBuilder itemsBuild = new StringBuilder();
-            for (String item : serviceCoupon.itemNames) {
-                itemsBuild.append(item).append(",");
-            }
-            itemsBuild.setLength(itemsBuild.length() - 1);
-            mPos.printText("项目名称:", itemsBuild.toString());
-        }
-        mPos.printText("原价:", Utils.moneyToStringEx(serviceCoupon.consumeAmount) + "元");
-        switch (serviceCoupon.paidType) {
-            case AppConstants.TYPE_PAID_AMOUNT:
-                mPos.printText("实收:", Utils.moneyToStringEx(serviceCoupon.actAmount) + "元");
-                break;
-            case AppConstants.TYPE_PAID_CREDITS:
-                mPos.printText("实收:", serviceCoupon.creditAmount + "积分");
-                break;
-            case AppConstants.TYPE_PAID_FREE:
-                mPos.printText("实收:", "免费");
-                break;
-            default:
-                break;
-        }
-        mPos.printEnd();
-    }
-
-    //付费预约
-    public void printOrder(OrderInfo orderInfo) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-        mPos.printText("客户:", orderInfo.customerName);
-        mPos.printText("手机:", Utils.formatPhone(orderInfo.phoneNum));
-        mPos.printText("核销类型:", "付费预约");
-        mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-        mPos.printText("核销码:", orderInfo.orderNo);
-        mPos.printDivide();
-        mPos.printText("预约定金:", Utils.moneyToStringEx(orderInfo.downPayment) + "元");
-        if (TextUtils.isEmpty(orderInfo.techNo)) {
-            mPos.printText("预约技师:", orderInfo.techName);
-        } else {
-            mPos.printText("预约技师:", orderInfo.techName + "[" + orderInfo.techNo + "]");
-        }
-        mPos.printText("预约项目:", (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName));
-        mPos.printText("下单时间:", orderInfo.createdAt);
-        mPos.printText("预约时间:", orderInfo.appointTime);
-        mPos.printEnd();
-    }
-
-    // 转盘奖品
-    public void printLuckWheel(PrizeInfo prizeInfo) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-        mPos.printText("客户:", prizeInfo.userName);
-        mPos.printText("手机:", Utils.formatPhone(prizeInfo.telephone));
-        mPos.printText("核销类型:", "奖品");
-        mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-        mPos.printText("核销码:", prizeInfo.verifyCode);
-        mPos.printDivide();
-        mPos.printText("活动名称:", prizeInfo.activityName);
-        mPos.printText("奖品:", prizeInfo.prizeName);
-        mPos.printEnd();
-    }
-
-    // 会员请客
-    public void printTreatInfo(TreatInfo treatInfo) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-        mPos.printText("客户:", treatInfo.userName);
-        mPos.printText("手机:", Utils.formatPhone(treatInfo.userPhone));
-        mPos.printText("核销类型:", "会员请客");
-        mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-        mPos.printText("核销码:", treatInfo.authorizeCode);
-        mPos.printDivide();
-        mPos.printText("抵扣金额:", Utils.moneyToStringEx(treatInfo.useMoney) + "元");
-        mPos.printEnd();
-    }
-
-    // 核销:根据核销类型打印
-    public void printByVerifyType(CheckInfo checkInfo) {
-        switch (checkInfo.getType()) {
-            case AppConstants.TYPE_COUPON:
-            case AppConstants.TYPE_CASH_COUPON:
-            case AppConstants.TYPE_GIFT_COUPON:
-            case AppConstants.TYPE_DISCOUNT_COUPON:
-                printCouponInfo((CouponInfo) checkInfo.getInfo());
-                break;
-            case AppConstants.TYPE_PAID_COUPON:
-                printPaidCouponInfo((CouponInfo) checkInfo.getInfo());
-                break;
-            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
-                printServiceItemCouponInfo((CouponInfo) checkInfo.getInfo());
-                break;
-            case AppConstants.TYPE_ORDER:
-                printOrder((OrderInfo) checkInfo.getInfo());
-                break;
-            default:
-                break;
-        }
-    }
-
-    // 收银:根据核销类型打印
-    public void printByVerifyType(VerificationItem item) {
-        switch (item.type) {
-            case AppConstants.TYPE_COUPON:
-            case AppConstants.TYPE_CASH_COUPON:
-            case AppConstants.TYPE_DISCOUNT_COUPON:
-                printCouponInfo(item.couponInfo);
-                break;
-            case AppConstants.TYPE_PAID_COUPON:
-                printPaidCouponInfo(item.couponInfo);
-                break;
-            case AppConstants.TYPE_ORDER:
-                printOrder(item.order);
-                break;
-            case AppConstants.TYPE_PAY_FOR_OTHER:
-                printTreatInfo(item.treatInfo);
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    // 根据券类型打印
-    public void printByCouponType(CouponInfo info) {
-        switch (info.couponType) {
-            case AppConstants.COUPON_TYPE_PAID:     //点钟券
-                printPaidCouponInfo(info);
-                break;
-            case AppConstants.COUPON_TYPE_SERVICE_ITEM:  //项目券
-                printServiceItemCouponInfo(info);
-                break;
-            case AppConstants.COUPON_TYPE_COUPON:   //体验券
-            case AppConstants.COUPON_TYPE_GIFT:     //礼品券
-            case AppConstants.COUPON_TYPE_CASH:     //现金券
-            case AppConstants.COUPON_TYPE_DISCOUNT: //折扣券
-                printCouponInfo(info);
-                break;
-            default:
-                break;
-        }
-    }
-
     /**********************************************************************************************/
     public void printCheckInfoList(List<CheckInfo> list, boolean keep, Callback<?> callback) {
         if (list == null || list.isEmpty()) {
@@ -913,7 +715,7 @@ public class VerifyManager {
             mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(couponInfo.getReallyCouponMoney()));
         }
         mPos.printDivide();
-        mPos.printRight("实收金额：" + 0 + "元", true);
+        mPos.printRight("实收金额：" + 0 + " 元", true);
         mPos.printDivide();
         mPos.printText("优惠详情");
         switch (couponInfo.couponType) {
@@ -1007,7 +809,7 @@ public class VerifyManager {
         mPos.printText("订单金额：", "￥ " + 0);
         mPos.printText("抵扣金额：", "-￥ " + 0);
         mPos.printDivide();
-        mPos.printRight("实收金额：" + 0 + "元", true);
+        mPos.printRight("实收金额：" + 0 + " 元", true);
         mPos.printDivide();
 
         mPos.printText("优惠详情");
@@ -1049,7 +851,8 @@ public class VerifyManager {
         mPos.printDivide();
 
         mPos.printText("优惠详情");
-        mPos.printText("[会员卡]" + treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.userPhone), "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+        mPos.printText("[会员消费]请客消费", "(-" + Utils.moneyToString((int) (treatInfo.useMoney * (1000 - treatInfo.memberDiscount) / 1000.0f)) + "元)");
+        mPos.printText(treatInfo.memberTypeName + "，" + String.format("%.02f", treatInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(treatInfo.memberCardNo));
         mPos.printDivide();
 
         mPos.printText("交易时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
@@ -1082,7 +885,7 @@ public class VerifyManager {
                 mPos.printText("订单金额：", "￥ " + 0);
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
@@ -1093,7 +896,7 @@ public class VerifyManager {
                 mPos.printText("订单金额：", "￥ " + 0);
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.giftCouponName, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
@@ -1104,7 +907,7 @@ public class VerifyManager {
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToString(recordInfo.amount) + "元)");
@@ -1115,7 +918,7 @@ public class VerifyManager {
                 mPos.printText("订单金额：", "￥ " + 0);
                 mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.description, "(-" + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount) + "元)");
@@ -1149,7 +952,7 @@ public class VerifyManager {
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + (TextUtils.isEmpty(recordInfo.serviceItemName) ? "到店选择" : recordInfo.serviceItemName) + (TextUtils.isEmpty(recordInfo.techDescription) ? "" : "，" + recordInfo.techDescription), "(-" + Utils.moneyToStringEx(recordInfo.amount) + "元)");
                 mPos.printText(recordInfo.verifyCode + "/" + Utils.formatCode(recordInfo.telephone));
@@ -1159,17 +962,18 @@ public class VerifyManager {
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(recordInfo.originalAmount - recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx(recordInfo.amount) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
-                mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.memberTypeName + (TextUtils.isEmpty(recordInfo.memberDiscountDesc) ? "" : "，" + recordInfo.memberDiscountDesc) + "/" + Utils.formatCode(recordInfo.memberPhone), "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText("[会员消费]请客消费", "(-" + Utils.moneyToStringEx(recordInfo.originalAmount) + "元)");
+                mPos.printText(recordInfo.memberTypeName + (TextUtils.isEmpty(recordInfo.memberDiscountDesc) ? "" : "，" + recordInfo.memberDiscountDesc) + "/" + Utils.formatCode(recordInfo.memberCardNo));
                 mPos.printDivide();
                 break;
             case AppConstants.TYPE_LUCKY_WHEEL:
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(recordInfo.originalAmount));
                 mPos.printText("抵扣金额：", "-￥ " + Utils.moneyToStringEx(recordInfo.amount));
                 mPos.printDivide();
-                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + "元", true);
+                mPos.printRight("实收金额：" + Utils.moneyToStringEx((recordInfo.originalAmount >= recordInfo.amount ? recordInfo.originalAmount - recordInfo.amount : 0)) + " 元", true);
                 mPos.printDivide();
                 mPos.printText("优惠详情");
                 mPos.printText("[" + recordInfo.businessTypeName + "]" + recordInfo.prizeActivityName);

@@ -107,6 +107,9 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         for (VerifyRecordDetailInfo detailInfo : details) {
+                            if (detailInfo.title.contains("会员卡号")) {
+                                mInfo.memberCardNo = detailInfo.text;
+                            }
                             if (detailInfo.title.contains("手机号")) {
                                 mInfo.memberPhone = detailInfo.text;
                             }

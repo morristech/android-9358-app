@@ -233,6 +233,9 @@ public class AppConstants {
     public static final String MEMBER_GENDER_FEMALE = "female";
     public static final String MEMBER_GENDER_MALE = "male";
 
+    public static final String MEMBER_RECORD_TYPE_OTHER = "member_other";
+    public static final String MEMBER_RECORD_TYPE_SUBTRACT = "member_subtract"; //错充扣回
+    public static final String MEMBER_RECORD_TYPE_REFUND = "member_refund";     //错扣退款
     public static final String MEMBER_RECORD_TYPE_CONSUME = "consume";
     public static final String MEMBER_RECORD_TYPE_RECHARGE = "recharge";
     public static final String MEMBER_RECORD_TYPE_CONSUME_TEXT = "会员消费";
