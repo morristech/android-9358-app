@@ -103,7 +103,7 @@ public class TechnicianChoiceAdapter extends RecyclerView.Adapter<TechnicianChoi
             } else if (TextUtils.equals(mPresenter.getSelectedTechId(), technician.getId())) {
                 mSelectImageView.setImageResource(R.drawable.icon_checkbox_checked);
             } else {
-                mSelectImageView.setImageResource(R.drawable.icon_checkbox);
+                mSelectImageView.setImageResource(R.drawable.mis_icon_checkbox);
             }
         }
 

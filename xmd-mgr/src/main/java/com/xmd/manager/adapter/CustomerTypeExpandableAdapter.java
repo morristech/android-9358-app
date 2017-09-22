@@ -229,7 +229,7 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                 if (mCallback.isChecked(groupPosition, childPosition)) {
                     couponHolder.checkImage.setBackgroundResource(R.drawable.icon_checkbox_checked);
                 } else {
-                    couponHolder.checkImage.setBackgroundResource(R.drawable.icon_checkbox);
+                    couponHolder.checkImage.setBackgroundResource(R.drawable.mis_icon_checkbox);
                 }
 
                 view.setOnClickListener(v -> {

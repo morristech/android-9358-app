@@ -70,7 +70,7 @@ public class TechnicianChoiceActivity extends BaseActivity implements Technician
     @Override
     public void showUnChecked(int viewPosition, ImageView mSelectedView) {
         if (mFirstItemPosition == -1 || (viewPosition >= mFirstItemPosition && viewPosition <= mLastItemPosition)) {
-            mSelectedView.setImageResource(R.drawable.icon_checkbox);
+            mSelectedView.setImageResource(R.drawable.mis_icon_checkbox);
         }
     }
 

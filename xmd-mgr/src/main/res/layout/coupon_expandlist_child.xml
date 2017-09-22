@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/select_time_padding"
-        android:background="@drawable/icon_checkbox" />
+        android:background="@drawable/mis_icon_checkbox" />
 
     <TextView
         android:id="@+id/coupon_name_text"
