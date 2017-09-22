@@ -94,7 +94,7 @@ public abstract class JournalEditImageView extends LinearLayout {
             CustomCombineImageView view = addSubView(i);
             bindData(view, mContent.getData(i));
         }
-        if (mContent.getDataSize() < mContent.getSubContentCount()) {
+        if (showAddImageView() && mContent.getDataSize() < mContent.getSubContentCount()) {
             //数据未满，放一个空白项
             CustomCombineImageView view = addSubView(mContent.getDataSize());
             view.setOnClickImageListener(new CustomCombineImageView.OnClickImageListener() {
@@ -104,6 +104,10 @@ public abstract class JournalEditImageView extends LinearLayout {
                 }
             });
         }
+    }
+
+    protected boolean showAddImageView() {
+        return true;
     }
 
 

@@ -17,12 +17,14 @@ import com.xmd.manager.journal.model.Technician;
 
 public class JournalEditTechnicianRankingView extends JournalEditTechnicianView {
     private boolean mIsInitData;
+    private boolean mShouldLoadData;
 
     public JournalEditTechnicianRankingView(Context context, JournalContent content, JournalContentEditContract.Presenter presenter) {
         super(context, content, presenter);
         if (content.getDataSize() > 0) {
             mIsInitData = true;
         }
+        mShouldLoadData = true;
     }
 
     @Override
@@ -52,7 +54,8 @@ public class JournalEditTechnicianRankingView extends JournalEditTechnicianView 
     @Override
     public void notifyDataChanged() {
         super.notifyDataChanged();
-        if (mContent.getDataSize() == 0) {
+        if (mShouldLoadData && mContent.getDataSize() == 0) {
+            mShouldLoadData = false;
             removeAllViews();
             TextView textView = new TextView(getContext());
             addView(textView);
@@ -62,5 +65,10 @@ public class JournalEditTechnicianRankingView extends JournalEditTechnicianView 
             textView.setGravity(Gravity.CENTER);
             mPresenter.onLoadTechnicianRankingData(mContent);
         }
+    }
+
+    @Override
+    protected boolean showAddImageView() {
+        return false;
     }
 }

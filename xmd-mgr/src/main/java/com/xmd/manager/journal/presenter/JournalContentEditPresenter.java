@@ -37,7 +37,6 @@ import com.xmd.manager.journal.model.CouponActivity;
 import com.xmd.manager.journal.model.Journal;
 import com.xmd.manager.journal.model.JournalContent;
 import com.xmd.manager.journal.model.JournalContentType;
-import com.xmd.manager.journal.model.JournalItemActivity;
 import com.xmd.manager.journal.model.JournalItemBase;
 import com.xmd.manager.journal.model.JournalItemCoupon;
 import com.xmd.manager.journal.model.JournalItemImageArticle;
@@ -525,7 +524,7 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
     public void onImageArticleImageClicked(JournalContent content, int index) {
         mContentImageArticle = content;
         mContentImageArticleIndex = index;
-        xmdImageTool.onlyPick(true).start((Activity) mContext, new com.xmd.image_tool.ImageTool.ResultListener() {
+        xmdImageTool.start((Activity) mContext, new com.xmd.image_tool.ImageTool.ResultListener() {
             @Override
             public void onResult(String s, Uri uri, Bitmap bitmap) {
                 if (s == null && uri != null) {
