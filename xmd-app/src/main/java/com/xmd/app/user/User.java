@@ -2,6 +2,8 @@ package com.xmd.app.user;
 
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.XLogger;
+
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -234,7 +236,18 @@ public class User implements Serializable {
         userType = n.userType != null ? n.userType : userType;
         telephone = n.telephone != null ? n.telephone : telephone;
         contactPermission = n.contactPermission != null ? n.contactPermission : contactPermission;
+
+        clubId = getIfNotNull(clubId, n.clubId);
+        clubName = getIfNotNull(clubName, n.clubName);
+        chatPassword = getIfNotNull(chatPassword, n.chatPassword);
+        techId = getIfNotNull(techId, n.techId);
+        techNo = getIfNotNull(techNo, n.techNo);
+        XLogger.i("update user -> " + toString());
         return this;
+    }
+
+    private <T> T getIfNotNull(T o, T n) {
+        return n == null ? o : n;
     }
 
     @Override
@@ -251,6 +264,11 @@ public class User implements Serializable {
                 && TextUtils.equals(telephone, o.telephone)
                 && TextUtils.equals(userRoles, o.userRoles)
                 && TextUtils.equals(noteName, o.noteName)
+                && TextUtils.equals(clubId, o.clubId)
+                && TextUtils.equals(clubName, o.clubName)
+                && TextUtils.equals(techId, o.techId)
+                && TextUtils.equals(techNo, o.techNo)
+                && TextUtils.equals(chatPassword, o.chatPassword)
                 && (o.contactPermission == null || o.contactPermission.equals(contactPermission));
     }
 

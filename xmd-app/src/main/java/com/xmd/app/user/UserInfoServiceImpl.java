@@ -60,21 +60,21 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public User getUserByChatId(String chatId) {
+    public synchronized User getUserByChatId(String chatId) {
         return daoSession.getUserDao().queryBuilder()
                 .where(UserDao.Properties.ChatId.eq(chatId))
                 .unique();
     }
 
     @Override
-    public User getUserByUserId(String userId) {
+    public synchronized User getUserByUserId(String userId) {
         return daoSession.getUserDao().queryBuilder()
                 .where(UserDao.Properties.UserId.eq(userId))
                 .unique();
     }
 
     @Override
-    public void saveUser(User user) {
+    public synchronized void saveUser(User user) {
         if (user == null || TextUtils.isEmpty(user.getId())) {
             XLogger.e("无法保存用户：" + user);
             return;
@@ -96,7 +96,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public User getCurrentUser() {
+    public synchronized User getCurrentUser() {
         if (currentUser == null) {
             String id = XmdApp.getInstance().getSp().getString(SpConstants.KEY_CURRENT_USER_ID, null);
             if (id != null) {
@@ -107,7 +107,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void saveCurrentUser(User user) {
+    public synchronized void saveCurrentUser(User user) {
         if (user != null) {
             saveUser(user);
             currentUser = getUserByUserId(user.getId());
@@ -170,7 +170,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         XLogger.i(TAG, "===>user login");
         currentUser = eventLogin.getUser();
         currentToken = eventLogin.getToken();
-        saveUser(currentUser);
         saveCurrentUser(currentUser);
     }
 

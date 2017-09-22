@@ -71,6 +71,7 @@ public class TechApplication extends MultiDexApplication {
                 Logger.v("getui process Start !");
             } else {
                 Logger.v("CurrentUser initialize !");
+
                 appContext = getApplicationContext();
                 debug = BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("dev");
 
@@ -159,6 +160,7 @@ public class TechApplication extends MultiDexApplication {
 
                 XmdComment.getInstance().init();
 
+//                LoginTechnician.getInstance().setToken("xxxxx");
                 LoginTechnician.getInstance().checkAndLogin();
             }
         }
