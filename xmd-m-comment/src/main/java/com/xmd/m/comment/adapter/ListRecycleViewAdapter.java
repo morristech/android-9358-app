@@ -157,7 +157,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             if (isManager) {
                 viewHolder.llTechInfo.setVisibility(View.VISIBLE);
-                viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "会所" : commentBean.techName);
+                viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "会所" : Utils.briefString(commentBean.techName, 7));
                 viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
             } else {
                 viewHolder.llTechInfo.setVisibility(View.GONE);
