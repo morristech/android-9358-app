@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
+import com.xmd.manager.event.OrderCountUpDate;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +30,9 @@ public class OperatingReportFragment extends BaseFragment {
 
     @BindView(R.id.image_operate_new)
     ImageView imageOperateNew;
+    @BindView(R.id.img_order_new)
+    ImageView imgOrderNew;
+
     Unbinder unbinder;
     View view;
 
@@ -34,6 +41,7 @@ public class OperatingReportFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_operating_report, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -49,10 +57,20 @@ public class OperatingReportFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Subscribe
+    public void newOrderSubscribe(OrderCountUpDate orderCount){
+        if(orderCount.newOrder>0){
+            imgOrderNew.setVisibility(View.VISIBLE);
+        }else{
+            imgOrderNew.setVisibility(View.GONE);
+        }
+    }
+
     //运营报表
     @OnClick(R.id.rl_operate)
     public void onRlOperateClicked() {
-        startActivity(new Intent(getActivity(), OperationReportActivity.class));
+        //startActivity(new Intent(getActivity(), OperationReportActivity.class));
+
     }
 
     //核销记录
@@ -64,6 +82,6 @@ public class OperatingReportFragment extends BaseFragment {
     //在线预约
     @OnClick(R.id.rl_online_order)
     public void onRlOnlineOrderClicked() {
-        startActivity(new Intent(getActivity(), OnlineOrderActivity.class));
+        startActivity(new Intent(getActivity(), ReserveDataActivity.class));
     }
 }

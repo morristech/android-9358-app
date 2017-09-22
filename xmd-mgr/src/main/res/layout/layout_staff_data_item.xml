@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_10">
+
+        <ImageView
+            android:id="@+id/img_staff_number"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_nub_01"/>
+
+        <TextView
+            android:id="@+id/text_staff_number"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/colorTitle"
+            android:textSize="17sp"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2.5"
+            android:orientation="horizontal">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/img_staff_head"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/icon22"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_staff_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:paddingLeft="@dimen/small_space"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="15sp"
+                    tools:text="李佳绩"/>
+
+                <TextView
+                    android:id="@+id/tv_staff_serialNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="6dp"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/fontNormal"
+                    android:visibility="gone"
+                    tools:text="[ 0021 ]"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_staff_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:lines="1"
+            android:paddingLeft="@dimen/margin_10"
+            android:textColor="#757575"
+            android:textSize="@dimen/fontBody"
+            tools:text="8"/>
+
+        <TextView
+            android:id="@+id/tv_staff_commit_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingRight="@dimen/small_space"
+            android:textColor="#757575"
+            android:textSize="15sp"
+            tools:text="157个"/>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_bottom_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="20dp"
+        android:gravity="center"
+        android:text="@string/staff_data_bottom_alter_message"/>
+
+</LinearLayout>

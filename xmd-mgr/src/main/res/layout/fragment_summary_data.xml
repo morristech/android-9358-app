@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/round_rect_white_bg"
+              android:layout_margin="@dimen/margin_10"
+              android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/small_space"
+            android:paddingLeft="@dimen/margin_10"
+            android:paddingTop="@dimen/small_space"
+            android:text="@string/staff_data_statistic"
+            android:textSize="@dimen/fontBody"
+            android:textColor="@color/colorClubItemTitle"/>
+
+        <TextView
+            android:id="@+id/tv_order_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingRight="@dimen/inter_space"
+            android:textColor="@color/colorClubItemTitle"
+            tools:text="24"/>
+    </LinearLayout>
+
+    <View style="@style/horizontal_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/inter_space">
+
+        <LinearLayout
+            android:id="@+id/order_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_untreated_order"/>
+
+            <TextView
+                android:id="@+id/tv_untreated_orders"
+                style="@style/order_detail_fragment_content_type"
+                android:textColor="@color/colorBtnSelector"
+                tools:text="saa"/>
+
+            <TextView
+                style="@style/order_detail_fragment_name_type"
+                android:text="@string/untreated_orders"/>
+
+
+        </LinearLayout>
+
+        <View style="@style/line_vertical"/>
+
+        <LinearLayout
+            android:id="@+id/order_refused"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_refused_order"/>
+            <TextView
+                android:id="@+id/tv_refused_orders"
+                style="@style/order_detail_fragment_content_type"
+                tools:text="saa"/>
+
+            <TextView
+                style="@style/order_detail_fragment_name_type"
+                android:text="@string/refused_orders"/>
+
+
+        </LinearLayout>
+
+        <View style="@style/line_vertical"/>
+
+        <LinearLayout
+            android:id="@+id/order_over_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_over_time_order"/>
+            <TextView
+                android:id="@+id/tv_overtime_orders"
+                style="@style/order_detail_fragment_content_type"
+                tools:text="saa"/>
+
+            <TextView
+                style="@style/order_detail_fragment_name_type"
+                android:text="@string/overtime_orders"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/inter_space"
+        android:paddingTop="@dimen/inter_space">
+
+        <LinearLayout
+            android:id="@+id/order_accept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_accept_order"/>
+
+            <TextView
+                android:id="@+id/tv_accept_orders"
+                style="@style/order_detail_fragment_content_type"
+                tools:text="saa"/>
+            <TextView
+                style="@style/order_detail_fragment_name_type"
+                android:text="@string/accept_orders"/>
+
+        </LinearLayout>
+
+        <View style="@style/line_vertical"/>
+
+        <LinearLayout
+            android:id="@+id/order_complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_complete_order"/>
+            <TextView
+                android:id="@+id/tv_completed_orders"
+                style="@style/order_detail_fragment_content_type"
+                tools:text="saa"/>
+            <TextView
+                style="@style/order_detail_fragment_name_type"
+                android:text="@string/completed_orders"/>
+
+
+        </LinearLayout>
+
+        <View style="@style/line_vertical"/>
+
+        <LinearLayout
+            android:id="@+id/order_failure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_nullity_order"/>
+
+            <TextView
+                android:id="@+id/tv_nullity_orders"
+                style="@style/order_detail_fragment_content_type"
+                tools:text="saa"/>
+
+            <TextView
+                style="@style/order_detail_fragment_name_type"
+                android:text="@string/nullity_orders"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

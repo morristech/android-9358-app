@@ -73,11 +73,15 @@ import com.xmd.manager.service.response.NewOrderCountResult;
 import com.xmd.manager.service.response.OnlinePayListResult;
 import com.xmd.manager.service.response.OrderDataResult;
 import com.xmd.manager.service.response.OrderFilterChangeResult;
+import com.xmd.manager.service.response.OrderListFilterResult;
 import com.xmd.manager.service.response.OrderListResult;
 import com.xmd.manager.service.response.OrderManageResult;
 import com.xmd.manager.service.response.OrderOrCouponResult;
+import com.xmd.manager.service.response.OrderProjectListResult;
 import com.xmd.manager.service.response.OrderResult;
 import com.xmd.manager.service.response.OrderSearchListResult;
+import com.xmd.manager.service.response.OrderSummaryResult;
+import com.xmd.manager.service.response.OrderTechListResult;
 import com.xmd.manager.service.response.PKActivityListResult;
 import com.xmd.manager.service.response.PKPersonalListResult;
 import com.xmd.manager.service.response.PKTeamListResult;
@@ -90,6 +94,7 @@ import com.xmd.manager.service.response.RegisterStatisticsResult;
 import com.xmd.manager.service.response.RegistryDataResult;
 import com.xmd.manager.service.response.SaveChatUserResult;
 import com.xmd.manager.service.response.SendGroupMessageResult;
+import com.xmd.manager.service.response.StaffDataResult;
 import com.xmd.manager.service.response.StatisticsHomeDataResult;
 import com.xmd.manager.service.response.StatisticsMainPageResult;
 import com.xmd.manager.service.response.TechBadCommentListResult;
@@ -457,6 +462,22 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST:
                 getBadCommentAndComplaint();
                 break;
+            case MsgDef.MSG_DEF_GET_SUMMARY_ORDER_DATA:
+                getSummaryOrderData((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_ORDER_RANK:
+                getStaffDataTechOrderRank((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_CLUB_ORDER_TECHNICIAN_LIST:
+                getOrderTechnicianList();
+                break;
+            case MsgDef.MSG_DEF_GET_CLUB_ORDER_PROJECT_LIST:
+                getOrderProjectList();
+                break;
+            case MsgDef.MSG_DEF_GET_ORDER_FILTER_LIST:
+                getOrderListFilter((Map<String, String>) msg.obj);
+                break;
+
         }
 
         return true;
@@ -2601,6 +2622,72 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(SaveChatUserResult result) {
                 RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //订单数据统计
+    private void getSummaryOrderData(Map<String, String> params) {
+        Call<OrderSummaryResult> call = getSpaService().getOrderSummaryData(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<OrderSummaryResult>() {
+            @Override
+            protected void postResult(OrderSummaryResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //数据统计技师排行
+    private void getStaffDataTechOrderRank(Map<String, String> params) {
+        Call<StaffDataResult> call = getSpaService().getStaffOrderRankData(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<StaffDataResult>() {
+            @Override
+            protected void postResult(StaffDataResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //订单过滤技师列表
+    private void getOrderTechnicianList() {
+        Call<OrderTechListResult> call = getSpaService().getSelectTechnicianList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<OrderTechListResult>() {
+            @Override
+            protected void postResult(OrderTechListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //订单过滤项目列表
+    private void getOrderProjectList() {
+        Call<OrderProjectListResult> call = getSpaService().getSelectProjectList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<OrderProjectListResult>() {
+            @Override
+            protected void postResult(OrderProjectListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    //
+
+    private void getOrderListFilter(Map<String, String> params) {
+        Call<OrderListFilterResult> call = getSpaService().orderListFilter(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE), params.get(RequestConstant.KEY_ORDER_FILTER_START_DATE),
+                params.get(RequestConstant.KEY_ORDER_FILTER_END_DATE), params.get(RequestConstant.KEY_ORDER_FILTER_STATUS), params.get(RequestConstant.KEY_ORDER_FILTER_ITEM_ID),
+                params.get(RequestConstant.KEY_ORDER_FILTER_TECH_ID), params.get(RequestConstant.KEY_ORDER_FILTER_TELEPHONE));
+
+        call.enqueue(new TokenCheckedCallback<OrderListFilterResult>() {
+            @Override
+            protected void postResult(OrderListFilterResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+
             }
         });
     }

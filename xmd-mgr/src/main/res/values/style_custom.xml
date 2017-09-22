@@ -141,8 +141,8 @@
     <style name="line_vertical">
         <item name="android:background">#E0E0E0</item>
         <item name="android:layout_width">1dp</item>
-        <item name="android:layout_marginTop">@dimen/small_space</item>
-        <item name="android:layout_marginBottom">@dimen/small_space</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
@@ -659,7 +659,7 @@
         <item name="android:textColor">@color/colorClubItemBody</item>
         <item name="android:textSize">@dimen/fontBody</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:padding">@dimen/small_space</item>
+
 
     </style>
 
@@ -669,7 +669,8 @@
         <item name="android:textColor">@color/colorClubItemTitle</item>
         <item name="android:textSize">@dimen/fontBig</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_marginBottom">@dimen/inter_space</item>
+        <item name="android:paddingTop">@dimen/small_space</item>
+        <item name="android:paddingBottom">@dimen/margin_2</item>
     </style>
 
     <style name="verification_record_content_type">
@@ -755,6 +756,23 @@
 
     <style name="text_bold">
         <item name="android:textSize">18sp</item>
+    </style>
+    <style name="reserve_data_filter_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:textColor">@color/selector_tab_text</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="reserve_data_table_line_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_10</item>
+        <item name="android:layout_marginLeft">@dimen/margin_10</item>
+        <item name="android:colorBackground">@color/selector_table_line</item>
     </style>
 
 </resources>

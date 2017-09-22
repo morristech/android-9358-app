@@ -110,26 +110,27 @@ public class SlidingMenu extends HorizontalScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        int action = ev.getAction();
-        switch (action) {
-            // Up时，进行判断，如果显示区域大于菜单宽度一半则完全显示，否则隐藏
-            case MotionEvent.ACTION_UP:
-                int scrollX = getScrollX();
-                if (scrollX > mHalfMenuWidth) {
-                    this.smoothScrollTo(mMenuWidth, 0);
-                    mContent.setAlpha(1.0f);
-                    isOpen = false;
-                    mCloseOrOpenListener.isOpen(false);
-                } else {
-                    this.smoothScrollTo(0, 0);
-                    mContent.setAlpha(0.7f);
-                    isOpen = true;
-                    mCloseOrOpenListener.isOpen(true);
-                }
-
-                return true;
-        }
-        return super.onTouchEvent(ev);
+//        int action = ev.getAction();
+//        switch (action) {
+//            // Up时，进行判断，如果显示区域大于菜单宽度一半则完全显示，否则隐藏
+//            case MotionEvent.ACTION_UP:
+//                int scrollX = getScrollX();
+//                if (scrollX > mHalfMenuWidth) {
+//                    this.smoothScrollTo(mMenuWidth, 0);
+//                    mContent.setAlpha(1.0f);
+//                    isOpen = false;
+//                    mCloseOrOpenListener.isOpen(false);
+//                } else {
+//                    this.smoothScrollTo(0, 0);
+//                    mContent.setAlpha(0.7f);
+//                    isOpen = true;
+//                    mCloseOrOpenListener.isOpen(true);
+//                }
+//
+//                return true;
+//        }
+//        return super.onTouchEvent(ev);
+        return true;
     }
 
 

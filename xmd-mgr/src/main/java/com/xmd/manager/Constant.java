@@ -61,7 +61,7 @@ public class Constant {
     public static final String TIME_FILTER_BY_ALL = "all";
 
     public static final Map<String, String> RANKING_TIME_FILTER_LABELS = new LinkedHashMap<String, String>() {{
-        put("日", TIME_FILTER_BY_DAY);
+        put("天", TIME_FILTER_BY_DAY);
         put("周", TIME_FILTER_BY_WEEK);
         put("月", TIME_FILTER_BY_MONTH);
         put("季", TIME_FILTER_BY_QUARTER);
@@ -84,7 +84,7 @@ public class Constant {
      */
     public static final String ORDER_STATUS_REJECTED = "reject";
     /**
-     * 未接受
+     * 待接新单
      */
     public static final String ORDER_STATUS_SUBMIT = "submit";
     /**
@@ -96,7 +96,7 @@ public class Constant {
      */
     public static final String ORDER_STATUS_COMPLETE = "complete";
     /**
-     * 失效
+     * 爽约
      */
     public static final String ORDER_STATUS_FAILURE = "failure";
     /**
@@ -368,5 +368,11 @@ public class Constant {
 
     public static final String OPERATE_START_TIME = "startTime";
     public static final String OPERATE_END_TIME = "endTime";
+
+    public static final String ONLINE_ORDER_START_TIME = "startTime";
+    public static final String ONLINE_ORDER_END_TIME = "endTime";
+    public static final String ONLINE_ORDER_STATUS = "orderStatus";
+    public static final String ONLINE_ORDER_PROJECT = "orderProject";
+    public static final String ONLINE_ORDER_TECH_NO = "techNo";
 }
 

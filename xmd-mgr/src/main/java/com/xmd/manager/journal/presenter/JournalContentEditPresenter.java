@@ -733,14 +733,6 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
                             JournalContent content = mJournal.getContent(i);
                             //排行榜不需要删除数据
                             if (!content.getType().getKey().equals(JournalContentType.CONTENT_KEY_TECHNICIAN_RANKING)) {
-                                if (content.getType().getKey().equals(JournalContentType.CONTENT_KEY_ACTIVITY)) {
-                                    XLogger.i(">>>", "size>>" + content.getDataSize());
-                                    XLogger.i(">>>", "优惠活动");
-//                                ((JournalItemActivity)content.getData(0)).setStartTime("");
-//                                ((JournalItemActivity)content.getData(0)).setEndTime("");
-//                                ((JournalItemActivity)content.getViewHolder()).setStartTime("");
-//                                ((JournalItemActivity)content.getViewHolder()).setEndTime("");
-                                }
                                 content.clearData();
                                 if (content.getViewHolder() != null) {
                                     content.getViewHolder().notifyDataChanged();

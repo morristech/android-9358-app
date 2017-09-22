@@ -3,14 +3,13 @@ package com.xmd.manager.window;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import butterknife.ButterKnife;
 
 /**
  * Created by linms@xiaomodo.com on 16-5-17.
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends com.xmd.app.BaseFragment {
 
     protected IFragmentCallback mIFragmentCallback;
     protected Bundle mArguments;

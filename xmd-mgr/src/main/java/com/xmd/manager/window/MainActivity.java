@@ -45,6 +45,7 @@ import com.xmd.manager.common.ImageLoader;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
+import com.xmd.manager.event.OrderCountUpDate;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
@@ -214,9 +215,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
     @CheckBusinessPermission(PermissionConstants.MG_TAB_ORDER)
     public void initPageOrder() {
-        mPageFragmentPagerAdapter.addFragment(new OrderListFragment());
-        icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_order));
-        tabTexts.add("订单");
+        mPageFragmentPagerAdapter.addFragment(new OperatingReportFragment());
+        icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_operate));
+        tabTexts.add("数据");
         sTabOrder = tabTexts.size() - 1;
     }
 
@@ -390,6 +391,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                         }
                         mViewPagerTabIndicator.setNotice(sTabOrder, pendingOrderCount);
                         redPointService.set(Constant.RED_POINT_NEW_ORDER, pendingOrderCount);
+                        EventBus.getDefault().post(new OrderCountUpDate(pendingOrderCount));
                     }
                     break;
             }

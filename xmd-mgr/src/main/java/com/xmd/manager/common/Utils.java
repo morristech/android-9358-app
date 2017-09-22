@@ -28,6 +28,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.AppConfig;
@@ -443,7 +444,8 @@ public class Utils {
     }
 
     public static void hideKeyboard(Activity activity) {
-        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+       activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
     public static boolean matchSecurityCodeFormat(String text) {

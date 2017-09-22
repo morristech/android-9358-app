@@ -145,6 +145,15 @@ public class BaseActivity extends AppCompatActivity {
         showLoading("");
     }
 
+    public void showLoading(String message,boolean cancelAble) {
+        if (progressDialog == null) {
+            progressDialog = new XProgressDialog(this);
+        }
+        progressDialog.setCancelable(cancelAble);
+        progressDialog.setTitle(message);
+        progressDialog.show(message);
+    }
+
     public void hideLoading() {
         if (progressDialog != null) {
             progressDialog.dismiss();

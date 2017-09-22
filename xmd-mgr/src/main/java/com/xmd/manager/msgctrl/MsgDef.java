@@ -195,4 +195,10 @@ public class MsgDef {
     public static final int MSG_DEF_GET_GROUP_STAT_SWITCH = 0x0129;
     //差评，投诉
     public static final int MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST = 0x0130;
+    //订单优化
+    public static final int MSG_DEF_GET_SUMMARY_ORDER_DATA = 0x0131;
+    public static final int MSG_DEF_GET_TECH_ORDER_RANK = 0x0132;
+    public static final int MSG_DEF_GET_CLUB_ORDER_TECHNICIAN_LIST = 0x0133;
+    public static final int MSG_DEF_GET_CLUB_ORDER_PROJECT_LIST = 0x0134;
+    public static final int MSG_DEF_GET_ORDER_FILTER_LIST = 0x0135;
 }

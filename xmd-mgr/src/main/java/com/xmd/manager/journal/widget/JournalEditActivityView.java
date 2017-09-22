@@ -93,6 +93,15 @@ public class JournalEditActivityView extends LinearLayout {
         public View getView() {
             return JournalEditActivityView.this;
         }
+
+        @Override
+        public void clearData() {
+            super.clearData();
+            mStartTimeView.setText("开始时间");
+            mEndTimeView.setText("结束时间");
+            mContentView.setText("");
+
+        }
     };
 
 

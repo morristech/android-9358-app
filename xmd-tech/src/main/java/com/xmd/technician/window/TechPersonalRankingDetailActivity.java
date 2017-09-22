@@ -1,5 +1,7 @@
 package com.xmd.technician.window;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -90,6 +92,13 @@ public class TechPersonalRankingDetailActivity extends BaseActivity implements B
         mCurrentMillisecond = System.currentTimeMillis();
         initViewPagerView();
         initTimeFilterPopupWindowView();
+        setStatusBarColor();
+    }
+    private void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor("#F36B5A"));
+        }
+
     }
 
     private void initViewPagerView() {

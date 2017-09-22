@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/margin_10"
+              android:background="@color/white"
+              android:layout_marginRight="@dimen/small_padding"
+              android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_order_filter_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/selector_tag_text"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/order_filter_order_all"
+        android:textColor="@color/selector_tag_text_color"
+        android:textSize="14sp"/>
+
+</LinearLayout>

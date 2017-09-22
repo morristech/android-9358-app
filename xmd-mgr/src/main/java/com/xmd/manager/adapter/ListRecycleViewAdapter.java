@@ -27,11 +27,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.DateUtils;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
-import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.ActivityRankingBean;
@@ -47,12 +44,12 @@ import com.xmd.manager.beans.MarketingIncomeBean;
 import com.xmd.manager.beans.OnlinePayBean;
 import com.xmd.manager.beans.Order;
 import com.xmd.manager.beans.RegisterInfo;
+import com.xmd.manager.beans.StaffDataBean;
 import com.xmd.manager.beans.TechBadComment;
 import com.xmd.manager.beans.TechRankingBean;
 import com.xmd.manager.beans.VisitInfo;
 import com.xmd.manager.common.DescribeMesaageUtil;
 import com.xmd.manager.common.ItemSlideHelper;
-import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.common.WidgetUtils;
@@ -131,6 +128,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_MARKETING_INCOME_ITEM = 17;
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 18;
     private static final int TYPE_TECH_PERSONAL_RANKING = 19;
+    private static final int TYPE_STAFF_DATA_ITEM = 20;
     private static final int TYPE_FOOTER = 99;
     private static final int TYPE_DADA_IS_EMPTY = 100;
 
@@ -142,6 +140,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private Context mContext;
     private RecyclerView mRecyclerView;
     private ItemSlideHelper mHelper;
+    private String mBottomMessage;
 
     public ListRecycleViewAdapter(Context context, List<T> data, Callback callback) {
         mContext = context;
@@ -163,6 +162,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     public List<T> getData() {
         return mData;
+    }
+
+    public void setBottomAlterTextMessage(String alterText){
+        this.mBottomMessage = alterText;
     }
 
     /**
@@ -217,6 +220,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PK_ACTIVITY_ITEM;
             } else if (mData.get(position) instanceof TechRankingBean) {
                 return TYPE_TECH_PERSONAL_RANKING;
+            } else if (mData.get(position) instanceof StaffDataBean) {
+                return TYPE_STAFF_DATA_ITEM;
             }
         }
         return TYPE_DADA_IS_EMPTY;
@@ -264,6 +269,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_TECH_PERSONAL_RANKING:
                 View viewRanking = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tech_personal_ranking_item, parent, false);
                 return new TechPersonalRankingListItemViewHolder(viewRanking);
+            case TYPE_STAFF_DATA_ITEM:
+                View staffData = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_staff_data_item, parent, false);
+                return new StaffDataListItemViewHolder(staffData);
             default:
                 return null;
         }
@@ -317,7 +325,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 desc = ResourceUtils.getString(R.string.order_list_item_empty);
                 footerHolder.itemFooter.setOnClickListener(null);
             } else if (mIsNoMore) {
-                desc = ResourceUtils.getString(R.string.order_list_item_no_more);
+                desc = TextUtils.isEmpty(mBottomMessage)?ResourceUtils.getString(R.string.order_list_item_no_more):mBottomMessage;
                 footerHolder.itemFooter.setOnClickListener(null);
             } else {
                 footerHolder.itemFooter.setOnClickListener(v -> mCallback.onLoadMoreButtonClicked());
@@ -378,13 +386,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 bindPkActivityListItemViewHolder(holder, obj);
             } else if (holder instanceof TechPersonalRankingListItemViewHolder) {
                 bindTechPersonalRankingViewHolder(holder, obj, position);
+            }else if(holder instanceof StaffDataListItemViewHolder){
+                bindStaffDataRankingViewHolder(holder,obj,position);
             }
         }
-//        else {
-//            bindDataisEmptyItemViewHolder(holder);
-//        }
 
     }
+
+
 
 
     /**
@@ -401,7 +410,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         itemHolder.customerName.setText(Utils.briefString(order.customerName, 7));
         itemHolder.customerPhone.setText(order.phoneNum);
         itemHolder.bookTime.setText(order.createdAt);
-        itemHolder.techName.setText(Utils.isEmpty(order.techName) ? ResourceUtils.getString(R.string.order_list_item_not_decided) : Utils.briefString(order.techName, 7));
+        itemHolder.techName.setText(Utils.isEmpty(order.techName) ? ResourceUtils.getString(R.string.order_list_item_not_decided) : Utils.briefString(order.techName, 5));
         if (Utils.isEmpty(order.techName)) {
             itemHolder.techSerial.setVisibility(View.GONE);
         } else {
@@ -936,7 +945,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TechBadComment techComment = (TechBadComment) obj;
         techHolder.badCommentTechRank.setText(String.valueOf(holder.getLayoutPosition() + 1));
         Glide.with(mContext).load(techComment.avatarUrl).into(techHolder.badCommentTechHead);
-        techHolder.badCommentTechName.setText(Utils.StrSubstring(6,techComment.name,true));
+        techHolder.badCommentTechName.setText(Utils.StrSubstring(6, techComment.name, true));
         if (Utils.isNotEmpty(techComment.techNo)) {
             String techNo = String.format("[%s]", techComment.techNo);
             techHolder.badCommentTechSerial.setText(Utils.changeColor(techNo, ResourceUtils.getColor(R.color.btn_background), 1, techNo.length() - 1));
@@ -970,7 +979,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         OnlinePayBean onLinePay = (OnlinePayBean) obj;
         Glide.with(mContext).load(onLinePay.avatarUrl).into(viewHolder.customerHead);
         if (Utils.isNotEmpty(onLinePay.userName)) {
-            viewHolder.tvCustomerName.setText(Utils.StrSubstring(8,onLinePay.userName,true));
+            viewHolder.tvCustomerName.setText(Utils.StrSubstring(8, onLinePay.userName, true));
         } else {
             viewHolder.tvCustomerName.setText("匿名用户");
         }
@@ -1024,9 +1033,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.llOnceCardIncomeView.setVisibility(View.GONE);
         }
 
-        if(bean.showPageCard){
+        if (bean.showPageCard) {
             viewHolder.tvMixedPackageIncome.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             viewHolder.tvMixedPackageIncome.setVisibility(View.GONE);
         }
 
@@ -1126,6 +1135,48 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
         Glide.with(mContext).load(techBean.avatarUrl).into(techRankingViewHolder.imgTechHead);
 
+    }
+
+    private void bindStaffDataRankingViewHolder(RecyclerView.ViewHolder holder, Object obj, int position) {
+
+        final StaffDataBean staffBean = ( StaffDataBean) obj;
+        StaffDataListItemViewHolder staffDataViewHolder = (StaffDataListItemViewHolder) holder;
+
+        String techName = TextUtils.isEmpty(staffBean.name)?"技师":staffBean.name;
+        staffDataViewHolder.tvStaffName.setText(Utils.StrSubstring(4,techName,true));
+        Glide.with(mContext).load(staffBean.avatarUrl).error(R.drawable.icon22).into(staffDataViewHolder.imgStaffHead);
+        if (Utils.isNotEmpty(staffBean.techNo)) {
+            String techNO = String.format("[%s]", staffBean.techNo);
+            staffDataViewHolder.tvStaffSerialNo.setText(Utils.changeColor(techNO, ResourceUtils.getColor(R.color.contact_marker), 1, techNO.length() - 1));
+            staffDataViewHolder.tvStaffSerialNo.setVisibility(View.VISIBLE);
+        } else {
+            staffDataViewHolder.tvStaffSerialNo.setVisibility(View.GONE);
+        }
+        if (position == 0) {
+            Glide.with(mContext).load(R.drawable.icon_nub_01).into(staffDataViewHolder.imgStaffNumber);
+            staffDataViewHolder.imgStaffNumber.setVisibility(View.VISIBLE);
+            staffDataViewHolder.textStaffNumber.setVisibility(View.GONE);
+        } else if (position == 1) {
+            Glide.with(mContext).load(R.drawable.icon_nub_02).into(staffDataViewHolder.imgStaffNumber);
+            staffDataViewHolder.imgStaffNumber.setVisibility(View.VISIBLE);
+            staffDataViewHolder.textStaffNumber.setVisibility(View.GONE);
+        } else if (position == 2) {
+            Glide.with(mContext).load(R.drawable.icon_nub_03).into(staffDataViewHolder.imgStaffNumber);
+            staffDataViewHolder.imgStaffNumber.setVisibility(View.VISIBLE);
+            staffDataViewHolder.textStaffNumber.setVisibility(View.GONE);
+        } else {
+            staffDataViewHolder.textStaffNumber.setText(String.valueOf(position + 1));
+            staffDataViewHolder.imgStaffNumber.setVisibility(View.GONE);
+            staffDataViewHolder.textStaffNumber.setVisibility(View.VISIBLE);
+        }
+
+        staffDataViewHolder.tvStaffOrder.setText(String.valueOf(staffBean.totalOrderCount));
+        staffDataViewHolder.tvCompleteOrderCount.setText(String.valueOf(staffBean.completeOrderCount));
+        if(position!=0 && position == (getItemCount()-1)){
+            staffDataViewHolder.tvBottomText.setVisibility(View.VISIBLE);
+        }else{
+            staffDataViewHolder.tvBottomText.setVisibility(View.GONE);
+        }
     }
 
 
@@ -1623,6 +1674,29 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView tvRankingMemberNumber;
 
         TechPersonalRankingListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class StaffDataListItemViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.img_staff_number)
+        ImageView imgStaffNumber;
+        @BindView(R.id.text_staff_number)
+        TextView textStaffNumber;
+        @BindView(R.id.img_staff_head)
+        CircleImageView imgStaffHead;
+        @BindView(R.id.tv_staff_name)
+        TextView tvStaffName;
+        @BindView(R.id.tv_staff_serialNo)
+        TextView tvStaffSerialNo;
+        @BindView(R.id.tv_staff_order)
+        TextView tvStaffOrder;
+        @BindView(R.id.tv_staff_commit_number)
+        TextView tvCompleteOrderCount;
+        @BindView(R.id.tv_bottom_text)
+        TextView tvBottomText;
+        StaffDataListItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

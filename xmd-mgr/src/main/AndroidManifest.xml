@@ -361,28 +361,22 @@
         <activity
             android:name=".window.OperationReportActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".window.OnlineOrderActivity"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".window.NewAddOperateActivity"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".window.OperateCycleSettingActivity"
-                  android:screenOrientation="portrait"/>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.jph.takephoto.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
-        作者：CrazyCodeBoy
-        链接：http://www.jianshu.com/p/56b9fb319310
-        來源：简书
-        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
+        <activity
+            android:name=".window.OnlineOrderActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".window.NewAddOperateActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.OperateCycleSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.ReserveDataActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.OrderFilterActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 
