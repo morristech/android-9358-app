@@ -696,5 +696,37 @@
     <string name="new_add_operate_end_time_hint">结束时间</string>
     <string name="operate_cycle_setting_title">报表周期设置</string>
     <string name="has_none_new_data">已无更多数据</string>
+    <!--订单数据-->
+    <string name="reserve_data_table_yesterday">昨天</string>
+    <string name="reserve_data_table_week">周</string>
+    <string name="reserve_data_table_month">月</string>
+    <string name="reserve_data_table_total">累计</string>
+    <string name="reserve_data_table_customized">自定义</string>
+    <string name="reserve_data_activity_title">预约数据</string>
+    <string name="reserve_data_order">订单</string>
+    <string name="staff_data_hint_text">(未选技师订单不统计)</string>
+    <string name="staff_data_ranking_total">总排名</string>
+    <string name="staff_data_staff_text">员工</string>
+    <string name="staff_data_staff_order">员工订单</string>
+    <string name="staff_data_order">预约</string>
+    <string name="staff_data_visitor">到店</string>
+    <string name="staff_data_statistic">汇总数据</string>
+    <string name="staff_data_bottom_alter_message">----只统计有预约订单的员工----</string>
+    <string name="staff_data_order_list_activity_title">订单列表</string>
+    <string name="order_filter_order_time">下单时间</string>
+    <string name="order_filter_order_status">订单状态</string>
+    <string name="order_filter_order_project">预约项目</string>
+    <string name="order_filter_order_staff">员工</string>
+    <string name="order_filter_order_all">全部</string>
+    <string name="order_filter_untreated">待接新单</string>
+    <string name="order_filter_refused">已拒绝</string>
+    <string name="order_filter_overtime">已超时</string>
+    <string name="order_filter_accept">即将到店</string>
+    <string name="order_filter_completed">已到店</string>
+    <string name="order_filter_nullity">已爽约</string>
+    <string name="order_filter_activity_title">订单筛选</string>
+
+
+
 
 </resources>

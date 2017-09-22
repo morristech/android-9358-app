@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/margin_10"
+              android:layout_marginRight="@dimen/margin_10"
+              android:background="@drawable/round_rect_white_bg"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/small_space">
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:background="#FF6666"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_10"
+            android:text="@string/staff_data_staff_order"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/fontBody"/>
+
+        <TextView
+            android:id="@+id/tv_order_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingRight="@dimen/inter_space"
+            android:text="@string/staff_data_hint_text"
+            android:textColor="@color/colorChartAxis"
+            android:textSize="@dimen/fontCaption"/>
+    </LinearLayout>
+    <View style="@style/horizontal_divider_line"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_space"
+        android:layout_marginRight="@dimen/small_space"
+        android:layout_marginTop="10dp"
+        android:background="#f6f6f6"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="@string/staff_data_ranking_total"
+            android:paddingLeft="@dimen/margin_10"
+            android:textColor="#616161"
+            android:textSize="@dimen/inter_text_size"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/staff_data_staff_text"
+            android:textColor="#616161"
+            android:textSize="@dimen/inter_text_size"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/staff_data_order"
+            android:textColor="#616161"
+            android:textSize="@dimen/inter_text_size"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/staff_data_visitor"
+            android:textColor="#616161"
+            android:textSize="@dimen/inter_text_size"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_empty_view"
+        android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:padding="@dimen/margin_10"
+              android:text="还没有数据哦"
+              android:textColor="#666666"
+              android:textSize="@dimen/fontBody"
+    android:visibility="gone"/>
+
+    <include layout="@layout/layout_swipe_refresh_list"/>
+
+</LinearLayout>

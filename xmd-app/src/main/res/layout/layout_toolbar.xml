@@ -47,7 +47,7 @@
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/toolbarTitleColor"
-            android:textSize="@dimen/toolbarTitleSize"/>
+            android:textSize="@dimen/toolbarTitleFontSize"/>
 
         <RelativeLayout
             android:id="@+id/rl_toolbar_right"

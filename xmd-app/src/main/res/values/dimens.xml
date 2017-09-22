@@ -15,6 +15,7 @@
     <dimen name="fontHeadline">24sp</dimen>
     <dimen name="fontTitle">21sp</dimen>
     <dimen name="fontSubheading">17sp</dimen>
+    <dimen name="fontTitleBar">17sp</dimen>
     <dimen name="fontBody">15sp</dimen>
     <dimen name="fontButton">15sp</dimen>
     <dimen name="fontCaption">13sp</dimen>
@@ -38,7 +39,9 @@
     <dimen name="tiny_space">3dp</dimen>
     <dimen name="spinner_item_text_size">8dp</dimen>
 
+
     <!-- toolbar 标题栏样式 -->
     <dimen name="toolbarTitleSize">@dimen/fontTitle</dimen>
+    <dimen name="toolbarTitleFontSize">@dimen/fontTitleBar</dimen>
 
 </resources>

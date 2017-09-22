@@ -195,7 +195,7 @@ public class Constant {
     }};
 
     public static final Map<String, String> RANKING_TIME_FILTER_LABELS = new LinkedHashMap<String, String>() {{
-        put("日", TIME_FILTER_BY_DAY);
+        put("天", TIME_FILTER_BY_DAY);
         put("周", TIME_FILTER_BY_WEEK);
         put("月", TIME_FILTER_BY_MONTH);
         put("季", TIME_FILTER_BY_QUARTER);

@@ -37,7 +37,7 @@
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/toolbarTitleColor"
-                    android:textSize="@dimen/toolbarTitleSize" />
+                    android:textSize="@dimen/toolbarTitleFontSize" />
 
                 <com.xmd.app.widget.CircleAvatarView
                     android:layout_width="@dimen/avatarSize"

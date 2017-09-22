@@ -1,8 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-          android:name="com.xmd.manager.window.OrderListFragment"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:name="com.xmd.manager.window.OrderListFragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:orientation="horizontal"
+                  android:paddingBottom="10dp"
+                  android:paddingLeft="15dp"
+                  android:paddingRight="15dp"
+                  android:paddingTop="10dp">
+        <com.xmd.manager.widget.ClearableEditText
+            android:id="@+id/et_order_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_editext_search"
+            android:inputType="number"
+            android:hint="@string/search_pay_activity_search_hint"
+            android:imeOptions="actionSearch"
+            android:paddingBottom="@dimen/small_space"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="@dimen/small_space"
+            android:singleLine="true"
+            android:textColor="@color/text_color_hint"
+        />
+        <Button
+            android:id="@+id/btn_search_cancel"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/btn_main"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:visibility="gone"
+        />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_time_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/icon_time"
+        android:drawablePadding="@dimen/small_space"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingLeft="20dp"
+        android:paddingTop="@dimen/small_space"
+        android:text="2017.07.08 - 2017.09.10"
+        android:textColor="@color/text_color_hint"/>
+    <FrameLayout
+        android:id="@+id/fm_order_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 
-</fragment>
+</LinearLayout>

@@ -90,7 +90,7 @@
     <dimen name="toolbar_padding_top">0dp</dimen>
     <dimen name="toolbar_padding_left_or_right">40dp</dimen>
     <dimen name="toolbar_height">48dp</dimen>
-    <dimen name="toolbar_title_text_size">18sp</dimen>
+    <dimen name="toolbar_title_text_size">@dimen/fontTitle</dimen>
     <dimen name="toolbar_menu_text_size">12sp</dimen>
     <dimen name="toolbar_img_width">32dp</dimen>
     <dimen name="toolbar_notice_icon_margin_top">7dp</dimen>
@@ -202,6 +202,7 @@
     <dimen name="fontNormal">12sp</dimen>
     <dimen name="fontRemark">11sp</dimen>
     <dimen name="fontSmall">10sp</dimen>
+    <dimen name="fontTitleBar">17sp</dimen>
 
 
     <dimen name="avatar_head">48dp</dimen>

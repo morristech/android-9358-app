@@ -54,16 +54,29 @@ public class Utils {
 
     }
 
-//    public static List<String> stringToList(String s,String delimiter){
-//        List<String> list = new ArrayList<>();
-//        if(TextUtils.isEmpty(s)){
-//            return list;
-//        }
-//        list = Arrays.asList(s.split(delimiter));
-//        return list;
-//
-//    }
+    /**
+     * shorten the string with ... to express if it's too long
+     *
+     * @param text
+     * @param length
+     * @return
+     */
+    public static String briefString(String text, int length) {
+        if (TextUtils.isEmpty(text)) {
+            return "";
+        }
 
+        if (text.length() <= length) {
+            return text;
+        }
+
+        int startIndex = length / 2;
+        String prefix = text.substring(0, startIndex);
+        String subfix = text.substring(text.length() - startIndex, text.length());
+
+        return prefix + "..." + subfix;
+
+    }
     public static List<String> StringToList(String textString, String delimiter) {
         List<String> strings = new ArrayList<>();
         strings.clear();

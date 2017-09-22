@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_10"
-    android:background="@color/tab_bg"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_10">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/margin_10"
+              android:layout_marginLeft="@dimen/margin_10"
+              android:layout_marginRight="@dimen/margin_10"
+              android:background="@color/tab_bg"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/margin_10">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +23,7 @@
             android:id="@+id/avatar"
             android:layout_width="@dimen/paid_consume_activity_avatar_size"
             android:layout_height="@dimen/paid_consume_activity_avatar_size"
-            android:src="@drawable/img_default_avatar" />
+            android:src="@drawable/img_default_avatar"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -42,7 +44,7 @@
 
                     android:gravity="center"
                     android:text="周先生"
-                    android:textColor="@color/value_color" />
+                    android:textColor="@color/value_color"/>
 
                 <TextView
                     android:id="@+id/custom_phone"
@@ -51,7 +53,7 @@
                     android:layout_marginLeft="@dimen/inter_space"
                     android:gravity="center"
                     android:text="13760609008"
-                    android:textColor="@color/value_color" />
+                    android:textColor="@color/value_color"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -76,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/order_list_item_tech_desc"
-                            android:textColor="@color/label_color" />
+                            android:textColor="@color/label_color"/>
 
                         <TextView
                             android:id="@+id/tech_name"
@@ -85,16 +87,18 @@
                             android:layout_marginLeft="@dimen/small_space"
                             android:maxLines="1"
                             android:text="name"
-                            android:textColor="@color/value_color" />
+                            android:textSize="12sp"
+                            android:textColor="@color/value_color"/>
 
                         <TextView
                             android:id="@+id/tech_serial"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginBottom="1dp"
                             android:layout_marginLeft="@dimen/small_space"
                             android:gravity="center"
-                            android:textSize="@dimen/fontNormal" />
+                            android:textSize="@dimen/fontRemark"/>
 
                     </LinearLayout>
 
@@ -109,7 +113,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="@string/order_list_item_item_desc"
-                            android:textColor="@color/label_color" />
+                            android:textColor="@color/label_color"/>
 
                         <TextView
                             android:id="@+id/item_name"
@@ -118,13 +122,15 @@
                             android:layout_marginLeft="@dimen/small_space"
                             android:maxLines="1"
                             android:text="Massage"
-                            android:textColor="@color/value_color" />
+                            android:textSize="12sp"
+                            android:ellipsize="end"
+                            android:textColor="@color/value_color"/>
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="18sp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -132,7 +138,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="@string/order_list_item_time_desc"
-                            android:textColor="@color/label_color" />
+                            android:textColor="@color/label_color"
+                            android:textSize="@dimen/fontBody"/>
 
                         <TextView
                             android:id="@+id/item_time"
@@ -141,7 +148,8 @@
                             android:layout_marginLeft="@dimen/small_space"
                             android:maxLines="1"
                             android:text="Massage"
-                            android:textColor="@color/value_color" />
+                            android:textColor="@color/value_color"
+                            android:textSize="12sp"/>
 
                         <TextView
                             android:id="@+id/paid_mark"
@@ -150,8 +158,8 @@
                             android:layout_marginLeft="@dimen/margin_2"
                             android:text="（全额预约）"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="12sp"
-                            android:visibility="gone" />
+                            android:textSize="11sp"
+                            android:visibility="visible"/>
 
                     </LinearLayout>
 
@@ -175,7 +183,7 @@
                 android:layout_gravity="right"
                 android:text="11:10"
                 android:textColor="@color/label_color"
-                android:textSize="@dimen/fontSmall" />
+                android:textSize="@dimen/fontSmall"/>
 
 
             <TextView
@@ -187,7 +195,7 @@
                 android:paddingBottom="@dimen/small_space"
                 android:paddingTop="@dimen/small_space"
                 android:text="10"
-                android:textColor="@color/colorClubItemBody" />
+                android:textColor="@color/colorClubItemBody"/>
 
             <TextView
                 android:id="@+id/order_state"
@@ -198,7 +206,7 @@
                 android:gravity="right"
                 android:padding="@dimen/small_space"
                 android:text="已接受"
-                android:textColor="@color/colorClubItemBody" />
+                android:textColor="@color/colorClubItemBody"/>
 
 
         </LinearLayout>
@@ -220,12 +228,12 @@
                 android:id="@+id/reject"
                 style="@style/operation_negative_button"
                 android:layout_toLeftOf="@+id/accept"
-                android:text="@string/order_list_item_reject" />
+                android:text="@string/order_list_item_reject"/>
 
             <Button
                 android:id="@+id/accept"
                 style="@style/operation_positive_button"
-                android:text="@string/order_list_item_accept" />
+                android:text="@string/order_list_item_accept"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -237,12 +245,12 @@
                 android:id="@+id/failure"
                 style="@style/operation_negative_button"
                 android:layout_toLeftOf="@+id/complete"
-                android:text="@string/order_list_item_failure" />
+                android:text="@string/order_list_item_failure"/>
 
             <Button
                 android:id="@+id/complete"
                 style="@style/operation_positive_button"
-                android:text="@string/order_list_item_complete" />
+                android:text="@string/order_list_item_complete"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -254,12 +262,12 @@
                 android:id="@+id/expire"
                 style="@style/operation_negative_button"
                 android:layout_toLeftOf="@+id/verified"
-                android:text="@string/paid_order_list_item_expire" />
+                android:text="@string/paid_order_list_item_expire"/>
 
             <Button
                 android:id="@+id/verified"
                 style="@style/operation_positive_button"
-                android:text="@string/paid_order_list_item_consume" />
+                android:text="@string/paid_order_list_item_consume"/>
         </RelativeLayout>
     </FrameLayout>
 

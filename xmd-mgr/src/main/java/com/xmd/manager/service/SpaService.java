@@ -9,104 +9,7 @@ import com.xmd.manager.beans.PaidCouponDetailResult;
 import com.xmd.manager.beans.PayResult;
 import com.xmd.manager.beans.RegisterDetailResult;
 import com.xmd.manager.beans.VisitListResult;
-import com.xmd.manager.service.response.AccountDataResult;
-import com.xmd.manager.service.response.AddGroupResult;
-import com.xmd.manager.service.response.AlbumUploadResult;
-import com.xmd.manager.service.response.AppCommentListResult;
-import com.xmd.manager.service.response.AwardVerificationResult;
-import com.xmd.manager.service.response.BadCommentListResult;
-import com.xmd.manager.service.response.BadCommentResult;
-import com.xmd.manager.service.response.BaseListResult;
-import com.xmd.manager.service.response.BaseResult;
-import com.xmd.manager.service.response.BaseStringResult;
-import com.xmd.manager.service.response.ChangeStatusResult;
-import com.xmd.manager.service.response.CheckVerificationTypeResult;
-import com.xmd.manager.service.response.ClubAuthConfigResult;
-import com.xmd.manager.service.response.ClubCouponResult;
-import com.xmd.manager.service.response.ClubCouponViewResult;
-import com.xmd.manager.service.response.ClubEnterResult;
-import com.xmd.manager.service.response.ClubListResult;
-import com.xmd.manager.service.response.ClubResult;
-import com.xmd.manager.service.response.CommentAndComplaintListResult;
-import com.xmd.manager.service.response.CommentDeleteResult;
-import com.xmd.manager.service.response.CouponDataResult;
-import com.xmd.manager.service.response.CouponUseDataResult;
-import com.xmd.manager.service.response.CustomerCouponsResult;
-import com.xmd.manager.service.response.CustomerListResult;
-import com.xmd.manager.service.response.CustomerOrdersResult;
-import com.xmd.manager.service.response.CustomerResult;
-import com.xmd.manager.service.response.CustomerSearchListResult;
-import com.xmd.manager.service.response.DefaultVerificationDetailResult;
-import com.xmd.manager.service.response.DeleteGroupResult;
-import com.xmd.manager.service.response.FavourableActivityListResult;
-import com.xmd.manager.service.response.GMessageStatSwitchResult;
-import com.xmd.manager.service.response.GroupInfoResult;
-import com.xmd.manager.service.response.GroupListResult;
-import com.xmd.manager.service.response.GroupMessageResult;
-import com.xmd.manager.service.response.GroupTagListResult;
-import com.xmd.manager.service.response.GroupUserListResult;
-import com.xmd.manager.service.response.JournalArticleDetailResult;
-import com.xmd.manager.service.response.JournalArticlesResult;
-import com.xmd.manager.service.response.JournalContentResult;
-import com.xmd.manager.service.response.JournalContentTypeListResult;
-import com.xmd.manager.service.response.JournalCouponActivityListResult;
-import com.xmd.manager.service.response.JournalImageArticleTemplateList;
-import com.xmd.manager.service.response.JournalListResult;
-import com.xmd.manager.service.response.JournalPhotoUploadResult;
-import com.xmd.manager.service.response.JournalSaveResult;
-import com.xmd.manager.service.response.JournalTemplateListResult;
-import com.xmd.manager.service.response.JournalUpdateStatusResult;
-import com.xmd.manager.service.response.JournalVideoConfigResult;
-import com.xmd.manager.service.response.JournalVideoDetailResult;
-import com.xmd.manager.service.response.LineChartDataResult;
-import com.xmd.manager.service.response.LoginResult;
-import com.xmd.manager.service.response.LogoutResult;
-import com.xmd.manager.service.response.MarketingIncomeListResult;
-import com.xmd.manager.service.response.MarketingResult;
-import com.xmd.manager.service.response.ModifyPasswordResult;
-import com.xmd.manager.service.response.NewOrderCountResult;
-import com.xmd.manager.service.response.OnlinePayListResult;
-import com.xmd.manager.service.response.OrderDataResult;
-import com.xmd.manager.service.response.OrderListResult;
-import com.xmd.manager.service.response.OrderOrCouponResult;
-import com.xmd.manager.service.response.OrderResult;
-import com.xmd.manager.service.response.OrderSearchListResult;
-import com.xmd.manager.service.response.PKActivityListResult;
-import com.xmd.manager.service.response.PKPersonalListResult;
-import com.xmd.manager.service.response.PKTeamListResult;
-import com.xmd.manager.service.response.PaidOrderSwitchResult;
-import com.xmd.manager.service.response.PayOrderDetailResult;
-import com.xmd.manager.service.response.PropagandaDataResult;
-import com.xmd.manager.service.response.RecordTypeListResult;
-import com.xmd.manager.service.response.RegisterListResult;
-import com.xmd.manager.service.response.RegisterStatisticsResult;
-import com.xmd.manager.service.response.RegistryDataResult;
-import com.xmd.manager.service.response.SaveChatUserResult;
-import com.xmd.manager.service.response.SendGroupMessageResult;
-import com.xmd.manager.service.response.ServiceItemListResult;
-import com.xmd.manager.service.response.StatisticsHomeDataResult;
-import com.xmd.manager.service.response.StatisticsMainPageResult;
-import com.xmd.manager.service.response.TechBadCommentListResult;
-import com.xmd.manager.service.response.TechListResult;
-import com.xmd.manager.service.response.TechPKRankingResult;
-import com.xmd.manager.service.response.TechRankDataResult;
-import com.xmd.manager.service.response.TechRankingListResult;
-import com.xmd.manager.service.response.TechnicianListResult;
-import com.xmd.manager.service.response.TechnicianRankingListResult;
-import com.xmd.manager.service.response.UseCouponResult;
-import com.xmd.manager.service.response.UserCouponListResult;
-import com.xmd.manager.service.response.UserCouponViewResult;
-import com.xmd.manager.service.response.UserEditGroupResult;
-import com.xmd.manager.service.response.UserGetCouponResult;
-import com.xmd.manager.service.response.UserGroupDetailListResult;
-import com.xmd.manager.service.response.UserGroupSaveResult;
-import com.xmd.manager.service.response.VerificationCouponDetailResult;
-import com.xmd.manager.service.response.VerificationRecordDetailResult;
-import com.xmd.manager.service.response.VerificationRecordListResult;
-import com.xmd.manager.service.response.VerificationSaveResult;
-import com.xmd.manager.service.response.VerificationServiceCouponResult;
-import com.xmd.manager.service.response.VisitDataResult;
-import com.xmd.manager.service.response.WifiDataResult;
+import com.xmd.manager.service.response.*;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -1181,6 +1084,35 @@ public interface SpaService {
                                                                    @Field("status") String status,
                                                                    @Field("commentType") String commentType);
 
+    @GET(RequestConstant.URL_GET_ORDER_SUMMARY_DATA)
+    Call<OrderSummaryResult> getOrderSummaryData(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                 @Query(RequestConstant.KEY_END_DATE) String endDate);
+
+    @GET(RequestConstant.URL_GET_CLUB_TECH_ORDER_RANK)
+    Call<StaffDataResult> getStaffOrderRankData(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                @Query(RequestConstant.KEY_END_DATE) String endDate);
+
+    @GET(RequestConstant.URL_GET_CLUB_SELECT_TECHNICIAN_LIST)
+    Call<OrderTechListResult> getSelectTechnicianList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_GET_CLUB_SELECT_ITEM_LIST)
+    Call<OrderProjectListResult> getSelectProjectList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CLUB_ORDER_LIST)
+    Call<OrderListFilterResult> orderListFilter(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_PAGE) String page,
+                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                @Field(RequestConstant.KEY_ORDER_FILTER_START_DATE) String startDate,
+                                                @Field(RequestConstant.KEY_ORDER_FILTER_END_DATE) String endDate,
+                                                @Field(RequestConstant.KEY_ORDER_FILTER_STATUS) String status,
+                                                @Field(RequestConstant.KEY_ORDER_FILTER_ITEM_ID) String itemId,
+                                                @Field(RequestConstant.KEY_ORDER_FILTER_TECH_ID) String techId,
+                                                @Field(RequestConstant.KEY_ORDER_FILTER_TELEPHONE) String telephone);
+
+
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_LOGOUT)
@@ -1190,5 +1122,7 @@ public interface SpaService {
     //检查
     @GET(RequestConstant.URL_CLUB_INFO)
     Observable<BaseBean> checkToken(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+
 }
 

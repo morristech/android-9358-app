@@ -60,6 +60,16 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
         return format.format(new Date());
     }
+    /**
+     * 获取昨天
+     *
+     * @return
+     */
+    public static String getYesterdayDate(){
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT);
+        return format.format(new Date(System.currentTimeMillis()-24*60*60*1000));
+    }
+
 
     /**
      * Monday
@@ -667,6 +677,14 @@ public class DateUtil {
         return format.format(nextDate);
     }
 
+    public static String getNextDate(long currentTime,String dateFormat) {
+
+        SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+        long nowTime = currentTime;
+        long nextDate = nowTime + DAY_MILLIS_SECOND;
+        return format.format(nextDate);
+    }
+
     /**
      * 获取指定定毫秒数之前的日期
      *
@@ -677,6 +695,14 @@ public class DateUtil {
     public static String getLastDate(long currentTime) {
         String FORMAT = "MM月dd日";
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
+        long nowTime = currentTime;
+        long nextDate = nowTime - DAY_MILLIS_SECOND;
+        return format.format(nextDate);
+    }
+
+    public static String getLastDate(long currentTime,String formatStr) {
+
+        SimpleDateFormat format = new SimpleDateFormat(formatStr);
         long nowTime = currentTime;
         long nextDate = nowTime - DAY_MILLIS_SECOND;
         return format.format(nextDate);

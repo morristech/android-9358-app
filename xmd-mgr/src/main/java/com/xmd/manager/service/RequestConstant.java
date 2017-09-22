@@ -182,6 +182,13 @@ public class RequestConstant {
 
     public static final String URL_COMMENT_LIST = BASE_URL + "/v2/comment/list";
 
+    /**
+     * 订单优化
+     */
+    public static final String URL_GET_ORDER_SUMMARY_DATA = BASE_URL + "/v2/manager/datastatistics/order_count_data";
+    public static final String URL_GET_CLUB_TECH_ORDER_RANK = BASE_URL + "/v2/manager/club/tech/order_rank";
+    public static final String URL_GET_CLUB_SELECT_TECHNICIAN_LIST = BASE_URL + "/v2/manager/club/select/technician/list";
+    public static final String URL_GET_CLUB_SELECT_ITEM_LIST = BASE_URL + "/v2/manager/club/select/item/list";
 
     /**********************************************************************dengyixia***********************/
     /*                                           keys                                            */
@@ -379,6 +386,9 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_INFO = "couponInfo";
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
 
+
+
+
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/
@@ -435,5 +445,16 @@ public class RequestConstant {
     public static final String KEY_FRIEND_USER_TYPE = "friendUserType";
     public static final String KEY_FRIEND_MESSAGE_TYPE = "msgType";
     public static final String KEY_CHAT_MSG_ID = "msgId";
+
+    /**
+     * 订单优化
+     */
+    public static final String KEY_ORDER_FILTER_START_DATE = "startDate";
+    public static final String KEY_ORDER_FILTER_END_DATE = "endDate";
+    public static final String KEY_ORDER_FILTER_ITEM_ID = "itemId";
+    public static final String KEY_ORDER_FILTER_STATUS = "status";
+    public static final String KEY_ORDER_FILTER_TECH_ID = "techId";
+    public static final String KEY_ORDER_FILTER_TELEPHONE = "telephone";
+
 }
 

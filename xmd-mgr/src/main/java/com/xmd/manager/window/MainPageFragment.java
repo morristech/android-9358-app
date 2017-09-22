@@ -251,8 +251,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     @BindView(R.id.main_bad_comment_list)
     RecyclerView badCommentList;
-    //   @BindView(R.id.toolbar_right_text)
-//    TextView mToolbarRightText;
+       @BindView(R.id.toolbar_right_text)
+    TextView mToolbarRightText;
     //线上流水
     @BindView(R.id.tv_title_account)
     TextView tvTitleAccount;
@@ -329,7 +329,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     private ImageView imageLeft;
     private View view;
-    //   private RelativeLayout mRlToolbar;
+    private RelativeLayout mRlToolbar;
     private String mPhoneNoOrCouponNo;
     private String mQrNo;
     private String mRid;
@@ -391,29 +391,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//        mMainPageScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                onScrollChanged(scrollX, scrollY);
-//            }
-//        });
-        XLogger.i(">>>","onResume");
-    }
-
-//    private void onScrollChanged(int scrollX, int scrollY) {
-////        if (scrollY > Utils.dip2px(getActivity(), 100)) {
-////            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.toolbarBackground));
-////        } else {
-////            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
-////        }
-//    }
-
-    @Override
     public void onStop() {
         super.onStop();
-        XLogger.i(">>>","stop");
         mSlidingMenu.closeMenu();
     }
 
@@ -1017,7 +996,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     @OnClick({R.id.main_marketing_time_switch, R.id.main_publicity_time_switch, R.id.main_account_time_switch,
             R.id.main_bad_comment, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking, R.id.layout_order, R.id.ll_wifi_today, R.id.ll_visit_today,
-            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code,
+            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code,R.id.toolbar_right_text,
             R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view, R.id.newOrderLayout})
     public void onClickView(View v) {
         switch (v.getId()) {
@@ -1031,9 +1010,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 switchMainAccountTimeData();
                 break;
             case R.id.layout_order:
-                Intent intentOrder = new Intent(getActivity(), OrdersDetailActivity.class);
-                intentOrder.putExtra(Constant.PARAM_RANGE, 0);
-                startActivity(intentOrder);
+                startActivity(new Intent(getActivity(),ReserveDataActivity.class));
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -1072,9 +1049,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 //全部差评
                 CommentListActivity.startCommentListActivity(getActivity(), true, "");
                 break;
-//            case R.id.toolbar_right_text:
-//                startActivity(new Intent(getActivity(), VerificationRecordListActivity.class));
-//                break;
+            case R.id.toolbar_right_text:
+                startActivity(new Intent(getActivity(), VerificationRecordListActivity.class));
+                break;
             case R.id.ll_account_paid:
                 //线上买单
                 UINavigation.gotoOnlinePayNotifyList(getContext());
@@ -1093,7 +1070,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.newOrderLayout:
                 redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
-                ((MainActivity) getActivity()).switchTo(MainActivity.sTabOrder);
+                startActivity(new Intent(getActivity(), ReserveDataActivity.class));
+               // ((MainActivity) getActivity()).switchTo(MainActivity.sTabOrder);
                 break;
 
         }
@@ -1274,17 +1252,4 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         }
     };
 
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            if(isVisibleToUser){
-//                getActivity().getWindow().setStatusBarColor(0xFFFF826c);
-//
-//            }else{
-//                getActivity().getWindow().setStatusBarColor(ResourceUtils.getColor(R.color.colorPrimary));
-//            }
-//        }
-//    }
 }
