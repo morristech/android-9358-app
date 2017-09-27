@@ -242,7 +242,7 @@ public class User implements Serializable {
         chatPassword = getIfNotNull(chatPassword, n.chatPassword);
         techId = getIfNotNull(techId, n.techId);
         techNo = getIfNotNull(techNo, n.techNo);
-        XLogger.i("update user -> " + toString());
+        XLogger.d("update user -> " + toString());
         return this;
     }
 

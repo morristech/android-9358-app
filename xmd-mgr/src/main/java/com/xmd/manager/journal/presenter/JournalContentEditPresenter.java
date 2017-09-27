@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.soundcloud.android.crop.Crop;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
@@ -524,7 +523,7 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
     public void onImageArticleImageClicked(JournalContent content, int index) {
         mContentImageArticle = content;
         mContentImageArticleIndex = index;
-        xmdImageTool.start((Activity) mContext, new com.xmd.image_tool.ImageTool.ResultListener() {
+        xmdImageTool.onlyPick(true).start((Activity) mContext, new com.xmd.image_tool.ImageTool.ResultListener() {
             @Override
             public void onResult(String s, Uri uri, Bitmap bitmap) {
                 if (s == null && uri != null) {

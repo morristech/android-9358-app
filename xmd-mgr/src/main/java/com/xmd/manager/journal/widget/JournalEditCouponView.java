@@ -127,6 +127,16 @@ public class JournalEditCouponView extends LinearLayout {
         public View getView() {
             return JournalEditCouponView.this;
         }
+
+        @Override
+        public void clearData() {
+            super.clearData();
+            for (ViewHolder viewHolder : mViewHolders) {
+                viewHolder.mRadioButton.setChecked(false);
+                viewHolder.mSpinner.setEnabled(false);
+                viewHolder.mSpinner.setSelection(0);
+            }
+        }
     };
 
     private class ViewHolder {
