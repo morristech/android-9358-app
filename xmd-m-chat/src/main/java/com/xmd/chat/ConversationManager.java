@@ -4,7 +4,9 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.Pageable;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -43,46 +45,76 @@ public class ConversationManager {
     private List<ConversationViewModel> mConversationList; //会话列表，按时间倒序排列
     private int loadCount;
 
+    private List<MyConversion> conversationList = new ArrayList<>();
+
     public void init() {
         mConversationList = new ArrayList<>();
     }
 
     //加载会话列表
-    public void loadConversationList(final boolean forceLoadUserInfo, final Callback<List<ConversationViewModel>> callback) {
-        mConversationList.clear();
-        Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
-        if (conversationMap.size() == 0) {
-            callback.onResponse(new ArrayList<ConversationViewModel>(), null);
+    public void loadConversationList(final boolean forceLoadUserInfo, final Callback<Pageable<ConversationViewModel>> callback, int page, int pageSize) {
+        if (page == 0) {
+            Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
+            if (conversationMap.size() == 0) {
+                callback.onResponse(new Pageable<ConversationViewModel>(), null);
+                return;
+            }
+            XLogger.d("total conversation count: " + conversationMap.size());
+            conversationList.clear();
+            for (Map.Entry<String, EMConversation> entry : conversationMap.entrySet()) {
+                conversationList.add(new MyConversion(entry.getKey(), entry.getValue()));
+            }
+            sortConversationByTime(conversationList);
         }
-        loadCount = conversationMap.size();
-        for (final String key : conversationMap.keySet()) {
-            final EMConversation conversation = conversationMap.get(key);
-            if (!TextUtils.isEmpty(key) && conversation != null) {
-                final User user = userInfoService.getUserByChatId(key);
+        int maxIndex = (page + 1) * pageSize;
+        loadCount = maxIndex <= conversationList.size() ? pageSize : conversationList.size() - (maxIndex - pageSize);
+        int loadIndex = 0;
+        final Pageable<ConversationViewModel> pageable = new Pageable<>();
+        pageable.setPage(page);
+        pageable.setPageSize(pageSize);
+        pageable.setTotalSize(conversationList.size());
+        pageable.setTotalPage((pageable.getTotalSize() + pageSize - 1) / pageSize);
+        pageable.setData(new ArrayList<ConversationViewModel>(loadCount));
+        for (final MyConversion myConversion : conversationList) {
+            if (loadIndex < page * pageSize) {
+                loadIndex++;
+                continue;
+            }
+            if (loadIndex >= (page + 1) * pageSize) {
+                break;
+            }
+            loadIndex++;
+            final EMConversation conversation = myConversion.getConversation();
+            if (!TextUtils.isEmpty(myConversion.getChatId()) && conversation != null) {
+                final User user = userInfoService.getUserByChatId(myConversion.getChatId());
                 if (forceLoadUserInfo || user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
-                    XLogger.d("load user " + key + " from server");
-                    userInfoService.loadUserInfoByChatIdFromServer(key, new Callback<User>() {
+                    XLogger.d("load user " + myConversion.getChatId() + " from server");
+                    userInfoService.loadUserInfoByChatIdFromServer(myConversion.getChatId(), new Callback<User>() {
                         @Override
                         public void onResponse(User result, Throwable error) {
                             if (error != null) {
-                                XLogger.e(XmdChat.TAG, " not found user by chatId:" + key);
+                                XLogger.e(XmdChat.TAG, " not found user by chatId:" + myConversion.getChatId());
+                                if (forceLoadUserInfo && user != null && user.getContactPermission() != null) {
+                                    XLogger.i("load user info from server failed, use cache instead!");
+                                    error = null;
+                                    result = user;
+                                }
                             }
-                            if (forceLoadUserInfo && user != null && user.getContactPermission() != null) {
-                                XLogger.i("load user info from server failed,use cache instead!");
-                                error = null;
-                            }
-                            onLoadFinish(error != null, user, conversation, callback);
+
+                            onLoadFinish(error != null, result, conversation, callback, pageable);
                         }
                     });
                 } else {
-                    XLogger.d("load user " + key + " from cache");
-                    onLoadFinish(false, user, conversation, callback);
+                    XLogger.d("load user " + myConversion.getChatId() + " from cache");
+                    onLoadFinish(false, user, conversation, callback, pageable);
                 }
             }
         }
     }
 
-    private void onLoadFinish(boolean error, User user, EMConversation conversation, Callback<List<ConversationViewModel>> callback) {
+    private void onLoadFinish(boolean error, User user, EMConversation conversation,
+                              Callback<Pageable<ConversationViewModel>> callback,
+                              Pageable<ConversationViewModel> pageable) {
         if (!error) {
             if (!user.getContactPermission().isEchat()) {
                 EMClient.getInstance().chatManager().getAllConversations().remove(user.getChatId());
@@ -90,13 +122,17 @@ public class ConversationManager {
                 XLogger.i(XmdChat.TAG, "delete conversation:" + user.getChatId());
             } else {
                 ConversationViewModel data = new ConversationViewModel(user, conversation);
-                mConversationList.add(data);
+                pageable.getData().add(data);
             }
         }
         loadCount--;
         if (loadCount == 0) {
-            sortConversationByTime(mConversationList);
-            callback.onResponse(mConversationList, null);
+            if (pageable.getPage() == 0) {
+                mConversationList.clear();
+            }
+            sortConversationViewModelByTime(pageable.getData());
+            mConversationList.addAll(pageable.getData());
+            callback.onResponse(pageable, null);
         }
     }
 
@@ -157,7 +193,39 @@ public class ConversationManager {
         return -1;
     }
 
-    private void sortConversationByTime(List<ConversationViewModel> dataList) {
+    private void sortConversationByTime(List<MyConversion> dataList) {
+        Collections.sort(dataList, new Comparator<MyConversion>() {
+            @Override
+            public int compare(MyConversion o1, MyConversion o2) {
+                if (o1 == null && o2 == null) {
+                    return 0;
+                }
+                if (o1 == null) {
+                    return -1;
+                }
+                if (o2 == null) {
+                    return 1;
+                }
+                EMMessage last1 = o1.getConversation().getLastMessage();
+                EMMessage last2 = o2.getConversation().getLastMessage();
+                if (last1 == null) {
+                    return -1;
+                }
+                if (last2 == null) {
+                    return 1;
+                }
+                if (last1.getMsgTime() > last2.getMsgTime()) {
+                    return -1;
+                }
+                if (last2.getMsgTime() > last1.getMsgTime()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+    }
+
+    private void sortConversationViewModelByTime(List<ConversationViewModel> dataList) {
         Collections.sort(dataList, new Comparator<ConversationViewModel>() {
             @Override
             public int compare(ConversationViewModel o1, ConversationViewModel o2) {
@@ -210,34 +278,46 @@ public class ConversationManager {
         return EMClient.getInstance().chatManager().getConversation(chatId);
     }
 
-    /***************************会话过滤，不通过的会话会被删除**********************/
-    //设置过滤器
-//    public void setFilter(ConversationFilter filter) {
-//        this.filter = filter;
-//    }
-//    private ConversationFilter filter;
-//
-//    public interface ConversationFilter {
-//        void filter(ConversationViewModel data, Callback<Boolean> listener);
-//    }
-//
-//    public ConversationFilter getFilter() {
-//        return filter;
-//    }
-//
-//    //从会话中解析出用户信息
-//    public User parseUserFromConversation(EMConversation conversation) {
-//        EMMessage emMessage = conversation.getLatestMessageFromOthers();
-//        if (emMessage != null) {
-//            ChatMessage chatMessage = new ChatMessage(emMessage);
-//            if (chatMessage.getUserId() != null) {
-//                User user = new User(chatMessage.getUserId());
-//                user.setName(chatMessage.getUserName());
-//                user.setAvatar(chatMessage.getUserAvatar());
-//                user.setChatId(chatMessage.getEmMessage().getFrom());
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
+    public static class MyConversion {
+        private String chatId;
+        private EMConversation conversation;
+
+        public MyConversion(String chatId, EMConversation conversation) {
+            this.chatId = chatId;
+            this.conversation = conversation;
+        }
+
+        public String getChatId() {
+            return chatId;
+        }
+
+        public void setChatId(String chatId) {
+            this.chatId = chatId;
+        }
+
+        public EMConversation getConversation() {
+            return conversation;
+        }
+
+        public void setConversation(EMConversation conversation) {
+            this.conversation = conversation;
+        }
+
+        @Override
+        public int hashCode() {
+            return chatId.hashCode() + conversation.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (!(obj instanceof MyConversion)) {
+                return false;
+            }
+            MyConversion o = (MyConversion) obj;
+            return chatId.equals(o.chatId) && conversation.equals(o.getConversation());
+        }
+    }
 }

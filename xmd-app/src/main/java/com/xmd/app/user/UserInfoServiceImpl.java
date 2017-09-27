@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.greendao.database.Database;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import rx.Observable;
 
@@ -44,12 +45,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     private String currentToken;
 
     private DaoSession daoSession;
+    private ConcurrentHashMap<String, User> chatIdMap;
+    private ConcurrentHashMap<String, User> userIdMap;
 
     @Override
     public void init(Context context) {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "xmd-db-user");
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
+        chatIdMap = new ConcurrentHashMap<>();
+        userIdMap = new ConcurrentHashMap<>();
 
         EventBusSafeRegister.register(this);
     }
@@ -60,17 +65,31 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public synchronized User getUserByChatId(String chatId) {
-        return daoSession.getUserDao().queryBuilder()
-                .where(UserDao.Properties.ChatId.eq(chatId))
-                .unique();
+    public User getUserByChatId(String chatId) {
+        User user = chatIdMap.get(chatId);
+        if (user == null) {
+            user = daoSession.getUserDao().queryBuilder()
+                    .where(UserDao.Properties.ChatId.eq(chatId))
+                    .unique();
+            if (user != null) {
+                chatIdMap.put(chatId, user);
+            }
+        }
+        return user;
     }
 
     @Override
-    public synchronized User getUserByUserId(String userId) {
-        return daoSession.getUserDao().queryBuilder()
-                .where(UserDao.Properties.UserId.eq(userId))
-                .unique();
+    public User getUserByUserId(String userId) {
+        User user = userIdMap.get(userId);
+        if (user == null) {
+            user = daoSession.getUserDao().queryBuilder()
+                    .where(UserDao.Properties.UserId.eq(userId))
+                    .unique();
+            if (user != null) {
+                userIdMap.put(userId, user);
+            }
+        }
+        return user;
     }
 
     @Override
@@ -85,13 +104,13 @@ public class UserInfoServiceImpl implements UserInfoService {
             //保存信息
             if (old != null) {
                 user = old.update(user);
-            }
-            XLogger.i(TAG, "save user: " + user);
-            if (getUserByUserId(user.getId()) != null) {
                 daoSession.getUserDao().update(user);
             } else {
                 daoSession.getUserDao().insert(user);
             }
+            XLogger.i(TAG, "save user: " + user);
+            userIdMap.put(user.getId(), user);
+            chatIdMap.put(user.getChatId(), user);
         }
     }
 
@@ -113,7 +132,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             currentUser = getUserByUserId(user.getId());
             XmdApp.getInstance().getSp().edit().putString(SpConstants.KEY_CURRENT_USER_ID, user.getId()).apply();
         } else {
-            if(currentUser == null){
+            if (currentUser == null) {
                 return;
             }
             daoSession.getUserDao().delete(currentUser);

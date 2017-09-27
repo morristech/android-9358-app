@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,7 +17,10 @@ import android.widget.ImageView;
 
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.Pageable;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.BaseViewModel;
 import com.xmd.app.CommonRecyclerViewAdapter;
@@ -38,6 +42,7 @@ import com.xmd.chat.viewmodel.ConversationViewModel;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,14 +54,22 @@ public class ConversationListFragment extends BaseFragment {
     private FragmentConversationBinding mBinding;
     private CommonRecyclerViewAdapter<ConversationViewModel> mAdapter;
 
-    public ObservableBoolean showLoading = new ObservableBoolean();
+    public ObservableBoolean isLoading = new ObservableBoolean();
     public ObservableField<String> showError = new ObservableField<>();
 
-    private List<ConversationViewModel> conversationViewModelList;
+    private List<ConversationViewModel> conversationViewModelList = new ArrayList<>();
 
     private ConversationManager conversationManager = ConversationManager.getInstance();
 
     protected static final String ARG_TITLE = "title";
+
+    private boolean paused;
+    private boolean needReload;
+    private int page = 0;
+    private final static int PAGE_SIZE = 10;
+    private boolean hasMoreData;
+
+    private LinearLayoutManager layoutManager;
 
     public static ConversationListFragment newInstance(String title) {
         Bundle bundle = new Bundle();
@@ -70,7 +83,8 @@ public class ConversationListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversation, container, false);
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        layoutManager = new LinearLayoutManager(getContext());
+        mBinding.recyclerView.setLayoutManager(layoutManager);
         return mBinding.getRoot();
     }
 
@@ -80,18 +94,27 @@ public class ConversationListFragment extends BaseFragment {
 
         setTitle(getArguments().getString(ARG_TITLE));
 
-        mAdapter = new CommonRecyclerViewAdapter<ConversationViewModel>() {
-            @Override
-            public void onViewRecycled(ViewHolder holder) {
-                super.onViewRecycled(holder);
-            }
-        };
+        mAdapter = new CommonRecyclerViewAdapter<>();
+        mAdapter.setFooter(R.layout.list_item_load_more, BR.data, this);
         mBinding.recyclerView.setAdapter(mAdapter);
+        mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int last = layoutManager.findLastVisibleItemPosition();
+                    int total = layoutManager.getItemCount();
+                    if (hasMoreData && last + 1 == total) {
+                        loadConversation(false);
+                    }
+                }
+            }
+        });
         mBinding.refreshLayout.setColorSchemeColors(0xffff0000, 0xff00ff00, 0xff0000ff, 0xffffffff, 0xff000000);
         mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadConversation(true);
+                reloadConversation(true);
             }
         });
 
@@ -107,35 +130,82 @@ public class ConversationListFragment extends BaseFragment {
         EventBusSafeRegister.unregister(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        paused = false;
+        if (needReload) {
+            reloadConversation(false);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        paused = true;
+    }
+
+    private void reloadConversation(boolean refresh) {
+        page = 0;
+        loadConversation(refresh);
+    }
+
     public boolean getShowSelfAvatar() {
         return false;
     }
 
     @Subscribe
     public void loadData(EventChatLoginSuccess event) {
-        loadConversation(false);
+        reloadConversation(false);
     }
 
-    private void loadConversation(boolean forceLoadUserInfo) {
-        showLoading.set(true);
-        conversationManager.loadConversationList(forceLoadUserInfo, new Callback<List<ConversationViewModel>>() {
+    public boolean isHasMoreData() {
+        return hasMoreData;
+    }
+
+    private void loadConversation(final boolean forceLoadUserInfo) {
+        if (isLoading.get()) {
+            return;
+        }
+        isLoading.set(true);
+        ThreadPoolManager.run(new Runnable() {
             @Override
-            public void onResponse(List<ConversationViewModel> result, Throwable error) {
-                mBinding.refreshLayout.setRefreshing(false);
-                showLoading.set(false);
-                conversationViewModelList = result;
-                mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationViewModelList);
-                ThreadPoolManager.postToUI(new Runnable() {
+            public void run() {
+                conversationManager.loadConversationList(forceLoadUserInfo, new Callback<Pageable<ConversationViewModel>>() {
                     @Override
-                    public void run() {
-                        mAdapter.notifyDataSetChanged();
+                    public void onResponse(final Pageable<ConversationViewModel> result, Throwable error) {
+                        if (error != null) {
+                            XToast.show("数据加载失败：" + error.getMessage());
+                            return;
+                        }
+                        XLogger.d("loadConversationList:" + result);
+                        ThreadPoolManager.postToUI(new Runnable() {
+                            @Override
+                            public void run() {
+                                isLoading.set(false);
+                                mBinding.refreshLayout.setRefreshing(false);
+                                if (result.getPage() == 0) {
+                                    conversationViewModelList.clear();
+                                }
+                                conversationViewModelList.addAll(result.getData());
+                                mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationViewModelList);
+                                mAdapter.notifyDataSetChanged();
+                                hasMoreData = page != result.getTotalPage() - 1;
+                                page++;
+                            }
+                        });
                     }
-                });
+                }, page, PAGE_SIZE);
             }
         });
     }
 
     private void processMessageReceiveOrSend(ChatMessage chatMessage) {
+        if (paused) {
+            XLogger.d("do not update when paused!");
+            needReload = true;
+            return;
+        }
         ConversationViewModel data = conversationManager.getConversationData(chatMessage.getRemoteChatId());
         if (data == null) {
             //new conversation,refresh all list

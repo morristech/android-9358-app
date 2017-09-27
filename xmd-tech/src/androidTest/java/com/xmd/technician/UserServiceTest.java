@@ -21,9 +21,10 @@ import java.util.List;
 public class UserServiceTest {
     @Test
     public void test() {
-//        for (int i = 0; i < 10000; i++) {
-//            UserInfoServiceImpl.getInstance().saveUser(new User(String.valueOf(i)));
-//        }
+        UserInfoServiceImpl.getInstance().init(TechApplication.getAppContext());
+        for (int i = 0; i < 10000; i++) {
+            UserInfoServiceImpl.getInstance().saveUser(new User(String.valueOf(i)));
+        }
         long t = SystemClock.elapsedRealtime();
         List<User> users = UserInfoServiceImpl.getInstance().getAllUsers();
         XLogger.d("---read " + users.size() + " cost: " + (SystemClock.elapsedRealtime() - t));
