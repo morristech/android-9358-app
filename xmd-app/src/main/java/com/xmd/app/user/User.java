@@ -227,19 +227,19 @@ public class User implements Serializable {
 
     public boolean hasNewData(User n) {
         return hasNewData(chatId, n.chatId)
-                && hasNewData(name, n.name)
-                && hasNewData(avatar, n.avatar)
-                && hasNewData(avatarId, n.avatarId)
-                && hasNewData(noteName, n.noteName)
-                && hasNewData(userRoles, n.userRoles)
-                && hasNewData(userType, n.userType)
-                && hasNewData(telephone, n.telephone)
-                && hasNewData(contactPermission, n.contactPermission)
-                && hasNewData(clubId, n.clubId)
-                && hasNewData(clubName, n.clubName)
-                && hasNewData(chatPassword, n.chatPassword)
-                && hasNewData(techId, n.techId)
-                && hasNewData(techNo, n.techNo);
+                || hasNewData(name, n.name)
+                || hasNewData(avatar, n.avatar)
+                || hasNewData(avatarId, n.avatarId)
+                || hasNewData(noteName, n.noteName)
+                || hasNewData(userRoles, n.userRoles)
+                || hasNewData(userType, n.userType)
+                || hasNewData(telephone, n.telephone)
+                || hasNewData(contactPermission, n.contactPermission)
+                || hasNewData(clubId, n.clubId)
+                || hasNewData(clubName, n.clubName)
+                || hasNewData(chatPassword, n.chatPassword)
+                || hasNewData(techId, n.techId)
+                || hasNewData(techNo, n.techNo);
     }
 
     private <T> boolean hasNewData(T o, T n) {

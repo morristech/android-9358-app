@@ -197,15 +197,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Subscribe(sticky = true, priority = 10)
     public void onLogin(EventLogin eventLogin) {
         XLogger.i(TAG, "===>user login");
-        currentUser = eventLogin.getUser();
         currentToken = eventLogin.getToken();
-        saveCurrentUser(currentUser);
+        saveCurrentUser(eventLogin.getUser());
     }
 
     @Subscribe(sticky = true, priority = -1)
     public void onLogout(EventLogout eventLogout) {
         XLogger.i(TAG, "<===user logout");
-        currentUser = null;
         currentToken = null;
         saveCurrentUser(null);
     }
@@ -213,7 +211,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Subscribe
     public void onTokenExpire(EventTokenExpired tokenExpired) {
         XLogger.i(TAG, "<===user expired");
-        currentUser = null;
         currentToken = null;
         saveCurrentUser(null);
     }
