@@ -190,7 +190,7 @@ public class ConversationListFragment extends BaseFragment {
                                 conversationViewModelList.addAll(result.getData());
                                 mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationViewModelList);
                                 mAdapter.notifyDataSetChanged();
-                                hasMoreData = page != result.getTotalPage() - 1;
+                                hasMoreData = page != result.getTotalPage() && page != result.getTotalPage() - 1;
                                 page++;
                             }
                         });

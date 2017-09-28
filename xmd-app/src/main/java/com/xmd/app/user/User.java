@@ -2,8 +2,6 @@ package com.xmd.app.user;
 
 import android.text.TextUtils;
 
-import com.shidou.commonlibrary.helper.XLogger;
-
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -227,60 +225,48 @@ public class User implements Serializable {
         this.contactPermission = contactPermission;
     }
 
-    public User update(User n) {
-        chatId = n.chatId != null ? n.chatId : chatId;
-        name = n.name != null ? n.name : name;
-        avatar = n.avatar != null ? n.avatar : avatar;
-        noteName = n.noteName != null ? n.noteName : noteName;
-        userRoles = n.userRoles != null ? n.userRoles : userRoles;
-        userType = n.userType != null ? n.userType : userType;
-        telephone = n.telephone != null ? n.telephone : telephone;
-        contactPermission = n.contactPermission != null ? n.contactPermission : contactPermission;
+    public boolean hasNewData(User n) {
+        return hasNewData(chatId, n.chatId)
+                && hasNewData(name, n.name)
+                && hasNewData(avatar, n.avatar)
+                && hasNewData(avatarId, n.avatarId)
+                && hasNewData(noteName, n.noteName)
+                && hasNewData(userRoles, n.userRoles)
+                && hasNewData(userType, n.userType)
+                && hasNewData(telephone, n.telephone)
+                && hasNewData(contactPermission, n.contactPermission)
+                && hasNewData(clubId, n.clubId)
+                && hasNewData(clubName, n.clubName)
+                && hasNewData(chatPassword, n.chatPassword)
+                && hasNewData(techId, n.techId)
+                && hasNewData(techNo, n.techNo);
+    }
 
-        clubId = getIfNotNull(clubId, n.clubId);
-        clubName = getIfNotNull(clubName, n.clubName);
-        chatPassword = getIfNotNull(chatPassword, n.chatPassword);
-        techId = getIfNotNull(techId, n.techId);
-        techNo = getIfNotNull(techNo, n.techNo);
-        XLogger.d("update user -> " + toString());
+    private <T> boolean hasNewData(T o, T n) {
+        return n != null && !n.equals(o);
+    }
+
+    public User update(User n) {
+        chatId = update(chatId, n.chatId);
+        name = update(name, n.name);
+        avatar = update(avatar, n.avatar);
+        avatarId = update(avatarId, n.avatarId);
+        noteName = update(noteName, n.noteName);
+        userRoles = update(userRoles, n.userRoles);
+        userType = update(userType, n.userType);
+        telephone = update(telephone, n.telephone);
+        contactPermission = update(contactPermission, n.contactPermission);
+
+        clubId = update(clubId, n.clubId);
+        clubName = update(clubName, n.clubName);
+        chatPassword = update(chatPassword, n.chatPassword);
+        techId = update(techId, n.techId);
+        techNo = update(techNo, n.techNo);
         return this;
     }
 
-    private <T> T getIfNotNull(T o, T n) {
+    private <T> T update(T o, T n) {
         return n == null ? o : n;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof User)) {
-            return false;
-        }
-        User o = (User) obj;
-        return TextUtils.equals(userId, o.userId)
-                && TextUtils.equals(chatId, o.chatId)
-                && TextUtils.equals(avatar, o.avatar)
-                && TextUtils.equals(name, o.name)
-                && TextUtils.equals(userType, o.userType)
-                && TextUtils.equals(telephone, o.telephone)
-                && TextUtils.equals(userRoles, o.userRoles)
-                && TextUtils.equals(noteName, o.noteName)
-                && TextUtils.equals(clubId, o.clubId)
-                && TextUtils.equals(clubName, o.clubName)
-                && TextUtils.equals(techId, o.techId)
-                && TextUtils.equals(techNo, o.techNo)
-                && TextUtils.equals(chatPassword, o.chatPassword)
-                && (o.contactPermission == null || o.contactPermission.equals(contactPermission));
-    }
-
-    @Override
-    public int hashCode() {
-        int h = 0x48;
-        h += userId == null ? 0 : userId.hashCode();
-        h += name == null ? 0 : name.hashCode();
-        h += avatar == null ? 0 : avatar.hashCode();
-        h += chatId == null ? 0 : chatId.hashCode();
-        h += noteName == null ? 0 : noteName.hashCode();
-        return h;
     }
 
     @Override
@@ -289,14 +275,16 @@ public class User implements Serializable {
                 "userId='" + userId + '\'' +
                 ", chatId='" + chatId + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", avatarId='" + avatarId + '\'' +
+                ", noteName='" + noteName + '\'' +
                 ", name='" + name + '\'' +
                 ", userType='" + userType + '\'' +
                 ", userRoles='" + userRoles + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", contactPermission=" + contactPermission +
-                ", noteName='" + noteName + '\'' +
                 ", clubId='" + clubId + '\'' +
                 ", clubName='" + clubName + '\'' +
+                ", techId='" + techId + '\'' +
                 ", techNo='" + techNo + '\'' +
                 ", chatPassword='" + chatPassword + '\'' +
                 '}';

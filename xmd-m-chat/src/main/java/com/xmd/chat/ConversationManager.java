@@ -55,11 +55,11 @@ public class ConversationManager {
     public void loadConversationList(final boolean forceLoadUserInfo, final Callback<Pageable<ConversationViewModel>> callback, int page, int pageSize) {
         if (page == 0) {
             Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
+            XLogger.d("total conversation count: " + conversationMap.size());
             if (conversationMap.size() == 0) {
                 callback.onResponse(new Pageable<ConversationViewModel>(), null);
                 return;
             }
-            XLogger.d("total conversation count: " + conversationMap.size());
             conversationList.clear();
             for (Map.Entry<String, EMConversation> entry : conversationMap.entrySet()) {
                 conversationList.add(new MyConversion(entry.getKey(), entry.getValue()));

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.CommonNetService;
 import com.xmd.app.EventBusSafeRegister;
@@ -73,6 +74,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     .unique();
             if (user != null) {
                 chatIdMap.put(chatId, user);
+                XLogger.i("get user from db : " + user);
             }
         }
         return user;
@@ -87,31 +89,39 @@ public class UserInfoServiceImpl implements UserInfoService {
                     .unique();
             if (user != null) {
                 userIdMap.put(userId, user);
+                XLogger.i("get user from db : " + user);
             }
         }
         return user;
     }
 
     @Override
-    public synchronized void saveUser(User user) {
+    public void saveUser(User user) {
         if (user == null || TextUtils.isEmpty(user.getId())) {
             XLogger.e("无法保存用户：" + user);
             return;
         }
-        User old = getUserByUserId(user.getUserId());
-
-        if (old == null || !user.equals(old)) {
-            //保存信息
-            if (old != null) {
-                user = old.update(user);
-                daoSession.getUserDao().update(user);
-            } else {
-                daoSession.getUserDao().insert(user);
+        synchronized (user.getUserId()) {
+            User old = getUserByUserId(user.getUserId());
+            if (old == null || old.hasNewData(user)) {
+                if (old != null) {
+                    user = old.update(user);
+                }
+                userIdMap.put(user.getId(), user);
+                chatIdMap.put(user.getChatId(), user);
+                saveUserToDb(user);
+                XLogger.i(TAG, (old == null ? "save" : "update") + " user: " + user);
             }
-            XLogger.i(TAG, "save user: " + user);
-            userIdMap.put(user.getId(), user);
-            chatIdMap.put(user.getChatId(), user);
         }
+    }
+
+    private void saveUserToDb(final User user) {
+        ThreadPoolManager.run(new Runnable() {
+            @Override
+            public void run() {
+                daoSession.getUserDao().insertOrReplace(user);
+            }
+        });
     }
 
     @Override

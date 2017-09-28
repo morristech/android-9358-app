@@ -67,4 +67,22 @@ public class ContactPermission implements Serializable {
     public boolean getCall() {
         return this.call;
     }
+
+    @Override
+    public int hashCode() {
+        return 49 + hashCode(hello) + hashCode(echat) + hashCode(call);
+    }
+
+    private int hashCode(boolean b) {
+        return b ? 1 : 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof ContactPermission)) {
+            return false;
+        }
+        ContactPermission o = (ContactPermission) obj;
+        return hello == o.hello && echat == o.echat && call == o.call;
+    }
 }

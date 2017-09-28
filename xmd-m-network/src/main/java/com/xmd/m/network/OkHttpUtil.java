@@ -111,7 +111,7 @@ public class OkHttpUtil {
                 Response response = chain.proceed(request);
 
                 if (mLog) {
-                    XLogger.i(TAG, "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
+                    XLogger.d(TAG, "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
                             + response.request().method() + "-RESPONSE:" + response.toString());
                 }
 
