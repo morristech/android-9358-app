@@ -100,7 +100,8 @@ public class ChatActivity extends BaseActivity {
     private int softwareKeyboardHeight = 0;
 
     private AudioManager audioManager;
-    private  String chatId;
+    private String chatId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +119,7 @@ public class ChatActivity extends BaseActivity {
         mBinding.recyclerView.setOnSizeChangedListener(new ChatRecyclerView.OnSizeChangedListener() {
             @Override
             public void onSizeChanged(int w, int h, int oldw, int oldh) {
-                if (oldh > h) {
+                if (oldh > h && oldh - h > 200) {
                     //small size, need to scroll to last visible position
                     mBinding.recyclerView.scrollToPosition(layoutManager.findLastVisibleItemPosition());
                     if (mFocusMenuView == null) {
@@ -349,8 +350,8 @@ public class ChatActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void inCustomerBlackList(InCustomerBlackListEvent event){
-        ChatSettingManager.getInstance().judgeInCustomerBlack(chatId,event.isInCustomerBlackList);
+    public void inCustomerBlackList(InCustomerBlackListEvent event) {
+        ChatSettingManager.getInstance().judgeInCustomerBlack(chatId, event.isInCustomerBlackList);
 
     }
 
