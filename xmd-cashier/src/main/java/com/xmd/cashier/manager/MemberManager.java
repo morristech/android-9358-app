@@ -403,6 +403,8 @@ public class MemberManager {
                 mInPosPay.set(false);
                 mTrade.posPayReturn = o;
                 if (error == null) {
+                    mTrade.setOriginMoney(money);
+                    mTrade.tradeTime = DateUtils.doDate2String(new Date());
                     mTrade.posMoney = money;
                     mTrade.posPayResult = AppConstants.PAY_RESULT_SUCCESS;
                     mTrade.posPayTypeString = Utils.getPayTypeString(CashierManager.getInstance().getPayType(o));
@@ -488,7 +490,6 @@ public class MemberManager {
         } else {
             mPos.printText("会员等级：", info.memberTypeName);
         }
-
         mPos.printDivide();
 
         switch (info.tradeType) {
