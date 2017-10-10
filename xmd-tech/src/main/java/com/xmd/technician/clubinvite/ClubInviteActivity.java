@@ -18,6 +18,7 @@ import com.xmd.technician.BR;
 import com.xmd.technician.R;
 import com.xmd.technician.clubinvite.beans.ClubInvite;
 import com.xmd.technician.widget.AlertDialogBuilder;
+import com.xmd.technician.widget.EmptyView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,6 +33,7 @@ public class ClubInviteActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private CommonRecyclerViewAdapter<ClubInvite> adapter;
     private List<ClubInvite> dataList = new ArrayList<>();
+    private EmptyView mEmptyView;
     private int page = 0;
     private int pageSize = Integer.MAX_VALUE;
 
@@ -39,7 +41,7 @@ public class ClubInviteActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_invite);
-
+        mEmptyView = (EmptyView) findViewById(R.id.empty_view);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonRecyclerViewAdapter<>();
@@ -70,6 +72,11 @@ public class ClubInviteActivity extends BaseActivity {
             @Override
             public void onCallbackSuccess(BaseBean<List<ClubInvite>> result) {
                 hideLoading();
+                if(result.getRespData().size() == 0){
+                    mEmptyView.setEmptyViewWithDescription(R.drawable.empty,"");
+                }else{
+                    mEmptyView.setStatus(EmptyView.Status.Gone);
+                }
                 if (page == 1) {
                     dataList.clear();
                 }

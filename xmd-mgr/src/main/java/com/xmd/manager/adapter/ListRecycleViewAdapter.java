@@ -393,9 +393,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     }
 
-
-
-
     /**
      * 订单
      *

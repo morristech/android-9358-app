@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xmd.app.widget.StationaryScrollView;
 import com.xmd.manager.R;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
@@ -65,7 +67,8 @@ public class ReserveDataActivity extends BaseActivity {
     FrameLayout fragmentSummaryData;
     @BindView(R.id.fragment_staff_data)
     FrameLayout fragmentStaffData;
-
+    @BindView(R.id.stationary_scroll_view)
+    StationaryScrollView stationaryScrollView;
 
 
     private String mStartTime;
@@ -94,7 +97,15 @@ public class ReserveDataActivity extends BaseActivity {
         initTimeFilterFragment();
         initSummaryDataFragment();
         initStaffDataFragment();
-
+        final View view = stationaryScrollView;
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                ViewGroup.LayoutParams containerParams = stationaryScrollView.getLayoutParams();
+                containerParams.height = stationaryScrollView.getHeight();
+                fragmentStaffData.setLayoutParams(containerParams);
+            }
+        });
     }
 
     private void initTimeFilterFragment() {
@@ -108,8 +119,8 @@ public class ReserveDataActivity extends BaseActivity {
     private void initSummaryDataFragment() {
         mSummaryDataFragment = new SummaryDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(RequestConstant.KEY_START_DATE,mStartTime);
-        bundle.putString(RequestConstant.KEY_END_DATE,mEndTime);
+        bundle.putString(RequestConstant.KEY_START_DATE, mStartTime);
+        bundle.putString(RequestConstant.KEY_END_DATE, mEndTime);
         mSummaryDataFragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -120,8 +131,8 @@ public class ReserveDataActivity extends BaseActivity {
     private void initStaffDataFragment() {
         mStaffDataFragment = new StaffDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(RequestConstant.KEY_START_DATE,mStartTime);
-        bundle.putString(RequestConstant.KEY_END_DATE,mEndTime);
+        bundle.putString(RequestConstant.KEY_START_DATE, mStartTime);
+        bundle.putString(RequestConstant.KEY_END_DATE, mEndTime);
         mStaffDataFragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -192,15 +203,15 @@ public class ReserveDataActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             //右上角进入订单页面
-            OnlineOrderActivity.startOnlineOrderActivity(ReserveDataActivity.this,mStartTime,mEndTime, "");
+            OnlineOrderActivity.startOnlineOrderActivity(ReserveDataActivity.this, mStartTime, mEndTime, "");
         }
     };
 
     @Subscribe
-    public void DateChangedSubscribe(DateChangedEvent event){
+    public void DateChangedSubscribe(DateChangedEvent event) {
         mStartTime = event.startTime;
         mEndTime = event.endTime;
-        mStaffDataFragment.setDateChanged(event.startTime,event.endTime);
-        mSummaryDataFragment.onRefreshDate(event.startTime,event.endTime);
+        mStaffDataFragment.setDateChanged(event.startTime, event.endTime);
+        mSummaryDataFragment.onRefreshDate(event.startTime, event.endTime);
     }
 }
