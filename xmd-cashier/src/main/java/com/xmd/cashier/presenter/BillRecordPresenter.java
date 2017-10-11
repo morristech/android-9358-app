@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
+import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
@@ -21,7 +22,6 @@ import rx.Subscription;
  */
 
 public class BillRecordPresenter implements BillRecordContract.Presenter {
-    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     private Context mContext;
     private BillRecordContract.View mView;
     private BillManager mBillManager;
@@ -224,6 +224,6 @@ public class BillRecordPresenter implements BillRecordContract.Presenter {
     }
 
     private String getFormatString(Date date) {
-        return Utils.getFormatString(date, DEFAULT_DATE_FORMAT);
+        return DateUtils.doDate2String(date, DateUtils.DF_YEAR_MONTH_DAY);
     }
 }

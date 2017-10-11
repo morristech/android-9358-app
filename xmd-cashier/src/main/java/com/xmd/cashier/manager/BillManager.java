@@ -94,7 +94,7 @@ public class BillManager {
         mPos.printText("交易时间：", DateUtils.doLong2String(Long.parseLong(info.payDate)));
         mPos.printText("支付方式：", Utils.getPayTypeString(info.posPayType));
         mPos.printText("收款人员：", (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
-        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
             byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {

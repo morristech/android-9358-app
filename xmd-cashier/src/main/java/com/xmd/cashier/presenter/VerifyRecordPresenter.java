@@ -309,7 +309,7 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
         calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
-        return DateUtils.doDate2String(calendar.getTime(), DateUtils.DF_DEFAULT);
+        return DateUtils.doDate2String(calendar.getTime());
     }
 
     // 上个月末
@@ -321,6 +321,6 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, calendar.getActualMaximum(Calendar.MINUTE));
         calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
-        return DateUtils.doDate2String(calendar.getTime(), DateUtils.DF_DEFAULT);
+        return DateUtils.doDate2String(calendar.getTime());
     }
 }

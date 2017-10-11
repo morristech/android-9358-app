@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.BuildConfig;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.m.network.XmdNetwork;
 
 /**
@@ -101,5 +102,29 @@ public class SPManager {
         if (count > 0) {
             setOrderPushTag(count - 1);
         }
+    }
+
+    public String getStatisticsStart() {
+        return mSharedPreferences.getString(SPConstants.STATISTICS_START_TIME, AppConstants.STATISTICS_DEFAULT_TIME);
+    }
+
+    public void setStatisticsStart(String startTime) {
+        mSharedPreferences.edit().putString(SPConstants.STATISTICS_START_TIME, startTime).apply();
+    }
+
+    public String getStatisticsEnd() {
+        return mSharedPreferences.getString(SPConstants.STATISTICS_END_TIME, AppConstants.STATISTICS_DEFAULT_TIME);
+    }
+
+    public void setStatisticsEnd(String endTime) {
+        mSharedPreferences.edit().putString(SPConstants.STATISTICS_END_TIME, endTime).apply();
+    }
+
+    public boolean getFirstStatistic() {    //是否第一次进行设置
+        return mSharedPreferences.getBoolean(SPConstants.STATISTICS_FIRST_SETTING, true);
+    }
+
+    public void setFirstStatistic(boolean isFirst) {
+        mSharedPreferences.edit().putBoolean(SPConstants.STATISTICS_FIRST_SETTING, isFirst).apply();
     }
 }

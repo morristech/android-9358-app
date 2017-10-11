@@ -67,6 +67,7 @@ public class AccountManager {
             mUser.clubIconUrl = clubResult.getRespData().imageUrl;
             mUser.clubName = clubResult.getRespData().name;
             mUser.clubId = clubResult.getRespData().clubId;
+            mUser.clubCreateTime = clubResult.getRespData().createTime;
             LocalPersistenceManager.writeUser(mUser);
         }
     }
@@ -99,6 +100,10 @@ public class AccountManager {
 
     public String getClubIcon() {
         return mUser.clubIconUrl;
+    }
+
+    public String getClubCreateTime() {
+        return mUser.clubCreateTime;
     }
 
     public Subscription login(String username, String password, final Callback<LoginResult> callback) {

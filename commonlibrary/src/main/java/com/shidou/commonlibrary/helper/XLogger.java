@@ -80,7 +80,7 @@ public class XLogger {
             }
             //创建日志输出文件
             mLogFile = new File(mLogFileDirPath + File.separator +
-                    DateUtils.doLong2String(System.currentTimeMillis(), DateUtils.DF_JUST_DAY)
+                    DateUtils.doLong2String(System.currentTimeMillis(), DateUtils.DF_YEAR_MONTH_DAY)
                     + LOG_FILE_ENDFIX);
             if (!mLogFile.exists()) {
                 try {

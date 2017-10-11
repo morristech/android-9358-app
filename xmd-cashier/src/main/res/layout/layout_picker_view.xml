@@ -10,14 +10,13 @@
         android:background="@color/colorWhite">
 
         <TextView
-            android:id="@+id/tv_picker_all"
+            android:id="@+id/tv_picker_choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:padding="@dimen/activity_small_margin"
-            android:text="全部"
             android:textColor="@color/colorText4"
             android:textSize="@dimen/small_font_size" />
 

@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_statistic_money"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_normal_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="交易总金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/no_total_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="优惠减免："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_internal_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="奖金提成(小摩豆代付部分)："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_bonus_commission"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="手续费："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_total_fee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="退款："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_total_refund"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="光大结算打款金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_gd_settle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="在线买单"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_fast_pay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="工牌扫码买单："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_qr_tech"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="收银水牌买单："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_qr_club"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="POS买单："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_qr_pos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="会员充值"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_member_recharge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="付费预约"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_paid_order"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="营销活动收入"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_marketing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="点钟券："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_paid_coupon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="限时抢："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_paid_service_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="特惠商城收入"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_mall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="项目次卡："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_item_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="混合套餐："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_item_package"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="POS结算打款金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_pos_settle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="银联支付："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_pos_settle_union"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="其他交易金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/no_other_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="优惠减免："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_internal_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="退款："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_internal_refund"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="POS收银"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_pos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="现金支付："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_pos_cash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="管理者后台(会员充值)"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_member_recharge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="微信："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_member_wx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="支付宝："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_member_ali"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="银联："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_member_union"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="现金："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_member_cash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="其他："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_member_else"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_switch_to_settle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:clickable="true"
+        android:drawablePadding="@dimen/activity_normal_margin"
+        android:drawableRight="@drawable/ic_more_right"
+        android:gravity="right"
+        android:padding="@dimen/activity_normal_margin"
+        android:text="按打款金额查看"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/small_font_size" />
+</LinearLayout>

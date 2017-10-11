@@ -524,7 +524,7 @@ public class MemberManager {
                 }
 
                 mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
-                mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+                mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
                 break;
             case AppConstants.MEMBER_TRADE_TYPE_PAY:        //消费
                 mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.orderAmount));
@@ -555,7 +555,7 @@ public class MemberManager {
                     mPos.printText("服务技师：", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
                 }
                 mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
-                mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+                mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
                 break;
             default:
                 break;

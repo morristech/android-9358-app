@@ -123,7 +123,7 @@ public class VerifyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Glide.with(mContext).load(info.avatarUrl).dontAnimate().placeholder(R.drawable.ic_avatar).into(itemHolder.mAvatar);
             if (!TextUtils.isEmpty(info.verifyTime)) {
                 itemHolder.mTime.setVisibility(View.VISIBLE);
-                itemHolder.mTime.setText(DateUtils.doString2String(info.verifyTime, DateUtils.DF_DEFAULT, DateUtils.DF_JUST_DATE_TIME));
+                itemHolder.mTime.setText(DateUtils.doString2String(info.verifyTime, DateUtils.DF_DEFAULT, DateUtils.DF_MONTH_DAY_HOUR_MIN));
             } else {
                 itemHolder.mTime.setVisibility(View.INVISIBLE);
             }

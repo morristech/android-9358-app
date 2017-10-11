@@ -151,6 +151,14 @@ public class ViewPagerTabIndicator extends FrameLayout {
         mPaint.setStyle(Paint.Style.FILL);
     }
 
+    public void setPaintColor(int colorId) {
+        mPaint.setColor(ResourceUtils.getColor(colorId));
+    }
+
+    public void setTextColor(int colorStateList) {
+        mTextColor = ResourceUtils.getColorStateList(colorStateList);
+    }
+
     public void setViewPager(ViewPager viewPager) {
         mViewPager = viewPager;
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -304,7 +312,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
             }
         });
 
-        if (mTabIcons != null && mTabIcons.length > 0) {
+        if (mTabIcons != null && mTabIcons.length > 0 && mTabIcons[index] != null) {
             mTabIcons[index].setBounds(0, 0, mTabIcons[index].getIntrinsicWidth(), mTabIcons[index].getIntrinsicHeight());
             switch (mDrawableDirection) {
                 case DRAWABLE_LEFT:

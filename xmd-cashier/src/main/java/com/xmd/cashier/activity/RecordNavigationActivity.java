@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
+import com.xmd.cashier.dal.sp.SPManager;
 
 /**
  * Created by zr on 17-4-27.
@@ -17,6 +18,7 @@ public class RecordNavigationActivity extends BaseActivity {
     private RelativeLayout lyBillNavigation;
     private RelativeLayout lySettleNavigation;
     private RelativeLayout lyVerifyNavigation;
+    private RelativeLayout lyStatisticsNavigation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class RecordNavigationActivity extends BaseActivity {
         lyBillNavigation = (RelativeLayout) findViewById(R.id.layout_navigation_bill);
         lySettleNavigation = (RelativeLayout) findViewById(R.id.layout_navigation_settle);
         lyVerifyNavigation = (RelativeLayout) findViewById(R.id.layout_navigation_verify);
+        lyStatisticsNavigation = (RelativeLayout) findViewById(R.id.layout_navigation_statistics);
 
         lyBillNavigation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,17 @@ public class RecordNavigationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 UiNavigation.gotoVerifyRecordActivity(RecordNavigationActivity.this);
+            }
+        });
+
+        lyStatisticsNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SPManager.getInstance().getFirstStatistic()) {
+                    UiNavigation.gotoStatisticsSettingActivity(RecordNavigationActivity.this);
+                } else {
+                    UiNavigation.gotoStatisticsActivity(RecordNavigationActivity.this);
+                }
             }
         });
     }

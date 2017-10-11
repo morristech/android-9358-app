@@ -145,7 +145,7 @@ public class VerifyRecordActivity extends BaseActivity implements VerifyRecordCo
                     if (TextUtils.isEmpty(mDecorateData.get(position).verifyTime)) {
                         return "未知";
                     } else {
-                        return DateUtils.doString2String(mDecorateData.get(position).verifyTime, DateUtils.DF_DEFAULT, DateUtils.DF_JUST_YEAR_MONTH_ZH);
+                        return DateUtils.doString2String(mDecorateData.get(position).verifyTime, DateUtils.DF_DEFAULT, DateUtils.DF_YEAR_MONTH_ZH);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

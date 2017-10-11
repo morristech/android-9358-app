@@ -19,7 +19,6 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.McardInfoContract;
 import com.xmd.cashier.dal.event.CardFinishEvent;
 import com.xmd.cashier.presenter.McardInfoPresenter;
@@ -127,14 +126,14 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
         mPickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                mPresenter.onBirthSelect(Utils.getFormatString(date, DateUtils.DF_JUST_DAY));
+                mPresenter.onBirthSelect(DateUtils.doDate2String(date, DateUtils.DF_YEAR_MONTH_DAY));
                 mPickerView.dismiss();
             }
         })
                 .setLayoutRes(R.layout.layout_picker_view, new CustomListener() {
                     @Override
                     public void customLayout(View v) {
-                        TextView tvAll = (TextView) v.findViewById(R.id.tv_picker_all);
+                        TextView tvAll = (TextView) v.findViewById(R.id.tv_picker_choice);
                         TextView tvFinish = (TextView) v.findViewById(R.id.tv_picker_finish);
                         tvAll.setText("清除");
                         tvAll.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +152,7 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
                         });
                     }
                 })
-                .setType(TimePickerView.Type.YEAR_MONTH_DAY)
+                .setType(new boolean[]{true, true, true, false, false, false})
                 .isCenterLabel(false)
                 .setTextColorCenter(getResources().getColor(R.color.colorPink))
                 .setDividerColor(getResources().getColor(R.color.colorPink))

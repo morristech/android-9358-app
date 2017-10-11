@@ -16,7 +16,6 @@ import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.SettleRecordAdapter;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.SettleRecordContract;
 import com.xmd.cashier.dal.bean.SettleRecordInfo;
 import com.xmd.cashier.presenter.SettleRecordPresenter;
@@ -72,7 +71,7 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
         mPickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                mPickerMonth = Utils.getFormatString(date, DateUtils.DF_JUST_YEAR_MONTH);
+                mPickerMonth = DateUtils.doDate2String(date, DateUtils.DF_YEAR_MONTH);
                 mPresenter.loadMonth(mPickerMonth);
                 mPickerView.dismiss();
             }
@@ -82,9 +81,10 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
                 .setLayoutRes(R.layout.layout_picker_view, new CustomListener() {
                     @Override
                     public void customLayout(View v) {
-                        TextView tvAll = (TextView) v.findViewById(R.id.tv_picker_all);
+                        TextView tvChoice = (TextView) v.findViewById(R.id.tv_picker_choice);
+                        tvChoice.setText("全部");
                         TextView tvFinish = (TextView) v.findViewById(R.id.tv_picker_finish);
-                        tvAll.setOnClickListener(new View.OnClickListener() {
+                        tvChoice.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mPresenter.loadInit();
@@ -100,7 +100,7 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
                         });
                     }
                 })
-                .setType(TimePickerView.Type.YEAR_MONTH)
+                .setType(new boolean[]{true, true, false, false, false, false})
                 .isCenterLabel(false)
                 .setTextColorCenter(getResources().getColor(R.color.colorPink))
                 .setDividerColor(getResources().getColor(R.color.colorPink))
@@ -135,7 +135,7 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
                 if (TextUtils.isEmpty(mDecorateData.get(position).createTime)) {
                     return "未知";
                 } else {
-                    return DateUtils.doString2String(mDecorateData.get(position).createTime, DateUtils.DF_DEFAULT, DateUtils.DF_JUST_YEAR_MONTH_ZH);
+                    return DateUtils.doString2String(mDecorateData.get(position).createTime, DateUtils.DF_DEFAULT, DateUtils.DF_YEAR_MONTH_ZH);
                 }
             }
 

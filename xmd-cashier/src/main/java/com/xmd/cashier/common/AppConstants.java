@@ -180,6 +180,7 @@ public class AppConstants {
     public static final String EXTRA_IS_SHOW = "is_show";
     public static final String EXTRA_COUPON_CODE = "coupon_code";
     public static final String EXTRA_GIFT_ACTIVITY_INFO = "gift_act";
+    public static final String EXTRA_BIZ_TYPE = "biz_type";
 
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
@@ -276,4 +277,6 @@ public class AppConstants {
     public static final String QR_TYPE_POS = "pos";
     public static final String QR_TYPE_CLUB = "club";
     public static final String QR_TYPE_TECH = "tech";
+
+    public static final String STATISTICS_DEFAULT_TIME = "00:00:00";
 }

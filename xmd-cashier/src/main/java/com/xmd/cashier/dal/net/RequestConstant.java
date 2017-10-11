@@ -106,6 +106,8 @@ public class RequestConstant {
     // ****************************************** 买单有礼 **************************************
     public static final String URL_GET_ONLINE_GIFT_ACTIVITY = SPA_SERVICE_BASE + "/v2/user/fastpay/package/online/act";
 
+    // ****************************************** Pos对账单 **************************************
+    public static final String URL_GET_TOTAL_STATISTICS = SPA_SERVICE_BASE + "/v2/club/financial/settle/summary";
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -165,6 +167,8 @@ public class RequestConstant {
 
     public static final String KEY_START_DATE = "startDate";
     public static final String KEY_END_DATE = "endDate";
+    public static final String KEY_START_TIME = "startTime";
+    public static final String KEY_END_TIME = "endTime";
 
     public static final String KEY_PAGE_START = "page";
     public static final String KEY_PAGE_SIZE = "pageSize";

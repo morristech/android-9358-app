@@ -27,6 +27,7 @@ import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
+import com.xmd.cashier.dal.net.response.StatisticsResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.TechListResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
@@ -688,4 +689,13 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_ONLINE_GIFT_ACTIVITY)
     Observable<GiftActivityResult> getGiftActivity(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                    @Query(RequestConstant.KEY_CLUB_ID) String clubId);
+
+
+    // ****************************************** Pos对账单 **************************************
+    @GET(RequestConstant.URL_GET_TOTAL_STATISTICS)
+    Observable<StatisticsResult> getTotalStatistics(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                    @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                    @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                    @Query(RequestConstant.KEY_START_TIME) String startTime,
+                                                    @Query(RequestConstant.KEY_END_TIME) String endTime);
 }

@@ -18,18 +18,17 @@ import java.util.Map;
  */
 public class DateUtils {
     public static final long DAY_TIME_MS = 24 * 3600 * 1000L;
+    public static final long WEEK_TIME_MS = 7 * 24 * 60 * 60 * 1000L;
 
     private static final String WEEK_ZH = "日一二三四五六";
 
     public static final String DF_DEFAULT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DF_JUST_DAY = "yyyy-MM-dd";
+    public static final String DF_YEAR_MONTH_DAY = "yyyy-MM-dd";
     public static final String DF_DEFAULT_ZH = "yyyy年MM月dd日 HH:mm:ss";
-    public static final String DF_JUST_DAY_WITHOUT_LINE = "yyMMdd";
-    public static final String DF_JUST_TIME = "HH:mm:ss";
-    public static final String DF_WITH_CN_ALL = "yyyy年MM月dd日 HH:mm:ss";
-    public static final String DF_JUST_YEAR_MONTH_ZH = "yyyy年MM月";
-    public static final String DF_JUST_YEAR_MONTH = "yyyy-MM";
-    public static final String DF_JUST_DATE_TIME = "MM-dd HH:mm";
+    public static final String DF_HOUR_MIN_SEC = "HH:mm:ss";
+    public static final String DF_YEAR_MONTH_ZH = "yyyy年MM月";
+    public static final String DF_YEAR_MONTH = "yyyy-MM";
+    public static final String DF_MONTH_DAY_HOUR_MIN = "MM-dd HH:mm";
 
 
     private static final Object lockObj = new Object();
@@ -68,7 +67,7 @@ public class DateUtils {
     public static boolean isSameDayWithNow(Date date) {
         if (date != null) {
             Date now = new Date(TimeProvider.currentTimeMillis());
-            return getSdf(DF_JUST_DAY).format(now).equals(getSdf(DF_JUST_DAY).format(date));
+            return getSdf(DF_YEAR_MONTH_DAY).format(now).equals(getSdf(DF_YEAR_MONTH_DAY).format(date));
         }
         return false;
     }
@@ -130,14 +129,14 @@ public class DateUtils {
         return doDate2String(new Date(date));
     }
 
-    public static String doLong2RelativeString(long date){
+    public static String doLong2RelativeString(long date) {
         String relativeTime = "";
         String timeDistinguish = "";
-        Calendar calendar =  Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
-        if(calendar.get(Calendar.YEAR) < Calendar.getInstance().get(Calendar.YEAR)){
+        if (calendar.get(Calendar.YEAR) < Calendar.getInstance().get(Calendar.YEAR)) {
             return doLong2String(date);
-        }else{
+        } else {
             int relativeHour = calendar.get(Calendar.HOUR_OF_DAY);
             if (0 <= relativeHour && relativeHour < 6) {
                 timeDistinguish = "凌晨";
@@ -150,8 +149,8 @@ public class DateUtils {
             } else if (18 <= relativeHour && relativeHour < 24) {
                 timeDistinguish = "晚上";
             }
-            String time = doLong2String(date,"MM月dd日 HH:mm");
-            relativeTime = String.format("%s "+timeDistinguish+"%s",time.substring(0,6),time.substring(7,time.length()));
+            String time = doLong2String(date, "MM月dd日 HH:mm");
+            relativeTime = String.format("%s " + timeDistinguish + "%s", time.substring(0, 6), time.substring(7, time.length()));
 
         }
         return relativeTime;
@@ -168,10 +167,6 @@ public class DateUtils {
             return doDate2String(date, newFormat);
         }
         return null;
-    }
-
-    public static String doString2StringZH(String date) {
-        return doString2String(date, DF_DEFAULT, "yyyy年MM月dd日 HH:mm:ss");
     }
 
     public static Long doDate2Long(String date) {
@@ -221,7 +216,7 @@ public class DateUtils {
      * @return
      */
     public static String getCurrentDate() {
-        SimpleDateFormat format = new SimpleDateFormat(DF_JUST_DAY);
+        SimpleDateFormat format = new SimpleDateFormat(DF_YEAR_MONTH_DAY);
         return format.format(new Date());
     }
 
@@ -267,8 +262,7 @@ public class DateUtils {
     }
 
     public static Long stringDateToLong(String date) {
-
-        SimpleDateFormat format = new SimpleDateFormat(DF_JUST_DAY);
+        SimpleDateFormat format = new SimpleDateFormat(DF_YEAR_MONTH_DAY);
         if (TextUtils.isEmpty(date)) {
             date = "1970-01-01 00:00:00";
         }

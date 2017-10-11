@@ -134,7 +134,7 @@ public class SettleManager {
             mPos.printRight("开始时间：" + info.startTime);
             mPos.printRight("截止时间：" + info.endTime);
             mPos.printRight("结算人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
-            mPos.printRight("结算时间：" + (TextUtils.isEmpty(info.createTime) ? Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT) : info.createTime));
+            mPos.printRight("结算时间：" + (TextUtils.isEmpty(info.createTime) ? DateUtils.doDate2String(new Date()) : info.createTime));
             if (!TextUtils.isEmpty(info.cashierName)) {
                 mPos.printRight("收款人员：" + info.cashierName);
             }

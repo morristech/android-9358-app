@@ -11,6 +11,7 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.activity.BaseActivity;
@@ -40,6 +41,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import okhttp3.Request;
 import rx.Observable;
@@ -81,6 +84,9 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         ThreadPoolManager.init(this);
 
         DataReportManager.getInstance().startMonitor();
+
+        Set<String> functions = new HashSet<>();
+        XmdApp.getInstance().init(this, SPManager.getInstance().getSpaServerAddress(), functions);
 
         // 初始化网络模块
         XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, SPManager.getInstance().getSpaServerAddress());

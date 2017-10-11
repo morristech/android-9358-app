@@ -16,6 +16,7 @@ public class User implements Serializable {
     public String clubName;
     public String clubIconUrl;
     public String clubId;
+    public String clubCreateTime;
 
     @Override
     public String toString() {

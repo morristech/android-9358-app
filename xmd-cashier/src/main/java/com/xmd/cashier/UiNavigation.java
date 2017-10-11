@@ -37,6 +37,8 @@ import com.xmd.cashier.activity.SettingActivity;
 import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
+import com.xmd.cashier.activity.StatisticsActivity;
+import com.xmd.cashier.activity.StatisticsSettingActivity;
 import com.xmd.cashier.activity.TechnicianActivity;
 import com.xmd.cashier.activity.VerificationActivity;
 import com.xmd.cashier.activity.VerifyCheckInfoActivity;
@@ -294,6 +296,16 @@ public class UiNavigation {
     public static void gotoGiftActActivity(Context context, GiftActivityInfo info) {
         Intent intent = new Intent(context, GiftActActivity.class);
         intent.putExtra(AppConstants.EXTRA_GIFT_ACTIVITY_INFO, info);
+        context.startActivity(intent);
+    }
+
+    public static void gotoStatisticsActivity(Context context) {
+        Intent intent = new Intent(context, StatisticsActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoStatisticsSettingActivity(Context context) {
+        Intent intent = new Intent(context, StatisticsSettingActivity.class);
         context.startActivity(intent);
     }
 }

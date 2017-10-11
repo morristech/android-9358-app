@@ -8,4 +8,5 @@ public class ClubInfo {
     public String clubId;
     public String name;
     public String imageUrl;
+    public String createTime;
 }

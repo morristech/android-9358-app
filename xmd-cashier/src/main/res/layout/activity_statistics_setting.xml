@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_normal_margin"
+                android:text="请设置每日对账统计的起止时间"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_normal_margin"
+                android:paddingRight="@dimen/activity_normal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_normal_margin"
+                    android:text="开始时间"
+                    android:textColor="@color/colorText4"
+                    android:textSize="@dimen/font_size_16" />
+
+                <TextView
+                    android:id="@+id/tv_setting_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_text_search"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/activity_little_margin"
+                    android:paddingLeft="@dimen/activity_normal_margin"
+                    android:paddingRight="@dimen/activity_normal_margin"
+                    android:paddingTop="@dimen/activity_little_margin"
+                    android:textSize="@dimen/font_size_16" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_normal_margin"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_normal_margin"
+                android:paddingRight="@dimen/activity_normal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_normal_margin"
+                    android:text="截止时间"
+                    android:textColor="@color/colorText4"
+                    android:textSize="@dimen/font_size_16" />
+
+                <TextView
+                    android:id="@+id/tv_setting_end"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_text_search"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/activity_little_margin"
+                    android:paddingLeft="@dimen/activity_normal_margin"
+                    android:paddingRight="@dimen/activity_normal_margin"
+                    android:paddingTop="@dimen/activity_little_margin"
+                    android:textSize="@dimen/font_size_16" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_normal_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="说明："
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_14" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_normal_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:layout_marginTop="@dimen/activity_little_margin"
+                android:lineSpacingMultiplier="1.1"
+                android:text="1. 每日对账统计时间的设置会影响按天统计的数据，不会影响到周、月、累计以及自定义时间段的统计数据；\n2. 开始时间默认为00:00:00，截止时间默认为次日00:00:00；\n3. 当开始时间大于或者等于截止时间时，截止时间为次日时间：例如当开始时间设置为08:00:00，截止时间设置为06:00:00，按天统计的日期定位在2017-01-01时，统计为2017-01-01 08:00:00至2017-01-02 06:00:00时间段的数据；\n4. 修改对账统计起止时间后，在下一次进入对账单页面时生效；"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_14" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_setting_confirm"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_normal_margin"
+        android:text="确定"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/small_font_size" />
+</LinearLayout>

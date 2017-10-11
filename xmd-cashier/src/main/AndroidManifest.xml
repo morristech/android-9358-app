@@ -180,6 +180,12 @@
             android:name=".activity.GiftActActivity"
             android:launchMode="singleTask"
             android:theme="@style/DialogActivity" />
+        <activity
+            android:name=".activity.StatisticsActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.StatisticsSettingActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

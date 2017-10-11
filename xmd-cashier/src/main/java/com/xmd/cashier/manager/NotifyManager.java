@@ -219,8 +219,8 @@ public class NotifyManager {
             mPos.printCenter("--补打小票--");
         }
         mPos.printDivide();
-        mPos.printText("客户: ", (TextUtils.isEmpty(info.phoneNum) ? info.customerName : String.format("%s(%s)", info.customerName, Utils.formatPhone(info.phoneNum))));
-        mPos.printText("技师: ", TextUtils.isEmpty(info.techSerialNo) ? info.techName : String.format("%s[%s]", info.techName, info.techSerialNo));
+        mPos.printText("客户: ", (TextUtils.isEmpty(info.phoneNum) ? info.customerName : String.format("%s(%s)", info.customerName, info.phoneNum)));
+        mPos.printText("技师: ", TextUtils.isEmpty(info.techSerialNo) ? (TextUtils.isEmpty(info.techName) ? "未指定" : info.techName) : String.format("%s[%s]", info.techName, info.techSerialNo));
         mPos.printText("项目: ", TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
         mPos.printText("到店: ", info.appointTime);
         mPos.printDivide();
@@ -228,7 +228,7 @@ public class NotifyManager {
         mPos.printDivide();
         mPos.printText("订单编号: ", info.id);
         mPos.printText("下单时间: ", info.createdAt);
-        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间: ", DateUtils.doDate2String(new Date()));
         String status = null;
         switch (info.status) {
             case AppConstants.ORDER_RECORD_STATUS_ACCEPT:
@@ -335,7 +335,7 @@ public class NotifyManager {
             mPos.printText("服务技师：", (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
         }
         mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
-        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
             byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {

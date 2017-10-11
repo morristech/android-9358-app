@@ -280,13 +280,8 @@ public class Utils {
         activity.getWindow().setAttributes(lp);
     }
 
-    public static String getFormatString(Date date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(date);
-    }
-
     public static String getCustomDateString(Context context, long when) {
-        String time = getFormatString(new Date(when), "HH:mm");
+        String time = com.shidou.commonlibrary.util.DateUtils.doDate2String(new Date(when), "HH:mm");
         if (DateUtils.isToday(when)) {
             return "今天" + " " + time;
         } else {
@@ -321,7 +316,7 @@ public class Utils {
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
         calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
-        return com.shidou.commonlibrary.util.DateUtils.doDate2String(calendar.getTime(), com.shidou.commonlibrary.util.DateUtils.DF_DEFAULT);
+        return com.shidou.commonlibrary.util.DateUtils.doDate2String(calendar.getTime());
     }
 
     // 月末 yyyy-MM-dd 23:59:59
@@ -332,7 +327,7 @@ public class Utils {
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, calendar.getActualMaximum(Calendar.MINUTE));
         calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
-        return com.shidou.commonlibrary.util.DateUtils.doDate2String(calendar.getTime(), com.shidou.commonlibrary.util.DateUtils.DF_DEFAULT);
+        return com.shidou.commonlibrary.util.DateUtils.doDate2String(calendar.getTime());
     }
 
     public static String getTimePeriodDes(String useTimePeriod) {

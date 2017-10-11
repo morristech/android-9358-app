@@ -1034,7 +1034,7 @@ public class TradeManager {
             mPos.printText("服务技师：", mTrade.memberRecordInfo.techName + (TextUtils.isEmpty(mTrade.memberRecordInfo.techNo) ? "" : "[" + mTrade.memberRecordInfo.techNo + "]"));
         }
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
-        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
             byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();    //会所活动二维码
             if (qrCodeBytes != null) {
@@ -1133,7 +1133,7 @@ public class TradeManager {
             mPos.printText("服务技师：", mTrade.onlinePayInfo.techName + (TextUtils.isEmpty(mTrade.onlinePayInfo.techNo) ? "" : "[" + mTrade.onlinePayInfo.techNo + "]"));
         }
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
-        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
             byte[] qrCodeBytes;
             switch (mTrade.onlinePayInfo.payChannel) {
@@ -1238,7 +1238,7 @@ public class TradeManager {
         mPos.printText("交易时间：", mTrade.tradeTime);
         mPos.printText("支付方式：", (TextUtils.isEmpty(mTrade.getPosPayTypeString()) ? "其他支付" : mTrade.getPosPayTypeString()) + "(POS机)");
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
-        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
             byte[] qrCodeBytes;
             switch (mTrade.currentCashier) {
@@ -1339,10 +1339,10 @@ public class TradeManager {
             }
         }
         mPos.printDivide();
-        mPos.printText("交易时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("交易时间：", DateUtils.doDate2String(new Date()));
         mPos.printText("核销终端：", "POS机");
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
-        mPos.printText("打印时间：", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
+        mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {    //客户联
             byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
