@@ -374,8 +374,8 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printText("交易总金额", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalAmount));
                 mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.totalDiscount));
                 mPos.printText("  奖金提成(小摩豆代付部分)：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.internalCommission));
-                mPos.printText("  手续费：", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalSettleFee));
-                mPos.printText("  退款：", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalRefund));
+                mPos.printText("  手续费：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.totalSettleFee));
+                mPos.printText("  退款：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.totalRefund));
                 mPos.printText("  光大结算打款金额", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalSettleAmount));
                 mPos.printText("    在线买单", "￥" + Utils.moneyToStringEx(mOnlineInfo.fastPay));
                 mPos.printText("      工牌扫码买单：", "￥" + Utils.moneyToStringEx(mOnlineInfo.qrTech));
