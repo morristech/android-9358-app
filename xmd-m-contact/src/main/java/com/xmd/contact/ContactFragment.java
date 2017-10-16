@@ -12,12 +12,16 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.Constants;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.DropDownMenuDialog;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.black.AddFriendActivity;
 import com.xmd.black.BlackListActivity;
+import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.httprequest.ConstantResources;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -100,6 +104,7 @@ public class ContactFragment extends BaseFragment {
                             BlackListActivity.startBlackListActivity(getActivity(), isFromManager);
                         } else {
                             AddFriendActivity.startAddFriendActivity(getActivity(), isFromManager);
+                            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_NEW_CUSTOMER_CLICK));
                         }
 
                         break;

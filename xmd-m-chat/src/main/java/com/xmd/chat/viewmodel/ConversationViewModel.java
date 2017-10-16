@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.chat.ChatMessageFactory;
@@ -94,6 +95,7 @@ public class ConversationViewModel {
     }
 
     public CharSequence getMessage() {
+        XLogger.i(">>>","message>>"+lastMessage.getContentText());
         return lastMessage.getContentText();
     }
 

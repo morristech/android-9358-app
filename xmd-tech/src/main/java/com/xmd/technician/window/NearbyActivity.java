@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.Constants;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
@@ -21,6 +23,7 @@ import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.event.MainPageStatistics;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
@@ -29,6 +32,8 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.FixPagerSnapHelper;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,6 +97,12 @@ public class NearbyActivity extends BaseActivity {
         getNearbyCusList();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     private void initView() {
         setTitle(R.string.main_nearby_title);
         setBackVisible(true);
@@ -127,6 +138,7 @@ public class NearbyActivity extends BaseActivity {
                         mCusAdapter.updateCurrentItem(position, result.customerLeft, cusSayHiTime);
                         // 成功提示
                         showToast("打招呼成功");
+                        EventBus.getDefault().post(new MainPageStatistics(Constants.UMENG_STATISTICS_HELLO_CLICK));
                     }
                 });
             }

@@ -249,11 +249,14 @@ public class ConversationListFragment extends BaseFragment {
             if (position >= 0) {
                 mAdapter.getDataList().remove(position);
             }
-        } else {
-            position = event.getPosition();
-        }
-        if (position >= 0) {
             mAdapter.notifyItemRemoved(position);
+        } else {
+            ThreadPoolManager.postToUI(new Runnable() {
+                @Override
+                public void run() {
+                    reloadConversation(true);
+                }
+            });
         }
     }
 

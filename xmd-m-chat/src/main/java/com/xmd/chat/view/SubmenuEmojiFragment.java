@@ -9,13 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
+import com.xmd.app.Constants;
 import com.xmd.app.EmojiManager;
 import com.xmd.chat.BR;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentSubmenuEmojiBinding;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.chat.viewmodel.SubMenuEmojiViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +49,7 @@ public class SubmenuEmojiFragment extends BaseFragment {
             dataList.add(new SubMenuEmojiViewModel(key, EmojiManager.getInstance().getEmojiMap().get(key), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_EMOJI_SEND));
                     output.append(EmojiManager.getInstance().getEmojiSpannableString(key));
                 }
             }));

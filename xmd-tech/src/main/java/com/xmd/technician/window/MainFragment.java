@@ -17,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
+import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.Constants;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
@@ -59,6 +62,7 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventRequestJoinClub;
+import com.xmd.technician.event.MainPageStatistics;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.SpaService;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
@@ -305,6 +309,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().post(new MainPageStatistics(Constants.UMENG_STATISTICS_HOME_BROWSE));
+    }
+
 
     @Override
     public void onDestroy() {
@@ -1008,6 +1019,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (view.getId()) {
             case R.id.main_nearby_say_hello:
                 // 打开附近的人
+                EventBus.getDefault().post((new MainPageStatistics(Constants.UMENG_STATISTICS_NEARBY_CLICK)));
                 Intent intent = new Intent(getActivity(), NearbyActivity.class);
                 startActivity(intent);
                 break;
@@ -1255,7 +1267,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-
     public Runnable mTask = new Runnable() {
         @Override
         public void run() {
@@ -1368,9 +1379,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         super.onHiddenChanged(hidden);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if(hidden){
+            if (hidden) {
                 getActivity().getWindow().setStatusBarColor(ResourceUtils.getColor(R.color.colorPrimary));
-            }else{
+            } else {
                 getActivity().getWindow().setStatusBarColor(0xFFFF826c);
             }
         }

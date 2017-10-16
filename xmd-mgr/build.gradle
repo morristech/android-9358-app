@@ -62,8 +62,8 @@ android {
         // 3.7.4 : add verify by phone number
         // 3.8.4 : fix bug
         // 3.8.8 : contacts optimization
-        versionCode 62
-        versionName "3.9.0"
+        versionCode 63
+        versionName "3.9.1"
 
         multiDexEnabled true
 

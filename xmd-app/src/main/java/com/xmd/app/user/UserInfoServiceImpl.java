@@ -108,7 +108,9 @@ public class UserInfoServiceImpl implements UserInfoService {
                     user = old.update(user);
                 }
                 userIdMap.put(user.getId(), user);
-                chatIdMap.put(user.getChatId(), user);
+                if(!TextUtils.isEmpty(user.getChatId())){
+                    chatIdMap.put(user.getChatId(), user);
+                }
                 saveUserToDb(user);
                 XLogger.i(TAG, (old == null ? "save" : "update") + " user: " + user);
             }

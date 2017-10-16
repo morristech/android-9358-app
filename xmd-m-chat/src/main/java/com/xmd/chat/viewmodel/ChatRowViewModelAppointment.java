@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
@@ -23,6 +24,7 @@ import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowAppointmentBinding;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 
@@ -134,6 +136,8 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         binding.executePendingBindings();
         orderChatMessage.setInnerProcessed(status);
         sendMessage(ChatMessage.MSG_TYPE_ORDER_CANCEL);
+        XLogger.i(">>>","取消发起预约");
+        EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_CANCEL));
     }
 
     //点击修改
@@ -153,6 +157,8 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         inProgress.set(true);
         EventBusSafeRegister.register(this);
         EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, mAppointmentData));
+        XLogger.i(">>>","发起预约生成订单");
+        EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_COMPLETE));
     }
 
     private void sendMessage(String msgType) {

@@ -34,6 +34,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.Constants;
 import com.xmd.app.ExCommonRecyclerViewAdapter;
 import com.xmd.app.SpConstants;
 import com.xmd.app.XmdApp;
@@ -55,6 +56,7 @@ import com.xmd.chat.R;
 import com.xmd.chat.VoiceManager;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.chat.event.EventDeleteMessage;
 import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventReplayDiceGame;
@@ -62,6 +64,7 @@ import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -452,6 +455,11 @@ public class ChatActivity extends BaseActivity {
 
     //显示子菜单
     public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
+        if(chatMenu.getSubMenyList().get(0) instanceof SubmenuEmojiFragment){
+            XLogger.i(">>>","此处是表情");
+            EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_EMOJI_CLICK));
+        }
+
         if (mFocusMenuView != null) {
             //当前显示聊天菜单
             mFocusMenuView.setSelected(false);
@@ -483,6 +491,8 @@ public class ChatActivity extends BaseActivity {
 
         if ("快捷回复".equals(chatMenu.getName())) {
             showSubMenuFastReply.set(true);
+            XLogger.i(">>>","此处是快捷回复");
+            EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_QUICK_CLICK));
         }
 
         mFocusMenuView = menuView;

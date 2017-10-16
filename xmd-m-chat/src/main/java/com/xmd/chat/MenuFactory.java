@@ -24,6 +24,7 @@ import com.xmd.appointment.AppointmentEvent;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.beans.FastReplySetting;
 import com.xmd.chat.beans.Location;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.RewardChatMessage;
@@ -104,6 +105,7 @@ public class MenuFactory {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_image, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 imageTool.onlyPick(true).start(activity, new ImageTool.ResultListener() {
                     @Override
                     public void onResult(String s, Uri uri, Bitmap bitmap) {
@@ -113,8 +115,10 @@ public class MenuFactory {
                         }
                     }
                 });
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_PICTURE_CLICK));
             }
         }, null));
+
     }
 
     //创建表情菜单
@@ -164,8 +168,11 @@ public class MenuFactory {
             @Override
             public void onClick(View v) {
                 onShowDeliverCouponView(activity, remoteUser);
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_COUPON_CLICK));
             }
+
         }, null));
+
     }
 
     //显示发券界面，因为当前两个app都已实现
@@ -199,8 +206,10 @@ public class MenuFactory {
                     data.setFixTechnician(true);
                 }
                 EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_CLICK));
             }
         }, null));
+
     }
 
     //处理预约菜单事件
@@ -268,6 +277,7 @@ public class MenuFactory {
                         }
                     }
                 });
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_LOCATION_CLICK));
             }
         }, null));
     }
@@ -286,10 +296,12 @@ public class MenuFactory {
                             public void onClick(DialogInterface dialog, int which) {
                                 ChatMessage chatMessage = OrderChatMessage.createRequestOrderMessage(remoteUser.getChatId());
                                 ChatMessageManager.getInstance().sendMessage(chatMessage);
+                                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_SEND));
                             }
                         })
                         .create()
                         .show();
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOKED_CLICK));
             }
         }, null));
     }
@@ -308,10 +320,12 @@ public class MenuFactory {
                             public void onClick(DialogInterface dialog, int which) {
                                 ChatMessage chatMessage = RewardChatMessage.createRequestRewardMessage(remoteUser.getChatId());
                                 ChatMessageManager.getInstance().sendMessage(chatMessage);
+                                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_REWARDED_SEND));
                             }
                         })
                         .create()
                         .show();
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_REWARDED_CLICK));
             }
         }, null));
     }
@@ -342,6 +356,7 @@ public class MenuFactory {
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_JOURNAL_CLICK));
             }
         }, null));
     }
@@ -374,6 +389,7 @@ public class MenuFactory {
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_MALL_CLICK));
             }
         }, null));
     }
@@ -404,6 +420,7 @@ public class MenuFactory {
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_ACTIVITY_CLICK));
             }
         }, null));
     }

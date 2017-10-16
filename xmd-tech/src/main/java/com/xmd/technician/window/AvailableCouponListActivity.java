@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.chat.ChatMessageManager;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.technician.Adapter.ChatCouponAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -23,6 +26,8 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.EmptyView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -210,6 +215,9 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                 }
             }
             checkDeliverResult();
+            XLogger.i(">>>","发券分享次数");
+            EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_COUPON_SEND));
+
         }
     }
 

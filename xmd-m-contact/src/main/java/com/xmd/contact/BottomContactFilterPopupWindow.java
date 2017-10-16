@@ -12,10 +12,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
+import com.xmd.app.Constants;
 import com.xmd.app.utils.Utils;
 import com.xmd.contact.adapter.TagListAdapter;
 import com.xmd.contact.bean.TagBean;
 import com.xmd.contact.bean.TreatedTagList;
+import com.xmd.contact.event.ContactUmengStatisticsEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +259,8 @@ public class BottomContactFilterPopupWindow {
                     Utils.list2String(mCustomerLevelFilter, ","), Utils.list2String(mCustomerTypeFilter, ","), Utils.list2String(mSerialNoFilter, ","));
         }
         dismiss();
+        EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_BTN_CLICK));
+
     }
 
 

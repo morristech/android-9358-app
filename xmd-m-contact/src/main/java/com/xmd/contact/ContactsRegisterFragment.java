@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ContactRegister;
-import com.xmd.contact.bean.ContactRegister;
 import com.xmd.contact.bean.ContactRegisterListResult;
+import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.event.SwitchTableToMarketingEvent;
 import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.contact.httprequest.DataManager;
@@ -133,6 +134,18 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactRegister> 
         mCustomerRemark = tagName;
         mCustomerTechId = serialNo;
         mCustomerUserGroup = userGroup;
+        if (!TextUtils.isEmpty(mCustomerRemark)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_CUSTOMER_CHOOSE));
+        }
+        if (!TextUtils.isEmpty(mCustomerLevel)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_VIP_CHOOSE));
+        }
+        if (!TextUtils.isEmpty(customerType)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_TYPE_CHOOSE));
+        }
+        if (!TextUtils.isEmpty(userGroup)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_CUSTOMER_GROUP));
+        }
         onRefresh();
     }
 

@@ -48,8 +48,12 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
     private ExpandableClubEmployeeListViewAdapter clubEmployeeAdapter;
     private boolean isFromManager;
 
-    public ContactsTechnicianFragment(boolean isFromManager) {
-        this.isFromManager = isFromManager;
+//    public ContactsTechnicianFragment(boolean isFromManager) {
+//        this.isFromManager = isFromManager;
+//    }
+
+    public ContactsTechnicianFragment(){
+
     }
 
 
@@ -59,6 +63,7 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
         view = inflater.inflate(R.layout.fragment_contact_technician, container, false);
         mTechnicianExpandList = (ExpandableListView) view.findViewById(R.id.technician_expand_list);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
+        isFromManager = getArguments().getBoolean(ConstantResources.APP_TYPE_IS_MANAGER,false);
         initView();
         return view;
     }

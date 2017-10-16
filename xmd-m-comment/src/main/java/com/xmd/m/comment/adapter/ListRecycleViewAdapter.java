@@ -286,7 +286,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (isManager) {
                 viewHolder.llVisitorTech.setVisibility(View.VISIBLE);
                 if (!TextUtils.isEmpty(visitBean.techName)) {
-                    viewHolder.tvVisitorTechName.setText(visitBean.techName);
+                    viewHolder.tvVisitorTechName.setText(Utils.StrSubstring(6,visitBean.techName,true));
                     if (!TextUtils.isEmpty(visitBean.techNo)) {
                         viewHolder.tvVisitorTechNo.setText(String.format("[%s]", visitBean.techNo));
                     } else {

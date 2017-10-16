@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.CommonRecyclerViewAdapter;
@@ -20,7 +21,10 @@ import com.xmd.chat.R;
 import com.xmd.chat.ShareDataManager;
 import com.xmd.chat.databinding.ChatShareListActivityBinding;
 import com.xmd.chat.databinding.ChatShareListTypeBinding;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.chat.viewmodel.ShareViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +58,7 @@ public class ShareListActivity extends BaseActivity {
     private List<ImageView> arrowViewList;
 
     private ShareDataManager dataManager = ShareDataManager.getInstance();
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +73,8 @@ public class ShareListActivity extends BaseActivity {
             finish();
             return;
         }
-        binding.tvTitle.setText(getIntent().getStringExtra(ACTIVITY_TITLE));
+        title = getIntent().getStringExtra(ACTIVITY_TITLE);
+        binding.tvTitle.setText(title);
         recyclerViewList = new ArrayList<>();
         arrowViewList = new ArrayList<>();
         for (int i = 0; i < dataTypeList.size(); i++) {
@@ -141,6 +147,17 @@ public class ShareListActivity extends BaseActivity {
 
         @Override
         public void onClick(View v) {
+           // XLogger.i(">>>","分享》》"+type);
+            if(title.equals("营销活动")){
+                XLogger.i(">>>","分享营销活动");
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_ACTIVITY_SEND));
+            }else if(title.equals("电子期刊")){
+                XLogger.i(">>>","分享电子期刊");
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_JOURNAL_SEND));
+            }else{
+                XLogger.i(">>>","分享特惠商城");
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_MALL_SEND));
+            }
             data.select.set(!data.select.get());
             List dataList = selectResultMap.get(type);
             if (dataList == null) {

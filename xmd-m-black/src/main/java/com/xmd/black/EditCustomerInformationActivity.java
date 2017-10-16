@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.Constants;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
@@ -28,6 +29,7 @@ import com.xmd.black.bean.ManagerEditCustomerResult;
 import com.xmd.black.bean.MarkBean;
 import com.xmd.black.bean.MarkResult;
 import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
+import com.xmd.black.event.EditOrAddCustomerStatisticsEvent;
 import com.xmd.black.httprequest.ConstantResource;
 import com.xmd.black.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -171,7 +173,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
             @Override
             public void onCallbackError(Throwable e) {
-               XToast.show(e.getLocalizedMessage());
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -288,6 +290,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
             public void onCallbackSuccess(EditCustomerResult result) {
                 XToast.show("保存成功");
                 EventBus.getDefault().post(new EditCustomerRemarkSuccessEvent(mCustomerName, mRemarkNoteName, mRemarkMessage, mRemarkImpression));
+                EventBus.getDefault().post(new EditOrAddCustomerStatisticsEvent(Constants.UMENG_STATISTICS_CUSTOMER_SAVE_CLICK));
                 EditCustomerInformationActivity.this.finish();
                 User user = UserInfoServiceImpl.getInstance().getUserByUserId(mUserId);
                 if (user != null) {

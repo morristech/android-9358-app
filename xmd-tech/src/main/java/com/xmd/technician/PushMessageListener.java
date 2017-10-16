@@ -36,7 +36,8 @@ public class PushMessageListener implements XmdPushMessageListener {
                     if (prev != null) {
                         ft.remove(prev);
                     }
-                    fragment.show(ft, ClubInviteDialogFragment.class.getName());
+                    fragment.show(fm,ClubInviteDialogFragment.class.getName());
+                    ft.commitAllowingStateLoss();
                 }
                 break;
         }

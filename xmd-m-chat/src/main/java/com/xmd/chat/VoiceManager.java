@@ -6,12 +6,15 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.text.format.Time;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.PathUtil;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.XmdApp;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -24,12 +27,15 @@ public class VoiceManager {
     private static final VoiceManager ourInstance = new VoiceManager();
     private MediaPlayer mediaPlayer;
     private MediaRecorder mediaRecorder;
-    private String recordFile;
+   // private String recordFile;
     private long recordStartTime;
     private long recordTime;
     private boolean audioSpeakerMode;
     private AudioManager audioManager;
     private OnPlayListener mOnPlayListener;
+    private String voiceFilePath = null;
+    private String voiceFileName = null;
+    private File file;
 
     public static VoiceManager getInstance() {
         return ourInstance;
@@ -131,8 +137,12 @@ public class VoiceManager {
         mediaRecorder.setAudioChannels(2);
         mediaRecorder.setAudioSamplingRate(8000);
         mediaRecorder.setAudioEncodingBitRate(64);
-        recordFile = PathUtil.getInstance().getVoicePath() + "/" + System.currentTimeMillis() + ".amr";
-        mediaRecorder.setOutputFile(recordFile);
+       // recordFile = PathUtil.getInstance().getVoicePath() + "/" + System.currentTimeMillis() + ".amr";
+       // mediaRecorder.setOutputFile(recordFile);
+        voiceFileName = getVoiceFileName(EMClient.getInstance().getCurrentUser());
+        voiceFilePath = PathUtil.getInstance().getVoicePath() + "/" + voiceFileName;
+        file = new File(voiceFilePath);
+        mediaRecorder.setOutputFile(file.getAbsolutePath());
         try {
             mediaRecorder.prepare();
             mediaRecorder.start();
@@ -145,6 +155,11 @@ public class VoiceManager {
         return false;
     }
 
+    private String getVoiceFileName(String uid) {
+        Time now = new Time();
+        now.setToNow();
+        return uid + now.toString().substring(0, 15) + ".arm";
+    }
     /**
      * 停止录音
      */
@@ -156,7 +171,7 @@ public class VoiceManager {
     }
 
     public String getRecordFile() {
-        return recordFile;
+        return voiceFilePath;
     }
 
     public long getRecordTime() {

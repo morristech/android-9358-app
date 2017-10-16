@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ContactAllBean;
 import com.xmd.contact.bean.ContactAllListResult;
+import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.event.SwitchTableToMarketingEvent;
 import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.contact.httprequest.DataManager;
@@ -44,11 +46,11 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     Unbinder unbinder;
     private View view;
     private List<ContactAllBean> mContacts;
-    private String mCustomerLevel;
-    private String mCustomerType;
-    private String mCustomerRemark;
+    private String mCustomerLevel;//等级
+    private String mCustomerType; //类型
+    private String mCustomerRemark; //标签
     private String mCustomerTechId;
-    private String mCustomerUserGroup;
+    private String mCustomerUserGroup;//群组
     private String mCustomerUserName;
     private Map<String, String> params;
     private boolean isSearchOrFilter = false;
@@ -155,6 +157,19 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         mCustomerRemark = tagName;
         mCustomerTechId = serialNo;
         mCustomerUserGroup = userGroup;
+        if (!TextUtils.isEmpty(mCustomerRemark)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_CUSTOMER_CHOOSE));
+        }
+        if (!TextUtils.isEmpty(mCustomerLevel)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_VIP_CHOOSE));
+        }
+        if (!TextUtils.isEmpty(customerType)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_TYPE_CHOOSE));
+        }
+        if (!TextUtils.isEmpty(userGroup)) {
+            EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_CUSTOMER_GROUP));
+        }
+
         onRefresh();
     }
 

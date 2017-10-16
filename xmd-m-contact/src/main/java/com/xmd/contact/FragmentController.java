@@ -1,9 +1,11 @@
 package com.xmd.contact;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.PermissionConstants;
 
@@ -63,7 +65,11 @@ public class FragmentController {
     }
 
     public void addClubTechnician() {
-        mFragments.add(new ContactsTechnicianFragment(true));
+        ContactsTechnicianFragment fragment = new ContactsTechnicianFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ConstantResources.APP_TYPE_IS_MANAGER,true);
+        fragment.setArguments(bundle);
+        mFragments.add(fragment);
     }
 
     //全部客户
@@ -87,7 +93,11 @@ public class FragmentController {
     //本店
     @CheckBusinessPermission(PermissionConstants.CONTACTS_MY_CLUB)
     public void addTechnicianFragment() {
-        mFragments.add(new ContactsTechnicianFragment(false));
+        ContactsTechnicianFragment fragment = new ContactsTechnicianFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ConstantResources.APP_TYPE_IS_MANAGER,false);
+        fragment.setArguments(bundle);
+        mFragments.add(fragment);
     }
 
     public void showFragment(int position) {
@@ -95,7 +105,7 @@ public class FragmentController {
         Fragment fragment = mFragments.get(position);
         FragmentTransaction ft = mFragmentManager.beginTransaction();
         ft.show(fragment);
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     private void hideFragments() {
@@ -103,7 +113,7 @@ public class FragmentController {
         for (Fragment fragment : mFragments) {
             ft.hide(fragment);
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     public Fragment getFragment(int position) {

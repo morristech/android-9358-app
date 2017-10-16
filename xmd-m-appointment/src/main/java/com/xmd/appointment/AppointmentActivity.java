@@ -319,6 +319,7 @@ public class AppointmentActivity extends BaseActivity
                     hideLoading();
                     XToast.show("创建预约成功！");
                     EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, mData));
+
                     finish();
                 }
 
@@ -332,6 +333,8 @@ public class AppointmentActivity extends BaseActivity
             EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, mData));
             finish();
         }
+        XLogger.i(">>>","预约发送");
+        EventBus.getDefault().post(new AppointmentUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_SEND));
     }
 
     @Override

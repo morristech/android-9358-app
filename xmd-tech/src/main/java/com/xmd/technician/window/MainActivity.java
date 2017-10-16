@@ -1,6 +1,5 @@
 package com.xmd.technician.window;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -43,11 +43,13 @@ import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
+import com.xmd.technician.event.MainPageStatistics;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.umengstatistics.UmengStatisticsManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,7 +106,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 }
             }
         });
-
+        UmengStatisticsManager.getStatisticsManagerInstance();
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
         );
@@ -249,6 +251,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         if (mCurrentTabIndex >= 0) {
             mBottomBarButtonList.get(mCurrentTabIndex).setSelected(false);
         }
+        if(mCurrentTabIndex!=0 &&index == 0){
+            EventBus.getDefault().post(new MainPageStatistics(Constants.UMENG_STATISTICS_HOME_BROWSE));
+        }
         // 把当前tab设为选中状态
         mBottomBarButtonList.get(index).setSelected(true);
         mCurrentTabIndex = index;
@@ -357,6 +362,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 } else {
                     XToast.show("打招呼成功！");
                     EventBus.getDefault().post(new SayHiSuccessEvent(position));
+                    EventBus.getDefault().post(new MainPageStatistics(Constants.UMENG_STATISTICS_HELLO_CLICK));
                 }
             }
         });

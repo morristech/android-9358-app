@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.Constants;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.ClearableEditText;
@@ -26,9 +27,12 @@ import com.xmd.app.widget.FlowLayout;
 import com.xmd.black.bean.CreateCustomerResult;
 import com.xmd.black.bean.MarkBean;
 import com.xmd.black.bean.MarkResult;
+import com.xmd.black.event.EditOrAddCustomerStatisticsEvent;
 import com.xmd.black.httprequest.ConstantResource;
 import com.xmd.black.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,6 +206,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
             public void onCallbackSuccess(CreateCustomerResult result) {
                 XToast.show("添加成功");
                 AddFriendActivity.this.finish();
+                EventBus.getDefault().post(new EditOrAddCustomerStatisticsEvent(Constants.UMENG_STATISTICS_CUSTOMER_SAVE_CLICK));
             }
 
             @Override

@@ -10,11 +10,13 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.CreditGift;
 import com.xmd.chat.beans.Location;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.chat.event.EventGameDiceStatusChange;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventNewUiMessage;
@@ -172,6 +174,7 @@ public class ChatMessageManager {
 
     //发送图片消息
     public ChatMessage sendImageMessage(String remoteChatId, String filePath) {
+        EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_PICTURE_SEND));
         return sendMessage(ChatMessage.createImageMessage(remoteChatId, filePath));
     }
 

@@ -69,7 +69,7 @@ public class OperatingReportFragment extends BaseFragment {
     //运营报表
     @OnClick(R.id.rl_operate)
     public void onRlOperateClicked() {
-        //startActivity(new Intent(getActivity(), OperationReportActivity.class));
+       startActivity(new Intent(getActivity(), OperationReportActivity.class));
 
     }
 

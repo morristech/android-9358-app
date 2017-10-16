@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.Constants;
 import com.xmd.app.widget.ClearableEditText;
 import com.xmd.contact.bean.TagListResult;
 import com.xmd.contact.bean.TreatedTagList;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
 import com.xmd.contact.event.SwitchTableToContactRegisterEvent;
+import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.contact.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -202,26 +204,31 @@ public class TechContactFragment extends BaseFragment {
         } else {
             contactFilter.show();
         }
+        EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_FILTER_CLICK));
     }
 
     @OnClick(R2.id.tv_customer_all)
     public void onTvCustomerAllClicked() {
         changeViewState(ConstantResources.CONTACT_ALL_INDEX);
+        EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_ALL_BROWSE));
     }
 
     @OnClick(R2.id.tv_customer_register)
     public void onTvCustomerRegisterClicked() {
         changeViewState(ConstantResources.CONTACT_REGISTER_INDEX);
+        EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_MINE_BROWSE));
     }
 
     @OnClick(R2.id.tv_customer_visitor)
     public void onTvCustomerVisitorClicked() {
         changeViewState(ConstantResources.CONTACT_VISITOR_INDEX);
+        EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_RECENTLY_BROWSE));
     }
 
     @OnClick(R2.id.tv_customer_technician)
     public void onTvCustomerTechnicianClicked() {
         changeViewState(ConstantResources.CONTACT_CLUB_INDEX);
+        EventBus.getDefault().post(new ContactUmengStatisticsEvent(Constants.UMENG_STATISTICS_COLLEAGUE_BROWSE));
     }
 
     private void changeViewState(int index) {

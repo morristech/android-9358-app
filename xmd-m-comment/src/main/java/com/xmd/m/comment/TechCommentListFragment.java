@@ -159,7 +159,7 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
     }
 
     private void onGetListFailed(String errorMsg) {
-        mSwipeRefreshLayout.setRefreshing(false);
+     //   mSwipeRefreshLayout.setRefreshing(false);
         if (XmdApp.getInstance().getContext() != null) {
             XToast.show(errorMsg);
         }

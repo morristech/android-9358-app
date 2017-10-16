@@ -79,7 +79,6 @@ public class XmdChat {
 
     @Subscribe
     public void onStartChat(EventStartChatActivity event) {
-        XLogger.i(">>>", "startChat");
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(ChatActivity.EXTRA_CHAT_ID, event.getRemoteChatId());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -112,7 +111,7 @@ public class XmdChat {
     public void onLogin(EventLogin eventLogin) {
         ChatAccountManager.getInstance().login(eventLogin);
         ChatSettingManager.getInstance().loadClubLocation(true, null);
-        ChatSettingManager.getInstance().loadDiceExpireTime();
+     //   ChatSettingManager.getInstance().loadDiceExpireTime();
         ChatSettingManager.getInstance().loadFastReply(null);
     }
 

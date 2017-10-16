@@ -41,8 +41,8 @@ public class NewAddOperateActivity extends BaseActivity {
 
     private void initView() {
         setTitle(ResourceUtils.getString(R.string.new_add_operate_title));
-        mInitStartTime = "2017-09-11 18：58";
-        mInitEndTime = "2017-09-13 18：58";
+        mInitStartTime = "2017-09-11 18：58:00";
+        mInitEndTime = "2017-09-13 18：58:00";
     }
 
     @OnClick(R.id.tv_start_time)

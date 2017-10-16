@@ -11,6 +11,7 @@ public class ConstantResources {
     public static final String APP_TYPE_TECH = "tech";
     public static final String CUSTOMER_TYPE_USER_ADD = "userAdd";//添加联系人
     public static final String CUSTOMER_TYPE_RECENT_VISIT = "recent_visit";
+    public static final String APP_TYPE_IS_MANAGER = "isFromManager";
 
     /**
      * 联系人优化

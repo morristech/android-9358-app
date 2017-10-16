@@ -88,7 +88,7 @@ public class EmojiManager {
         for (Pattern pattern : emojiPatternMap.keySet()) {
             Matcher matcher = pattern.matcher(s);
             while (matcher.find()) {
-                s.setSpan(new ImageSpan(context, emojiPatternMap.get(pattern)), matcher.start(), matcher.end(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                s.setSpan(new ImageSpan(context, emojiPatternMap.get(pattern)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
         return s;
@@ -96,7 +96,7 @@ public class EmojiManager {
 
     public SpannableString getEmojiSpannableString(String emojiKey) {
         SpannableString s = new SpannableString(emojiKey);
-       s.setSpan(new ImageSpan(context, emojiMap.get(emojiKey)), 0, emojiKey.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+       s.setSpan(new ImageSpan(context, emojiMap.get(emojiKey)), 0, emojiKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return s;
     }
 }

@@ -38,9 +38,11 @@ import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.ControllerRegister;
+import com.xmd.technician.umengstatistics.UmengStatisticsManager;
 import com.xmd.technician.window.AvailableCouponListActivity;
 import com.xmd.technician.window.WelcomeActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -80,7 +82,6 @@ public class TechApplication extends MultiDexApplication {
 
                 //SP初始化
                 SharedPreferenceHelper.initialize();
-
                 //解析APP版本和渠道信息
                 parseAppVersion();
 
@@ -116,14 +117,18 @@ public class TechApplication extends MultiDexApplication {
 
 
                 //打开友盟错误统计,可以和全局错误拦截器共存
-                MobclickAgent.setCatchUncaughtExceptions(true);
+                MobclickAgent.setCatchUncaughtExceptions(false);
 
                 // 应用入口，禁止默认的页面统计方式
                 MobclickAgent.openActivityDurationTrack(true);
+                //定义后台回到前台统计时间间隔
+                MobclickAgent.setSessionContinueMillis(3000);
+                MobclickAgent.setDebugMode(true);
+
 
                 //初始化线程池
                 ThreadPoolManager.init(this);
-
+                UmengStatisticsManager.getStatisticsManagerInstance().init(appContext);
                 long start = System.currentTimeMillis();
 
                 //模块功能初始化

@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="@string/search_customer_activity_search_hint"
+            android:hint="@string/search_pay_activity_search_hint"
             android:singleLine="true" />
 
         <ImageView
