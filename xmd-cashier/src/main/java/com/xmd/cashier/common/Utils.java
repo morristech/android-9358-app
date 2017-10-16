@@ -145,6 +145,12 @@ public class Utils {
         return String.format(Locale.CHINA, "%d.%02d", d1, d2);
     }
 
+    public static String moneyToStringEx(long value) {
+        long d1 = value / 100;
+        long d2 = value % 100;
+        return String.format(Locale.CHINA, "%d.%02d", d1, d2);
+    }
+
     //将以元为单位的钱，转换成以分为单位的钱
     public static int stringToMoney(String value) {
         if (TextUtils.isEmpty(value)) {
