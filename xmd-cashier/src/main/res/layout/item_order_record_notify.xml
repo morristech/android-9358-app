@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="$900"
+                    android:text="$"
                     android:textColor="@color/colorStatusYellow"
                     android:textSize="@dimen/head_font_size" />
 
