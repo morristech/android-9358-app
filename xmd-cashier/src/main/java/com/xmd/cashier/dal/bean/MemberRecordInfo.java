@@ -26,6 +26,7 @@ public class MemberRecordInfo {
     public String cardNo;   //会员卡号
     public long memberId;   //会员ID
     public int memberTypeId;    //会员等级
+    public int memberDiscount;  //会员折扣
     public String memberTypeName;   //会员等级名称
     public String avatarUrl;    //用户头像
 

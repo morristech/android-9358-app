@@ -943,7 +943,7 @@ public class TradeManager {
         mPos.printDivide();
         mPos.printText("会员卡号：", (keep ? mTrade.memberRecordInfo.cardNo : Utils.formatCode(mTrade.memberRecordInfo.cardNo)) + "(" + Utils.formatName(mTrade.memberRecordInfo.name, keep) + ")");
         mPos.printText("手机号码：", (keep ? mTrade.memberRecordInfo.telephone : Utils.formatPhone(mTrade.memberRecordInfo.telephone)));
-        mPos.printText("会员等级：", mTrade.memberRecordInfo.memberTypeName + "(" + String.format("%.02f", mTrade.memberRecordInfo.discount / 100.0f) + "折)");
+        mPos.printText("会员等级：", mTrade.memberRecordInfo.memberTypeName + "(" + String.format("%.02f", mTrade.memberRecordInfo.memberDiscount / 100.0f) + "折)");
         List<TempUser> contacts = getTempContacts();
         if (contacts != null && !contacts.isEmpty()) {
             for (TempUser user : contacts) {
@@ -1024,7 +1024,7 @@ public class TradeManager {
             }
         }
         mPos.printText("[会员消费]消费支付", "(-" + Utils.moneyToString(mTrade.memberRecordInfo.discountAmount) + "元)");
-        mPos.printText(mTrade.memberRecordInfo.memberTypeName + "，" + String.format("%.02f", mTrade.memberRecordInfo.discount / 100.0f) + "折/" + Utils.formatCode(mTrade.memberRecordInfo.cardNo));
+        mPos.printText(mTrade.memberRecordInfo.memberTypeName + "，" + String.format("%.02f", mTrade.memberRecordInfo.memberDiscount / 100.0f) + "折/" + Utils.formatCode(mTrade.memberRecordInfo.cardNo));
         mPos.printDivide();
 
         mPos.printText("交易号：", mTrade.memberRecordInfo.tradeNo);

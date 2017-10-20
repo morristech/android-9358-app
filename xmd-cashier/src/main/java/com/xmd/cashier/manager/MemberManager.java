@@ -486,7 +486,7 @@ public class MemberManager {
         mPos.printText("会员卡号：", (keep ? info.cardNo : Utils.formatCode(info.cardNo)) + "(" + Utils.formatName(info.name, keep) + ")");
         mPos.printText("手机号码：", (keep ? info.telephone : Utils.formatPhone(info.telephone)));
         if (AppConstants.MEMBER_RECORD_TYPE_CONSUME.equals(info.businessCategory) || AppConstants.MEMBER_RECORD_TYPE_RECHARGE.equals(info.businessCategory)) {
-            mPos.printText("会员等级：", info.memberTypeName + "(" + String.format("%.02f", info.discount / 100.0f) + "折)");
+            mPos.printText("会员等级：", info.memberTypeName + "(" + String.format("%.02f", info.memberDiscount / 100.0f) + "折)");
         } else {
             mPos.printText("会员等级：", info.memberTypeName);
         }
@@ -538,7 +538,7 @@ public class MemberManager {
                 switch (info.businessCategory) {
                     case AppConstants.MEMBER_RECORD_TYPE_CONSUME:   //消费支付
                         mPos.printText("[会员消费]消费支付", "(-" + Utils.moneyToStringEx(info.discountAmount) + "元)");
-                        mPos.printText(info.memberTypeName + "，" + String.format("%.02f", info.discount / 100.0f) + "折/" + Utils.formatCode(info.cardNo));
+                        mPos.printText(info.memberTypeName + "，" + String.format("%.02f", info.memberDiscount / 100.0f) + "折/" + Utils.formatCode(info.cardNo));
                         break;
                     case AppConstants.MEMBER_RECORD_TYPE_SUBTRACT:  //错充扣回
                     case AppConstants.MEMBER_RECORD_TYPE_OTHER:     //其他
