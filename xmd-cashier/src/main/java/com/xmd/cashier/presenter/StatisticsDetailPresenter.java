@@ -358,50 +358,50 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
         mPos.printDivide();
         switch (mStyleType) {
             case STYLE_SETTLE:
-                mPos.printText("需结算打款汇总", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalSettleAmount));
-                mPos.printText("  微信：", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalWx));
-                mPos.printText("  支付宝：", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalAli));
-                mPos.printText("  银联：", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalUnion));
-                mPos.printText("其他交易记账", "￥" + Utils.moneyToStringEx(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos));
-                mPos.printText("  微信：", "￥" + Utils.moneyToStringEx(mOfflineInfo.wxMember));
-                mPos.printText("  支付宝：", "￥" + Utils.moneyToStringEx(mOfflineInfo.aliMember));
-                mPos.printText("  银联：", "￥" + Utils.moneyToStringEx(mOfflineInfo.unionMember));
-                mPos.printText("  现金：", "￥" + Utils.moneyToStringEx(mOfflineInfo.cashMember + mOfflineInfo.cashPos));
-                mPos.printText("  其他：", "￥" + Utils.moneyToStringEx(mOfflineInfo.otherMember));
+                mPos.printText("需结算打款汇总", formatAmount(mOnlineInfo.totalSettleAmount));
+                mPos.printText("  微信：", formatAmount(mOnlineInfo.totalWx));
+                mPos.printText("  支付宝：", formatAmount(mOnlineInfo.totalAli));
+                mPos.printText("  银联：", formatAmount(mOnlineInfo.totalUnion));
+                mPos.printText("其他交易记账", formatAmount(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos));
+                mPos.printText("  微信：", formatAmount(mOfflineInfo.wxMember));
+                mPos.printText("  支付宝：", formatAmount(mOfflineInfo.aliMember));
+                mPos.printText("  银联：", formatAmount(mOfflineInfo.unionMember));
+                mPos.printText("  现金：", formatAmount(mOfflineInfo.cashMember + mOfflineInfo.cashPos));
+                mPos.printText("  其他：", formatAmount(mOfflineInfo.otherMember));
                 mPos.printDivide();
                 break;
             case STYLE_MONEY:
-                mPos.printText("交易总金额", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalAmount));
-                mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.totalDiscount));
-                mPos.printText("  奖金提成(小摩豆代付部分)：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.internalCommission));
-                mPos.printText("  手续费：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.totalSettleFee));
-                mPos.printText("  退款：", "-￥" + Utils.moneyToStringEx(mOnlineInfo.totalRefund));
-                mPos.printText("  光大结算打款金额", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalSettleAmount));
-                mPos.printText("    在线买单", "￥" + Utils.moneyToStringEx(mOnlineInfo.fastPay));
-                mPos.printText("      工牌扫码买单：", "￥" + Utils.moneyToStringEx(mOnlineInfo.qrTech));
-                mPos.printText("      收银水牌买单：", "￥" + Utils.moneyToStringEx(mOnlineInfo.qrClub));
-                mPos.printText("      POS买单：", "￥" + Utils.moneyToStringEx(mOnlineInfo.qrPos));
-                mPos.printText("    会员充值", "￥" + Utils.moneyToStringEx(mOnlineInfo.recharge));
-                mPos.printText("    付费预约", "￥" + Utils.moneyToStringEx(mOnlineInfo.paidOrder));
-                mPos.printText("    营销活动收入", "￥" + Utils.moneyToStringEx(mOnlineInfo.marketing));
-                mPos.printText("      点钟券：", "￥" + Utils.moneyToStringEx(mOnlineInfo.paidCoupon));
-                mPos.printText("      限时抢：", "￥" + Utils.moneyToStringEx(mOnlineInfo.paidServiceItem));
-                mPos.printText("    特惠商城收入", "￥" + Utils.moneyToStringEx(mOnlineInfo.mall));
-                mPos.printText("      项目次卡：", "￥" + Utils.moneyToStringEx(mOnlineInfo.itemCard));
-                mPos.printText("      混合套餐：", "￥" + Utils.moneyToStringEx(mOnlineInfo.itemPackage));
-                mPos.printText("  POS结算打款金额", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalUnion));
-                mPos.printText("    银联支付：", "￥" + Utils.moneyToStringEx(mOnlineInfo.totalUnion));
-                mPos.printText("其他交易金额", "￥" + Utils.moneyToStringEx(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos + mOfflineInfo.totalDiscount + mOfflineInfo.totalRefund));
-                mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(mOfflineInfo.totalDiscount));
-                mPos.printText("  退款：", "-￥" + Utils.moneyToStringEx(mOfflineInfo.totalRefund));
-                mPos.printText("  POS收银", "￥" + Utils.moneyToStringEx(mOfflineInfo.cashPos));
-                mPos.printText("    现金支付：", "￥" + Utils.moneyToStringEx(mOfflineInfo.cashPos));
-                mPos.printText("  管理者后台(会员充值)", "￥" + Utils.moneyToStringEx(mOfflineInfo.totalRecharge));
-                mPos.printText("    微信：", "￥" + Utils.moneyToStringEx(mOfflineInfo.wxMember));
-                mPos.printText("    支付宝：", "￥" + Utils.moneyToStringEx(mOfflineInfo.aliMember));
-                mPos.printText("    银联：", "￥" + Utils.moneyToStringEx(mOfflineInfo.unionMember));
-                mPos.printText("    现金：", "￥" + Utils.moneyToStringEx(mOfflineInfo.cashMember));
-                mPos.printText("    其他：", "￥" + Utils.moneyToStringEx(mOfflineInfo.otherMember));
+                mPos.printText("交易总金额", formatAmount(mOnlineInfo.totalAmount));
+                mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalDiscount)));
+                mPos.printText("  奖金提成(小摩豆代付部分)：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.internalCommission)));
+                mPos.printText("  手续费：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalSettleFee)));
+                mPos.printText("  退款：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalRefund)));
+                mPos.printText("  光大结算打款金额", formatAmount(mOnlineInfo.totalSettleAmount));
+                mPos.printText("    在线买单", formatAmount(mOnlineInfo.fastPay));
+                mPos.printText("      工牌扫码买单：", formatAmount(mOnlineInfo.qrTech));
+                mPos.printText("      收银水牌买单：", formatAmount(mOnlineInfo.qrClub));
+                mPos.printText("      POS买单：", formatAmount(mOnlineInfo.qrPos));
+                mPos.printText("    会员充值", formatAmount(mOnlineInfo.recharge));
+                mPos.printText("    付费预约", formatAmount(mOnlineInfo.paidOrder));
+                mPos.printText("    营销活动收入", formatAmount(mOnlineInfo.marketing));
+                mPos.printText("      点钟券：", formatAmount(mOnlineInfo.paidCoupon));
+                mPos.printText("      限时抢：", formatAmount(mOnlineInfo.paidServiceItem));
+                mPos.printText("    特惠商城收入", formatAmount(mOnlineInfo.mall));
+                mPos.printText("      项目次卡：", formatAmount(mOnlineInfo.itemCard));
+                mPos.printText("      混合套餐：", formatAmount(mOnlineInfo.itemPackage));
+                mPos.printText("  POS结算打款金额", formatAmount(mOnlineInfo.totalUnion));
+                mPos.printText("    银联支付：", formatAmount(mOnlineInfo.totalUnion));
+                mPos.printText("其他交易金额", formatAmount(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos + mOfflineInfo.totalDiscount + mOfflineInfo.totalRefund));
+                mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(Math.abs(mOfflineInfo.totalDiscount)));
+                mPos.printText("  退款：", "-￥" + Utils.moneyToStringEx(Math.abs(mOfflineInfo.totalRefund)));
+                mPos.printText("  POS收银", formatAmount(mOfflineInfo.cashPos));
+                mPos.printText("    现金支付：", formatAmount(mOfflineInfo.cashPos));
+                mPos.printText("  管理者后台(会员充值)", formatAmount(mOfflineInfo.totalRecharge));
+                mPos.printText("    微信：", formatAmount(mOfflineInfo.wxMember));
+                mPos.printText("    支付宝：", formatAmount(mOfflineInfo.aliMember));
+                mPos.printText("    银联：", formatAmount(mOfflineInfo.unionMember));
+                mPos.printText("    现金：", formatAmount(mOfflineInfo.cashMember));
+                mPos.printText("    其他：", formatAmount(mOfflineInfo.otherMember));
                 mPos.printDivide();
                 break;
             default:
@@ -428,6 +428,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
         mPos.printEnd();
     }
 
+
     @Override
     public void styleSettle() {
         mView.showSettleStyle();
@@ -438,6 +439,11 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
     public void styleMoney() {
         mView.showMoneyStyle();
         mStyleType = STYLE_MONEY;
+    }
+
+    @Override
+    public String formatAmount(long amount) {
+        return ((amount < 0) ? "-￥" : "￥") + Utils.moneyToStringEx(Math.abs(amount));
     }
 
 

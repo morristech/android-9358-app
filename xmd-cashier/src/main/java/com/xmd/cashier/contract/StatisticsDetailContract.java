@@ -38,6 +38,8 @@ public interface StatisticsDetailContract {
         void styleSettle();
 
         void styleMoney();
+
+        String formatAmount(long amount);
     }
 
     interface View extends BaseView<Presenter> {
