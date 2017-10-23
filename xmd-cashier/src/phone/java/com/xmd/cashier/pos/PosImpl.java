@@ -116,6 +116,16 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printBoldText(String left, String right) {
+
+    }
+
+    @Override
+    public void printBoldText(String left, String right, boolean highLight) {
+
+    }
+
+    @Override
     public void printText(String left, String right, boolean highLight) {
 
     }

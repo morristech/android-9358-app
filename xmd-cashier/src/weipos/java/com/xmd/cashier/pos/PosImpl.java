@@ -313,12 +313,26 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printBoldText(String left, String right) {
+        printBoldText(left, right, false);
+    }
+
+    @Override
+    public void printBoldText(String left, String right, boolean highLight) {
+        if (mLatticePrinter != null) {
+            String printText = left + getBlankBySize((highLight ? largeSize : mediumSize) - stringSize(left) - stringSize(right)) + right;
+            mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, (highLight ? LatticePrinter.FontSize.LARGE : LatticePrinter.FontSize.MEDIUM), LatticePrinter.FontStyle.BOLD);
+        }
+    }
+
+    @Override
     public void printText(String left, String right, boolean highLight) {
         if (mLatticePrinter != null) {
             String printText = left + getBlankBySize((highLight ? largeSize : mediumSize) - stringSize(left) - stringSize(right)) + right;
             mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, (highLight ? LatticePrinter.FontSize.LARGE : LatticePrinter.FontSize.MEDIUM), LatticePrinter.FontStyle.NORMAL);
         }
     }
+
 
     @Override
     public void printDivide() {

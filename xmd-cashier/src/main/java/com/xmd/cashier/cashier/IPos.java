@@ -56,6 +56,10 @@ public interface IPos {
     // 效果:left居左 right居右 huipos未实现
     void printText(String left, String right);
 
+    void printBoldText(String left, String right);
+
+    void printBoldText(String left, String right, boolean highLight);
+
     void printText(String left, String right, boolean highLight);
 
     // 效果:打印分隔线 huipos空行
