@@ -3,31 +3,31 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="data"
-            type="com.xmd.chat.viewmodel.ConversationViewModel" />
+            type="com.xmd.chat.viewmodel.ConversationViewModel"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1px"
-        android:background="@android:color/white"
-        android:onClick="@{(v)->data.onClick(v)}"
-        android:onLongClick="@{(v)->data.onLongClick(v)}"
-        android:orientation="horizontal"
-        android:padding="8dp">
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="1px"
+                  android:background="@android:color/white"
+                  android:onClick="@{(v)->data.onClick(v)}"
+                  android:onLongClick="@{(v)->data.onLongClick(v)}"
+                  android:orientation="horizontal"
+                  android:padding="8dp">
 
         <com.xmd.app.widget.CircleAvatarView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:user="@{data.user}" />
+            app:user="@{data.user}"/>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -39,18 +39,18 @@
                 android:layout_gravity="center"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="@dimen/fontSubheading"
-                android:text="@{data.name}" />
+                android:text="@{data.name}"
+                android:textSize="@dimen/fontSubheading"/>
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:bufferType="spannable"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{data.message}"
-                android:textSize="@dimen/fontCaption" />
+                />
 
         </LinearLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="3"
-                app:time="@{data}" />
+                app:time="@{data}"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:text="@{String.valueOf(data.unReadMsgCount)}"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/fontSmall"
-                    android:visibility="@{data.unReadMsgCount>0?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{data.unReadMsgCount>0?View.VISIBLE:View.GONE}"/>
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

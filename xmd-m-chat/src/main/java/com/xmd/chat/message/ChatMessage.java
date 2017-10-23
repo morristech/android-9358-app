@@ -1,5 +1,6 @@
 package com.xmd.chat.message;
 
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 
@@ -87,7 +88,7 @@ public class ChatMessage {
     //预约消息
     private EMMessage emMessage;
 
-    private SpannableString contentText; //缓存emoji格式化后的数据
+    private Spannable contentText; //缓存emoji格式化后的数据
     protected String formatTime; //缓存格式化后的时间
     protected String relativeTime;
 

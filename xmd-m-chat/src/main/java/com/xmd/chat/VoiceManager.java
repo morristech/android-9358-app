@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import retrofit2.http.Field;
+
 /**
  * Created by mo on 17-7-8.
  * 语音管理
@@ -27,13 +29,12 @@ public class VoiceManager {
     private static final VoiceManager ourInstance = new VoiceManager();
     private MediaPlayer mediaPlayer;
     private MediaRecorder mediaRecorder;
-   // private String recordFile;
+    private String recordFile;
     private long recordStartTime;
     private long recordTime;
     private boolean audioSpeakerMode;
     private AudioManager audioManager;
     private OnPlayListener mOnPlayListener;
-    private String voiceFilePath = null;
     private String voiceFileName = null;
     private File file;
 
@@ -127,6 +128,7 @@ public class VoiceManager {
      * 开始录音
      */
     public boolean startRecord() {
+        file = null;
         if (mediaRecorder == null) {
             mediaRecorder = new MediaRecorder();
         }
@@ -134,14 +136,12 @@ public class VoiceManager {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setAudioChannels(2);
+        mediaRecorder.setAudioChannels(1);
         mediaRecorder.setAudioSamplingRate(8000);
         mediaRecorder.setAudioEncodingBitRate(64);
-       // recordFile = PathUtil.getInstance().getVoicePath() + "/" + System.currentTimeMillis() + ".amr";
-       // mediaRecorder.setOutputFile(recordFile);
         voiceFileName = getVoiceFileName(EMClient.getInstance().getCurrentUser());
-        voiceFilePath = PathUtil.getInstance().getVoicePath() + "/" + voiceFileName;
-        file = new File(voiceFilePath);
+        recordFile = PathUtil.getInstance().getVideoPath() + "/" + voiceFileName;
+        file = new File(recordFile);
         mediaRecorder.setOutputFile(file.getAbsolutePath());
         try {
             mediaRecorder.prepare();
@@ -155,11 +155,6 @@ public class VoiceManager {
         return false;
     }
 
-    private String getVoiceFileName(String uid) {
-        Time now = new Time();
-        now.setToNow();
-        return uid + now.toString().substring(0, 15) + ".arm";
-    }
     /**
      * 停止录音
      */
@@ -171,7 +166,13 @@ public class VoiceManager {
     }
 
     public String getRecordFile() {
-        return voiceFilePath;
+        return recordFile;
+    }
+
+    private String getVoiceFileName(String uid) {
+        Time now = new Time();
+        now.setToNow();
+        return uid + now.toString().substring(0, 15) + ".amr";
     }
 
     public long getRecordTime() {

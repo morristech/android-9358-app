@@ -27,7 +27,7 @@
             android:paddingRight="20dp"
             android:paddingTop="@dimen/small_space"
             android:singleLine="true"
-            android:textColor="@color/text_color_hint"
+            android:textColorHint="@color/text_color_hint"
         />
         <Button
             android:id="@+id/btn_search_cancel"
