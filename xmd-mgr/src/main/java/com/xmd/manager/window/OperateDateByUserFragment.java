@@ -1,10 +1,12 @@
 package com.xmd.manager.window;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +24,12 @@ import butterknife.Unbinder;
 
 public class OperateDateByUserFragment extends BaseFragment {
 
+    public static int REQUEST_CODE_CREATE_OPERATE = 0x0001;
+    public static String CREATE_OPERATE_SUCCESS = "success";
+
     Unbinder unbinder;
     private OperateListFragment mOperateListFragment;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,7 +42,7 @@ public class OperateDateByUserFragment extends BaseFragment {
     protected void initView() {
         mOperateListFragment = new OperateListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(OperateListFragment.OPERATE_LIST_TYPE,"bgUser");
+        bundle.putInt(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_CUSTOM_TYPE);
         mOperateListFragment.setArguments(bundle);
         initFragmentView();
     }
@@ -56,7 +62,18 @@ public class OperateDateByUserFragment extends BaseFragment {
 
     @OnClick(R.id.tv_add_operate)
     public void onViewClicked() {
-        XLogger.i(">>>","新增报表");
-        startActivity(new Intent(getActivity(),NewAddOperateActivity.class));
+        XLogger.i(">>>", "新增报表");
+        Intent intent = new Intent(getActivity(), NewAddOperateActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_CREATE_OPERATE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && REQUEST_CODE_CREATE_OPERATE == requestCode) {
+            if (!TextUtils.isEmpty(data.getStringExtra(CREATE_OPERATE_SUCCESS)) && CREATE_OPERATE_SUCCESS.equals("success")) {
+                XLogger.i(">>>", "此时应刷新列表");
+            }
+        }
     }
 }

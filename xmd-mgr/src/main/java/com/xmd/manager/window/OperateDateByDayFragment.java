@@ -64,7 +64,7 @@ public class OperateDateByDayFragment extends BaseFragment {
     private void initFragmentView() {
         mOperateListFragment = new OperateListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(OperateListFragment.OPERATE_LIST_TYPE, "bgDay");
+        bundle.putInt(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_DAY_TYPE);
         mOperateListFragment.setArguments(bundle);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

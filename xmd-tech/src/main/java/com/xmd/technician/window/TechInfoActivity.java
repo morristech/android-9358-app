@@ -201,7 +201,7 @@ public class TechInfoActivity extends BaseActivity {
                 mNativePlace.setText(mTechInfo.province + " " + mTechInfo.city);
             }
 
-            if (mTechInfo.gender.equals("male")) {
+            if (!TextUtils.isEmpty(mTechInfo.gender)&&mTechInfo.gender.equals("male")) {
                 mMale.setChecked(true);
             } else {
                 mFemale.setChecked(true);

@@ -201,4 +201,12 @@ public class MsgDef {
     public static final int MSG_DEF_GET_CLUB_ORDER_TECHNICIAN_LIST = 0x0133;
     public static final int MSG_DEF_GET_CLUB_ORDER_PROJECT_LIST = 0x0134;
     public static final int MSG_DEF_GET_ORDER_FILTER_LIST = 0x0135;
+    //运营报表
+    public static final int MSG_DEF_CREATE_REPORT_CUSTOM = 0x0136;
+    public static final int MSG_DEF_DELETE_REPORT = 0x0137;
+    public static final int MSG_DEF_GET_REPORT_LIST = 0x0138;
+    public static final int MSG_DEF_GET_REPORT_CONFIG = 0x0139;
+    public static final int MSG_DEF_GET_REPORT_NEWS = 0x0140;
+    public static final int MSG_DEF_GET_REPORT_BY_ID = 0x0141;
+
 }

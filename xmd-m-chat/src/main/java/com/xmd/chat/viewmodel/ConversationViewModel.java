@@ -95,7 +95,6 @@ public class ConversationViewModel {
     }
 
     public CharSequence getMessage() {
-        XLogger.i(">>>","message>>"+lastMessage.getContentText());
         return lastMessage.getContentText();
     }
 

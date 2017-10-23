@@ -92,6 +92,11 @@ import com.xmd.manager.service.response.RecordTypeListResult;
 import com.xmd.manager.service.response.RegisterListResult;
 import com.xmd.manager.service.response.RegisterStatisticsResult;
 import com.xmd.manager.service.response.RegistryDataResult;
+import com.xmd.manager.service.response.ReportCreateResult;
+import com.xmd.manager.service.response.ReportDeleteResult;
+import com.xmd.manager.service.response.ReportInfoResult;
+import com.xmd.manager.service.response.ReportNewsResult;
+import com.xmd.manager.service.response.ReportSettingResult;
 import com.xmd.manager.service.response.SaveChatUserResult;
 import com.xmd.manager.service.response.SendGroupMessageResult;
 import com.xmd.manager.service.response.StaffDataResult;
@@ -477,11 +482,29 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_ORDER_FILTER_LIST:
                 getOrderListFilter((Map<String, String>) msg.obj);
                 break;
-
+            case MsgDef.MSG_DEF_GET_REPORT_NEWS:
+                getFinancialReportNews();
+                break;
+            case MsgDef.MSG_DEF_GET_REPORT_LIST:
+                getFinancialReportList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_REPORT_CONFIG:
+                getFinancialReportConfig((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_REPORT_BY_ID:
+                getFinancialReportById(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_DELETE_REPORT:
+                deleteFinancialReportById(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM:
+                createFinancialReport((Map<String, String>) msg.obj);
+                break;
         }
 
         return true;
     }
+
 
 
     private void doSwitchIndex(Map<String, String> params) {
@@ -2692,6 +2715,64 @@ public class RequestController extends AbstractController {
         });
     }
 
+    //新报表提示
+    private void getFinancialReportNews() {
+        Call<ReportNewsResult> call = getSpaService().getReportNews(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<ReportNewsResult>() {
+            @Override
+            protected void postResult(ReportNewsResult result) {
+                super.postResult(result);
+            }
+        });
+    }
+
+    //报表列表
+    private void getFinancialReportList(Map<String, String> obj) {
+
+    }
+    //报表详情
+    private void getFinancialReportById(String reportId) {
+        Call<ReportInfoResult> call = getSpaService().getReportInfo(SharedPreferenceHelper.getUserToken(),reportId);
+        call.enqueue(new TokenCheckedCallback<ReportInfoResult>() {
+            @Override
+            protected void postResult(ReportInfoResult result) {
+                super.postResult(result);
+            }
+        });
+    }
+    //删除报表
+      private void deleteFinancialReportById(String reportId) {
+          Call<ReportDeleteResult> call = getSpaService().deleteReport(SharedPreferenceHelper.getUserToken(),reportId);
+          call.enqueue(new TokenCheckedCallback<ReportDeleteResult>() {
+              @Override
+              protected void postResult(ReportDeleteResult result) {
+                  super.postResult(result);
+              }
+          });
+
+    }
+
+    //设置报表 未确定
+    private void getFinancialReportConfig(Map<String, String> params) {
+        Call<ReportSettingResult> call = getSpaService().reportSetting(SharedPreferenceHelper.getUserToken());
+
+    }
+
+    //创建自定义报表
+    private void createFinancialReport(Map<String, String> params) {
+        Call<ReportCreateResult> call = getSpaService().createReport(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_REPORT_CUSTOM_START_TIME),
+                params.get(RequestConstant.KEY_REPORT_CUSTOM_END_TIME),params.get(RequestConstant.KEY_REPORT_CUSTOM_NAME));
+        call.enqueue(new TokenCheckedCallback<ReportCreateResult>() {
+            @Override
+            protected void postResult(ReportCreateResult result) {
+                super.postResult(result);
+            }
+        });
+
+    }
+
+
+
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {
         String version = params.get(RequestConstant.KEY_UPDATE_VERSION);
@@ -2741,6 +2822,7 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
 
     /**
      * @FormUrlEncoded

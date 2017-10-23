@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_10"
+                android:paddingRight="@dimen/margin_10">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="0.5dp"
+                  android:layout_marginTop="0.5dp"
+                  android:background="@drawable/white_background_selector"
+                  android:orientation="vertical"
+                  android:paddingLeft="@dimen/margin_10"
+                  android:paddingRight="@dimen/margin_10">
+
+        <TextView
+            android:id="@+id/tv_report_name"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:textColor="#212121"
+            android:textSize="16sp"
+            tools:text="2017-08-14运营日表"/>
+        <View style="@style/horizontal_divider_line"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_report_share"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_report_share"
+                android:drawablePadding="@dimen/margin_10"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="分享"
+                android:textColor="#666666"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/img_operate_new_remark"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/list_img_new"/>
+</RelativeLayout>

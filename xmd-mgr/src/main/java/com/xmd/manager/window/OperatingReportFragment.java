@@ -10,17 +10,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.event.OrderCountUpDate;
+import com.xmd.manager.msgctrl.MsgDef;
+import com.xmd.manager.msgctrl.MsgDispatcher;
+import com.xmd.manager.msgctrl.RxBus;
+import com.xmd.manager.service.response.ReportNewsResult;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.Subscription;
 
 /**
  * Created by Lhj on 17-9-11.
@@ -35,6 +42,7 @@ public class OperatingReportFragment extends BaseFragment {
 
     Unbinder unbinder;
     View view;
+    public Subscription mReportNewSubscribe;
 
     @Nullable
     @Override
@@ -46,9 +54,24 @@ public class OperatingReportFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        XLogger.i(">>>","onResume");
+     //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
+
+    }
+
+    @Override
     protected void initView() {
         view.findViewById(R.id.toolbar_left).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(ResourceUtils.getString(R.string.operate_data_title));
+        mReportNewSubscribe = RxBus.getInstance().toObservable(ReportNewsResult.class).subscribe(
+                reportNewsResult -> {handlerReportNewsResult(reportNewsResult);}
+        );
+    }
+
+    private void handlerReportNewsResult(ReportNewsResult reportNewsResult) {
+
     }
 
     @Override

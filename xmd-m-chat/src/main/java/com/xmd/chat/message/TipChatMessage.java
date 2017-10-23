@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 public class TipChatMessage extends ChatMessage {
-    private static String ATTR_TIP_TYPE = "tipType";
+    public static String ATTR_TIP_TYPE = "tipType";
 
     public static final String TIP_TYPE_PLAY_DICE = "tip_type_play_dice";
 
@@ -41,15 +41,9 @@ public class TipChatMessage extends ChatMessage {
     public CharSequence getTip() {
         switch (getAttrType()) {
             case ChatMessage.MSG_TYPE_COUPON_TIP:
-                return String.format("%s领取了您的\"%s\"", getUserName(), super.getContentText());
+                return  super.getContentText();
             case ChatMessage.MSG_TYPE_PAID_COUPON_TIP: {
-                String text = super.getContentText().toString();
-                String[] msg = text.split("&");
-                String couponTitle = "";
-                if (msg.length > 0) {
-                    couponTitle = msg[0];
-                }
-                return String.format("%s购买了您 ＂%s＂点钟券", getUserName(), couponTitle);
+                return super.getContentText().toString();
             }
             case TIP_TYPE_PLAY_DICE: {
                 String msg = super.getOriginContentText();

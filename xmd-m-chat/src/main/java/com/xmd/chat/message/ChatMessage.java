@@ -254,7 +254,21 @@ public class ChatMessage {
         if (contentText == null) {
             if (emMessage.getType().equals(EMMessage.Type.TXT)) {
                 String message = ((EMTextMessageBody) emMessage.getBody()).getMessage();
-                contentText = EmojiManager.getInstance().format(message);
+                if(getAttrType().equals(MSG_TYPE_COUPON_TIP)){
+                    String couponMessage = String.format("%s领取了您的\"%s\"", getUserName(), message);
+                    contentText = EmojiManager.getInstance().format(couponMessage);
+                }else if(getAttrType().equals(MSG_TYPE_PAID_COUPON_TIP)){
+                    String[] msg = message.split("&");
+                    String couponTitle = "";
+                    if (msg.length > 0) {
+                        couponTitle = msg[0];
+                    }
+                    String paidType = String.format("%s购买了您 ＂%s＂点钟券", getUserName(), couponTitle);
+                    contentText = EmojiManager.getInstance().format(paidType);
+                }else{
+                    contentText = EmojiManager.getInstance().format(message);
+                }
+
             } else {
                 contentText = new SpannableString("[" + emMessage.getType().name() + "]");
             }
@@ -356,6 +370,14 @@ public class ChatMessage {
         } catch (HyphenateException e) {
             return null;
         }
+    }
+
+    public String getAttrType() {
+        String attrType = getSafeStringAttribute(TipChatMessage.ATTR_TIP_TYPE);
+        if (attrType == null) {
+            attrType = "";
+        }
+        return attrType;
     }
 
     public static Integer getSafeIntegerAttribute(EMMessage emMessage, String key) {

@@ -42,6 +42,7 @@ import com.xmd.manager.beans.GroupBean;
 import com.xmd.manager.beans.GroupMessage;
 import com.xmd.manager.beans.MarketingIncomeBean;
 import com.xmd.manager.beans.OnlinePayBean;
+import com.xmd.manager.beans.OperateReportBean;
 import com.xmd.manager.beans.Order;
 import com.xmd.manager.beans.RegisterInfo;
 import com.xmd.manager.beans.StaffDataBean;
@@ -129,6 +130,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 18;
     private static final int TYPE_TECH_PERSONAL_RANKING = 19;
     private static final int TYPE_STAFF_DATA_ITEM = 20;
+    private static final int TYPE_OPERATE_REPORT_ITEM = 21;
     private static final int TYPE_FOOTER = 99;
     private static final int TYPE_DADA_IS_EMPTY = 100;
 
@@ -164,7 +166,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         return mData;
     }
 
-    public void setBottomAlterTextMessage(String alterText){
+    public void setBottomAlterTextMessage(String alterText) {
         this.mBottomMessage = alterText;
     }
 
@@ -222,6 +224,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PERSONAL_RANKING;
             } else if (mData.get(position) instanceof StaffDataBean) {
                 return TYPE_STAFF_DATA_ITEM;
+            } else if (mData.get(position) instanceof OperateReportBean) {
+                return TYPE_OPERATE_REPORT_ITEM;
             }
         }
         return TYPE_DADA_IS_EMPTY;
@@ -272,6 +276,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_STAFF_DATA_ITEM:
                 View staffData = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_staff_data_item, parent, false);
                 return new StaffDataListItemViewHolder(staffData);
+            case TYPE_OPERATE_REPORT_ITEM:
+                View operateReportView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_operate_item, parent, false);
+                return new OperateReportListItemViewHolder(operateReportView);
             default:
                 return null;
         }
@@ -325,7 +332,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 desc = ResourceUtils.getString(R.string.order_list_item_empty);
                 footerHolder.itemFooter.setOnClickListener(null);
             } else if (mIsNoMore) {
-                desc = TextUtils.isEmpty(mBottomMessage)?ResourceUtils.getString(R.string.order_list_item_no_more):mBottomMessage;
+                desc = TextUtils.isEmpty(mBottomMessage) ? ResourceUtils.getString(R.string.order_list_item_no_more) : mBottomMessage;
                 footerHolder.itemFooter.setOnClickListener(null);
             } else {
                 footerHolder.itemFooter.setOnClickListener(v -> mCallback.onLoadMoreButtonClicked());
@@ -386,12 +393,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 bindPkActivityListItemViewHolder(holder, obj);
             } else if (holder instanceof TechPersonalRankingListItemViewHolder) {
                 bindTechPersonalRankingViewHolder(holder, obj, position);
-            }else if(holder instanceof StaffDataListItemViewHolder){
-                bindStaffDataRankingViewHolder(holder,obj,position);
+            } else if (holder instanceof StaffDataListItemViewHolder) {
+                bindStaffDataRankingViewHolder(holder, obj, position);
+            } else if(holder instanceof OperateReportListItemViewHolder){
+                bindOperateReportListViewHolder(holder,obj);
             }
         }
 
     }
+
+
 
     /**
      * 订单
@@ -1136,11 +1147,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     private void bindStaffDataRankingViewHolder(RecyclerView.ViewHolder holder, Object obj, int position) {
 
-        final StaffDataBean staffBean = ( StaffDataBean) obj;
+        final StaffDataBean staffBean = (StaffDataBean) obj;
         StaffDataListItemViewHolder staffDataViewHolder = (StaffDataListItemViewHolder) holder;
 
-        String techName = TextUtils.isEmpty(staffBean.name)?"技师":staffBean.name;
-        staffDataViewHolder.tvStaffName.setText(Utils.StrSubstring(4,techName,true));
+        String techName = TextUtils.isEmpty(staffBean.name) ? "技师" : staffBean.name;
+        staffDataViewHolder.tvStaffName.setText(Utils.StrSubstring(4, techName, true));
         Glide.with(mContext).load(staffBean.avatarUrl).error(R.drawable.icon22).into(staffDataViewHolder.imgStaffHead);
         if (Utils.isNotEmpty(staffBean.techNo)) {
             String techNO = String.format("[%s]", staffBean.techNo);
@@ -1169,11 +1180,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
         staffDataViewHolder.tvStaffOrder.setText(String.valueOf(staffBean.totalOrderCount));
         staffDataViewHolder.tvCompleteOrderCount.setText(String.valueOf(staffBean.completeOrderCount));
-        if(position!=0 && position == (getItemCount()-1)){
+        if (position != 0 && position == (getItemCount() - 1)) {
             staffDataViewHolder.tvBottomText.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             staffDataViewHolder.tvBottomText.setVisibility(View.GONE);
         }
+    }
+
+    private void bindOperateReportListViewHolder(RecyclerView.ViewHolder holder, Object obj) {
+        final OperateReportBean reoprtBean = (OperateReportBean) obj;
+        OperateReportListItemViewHolder viewHolder = (OperateReportListItemViewHolder) holder;
+
+
     }
 
 
@@ -1676,7 +1694,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    static class StaffDataListItemViewHolder extends RecyclerView.ViewHolder{
+    static class StaffDataListItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_staff_number)
         ImageView imgStaffNumber;
         @BindView(R.id.text_staff_number)
@@ -1693,7 +1711,22 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView tvCompleteOrderCount;
         @BindView(R.id.tv_bottom_text)
         TextView tvBottomText;
+
         StaffDataListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class OperateReportListItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_report_name)
+        TextView tvReportName;
+        @BindView(R.id.tv_report_share)
+        TextView tvReportShare;
+        @BindView(R.id.img_operate_new_remark)
+        ImageView imgOperateNewRemark;
+
+        OperateReportListItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

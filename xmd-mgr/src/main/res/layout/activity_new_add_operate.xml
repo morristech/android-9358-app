@@ -27,7 +27,9 @@
             android:background="@drawable/shape_round_corner_bg"
             android:gravity="center_vertical"
             android:hint="@string/new_add_operate_edit_name_hint"
+            android:maxLength="18"
             android:paddingLeft="10dp"
+            android:singleLine="true"
             android:textColor="#999999"
             android:textSize="@dimen/fontSubheading"/>
 

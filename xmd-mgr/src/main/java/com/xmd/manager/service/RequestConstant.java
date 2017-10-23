@@ -189,6 +189,16 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_TECH_ORDER_RANK = BASE_URL + "/v2/manager/club/tech/order_rank";
     public static final String URL_GET_CLUB_SELECT_TECHNICIAN_LIST = BASE_URL + "/v2/manager/club/select/technician/list";
     public static final String URL_GET_CLUB_SELECT_ITEM_LIST = BASE_URL + "/v2/manager/club/select/item/list";
+    /**
+     * 运营报表
+     */
+    public static final String URL_CLUB_FINANCIAL_REPORT_CUSTOMER = BASE_URL + "/v2/club/financial/report/custom";
+    public static final String URL_CLUB_FINANCIAL_REPORT_DELETE = BASE_URL + "/v2/club/financial/report/delete";
+    public static final String URL_GET_CLUB_FINANCIAL_REPORT = BASE_URL + "/v2/club/financial/report";
+    public static final String URL_CLUB_FINANCIAL_REPORT_CONFIG = BASE_URL + "/v2/club/financial/report/config";
+    public static final String URL_GET_CLUB_FINANCIAL_REPORT_NEWS = BASE_URL + "/v2/club/financial/report/news";
+    public static final String URL_GET_CLUB_FINANCIAL_REPORT_BY_ID = BASE_URL + "/v2/club/financial/report/{id}";
+
 
     /**********************************************************************dengyixia***********************/
     /*                                           keys                                            */
@@ -387,8 +397,6 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
 
 
-
-
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/
@@ -455,6 +463,16 @@ public class RequestConstant {
     public static final String KEY_ORDER_FILTER_STATUS = "status";
     public static final String KEY_ORDER_FILTER_TECH_ID = "techId";
     public static final String KEY_ORDER_FILTER_TELEPHONE = "telephone";
+
+    /**
+     * 自定义报表
+     */
+
+    public static final String KEY_REPORT_CUSTOM_START_TIME = "startTime";
+    public static final String KEY_REPORT_CUSTOM_END_TIME = "endTime";
+    public static final String KEY_REPORT_CUSTOM_NAME = "name";
+    public static final String KEY_REPORT_DATE = "date";
+    public static final String KEY_REPORT_TYPE = "type";
 
 }
 

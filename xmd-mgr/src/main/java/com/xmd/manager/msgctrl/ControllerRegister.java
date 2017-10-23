@@ -134,7 +134,13 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_TECH_ORDER_RANK,
                 MsgDef.MSG_DEF_GET_CLUB_ORDER_TECHNICIAN_LIST,
                 MsgDef.MSG_DEF_GET_CLUB_ORDER_PROJECT_LIST,
-                MsgDef.MSG_DEF_GET_ORDER_FILTER_LIST
+                MsgDef.MSG_DEF_GET_ORDER_FILTER_LIST,
+                MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM,
+                MsgDef.MSG_DEF_DELETE_REPORT,
+                MsgDef.MSG_DEF_GET_REPORT_LIST,
+                MsgDef.MSG_DEF_GET_REPORT_CONFIG,
+                MsgDef.MSG_DEF_GET_REPORT_NEWS,
+                MsgDef.MSG_DEF_GET_REPORT_BY_ID
 
         });
     }

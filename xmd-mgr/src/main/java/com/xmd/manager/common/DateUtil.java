@@ -60,6 +60,16 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
         return format.format(new Date());
     }
+
+    /**
+     * 获取当前日期
+     *
+     * @return
+     */
+    public static String getCurrentTime() {
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT3);
+        return format.format(new Date());
+    }
     /**
      * 获取昨天
      *
@@ -99,7 +109,15 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
         return format.format(cal.getTime());
     }
-
+    /**
+     * @return
+     */
+    public static String getFirstDayOfMonthTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT3);
+        return format.format(cal.getTime());
+    }
 
     public static String getFirstDayOfMonth(String formatString) {
         Calendar cal = Calendar.getInstance();

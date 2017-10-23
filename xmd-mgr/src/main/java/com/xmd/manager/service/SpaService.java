@@ -1,5 +1,6 @@
 package com.xmd.manager.service;
 
+import com.xmd.m.comment.adapter.ListRecycleViewAdapter;
 import com.xmd.m.network.BaseBean;
 import com.xmd.manager.beans.CheckCouponResult;
 import com.xmd.manager.beans.CheckInfoList;
@@ -1112,6 +1113,30 @@ public interface SpaService {
                                                 @Field(RequestConstant.KEY_ORDER_FILTER_TECH_ID) String techId,
                                                 @Field(RequestConstant.KEY_ORDER_FILTER_TELEPHONE) String telephone);
 
+    @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT_NEWS)
+    Call<ReportNewsResult> getReportNews(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    //获取报表信息
+    @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT_BY_ID)
+    Call<ReportInfoResult> getReportInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                         @Path(RequestConstant.KEY_ID) String id);
+    //删除报表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_DELETE)
+    Call<ReportDeleteResult> deleteReport(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_ID) String id);
+    //报表设置
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_CONFIG)
+    Call<ReportSettingResult> reportSetting(@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    //创建报表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_CUSTOMER)
+    Call<ReportCreateResult> createReport(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_REPORT_CUSTOM_START_TIME) String startTime,
+                                          @Field(RequestConstant.KEY_REPORT_CUSTOM_END_TIME) String endTime,
+                                          @Field(RequestConstant.KEY_REPORT_CUSTOM_NAME) String name);
 
 
     @FormUrlEncoded
