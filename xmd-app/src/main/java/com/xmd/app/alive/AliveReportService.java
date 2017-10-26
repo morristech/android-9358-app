@@ -3,7 +3,6 @@ package com.xmd.app.alive;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -165,10 +164,10 @@ public class AliveReportService extends Service {
     private static int NOTIFICATION_ID = 0x2333;
 
     void setForeground() {
-        startForeground(NOTIFICATION_ID, new Notification());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            startService(new Intent(this, InnerService.class));
-        }
+//        startForeground(NOTIFICATION_ID, new Notification());
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//            startService(new Intent(this, InnerService.class));
+//        }
     }
 
     public static class InnerService extends Service {
