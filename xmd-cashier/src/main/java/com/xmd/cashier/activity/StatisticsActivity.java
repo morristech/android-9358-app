@@ -19,7 +19,7 @@ import com.xmd.cashier.common.AppConstants;
  */
 
 public class StatisticsActivity extends BaseActivity {
-    public String[] STATISTICS_FILTER_TIME = new String[]{"天", "周", "月", "累计", "自定义"};
+    public String[] STATISTICS_FILTER_TIME = new String[]{"日", "周", "月", "累计", "自定义"};
     public Drawable[] STATISTICS_FILTER_ICON = new Drawable[]{null, null, null, null, ResourceUtils.getDrawable(R.drawable.selector_tab_indicator)};
 
     private ViewPagerTabIndicator mIndicator;

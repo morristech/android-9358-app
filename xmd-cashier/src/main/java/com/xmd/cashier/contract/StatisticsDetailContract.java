@@ -39,6 +39,8 @@ public interface StatisticsDetailContract {
 
         void styleMoney();
 
+        void setStyle();
+
         String formatAmount(long amount);
     }
 

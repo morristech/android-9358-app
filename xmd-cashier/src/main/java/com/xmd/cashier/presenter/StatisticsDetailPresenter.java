@@ -371,7 +371,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printDivide();
                 break;
             case STYLE_MONEY:
-                mPos.printBoldText("交易总金额", formatAmount(mOnlineInfo.totalAmount));
+                mPos.printBoldText("需结算打款交易金额", formatAmount(mOnlineInfo.totalAmount));
                 mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalDiscount)));
                 mPos.printText("  奖金提成(小摩豆代付部分)：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.internalCommission)));
                 mPos.printText("  手续费：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalSettleFee)));
@@ -439,6 +439,19 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
     public void styleMoney() {
         mView.showMoneyStyle();
         mStyleType = STYLE_MONEY;
+    }
+
+    @Override
+    public void setStyle() {
+        switch (mStyleType) {
+            case STYLE_MONEY:
+                mView.showMoneyStyle();
+                break;
+            case STYLE_SETTLE:
+            default:
+                mView.showSettleStyle();
+                break;
+        }
     }
 
     @Override

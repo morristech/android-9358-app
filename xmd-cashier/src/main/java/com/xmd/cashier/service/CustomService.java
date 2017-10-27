@@ -310,6 +310,7 @@ public class CustomService extends Service {
                         switch (type) {
                             case AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY:
                                 NotifyManager.getInstance().printOnlinePayRecord((OnlinePayInfo) object, false, true);
+                                NotifyManager.getInstance().printOnlinePayRecord((OnlinePayInfo) object, false, false);
                                 break;
                             case AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD:
                                 NotifyManager.getInstance().printOrderRecord((OrderRecordInfo) object, false);
