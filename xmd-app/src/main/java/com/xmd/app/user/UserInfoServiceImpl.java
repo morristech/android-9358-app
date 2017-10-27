@@ -108,7 +108,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     user = old.update(user);
                 }
                 userIdMap.put(user.getId(), user);
-                if(!TextUtils.isEmpty(user.getChatId())){
+                if (!TextUtils.isEmpty(user.getChatId())) {
                     chatIdMap.put(user.getChatId(), user);
                 }
                 saveUserToDb(user);

@@ -48,9 +48,6 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
     private ExpandableClubEmployeeListViewAdapter clubEmployeeAdapter;
     private boolean isFromManager;
 
-//    public ContactsTechnicianFragment(boolean isFromManager) {
-//        this.isFromManager = isFromManager;
-//    }
 
     public ContactsTechnicianFragment(){
 

@@ -215,7 +215,6 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                 }
             }
             checkDeliverResult();
-            XLogger.i(">>>","发券分享次数");
             EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_COUPON_SEND));
 
         }

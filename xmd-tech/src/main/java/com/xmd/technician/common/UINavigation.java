@@ -87,9 +87,9 @@ public class UINavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoChatActivityFromService(Context context, String emChatId) {
-        EventBus.getDefault().post(new EventStartChatActivity(emChatId));
-    }
+//    public static void gotoChatActivityFromService(Context context, String emChatId) {
+//        EventBus.getDefault().post(new EventStartChatActivity(emChatId));
+//    }
 
     public static void gotoOnlinePayNotifyList(Context context) {
         Intent intent = new Intent(context, OnlinePayNotifyActivity.class);

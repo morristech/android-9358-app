@@ -56,7 +56,6 @@ public class OperatingReportFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        XLogger.i(">>>","onResume");
      //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
 
     }

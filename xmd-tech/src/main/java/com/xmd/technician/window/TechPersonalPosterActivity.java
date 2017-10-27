@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Adapter.TechPosterListAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -137,7 +138,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             mPosterBean = new PosterBean();
         }
         createPosterIntent.putExtra(Constant.KEY_CURRENT_POSTER, mPosterBean);
-        createPosterIntent.putExtra(Constant.KEY_QR_CODE_URL, Utils.isNotEmpty(mQrCodeUrl)?mQrCodeUrl:"");
+        createPosterIntent.putExtra(Constant.KEY_QR_CODE_URL, Utils.isNotEmpty(mQrCodeUrl) ? mQrCodeUrl : "");
         startActivity(createPosterIntent);
     }
 
@@ -169,7 +170,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
         }
         mDialog = new TechPosterDialog(this, mCurrentModel, true, true);
         mDialog.show();
-        mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, null, bean.imageUrl,bean.qrCodeUrl);
+        mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, null, bean.imageUrl, bean.qrCodeUrl);
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.setPosterListener(this);
     }
@@ -208,7 +209,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
                 if (mDialog != null) {
                     mDialog.dismiss();
                     dismiss.setVisibility(View.GONE);
-                    saveImage(view,true);
+                    saveImage(view, true);
                 }
 
             }
@@ -226,13 +227,13 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
         if (mDialog != null) {
             mDialog.dismiss();
             dismiss.setVisibility(View.GONE);
-            String localFile = saveImage(view,false);
+            String localFile = saveImage(view, false);
             ShareController.doShareImage(localFile);
         }
 
     }
 
-    private String saveImage(View v,boolean saveToGallery) {
+    private String saveImage(View v, boolean saveToGallery) {
         Bitmap bitmap;
         String name = "技师海报.png";
         File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + "技师海报");
@@ -250,16 +251,22 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
         v.getLocationOnScreen(location);
         File picFile = new File(file, name);
         try {
+            if (bitmap.getWidth() >= location[0] + view.getWidth()) {
+                bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(TechPersonalPosterActivity.this, 45));
+            } else {
+                bitmap = Bitmap.createBitmap(bitmap, 0, location[1], bitmap.getWidth(), view.getHeight() - Utils.dip2px(TechPersonalPosterActivity.this, 45));
+            }
             bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(this, 45));
             FileOutputStream fo = new FileOutputStream(picFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fo);
-            if(saveToGallery){
+            if (saveToGallery) {
                 saveImageToGallery(picFile);
             }
             return picFile.toString();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            XToast.show("图片保存失败，请重新尝试");
         } finally {
             view.destroyDrawingCache();
         }

@@ -255,10 +255,10 @@ public class ChatMessage {
         if (contentText == null) {
             if (emMessage.getType().equals(EMMessage.Type.TXT)) {
                 String message = ((EMTextMessageBody) emMessage.getBody()).getMessage();
-                if(getAttrType().equals(MSG_TYPE_COUPON_TIP)){
+                if (getAttrType().equals(MSG_TYPE_COUPON_TIP)) {
                     String couponMessage = String.format("%s领取了您的\"%s\"", getUserName(), message);
                     contentText = EmojiManager.getInstance().format(couponMessage);
-                }else if(getAttrType().equals(MSG_TYPE_PAID_COUPON_TIP)){
+                } else if (getAttrType().equals(MSG_TYPE_PAID_COUPON_TIP)) {
                     String[] msg = message.split("&");
                     String couponTitle = "";
                     if (msg.length > 0) {
@@ -266,7 +266,7 @@ public class ChatMessage {
                     }
                     String paidType = String.format("%s购买了您 ＂%s＂点钟券", getUserName(), couponTitle);
                     contentText = EmojiManager.getInstance().format(paidType);
-                }else{
+                } else {
                     contentText = EmojiManager.getInstance().format(message);
                 }
 
@@ -343,9 +343,9 @@ public class ChatMessage {
                     || now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)) {
                 relativeTime = DateUtils.doLong2RelativeString(msgTime);
             } else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
-                relativeTime = DateUtils.doLong2String(msgTime, "昨天 "+timeDistinguish+ "hh:mm");
+                relativeTime = DateUtils.doLong2String(msgTime, "昨天 " + timeDistinguish + "hh:mm");
             } else {
-                relativeTime = DateUtils.doLong2String(msgTime, timeDistinguish+"hh:mm");
+                relativeTime = DateUtils.doLong2String(msgTime, timeDistinguish + "hh:mm");
             }
 
         }
@@ -369,7 +369,8 @@ public class ChatMessage {
         try {
             return emMessage.getStringAttribute(key);
         } catch (HyphenateException e) {
-            return null;
+            e.getLocalizedMessage();
+            return "";
         }
     }
 

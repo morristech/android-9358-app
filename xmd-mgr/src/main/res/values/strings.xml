@@ -697,7 +697,7 @@
     <string name="operate_cycle_setting_title">报表周期设置</string>
     <string name="has_none_new_data">已无更多数据</string>
     <!--订单数据-->
-    <string name="reserve_data_table_yesterday">昨天</string>
+    <string name="reserve_data_table_yesterday">天</string>
     <string name="reserve_data_table_week">周</string>
     <string name="reserve_data_table_month">月</string>
     <string name="reserve_data_table_total">累计</string>

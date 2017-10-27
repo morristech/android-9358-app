@@ -96,7 +96,7 @@ public class HelloReplyService extends Service {
         text.setText(mReplyList.get(0).receiverName);
         mLayout.setOnClickListener(v -> {
             hide();
-            UINavigation.gotoChatActivityFromService(TechApplication.getAppContext(), mReplyList.get(0).receiverEmChatId);
+            UINavigation.gotoChatActivity(TechApplication.getAppContext(), mReplyList.get(0).receiverEmChatId);
         });
         ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, () -> hide(), DISMISS_INTERVAL);
     }

@@ -572,20 +572,6 @@ public class Utils {
     }
 
 
-    public static void saveImageToGallery(Context context, File file) {
-        // 其次把文件插入到系统图库
-        try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
-            // 最后通知图库更新
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
-                    + file)));
-            Logger.i(">>>", "保存成功");
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static String stringFormat(String string) {
         if (Utils.isEmpty(string)) {
             return "";

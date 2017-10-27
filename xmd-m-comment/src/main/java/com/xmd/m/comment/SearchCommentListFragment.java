@@ -367,7 +367,6 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i(">>>", e.getLocalizedMessage());
             }
         });
     }

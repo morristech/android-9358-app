@@ -190,7 +190,6 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
     }
 
     private void loadMore() {
-        XLogger.i(">>>", "loadMore");
         if (getListSafe()) {
             //上拉刷新，加载更多数据
             mSwipeRefreshLayout.setRefreshing(true);
@@ -345,13 +344,11 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i(">>>", e.getLocalizedMessage());
             }
         });
     }
 
     public void filterComplaint(String starTime, String endTime, String techList, String commentType) {
-        XLogger.i(">>>", "此处是过滤");
         resetData();
         mStartDate = starTime;
         mEndDate = endTime;

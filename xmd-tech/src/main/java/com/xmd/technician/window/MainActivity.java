@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
@@ -120,26 +121,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         XmdChat.getInstance().loadConversation();
     }
 
-//    @TargetApi(23)
-//    private void requestPermissions() {
-//        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
-//            @Override
-//            public void onGranted() {
-//
-//            }
-//
-//            @Override
-//            public void onDenied(String permission) {
-//
-//            }
-//        });
-//    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         checkLoginStatus();
-
         if (processXmdDisplay(intent)) {
             return;
         }
@@ -251,7 +236,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         if (mCurrentTabIndex >= 0) {
             mBottomBarButtonList.get(mCurrentTabIndex).setSelected(false);
         }
-        if(mCurrentTabIndex!=0 &&index == 0){
+        if (mCurrentTabIndex != 0 && index == 0) {
             EventBus.getDefault().post(new MainPageStatistics(Constants.UMENG_STATISTICS_HOME_BROWSE));
         }
         // 把当前tab设为选中状态
@@ -265,6 +250,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
      */
     @Subscribe
     public void updateUnreadMsgLabel(EventTotalUnreadCount event) {
+        XLogger.i(">>>", "刷新未读消息总数" + event.getCount());
         int count = event.getCount();
         if (count > 0) {
             if (count > 99) {
@@ -320,7 +306,15 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                         this.makeShortToast("打招呼失败，缺少客户信息");
                         return;
                     }
-                    sayHello(event.bean.emChatId, 9999);
+                    if (HelloSettingManager.getInstance().getTemplateId() <= 3) {
+                        Intent intent = new Intent(this, HelloSettingActivity.class);
+                        startActivity(intent);
+                        XToast.show("请先设置打招呼模板！");
+                        return;
+                    }
+                    //    XLogger.i(">>>","integer>"+HelloSettingManager.getInstance().getTemplateParentId());
+                    //    ;
+                     sayHello(event.bean.emChatId, 9999);
                     break;
             }
         }
@@ -334,7 +328,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @Subscribe
     public void switchTableToMarketingFragment(SwitchTableToMarketingEvent event) {
-        switchFragment(getFragmentSize()-1);
+        switchFragment(getFragmentSize() - 1);
     }
 
     @Subscribe

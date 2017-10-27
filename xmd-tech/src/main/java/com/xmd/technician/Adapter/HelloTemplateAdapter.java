@@ -61,9 +61,12 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     // 未选择系统模版
     public void unCheckedData() {
-        mData.get(mCheckPos).setSelected(false);
-        notifyItemChanged(mCheckPos);
-        mCheckPos = -1;
+        if(mCheckPos != -1){
+            mData.get(mCheckPos).setSelected(false);
+            notifyItemChanged(mCheckPos);
+            mCheckPos = -1;
+        }
+
     }
 
     @Override

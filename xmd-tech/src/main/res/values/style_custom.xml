@@ -317,7 +317,7 @@
 
     <style name="main_fragment_layout_title_right_style" parent="@style/wh_wrap_content_layout">
         <item name="android:drawablePadding">@dimen/small_space</item>
-        <item name="android:drawableRight">@drawable/icon_right</item>
+        <item name="android:drawableRight">@drawable/icon_right_allow</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_alignParentLeft">false</item>
         <item name="android:textColor">@color/list_item_label_color</item>

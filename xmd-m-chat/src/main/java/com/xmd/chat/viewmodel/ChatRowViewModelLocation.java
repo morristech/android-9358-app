@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowLocationBinding;
@@ -20,6 +22,7 @@ import com.xmd.chat.message.CustomLocationMessage;
 
 /**
  * Created by mo on 17-7-1.
+ * 17-10-27,将webView 该为imageView
  * 位置消息
  */
 
@@ -31,13 +34,13 @@ public class ChatRowViewModelLocation extends ChatRowViewModel {
 
     public static View createView(ViewGroup parent) {
         ChatRowLocationBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_location, parent, false);
-        WebSettings webSettings = binding.webView.getSettings();
-        webSettings.setSupportZoom(false);
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        binding.webView.setBlockTouch(true);
+//        WebSettings webSettings = binding.webView.getSettings();
+//        webSettings.setSupportZoom(false);
+//        webSettings.setUseWideViewPort(true);
+//        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//        webSettings.setLoadWithOverviewMode(true);
+//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+//        binding.webView.setBlockTouch(true);
         return binding.getRoot();
     }
 
@@ -58,10 +61,11 @@ public class ChatRowViewModelLocation extends ChatRowViewModel {
     }
 
     @BindingAdapter("map")
-    public static void bindMap(WebView webView, ChatRowViewModelLocation data) {
+    public static void bindMap(ImageView locationView, ChatRowViewModelLocation data) {
         CustomLocationMessage locationMessage = (CustomLocationMessage) data.getChatMessage();
-        XLogger.d("load map: " + locationMessage.getMapUrl());
-        webView.loadUrl(locationMessage.getMapUrl());
+//        XLogger.d("load map: " + locationMessage.getMapUrl());
+//        webView.loadUrl(locationMessage.getMapUrl());
+        Glide.with(locationView.getContext()).load(locationMessage.getMapUrl()).into(locationView);
     }
 
     @Override

@@ -66,15 +66,15 @@
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:paddingLeft="@dimen/margin_2"
             android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/margin_2"
             android:src="@drawable/icon_setting_menu"/>
 
         <TextView
             style="@style/menu_setting_text_style"
             android:text="@string/settings_hello"/>
     </RelativeLayout>
-
+    <View style="@style/horizontal_divider_line"/>
     <RelativeLayout
         android:id="@+id/menu_fast_reply"
         style="@style/menu_setting_relative_style">
@@ -82,13 +82,13 @@
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:paddingLeft="@dimen/margin_2"
             android:layout_centerVertical="true"
-            android:src="@drawable/slide_menu_fast_reply" />
+            android:paddingLeft="@dimen/margin_2"
+            android:src="@drawable/slide_menu_fast_reply"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="快捷回复设置" />
+            android:text="快捷回复设置"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             app:switchStatus="open"
-            />
+        />
     </RelativeLayout>
 
     <RelativeLayout
@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             app:switchStatus="open"
-            />
+        />
 
 
     </RelativeLayout>
@@ -196,14 +196,14 @@
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"
         android:visibility="gone"
-        >
+    >
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
             android:background="@drawable/icon_quit"
-            />
+        />
 
         <TextView
             android:id="@+id/join_or_quit_club"
@@ -239,7 +239,7 @@
 
     </RelativeLayout>
 
-    <View style="@style/horizontal_divider_line" />
+    <View style="@style/horizontal_divider_line"/>
 
     <RelativeLayout
         android:id="@+id/menu_club_invite"
@@ -249,25 +249,25 @@
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:paddingLeft="@dimen/margin_2"
             android:layout_centerVertical="true"
-            android:src="@drawable/slide_menu_fast_reply" />
+            android:paddingLeft="@dimen/margin_2"
+            android:src="@drawable/slide_menu_fast_reply"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="入职邀请" />
+            android:text="入职邀请"/>
 
         <TextView
             android:id="@+id/menu_club_invite_count"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:gravity="center"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/red_circle"
+            android:gravity="center"
             android:text="0"
-            android:textSize="11sp"
             android:textColor="@android:color/white"
-            android:background="@drawable/red_circle" />
+            android:textSize="11sp"/>
     </RelativeLayout>
 
     <View
@@ -286,7 +286,7 @@
         android:layout_marginRight="@dimen/home_button_height"
         android:background="@drawable/bg_quit_club"
 
-        >
+    >
 
         <TextView
             android:layout_width="wrap_content"

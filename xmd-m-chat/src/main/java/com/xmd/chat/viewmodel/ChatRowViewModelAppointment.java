@@ -136,7 +136,6 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         binding.executePendingBindings();
         orderChatMessage.setInnerProcessed(status);
         sendMessage(ChatMessage.MSG_TYPE_ORDER_CANCEL);
-        XLogger.i(">>>","取消发起预约");
         EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_CANCEL));
     }
 
@@ -157,7 +156,6 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         inProgress.set(true);
         EventBusSafeRegister.register(this);
         EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, mAppointmentData));
-        XLogger.i(">>>","发起预约生成订单");
         EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_COMPLETE));
     }
 

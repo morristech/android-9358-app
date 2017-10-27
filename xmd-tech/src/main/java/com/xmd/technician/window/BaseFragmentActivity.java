@@ -52,6 +52,9 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
 
     @Override
     protected void onDestroy() {
+        if(mProgressDialog != null){
+            mProgressDialog.dismiss();
+        }
         super.onDestroy();
     }
 

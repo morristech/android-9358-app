@@ -411,7 +411,7 @@ public class CommentDetailActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i(">>>", e.getLocalizedMessage());
+
             }
         });
     }

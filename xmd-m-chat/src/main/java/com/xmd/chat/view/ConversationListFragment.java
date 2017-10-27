@@ -229,6 +229,7 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void onReceiveNewMessages(EventNewMessages messages) {
+        XLogger.i(">>>", "接收到消息...");
         for (EMMessage message : messages.getList()) {
             processMessageReceiveOrSend(new ChatMessage(message));
         }
@@ -262,6 +263,7 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void onUnreadCountEvent(EventUnreadCount event) {
+        XLogger.i(">>>","未读消息单聊数》"+event.getConversationViewModel().getUnReadMsgCount());
         int position = mAdapter.getDataList().indexOf(event.getConversationViewModel());
         if (position >= 0) {
             mAdapter.notifyItemChanged(position);

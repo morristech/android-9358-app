@@ -109,7 +109,6 @@ public class ChatActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.chat_activity);
-
         chatId = getIntent().getStringExtra(EXTRA_CHAT_ID);
         if (TextUtils.isEmpty(chatId)) {
             XToast.show("必须传入聊天ID!");
@@ -425,6 +424,7 @@ public class ChatActivity extends BaseActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    XLogger.i(">>>","此处有点击时间");
                     showSubMenuFastReply.set(false);
                     if (voiceInputMode.get()) {
                         voiceInputMode.set(false);
@@ -455,8 +455,7 @@ public class ChatActivity extends BaseActivity {
 
     //显示子菜单
     public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
-        if(chatMenu.getSubMenyList().get(0) instanceof SubmenuEmojiFragment){
-            XLogger.i(">>>","此处是表情");
+        if (chatMenu.getSubMenyList().get(0) instanceof SubmenuEmojiFragment) {
             EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_EMOJI_CLICK));
         }
 
@@ -491,7 +490,6 @@ public class ChatActivity extends BaseActivity {
 
         if ("快捷回复".equals(chatMenu.getName())) {
             showSubMenuFastReply.set(true);
-            XLogger.i(">>>","此处是快捷回复");
             EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_QUICK_CLICK));
         }
 

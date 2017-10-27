@@ -127,7 +127,9 @@ public class AppointmentActivity extends BaseActivity
                 });
     }
 
-    /************************技师选择***********************/
+    /************************
+     * 技师选择
+     ***********************/
     //点击选择技师
     public void onClickSelectTech() {
         if (mData.isFixTechnician()) {
@@ -184,7 +186,9 @@ public class AppointmentActivity extends BaseActivity
     }
 
 
-    /************************服务选择***********************/
+    /************************
+     * 服务选择
+     ***********************/
     //点击选择服务
     public void onClickSelectService() {
         if (mData.getTechnician() != null && mData.getAppointmentSetting() == null) {
@@ -243,7 +247,9 @@ public class AppointmentActivity extends BaseActivity
     }
 
 
-    /**************************时间选择******************************/
+    /**************************
+     * 时间选择
+     ******************************/
     public void onClickSelectTime() {
         if (mData.getAppointmentSetting() == null) {
             showLoading();
@@ -298,7 +304,9 @@ public class AppointmentActivity extends BaseActivity
         }
     }
 
-    /***************联系人信息*******************/
+    /***************
+     * 联系人信息
+     *******************/
 
     public void onCustomerNameChange(Editable e) {
         mData.setCustomerName(e.toString());
@@ -309,7 +317,9 @@ public class AppointmentActivity extends BaseActivity
     }
 
 
-    /***************提交*******************/
+    /***************
+     * 提交
+     *******************/
     public void onClickSubmit() {
         if (mData.isNeedSubmit()) {
             showLoading();
@@ -333,7 +343,6 @@ public class AppointmentActivity extends BaseActivity
             EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, mData));
             finish();
         }
-        XLogger.i(">>>","预约发送");
         EventBus.getDefault().post(new AppointmentUmengStatisticsEvent(Constants.UMENG_STATISTICS_BOOK_SEND));
     }
 

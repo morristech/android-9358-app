@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Adapter.HelloTemplateAdapter;
@@ -90,7 +91,6 @@ public class HelloSettingActivity extends BaseActivity {
             mCustomCheck.setEnabled(true);
         });
         mTemplateListView.setNestedScrollingEnabled(false);
-        // mTemplateListView.setLayoutManager(new FullyGridLayoutManager(HelloSettingActivity.this, 1));
         mTemplateListView.setLayoutManager(new GridLayoutManager(HelloSettingActivity.this, 1));
         mTemplateListView.setAdapter(mAdapter);
         initCustom();
@@ -236,6 +236,10 @@ public class HelloSettingActivity extends BaseActivity {
             // 系统招呼:只需要提供模版ID
             mTemplateContent = null;
             mTemplateId = String.valueOf(mAdapter.getCheckId());
+        }
+        if (mTemplateContent == null && mTemplateId == null) {
+            XToast.show("请选择模板");
+            return;
         }
 
         showLoading("正在提交...");

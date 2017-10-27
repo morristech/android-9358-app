@@ -86,7 +86,7 @@ public class TimeFilterFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        mCurrentDateYesterdayTime = DateUtil.getYesterdayDate();
+        mCurrentDateYesterdayTime = DateUtil.getCurrentDate();
         mCurrentDateWeekStartTime = DateUtil.getFirstDayOfWeek(new Date(), DATE_FORMAT);
         mCurrentDateWeekEndTime = DateUtil.getLastDayOfWeek(new Date(), DATE_FORMAT);
         mCurrentDateMonthStartTime = DateUtil.getFirstDayOfMonth(DATE_FORMAT);
@@ -195,7 +195,7 @@ public class TimeFilterFragment extends BaseFragment {
             case R.id.rl_time_add:
                 switch (mCurrentType) {
                     case ReserveDataActivity.TIME_FILTER_TYPE_DAY:
-                        if (mCurrentStartTime.equals(DateUtil.getYesterdayDate())) {
+                        if (mCurrentStartTime.equals(DateUtil.getCurrentDate())) {
                             XToast.show("已无更多数据");
                         } else {
                             mCurrentStartTime = DateUtil.getNextDate(DateUtil.stringDateToLong(mCurrentDateYesterdayTime), DATE_FORMAT);

@@ -253,6 +253,7 @@ public class MenuFactory {
     //创建更多菜单
     public void createMoreMenu(final BaseActivity activity) {
         if (moreMenus.size() == 0) {
+            XToast.show("暂无更多菜单");
             return;
         }
         List<Fragment> fragmentList = new ArrayList<>();

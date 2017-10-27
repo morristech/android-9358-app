@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="data"
-            type="com.xmd.chat.viewmodel.ChatRowViewModelLocation" />
+            type="com.xmd.chat.viewmodel.ChatRowViewModelLocation"/>
     </data>
 
 
@@ -17,20 +17,27 @@
         android:layout_height="180dp"
         android:orientation="vertical">
 
-        <com.shidou.commonlibrary.widget.XWebView
-            android:id="@+id/webView"
+        <!--<com.shidou.commonlibrary.widget.XWebView-->
+        <!--android:id="@+id/webView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="180dp"-->
+        <!--android:scrollbars="none"-->
+        <!--android:background="#AAaaFF"-->
+        <!--app:map="@{data}"/>-->
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            app:map="@{data}" />
+            android:scaleType="center"
+            app:map="@{data}"
+        />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:background="#80000000"
             android:text="@{data.address}"
-            android:layout_gravity="bottom"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"/>
     </FrameLayout>
 
 </layout>

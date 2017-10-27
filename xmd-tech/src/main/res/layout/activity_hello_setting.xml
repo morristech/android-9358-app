@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,18 +23,18 @@
                 android:paddingLeft="@dimen/padding_10"
                 android:text="@string/hello_setting_content"
                 android:textColor="@color/text_index"
-                android:textSize="@dimen/fontBody" />
+                android:textSize="@dimen/fontBody"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/indicator_normal_color" />
+                android:background="@color/indicator_normal_color"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rc_template_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white" />
+                android:background="@color/color_white"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,14 +47,13 @@
                     android:id="@+id/cb_custom_text_enable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/padding_15"
-                    android:layout_marginRight="@dimen/padding_15"
-                    android:button="@drawable/radio_button_style_selector"
-                    android:paddingBottom="@dimen/margin_20"
-                    android:paddingTop="@dimen/margin_20"
-                    android:text="@null" />
+                    android:button="@null"
+                    android:drawableLeft="@drawable/radio_button_style_selector"
+                    android:drawablePadding="15dip"
+                    android:paddingBottom="20dip"
+                    android:paddingLeft="15dip"
+                    android:paddingTop="20dip"/>
 
                 <EditText
                     android:id="@+id/et_custom_text_content"
@@ -74,13 +73,13 @@
                     android:padding="@dimen/margin_5"
                     android:textColor="@color/nearby_text_black_light"
                     android:textColorHint="@color/colorRemark"
-                    android:textSize="@dimen/fontBody" />
+                    android:textSize="@dimen/fontBody"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/indicator_normal_color" />
+                android:background="@color/indicator_normal_color"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -89,7 +88,7 @@
                 android:paddingLeft="@dimen/padding_10"
                 android:text="@string/hello_setting_image"
                 android:textColor="@color/text_index"
-                android:textSize="@dimen/fontBody" />
+                android:textSize="@dimen/fontBody"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -102,8 +101,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp">
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
 
                     <ImageView
                         android:id="@+id/img_need_upload"
@@ -111,15 +110,15 @@
                         android:layout_height="96dp"
                         android:paddingRight="8dp"
                         android:paddingTop="8dp"
-                        android:scaleType="fitCenter" />
+                        android:scaleType="fitCenter"/>
 
                     <ImageView
                         android:id="@+id/btn_clear_image"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_gravity="top|right"
-                        android:src="@drawable/close"
-                        android:alpha="0.8" />
+                        android:alpha="0.8"
+                        android:src="@drawable/close"/>
                 </FrameLayout>
 
 
@@ -128,14 +127,14 @@
                     android:layout_width="160dp"
                     android:layout_height="34dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="32dp"
                     android:background="@drawable/bg_journal_mark"
                     android:onClick="onAddBtnClick"
                     android:padding="0dp"
                     android:text="选择图片"
                     android:textColor="@color/colorMainBtn"
-                    android:textSize="@dimen/fontTitle"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="32dp" />
+                    android:textSize="@dimen/fontTitle"/>
             </FrameLayout>
 
             <Button
@@ -150,7 +149,7 @@
                 android:onClick="onConfirmBtnClick"
                 android:text="确定"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontTitle" />
+                android:textSize="@dimen/fontTitle"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

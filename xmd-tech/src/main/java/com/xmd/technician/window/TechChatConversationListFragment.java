@@ -2,11 +2,13 @@ package com.xmd.technician.window;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.network.BaseBean;
@@ -62,7 +64,7 @@ public class TechChatConversationListFragment extends ConversationListFragment {
     //显示客服上下线开关
     private void initToolBarCustomerService() {
         LinearLayout container = (LinearLayout) getView().findViewById(R.id.rightLinearLayout);
-        container.setVisibility(technician.getCustomerService() == null ? View.GONE : View.VISIBLE);
+        container.setVisibility(TextUtils.isEmpty(technician.getCustomerService()) ? View.GONE : View.VISIBLE);
         ImageView imageView = new ImageView(getContext());
         container.addView(imageView);
         imageView.setImageResource(R.drawable.ic_service);

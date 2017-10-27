@@ -185,7 +185,6 @@ public class CommentFilterPopupWindow extends PopupWindow implements View.OnClic
         if (i == R.id.comment_filter_submit) {
             String start = startTime.getText().toString();
             String end = endTime.getText().toString();
-            XLogger.i(">>>","start>>"+start);
             String techLest = Utils.listToString(mSelectedTechNumber, ",");
             String currentCommentFilter = mCurrentCommentFilter;
             if (mCommentInterface != null) {

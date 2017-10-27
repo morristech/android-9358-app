@@ -133,7 +133,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
             showButton();
         } else {
-           getHelloStatus();
+            getHelloStatus();
         }
         BlackListManager.getInstance().isInBlackList(userId);
     }
@@ -251,7 +251,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @Subscribe
     public void userInfo(UserInfoBean bean) {
         mBean = bean;
-  //      hideLoading();
+        //      hideLoading();
     }
 
     @Subscribe
@@ -293,14 +293,14 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         }
     }
 
-    private void getHelloStatus(){
+    private void getHelloStatus() {
         DataManager.getInstance().getHelloStatus(userId, new NetworkSubscriber<HelloCheckRecentlyResult>() {
             @Override
             public void onCallbackSuccess(HelloCheckRecentlyResult result) {
                 hadHelloed = result.getRespData().equals("Y");
-                if(hadHelloed){
+                if (hadHelloed) {
                     btnEmHello.setImageResource(R.drawable.btn_helloed);
-                }else{
+                } else {
                     btnEmHello.setImageResource(R.drawable.btn_hello);
                 }
                 loadPermissionInfo();
@@ -443,15 +443,15 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @OnClick(R2.id.btn_EmHello)
     public void onBtnEmHelloClicked() {
         if (null != mBean) {
-         if(!hadHelloed){
-             if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-                 EventBus.getDefault().post(new UserInfoEvent(0, 3, mBean));
-             } else {
-                 EventBus.getDefault().post(new UserInfoEvent(1, 3, mBean));
-             }
-             hadHelloed = true;
-             btnEmHello.setImageResource(R.drawable.btn_helloed);
-         }
+            if (!hadHelloed) {
+                if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
+                    EventBus.getDefault().post(new UserInfoEvent(0, 3, mBean));
+                } else {
+                    EventBus.getDefault().post(new UserInfoEvent(1, 3, mBean));
+                }
+                hadHelloed = true;
+                btnEmHello.setImageResource(R.drawable.btn_helloed);
+            }
         }
     }
 

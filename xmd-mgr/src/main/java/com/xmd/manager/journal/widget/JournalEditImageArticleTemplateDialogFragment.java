@@ -38,12 +38,12 @@ public class JournalEditImageArticleTemplateDialogFragment extends DialogFragmen
     private CommonRecyclerViewAdapter<ImageArticleTemplateWrapper> mAdapter;
     private int mTitleHeight = 0;
     private String mTemplateId;
+
     public static JournalEditImageArticleTemplateDialogFragment newInstance(String templateId) {
         JournalEditImageArticleTemplateDialogFragment fragment = new JournalEditImageArticleTemplateDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("templateId", templateId);
         fragment.setArguments(bundle);
-        XLogger.i(">>>","FragmentTemplateId>>"+templateId);
         return fragment;
     }
 

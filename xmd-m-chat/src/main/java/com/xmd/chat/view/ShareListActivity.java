@@ -147,15 +147,11 @@ public class ShareListActivity extends BaseActivity {
 
         @Override
         public void onClick(View v) {
-           // XLogger.i(">>>","分享》》"+type);
-            if(title.equals("营销活动")){
-                XLogger.i(">>>","分享营销活动");
+            if (title.equals("营销活动")) {
                 EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_ACTIVITY_SEND));
-            }else if(title.equals("电子期刊")){
-                XLogger.i(">>>","分享电子期刊");
+            } else if (title.equals("电子期刊")) {
                 EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_JOURNAL_SEND));
-            }else{
-                XLogger.i(">>>","分享特惠商城");
+            } else {
                 EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_MALL_SEND));
             }
             data.select.set(!data.select.get());

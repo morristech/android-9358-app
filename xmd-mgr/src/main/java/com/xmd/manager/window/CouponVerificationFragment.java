@@ -113,11 +113,6 @@ public class CouponVerificationFragment extends BaseFragment {
         }
 
         mCouponUseSupplement.loadDataWithBaseURL(null, mCouponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
-        if (Utils.couponIsCanUse(mCouponInfo.startDate, mCouponInfo.endUseDate, mCouponInfo.useTimePeriod)) {
-            XLogger.i(">>>","可用");
-        } else {
-            XLogger.i(">>>","不可用");
-        }
         mCouponStatus.setText("");
         mCouponUse.setEnabled(true);
         if (Utils.isNotEmpty(DescribeMesaageUtil.getLimitedItems(mCouponInfo.itemNames))) {

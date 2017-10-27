@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -165,17 +166,13 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
     public void saveImageToGallery(Context context) {
         // 其次把文件插入到系统图库
         try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
-            // 最后通知图库更新
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
-                    + file)));
-            makeShortToast("保存成功");
-//            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-//                @Override
-//                public void run() {
-//                   IntroduceAccountActivity.this.finish();
-//                }
-//            },1500);
+            if(file.getAbsolutePath() != null){
+                MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
+                // 最后通知图库更新
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
+                        + file)));
+                makeShortToast("保存成功");
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

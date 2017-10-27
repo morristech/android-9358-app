@@ -380,7 +380,12 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         v.getLocationOnScreen(location);
         File picFile = new File(file, name);
         try {
-            bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 45));
+            if (bitmap.getWidth() >= location[0] + view.getWidth()) {
+                bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 45));
+            } else {
+                bitmap = Bitmap.createBitmap(bitmap, 0, location[1], bitmap.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 45));
+            }
+
             FileOutputStream fos = new FileOutputStream(picFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             saveImageToGallery(picFile);

@@ -120,6 +120,7 @@ public class ChatMessageManager {
                         }
 
                         EventBus.getDefault().post(new EventNewMessages(list));
+                        XLogger.i(">>>","收到消息后更新未读消息数"+EMClient.getInstance().chatManager().getUnreadMessageCount());
                         EventBus.getDefault().post(new EventTotalUnreadCount(EMClient.getInstance().chatManager().getUnreadMessageCount()));
                     }
                 });

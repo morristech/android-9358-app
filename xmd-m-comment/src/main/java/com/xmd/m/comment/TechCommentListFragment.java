@@ -97,7 +97,7 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
             mType = "2";
         } else if (currentBizType.equals(ResourceUtils.getString(R.string.comment_table_good))) {
             mType = "3";
-        }else{
+        } else {
             mType = "4";
         }
         mUserName = "";
@@ -125,8 +125,8 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
         mParams.put(RequestConstant.KEY_TYPE, mType);
         mParams.put(RequestConstant.KEY_USER_NAME, mUserName);
         mParams.put(RequestConstant.KEY_COMMENT_TYPE, mCommentType);
-        mParams.put(RequestConstant.KEY_RETURN_STATUS,"");
-        mParams.put(RequestConstant.KEY_STATUS,"valid");
+        mParams.put(RequestConstant.KEY_RETURN_STATUS, "");
+        mParams.put(RequestConstant.KEY_STATUS, "valid");
 
         DataManager.getInstance().loadCommentList(mParams, new NetworkSubscriber<CommentListResult>() {
                     @Override
@@ -154,12 +154,14 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
             }
             mCommentList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
-            mListAdapter.setData(mCommentList, false,mType);
+            mListAdapter.setData(mCommentList, false, mType);
         }
     }
 
     private void onGetListFailed(String errorMsg) {
-     //   mSwipeRefreshLayout.setRefreshing(false);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         if (XmdApp.getInstance().getContext() != null) {
             XToast.show(errorMsg);
         }
@@ -218,7 +220,7 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
 
     @Override
     public void onItemClicked(CommentBean bean, String type) {
-        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, false,type);
+        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, false, type);
     }
 
     @Override

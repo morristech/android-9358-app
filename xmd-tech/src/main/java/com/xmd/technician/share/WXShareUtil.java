@@ -84,7 +84,6 @@ public class WXShareUtil extends BaseShareUtil {
     }
 
     private void shareToWeiXinImage(String imagePath,int flag){
-        XLogger.i(">>>","imgagePath"+imagePath);
         File file = new File(imagePath);
         if(!file.exists()){
             String tip = "文件不存在";
