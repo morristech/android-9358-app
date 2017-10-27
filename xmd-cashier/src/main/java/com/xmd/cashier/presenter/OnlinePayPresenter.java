@@ -196,6 +196,38 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 });
     }
 
+    public void printTwice(final OnlinePayInfo info) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        NotifyManager.getInstance().printOnlinePayRecord(info, false, false);
+                        NotifyManager.getInstance().printOnlinePayRecord(info, false, true);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.showToast("打印成功");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mView.showToast("打印失败");
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
+    }
+
     @Override
     public void pass(final OnlinePayInfo info, final int position) {
         // 确认
@@ -219,7 +251,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlinePassSwitch()) {
-                    print(info, false, true);
+                    printTwice(info);
                 }
             }
 
