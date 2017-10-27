@@ -487,7 +487,7 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
     public void setDataNormal(OnlineStatisticInfo online, OfflineStatisticInfo offline) {
         mDataNormalLayout.setVisibility(View.VISIBLE);
         mDataErrorLayout.setVisibility(View.GONE);
-        mPresenter.styleSettle();
+        mPresenter.setStyle();
 
         mSettleTotal.setText(mPresenter.formatAmount(online.totalSettleAmount));
         mSettleWX.setText(mPresenter.formatAmount(online.totalWx));
