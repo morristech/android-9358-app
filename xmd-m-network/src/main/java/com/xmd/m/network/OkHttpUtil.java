@@ -146,9 +146,9 @@ public class OkHttpUtil {
         if (requestBody != null) {
             if (requestBody instanceof FormBody) {
                 FormBody body = (FormBody) request.body();
-               // result += " -d '";
+                result += " -d '";
                 if (!result.contains("token") && !TextUtils.isEmpty(mCommonHeader.get("token"))) {
-                    result += "?token=" + mCommonHeader.get("token") + "&";
+                    result += "token=" + mCommonHeader.get("token") + "&";
                 }
                 for (int i = 0; i < body.size(); i++) {
                     if (result.contains("token") && body.name(i).equals("token")) {
@@ -156,8 +156,7 @@ public class OkHttpUtil {
                     }
                     result += body.name(i) + "=" + body.value(i) + "&";
                 }
-            //    result = result.substring(0, result.length() - 1) + "'";
-                result = result.substring(0, result.length() - 1) ;
+                result = result.substring(0, result.length() - 1) + "'";
             } else {
                 result += "----un form data!";
             }

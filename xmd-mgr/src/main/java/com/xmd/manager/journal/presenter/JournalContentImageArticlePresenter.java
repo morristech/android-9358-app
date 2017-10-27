@@ -153,7 +153,7 @@ public class JournalContentImageArticlePresenter implements JournalContentImageA
         mShowLoadingData.set(true);
         mLoadDataError.set(null);
 
-        if (ImageArticleManager.getInstance().getTemplates(Integer.parseInt(mTemplateId)) == null) {
+        if (ImageArticleManager.getInstance().getTemplates(Integer.parseInt(mTemplateId)) != null) {
             for (JournalTemplateImageArticleBean template : ImageArticleManager.getInstance().getTemplates(Integer.parseInt(mTemplateId))) {
                 if (template.id.equals(mContentImageArticle.templateId)) {
                     mSelectedTemplate = template;
