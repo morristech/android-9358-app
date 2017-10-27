@@ -201,8 +201,8 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().printOnlinePayRecord(info, false, false);
                         NotifyManager.getInstance().printOnlinePayRecord(info, false, true);
+                        NotifyManager.getInstance().printOnlinePayRecord(info, false, false);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
