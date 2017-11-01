@@ -9,3 +9,4 @@
 build
 /captures
 /node_modules
+将删除 libs/

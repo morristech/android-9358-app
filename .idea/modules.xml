@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/permission-tool/permission-tool.iml" filepath="$PROJECT_DIR$/permission-tool/permission-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-app/xmd-app.iml" filepath="$PROJECT_DIR$/xmd-app/xmd-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-cashier/xmd-cashier.iml" filepath="$PROJECT_DIR$/xmd-cashier/xmd-cashier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmd-file-provider/xmd-file-provider.iml" filepath="$PROJECT_DIR$/xmd-file-provider/xmd-file-provider.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-appointment/xmd-m-appointment.iml" filepath="$PROJECT_DIR$/xmd-m-appointment/xmd-m-appointment.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-black/xmd-m-black.iml" filepath="$PROJECT_DIR$/xmd-m-black/xmd-m-black.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-chat/xmd-m-chat.iml" filepath="$PROJECT_DIR$/xmd-m-chat/xmd-m-chat.iml" />

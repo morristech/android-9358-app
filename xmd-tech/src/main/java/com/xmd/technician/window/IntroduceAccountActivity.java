@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.google.zxing.Result;
+import com.xmd.file.provider.FileProvider7;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.DecodeImage;
@@ -169,8 +169,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
             if(file.getAbsolutePath() != null){
                 MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
                 // 最后通知图库更新
-                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
-                        + file)));
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, FileProvider7.getUriForFile(context,file)));
                 makeShortToast("保存成功");
             }
         } catch (FileNotFoundException e) {
