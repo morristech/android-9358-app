@@ -78,7 +78,7 @@ public class ScanPayPresenter implements Presenter {
                     @Override
                     public void onCallbackSuccess(StringResult result) {
                         if (isCodeExpire()) {
-                            doCodeExpire();
+                            doError("二维码已过期，请重新支付");
                             return;
                         }
                         if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
@@ -93,8 +93,8 @@ public class ScanPayPresenter implements Presenter {
                     public void onCallbackError(Throwable e) {
                         if (e instanceof ServerException) {
                             if (((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                // 400:二维码过期
-                                doCodeExpire();
+                                // 400:二维码过期或者其他异常情况
+                                doError(e.getMessage());
                             } else if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                                 // 会话过期
                                 doFinish();
@@ -129,7 +129,7 @@ public class ScanPayPresenter implements Presenter {
                 } else {
                     if (isCodeExpire()) {
                         // 二维码过期
-                        doCodeExpire();
+                        doError("二维码已过期，请重新支付");
                     } else {
                         // 尚未支付成功:重试
                         mHandler.postDelayed(mRunnable, INTERVAL);
@@ -325,12 +325,12 @@ public class ScanPayPresenter implements Presenter {
         return current - create > EXPIRE_INTERVAL;
     }
 
-    private void doCodeExpire() {
+    private void doError(final String msg) {
         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_CANCEL;
         mTradeManager.finishPay(mContext, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
-                mView.showError("二维码已过期，请重新支付");
+                mView.showError(msg);
             }
         });
     }
