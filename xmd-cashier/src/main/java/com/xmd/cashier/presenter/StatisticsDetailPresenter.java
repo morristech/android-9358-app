@@ -358,7 +358,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
         mPos.printDivide();
         switch (mStyleType) {
             case STYLE_SETTLE:
-                mPos.printBoldText("需结算打款汇总", formatAmount(mOnlineInfo.totalSettleAmount));
+                mPos.printBoldText("小摩豆结算营业额汇总", formatAmount(mOnlineInfo.totalSettleAmount));
                 mPos.printText("  微信：", formatAmount(mOnlineInfo.totalWx));
                 mPos.printText("  支付宝：", formatAmount(mOnlineInfo.totalAli));
                 mPos.printText("  银联：", formatAmount(mOnlineInfo.totalUnion));
@@ -371,7 +371,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printDivide();
                 break;
             case STYLE_MONEY:
-                mPos.printBoldText("需结算打款交易金额", formatAmount(mOnlineInfo.totalAmount));
+                mPos.printBoldText("小摩豆结算营业额", formatAmount(mOnlineInfo.totalAmount));
                 mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalDiscount)));
                 mPos.printText("  奖金提成(小摩豆代付部分)：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.internalCommission)));
                 mPos.printText("  手续费：", "-￥" + Utils.moneyToStringEx(Math.abs(mOnlineInfo.totalSettleFee)));
