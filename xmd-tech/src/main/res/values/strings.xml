@@ -642,5 +642,9 @@
     <string name="tech_poster_primary_title_default">欢迎您</string>
     <string name="tech_poster_minor_title_default">关注9358，快来预约我吧～</string>
     <string name="tech_poster_save_alter_message">保存图片后，二维码至%s前有效，图片如需下次使用，建议重新进行保存.</string>
+    <string name="tech_center_info_edit">编辑</string>
+    <string name="tech_center_info_save">保存</string>
+    <string name="tech_center_info_album_jurisdiction_all">（所有人均可查看）</string>
+    <string name="tech_center_info_album_jurisdiction_vip">（仅到店客户&amp;VIP可见）</string>
 
 </resources>

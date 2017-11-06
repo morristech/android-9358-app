@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Adapter.HelloTemplateAdapter;
@@ -237,7 +236,7 @@ public class HelloSettingActivity extends BaseActivity {
             mTemplateContent = null;
             mTemplateId = String.valueOf(mAdapter.getCheckId());
         }
-        if (mTemplateContent == null && mTemplateId == null) {
+        if (mTemplateContent == null && mTemplateId.equals("null")) {
             XToast.show("请选择模板");
             return;
         }

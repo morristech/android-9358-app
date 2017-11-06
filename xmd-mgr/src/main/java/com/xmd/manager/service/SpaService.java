@@ -1,6 +1,5 @@
 package com.xmd.manager.service;
 
-import com.xmd.m.comment.adapter.ListRecycleViewAdapter;
 import com.xmd.m.network.BaseBean;
 import com.xmd.manager.beans.CheckCouponResult;
 import com.xmd.manager.beans.CheckInfoList;

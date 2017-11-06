@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorMain"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorMain"
+              android:orientation="vertical">
 
     <com.xmd.technician.widget.SmoothProgressBar
         android:id="@+id/download_progressbar"
@@ -10,20 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
         android:max="1000"
-        android:progressDrawable="@drawable/icon11" />
+        android:progressDrawable="@drawable/icon11"/>
 
     <WebView
         android:id="@+id/mainwebView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/line_divide_height" />
+        android:layout_marginTop="@dimen/line_divide_height"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/line_cut"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/colorLineDivide"/>
 
     <LinearLayout
         android:id="@+id/menu_LinearLayout"
@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:minHeight="44dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/back_ImageView"
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_back_selector" />
+            android:src="@drawable/ic_back_selector"/>
 
         <ImageView
             android:id="@+id/refresh_ImageView"
@@ -47,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_refresh_selector" />
+            android:src="@drawable/ic_refresh_selector"/>
 
         <ImageView
             android:id="@+id/go_next_ImageView"
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_go_selector" />
+            android:src="@drawable/ic_go_selector"/>
 
         <ImageView
             android:id="@+id/home_ImageView"
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_home_selector" />
+            android:src="@drawable/ic_home_selector"/>
     </LinearLayout>
 
 </LinearLayout>

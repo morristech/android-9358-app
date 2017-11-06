@@ -141,7 +141,12 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     private void handleLoginResult(LoginResult result) {
         if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
             mView.hideLoading();
-            mView.showAlertDialog(result.msg == null ? result.message : result.msg);
+            if(TextUtils.isEmpty(result.msg) && TextUtils.isEmpty(result.message)){
+                mView.showAlertDialog("请检查网络链接，重新登录");
+            }else{
+                mView.showAlertDialog(result.msg == null ? result.message : result.msg);
+            }
+
         } else {
             if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO) {
                 //新的接口返回数据在respData中，所以要做一下转换

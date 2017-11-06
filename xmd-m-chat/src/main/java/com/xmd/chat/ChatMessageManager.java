@@ -1,6 +1,13 @@
 package com.xmd.chat;
 
+import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Vibrator;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -8,9 +15,11 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.util.AppUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
+import com.xmd.app.XmdApp;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -56,14 +65,17 @@ public class ChatMessageManager {
     }
 
     private ChatMessageManager() {
+
     }
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
-
+    protected Ringtone ringtone = null; //手机铃声
+    protected Vibrator vibrator; //手机震动
     private String currentChatId; //当前正在聊天的用户chatId,收到此人消息自动设置已读
     private Map<String, CreditGift> creditGiftMap = new HashMap<>(); //积分礼物
 
     public void init() {
+        vibrator = (Vibrator) XmdApp.getInstance().getContext().getSystemService(Context.VIBRATOR_SERVICE);
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             @Override
             public void onMessageReceived(final List<EMMessage> list) {
@@ -117,10 +129,12 @@ public class ChatMessageManager {
                             }
 
                             displayNotification(chatMessage);
+                            if(AppUtils.isBackground(XmdApp.getInstance().getContext())){
+                                vibrateAndPlayTone();
+                            }
                         }
 
                         EventBus.getDefault().post(new EventNewMessages(list));
-                        XLogger.i(">>>","收到消息后更新未读消息数"+EMClient.getInstance().chatManager().getUnreadMessageCount());
                         EventBus.getDefault().post(new EventTotalUnreadCount(EMClient.getInstance().chatManager().getUnreadMessageCount()));
                     }
                 });
@@ -354,5 +368,37 @@ public class ChatMessageManager {
             }
         }
         return false;
+    }
+
+    private void vibrateAndPlayTone() {
+        long[] pattern = new long[] { 0, 180, 80, 120 };
+        vibrator.vibrate(pattern, -1);
+
+        if (ringtone == null) {
+            Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            ringtone = RingtoneManager.getRingtone(XmdApp.getInstance().getContext(), notificationUri);
+            if (ringtone == null) {
+                return;
+            }
+        }
+
+        if (!ringtone.isPlaying()) {
+            String vendor = Build.MANUFACTURER;
+            ringtone.play();
+            if (vendor != null && vendor.toLowerCase().contains("samsung")) {
+                Thread ctlThread = new Thread() {
+                    public void run() {
+                        try {
+                            Thread.sleep(3000);
+                            if (ringtone.isPlaying()) {
+                                ringtone.stop();
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+                };
+                ctlThread.run();
+            }
+        }
     }
 }

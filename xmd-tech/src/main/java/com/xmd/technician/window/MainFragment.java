@@ -17,7 +17,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.method.HideReturnsTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +29,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
-import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.Constants;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
@@ -913,7 +910,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @CheckBusinessPermission(PermissionConstants.PERSONAL_EDIT)
     public void gotoEditPersonalData() {
-        Intent intent = new Intent(getActivity(), TechInfoActivity.class);
+        Intent intent = new Intent(getActivity(), TechUserCenterActivity.class);
         getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
     }
 

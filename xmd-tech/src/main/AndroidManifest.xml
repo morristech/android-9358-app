@@ -224,7 +224,10 @@
             android:name=".window.EditTechPosterActivity"
             android:label="@string/tech_poster_choice_poster_model"
             android:screenOrientation="portrait"/>
-        <activity android:name=".clubinvite.ClubInviteActivity"></activity>
+        <activity android:name=".clubinvite.ClubInviteActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".window.TechUserCenterActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

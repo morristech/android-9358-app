@@ -178,13 +178,8 @@ public class ConversationManager {
         ConversationViewModel conversationViewModel = getConversationData(chatId);
         if (conversationViewModel != null) {
             conversationViewModel.getConversation().markAllMessagesAsRead();
-            XLogger.i(">>>", "单个聊天的" + conversationViewModel.getUnReadMsgCount());
-        } else {
-            XLogger.i(">>>", "viewModel是null");
         }
-
         EventBus.getDefault().post(new EventUnreadCount(conversationViewModel));
-        XLogger.i(">>>", "将消息设置为已读更新未读消息数...." + EMClient.getInstance().chatManager().getUnreadMessageCount());
         EventBus.getDefault().post(new EventTotalUnreadCount(EMClient.getInstance().chatManager().getUnreadMessageCount()));
     }
 
