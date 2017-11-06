@@ -363,11 +363,11 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printText("  支付宝：", formatAmount(mOnlineInfo.totalAli));
                 mPos.printText("  银联：", formatAmount(mOnlineInfo.totalUnion));
                 mPos.printBoldText("其他交易记账", formatAmount(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos));
-                mPos.printText("  微信：", formatAmount(mOfflineInfo.wxMember));
-                mPos.printText("  支付宝：", formatAmount(mOfflineInfo.aliMember));
-                mPos.printText("  银联：", formatAmount(mOfflineInfo.unionMember));
-                mPos.printText("  现金：", formatAmount(mOfflineInfo.cashMember + mOfflineInfo.cashPos));
-                mPos.printText("  其他：", formatAmount(mOfflineInfo.otherMember));
+                mPos.printText("  微信(记账)：", formatAmount(mOfflineInfo.wxMember));
+                mPos.printText("  支付宝(记账)：", formatAmount(mOfflineInfo.aliMember));
+                mPos.printText("  银联(记账)：", formatAmount(mOfflineInfo.unionMember));
+                mPos.printText("  现金(记账)：", formatAmount(mOfflineInfo.cashMember + mOfflineInfo.cashPos));
+                mPos.printText("  其他(记账)：", formatAmount(mOfflineInfo.otherMember));
                 mPos.printDivide();
                 break;
             case STYLE_MONEY:
@@ -397,11 +397,11 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printText("  POS收银", formatAmount(mOfflineInfo.cashPos));
                 mPos.printText("    现金支付：", formatAmount(mOfflineInfo.cashPos));
                 mPos.printText("  管理者后台(会员充值)", formatAmount(mOfflineInfo.totalRecharge));
-                mPos.printText("    微信：", formatAmount(mOfflineInfo.wxMember));
-                mPos.printText("    支付宝：", formatAmount(mOfflineInfo.aliMember));
-                mPos.printText("    银联：", formatAmount(mOfflineInfo.unionMember));
-                mPos.printText("    现金：", formatAmount(mOfflineInfo.cashMember));
-                mPos.printText("    其他：", formatAmount(mOfflineInfo.otherMember));
+                mPos.printText("    微信(记账)：", formatAmount(mOfflineInfo.wxMember));
+                mPos.printText("    支付宝(记账)：", formatAmount(mOfflineInfo.aliMember));
+                mPos.printText("    银联(记账)：", formatAmount(mOfflineInfo.unionMember));
+                mPos.printText("    现金(记账)：", formatAmount(mOfflineInfo.cashMember));
+                mPos.printText("    其他(记账)：", formatAmount(mOfflineInfo.otherMember));
                 mPos.printDivide();
                 break;
             default:

@@ -696,7 +696,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="微信："
+                android:text="微信(记账)："
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
 
@@ -722,7 +722,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="支付宝："
+                android:text="支付宝(记账)："
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
 
@@ -748,7 +748,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="银联："
+                android:text="银联(记账)："
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
 
@@ -774,7 +774,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="现金："
+                android:text="现金(记账)："
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
 
@@ -800,7 +800,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="其他："
+                android:text="其他(记账)："
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
 
