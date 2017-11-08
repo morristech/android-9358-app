@@ -911,7 +911,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.PERSONAL_EDIT)
     public void gotoEditPersonalData() {
         Intent intent = new Intent(getActivity(), TechUserCenterActivity.class);
-       // Intent intent = new Intent(getActivity(),TechInfoActivity.class);
+     //  Intent intent = new Intent(getActivity(),TechInfoActivity.class);
         getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
     }
 

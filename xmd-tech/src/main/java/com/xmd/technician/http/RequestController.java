@@ -35,17 +35,13 @@ import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CategoryListResult;
-import com.xmd.technician.http.gson.ClubEmployeeDetailResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
-import com.xmd.technician.http.gson.ContactAllListResult;
 import com.xmd.technician.http.gson.ContactPermissionChatResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
-import com.xmd.technician.http.gson.ContactRegisterListResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
-import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
@@ -55,7 +51,6 @@ import com.xmd.technician.http.gson.HelloRecordListResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
-import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -834,7 +829,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<AlbumResult>() {
             @Override
             protected void postResult(AlbumResult result) {
-                RxBus.getInstance().post(new AlbumResult());
+                RxBus.getInstance().post(result);
             }
         });
     }

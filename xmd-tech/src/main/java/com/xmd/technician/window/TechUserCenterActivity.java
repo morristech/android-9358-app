@@ -246,14 +246,14 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
             //加载本地图片会比较快一些
             imgTechCenterHead.setImageBitmap(mAvatarBitmap);
         } else {
-
             Toast.makeText(this, "头像上传失败：" + (TextUtils.isEmpty(result.msg) ? "网络异常" : result.msg), Toast.LENGTH_LONG).show();
         }
     }
 
     private void handleUpdateTechInfoResult(UpdateTechInfoResult result) {
         hideLoading();
-        if (result.statusCode == 200) {
+        if (result.statusCode == 200 ) {
+            setResult(RESULT_OK);
             mCurrentInfoState = AlbumListAdapter.ALBUM_STATUS_NORMAL;
             makeShortToast("编辑成功");
             viewStateChanged();
@@ -284,8 +284,8 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
             setResult(RESULT_OK);
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_EDIT_INFO);
         } else {
-            if (TextUtils.isEmpty(result.msg)) {
-                Toast.makeText(this, "照片上传失败：" + result.msg, Toast.LENGTH_LONG).show();
+            if (!TextUtils.isEmpty(result.msg)) {
+                XToast.show("照片上传失败：" + result.msg);
             }
 
         }
