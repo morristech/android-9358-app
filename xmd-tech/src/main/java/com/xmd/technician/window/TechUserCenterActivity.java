@@ -10,6 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.utils.Utils;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Adapter.AlbumListAdapter;
 import com.xmd.technician.Constant;
@@ -122,6 +124,10 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
     LinearLayout llAuthorityChange;
     @BindView(R.id.edit_ll_tech_center_edit_save)
     LinearLayout editLlTechCenterEditSave;
+    @BindView(R.id.edit_ll_tech_nick_name)
+    LinearLayout editLlTechNickName;
+    @BindView(R.id.tv_tech_nick_name_length)
+    TextView tvTechNickNameLength;
 
     //
     private int mCurrentInfoState;//状态：0,编辑状态，AlbumListAdapter.ALBUM_STATUS_NORMAL：正常状态
@@ -171,6 +177,29 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        editTechNickName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvTechNickNameLength.setText(String.format("%s/10", editTechNickName.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        editTechNickName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return true;
             }
         });
         mGetTechInfoSubscription = RxBus.getInstance().toObservable(TechEditResult.class).subscribe(
@@ -303,7 +332,7 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
             XToast.show("技师昵称不能为空");
             return;
         }
-        mTechInfo.setDescription(editTechAutograph.getText().toString());
+        mTechInfo.setDescription(Utils.replaceBlank(editTechAutograph.getText().toString().trim()));
         mTechInfo.setViewAlbumType(rbAll.isChecked() ? AlbumListAdapter.ALBUM_STATUS_NORMAL : 2);
         if (mSelectPlaceDialog != null) {
             mTechInfo.setProvinceCode(mSelectPlaceDialog.mCurrentProvinceCode);
@@ -326,7 +355,8 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
 
         imgTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);
         tvTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);
-        editTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
+        editLlTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
+        //   editTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
         tvTechNickName.setText(mTechInfo.getName());
         editTechNickName.setText(mTechInfo.getName());
 
@@ -417,7 +447,7 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
                 if (mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL) {
                     return;
                 }
-                mImageTool.reset().maxSize(Constant.AVATAR_MAX_SIZE).setAspectX_Y(AlbumListAdapter.ALBUM_STATUS_NORMAL, AlbumListAdapter.ALBUM_STATUS_NORMAL).start(TechUserCenterActivity.this, new ImageTool.ResultListener() {
+                mImageTool.reset().maxSize(Constant.AVATAR_MAX_SIZE).setAspectX_Y(1, 1).start(TechUserCenterActivity.this, new ImageTool.ResultListener() {
                     @Override
                     public void onResult(String s, Uri uri, Bitmap bitmap) {
                         if (s != null) {
@@ -441,4 +471,6 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
                 break;
         }
     }
+
+
 }

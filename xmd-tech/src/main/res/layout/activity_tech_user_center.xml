@@ -79,22 +79,57 @@
                             android:src="@drawable/icon_tech_nick_name"/>
                         <TextView
                             style="@style/tech_center_category_style"
+                            android:layout_gravity="top"
                             android:text="昵称"/>
                         <TextView
                             android:id="@+id/tv_tech_nick_name"
                             style="@style/tech_center_category_detail_style"
                             android:maxLength="10"
                             tools:text="小仙女"/>
-                        <com.xmd.technician.widget.ClearableEditText
-                            android:id="@+id/edit_tech_nick_name"
+                        <LinearLayout
+                            android:id="@+id/edit_ll_tech_nick_name"
                             android:layout_width="match_parent"
-                            android:layout_height="34dp"
-                            android:background="@drawable/shape_round_with_stroke"
-                            android:paddingLeft="@dimen/inter_space"
-                            android:textColor="#333333"
-                            android:textColorHint="#616161"
-                            android:textSize="16sp"
-                            android:visibility="gone"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/small_space"
+                            android:paddingTop="@dimen/small_space"
+                            android:visibility="gone">
+
+                            <com.xmd.technician.widget.ClearableEditText
+                                android:id="@+id/edit_tech_nick_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:background="@drawable/shape_round_with_stroke"
+                                android:hint="请输入昵称..."
+                                android:maxLength="10"
+                                android:paddingLeft="@dimen/small_space"
+                                android:paddingRight="@dimen/margin_2"
+                                android:textColor="#333333"
+                                android:textColorHint="#616161"
+                                android:textSize="16sp"/>
+                            <TextView
+                                android:id="@+id/tv_tech_nick_name_length"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:paddingBottom="6dp"
+                                android:paddingTop="6dp"
+                                android:textColor="#333333"
+                                android:textSize="14sp"
+                                tools:text="0/10"/>
+                        </LinearLayout>
+                        <!--<com.xmd.technician.widget.ClearableEditText-->
+                            <!--android:id="@+id/edit_tech_nick_name"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="34dp"-->
+                            <!--android:background="@drawable/shape_round_with_stroke"-->
+                            <!--android:paddingLeft="@dimen/inter_space"-->
+                            <!--android:maxLength="10"-->
+                            <!--android:textColor="#333333"-->
+                            <!--android:textColorHint="#616161"-->
+                            <!--android:textSize="16sp"-->
+                            <!--android:hint="昵称最多10个字符"-->
+                            <!--android:visibility="gone"/>-->
 
                     </LinearLayout>
                     <View style="@style/tech_center_divider_line_style"/>

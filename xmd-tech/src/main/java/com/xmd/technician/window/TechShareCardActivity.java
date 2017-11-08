@@ -143,6 +143,7 @@ public class TechShareCardActivity extends BaseActivity {
         try {
             result = new MultiFormatWriter().encode(contentString, BarcodeFormat.QR_CODE, dimension, dimension, hints);
         } catch (IllegalArgumentException iae) {
+            iae.printStackTrace();
             return null;
         }
         int width = result.getWidth();
