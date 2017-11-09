@@ -47,18 +47,12 @@
     <dimen name="tab_height">48dp</dimen>
 
     <dimen name="popup_window_button_height">48dp</dimen>
-    <dimen name="array_popup_window_width">200dp</dimen>
     <dimen name="array_popup_window_item_height">36dp</dimen>
     <dimen name="popup_window_button_min_width">100dp</dimen>
-    <dimen name="popup_window_button_text_size">14sp</dimen>
-
-    <dimen name="login_activity_version_section_height">48dp</dimen>
 
     <dimen name="home_activity_drawer_title_height">80dp</dimen>
     <dimen name="home_activity_drawer_title_text_size">18sp</dimen>
     <dimen name="home_activity_drawer_width">240dp</dimen>
-    <dimen name="home_activity_bottom_tap_height">48dp</dimen>
-    <dimen name="drawer_button_min_width">100dp</dimen>
 
     <dimen name="list_item_card_corner_radius">5dp</dimen>
     <dimen name="list_item_card_elevation">1dp</dimen>
@@ -66,7 +60,6 @@
     <dimen name="list_footer_height">60dp</dimen>
 
     <dimen name="dialog_min_width">280dp</dimen>
-    <dimen name="dialog_title_height">48dp</dimen>
     <dimen name="dialog_content_height">80dp</dimen>
     <dimen name="dialog_content_item_height">24dp</dimen>
     <dimen name="dialog_content_title_size">18sp</dimen>
@@ -75,23 +68,17 @@
     <dimen name="dialog_button_height">48dp</dimen>
     <dimen name="dialog_button_text_size">14sp</dimen>
     <dimen name="dialog_button_row_padding">8dp</dimen>
-    <dimen name="dialog_button_row_height">64dp</dimen>
 
-    <dimen name="primary_button_text_size">12sp</dimen>
     <dimen name="operation_button_text_size">12sp</dimen>
-    <dimen name="operation_button_row_padding">8dp</dimen>
-    <dimen name="operation_button_row_height">32dp</dimen>
     <dimen name="operation_button_width">48dp</dimen>
     <dimen name="operation_button_height">24dp</dimen>
 
     <dimen name="card_corner_radius">5dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
 
-    <dimen name="toolbar_padding_top">0dp</dimen>
     <dimen name="toolbar_padding_left_or_right">40dp</dimen>
     <dimen name="toolbar_height">48dp</dimen>
     <dimen name="toolbar_title_text_size">@dimen/fontTitle</dimen>
-    <dimen name="toolbar_menu_text_size">12sp</dimen>
     <dimen name="toolbar_img_width">32dp</dimen>
     <dimen name="toolbar_notice_icon_margin_top">7dp</dimen>
 
@@ -100,43 +87,26 @@
     <dimen name="login_activity_username_magin_top">52dp</dimen>
     <dimen name="login_activity_login_button_magin_top">44dp</dimen>
 
-    <dimen name="main_activity_cardview_height">60dp</dimen>
-
-    <dimen name="consume_activity_club_name_height">48dp</dimen>
-    <dimen name="consume_activity_coupon_title_bar_height">32dp</dimen>
-    <dimen name="consume_activity_coupon_desc_text_size">14sp</dimen>
     <dimen name="consume_activity_coupon_item_head_height">10dp</dimen>
 
     <dimen name="cousume_activity_coupon_margin_left">15dp</dimen>
-    <dimen name="cousume_activity_coupon_draw_padding">8dp</dimen>
-    <dimen name="consume_activity_club_name_textsize">24sp</dimen>
-
-    <dimen name="consume_activity_cardview_height">80dp</dimen>
-    <dimen name="consume_activity_customer_phone_text_size">16sp</dimen>
-    <dimen name="consume_activity_item_title_text_size">16dp</dimen>
-    <dimen name="consume_activity_item_sub_title_text_size">14dp</dimen>
-    <dimen name="consume_activity_component_space">8dp</dimen>
-    <dimen name="consume_activity_phone_margin_bottom">8dp</dimen>
 
 
     <color name="title_line">#D9D9D9</color>
 
     <dimen name="small_margin">12dp</dimen>
     <dimen name="login_top_margin">30dp</dimen>
-    <dimen name="login_btn_corner">2dp</dimen>
 
     <dimen name="browser_progress_bar_height">1dp</dimen>
 
 
     <dimen name="new_order_count_bg_radius">32dp</dimen>
-    <dimen name="new_order_count_text_size">16dp</dimen>
 
     <dimen name="about_us_activity_icon_margin_top">85dp</dimen>
     <dimen name="about_us_activity_version_margin_top">16dp</dimen>
     <dimen name="about_us_activity_button_margin_top">90dp</dimen>
     <dimen name="about_us_activity_version_text_size">14sp</dimen>
 
-    <dimen name="coupon_list_item_share_button_height">32dp</dimen>
     <dimen name="coupon_list_item_title_text_size">16sp</dimen>
     <dimen name="coupon_list_item_sub_title_text_size">14sp</dimen>
     <dimen name="coupon_list_item_text_size">12sp</dimen>
@@ -146,30 +116,14 @@
     <dimen name="setting_activity_item_height">48dp</dimen>
 
     <dimen name="paid_consume_activity_avatar_size">24dp</dimen>
-    <dimen name="paid_consume_activity_customer_name_text_size">14sp</dimen>
-    <dimen name="paid_consume_activity_customer_phone_text_size">14sp</dimen>
-
-    <dimen name="paid_coupon_user_detail_list_item_height">64dp</dimen>
-    <dimen name="paid_coupon_user_detail_list_item_avatar_size">32dp</dimen>
-    <dimen name="paid_coupon_user_detail_list_item_user_name_text_size">14sp</dimen>
-    <dimen name="paid_coupon_user_detail_list_item_telephone_text_size">12sp</dimen>
 
     <dimen name="technician_list_item_height">50dp</dimen>
 
     <dimen name="customer_list_item_header_text_size">14sp</dimen>
-    <dimen name="customer_list_item_left_text_size">14sp</dimen>
-    <dimen name="customer_list_item_right_text_size">12sp</dimen>
 
     <dimen name="customer_type_label_width">37dp</dimen>
     <dimen name="customer_type_label_height">15dp</dimen>
 
-    <dimen name="layout_technician_ranking_circle_image_size">48dp</dimen>
-
-    <dimen name="layout_statistics_subfix_size">12sp</dimen>
-    <dimen name="layout_statistics_text_value_size">24sp</dimen>
-
-    <dimen name="layout_order_section_height">70dp</dimen>
-    <dimen name="layout_ranking_section_height">110dp</dimen>
     <dimen name="layout_user_section_height">84dp</dimen>
     <dimen name="layout_pay_code_height">83dp</dimen>
 
@@ -177,17 +131,11 @@
     <dimen name="chat_activity_item_size">20dp</dimen>
 
     <dimen name="conversation_list_item_avatar_size">48dp</dimen>
-    <dimen name="personal_info_height">83dp</dimen>
     <dimen name="personal_item_height">44dp</dimen>
     <dimen name="personal_description_height">40dp</dimen>
 
     <dimen name="personal_padding">12dp</dimen>
-    <dimen name="personal_info_margin_top">21dp</dimen>
     <dimen name="personal_margin">16dp</dimen>
-    <dimen name="personal_item_margin_right">30dp</dimen>
-
-    <dimen name="order_list_item_operation_section_width">168dp</dimen>
-    <dimen name="order_list_item_operation_item_width">84dp</dimen>
 
     <dimen name="conversation_list_item_height">64dp</dimen>
     <dimen name="conversation_list_item_half_height">32dp</dimen>
@@ -209,27 +157,16 @@
 
     <dimen name="feedback_btn_height">32dp</dimen>
     <dimen name="feedback_btn_width">90dp</dimen>
-    <dimen name="comment_item_height">96dp</dimen>
-    <dimen name="work_time_padding">24dp</dimen>
-    <dimen name="dialog_multi_check_default_height">34dp</dimen>
     <dimen name="default_dialog_width">280dp</dimen>
     <dimen name="button_radius">4dp</dimen>
 
-    <dimen name="chat_activity_chat_item_margin_left">48dp</dimen>
-
     <dimen name="customer_comment_margin_top">11dp</dimen>
-    <dimen name="customer_comment_margin_top_m">14dp</dimen>
     <dimen name="customer_comment_margin_left">19dp</dimen>
     <dimen name="customer_comment_margin_right">13dp</dimen>
     <dimen name="customer_comment_list_item_avatar_size">37dp</dimen>
 
     <dimen name="customer_comment_impression_radius">14dp</dimen>
     <dimen name="customer_comment_impression_height">26dp</dimen>
-
-    <dimen name="delivery_coupon_activity_ic_select_margin_left">17dp</dimen>
-    <dimen name="delivery_coupon_activity_ic_select_margin_right">17dp</dimen>
-
-    <dimen name="cusomer_comment_listitem_margin_right">96dp</dimen>
 
     <dimen name="customer_type_item_width">135dp</dimen>
     <dimen name="order_type_item_width">120dp</dimen>
@@ -240,24 +177,17 @@
     <dimen name="select_time_padding">15dp</dimen>
     <dimen name="select_time_height">60dp</dimen>
     <dimen name="margin_10">10dp</dimen>
-    <dimen name="delete_item_btn">84dp</dimen>
     <dimen name="btn_height">44dp</dimen>
     <dimen name="pay_margin">13dp</dimen>
-    <dimen name="pay_padding">22dp</dimen>
     <dimen name="pay_money_height">121dp</dimen>
     <dimen name="pay_money_margin_bottom">14dp</dimen>
-    <dimen name="pay_money_line_margin_bottom">38dp</dimen>
-    <dimen name="send_group_message_padding">9dp</dimen>
 
 
     <dimen name="font_button_medium">15sp</dimen>
     <dimen name="font_caption_regular">13sp</dimen>
-    <dimen name="font_body1_regular">15sp</dimen>
     <dimen name="font_body2_medium">15sp</dimen>
     <dimen name="font_subheading_regular">17sp</dimen>
     <dimen name="font_title_medium">21sp</dimen>
-    <dimen name="font_headline_regular">24sp</dimen>
-    <dimen name="font_display1_regular">34sp</dimen>
     <dimen name="password_edit_height">50dp</dimen>
     <dimen name="search_margin">8dp</dimen>
     <dimen name="service_bottom_dialog_padding">25dp</dimen>
@@ -268,12 +198,10 @@
     <dimen name="verification_torus_margin">-8dp</dimen>
     <dimen name="verification_circle_diameter">16dp</dimen>
     <dimen name="verification_btn_width">180dp</dimen>
-    <dimen name="bad_comment_margin">20dp</dimen>
 
     <!-- 用户分组-->
     <dimen name="group_list_margin">20dp</dimen>
     <dimen name="side_bar_text_size">5dp</dimen>
-    <dimen name="main_page_order_division_line_height">100dp</dimen>
     <dimen name="group_message_recycler_view_height">130dp</dimen>
     <dimen name="group_add_member_width">50dp</dimen>
     <dimen name="group_add_member_view_width">55dp</dimen>
@@ -292,7 +220,5 @@
     <dimen name="fontBody">15sp</dimen>
     <dimen name="fontButton">15sp</dimen>
     <dimen name="fontCaption">13sp</dimen>
-
-    <dimen name="redPointSize">12dp</dimen>
 
 </resources>

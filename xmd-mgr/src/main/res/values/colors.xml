@@ -5,7 +5,6 @@
     <color name="colorAccent">#F27533</color>
 
     <color name="primary_color_normal">#ddff6666</color>
-    <color name="primary_line_color">#ff6666</color>
     <color name="app_bg">#EFEFF4</color>
 
     <color name="transparent">#00000000</color>
@@ -30,13 +29,6 @@
     <color name="tab_bottom_line_color">#dadada</color>
 
 
-    <color name="consume_activity_bg_color">#FFF</color>
-    <color name="orange_yellow">#FFE3B2</color>
-    <color name="club_name">#B47200</color>
-
-    <color name="btn_normal">#F00</color>
-    <color name="btn_pressed">#4D4D4D</color>
-
     <color name="text_color_hint">#999999</color>
     <color name="text_color">#4D4D4D</color>
 
@@ -50,7 +42,6 @@
     <color name="value_color">#333333</color>
     <color name="amount_color">@color/colorPrimary</color>
     <color name="number_color">#ff9d09</color>
-    <color name="list_item_bg">#FFF</color>
     <color name="list_item_line_color">#EEE</color>
     <color name="border_line_color">@color/colorPrimary</color>
     <color name="dialog_line_gray">#DDD</color>
@@ -59,8 +50,6 @@
 
     <!-- listitem operation button -->
 
-    <color name="operation_button_bg_disabled">#33000000</color>
-    <color name="side_bar_text">#666666</color>
     <color name="operation_button_positive_bg_normal">#66cc66</color>
     <color name="operation_button_positive_bg_pressed">#8866cc66</color>
     <color name="operation_button_positive_text_normal">#fff</color>
@@ -69,29 +58,17 @@
 
     <color name="operation_button_negative_bg_normal">#ff6666</color>
     <color name="operation_button_negative_bg_pressed">#88ff6666</color>
-    <color name="operation_button_negative_text_normal">#fff</color>
-    <color name="operation_button_negative_text_pressed">#fff</color>
 
 
     <!-- Custom Dialog-->
-    <color name="dialog_button_negative_bg_normal">#FFF</color>
     <color name="dialog_button_negative_text_normal">#FF6666</color>
     <color name="dialog_button_negative_text_pressed">#FFF</color>
-
-    <color name="dialog_button_positive_bg_normal">#FF6666</color>
-    <color name="dialog_button_positive_text_normal">#FFF</color>
-    <color name="dialog_button_positive_text_pressed">#FFF</color>
-
-    <color name="dialog_button_bg_pressed">#c9443a</color>
 
     <color name="primary_button_color_normal">@color/colorPrimary</color>
     <color name="primary_button_color_pressed">#70ff6666</color>
     <color name="primary_button_text_color">#FFF</color>
 
-    <color name="drawer_button_normal">#FFF</color>
     <color name="drawer_button_pressed">#ff6666</color>
-    <color name="drawer_button_text_normal">#333</color>
-    <color name="drawer_button_text_pressed">#FFF</color>
 
     <color name="popup_window_button_normal">#FFF</color>
     <color name="popup_window_button_pressed">#ff6666</color>
@@ -99,10 +76,7 @@
     <color name="popup_window_button_text_pressed">#FFF</color>
 
     <color name="toolbar_title_color">#FFF</color>
-    <color name="toolbar_text_color_normal">#FFF</color>
-    <color name="toolbar_text_color_pressed">#555555</color>
 
-    <color name="new_order_count_text_color">#000</color>
     <color name="about_us_activity_version_text_color">#4d4d4d</color>
 
     <color name="coupon_activity_desc_text_color">#ff9d09</color>
@@ -111,8 +85,6 @@
     <color name="customer_technician_list_background_color">#f2f2f2</color>
     <color name="customer_list_item_header_background_color">#eaeaeaea</color>
     <color name="customer_list_item_header_text_color">#666</color>
-    <color name="customer_list_item_left_text_color">#333</color>
-    <color name="customer_list_item_right_text_color">#999</color>
 
     <color name="customer_type_label_weixin">#5fc39f</color>
     <color name="customer_type_label_temp">#ff6666</color>
@@ -132,7 +104,6 @@
 
     <color name="colorMain">#fb5549</color>
     <color name="colorBackground">#f0f0f0</color>
-    <color name="colorServiceDivide">#00e0e0e0</color>
     <color name="colorTitle">#333333</color>
     <color name="colorBody">#666666</color>
     <color name="colorRemark">#999999</color>
@@ -140,13 +111,8 @@
     <color name="colorCommentDivide">#e0e0e0</color>
     <color name="textColorHint">#DCDCDC</color>
     <color name="colorLineDivide">#d9d9d9</color>
-    <color name="colorStatusNormal">#d8d8d8</color>
-    <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff6666</color>
     <color name="colorBtnChecked">#fb5549</color>
-    <color name="colorBorder">#DFDFDF</color>
-    <color name="orderDetail">#000</color>
-    <color name="colorBorderCoupon">#D9D9D9</color>
 
     <color name="colorClubItemTitle">#212121</color>
     <color name="colorClubItemBody">#616161</color>
@@ -161,7 +127,6 @@
     <color name="colorSurplusAmount">#8b6d3E</color>
     <color name="colorTimeLimit">#b2A083</color>
     <color name="colorGroupChecked">#f85c5c</color>
-    <color name="colorGroupNameText">#5A6c7e</color>
     <color name="colorVisitFromText">#757575</color>
 
     <color name="colorSubTitle">#212121</color>
@@ -178,24 +143,18 @@
     <color name="ranking_register">#FFCC36</color>
     <color name="ranking_server">#EA5191</color>
     <color name="ranking_sail">#FF7C41</color>
-    <color name="main_tool_bar_bg">#FF9770</color>
-    <color name="service_dialog_text_color">#007AFF</color>
     <color name="main_order_middle">#7ac1f7</color>
-    <color name="right_btn_color">#DB4C4C</color>
     <color name="edit_group_group_name">#F5F5F5</color>
     <color name="sideBarColor">#303F9F</color>
-    <color name="contact_item_name_text_color">#222222</color>
     <color name="light_mask">#20000000</color>
     <color name="light_mask2">#40000000</color>
     <color name="order_verification_title">#424242</color>
     <color name="order_verification_content">#9e9e9e</color>
     <color name="main_btn_pressed">#C95151</color>
     <color name="verification_pressed">#7fa653</color>
-    <color name="verification_unenabled">#999999</color>
     <color name="verification_normal">#9ccc65</color>
     <color name="order_total">#6f6756</color>
     <color name="add_group">#bdbdbd</color>
-    <color name="number_of_groups">#feb705</color>
     <color name="underway_color">#6ed745</color>
     <color name="contact_marker">#ff9a0c</color>
     <color name="colorExpandButton">#0e7bd0</color>

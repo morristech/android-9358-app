@@ -1,15 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="common_greeting_array">
-        <item>客官，打赏几个铜板鼓励鼓励嘛！</item>
-        <item>这个月完成不了任务了，大侠可否帮忙点个钟？</item>
-        <item>店里搞活动啦！送您个优惠券，记得过来啊</item>
-        <item>好久不见了，有空过来玩玩啊！</item>
-        <item>约定了，记得准时来，不见不散～</item>
-        <item>您有什么疑问，都可以找我咨询～</item>
-        <item>很高兴能为您解决问题，客官给个好评哦么么哒～</item>
-        <item>不好意思，现在暂时回答不了您的问题，稍后回复您～</item>
-        <item>方便的话麻烦留一个联系方式，以后常联系～</item>
-        <item>多谢客官打赏～</item>
-    </string-array>
 </resources>

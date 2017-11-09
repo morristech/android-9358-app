@@ -2,20 +2,15 @@
 
     <string name="app_name">9358管理者</string>
     <string name="company_name">深圳市小摩豆网络科技有限公司</string>
-    <string name="version_name">3.6.0</string>
 
     <string name="login">登录</string>
-    <string name="title_activity_login">LoginActivity</string>;
+    ;
 
     <string name="content_description">pic</string>
 
     <string name="amount_unit">元</string>
-    <string name="amount_unit_format">%1$d元</string>
-    <string name="float_amount_unit_format">%1$.2f元</string>
-    <string name="count_unit">次</string>
     <string name="person_unit">人</string>
     <string name="person_units">人次</string>
-    <string name="took_unit">个</string>
     <string name="coupon_unit">张</string>
     <string name="person_unit_format">%1$d人</string>
     <string name="bad_comment_unit_format">差评 %1$d</string>
@@ -29,15 +24,10 @@
     <string name="accumulate_with_semi_colon">累计 :</string>
     <string name="visit_accumulate_with_semi_colon">网店访客累计 :</string>
     <string name="main_page_account_income_total">营销活动收入累计 :</string>
-    <string name="wifi_accumulate_with_semi_colon">wifi宣传累计 :</string>
     <string name="btn_consume">核销</string>
     <string name="btn_send">发送</string>
     <string name="btn_setting">设置</string>
     <string name="btn_back">返回</string>
-    <string name="btn_more">更多</string>
-    <string name="btn_filter">筛选</string>
-    <string name="btn_colse">关闭</string>
-    <string name="btn_delete">删除</string>
     <string name="btn_save">保存</string>
     <string name="btn_confirm">确定</string>
     <string name="switch_off">已关闭</string>
@@ -46,9 +36,7 @@
     <string name="previous_step">上一步</string>
     <string name="preview">预览</string>
 
-    <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
-    <string name="bind_client_id_failed">消息推送服务初始化失败</string>;
-    <string name="btn_check_upgrade">检查更新</string>
+    ;
 
     <string name="login_activity_input_username">请输入账号</string>
     <string name="login_activity_input_password">请输入密码</string>
@@ -56,53 +44,30 @@
     <string name="login_activity_hint_password_not_empty">密码不能为空</string>
     <string name="login_activity_hint_server_host_not_empty">服务器不能为空</string>
 
-    <string name="home_activity_index">首页</string>
-    <string name="home_activity_comment">消息</string>
     <string name="home_activity_customer_management">客情管理</string>
-    <string name="home_activity_order">订单</string>
-    <string name="home_activity_coupon">优惠券</string>
     <string name="home_activity_marketing">营销</string>
 
     <string name="main_activity_title">首页</string>
-    <string name="main_activity_order_manage">订单管理</string>
-    <string name="main_activity_coupon_consume">优惠券核销</string>
-    <string name="main_activity_statistics">数据统计</string>
-    <string name="main_activity_ranking">排行榜</string>
-    <string name="main_activity_paid_order_consume">预约订单核销</string>
 
     <!-- More Popup Window -->
     <string name="action_setting">系统设置</string>
-    <string name="action_update">版本更新</string>
     <string name="action_feedback">意见反馈</string>
     <string name="action_about_us">关于我们</string>
     <string name="action_service">专属客服</string>
     <string name="service_phone">13973537138</string>
     <string name="action_club_list">店铺列表</string>
     <string name="action_logout">退出登录</string>
-    <string name="logout_success">成功退出</string>
     <string name="action_choice_club">选店查看</string>
     <string name="action_change_password">修改密码</string>
 
     <!-- Order Filter Popup Window -->
-    <string name="action_order_filter_all"> 全部订单</string>
-    <string name="action_order_filter_submit">未接受订单</string>
-    <string name="action_order_filter_accepted">已接受订单</string>
-    <string name="action_order_filter_rejected">已拒绝订单</string>
-    <string name="action_order_filter_failured">已失效订单</string>
-    <string name="action_order_filter_completed">已完成订单</string>
-    <string name="action_order_filter_overtime">已超时订单</string>
-    <string name="action_order_filter_cancel">已取消订单</string>
-    <string name="action_order_filter_refund">已退款订单</string>
 
     <!-- Consume Activity -->
-    <string name="consume_activity_title">优惠券核销</string>
     <string name="coupon_activity_title">优惠券</string>
-    <string name="user_coupon_list_activity_title">优惠券</string>
     <string name="capture_activity_title">二维码扫描</string>
     <string name="browser_activity_title">9358</string>
     <string name="about_us_activity_title">关于我们</string>
     <string name="feedback_activity_title">意见反馈</string>
-    <string name="pay_activity">支付</string>
     <string name="about_us_activity_check_upgrade">检查更新</string>
 
     <string name="capture_activity_unrecognize_qr">未能识别此二维码</string>
@@ -116,44 +81,14 @@
     <string name="empty_view_empty">暂无数据</string>
     <string name="empty_view_loading">正在加载&#8230;</string>
 
-    <string name="consume_activity_coupon_consume_title">优惠券使用</string>
-    <string name="consume_activity_coupon_usage_title">优惠券</string>
-    <string name="consume_activity_qrcode_scan">扫一扫</string>
-    <string name="consume_activity_phone_input_hint">请输入手机号码或者优惠码</string>
-    <string name="consume_activity_coupon_consume">立即使用</string>
-    <string name="consume_activity_coupon_list_title">优惠券</string>
-    <string name="consume_activity_coupon_list_refresh">刷新</string>
-    <string name="consume_activity_coupon_phone_and_no_empty">用户手机号码或者优惠券码不能为空</string>
-
-    <string name="consume_activity_qrcode_consume_title">扫描核销</string>
-    <string name="consume_activity_qrcode_consume_sub_title">扫描用户优惠券二维码核销</string>
-
-    <string name="consume_activity_manually_consume_title">手工核销</string>
-    <string name="consume_activity_manually_consume_sub_title">输入手机号码或者优惠码核销</string>
-
-    <string name="consume_activity_detail_title">优惠券使用</string>
-    <string name="consume_activity_detail_sub_title">查看优惠券使用详情</string>
-    <string name="consume_activity_empty_coupon">暂无优惠券</string>
-    <string name="consume_activity_refresh_coupons_failed">刷新列表失败，请稍候重试</string>
-    <string name="consume_activity_refresh_coupons_success">优惠券列表刷新成功</string>
-
-    <string name="consume_refresh">刷新</string>
-
-    <string name="user_phone_format_error">用户手机号码输入格式不对</string>
-    <string name="coupon_info_empty">优惠券信息为空，请确认</string>
     <string name="logout_confirm_title">系统提示</string>
     <string name="logout_confirm_message">确认要退出当前帐号</string>
 
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
-    <string name="title_activity_capture">二维码扫描</string>
     <string name="scan_text">将二维码放入框内，即可自动扫描</string>
 
-    <string name="order_list_activity_title">订单管理</string>
-    <string name="order_list_activity_order_not_exist">=_=!!, 还没有订单哦</string>
-
     <string name="order_list_item_tech_desc">预约技师</string>
-    <string name="order_list_item_tech_serial">编号</string>
     <string name="order_list_item_item_desc">预约项目</string>
     <string name="order_list_item_time_desc">预约时间</string>
 
@@ -168,7 +103,6 @@
     <string name="order_list_item_empty">=_=!!, 还没有数据哦</string>
 
     <string name="verification_record_list_item_loading">点击或者上拉，加载更多数据</string>
-    <string name="verification_record_list_item_next_month">点击或者上拉，加载下个月数据</string>
     <string name="verification_record_list_item_no_more">----------已经全部加载完毕----------</string>
     <string name="verification_record_list_item_empty">=_=!!, 还没有数据哦</string>
 
@@ -178,15 +112,12 @@
     <string name="order_detail_expire_order_confirm">确认过期</string>
     <string name="order_detail_verified_order_confirm">确认核销</string>
 
-    <string name="function_not_work_yet">该功能尚未开放，敬请期待</string>
     <string name="get_club_failed">获取会所信息失败</string>
-    <string name="get_club_auth_config_failed">获取会所权限配置信息失败</string>
     <string name="authority_forbidden">您的权限不足，请联系管理员</string>
 
     <string name="coupon_list_item_activity_duration_desc">活动日期</string>
     <string name="coupon_list_item_coupon_duration_desc">券有效期</string>
     <string name="coupon_list_item_coupon_use_duration_desc">使用时段</string>
-    <string name="coupon_list_item_share">分享</string>
 
     <string name="coupon_activity_coupon_desc">优惠说明</string>
     <string name="coupon_activity_coupon_use_desc">使用说明</string>
@@ -198,13 +129,9 @@
 
     <string name="user_coupon_list_activity_phone_number">手机号码</string>
     <string name="user_coupon_list_activity_coupon_number">优惠码</string>
-    <string name="user_coupon_list_activity_coupon_not_exist">优惠券不存在</string>
 
     <string name="coupon_use_data_activity_title">优惠券使用数据</string>
     <string name="coupon_use_data_activity_count_desc">使用次数</string>
-    <string name="coupon_use_list_item_loading">点击或者上拉，加载更多数据</string>
-    <string name="coupon_use_list_item_no_more"> ^_^, 没有更多数据</string>
-    <string name="coupon_use_list_item_empty">=_=!!, 还没有数据哦</string>
 
 
     <!-- Weixin Share -->
@@ -222,37 +149,21 @@
 
     <string name="setting_activity_title">系统设置</string>
     <string name="dialog_system_message">系统消息</string>
-    <string name="request_permission">请求权限</string>
     <string name="setting_activity_group_normal">常规设置</string>
     <string name="setting_activity_order_notification">是否接收订单通知</string>
 
     <string name="configuration_monitor_activity_title">配置查看</string>
 
-    <string name="paid_consume_activity_title">付费预约核销</string>
-
-    <string name="paid_consume_activity_to_consume">待核销</string>
-    <string name="paid_consume_activity_consumed">已核销</string>
-    <string name="paid_consume_activity_expired">已失效</string>
     <string name="paid_consume_activity_qrcode">扫码核销</string>
-    <string name="paid_conusme_activity_order_consume_code_hint">请输入预约码</string>
     <string name="paid_consume_activity_order_consume">核销</string>
-    <string name="paid_consume_activity_input_order_no_tip">请输入预约号</string>
 
     <string name="paid_order_list_item_expire">爽约</string>
     <string name="paid_order_list_item_consume">核销</string>
     <string name="paid_order_list_order_down_payment">%1$d</string>
-    <string name="paid_order_warning_tips">T_T, 订单处理可能有点小问题，不要担心，请联系小摩豆。</string>
 
     <string name="pending_order">待接新单</string>
     <string name="accepted_order">累计接单</string>
-    <string name="completed_order">已完成订单</string>
     <string name="main_page_completed_order">即将到店</string>
-
-    <string name="order_status_operation_accept">接受</string>
-    <string name="order_status_operation_reject">拒绝</string>
-    <string name="order_status_operation_complete">完成</string>
-    <string name="order_status_operation_expire">爽约</string>
-    <string name="order_status_operation_delete">删除订单</string>
 
     <string name="customer_management_technician">所属技师排序</string>
     <string name="customer_management_active_degree">活跃度排序</string>
@@ -260,13 +171,11 @@
 
     <string name="layout_statistics_title">网店宣传</string>
     <string name="layout_obtain_client_title">营销数据</string>
-    <string name="layout_statistics_check_detail">查看全部</string>
     <string name="layout_statistics_propagate">WiFi宣传：</string>
     <string name="layout_statistics_visit">网店访问：</string>
     <string name="layout_statistics_new_register">新增客户：</string>
     <string name="layout_statistics_coupon_get">领券数量：</string>
     <string name="layout_statistics_visit_detail"> 网店网访问详情</string>
-    <string name="layout_main_publicity">宣传效果</string>
     <string name="layout_account_title">线上流水</string>
     <string name="layout_main_publicity_yesterday">（昨天）</string>
     <string name="layout_main_publicity_today">（今天）</string>
@@ -297,64 +206,21 @@
 
     <string name="conversation_list_activity_title">消息列表</string>
     <!-- chat -->
-    <string name="location_recv">[%1$s的位置]</string>
-    <string name="location_prefix">[我的位置]</string>
-    <string name="picture">[图片]</string>
-    <string name="video">[视频]</string>
-    <string name="file">[文件]</string>
-    <string name="voice_prefix">[语音]</string>
-    <string name="voice_call">[语音通话]</string>
-    <string name="video_call">[视频通话]</string>
-    <string name="dynamic_expression">[动态表情]</string>
-    <string name="cant_find_pictures">找不到图片</string>
-    <string name="request_user_reward">"<i></i>万水千山总是情<br />打赏两个行不行~"</string>
-    <string name="beg_reward">求打赏</string>
-    <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
-    <string name="accept">接受</string>
-    <string name="refuse">拒绝</string>
-    <string name="common_greeting_format">确认发送＂%1$s＂信息？</string>
-    <string name="no_paid_coupon">抱歉！暂无点钟券！</string>
-    <string name="no_coupon">抱歉！暂无优惠券！</string>
-    <string name="send_coupon_msg_format"><i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b></string>
-    <string name="message_remove_confirm_tips">确认删除此条消息吗？</string>
 
-    <string name="message_fragment_title">我的消息</string>
-    <string name="cant_chat_with_yourself">不能和自己聊天</string>
-    <string name="button_send">发送</string>
     <string name="search_hint">请输入昵称进行搜索</string>
     <string name="search_phone_hint">请输入用户手机号进行搜索</string>
-    <string name="no_more_messages">没有更多的消息了</string>
-    <string name="chat_activity_input_here">在此输入</string>
-    <string name="messages_cannot_be_empty">发送内容不能为空，请重新输入</string>
-
-    <string name="download_the_pictures">下载图片: 0%</string>
-    <string name="download_the_pictures_new">下载图片:</string>
-
-    <string name="app_info_title">place</string>
 
     <string name="customer_comments_activity_title">所有评论</string>
     <string name="customer_comments_score">综合评分：</string>
-    <string name="customer_comments_appearance">仪容</string>
-    <string name="customer_comments_attitude">态度</string>
-    <string name="customer_comments_skill">技能</string>
-    <string name="customer_comments_steal_clock">偷钟</string>
     <string name="customer_orders_activity_title">所有订单</string>
     <string name="customer_coupons_activity_title">所有优惠券</string>
 
-    <string name="statistics_activity_title">数据统计</string>
-    <string name="statistics_fragment_orders">订单数</string>
     <string name="statistics_fragment_register_users">新增客户</string>
     <string name="statistics_fragment_wifi_propagate">WiFi宣传</string>
-    <string name="statistics_fragment_visit_detail">网店访客</string>
     <string name="statistics_activity_register_detail">注册明细</string>
-    <string name="statistics_fragment_took_detail">拓客</string>
-    <string name="statistics_fragment_coupon">领券</string>
     <string name="right_btn_visit_detail">明 细</string>
 
-    <string name="statistics_fragment_wifi_propagate_number">WiFi宣传数</string>
-
     <string name="statistics_fragment_statistics_visit">网店访客：</string>
-    <string name="statistics_fragment_statistics_visit_number">网店访问数</string>
     <string name="statistics_fragment_account_paid">买单金额：</string>
     <string name="statistics_fragment_account_sail">销售金额：</string>
     <string name="statistics_fragment_coupon_detail">优惠券数据详情</string>
@@ -367,7 +233,6 @@
     <string name="statistics_fragment_tech_income">技师提成</string>
 
     <string name="main_fragment_consume_code_hint">输入手机号或核销码进行核销</string>
-    <string name="main_fragment_consume_code_invalid">无效的核销码</string>
 
     <string name="deliver_coupon_activity_title">发券</string>
     <string name="deliver_coupon_activity_select_tips">请选择优惠券</string>
@@ -375,24 +240,16 @@
     <string name="search_pay_activity_search_hint">输入客户手机或技师编号</string>
     <string name="search_club_activity_search_hint">按名称搜索会所</string>
     <string name="alert_tips_title">温馨提示</string>
-    <string name="alert_top_no_data">你尚未拥有优惠券</string>
-    <string name="handler_app_crashed">T_T, 程序崩溃了，将重新启动</string>
     <string name="orders_detail">订单数详情</string>
     <string name="coupons_detail">优惠券详情</string>
     <string name="dianzhong_detail">点钟详情</string>
     <string name="register_detail">注册数详情</string>
-    <string name="time">时间 ：</string>
 
     <string name="purchased_dianzhong">购买</string>
     <string name="used_dianzhong">使用</string>
     <string name="shared_dianzhong">分享</string>
     <string name="pasted_dianzhong">过期 </string>
     <string name="coupons_delivery">领取</string>
-
-    <string name="club_account">会所帐号</string>
-    <string name="club_register_time">注册时间</string>
-    <string name="club_status">录入进程</string>
-    <string name="club_p">最近操作人</string>
 
     <string name="user_type_weixin">微信用户</string>
     <string name="user_type_user">粉丝用户</string>
@@ -419,21 +276,15 @@
     <string name="group_by_tech">按拓客者</string>
     <string name="group_by_customize">自定义分组</string>
     <string name="group_by_member">会员类型</string>
-    <string name="select_customize">选择客户</string>
     <string name="select_activity">选择活动</string>
     <string name="edit_content">编辑内容</string>
     <string name="message_confirm">消息确认</string>
     <string name="active_customer_text">近期内消费过的客户</string>
     <string name="valid_customer_text">曾经消费过，但近期内无消费的客户</string>
-    <string name="coupon_time">领券时间</string>
-    <string name="login_time">登录时间</string>
-    <string name="order_time">预约时间</string>
     <string name="select_coupon">选择优惠活动</string>
     <string name="edit_message">输入发送内容</string>
     <string name="btn_reset">重置</string>
     <string name="send_group_detail">发送记录</string>
-    <string name="send_group_total_amount">发送人数：</string>
-    <string name="send_group_use_amount">核销人数：</string>
     <string name="select_customer">选择客户</string>
     <string name="click_expand">点击展开</string>
     <string name="send_content">发送内容</string>
@@ -453,17 +304,14 @@
     <string name="send_group_message_alert">请添加图片或文字</string>
     <string name="send_group_message_alert_enough">您本月群发消息使用次数已用完</string>
     <string name="send_group_message_limit">所选择发送人数为0</string>
-    <string name="coupon_on_line">在线</string>
     <string name="coupon_tips">优惠券</string>
     <string name="coupon_cash">现金券</string>
     <string name="paid_coupon">点钟券</string>
     <string name="no_data">无</string>
     <string name="send_group_message_success">群消息已成功发送</string>
-    <string name="emchat_login_failed">环信登录失败，请重新登录...</string>
     <string name="text_100">100</string>
     <string name="default_start_time">2015-01-01</string>
     <string name="text_send_group_time_limit">(两次群发消息之间需要间隔24小时以上)</string>
-    <string name="alert_message_send_group_time_limit">距离上次群发消息未超过24小时</string>
     <string name="text_all_customer_hint">(发送至通过会所注册的全部手机用户)</string>
     <string name="text_no_activity_selected">未选择任何活动</string>
     <string name="text_no_content">无内容</string>
@@ -480,13 +328,11 @@
     <string name="club_credit_shopping">积分商城</string>
     <string name="club_bottom_alert">----------已经全部加载完毕----------</string>
     <string name="all_bad_comment">全部差评</string>
-    <string name="bad_comment_detail">评论详情</string>
     <string name="bad_comment_manage">差评投诉</string>
     <string name="return_visit">回访</string>
     <string name="operation">操作</string>
     <string name="comment_text">点评:</string>
     <string name="tech_text">技师</string>
-    <string name="service_text">服务</string>
     <string name="fitment_text">装修</string>
     <string name="modify_password_old_hint">输入原密码</string>
     <string name="modify_password_new_hint">请输入6-20位新密码，仅限字母和数字</string>
@@ -495,25 +341,22 @@
     <string name="modify_password_failed">修改密码失败</string>
     <string name="settings_activity_modify_password">修改密码</string>
     <string name="phone_is_null">您所拨打的电话是空号</string>
-    <string name="wait_return_visit">待回访</string>
-    <string name="had_visited">已回访</string>
     <string name="bad_comment_ranking">排名</string>
     <string name="bad_comment_tech">技师 （工号）</string>
     <string name="bad_comment_num">差评数</string>
     <string name="bad_comment_ratio">差评率</string>
     <string name="rank_null_text">暂无技师</string>
-    <string name="comment_order">订单</string>
     <string name="comment_club">会所</string>
-    <string name="comment_qr_code">扫码点评:</string>
-    <string name="comment_qr_by_code">扫码点评</string>
-    <string name="comment_type_order">点评订单：</string>
-    <string name="comment_type_tech">点评技师：</string>
-    <string name="comment_type_club">点评会所：</string>
-    <string name="comment_remark_valid">标记为未回访</string>
-    <string name="comment_remark_finish">标记为已回访</string>
-    <string name="comment_remark_delete">标记为删除</string>
-    <string name="abnormal_server">服务器异常</string>>
-    <string name="bad_comment_rank">差评榜</string>
+    <string name="comment_qr_code">扫码点评:</string><![CDATA[
+
+
+
+
+
+
+
+    >
+    ]]>
     <string name="order_verification_info">订单信息</string>
     <string name="verification_name">预约人：       </string>
     <string name="verification_start_time">到店时间：</string>
@@ -527,7 +370,6 @@
     <string name="verification_order_code">核销码</string>
     <string name="verification_action_name">活动名称</string>
     <string name="verification_reward_action_name">抢购活动</string>
-    <string name="verification_user_now">立即使用</string>
     <string name="verification_action_introduce">活动说明</string>
     <string name="verification_coupon_action_time">活动日期</string>
     <string name="verification_coupon_available_time">券有效期</string>
@@ -560,7 +402,6 @@
     <string name="journal_title_technician_choice">选择技师</string>
     <string name="journal_title_edit_project">选择项目</string>
     <!-- 用户分组 -->
-    <string name="group_is_null">暂无分组</string>
     <string name="group_introduce_text">暂无分组\n\n您可以通过给客户添加分组来进行分类\n分组用户可用于群发消息</string>
     <string name="new_create">新建</string>
     <string name="create_group">新建分组</string>
@@ -569,19 +410,14 @@
     <string name="edit_group">编辑分组</string>
     <string name="delete_group">删除分组</string>
     <string name="all_group">添加分组</string>
-    <string name="save_group">保存分组</string>
-    <string name="select_customer_hint">搜索联系人</string>
     <string name="group_name">分组名称</string>
     <string name="group_remark">备注</string>
     <string name="group_member">成员</string>
-    <string name="select_group_member">搜索联系人</string>
     <string name="group_input_group_name">请输入分组名称（14字符以内）</string>
     <string name="group_remark_hint">添加备注信息，方便理解分组内容（20字符以内）</string>
     <string name="group_add_or_delete_group_member">注：点击“+”可增加联系人，点击“-”可删除联系人</string>
     <string name="customer_group_data">分组</string>
-    <string name="customer_group_data_remark_hint">添加备注信息，便于了解客户喜好</string>
     <!--订单改版-->
-    <string name="total_orders">订单数</string>
     <string name="unAccept_orders_total">未接订单</string>
     <string name="had_accept_orders_total">已接订单</string>
     <string name="untreated_orders">待接新单</string>
@@ -603,16 +439,13 @@
     <string name="coupon_record_project">项目券</string>
     <string name="coupon_record_award">奖品券</string>
     <string name="coupon_record_guest">请客</string>
-    <string name="alert_permission_message">需要存储访问权限才能选择照片，如果未能弹出权限申请框，请自行在设置中打开APP存储访问权限</string>
     <!--用户分组-->
     <string name="group_member_is_null">该分组尚未添加成员</string>
     <string name="group_edit_name_null">分组名称不可为空</string>
-    <string name="group_add_sure">确认添加</string>
     <string name="customer_group_is_null">尚未添加分组，赶紧去添加吧</string>
     <string name="customer_search_alter">搜索内容不能为空</string>
     <string name="select_customer_group_message_send">分组客户（可多选）</string>
     <string name="activity_select_member">选择联系人</string>
-    <string name="select_photo_failure">图片选择器没有返回数据!</string>
     <string name="tech_is_null">无</string>
     <!--核销记录详情-->
     <string name="verification_record">核销记录</string>
@@ -622,26 +455,6 @@
     <string name="verification_record_time">核销时间：</string>
     <string name="verification_record_handlers">核销人：</string>
     <string name="verification_record_code">核销码：</string>
-    <string name="verification_record_coupon_name">优惠券名称：</string>
-    <string name="verification_record_coupon_type">优惠券类型：</string>
-    <string name="verification_record_coupon_validity">有效期：</string>
-    <string name="verification_record_coupon_sharer">分享者：</string>
-    <string name="verification_record_project_name">活动名称：</string>
-    <string name="verification_record_project_type">项目名称：</string>
-    <string name="verification_record_project_price">原价：</string>
-    <string name="verification_record_project_income">实收：</string>
-    <string name="verification_record_pay_coupon_name">点钟券名称：</string>
-    <string name="verification_record_pay_coupon_detail">点钟券详情：</string>
-    <string name="verification_record_pay_coupon_validity">有效期：</string>
-    <string name="verification_record_pay_coupon_tech">技师：</string>
-    <string name="verification_record_reward_name">奖品：</string>
-    <string name="verification_record_reward_active">活动名称：</string>
-    <string name="verification_record_entertain_pay">实际消费金额：</string>
-    <string name="verification_record_pay_order_money">预约定金</string>
-    <string name="verification_record_pay_order_tech">预约技师</string>
-    <string name="verification_record_pay_order_project">预约项目</string>
-    <string name="verification_record_pay_order_time">预约时间</string>
-    <string name="verification_record_pay_order_arrival_time">到店时间</string>
     <string name="search_phone_alert">请输入手机号进行搜索</string>
     <string name="customer_coupon_list_title">核销</string>
     <string name="btn_verification">核销</string>
@@ -655,21 +468,14 @@
     <string name="marketing_income_total">营销收入累计</string>
     <string name="online_pay_money">实付金额：</string>
     <string name="online_pay_time">买单时间：</string>
-    <string name="online_pay_tech">技    师：</string>
-    <string name="online_pay_remark">备注：</string>
     <string name="text_default">-</string>
     <string name="marketing_income_statistics">营销收入统计</string>
     <!--排行版-->
     <string name="pk_ranking_head">排行榜</string>
     <string name="pk_ranking_on_line">进行中</string>
-    <string name="pk_ranking_out_off_line">已结束</string>
     <string name="pk_active_title">谁是王者</string>
     <string name="btn_pk_ranking_detail">查看个人排行</string>
     <string name="pk_ranking_detail_title">排行榜</string>
-    <string name="pk_filter_register">拓客</string>
-    <string name="pk_filter_sail">营销</string>
-    <string name="pk_filter_service">好评</string>
-    <string name="pk_time_filter_limit_alter">已无更多数据</string>
     <string name="pk_team_ranking_title">队伍排名</string>
     <string name="pk_personal_ranking_title">个人排名</string>
     <string name="personal_ranking_toker">拓客之星</string>
@@ -679,7 +485,6 @@
     <!--优化-->
     <string name="all_data_load_finish">----------已经全部加载完毕----------</string>
     <string name="coupon_fragment_coupon_reward">提成 %s元</string>
-    <string name="edit_group_message_title">群发消息</string>
     <!--经营数据-->
     <string name="operate_data_title">经营数据</string>
     <string name="operate_title">运营报表</string>

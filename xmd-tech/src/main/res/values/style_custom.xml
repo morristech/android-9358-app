@@ -149,13 +149,6 @@
         <item name="android:textColor">@color/selector_popup_window_button_text</item>
     </style>
 
-    <style name="top_menu_container">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/home_button_height</item>
-        <item name="android:background">@color/title_Radio_button</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
     <style name="horizontal_divider_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
@@ -184,47 +177,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/divider_thin_color</item>
-    </style>
-
-    <style name="user_center_layout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/personal_item_height</item>
-        <item name="android:paddingLeft">@dimen/personal_padding</item>
-        <item name="android:paddingRight">@dimen/personal_padding</item>
-        <item name="android:background">@drawable/personal_item_selector</item>
-    </style>
-
-    <style name="user_center_imLeft">
-        <item name="android:layout_width">@dimen/personal_item_icon_height</item>
-        <item name="android:layout_height">@dimen/personal_item_icon_height</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-
-    <style name="user_center_tvName">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/search_view_height</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/colorBody</item>
-        <item name="android:textSize">@dimen/fontTitle</item>
-    </style>
-
-    <style name="user_center_ivRight">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:src">@drawable/right_arrow</item>
-    </style>
-
-    <style name="user_center_tvRight">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_marginRight">@dimen/personal_item_margin_right</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/colorBtnSelector</item>
-        <item name="android:textSize">@dimen/fontBody</item>
     </style>
 
     <style name="text_bold">
