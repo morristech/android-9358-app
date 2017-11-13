@@ -36,8 +36,9 @@ android {
         //1.8.4 fixbug
         //1.8.8 联系人优化，技师海报优化
         //1.8.10 app统一化
-        versionCode 59
-        versionName "1.9.1"
+        //1.9.2 app埋点，个人中心优化
+        versionCode 60
+        versionName "1.9.2"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
