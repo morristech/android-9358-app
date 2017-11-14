@@ -33,6 +33,8 @@ public interface MainContract {
 
         void onRecordLayoutClick();
 
+        void onAssistCashierLayoutClick();
+
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
         boolean onKeyEventBack();
@@ -51,5 +53,7 @@ public interface MainContract {
         void onNavigationMenu();
 
         String getVerifyCode();
+
+        void updateAssistCashier(boolean status);
     }
 }

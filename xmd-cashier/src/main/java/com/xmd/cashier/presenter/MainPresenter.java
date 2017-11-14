@@ -17,6 +17,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MainContract;
 import com.xmd.cashier.dal.bean.CouponInfo;
+import com.xmd.cashier.dal.bean.SwitchInfo;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponQRCodeScanResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
@@ -27,6 +28,7 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
+import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.UpdateManager;
@@ -35,6 +37,10 @@ import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.XmdNetwork;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Subscription;
 
@@ -123,7 +129,13 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCashierLayoutClick() {
-        UiNavigation.gotoCashierActivity(mContext);
+        if (InnerManager.getInstance().getInnerSwitch()) {
+            //内网开启
+            UiNavigation.gotoInnerSelectActivity(mContext);
+        } else {
+            //原始流程
+            UiNavigation.gotoCashierActivity(mContext);
+        }
     }
 
     @Override
@@ -148,6 +160,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onRecordLayoutClick() {
         UiNavigation.gotoRecordNavigationActivity(mContext);
+    }
+
+    @Override
+    public void onAssistCashierLayoutClick() {
+        UiNavigation.gotoCashierActivity(mContext); //原始收银流程
     }
 
     @Override
@@ -413,8 +430,9 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCreate() {
+        EventBus.getDefault().register(this);
         mView.showLoading();
-        if (CashierManager.getInstance().needCheckUpate()) {
+        if (CashierManager.getInstance().needCheckUpdate()) {
             UpdateManager.getInstance().checkUpdate(mContext, CashierManager.getInstance().getAppCode(), AccountManager.getInstance().getUserId(), new Callback<Void>() {
                 @Override
                 public void onSuccess(Void o) {
@@ -430,6 +448,7 @@ public class MainPresenter implements MainContract.Presenter {
         } else {
             initPos();
         }
+        updateAssistCashier();
     }
 
     private void initPos() {
@@ -474,6 +493,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         mView.hideLoading();
         if (mLogoutSubscription != null) {
             mLogoutSubscription.unsubscribe();
@@ -496,8 +516,17 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetOrderInfoSubscription != null) {
             mGetOrderInfoSubscription.unsubscribe();
         }
-        if (CashierManager.getInstance().needCheckUpate()) {
+        if (CashierManager.getInstance().needCheckUpdate()) {
             UpdateManager.getInstance().cancel();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SwitchInfo info) {
+        updateAssistCashier();
+    }
+
+    private void updateAssistCashier() {
+        mView.updateAssistCashier(InnerManager.getInstance().getInnerSwitch());
     }
 }

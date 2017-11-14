@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private RelativeLayout mMainOrderLayout;
     private RelativeLayout mMainOnlinePayLayout;
     private RelativeLayout mMainRecordLayout;
+    private RelativeLayout mMainAssistCashierLayout;
 
     private NestedScrollView mScrollView;
 
@@ -50,6 +51,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private TextView mDrawerVersion;
 
     private int mHeadHeight;
+
+    private TextView mCashierTitle;
+    private TextView mCashierSubTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,10 +110,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mVerifyConfirm = (TextView) findViewById(R.id.btn_verify_confirm);
 
         mMainCashierLayout = (RelativeLayout) findViewById(R.id.layout_main_cashier);
+        mCashierTitle = (TextView) findViewById(R.id.tv_main_cashier_title);
+        mCashierSubTitle = (TextView) findViewById(R.id.tv_main_cashier_sub_title);
         mMainMemberLayout = (RelativeLayout) findViewById(R.id.layout_main_member);
         mMainOrderLayout = (RelativeLayout) findViewById(R.id.layout_main_order);
         mMainOnlinePayLayout = (RelativeLayout) findViewById(R.id.layout_main_online_pay);
         mMainRecordLayout = (RelativeLayout) findViewById(R.id.layout_main_record);
+        mMainAssistCashierLayout = (RelativeLayout) findViewById(R.id.layout_main_assist_cashier);
 
         mDrawerAvatar = (CircleImageView) findViewById(R.id.imv_club_icon);
         mDrawerClubName = (TextView) findViewById(R.id.tv_club_name);
@@ -157,6 +164,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             @Override
             public void onClick(View v) {
                 mPresenter.onRecordLayoutClick();
+            }
+        });
+
+        mMainAssistCashierLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onAssistCashierLayoutClick();
             }
         });
 
@@ -222,6 +236,21 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public String getVerifyCode() {
         return mVerifyInput.getText().toString().trim();
+    }
+
+    @Override
+    public void updateAssistCashier(boolean status) {
+        if (status) {
+            //开通
+            mMainAssistCashierLayout.setVisibility(View.VISIBLE);
+            mCashierTitle.setText("内网收银");
+            mCashierSubTitle.setText("订单、消费、结账");
+        } else {
+            //关闭
+            mMainAssistCashierLayout.setVisibility(View.GONE);
+            mCashierTitle.setText("收银");
+            mCashierSubTitle.setText("现金、银联、微信、支付宝");
+        }
     }
 
     @Override

@@ -73,7 +73,7 @@
                         android:layout_marginTop="@dimen/activity_vertical_margin"
                         android:layout_toLeftOf="@id/img_main_cashier_arrow"
                         android:layout_toRightOf="@id/img_main_cashier"
-                        android:text="现金、刷卡、微信"
+                        android:text="现金、银联、微信、支付宝"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/font_size_16" />
                 </RelativeLayout>
@@ -297,6 +297,60 @@
                         android:layout_toRightOf="@id/img_main_record"
                         android:singleLine="true"
                         android:text="收银记录、结算、核销记录"
+                        android:textColor="@color/colorText3"
+                        android:textSize="@dimen/font_size_16" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_main_assist_cashier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_normal_margin"
+                    android:layout_marginRight="@dimen/activity_normal_margin"
+                    android:layout_marginTop="@dimen/activity_normal_margin"
+                    android:background="@drawable/bg_area_item"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin">
+
+                    <ImageView
+                        android:id="@+id/img_main_assist_cashier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/ic_main_cashier" />
+
+                    <ImageView
+                        android:id="@+id/img_main_assist_cashier_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_arrow" />
+
+                    <TextView
+                        android:id="@+id/tv_main_assist_cashier_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/img_main_assist_cashier_arrow"
+                        android:layout_toRightOf="@id/img_main_assist_cashier"
+                        android:text="辅助收银"
+                        android:textColor="@color/colorText4"
+                        android:textSize="@dimen/medium_font_size" />
+
+                    <TextView
+                        android:id="@+id/tv_main_assist_cashier_sub_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_main_assist_cashier_title"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_toLeftOf="@id/img_main_assist_cashier_arrow"
+                        android:layout_toRightOf="@id/img_main_assist_cashier"
+                        android:text="消费补收、散单收银"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/font_size_16" />
                 </RelativeLayout>

@@ -33,7 +33,7 @@ public class AppConstants {
     public static final String COUPON_TYPE_DISCOUNT = "discount";   //折扣券
     public static final String COUPON_TYPE_SERVICE_ITEM = "service_item";    //项目券
 
-    public static final int VIEW_TYPE_UNKNOW = -1;
+    public static final int VIEW_TYPE_UNKNOWN = -1;
     public static final int VIEW_TYPE_COUPON = 1;
     public static final int VIEW_TYPE_ORDER = 2;
     public static final int VIEW_TYPE_TREAT = 3;
@@ -47,15 +47,15 @@ public class AppConstants {
     public static final int CASHIER_TYPE_ERROR = -1;
     public static final int CASHIER_TYPE_MEMBER = 0;// 会员支付
     public static final int CASHIER_TYPE_POS = 1;   // POS支付
-    public static final int CASHIER_TYPE_XMD_ONLINE = 2;// 小摩豆在线买单
-    public static final int CASHIER_TYPE_CASH = 3;  //现金支付
+    public static final int CASHIER_TYPE_QRCODE = 2;// 扫码支付
+    public static final int CASHIER_TYPE_CASH = 3;  // 现金支付
+    public static final int CASHIER_TYPE_MARK = 4;  // 记账支付
 
     public static final int PAY_TYPE_UNKNOWN = 0;
     public static final int PAY_TYPE_CASH = 1;
     public static final int PAY_TYPE_ALIPAY = 2;
     public static final int PAY_TYPE_WECHART = 3;
     public static final int PAY_TYPE_CARD = 4;
-    public static final int PAY_TYPE_MEMBER = 5;
 
     public static final int DISCOUNT_TYPE_NONE = 0;
     public static final int DISCOUNT_TYPE_COUPON = 2;
@@ -86,6 +86,7 @@ public class AppConstants {
 
     public static final int APP_LIST_DEFAULT_PAGE = 1;
     public static final int APP_LIST_PAGE_SIZE = 20;
+    public static final int APP_LIST_INNRE_PAGE_SIZE = 5;
 
     public static final Map<String, Integer> PAY_TIME_FILTERS = new LinkedHashMap<String, Integer>() {{
         put("全部(近三月)", PAY_TIME_ALL_THREE_MONTH);
@@ -164,6 +165,14 @@ public class AppConstants {
         put(ORDER_RECORD_STATUS_OVERTIME_TEXT, ORDER_RECORD_STATUS_OVERTIME);
     }};
 
+    public static final Map<String, String> PAY_CHANNEL_FILTER = new LinkedHashMap<String, String>() {{
+        put(CASHIER_TYPE_WX_TEXT, PAY_CHANNEL_WX);
+        put(CASHIER_TYPE_ALI_TEXT, PAY_CHANNEL_ALI);
+        put(CASHIER_TYPE_UNION_TEXT, PAY_CHANNEL_UNION);
+        put(CASHIER_TYPE_ACCOUNT_TEXT, PAY_CHANNEL_ACCOUNT);
+        put(CASHIER_TYPE_CASH_TEXT, PAY_CHANNEL_CASH);
+    }};
+
     public static final String EXTRA_CASH_AMOUNT = "cash_amount";
     public static final String EXTRA_BILL_INFO = "extra_bill_info";
     public static final String EXTRA_PHONE_VERIFY = "extra_phone_verify";
@@ -176,6 +185,7 @@ public class AppConstants {
     public static final String EXTRA_NOTIFY_DATA = "notify_data";
     public static final String EXTRA_NOTIFY_TYPE_ORDER_RECORD = "order_record";
     public static final String EXTRA_NOTIFY_TYPE_ONLINE_PAY = "online_pay";
+    public static final String EXTRA_NOTIFY_TYPE_INNER_PAY = "inner_pay";
     public static final String EXTRA_RECORD_ID = "record_id";
     public static final String EXTRA_IS_SHOW = "is_show";
     public static final String EXTRA_COUPON_CODE = "coupon_code";
@@ -185,9 +195,8 @@ public class AppConstants {
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
 
-    public static final String CASHIER_TYPE_POS_TEXT = "银行卡或现金";
     public static final String CASHIER_TYPE_XMD_ONLINE_TEXT = "微信或支付宝";
-    public static final String CASHIER_TYPE_MEMBER_TEXT = "会员支付";
+    public static final String CASHIER_TYPE_ACCOUNT_TEXT = "会员支付";
     public static final String CASHIER_TYPE_CASH_TEXT = "现金支付";
     public static final String CASHIER_TYPE_WX_TEXT = "微信支付";
     public static final String CASHIER_TYPE_ALI_TEXT = "支付宝支付";
@@ -203,6 +212,8 @@ public class AppConstants {
     public static final String PUSH_TAG_MEMBER_PRINT = "member_print";  //会员记录打印
     public static final String PUSH_TAG_ORDER_PRINT = "order_print";    //订单记录打印
     public static final String PUSH_TAG_FASTPAY_PRINT = "fast_pay_print";   //买单记录打印
+    public static final String PUSH_TAG_CLUB_ORDER_TO_PAY = "club_order_to_pay";
+    public static final String PUSH_TAG_FAST_PAY_SUCCESS = "fast_pay_success";
 
     public static final String PAY_CHANNEL_WX = "wx";
     public static final String PAY_CHANNEL_ALI = "ali";
@@ -268,9 +279,9 @@ public class AppConstants {
     public static final int ITEM_TYPE_SERVICE = 3;  //项目
     public static final int ITEM_TYPE_MONEY = 4;    //现金
 
-    public static final String ONLINE_PAY_DISCOUNT_COUPON = "coupon";
-    public static final String ONLINE_PAY_DISCOUNT_ORDER = "paid_order";
-    public static final String ONLINE_PAY_DISCOUNT_MEMBER = "member";
+    public static final String PAY_DISCOUNT_COUPON = "coupon";
+    public static final String PAY_DISCOUNT_ORDER = "paid_order";
+    public static final String PAY_DISCOUNT_MEMBER = "member";
 
     public static final String INPUT_DIGITS = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -279,4 +290,38 @@ public class AppConstants {
     public static final String QR_TYPE_TECH = "tech";
 
     public static final String STATISTICS_DEFAULT_TIME = "00:00:00";
+
+    public static final String EXTRA_INNER_SEARCH_TYPE = "search_type";
+    public static final String INNER_SEARCH_TYPE_ROOM = "room";
+    public static final String INNER_SEARCH_TYPE_ORDER = "order";
+    public static final String INNER_SEARCH_TYPE_TECH = "tech";
+    public static final String INNER_SEARCH_TYPE_FLOOR_STAFF = "floor_staff";
+
+    public static final String INNER_ORDER_ITEM_TYPE_SPA = "spa";
+    public static final String INNER_ORDER_ITEM_TYPE_GOODS = "goods";
+
+    public static final String INNER_BATCH_STATUS_UNPAID = "unpaid";
+    public static final String INNER_BATCH_STATUS_PAID = "paid";
+    public static final String INNER_BATCH_STATUS_PASS = "pass";
+    public static final String INNER_BATCH_STATUS_UNPASS = "unpass";
+
+    public static final String INNER_SWITCH_CODE = "native_system";
+
+    public static final String EXTRA_INNER_EMP_ID = "empId";
+    public static final String EXTRA_INNER_RECORD_DETAIL = "order_detail";
+
+    public static final String EXTRA_INNER_METHOD_SOURCE = "pay_source";
+    public static final String INNER_METHOD_SOURCE_NORMAL = "normal";
+    public static final String INNER_METHOD_SOURCE_RECORD = "record";
+    public static final String INNER_METHOD_SOURCE_PUSH = "push";
+
+    public static final List<String> INNER_PAY_STEPS = Arrays.asList(new String[]{"结账方式", "支付方式", "支付结果"});
+
+    public static final String INNER_DISCOUNT_CHECK_CASH_COUPON = "cash_coupon";
+    public static final String INNER_DISCOUNT_CHECK_DISCOUNT_COUPON = "discount_coupon";
+    public static final String INNER_DISCOUNT_CHECK_COUPON = "coupon";
+    public static final String INNER_DISCOUNT_GIFT_COUPON = "gift_coupon";
+    public static final String INNER_DISCOUNT_SERVICE_ITEM_COUPON = "service_item_coupon";
+    public static final String INNER_DISCOUNT_CONSUME = "consume";
+    public static final String INNER_DISCOUNT_PAID_ORDER = "paid_order";
 }

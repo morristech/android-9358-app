@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <com.xmd.cashier.widget.StepView
+        android:id="@+id/sv_step_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_normal_margin"
+        app:svLineWidth="1dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_order_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/activity_little_margin"
+        android:paddingRight="@dimen/activity_little_margin" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <RelativeLayout
+        android:id="@+id/layout_verify_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_area_item"
+        android:padding="@dimen/activity_normal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优惠券"
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/font_size_16" />
+
+        <ImageView
+            android:id="@+id/img_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:id="@+id/tv_verify_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/img_arrow"
+            android:background="@drawable/bg_area_golden"
+            android:paddingLeft="@dimen/activity_little_margin"
+            android:paddingRight="@dimen/activity_little_margin"
+            android:text="已选0张"
+            android:textColor="@color/colorGoldenDark"
+            android:textSize="@dimen/font_size_16" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@color/colorWhite"
+        android:padding="@dimen/activity_normal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应付金额"
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/font_size_16" />
+
+        <TextView
+            android:id="@+id/tv_need_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="$123"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/font_size_16"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:padding="@dimen/activity_normal_margin">
+
+        <Button
+            android:id="@+id/btn_pay"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/state_btn_normal"
+            android:text="支付"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16" />
+    </RelativeLayout>
+</LinearLayout>

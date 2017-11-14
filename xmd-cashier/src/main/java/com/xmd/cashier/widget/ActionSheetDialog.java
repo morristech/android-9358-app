@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.xmd.cashier.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zr on 17-5-11.
@@ -76,6 +77,12 @@ public class ActionSheetDialog extends Dialog implements AdapterView.OnItemClick
         for (String title : titles) {
             mListArray.add(title);
         }
+        mSheetAdapter.notifyDataSetChanged();
+    }
+
+    public void setContents(List<String> titles) {
+        mListArray.clear();
+        mListArray.addAll(titles);
         mSheetAdapter.notifyDataSetChanged();
     }
 

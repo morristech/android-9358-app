@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e0000000"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_inner_notify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_area_line"
+        android:orientation="vertical"
+        app:layout_heightPercent="60%"
+        app:layout_widthPercent="80%">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/notify_inner_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="结账通知"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size" />
+
+            <ImageView
+                android:id="@+id/notify_inner_off"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/activity_normal_margin"
+                android:paddingRight="@dimen/activity_normal_margin"
+                android:src="@drawable/ic_off" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorStoke" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/item_inner_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:visibility="visible" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorStoke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_little_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="right"
+                android:text="订单金额："
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/notify_inner_origin_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:paddingRight="@dimen/activity_normal_margin"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_little_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="right"
+                android:text="应付金额："
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/notify_inner_need_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:paddingRight="@dimen/activity_normal_margin"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:text="如果当前正在支付，请直接关闭，避免影响现有支付，稍后可在结账提醒中继续发起支付!"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/font_size_13" />
+
+        <Button
+            android:id="@+id/btn_notify_inner_pay"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/activity_small_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:background="@drawable/state_btn_normal"
+            android:text="去收银"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/small_font_size" />
+    </LinearLayout>
+</android.support.percent.PercentRelativeLayout>

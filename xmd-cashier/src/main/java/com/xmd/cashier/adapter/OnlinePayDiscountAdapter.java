@@ -45,16 +45,16 @@ public class OnlinePayDiscountAdapter extends RecyclerView.Adapter<OnlinePayDisc
         final OnlinePayInfo.OnlinePayDiscountInfo info = mData.get(position);
         if (info.type != null) {
             switch (info.type) {
-                case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
+                case AppConstants.PAY_DISCOUNT_COUPON:
                     holder.mDiscountType.setText("用券抵扣");
                     holder.mDiscountCoupon.setVisibility(View.VISIBLE);
                     holder.mDiscountCoupon.setText(info.bizName);
                     break;
-                case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
+                case AppConstants.PAY_DISCOUNT_ORDER:
                     holder.mDiscountType.setText("预约抵扣");
                     holder.mDiscountCoupon.setVisibility(View.GONE);
                     break;
-                case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                case AppConstants.PAY_DISCOUNT_MEMBER:
                     holder.mDiscountType.setText("会员优惠");
                     holder.mDiscountCoupon.setVisibility(View.GONE);
                     break;

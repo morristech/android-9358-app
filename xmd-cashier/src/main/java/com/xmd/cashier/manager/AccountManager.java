@@ -149,6 +149,8 @@ public class AccountManager {
                             NotifyManager.getInstance().startGetFastPayCountAsync();
                             NotifyManager.getInstance().startGetOrderCountAsync();
                             MemberManager.getInstance().startGetMemberSetting();
+                            InnerManager.getInstance().startGetInnerSwitch();
+                            InnerManager.getInstance().startGetInnerChannel();
                         }
 
                         @Override
@@ -187,6 +189,8 @@ public class AccountManager {
         NotifyManager.getInstance().stopGetFastPayCountAsync();
         NotifyManager.getInstance().stopGetOrderCountAsync();
         MemberManager.getInstance().stopGetMemberSetting();
+        InnerManager.getInstance().stopGetInnerSwitch();
+        InnerManager.getInstance().stopGetInnerChannel();
 
         Observable<LogoutResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .logout(getToken(), AppConstants.SESSION_TYPE);

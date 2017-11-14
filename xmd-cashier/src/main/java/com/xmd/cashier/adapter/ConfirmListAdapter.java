@@ -46,7 +46,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
             case AppConstants.VIEW_TYPE_TREAT:
                 view = LayoutInflater.from(context).inflate(R.layout.item_treat_status, parent, false);
                 break;
-            case AppConstants.VIEW_TYPE_UNKNOW:
+            case AppConstants.VIEW_TYPE_UNKNOWN:
             default:
                 break;
         }
@@ -66,7 +66,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
             case AppConstants.TYPE_PAY_FOR_OTHER:
                 return AppConstants.VIEW_TYPE_TREAT;
         }
-        return AppConstants.VIEW_TYPE_UNKNOW;
+        return AppConstants.VIEW_TYPE_UNKNOWN;
     }
 
     @Override

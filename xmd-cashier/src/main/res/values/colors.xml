@@ -43,4 +43,10 @@
 
     <color name="colorSilver">#7B7B7B</color>
     <color name="colorGolden">#C1A272</color>
+    <color name="colorTransGolden">#ccffecb7</color>
+
+    <color name="colorGoldenLight">#ead4a1</color>
+    <color name="colorGoldenDark">#8f703b</color>
+    <color name="colorBlueLight">#7fbdff</color>
+    <color name="colorBlueDark">#7997b7</color>
 </resources>

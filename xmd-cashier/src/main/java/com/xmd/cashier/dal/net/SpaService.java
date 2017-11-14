@@ -8,6 +8,16 @@ import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
+import com.xmd.cashier.dal.net.response.InnerBatchHoleResult;
+import com.xmd.cashier.dal.net.response.InnerBatchResult;
+import com.xmd.cashier.dal.net.response.InnerChannelListResult;
+import com.xmd.cashier.dal.net.response.InnerHandListResult;
+import com.xmd.cashier.dal.net.response.InnerOrderListResult;
+import com.xmd.cashier.dal.net.response.InnerRecordListResult;
+import com.xmd.cashier.dal.net.response.InnerRoomListResult;
+import com.xmd.cashier.dal.net.response.InnerSwitchResult;
+import com.xmd.cashier.dal.net.response.InnerTechListResult;
+import com.xmd.cashier.dal.net.response.InnerUnpaidResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
@@ -698,4 +708,86 @@ public interface SpaService {
                                                     @Query(RequestConstant.KEY_END_DATE) String endDate,
                                                     @Query(RequestConstant.KEY_START_TIME) String startTime,
                                                     @Query(RequestConstant.KEY_END_TIME) String endTime);
+
+
+    // ****************************************** 内网收银 **************************************
+    //获取内网开关
+    @GET(RequestConstant.URL_GET_INNER_SWITCH)
+    Call<InnerSwitchResult> getInnerSwitch(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                           @Query(RequestConstant.KEY_CODE) String code);
+
+    //获取支付方式
+    @GET(RequestConstant.URL_GET_PAY_CHANNEL_LIST)
+    Call<InnerChannelListResult> getInnerChannelList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    //获取房间列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_ROOM_LIST)
+    Observable<InnerRoomListResult> getRoomList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_ROOM_NAME) String roomName);
+
+    //获取手牌
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_HAND_LIST)
+    Observable<InnerHandListResult> getHandList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_USER_IDENTIFY) String userIdentify);
+
+    @GET(RequestConstant.URL_GET_TECHNICIAN_LIST)
+    Observable<InnerTechListResult> getTechnicianList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                      @Query(RequestConstant.KEY_TECH_NO_SEARCH) String noSearch,
+                                                      @Query(RequestConstant.KEY_ROLE) String role);
+
+    //根据条件获取订单列表
+    @GET(RequestConstant.URL_GET_INNER_ORDER_LIST)
+    Observable<InnerOrderListResult> getInnerOrderList(@Query(RequestConstant.KEY_TOKEN) String token,
+                                                       @Query(RequestConstant.KEY_ORDER_ID) String orderId,
+                                                       @Query(RequestConstant.KEY_EMP_ID) String empId,
+                                                       @Query(RequestConstant.KEY_ROOM_ID) String roomId);
+
+    //获取支付列表
+    @GET(RequestConstant.URL_GET_INNER_RECORD_LIST)
+    Observable<InnerRecordListResult> getInnerRecordList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Query(RequestConstant.KEY_PAGE_START) String page,
+                                                         @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+
+    //生成结账
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GENERATE_INNER_BATCH_ORDER)
+    Observable<InnerBatchResult> generateInnerBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Field(RequestConstant.KEY_BATCH_NO) String batchNo,
+                                                         @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                         @Field(RequestConstant.KEY_ORDER_IDS) String orderIds,
+                                                         @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                         @Field(RequestConstant.KEY_VERIFY_CODES) String verifyCodes);
+
+    //买单回调
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER)
+    Observable<BaseBean> callbackInnerBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                 @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                 @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                                 @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER)
+    Call<BaseBean> callbackInnerBatchOrderSync(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                               @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                               @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                               @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                               @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
+
+    //内网支付单详情
+    @GET(RequestConstant.URL_GET_THIRD_PAY_STATUS)
+    Call<OnlinePayDetailResult> getThirdPayStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+
+    @GET(RequestConstant.URL_GET_INNER_BATCH_HOLE)
+    Observable<InnerBatchHoleResult> getInnerHoleBatch(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Query(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId);
+
+    @GET(RequestConstant.URL_GET_INNER_UNPAID_COUNT)
+    Observable<InnerUnpaidResult> getInnerUnpaid(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }
+

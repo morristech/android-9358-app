@@ -283,13 +283,13 @@ public class NotifyManager {
             for (OnlinePayInfo.OnlinePayDiscountInfo discountInfo : info.orderDiscountList) {
                 if (discountInfo.type != null) {
                     switch (discountInfo.type) {
-                        case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
+                        case AppConstants.PAY_DISCOUNT_COUPON:
                             mPos.printText("用券抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                             break;
-                        case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
+                        case AppConstants.PAY_DISCOUNT_ORDER:
                             mPos.printText("预约抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                             break;
-                        case AppConstants.ONLINE_PAY_DISCOUNT_MEMBER:
+                        case AppConstants.PAY_DISCOUNT_MEMBER:
                             mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                             break;
                         default:

@@ -76,7 +76,6 @@ public class LoginPresenter implements LoginContract.Presenter {
     private void processChangeServerCMD() {
         final String[] serverList = new String[]{
                 BuildConfig.SERVER_PUBLIC,
-                BuildConfig.SERVER_SDCM210,
                 BuildConfig.SERVER_SDCM105,
                 BuildConfig.SERVER_SDCM103,
                 BuildConfig.SERVER_SDCM100

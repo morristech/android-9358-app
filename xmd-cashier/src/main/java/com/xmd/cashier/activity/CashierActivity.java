@@ -57,7 +57,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
             public boolean onKeyEnter() {
                 if (mPresenter.checkInput()) {
                     ActionSheetDialog dialog = new ActionSheetDialog(CashierActivity.this);
-                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_MEMBER_TEXT, AppConstants.CASHIER_TYPE_CASH_TEXT, AppConstants.CASHIER_TYPE_UNION_TEXT});
+                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_ACCOUNT_TEXT, AppConstants.CASHIER_TYPE_CASH_TEXT, AppConstants.CASHIER_TYPE_UNION_TEXT});
                     dialog.setCancelText("取消");
                     dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
                         @Override
@@ -69,7 +69,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
                                 case AppConstants.CASHIER_TYPE_UNION_TEXT:
                                     mPresenter.onClickPosPay();
                                     break;
-                                case AppConstants.CASHIER_TYPE_MEMBER_TEXT:
+                                case AppConstants.CASHIER_TYPE_ACCOUNT_TEXT:
                                     mPresenter.onClickMemberPay();
                                     break;
                                 case AppConstants.CASHIER_TYPE_CASH_TEXT:

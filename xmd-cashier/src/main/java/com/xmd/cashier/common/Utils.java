@@ -28,7 +28,6 @@ import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -238,7 +237,7 @@ public class Utils {
             case AppConstants.PAY_CHANNEL_WX:
                 return AppConstants.CASHIER_TYPE_WX_TEXT;
             case AppConstants.PAY_CHANNEL_ACCOUNT:
-                return AppConstants.CASHIER_TYPE_MEMBER_TEXT;
+                return AppConstants.CASHIER_TYPE_ACCOUNT_TEXT;
             default:
                 return "其他";
         }

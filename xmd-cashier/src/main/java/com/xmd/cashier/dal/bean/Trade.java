@@ -15,24 +15,28 @@ public class Trade {
         discountType = AppConstants.DISCOUNT_TYPE_COUPON;
     }
 
-    public int currentCashier; //当前收银方式:会员支付 OR POS收银程序 OR 小摩豆微信在线买单;为error时表示不需要支付金额
+    public int currentCashier;  //当前收银方式标记
+    public String currentCashierName;   //当前收银方式名称
+    public String currentCashierType;
+    public String currentCashierMark;   //当前收银方式备注
     public boolean isClient;    //用来控制打印是否要打印客户联小票
 
     //订单信息
-    public String tradeNo; //订单号
-    public int tradeStatus;//订单状态
-    public String tradeTime;//交易时间
+    public String tradeNo;  //订单号
+    public int tradeStatus; //订单状态
+    public String tradeTime;    //交易时间
 
-    private int originMoney;//原始消费金额
-    private int discountType;//0:系统计算 1：用户手动输入
-    private int userDiscountMoney;//用户手动输入的抵扣金额
-    private int couponDiscountMoney; //抵扣金额=优惠券+预付费订单+朋友请客
-    private int willDiscountMoney;//将会优惠金额
+    private int originMoney;    //原始消费金额  |内网
+    private int discountType;   //0:无; 1:用户手动输入; 2:核销;
+    private int userDiscountMoney;  //用户手动输入的抵扣金额
+    private int couponDiscountMoney;    //核销抵扣金额=各种券+预付费订单+朋友请客
+    private int willDiscountMoney;  //预计优惠金额    |内网
+    private int willPayMoney;   //应该支付的金额
 
     /**
-     * 各类优惠券，预付费订单，请客
+     * 体验券|点钟券|折扣券|现金券|付费预约|请客
      **/
-    private List<VerificationItem> couponList;//当前优惠券列表
+    private List<VerificationItem> couponList;//当前核销列表
     private int verificationCount;  //将要核销的优惠券数量
     private int verificationMoney;  //将要核销的金额
     private int verificationSuccessfulMoney;//核销成功的金额
@@ -41,10 +45,11 @@ public class Trade {
     /**
      * 会员支付
      **/
+    public String memberId;
     public String memberPayMethod;  // 支付方式：接口 或者 二维码memberToken
-    public MemberInfo memberInfo;// 会员支付时的会员信息
+    public MemberInfo memberInfo;   // 会员支付时的会员信息
     public String memberToken;  //会员二维码token
-    public MemberRecordInfo memberRecordInfo;//会员支付信息
+    public MemberRecordInfo memberRecordInfo;   //会员支付信息
     public String memberTempPhone;  //临时手机号
 
     /**
@@ -63,14 +68,23 @@ public class Trade {
     public Object posPayReturn;//收银台支付返回
     public int posPoints;//收银台收银获得积分
 
-    //设置原始消费金额
-    public void setOriginMoney(int originMoney) {
-        this.originMoney = originMoney;
+    /**
+     * 内网
+     */
+    public String batchNo;      //批次号
+    public String payOrderId;   //订单编号
+    public String payUrl;
+    public InnerRecordInfo innerRecordInfo; //支付信息
+
+    public int getWillPayMoney() {
+        return willPayMoney;
     }
 
-    /**
-     * 当前需要支付的金额
-     **/
+    public void setWillPayMoney(int money) {
+        willPayMoney = money;
+    }
+
+    // 需要支付的金额
     public int getNeedPayMoney() {
         int needPayMoney = originMoney - willDiscountMoney;
         if (needPayMoney < 0) {
@@ -79,11 +93,16 @@ public class Trade {
         return needPayMoney;
     }
 
+    // 初始消费金额
     public int getOriginMoney() {
         return originMoney;
     }
 
-    //将要减免的金额
+    public void setOriginMoney(int originMoney) {
+        this.originMoney = originMoney;
+    }
+
+    // 预计减免的金额
     public int getWillDiscountMoney() {
         return willDiscountMoney;
     }
@@ -92,6 +111,7 @@ public class Trade {
         this.willDiscountMoney = willDiscountMoney;
     }
 
+    // 减免类型
     public int getDiscountType() {
         return discountType;
     }
@@ -100,6 +120,7 @@ public class Trade {
         this.discountType = discountType;
     }
 
+    // 手动减免金额
     public int getUserDiscountMoney() {
         return userDiscountMoney;
     }
@@ -108,6 +129,7 @@ public class Trade {
         this.userDiscountMoney = userDiscountMoney;
     }
 
+    // 核销减免金额
     public void setCouponDiscountMoney(int couponDiscountMoney) {
         this.couponDiscountMoney = couponDiscountMoney;
     }
@@ -116,6 +138,7 @@ public class Trade {
         return couponDiscountMoney;
     }
 
+    // 核销列表
     public List<VerificationItem> getCouponList() {
         return couponList;
     }
@@ -124,6 +147,7 @@ public class Trade {
         couponList.clear();
     }
 
+    // 预计核销数目
     public int getVerificationCount() {
         return verificationCount;
     }
@@ -132,6 +156,7 @@ public class Trade {
         this.verificationCount = verificationCount;
     }
 
+    // 预计核销金额
     public int getVerificationMoney() {
         return verificationMoney;
     }
@@ -140,12 +165,22 @@ public class Trade {
         this.verificationMoney = verificationMoney;
     }
 
+    // 核销成功金额
     public int getVerificationSuccessfulMoney() {
         return verificationSuccessfulMoney;
     }
 
     public void setVerificationSuccessfulMoney(int verificationSuccessfulMoney) {
         this.verificationSuccessfulMoney = verificationSuccessfulMoney;
+    }
+
+    // 请客未使用金额
+    public int getVerificationNoUseTreatMoney() {
+        return verificationNoUseTreatMoney;
+    }
+
+    public void setVerificationNoUseTreatMoney(int verificationNoUseTreatMoney) {
+        this.verificationNoUseTreatMoney = verificationNoUseTreatMoney;
     }
 
     public synchronized String getPosTradeNo() {
@@ -167,7 +202,6 @@ public class Trade {
         return posPayTypeChannel;
     }
 
-
     //生成新的订单号给收银APP使用
     public void newCashierTradeNo() {
         int seed = 0;
@@ -176,13 +210,5 @@ public class Trade {
             seed++;
         }
         posTradeNo = String.format("%s%04d", tradeNo, seed);
-    }
-
-    public int getVerificationNoUseTreatMoney() {
-        return verificationNoUseTreatMoney;
-    }
-
-    public void setVerificationNoUseTreatMoney(int verificationNoUseTreatMoney) {
-        this.verificationNoUseTreatMoney = verificationNoUseTreatMoney;
     }
 }

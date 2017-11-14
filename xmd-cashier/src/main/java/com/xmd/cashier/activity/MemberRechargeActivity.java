@@ -311,7 +311,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
                 switch (item) {
                     case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
                         // 扫码支付
-                        type = AppConstants.CASHIER_TYPE_XMD_ONLINE;
+                        type = AppConstants.CASHIER_TYPE_QRCODE;
                         break;
                     case AppConstants.CASHIER_TYPE_UNION_TEXT:
                         // POS刷卡或者现金

@@ -123,7 +123,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
                 UiNavigation.gotoMemberCashierActivity(mContext);
                 mView.finishSelf();
                 break;
-            case AppConstants.CASHIER_TYPE_XMD_ONLINE:
+            case AppConstants.CASHIER_TYPE_QRCODE:
                 UiNavigation.gotoScanPayActivity(mContext);
                 mView.finishSelf();
                 break;

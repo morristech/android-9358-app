@@ -32,6 +32,7 @@ import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
+import com.xmd.cashier.dal.net.response.InnerBatchResult;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
@@ -111,7 +112,7 @@ public class TradeManager {
     }
 
     /*******************************************支付相关********************************************/
-    // 生成订单号:可用来生成交易流水
+    // 生成订单号:可用来生成交易流水POS_PAY_DEAL
     public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
         Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getTradeNo(AccountManager.getInstance().getToken(), mTrade.getOriginMoney(), formatCouponList(mTrade.getCouponList()), RequestConstant.DEFAULT_SIGN_VALUE);
@@ -140,6 +141,7 @@ public class TradeManager {
                 mTrade.memberPayMethod = AppConstants.MEMBER_PAY_METHOD_SCAN;
                 mTrade.memberInfo = result.getRespData();
                 mTrade.memberToken = memberToken;
+                mTrade.memberId = String.valueOf(result.getRespData().id);
                 callback.onSuccess(mTrade.memberInfo);
             }
 
@@ -268,7 +270,7 @@ public class TradeManager {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         switch (mTrade.currentCashier) {
-                            case AppConstants.CASHIER_TYPE_XMD_ONLINE:  //小摩豆买单支付
+                            case AppConstants.CASHIER_TYPE_QRCODE:  //小摩豆买单支付
                                 if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
                                     printOnlinePay(false, null);
                                 }
@@ -1351,5 +1353,93 @@ public class TradeManager {
             }
         }
         mPos.printEnd();
+    }
+
+    //*********************************************内网***********************************************
+    public Subscription generateInnerBatch(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, final Callback<InnerBatchResult> callback) {
+        Observable<InnerBatchResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .generateInnerBatchOrder(AccountManager.getInstance().getToken(),
+                        batchNo, memberId, orderIds, payChannel, verifyCodes);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerBatchResult>() {
+            @Override
+            public void onCallbackSuccess(InnerBatchResult result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
+    }
+
+    public Subscription callbackInnerBatch(String payOrderId, String payChannel, String memberId, String tradeNo, final Callback<BaseBean> callback) {
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .callbackInnerBatchOrder(AccountManager.getInstance().getToken(),
+                        memberId, payChannel, payOrderId, tradeNo);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
+    }
+
+    public String formatVerifyCodes(List<VerificationItem> verifys) {
+        StringBuilder result = new StringBuilder();
+        for (VerificationItem item : verifys) {
+            if (item.selected) {
+                switch (item.type) {
+                    case AppConstants.TYPE_COUPON:
+                    case AppConstants.TYPE_CASH_COUPON:
+                    case AppConstants.TYPE_PAID_COUPON:
+                    case AppConstants.TYPE_DISCOUNT_COUPON:
+                        result.append(item.couponInfo.couponNo + ",");
+                        break;
+                    case AppConstants.TYPE_ORDER:
+                        result.append(item.order.orderNo + ",");
+                        break;
+                    case AppConstants.TYPE_PAY_FOR_OTHER:
+                        result.append(item.treatInfo.authorizeCode + ",");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        if (result.length() > 0) {
+            result.deleteCharAt(result.length() - 1);
+            return result.toString();
+        } else {
+            return null;
+        }
+    }
+
+    public int getDiscountAmount(List<VerificationItem> verifys) {
+        int total = 0;
+        for (VerificationItem info : verifys) {
+            if (info.selected) {
+                switch (info.type) {
+                    case AppConstants.TYPE_COUPON:
+                    case AppConstants.TYPE_CASH_COUPON:
+                    case AppConstants.TYPE_PAID_COUPON:
+                    case AppConstants.TYPE_DISCOUNT_COUPON:
+                        total += info.couponInfo.getReallyCouponMoney();
+                        break;
+                    case AppConstants.TYPE_ORDER:
+                        total += info.order.downPayment;
+                        break;
+                    case AppConstants.TYPE_PAY_FOR_OTHER:
+                        total += info.treatInfo.amount;
+                        break;
+                }
+            }
+        }
+        return total;
     }
 }

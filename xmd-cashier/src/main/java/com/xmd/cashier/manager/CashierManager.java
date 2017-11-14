@@ -71,7 +71,7 @@ public class CashierManager {
         return mCashier.getAppCode();
     }
 
-    public boolean needCheckUpate() {
+    public boolean needCheckUpdate() {
         return mCashier.needCheckUpdate();
     }
 

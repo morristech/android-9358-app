@@ -153,6 +153,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                             // 消费
                             TradeManager.getInstance().getCurrentTrade().memberInfo = o;
                             TradeManager.getInstance().getCurrentTrade().memberPayMethod = AppConstants.MEMBER_PAY_METHOD_CODE;
+                            TradeManager.getInstance().getCurrentTrade().memberId = String.valueOf(o.id);
                             EventBus.getDefault().post(o);
                             mView.finishSelf();
                             break;

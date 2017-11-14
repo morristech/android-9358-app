@@ -64,7 +64,7 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             case AppConstants.CHECK_INFO_TYPE_ORDER:
                 return AppConstants.VIEW_TYPE_ORDER;
             default:
-                return AppConstants.VIEW_TYPE_UNKNOW;
+                return AppConstants.VIEW_TYPE_UNKNOWN;
         }
     }
 
@@ -75,7 +75,7 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 return new CouponViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_coupon, parent, false));
             case AppConstants.VIEW_TYPE_ORDER:
                 return new OrderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_order, parent, false));
-            case AppConstants.VIEW_TYPE_UNKNOW:
+            case AppConstants.VIEW_TYPE_UNKNOWN:
             default:
                 return null;
         }

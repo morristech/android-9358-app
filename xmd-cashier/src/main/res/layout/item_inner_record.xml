@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_little_margin"
+    android:background="@drawable/bg_area_unselect"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_small_margin"
+        android:paddingLeft="@dimen/activity_normal_margin"
+        android:paddingRight="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_small_margin">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_inner_time"
+            android:drawablePadding="@dimen/activity_small_margin"
+            android:textColor="@color/colorText3"
+            android:textSize="@dimen/font_size_14" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:text="status"
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/font_size_16" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_inner_record_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_normal_margin"
+        android:layout_marginRight="@dimen/activity_normal_margin"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_normal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="买单金额："
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/font_size_14" />
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/small_font_size" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_little_margin"
+        android:paddingLeft="@dimen/activity_normal_margin"
+        android:paddingRight="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_little_margin">
+
+        <Button
+            android:id="@+id/btn_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:background="@drawable/state_btn_negative"
+            android:minWidth="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_small_margin"
+            android:paddingRight="@dimen/activity_small_margin"
+            android:text="查看订单"
+            android:textColor="@color/colorButton"
+            android:textSize="@dimen/font_size_16" />
+
+        <LinearLayout
+            android:id="@+id/layout_print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btn_print_club"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:background="@drawable/state_btn_negative"
+                android:minWidth="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_small_margin"
+                android:paddingRight="@dimen/activity_small_margin"
+                android:text="打印商户联"
+                android:textColor="@color/colorButton"
+                android:textSize="@dimen/font_size_16" />
+
+            <Button
+                android:id="@+id/btn_print_client"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/state_btn_negative"
+                android:minWidth="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_small_margin"
+                android:paddingRight="@dimen/activity_small_margin"
+                android:text="打印客户联"
+                android:textColor="@color/colorButton"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_go_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/state_btn_normal"
+            android:text="去支付"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</LinearLayout>

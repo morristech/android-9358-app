@@ -16,6 +16,14 @@ import com.xmd.cashier.activity.ConfigurationActivity;
 import com.xmd.cashier.activity.ConfirmActivity;
 import com.xmd.cashier.activity.DiscountCouponActivity;
 import com.xmd.cashier.activity.GiftActActivity;
+import com.xmd.cashier.activity.InnerDetailActivity;
+import com.xmd.cashier.activity.InnerMethodActivity;
+import com.xmd.cashier.activity.InnerOrderSelectActivity;
+import com.xmd.cashier.activity.InnerOrderTechActivity;
+import com.xmd.cashier.activity.InnerPaymentActivity;
+import com.xmd.cashier.activity.InnerRecordActivity;
+import com.xmd.cashier.activity.InnerResultActivity;
+import com.xmd.cashier.activity.InnerSelectActivity;
 import com.xmd.cashier.activity.LoginActivity;
 import com.xmd.cashier.activity.MainActivity;
 import com.xmd.cashier.activity.McardInfoActivity;
@@ -53,6 +61,7 @@ import com.xmd.cashier.dal.bean.BillInfo;
 import com.xmd.cashier.dal.bean.CommonVerifyInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.GiftActivityInfo;
+import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
@@ -306,6 +315,51 @@ public class UiNavigation {
 
     public static void gotoStatisticsSettingActivity(Context context) {
         Intent intent = new Intent(context, StatisticsSettingActivity.class);
+        context.startActivity(intent);
+    }
+
+    //**********************************内网管理*************************************
+    public static void gotoInnerPaymentActivity(Context context) {
+        Intent intent = new Intent(context, InnerPaymentActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerMethodActivity(Context context, String source, InnerRecordInfo info) {
+        Intent intent = new Intent(context, InnerMethodActivity.class);
+        intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, source);
+        intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, info);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerSelectActivity(Context context) {
+        Intent intent = new Intent(context, InnerSelectActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerOrderSelectActivity(Context context) {
+        Intent intent = new Intent(context, InnerOrderSelectActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerOrderTechActivity(Context context, String empId) {
+        Intent intent = new Intent(context, InnerOrderTechActivity.class);
+        intent.putExtra(AppConstants.EXTRA_INNER_EMP_ID, empId);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerRecordActivity(Context context) {
+        Intent intent = new Intent(context, InnerRecordActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerDetailActivity(Context context, InnerRecordInfo record) {
+        Intent intent = new Intent(context, InnerDetailActivity.class);
+        intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, record);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerResultActivity(Context context) {
+        Intent intent = new Intent(context, InnerResultActivity.class);
         context.startActivity(intent);
     }
 }

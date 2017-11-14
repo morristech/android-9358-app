@@ -71,7 +71,7 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
             }
         });
 
-        mScanTipText = (ImageView) findViewById(R.id.tv_scan_tip);
+        mScanTipText = (ImageView) findViewById(R.id.img_scan_tip);
         mScanStatusLayout = (RelativeLayout) findViewById(R.id.ly_scan_status);
         mCancelText = (TextView) findViewById(R.id.tv_cancel);
         mCancelText.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);

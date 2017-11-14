@@ -278,7 +278,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     public void onRecharge(int type) {
         switch (type) {
             case AppConstants.CASHIER_TYPE_POS: //Pos银联
-            case AppConstants.CASHIER_TYPE_XMD_ONLINE:  // 扫码买单
+            case AppConstants.CASHIER_TYPE_QRCODE:  // 扫码买单
                 doRechargeRequest(type, null);
                 break;
             case AppConstants.CASHIER_TYPE_CASH:    // 现金支付
@@ -337,7 +337,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                     case AppConstants.CASHIER_TYPE_POS: //Pos支付
                         onRechargePos();
                         break;
-                    case AppConstants.CASHIER_TYPE_XMD_ONLINE:  //扫码支付
+                    case AppConstants.CASHIER_TYPE_QRCODE:  //扫码支付
                         onRechargeScan();
                         break;
                     case AppConstants.CASHIER_TYPE_CASH:    //现金支付

@@ -108,6 +108,26 @@ public class RequestConstant {
 
     // ****************************************** Pos对账单 **************************************
     public static final String URL_GET_TOTAL_STATISTICS = SPA_SERVICE_BASE + "/v2/club/financial/settle/summary";
+
+
+    // ****************************************** 内网收银 **************************************
+    public static final String URL_GET_INNER_SWITCH = SPA_SERVICE_BASE + "/v2/manager/settings/switch/get";// 获取内网开关
+    public static final String URL_GET_PAY_CHANNEL_LIST = SPA_SERVICE_BASE + "/v2/manager/pay/channel/list/valid";      // 获取会所设置的有效支付方式
+
+    public static final String URL_GET_ROOM_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/room/simple/select/list";   //获取使用中的房间列表
+    public static final String URL_GET_HAND_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/select/list";               //获取手牌列表
+    public static final String URL_GET_TECHNICIAN_LIST = SPA_SERVICE_BASE + "/v1/manager/club/employee/group/tech/list";     //获取技师列表                                                                                       //获取会所技师列表
+    public static final String URL_GET_INNER_ORDER_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/normal/list";    //根据房间,技师,手牌查询订单列表
+
+    // 收银结账部分
+    public static final String URL_GET_INNER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/list";   //获取合并支付列表
+
+    public static final String URL_GENERATE_INNER_BATCH_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/save";   //保存结账单
+    public static final String URL_CALLBACK_INNER_BATCH_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/success/save";    //支付回调
+    public static final String URL_GET_THIRD_PAY_STATUS = URL_GET_XMD_ONLINE_ORDER_DETAIL;      //微信支付宝 查询支付详情
+    public static final String URL_GET_INNER_BATCH_HOLE = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/detail";  //根据订单PayOrderId查询详情
+    public static final String URL_GET_INNER_UNPAID_COUNT = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/unpaid/count";      //查询当前内网订单未支付的数量
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -207,6 +227,19 @@ public class RequestConstant {
     public static final String KEY_DISCOUNT_AMOUNT = "discountAmount";
 
     public static final String KEY_REPORT_TAG = "reportTag";
+
+    public static final String KEY_TECH_NO_SEARCH = "noSearch";
+    public static final String KEY_ROLE = "role";
+    public static final String KEY_ROOM_ID = "roomId";
+    public static final String KEY_ROOM_NAME = "roomName";
+    public static final String KEY_EMP_ID = "empId";
+    public static final String KEY_USER_IDENTIFY = "userIdentify";
+
+    public static final String KEY_BATCH_NO = "batchNo";
+    public static final String KEY_ORDER_IDS = "orderIds";
+    public static final String KEY_VERIFY_CODES = "verifyCodes";
+    public static final String KEY_PAY_ORDER_ID = "payOrderId";
+    public static final String KEY_PUSH_DATA = "data";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

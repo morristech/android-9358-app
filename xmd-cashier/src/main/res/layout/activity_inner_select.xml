@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_inner_record" />
+
+    <com.xmd.cashier.widget.StepView
+        android:id="@+id/sv_step_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_small_margin"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_normal_margin"
+        app:svLineWidth="1dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAccent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_navigation_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/activity_small_margin"
+            android:text="房间"
+            android:textSize="@dimen/small_font_size" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_navigation_hand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/activity_small_margin"
+            android:text="手牌"
+            android:textSize="@dimen/small_font_size" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_navigation_tech"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/activity_small_margin"
+            android:text="技师工号"
+            android:textSize="@dimen/small_font_size" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAccent" />
+
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_little_margin"
+        android:background="@drawable/bg_area_line"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+
+        <com.xmd.cashier.widget.ClearableEditText
+            android:id="@+id/edt_search_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawablePadding="4dp"
+            android:hint="请输入房间号"
+            android:lines="1"
+            android:padding="@dimen/activity_little_margin"
+            android:textColorHint="@color/colorText3"
+            android:textSize="@dimen/font_size_16" />
+
+        <Button
+            android:id="@+id/btn_on_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_btn_search"
+            android:text="@string/verification_button_search" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_select_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:id="@+id/layout_select_sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransGolden"
+        android:gravity="right"
+        android:padding="@dimen/activity_little_margin"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_select_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_inner_select"
+            android:drawablePadding="@dimen/activity_small_margin"
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_little_margin"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/font_size_14"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:padding="@dimen/activity_normal_margin">
+
+        <Button
+            android:id="@+id/btn_select_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/state_btn_normal"
+            android:text="确定"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16" />
+    </RelativeLayout>
+</LinearLayout>

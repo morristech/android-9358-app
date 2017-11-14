@@ -44,11 +44,11 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     private MemberRecordInfo memberRecordInfo;
     private boolean success = false;
 
+    private Subscription mRechargeByCashSubscription;
+
     private Call<MemberRecordResult> callDetailRecharge;
     private RetryPool.RetryRunnable mRetryDetailRecharge;
     private boolean resultDetailRecharge = false;
-
-    private Subscription mRechargeByCashSubscription;
 
     public void startDetailRecharge() {
         mRetryDetailRecharge = new RetryPool.RetryRunnable(5000, 1.0f, new RetryPool.RetryExecutor() {

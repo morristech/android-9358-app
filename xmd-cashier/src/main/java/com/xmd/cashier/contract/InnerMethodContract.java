@@ -1,0 +1,40 @@
+package com.xmd.cashier.contract;
+
+import com.xmd.cashier.BasePresenter;
+import com.xmd.cashier.BaseView;
+import com.xmd.cashier.dal.bean.InnerOrderInfo;
+import com.xmd.cashier.dal.bean.InnerRecordInfo;
+
+import java.util.List;
+
+/**
+ * Created by zr on 17-11-2.
+ */
+
+public interface InnerMethodContract {
+    interface Presenter extends BasePresenter {
+        void onVerifySelect();
+
+        void onPayClick();
+    }
+
+    interface View extends BaseView<Presenter> {
+        void showVerifyDesc(String desc);
+
+        void hideVerifyDesc();
+
+        void showNeedPayAmount(int amount);
+
+        void showOrderList(List<InnerOrderInfo> list);
+
+        String returnSource();
+
+        InnerRecordInfo returnRecordInfo();
+
+        void showEnterAnim();
+
+        void showExitAnim();
+
+        void showStepView();
+    }
+}

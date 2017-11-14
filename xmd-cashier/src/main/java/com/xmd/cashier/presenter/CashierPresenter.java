@@ -111,7 +111,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     // 小摩豆买单
     @Override
     public void onClickXMDOnlinePay() {
-        mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_XMD_ONLINE;
+        mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_QRCODE;
         doCashier();
     }
 
@@ -295,7 +295,7 @@ public class CashierPresenter implements CashierContract.Presenter {
                 // 会员
                 payMember();
                 break;
-            case AppConstants.CASHIER_TYPE_XMD_ONLINE:
+            case AppConstants.CASHIER_TYPE_QRCODE:
                 // 在线扫码
                 payXMDOnline();
                 break;
@@ -316,6 +316,7 @@ public class CashierPresenter implements CashierContract.Presenter {
 
     @Override
     public void onCreate() {
+        mTradeManager.newTrade();
     }
 
     @Override

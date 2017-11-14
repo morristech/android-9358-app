@@ -186,6 +186,35 @@
         <activity
             android:name=".activity.StatisticsSettingActivity"
             android:launchMode="singleTask" />
+
+        <!-- 内网收银 -->
+        <activity
+            android:name=".activity.InnerSelectActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InnerMethodActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InnerRecordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InnerPaymentActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InnerResultActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InnerDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogActivity" />
+        <activity
+            android:name=".activity.InnerOrderSelectActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogActivity" />
+        <activity
+            android:name=".activity.InnerOrderTechActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogActivity" />
     </application>
 
 </manifest>

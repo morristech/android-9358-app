@@ -15,19 +15,28 @@ import android.support.annotation.Nullable;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
+import com.xmd.cashier.activity.InnerMethodActivity;
+import com.xmd.cashier.adapter.InnerRecordDetailAdapter;
 import com.xmd.cashier.adapter.OnlinePayNotifyAdapter;
 import com.xmd.cashier.adapter.OrderRecordNotifyAdapter;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.common.Utils;
+import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.RequestConstant;
@@ -69,6 +78,9 @@ public class CustomService extends Service {
                     break;
                 case AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY:
                     showOnlinePayNotify((List<OnlinePayInfo>) intent.getSerializableExtra(AppConstants.EXTRA_NOTIFY_DATA));
+                    break;
+                case AppConstants.EXTRA_NOTIFY_TYPE_INNER_PAY:
+                    showInnerOrderNotify((InnerRecordInfo) intent.getSerializableExtra(AppConstants.EXTRA_NOTIFY_DATA));
                     break;
                 default:
                     break;
@@ -600,6 +612,48 @@ public class CustomService extends Service {
         animator.setRemoveDuration(500);
         rv.setItemAnimator(animator);
         rv.setAdapter(adapter);
+    }
+
+    public void showInnerOrderNotify(final InnerRecordInfo recordInfo) {
+        textToSound("您有一笔新结账订单待处理");
+        wakeupScreen();
+        if (isShow) {
+            return;
+        }
+        mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_inner_notify, null);
+        mWindowManager.addView(mLayout, mLayoutParams);
+        isShow = true;
+
+        ImageView mCloseImg = (ImageView) mLayout.findViewById(R.id.notify_inner_off);
+        RecyclerView mInnerList = (RecyclerView) mLayout.findViewById(R.id.item_inner_list);
+        if (recordInfo.details != null && !recordInfo.details.isEmpty()) {
+            InnerRecordDetailAdapter detailAdapter = new InnerRecordDetailAdapter(MainApplication.getInstance().getApplicationContext(), true);
+            detailAdapter.setData(recordInfo.details);
+            mInnerList.setLayoutManager(new LinearLayoutManager(MainApplication.getInstance().getApplicationContext()));
+            mInnerList.setAdapter(detailAdapter);
+        }
+        TextView mOrigin = (TextView) mLayout.findViewById(R.id.notify_inner_origin_amount);
+        TextView mNeed = (TextView) mLayout.findViewById(R.id.notify_inner_need_amount);
+        Button mPayBtn = (Button) mLayout.findViewById(R.id.btn_notify_inner_pay);
+        mCloseImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hide();
+            }
+        });
+        mOrigin.setText("￥" + Utils.moneyToStringEx(recordInfo.originalAmount));
+        mNeed.setText("￥" + Utils.moneyToStringEx(recordInfo.payAmount));
+        mPayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hide();
+                Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerMethodActivity.class);
+                intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, AppConstants.INNER_METHOD_SOURCE_PUSH);
+                intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, recordInfo);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                MainApplication.getInstance().getApplicationContext().startActivity(intent);
+            }
+        });
     }
 
     // 关闭弹框
