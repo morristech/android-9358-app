@@ -25,6 +25,7 @@ import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Iterator;
 
@@ -374,7 +375,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         });
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InnerFinishEvent event) {
         switch (mSelectType) {
             case AppConstants.INNER_SEARCH_TYPE_ROOM:
@@ -393,7 +394,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         getInnerUnpaidCount();
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InnerPushEvent event) {
         getInnerUnpaidCount();
     }

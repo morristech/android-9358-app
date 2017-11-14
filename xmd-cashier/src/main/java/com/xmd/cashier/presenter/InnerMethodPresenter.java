@@ -31,6 +31,7 @@ import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -355,7 +356,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
         return resultCallBackBatch;
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MemberInfo info) {
         // 会员支付流程
         doCashier();

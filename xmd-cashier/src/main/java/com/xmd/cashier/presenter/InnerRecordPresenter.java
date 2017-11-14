@@ -18,6 +18,7 @@ import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -267,7 +268,7 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
         });
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InnerFinishEvent finishEvent) {
         load(false);
     }
