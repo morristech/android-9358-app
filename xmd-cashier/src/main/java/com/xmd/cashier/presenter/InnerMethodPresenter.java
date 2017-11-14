@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerMethodContract;
@@ -18,6 +19,7 @@ import com.xmd.cashier.dal.net.response.InnerBatchResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
+import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
@@ -33,7 +35,11 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-11-2.
@@ -220,6 +226,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                         trade.setOriginMoney(batchInfo.oriAmount);
                         trade.setWillDiscountMoney(batchInfo.discountAmount);
                         trade.setWillPayMoney(batchInfo.payAmount);
+                        trade.tradeTime = DateUtils.getCurrentDate();
                         if (AppConstants.APP_REQUEST_YES.equals(batchInfo.status)) {
                             //核销金额已完成抵扣
                             UiNavigation.gotoInnerResultActivity(mContext);
@@ -277,7 +284,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
             @Override
             public void onSuccess(Void o) {
                 mView.showToast("支付成功！");
-                mTradeManager.reportTradeDataSync();
+                reportTrade();
                 startCallBackBatch();
             }
 
@@ -352,5 +359,21 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
     public void onEvent(MemberInfo info) {
         // 会员支付流程
         doCashier();
+    }
+
+    // POS渠道支付时需要汇报
+    private void reportTrade() {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        DataReportManager.getInstance().reportData(TradeManager.getInstance().getCurrentTrade(), AppConstants.REPORT_DATA_BIZ_INNER);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

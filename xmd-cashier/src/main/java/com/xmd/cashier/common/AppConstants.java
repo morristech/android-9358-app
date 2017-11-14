@@ -272,6 +272,7 @@ public class AppConstants {
 
     public static final String REPORT_DATA_BIZ_TRADE = "trade";
     public static final String REPORT_DATA_BIZ_MEMBER = "member";
+    public static final String REPORT_DATA_BIZ_INNER = "inner";
 
     public static final int ITEM_TYPE_CREDIT = 0;   //积分
     public static final int ITEM_TYPE_GIF = 1;      //礼品

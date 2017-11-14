@@ -62,7 +62,7 @@ public class InnerOrderSelectAdapter extends RecyclerView.Adapter<InnerOrderSele
             holder.mSelectImg.setImageResource(R.drawable.ic_order_unselect);
         }
         holder.mRoomText.setText(info.roomTypeName + "：" + info.roomName);
-        holder.mSeatText.setText("座位号：" + info.seatId);
+        holder.mSeatText.setText("座位号：" + info.seatName);
         holder.mIdentifyText.setText("客单号：" + info.userIdentify);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

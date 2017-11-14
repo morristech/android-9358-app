@@ -21,6 +21,7 @@ public class InnerOrderInfo implements Serializable{
     public String roomName;    //房间名称
     public String roomTypeName;    //房间类型名称
     public long seatId;    //账单座位ID
+    public String seatName;
     public String startTime;    //开始时间
     public String closeTime;
     public int status;    //账单状态

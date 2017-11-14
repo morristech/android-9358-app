@@ -76,7 +76,7 @@ public class InnerOrderTechAdapter extends RecyclerView.Adapter<InnerOrderTechAd
         }
         holder.mTimeText.setText(info.startTime);
         holder.mRoomText.setText(info.roomTypeName + "：" + info.roomName);
-        holder.mSeatText.setText("座位号：" + info.seatId);
+        holder.mSeatText.setText("座位号：" + info.seatName);
         holder.mIdentifyText.setText("客单号：" + info.userIdentify);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
