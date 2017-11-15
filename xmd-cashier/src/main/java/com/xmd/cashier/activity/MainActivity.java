@@ -243,7 +243,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         if (status) {
             //开通
             mMainAssistCashierLayout.setVisibility(View.VISIBLE);
-            mCashierTitle.setText("内网收银");
+            mCashierTitle.setText("收银");
             mCashierSubTitle.setText("订单、消费、结账");
         } else {
             //关闭
