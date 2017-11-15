@@ -640,7 +640,6 @@ public class RequestController extends AbstractController {
     }
 
 
-
     /**
      * Update the order's status
      *
@@ -738,6 +737,13 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<UpdateTechInfoResult>() {
             @Override
             protected void postResult(UpdateTechInfoResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                UpdateTechInfoResult result = new UpdateTechInfoResult();
+                result.msg = errorMsg;
                 RxBus.getInstance().post(result);
             }
         });
@@ -1077,7 +1083,6 @@ public class RequestController extends AbstractController {
 //            }
 //        });
     }
-
 
 
     /**

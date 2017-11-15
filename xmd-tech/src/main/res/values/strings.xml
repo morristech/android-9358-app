@@ -377,5 +377,6 @@
     <string name="tech_center_info_save">保存</string>
     <string name="tech_center_info_album_jurisdiction_all">（所有人均可查看）</string>
     <string name="tech_center_info_album_jurisdiction_vip">（仅到店客户&amp;VIP可见）</string>
+    <string name="tech_info_edit_title">资料编辑</string>
 
 </resources>

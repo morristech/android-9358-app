@@ -103,7 +103,7 @@ public class TechDetailInfo {
     }
 
     public String getProvince() {
-        return TextUtils.isEmpty(province) ? "请选择..." : province;
+        return TextUtils.isEmpty(province) ? "" : province;
     }
 
     public void setProvince(String province) {

@@ -90,46 +90,36 @@
                             android:id="@+id/edit_ll_tech_nick_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/small_space"
-                            android:paddingTop="@dimen/small_space"
+                            android:orientation="horizontal"
                             android:visibility="gone">
 
                             <com.xmd.technician.widget.ClearableEditText
                                 android:id="@+id/edit_tech_nick_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="35dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:background="@drawable/shape_round_with_stroke"
                                 android:hint="请输入昵称..."
                                 android:maxLength="10"
+                                android:paddingBottom="@dimen/small_space"
                                 android:paddingLeft="@dimen/small_space"
                                 android:paddingRight="@dimen/margin_2"
+                                android:paddingTop="@dimen/small_space"
                                 android:textColor="#333333"
                                 android:textColorHint="#616161"
                                 android:textSize="16sp"/>
                             <TextView
                                 android:id="@+id/tv_tech_nick_name_length"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/inter_space"
                                 android:gravity="right"
                                 android:paddingBottom="6dp"
                                 android:paddingTop="6dp"
-                                android:textColor="#333333"
+                                android:textColor="#C3c3c3"
                                 android:textSize="14sp"
                                 tools:text="0/10"/>
                         </LinearLayout>
-                        <!--<com.xmd.technician.widget.ClearableEditText-->
-                            <!--android:id="@+id/edit_tech_nick_name"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="34dp"-->
-                            <!--android:background="@drawable/shape_round_with_stroke"-->
-                            <!--android:paddingLeft="@dimen/inter_space"-->
-                            <!--android:maxLength="10"-->
-                            <!--android:textColor="#333333"-->
-                            <!--android:textColorHint="#616161"-->
-                            <!--android:textSize="16sp"-->
-                            <!--android:hint="昵称最多10个字符"-->
-                            <!--android:visibility="gone"/>-->
 
                     </LinearLayout>
                     <View style="@style/tech_center_divider_line_style"/>
@@ -224,9 +214,10 @@
                                 android:gravity="center_vertical"
                                 android:paddingLeft="@dimen/small_space"
                                 android:paddingRight="@dimen/inter_space"
-                                android:text="修改"
+                                android:text="选择"
                                 android:textColor="#53B0F2"
-                                android:textSize="14sp"/>
+                                android:textSize="14sp"
+                            />
 
                         </LinearLayout>
 
@@ -238,7 +229,10 @@
                             android:id="@+id/img_tech_autograph"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:layout_gravity="top"
+                            android:layout_marginTop="15dp"
                             android:src="@drawable/icon_tech_autograph"/>
+
                         <TextView
                             style="@style/tech_center_category_style"
                             android:layout_gravity="top"
@@ -247,6 +241,8 @@
                         <TextView
                             android:id="@+id/tv_tech_autograph"
                             style="@style/tech_center_category_detail_style"
+                            android:paddingBottom="@dimen/small_space"
+                            android:paddingTop="@dimen/small_space"
                             tools:text="既见君子，云胡不喜"/>
                         <LinearLayout
                             android:id="@+id/edit_ll_tech_autograph"
@@ -260,10 +256,11 @@
                             <com.xmd.technician.widget.ClearableEditText
                                 android:id="@+id/edit_tech_autograph"
                                 android:layout_width="match_parent"
-                                android:layout_height="60dp"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/shape_round_with_stroke"
                                 android:hint="请输入..."
-                                android:maxLength="30"
+                                android:maxLength="200"
+                                android:minHeight="60dp"
                                 android:paddingLeft="@dimen/small_space"
                                 android:paddingRight="@dimen/margin_2"
                                 android:textColor="#333333"
@@ -278,7 +275,7 @@
                                 android:paddingTop="6dp"
                                 android:textColor="#333333"
                                 android:textSize="14sp"
-                                tools:text="0/30"/>
+                                tools:text="0/200"/>
                         </LinearLayout>
 
 
@@ -312,10 +309,13 @@
                         android:textSize="14sp"
                         android:visibility="gone"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:background="@color/white"
-                              android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ll_album_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:visibility="visible">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_alarm"
                         android:layout_width="match_parent"
@@ -333,8 +333,17 @@
                         android:textColor="#999999"
                         android:textSize="14sp"
                         tools:text="(所有人均可查看)"/>
-
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/albums_is_null"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/inter_space"
+                    android:text="暂未添加照片"
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
                 <LinearLayout
                     android:id="@+id/ll_authority_change"
                     android:layout_width="match_parent"
