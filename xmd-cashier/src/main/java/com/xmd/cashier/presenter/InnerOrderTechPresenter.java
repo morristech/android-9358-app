@@ -34,8 +34,7 @@ public class InnerOrderTechPresenter implements InnerOrderTechContract.Presenter
     @Override
     public void onCreate() {
         if (TextUtils.isEmpty(mView.returnEmpId())) {
-            mView.showToast("查询订单异常...");
-            mView.finishSelf();
+            mView.showDesc("查询订单错误...");
             return;
         } else {
             getOrderList(mView.returnEmpId());
@@ -54,17 +53,17 @@ public class InnerOrderTechPresenter implements InnerOrderTechContract.Presenter
             public void onCallbackSuccess(InnerOrderListResult result) {
                 mView.hideLoading();
                 if (result != null && result.getRespData() != null && !result.getRespData().isEmpty()) {
+                    mView.hideDesc();
                     mView.showOrderData(result.getRespData());
                 } else {
-                    mView.showToast("暂无有效订单...");
-                    mView.finishSelf();
+                    mView.showDesc("暂无订单...");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
                 mView.hideLoading();
-                mView.showToast(e.getLocalizedMessage());
+                mView.showDesc(e.getLocalizedMessage());
             }
         });
     }

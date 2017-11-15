@@ -30,6 +30,14 @@
             android:layout_height="1px"
             android:background="@color/colorStoke" />
 
+        <TextView
+            android:id="@+id/tv_order_result_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/activity_little_margin"
+            android:textSize="@dimen/font_size_14" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_order_detail"
             android:layout_width="match_parent"

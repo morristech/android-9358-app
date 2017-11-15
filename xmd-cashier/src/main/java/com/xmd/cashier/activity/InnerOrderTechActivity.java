@@ -25,6 +25,7 @@ import java.util.List;
 public class InnerOrderTechActivity extends BaseActivity implements InnerOrderTechContract.View {
     private InnerOrderTechContract.Presenter mPresenter;
 
+    private TextView mDescText;
     private RecyclerView mOrderList;
     private TextView mNegativeText;
     private TextView mPositiveText;
@@ -47,6 +48,7 @@ public class InnerOrderTechActivity extends BaseActivity implements InnerOrderTe
         mOrderList = (RecyclerView) findViewById(R.id.rv_order_detail);
         mNegativeText = (TextView) findViewById(R.id.tv_tech_negative);
         mPositiveText = (TextView) findViewById(R.id.tv_tech_positive);
+        mDescText = (TextView) findViewById(R.id.tv_order_result_desc);
 
         mTechAdapter = new InnerOrderTechAdapter(InnerOrderTechActivity.this);
         mTechAdapter.setCallBack(new InnerOrderTechAdapter.CallBack() {
@@ -106,5 +108,16 @@ public class InnerOrderTechActivity extends BaseActivity implements InnerOrderTe
     @Override
     public String returnEmpId() {
         return mEmpId;
+    }
+
+    @Override
+    public void showDesc(String desc) {
+        mDescText.setVisibility(View.VISIBLE);
+        mDescText.setText(desc);
+    }
+
+    @Override
+    public void hideDesc() {
+        mDescText.setVisibility(View.GONE);
     }
 }

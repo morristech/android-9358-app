@@ -262,7 +262,7 @@ public class InnerManager {
         for (InnerOrderInfo orderInfo : info.details) {
             mPos.printText("[" + orderInfo.roomName + " " + orderInfo.roomTypeName + "]" + orderInfo.userIdentify + "手牌", Utils.moneyToStringEx(orderInfo.amount));
             for (InnerOrderItemInfo orderItemInfo : orderInfo.itemList) {
-                mPos.printText("  " + orderItemInfo.itemName + " * " + orderItemInfo.itemCount + "    " + Utils.moneyToString(orderItemInfo.itemAmount) + "元" + "/" + orderItemInfo.itemUnit);
+                mPos.printText("  " + orderItemInfo.itemName + " * " + orderItemInfo.itemCount, Utils.moneyToString(orderItemInfo.itemAmount) + "元" + "/" + orderItemInfo.itemUnit);
             }
         }
 

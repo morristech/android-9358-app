@@ -25,5 +25,9 @@ public interface InnerOrderTechContract {
         void updateItem(int position);
 
         String returnEmpId();
+
+        void showDesc(String desc);
+
+        void hideDesc();
     }
 }
