@@ -63,7 +63,7 @@ public class InnerOrderTechAdapter extends RecyclerView.Adapter<InnerOrderTechAd
             holder.mSelectImg.setImageResource(R.drawable.ic_order_select);
         } else {
             //未选中
-            holder.mItemLayout.setBackgroundResource(R.drawable.bg_area_select);
+            holder.mItemLayout.setBackgroundResource(R.drawable.bg_area_unselect);
             holder.mTimeText.setTextColor(ResourceUtils.getColor(R.color.colorText2));
             Drawable drawable = mContext.getResources().getDrawable(R.drawable.ic_inner_time);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
