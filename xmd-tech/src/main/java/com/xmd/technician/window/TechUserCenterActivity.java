@@ -133,7 +133,6 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.albums_is_null)
     TextView albumsIsNull;
 
-    //
     private int mCurrentInfoState;//状态：0,编辑状态，AlbumListAdapter.ALBUM_STATUS_NORMAL：正常状态
 
     private Subscription mGetTechInfoSubscription;
