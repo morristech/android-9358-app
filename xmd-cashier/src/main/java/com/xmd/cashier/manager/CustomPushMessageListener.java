@@ -5,7 +5,6 @@ import android.content.Intent;
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.MainApplication;
-import com.xmd.cashier.activity.InnerMethodActivity;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
@@ -20,8 +19,6 @@ import com.xmd.m.notify.push.XmdPushMessageListener;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 
 import rx.Observable;
 import rx.Subscriber;
