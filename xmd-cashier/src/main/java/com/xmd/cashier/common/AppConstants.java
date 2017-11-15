@@ -325,4 +325,8 @@ public class AppConstants {
     public static final String INNER_DISCOUNT_SERVICE_ITEM_COUPON = "service_item_coupon";
     public static final String INNER_DISCOUNT_CONSUME = "consume";
     public static final String INNER_DISCOUNT_PAID_ORDER = "paid_order";
+
+    public static final String TECH_STATUS_FREE = "free";
+    public static final String TECH_STATUS_BUSY = "busy";
+    public static final String TECH_STATUS_REST = "rest";
 }

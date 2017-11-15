@@ -328,7 +328,7 @@ public class NotifyManager {
             //会员
             mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.platform) ? "" : "(" + Utils.getPlatform(info.platform) + ")"));
         } else {
-            mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.qrType) ? "" : "(" + Utils.getQRPlatform(info.qrType) + ")"));
+            mPos.printText("支付方式：", (TextUtils.isEmpty(info.payChannelName) ? Utils.getPayChannel(info.payChannel) : info.payChannelName) + (TextUtils.isEmpty(info.qrType) ? "" : "(" + Utils.getQRPlatform(info.qrType) + ")"));
         }
 
         if (!TextUtils.isEmpty(info.techName)) {

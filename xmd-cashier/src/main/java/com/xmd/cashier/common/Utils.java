@@ -238,6 +238,8 @@ public class Utils {
                 return AppConstants.CASHIER_TYPE_WX_TEXT;
             case AppConstants.PAY_CHANNEL_ACCOUNT:
                 return AppConstants.CASHIER_TYPE_ACCOUNT_TEXT;
+            case AppConstants.PAY_CHANNEL_UNION:
+                return AppConstants.CASHIER_TYPE_UNION_TEXT;
             default:
                 return "其他";
         }

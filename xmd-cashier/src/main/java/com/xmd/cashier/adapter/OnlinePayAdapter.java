@@ -174,7 +174,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemViewHolder.mAddTechName.setText(info.otherTechNames);
             }
 
-            itemViewHolder.mPayChannel.setText(Utils.getPayChannel(info.payChannel));
+            itemViewHolder.mPayChannel.setText(info.payChannelName);
 
             if (TextUtils.isEmpty(info.techName)) {
                 itemViewHolder.mTechInfoRow.setVisibility(View.GONE);
