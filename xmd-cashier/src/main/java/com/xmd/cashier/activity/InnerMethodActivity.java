@@ -1,5 +1,6 @@
 package com.xmd.cashier.activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerMethodContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.presenter.InnerMethodPresenter;
 import com.xmd.cashier.widget.StepView;
 
@@ -44,6 +46,10 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
 
     private StepView mStepView;
 
+    private RelativeLayout mSelectSetLayout;
+    private TextView mSelectStatusText;
+    private TextView mSelectCountText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +64,28 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     private void initView() {
         showToolbar(R.id.toolbar, "收银");
         mStepView = (StepView) findViewById(R.id.sv_step_method);
+
+        mSelectSetLayout = (RelativeLayout) findViewById(R.id.layout_select_set);
+        mSelectStatusText = (TextView) findViewById(R.id.tv_select_status);
+        mSelectCountText = (TextView) findViewById(R.id.tv_select_count);
+        mSelectStatusText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onSelectChange();
+            }
+        });
+
         mVerifySelectLayout = (RelativeLayout) findViewById(R.id.layout_verify_select);
         mVerifyDescText = (TextView) findViewById(R.id.tv_verify_desc);
         mPayBtn = (Button) findViewById(R.id.btn_pay);
         mNeedPayAmount = (TextView) findViewById(R.id.tv_need_amount);
-        mAdapter = new InnerOrderAdapter(this);
+        mAdapter = new InnerOrderAdapter(this, AppConstants.INNER_METHOD_SOURCE_NORMAL.equals(mSource));
+        mAdapter.setCallBack(new InnerOrderAdapter.ItemCallBack() {
+            @Override
+            public void onItemClick(InnerOrderInfo orderInfo, int position) {
+                mPresenter.onOrderClick(orderInfo, position);
+            }
+        });
         mOrderList = (RecyclerView) findViewById(R.id.rv_order_list);
         mOrderList.setLayoutManager(new LinearLayoutManager(this));
         mOrderList.setAdapter(mAdapter);
@@ -144,6 +167,7 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
 
     @Override
     public boolean onKeyEventBack() {
+        InnerManager.getInstance().removeUnselectedInfos();
         finishSelf();
         showExitAnim();
         return true;
@@ -163,5 +187,32 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     public void showStepView() {
         mStepView.setSteps(AppConstants.INNER_PAY_STEPS);
         mStepView.selectedStep(2);
+    }
+
+    @Override
+    public void setStatusLayout(boolean show) {
+        mSelectSetLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void updateStatus(boolean selected) {
+        Drawable leftDrawable = getResources().getDrawable(selected ? R.drawable.ic_order_select_little : R.drawable.ic_order_unselect_little);
+        leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
+        mSelectStatusText.setCompoundDrawables(leftDrawable, null, null, null);
+    }
+
+    @Override
+    public void showSelectCount(int count) {
+        mSelectCountText.setText(String.valueOf(count));
+    }
+
+    @Override
+    public void updateItem(int position) {
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void updateAll() {
+        mAdapter.notifyDataSetChanged();
     }
 }

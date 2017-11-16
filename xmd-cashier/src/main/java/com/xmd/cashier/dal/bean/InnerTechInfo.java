@@ -13,12 +13,4 @@ public class InnerTechInfo {
     public String status;
     public String techNo;
     public String telephone;
-
-    public class EmployeeGroupInfo {
-        public long groupId;
-        public String groupName;
-        public String groupRole;
-    }
-
-    public boolean selected;
 }

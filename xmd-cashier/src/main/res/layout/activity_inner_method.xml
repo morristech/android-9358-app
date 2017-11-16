@@ -13,19 +13,76 @@
         android:id="@+id/sv_step_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:layout_marginBottom="@dimen/activity_little_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/activity_normal_margin"
-        android:paddingTop="@dimen/activity_normal_margin"
+        android:paddingBottom="@dimen/activity_little_margin"
+        android:paddingTop="@dimen/activity_little_margin"
         app:svLineWidth="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/layout_select_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:id="@+id/tv_select_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/ic_order_select_little"
+            android:drawablePadding="@dimen/activity_normal_margin"
+            android:paddingBottom="@dimen/activity_small_margin"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:paddingTop="@dimen/activity_small_margin"
+            android:text="全选"
+            android:textSize="@dimen/font_size_16" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="已选("
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/tv_select_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text=")"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_order_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="@dimen/activity_little_margin"
-        android:paddingRight="@dimen/activity_little_margin" />
+        android:layout_weight="1" />
 
     <View
         android:layout_width="match_parent"
@@ -63,7 +120,6 @@
             android:background="@drawable/bg_area_golden"
             android:paddingLeft="@dimen/activity_little_margin"
             android:paddingRight="@dimen/activity_little_margin"
-            android:text="已选0张"
             android:textColor="@color/colorGoldenDark"
             android:textSize="@dimen/font_size_16" />
     </RelativeLayout>
@@ -76,7 +132,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:layout_marginBottom="@dimen/activity_little_margin"
         android:background="@color/colorWhite"
         android:padding="@dimen/activity_normal_margin">
 

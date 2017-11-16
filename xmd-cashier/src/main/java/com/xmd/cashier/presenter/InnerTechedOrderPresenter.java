@@ -3,7 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.xmd.cashier.contract.InnerOrderTechContract;
+import com.xmd.cashier.contract.InnerTechedOrderContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerOrderListResult;
@@ -19,13 +19,13 @@ import rx.Subscription;
  * Created by zr on 17-11-8.
  */
 
-public class InnerOrderTechPresenter implements InnerOrderTechContract.Presenter {
+public class InnerTechedOrderPresenter implements InnerTechedOrderContract.Presenter {
     private Subscription mGetTechOrderListSubscription;
 
     private Context mContext;
-    private InnerOrderTechContract.View mView;
+    private InnerTechedOrderContract.View mView;
 
-    public InnerOrderTechPresenter(Context context, InnerOrderTechContract.View view) {
+    public InnerTechedOrderPresenter(Context context, InnerTechedOrderContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);

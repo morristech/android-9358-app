@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
@@ -36,8 +37,11 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
     private InnerRecordInfo mRecordInfo;
 
     private TextView mOriginAmount;
+    private LinearLayout mPaidOrderLayout;
     private TextView mPaidOrderAmount;
+    private LinearLayout mPaidCouponLayout;
     private TextView mCouponAmount;
+    private LinearLayout mPaidMemberLayout;
     private TextView mMemberAmount;
     private TextView mNeedAmount;
 
@@ -57,8 +61,11 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
         mOrderDetailPositive = (TextView) findViewById(R.id.tv_order_positive);
 
         mOriginAmount = (TextView) findViewById(R.id.tv_origin_amount);
+        mPaidOrderLayout = (LinearLayout) findViewById(R.id.layout_paid_order);
         mPaidOrderAmount = (TextView) findViewById(R.id.tv_paid_order_amount);
+        mPaidCouponLayout = (LinearLayout) findViewById(R.id.layout_paid_coupon);
         mCouponAmount = (TextView) findViewById(R.id.tv_coupon_amount);
+        mPaidMemberLayout = (LinearLayout) findViewById(R.id.layout_paid_member);
         mMemberAmount = (TextView) findViewById(R.id.tv_member_amount);
         mNeedAmount = (TextView) findViewById(R.id.tv_need_amount);
 
@@ -76,7 +83,7 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
             }
         });
 
-        mOrderAdapter = new InnerOrderAdapter(this);
+        mOrderAdapter = new InnerOrderAdapter(this, false);
         mOrderDetailList.setLayoutManager(new LinearLayoutManager(this));
         mOrderDetailList.addItemDecoration(new CustomRecycleViewDecoration(8));
         mOrderDetailList.setAdapter(mOrderAdapter);
@@ -128,9 +135,24 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
             }
         }
         mOriginAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.originalAmount));
-        mPaidOrderAmount.setText("￥" + Utils.moneyToStringEx(paidOrderAmount));
-        mCouponAmount.setText("￥" + Utils.moneyToStringEx(paidCouponAmount));
-        mMemberAmount.setText("￥" + Utils.moneyToStringEx(paidMemberAmount));
+        if (paidOrderAmount > 0) {
+            mPaidOrderLayout.setVisibility(View.VISIBLE);
+            mPaidOrderAmount.setText("￥" + Utils.moneyToStringEx(paidOrderAmount));
+        } else {
+            mPaidOrderLayout.setVisibility(View.GONE);
+        }
+        if (paidCouponAmount > 0) {
+            mPaidCouponLayout.setVisibility(View.VISIBLE);
+            mCouponAmount.setText("￥" + Utils.moneyToStringEx(paidCouponAmount));
+        } else {
+            mPaidCouponLayout.setVisibility(View.GONE);
+        }
+        if (paidMemberAmount > 0) {
+            mPaidMemberLayout.setVisibility(View.VISIBLE);
+            mMemberAmount.setText("￥" + Utils.moneyToStringEx(paidMemberAmount));
+        } else {
+            mPaidMemberLayout.setVisibility(View.GONE);
+        }
         mNeedAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.payAmount));
     }
 }

@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_normal_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/activity_normal_margin"
-        android:paddingTop="@dimen/activity_normal_margin"
+        android:paddingBottom="@dimen/activity_little_margin"
+        android:paddingTop="@dimen/activity_little_margin"
         app:svLineWidth="1dp" />
 
     <LinearLayout

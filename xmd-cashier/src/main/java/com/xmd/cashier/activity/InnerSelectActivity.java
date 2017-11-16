@@ -3,6 +3,7 @@ package com.xmd.cashier.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
@@ -13,17 +14,18 @@ import android.widget.TextView;
 
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
+import com.xmd.cashier.adapter.ExInnerRoomAdapter;
+import com.xmd.cashier.adapter.ExInnerTechStatusAdapter;
 import com.xmd.cashier.adapter.InnerHandAdapter;
-import com.xmd.cashier.adapter.InnerRoomAdapter;
-import com.xmd.cashier.adapter.InnerTechAdapter;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerSelectContract;
+import com.xmd.cashier.dal.bean.ExInnerRoomInfo;
+import com.xmd.cashier.dal.bean.ExInnerTechStatusInfo;
 import com.xmd.cashier.dal.bean.InnerHandInfo;
 import com.xmd.cashier.dal.bean.InnerRoomInfo;
 import com.xmd.cashier.dal.bean.InnerTechInfo;
 import com.xmd.cashier.presenter.InnerSelectPresenter;
 import com.xmd.cashier.widget.ClearableEditText;
-import com.xmd.cashier.widget.SpaceRecycleViewDecoration;
 import com.xmd.cashier.widget.StepView;
 
 import java.util.List;
@@ -48,9 +50,9 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
     private LinearLayout mSumLayout;
     private TextView mSumText;
 
-    private InnerRoomAdapter mRoomAdapter;
     private InnerHandAdapter mHandAdapter;
-    private InnerTechAdapter mTechAdapter;
+    private ExInnerRoomAdapter mExRoomAdapter;
+    private ExInnerTechStatusAdapter mExTechStatusAdapter;
 
     private TextView mNaviRoom;
     private TextView mNaviHand;
@@ -115,8 +117,6 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
         });
 
         mContentList = (RecyclerView) findViewById(R.id.rv_select_content);
-        mContentList.setLayoutManager(new GridLayoutManager(this, 4));
-        mContentList.addItemDecoration(new SpaceRecycleViewDecoration(8, 8, 8, 8));
 
         mNaviRoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,13 +161,13 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
     }
 
     @Override
-    public void showRoomData(List<InnerRoomInfo> list) {
-        mRoomAdapter.setData(list);
+    public void showExRoomData(List<ExInnerRoomInfo> list) {
+        mExRoomAdapter.setData(list);
     }
 
     @Override
     public void updateRoom(int position) {
-        mRoomAdapter.notifyItemChanged(position);
+        mExRoomAdapter.notifyItemChanged(position);
     }
 
     @Override
@@ -180,14 +180,10 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
         mHandAdapter.notifyItemChanged(position);
     }
 
-    @Override
-    public void showTechData(List<InnerTechInfo> list) {
-        mTechAdapter.setData(list);
-    }
 
     @Override
-    public void updateTech(int position) {
-        mTechAdapter.notifyItemChanged(position);
+    public void showTechStatusData(List<ExInnerTechStatusInfo> techStatusInfos) {
+        mExTechStatusAdapter.setData(techStatusInfos);
     }
 
     @Override
@@ -212,18 +208,19 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
         mHandAdapter = null;
         mNaviTech.setBackgroundColor(ResourceUtils.getColor(R.color.colorWhite));
         mNaviTech.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
-        mTechAdapter = null;
+        mExTechStatusAdapter = null;
 
         mSearchText.setText("");
         mSearchText.setHint("请输入房间号");
-        mRoomAdapter = new InnerRoomAdapter(this);
-        mRoomAdapter.setCallBack(new InnerRoomAdapter.CallBack() {
+        mExRoomAdapter = new ExInnerRoomAdapter(this);
+        mExRoomAdapter.setExCallBack(new ExInnerRoomAdapter.ExCallBack() {
             @Override
-            public void onItemClick(InnerRoomInfo info, int position) {
-                mPresenter.onRoomSelect(info, position);
+            public void onSectionClick(InnerRoomInfo roomInfo, int sectionPosition) {
+                mPresenter.onRoomSelect(roomInfo, sectionPosition);
             }
         });
-        mContentList.setAdapter(mRoomAdapter);
+        mContentList.setAdapter(mExRoomAdapter);
+        mContentList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -233,10 +230,10 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
 
         mNaviRoom.setBackgroundColor(ResourceUtils.getColor(R.color.colorWhite));
         mNaviRoom.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
-        mRoomAdapter = null;
+        mExRoomAdapter = null;
         mNaviTech.setBackgroundColor(ResourceUtils.getColor(R.color.colorWhite));
         mNaviTech.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
-        mTechAdapter = null;
+        mExTechStatusAdapter = null;
 
         mSearchText.setText("");
         mSearchText.setHint("请输入手牌号");
@@ -247,6 +244,7 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
                 mPresenter.onHandSelect(info, position);
             }
         });
+        mContentList.setLayoutManager(new GridLayoutManager(this, 4));
         mContentList.setAdapter(mHandAdapter);
     }
 
@@ -257,21 +255,22 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
 
         mNaviRoom.setBackgroundColor(ResourceUtils.getColor(R.color.colorWhite));
         mNaviRoom.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
-        mRoomAdapter = null;
+        mExRoomAdapter = null;
         mNaviHand.setBackgroundColor(ResourceUtils.getColor(R.color.colorWhite));
         mNaviHand.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
         mHandAdapter = null;
 
         mSearchText.setText("");
         mSearchText.setHint("请输入技师编号");
-        mTechAdapter = new InnerTechAdapter(this);
-        mTechAdapter.setCallBack(new InnerTechAdapter.CallBack() {
+        mExTechStatusAdapter = new ExInnerTechStatusAdapter(this);
+        mExTechStatusAdapter.setCallBack(new ExInnerTechStatusAdapter.ExInnerStatusCallBack() {
             @Override
-            public void onItemClick(InnerTechInfo info, int position) {
-                mPresenter.onTechSelect(info, position);
+            public void onExStatusClick(InnerTechInfo info) {
+                mPresenter.onTechSelect(info);
             }
         });
-        mContentList.setAdapter(mTechAdapter);
+        mContentList.setLayoutManager(new LinearLayoutManager(this));
+        mContentList.setAdapter(mExTechStatusAdapter);
     }
 
     public void onClickInnerRecord(View view) {

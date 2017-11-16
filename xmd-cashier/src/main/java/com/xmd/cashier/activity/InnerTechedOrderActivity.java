@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
-import com.xmd.cashier.adapter.InnerOrderTechAdapter;
+import com.xmd.cashier.adapter.InnerTechedOrderAdapter;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.contract.InnerOrderTechContract;
+import com.xmd.cashier.contract.InnerTechedOrderContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.presenter.InnerOrderTechPresenter;
+import com.xmd.cashier.presenter.InnerTechedOrderPresenter;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
 
 import java.util.List;
@@ -22,24 +22,24 @@ import java.util.List;
  * 技师订单列表
  */
 
-public class InnerOrderTechActivity extends BaseActivity implements InnerOrderTechContract.View {
-    private InnerOrderTechContract.Presenter mPresenter;
+public class InnerTechedOrderActivity extends BaseActivity implements InnerTechedOrderContract.View {
+    private InnerTechedOrderContract.Presenter mPresenter;
 
     private TextView mDescText;
     private RecyclerView mOrderList;
     private TextView mNegativeText;
     private TextView mPositiveText;
 
-    private InnerOrderTechAdapter mTechAdapter;
+    private InnerTechedOrderAdapter mTechAdapter;
 
     private String mEmpId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inner_order_tech);
+        setContentView(R.layout.activity_inner_teched_order);
         mEmpId = getIntent().getStringExtra(AppConstants.EXTRA_INNER_EMP_ID);
-        mPresenter = new InnerOrderTechPresenter(this, this);
+        mPresenter = new InnerTechedOrderPresenter(this, this);
         initView();
         mPresenter.onCreate();
     }
@@ -50,15 +50,15 @@ public class InnerOrderTechActivity extends BaseActivity implements InnerOrderTe
         mPositiveText = (TextView) findViewById(R.id.tv_tech_positive);
         mDescText = (TextView) findViewById(R.id.tv_order_result_desc);
 
-        mTechAdapter = new InnerOrderTechAdapter(InnerOrderTechActivity.this);
-        mTechAdapter.setCallBack(new InnerOrderTechAdapter.CallBack() {
+        mTechAdapter = new InnerTechedOrderAdapter(InnerTechedOrderActivity.this);
+        mTechAdapter.setCallBack(new InnerTechedOrderAdapter.CallBack() {
             @Override
             public void onItemClick(InnerOrderInfo info, int position) {
                 mPresenter.onItemSelect(info, position);
             }
         });
 
-        mOrderList.setLayoutManager(new LinearLayoutManager(InnerOrderTechActivity.this));
+        mOrderList.setLayoutManager(new LinearLayoutManager(InnerTechedOrderActivity.this));
         mOrderList.addItemDecoration(new CustomRecycleViewDecoration(3));
         mOrderList.setAdapter(mTechAdapter);
 
@@ -86,7 +86,7 @@ public class InnerOrderTechActivity extends BaseActivity implements InnerOrderTe
     }
 
     @Override
-    public void setPresenter(InnerOrderTechContract.Presenter presenter) {
+    public void setPresenter(InnerTechedOrderContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

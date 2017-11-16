@@ -59,7 +59,7 @@ public class InnerRoomAdapter extends RecyclerView.Adapter<InnerRoomAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallBack.onItemClick(roomInfo, position);
+                mCallBack.onItemClick(roomInfo);
             }
         });
     }
@@ -86,6 +86,6 @@ public class InnerRoomAdapter extends RecyclerView.Adapter<InnerRoomAdapter.View
     }
 
     public interface CallBack {
-        void onItemClick(InnerRoomInfo info, int position);
+        void onItemClick(InnerRoomInfo info);
     }
 }

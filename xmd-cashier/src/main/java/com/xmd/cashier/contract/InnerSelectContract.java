@@ -2,6 +2,8 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
+import com.xmd.cashier.dal.bean.ExInnerRoomInfo;
+import com.xmd.cashier.dal.bean.ExInnerTechStatusInfo;
 import com.xmd.cashier.dal.bean.InnerHandInfo;
 import com.xmd.cashier.dal.bean.InnerRoomInfo;
 import com.xmd.cashier.dal.bean.InnerTechInfo;
@@ -24,7 +26,7 @@ public interface InnerSelectContract {
 
         void onHandSelect(InnerHandInfo info, int position);
 
-        void onTechSelect(InnerTechInfo info, int position);
+        void onTechSelect(InnerTechInfo info);
 
         void onNaviRoomClick();
 
@@ -38,7 +40,7 @@ public interface InnerSelectContract {
     interface View extends BaseView<Presenter> {
         String returnSearchText();
 
-        void showRoomData(List<InnerRoomInfo> list);
+        void showExRoomData(List<ExInnerRoomInfo> list);
 
         void updateRoom(int position);
 
@@ -46,9 +48,7 @@ public interface InnerSelectContract {
 
         void updateHand(int position);
 
-        void showTechData(List<InnerTechInfo> list);
-
-        void updateTech(int position);
+        void showTechStatusData(List<ExInnerTechStatusInfo> techStatusInfos);
 
         void showSum(String text);
 

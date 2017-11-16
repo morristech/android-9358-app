@@ -53,18 +53,12 @@ public class InnerTechAdapter extends RecyclerView.Adapter<InnerTechAdapter.View
         } else {
             holder.mContentText.setText(techInfo.name);
         }
-
-        if (techInfo.selected) {
-            holder.mItemLayout.setBackgroundResource(R.drawable.bg_area_select);
-            holder.mSelectImage.setVisibility(View.VISIBLE);
-        } else {
-            holder.mItemLayout.setBackgroundResource(R.drawable.bg_area_unselect);
-            holder.mSelectImage.setVisibility(View.GONE);
-        }
+        holder.mItemLayout.setBackgroundResource(R.drawable.bg_area_unselect);
+        holder.mSelectImage.setVisibility(View.GONE);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallBack.onItemClick(techInfo, position);
+                mCallBack.onItemClick(techInfo);
             }
         });
     }
@@ -91,6 +85,6 @@ public class InnerTechAdapter extends RecyclerView.Adapter<InnerTechAdapter.View
     }
 
     public interface CallBack {
-        void onItemClick(InnerTechInfo info, int position);
+        void onItemClick(InnerTechInfo info);
     }
 }

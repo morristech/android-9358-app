@@ -10,7 +10,7 @@ import java.util.List;
  * Created by zr on 17-11-8.
  */
 
-public interface InnerOrderTechContract {
+public interface InnerSelectedOrderContract {
     interface Presenter extends BasePresenter {
         void onNegative();
 
@@ -20,14 +20,13 @@ public interface InnerOrderTechContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showOrderData(List<InnerOrderInfo> list);
+        void showCountText(String text);
+
+        void hideCountText();
 
         void updateItem(int position);
 
-        String returnEmpId();
-
-        void showDesc(String desc);
-
-        void hideDesc();
+        void showOrderData(List<InnerOrderInfo> list);
     }
+
 }

@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,10 +78,34 @@ public class InnerManager {
         }
     }
 
+    public void removeUnselectedInfos() {
+        Iterator<InnerOrderInfo> it = innerOrderInfos.iterator();
+        while (it.hasNext()) {
+            InnerOrderInfo info = it.next();
+            if (!info.selected) {
+                it.remove();
+            }
+        }
+    }
+
+    public void selectedOrderInfos() {
+        for (InnerOrderInfo orderInfo : innerOrderInfos) {
+            orderInfo.selected = true;
+        }
+    }
+
+    public void unselectedOrderInfos() {
+        for (InnerOrderInfo orderInfo : innerOrderInfos) {
+            orderInfo.selected = false;
+        }
+    }
+
     public String getOrderIds() {
         StringBuilder result = new StringBuilder();
         for (InnerOrderInfo info : innerOrderInfos) {
-            result.append(info.id + ",");
+            if (info.selected) {
+                result.append(info.id + ",");
+            }
         }
         if (result.length() > 0) {
             result.deleteCharAt(result.length() - 1);
@@ -90,10 +115,22 @@ public class InnerManager {
         }
     }
 
+    public int getSelectCount() {
+        int count = 0;
+        for (InnerOrderInfo info : innerOrderInfos) {
+            if (info.selected) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
     public int getOrderAmount() {
         int amount = 0;
         for (InnerOrderInfo info : innerOrderInfos) {
-            amount += info.amount;
+            if (info.selected) {
+                amount += info.amount;
+            }
         }
         return amount;
     }

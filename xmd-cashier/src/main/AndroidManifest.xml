@@ -208,11 +208,11 @@
             android:launchMode="singleTask"
             android:theme="@style/DialogActivity" />
         <activity
-            android:name=".activity.InnerOrderSelectActivity"
+            android:name=".activity.InnerSelectedOrderActivity"
             android:launchMode="singleTask"
             android:theme="@style/DialogActivity" />
         <activity
-            android:name=".activity.InnerOrderTechActivity"
+            android:name=".activity.InnerTechedOrderActivity"
             android:launchMode="singleTask"
             android:theme="@style/DialogActivity" />
     </application>

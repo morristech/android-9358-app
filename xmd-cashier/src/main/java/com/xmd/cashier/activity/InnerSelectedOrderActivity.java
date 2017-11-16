@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
-import com.xmd.cashier.adapter.InnerOrderSelectAdapter;
-import com.xmd.cashier.contract.InnerOrderSelectContract;
+import com.xmd.cashier.adapter.InnerSelectedOrderAdapter;
+import com.xmd.cashier.contract.InnerSelectedOrderContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.presenter.InnerOrderSelectPresenter;
+import com.xmd.cashier.presenter.InnerSelectedOrderPresenter;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
 
 import java.util.List;
@@ -21,20 +21,20 @@ import java.util.List;
  * 订单选中列表
  */
 
-public class InnerOrderSelectActivity extends BaseActivity implements InnerOrderSelectContract.View {
+public class InnerSelectedOrderActivity extends BaseActivity implements InnerSelectedOrderContract.View {
     private TextView mCountText;
     private TextView mNegativeText;
     private TextView mPositiveText;
     private RecyclerView mSelectOrderList;
-    private InnerOrderSelectAdapter mOrderAdapter;
+    private InnerSelectedOrderAdapter mOrderAdapter;
 
-    private InnerOrderSelectContract.Presenter mPresenter;
+    private InnerSelectedOrderContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inner_order_select);
-        mPresenter = new InnerOrderSelectPresenter(this, this);
+        setContentView(R.layout.activity_inner_selected_order);
+        mPresenter = new InnerSelectedOrderPresenter(this, this);
         initView();
         mPresenter.onCreate();
     }
@@ -44,14 +44,14 @@ public class InnerOrderSelectActivity extends BaseActivity implements InnerOrder
         mSelectOrderList = (RecyclerView) findViewById(R.id.rv_order_detail);
         mNegativeText = (TextView) findViewById(R.id.tv_select_negative);
         mPositiveText = (TextView) findViewById(R.id.tv_select_positive);
-        mOrderAdapter = new InnerOrderSelectAdapter(InnerOrderSelectActivity.this);
-        mOrderAdapter.setCallBack(new InnerOrderSelectAdapter.CallBack() {
+        mOrderAdapter = new InnerSelectedOrderAdapter(InnerSelectedOrderActivity.this);
+        mOrderAdapter.setCallBack(new InnerSelectedOrderAdapter.CallBack() {
             @Override
             public void onItemClick(InnerOrderInfo info, int position) {
                 mPresenter.onItemSelect(info, position);
             }
         });
-        mSelectOrderList.setLayoutManager(new LinearLayoutManager(InnerOrderSelectActivity.this));
+        mSelectOrderList.setLayoutManager(new LinearLayoutManager(InnerSelectedOrderActivity.this));
         mSelectOrderList.addItemDecoration(new CustomRecycleViewDecoration(3));
         mSelectOrderList.setAdapter(mOrderAdapter);
         mNegativeText.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +76,7 @@ public class InnerOrderSelectActivity extends BaseActivity implements InnerOrder
     }
 
     @Override
-    public void setPresenter(InnerOrderSelectContract.Presenter presenter) {
+    public void setPresenter(InnerSelectedOrderContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

@@ -10,6 +10,7 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerMethodContract;
 import com.xmd.cashier.dal.bean.InnerBatchInfo;
+import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
@@ -54,6 +55,8 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
     private Subscription mGenerateBatchSubscription;
     private Subscription mPosTradeNoSubscription;
 
+    private boolean mHoleSelect = true;
+
     public InnerMethodPresenter(Context context, InnerMethodContract.View view) {
         mContext = context;
         mView = view;
@@ -71,15 +74,18 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                 mView.showOrderList(InnerManager.getInstance().getInnerOrderInfos());
                 int origin = InnerManager.getInstance().getOrderAmount();
                 mTradeManager.getCurrentTrade().setOriginMoney(origin);
+                mView.setStatusLayout(true);
+                mView.updateStatus(mHoleSelect);
+                mView.showSelectCount(InnerManager.getInstance().getSelectCount());
                 break;
             case AppConstants.INNER_METHOD_SOURCE_RECORD:
             case AppConstants.INNER_METHOD_SOURCE_PUSH:
-                // 订单提醒记录
                 InnerRecordInfo recordInfo = mView.returnRecordInfo();
                 mTradeManager.getCurrentTrade().payOrderId = recordInfo.payId;
                 mTradeManager.getCurrentTrade().batchNo = recordInfo.batchNo;
                 mTradeManager.getCurrentTrade().setOriginMoney(recordInfo.payAmount);
                 mView.showOrderList(recordInfo.details);
+                mView.setStatusLayout(false);
                 break;
             default:
                 break;
@@ -88,6 +94,10 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
 
     @Override
     public void onStart() {
+        updateAmount();
+    }
+
+    private void updateAmount() {
         Trade trade = mTradeManager.getCurrentTrade();
         if (trade.getVerificationCount() > 0) {
             mView.showVerifyDesc("已选择" + trade.getVerificationCount() + "张");
@@ -125,7 +135,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
     @Override
     public void onPayClick() {
         if (AppConstants.INNER_METHOD_SOURCE_NORMAL.equals(mView.returnSource())) {
-            int count = InnerManager.getInstance().getInnerOrderInfos().size();
+            int count = InnerManager.getInstance().getSelectCount();
             if (count > 1) {
                 new CustomAlertDialogBuilder(mContext)
                         .setMessage("本次消费有" + count + "笔订单，确认合并进行支付吗?")
@@ -150,6 +160,45 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
         } else {
             showMethod();
         }
+    }
+
+    @Override
+    public void onSelectChange() {
+        if (mHoleSelect) {
+            // 取消
+            InnerManager.getInstance().unselectedOrderInfos();
+        } else {
+            // 全选
+            InnerManager.getInstance().selectedOrderInfos();
+        }
+        mHoleSelect = !mHoleSelect;
+        mView.updateStatus(mHoleSelect);
+        mView.updateAll();
+        mView.showSelectCount(InnerManager.getInstance().getSelectCount());
+        // 订单金额|核销金额
+        mTradeManager.getCurrentTrade().setOriginMoney(InnerManager.getInstance().getOrderAmount());
+        mTradeManager.setDiscountOriginAmount();
+        updateAmount();
+    }
+
+    @Override
+    public void onOrderClick(InnerOrderInfo info, int position) {
+        info.selected = !info.selected;
+        mView.updateItem(position);
+        mView.showSelectCount(InnerManager.getInstance().getSelectCount());
+        if (InnerManager.getInstance().getSelectCount() == 0) {
+            mHoleSelect = false;
+            mView.updateStatus(mHoleSelect);
+        } else if (InnerManager.getInstance().getSelectCount() == InnerManager.getInstance().getInnerOrderInfos().size()) {
+            mHoleSelect = true;
+            mView.updateStatus(mHoleSelect);
+        } else {
+            // do nothing
+        }
+        // 订单金额|核销金额
+        mTradeManager.getCurrentTrade().setOriginMoney(InnerManager.getInstance().getOrderAmount());
+        mTradeManager.setDiscountOriginAmount();
+        updateAmount();
     }
 
     private void showMethod() {

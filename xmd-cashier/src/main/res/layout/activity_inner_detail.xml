@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        app:layout_heightPercent="85%"
+        app:layout_heightPercent="70%"
         app:layout_widthPercent="100%">
 
         <TextView
@@ -37,6 +37,11 @@
             android:layout_weight="1"
             android:paddingLeft="@dimen/activity_little_margin"
             android:paddingRight="@dimen/activity_little_margin" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorStoke" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,6 +71,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_paid_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_little_margin"
@@ -92,6 +98,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_paid_coupon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_little_margin"
@@ -118,6 +125,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_paid_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_little_margin"

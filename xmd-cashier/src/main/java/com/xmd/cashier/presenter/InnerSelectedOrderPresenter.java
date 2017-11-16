@@ -2,7 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
-import com.xmd.cashier.contract.InnerOrderSelectContract;
+import com.xmd.cashier.contract.InnerSelectedOrderContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.manager.InnerManager;
 
@@ -10,11 +10,11 @@ import com.xmd.cashier.manager.InnerManager;
  * Created by zr on 17-11-8.
  */
 
-public class InnerOrderSelectPresenter implements InnerOrderSelectContract.Presenter {
+public class InnerSelectedOrderPresenter implements InnerSelectedOrderContract.Presenter {
     public Context mContext;
-    public InnerOrderSelectContract.View mView;
+    public InnerSelectedOrderContract.View mView;
 
-    public InnerOrderSelectPresenter(Context context, InnerOrderSelectContract.View view) {
+    public InnerSelectedOrderPresenter(Context context, InnerSelectedOrderContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);

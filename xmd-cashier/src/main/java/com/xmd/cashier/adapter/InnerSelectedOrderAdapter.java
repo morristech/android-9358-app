@@ -20,12 +20,12 @@ import java.util.List;
  * Created by zr on 17-11-7.
  */
 
-public class InnerOrderSelectAdapter extends RecyclerView.Adapter<InnerOrderSelectAdapter.ViewHolder> {
+public class InnerSelectedOrderAdapter extends RecyclerView.Adapter<InnerSelectedOrderAdapter.ViewHolder> {
     private Context mContext;
     private List<InnerOrderInfo> mData = new ArrayList<>();
     private CallBack mCallBack;
 
-    public InnerOrderSelectAdapter(Context context) {
+    public InnerSelectedOrderAdapter(Context context) {
         mContext = context;
     }
 
@@ -42,7 +42,7 @@ public class InnerOrderSelectAdapter extends RecyclerView.Adapter<InnerOrderSele
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inner_order_select, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inner_selected_order, parent, false));
     }
 
     @Override

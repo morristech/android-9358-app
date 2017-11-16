@@ -6,6 +6,10 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerSelectContract;
+import com.xmd.cashier.dal.bean.EmployeeGroupInfo;
+import com.xmd.cashier.dal.bean.ExInnerRoomInfo;
+import com.xmd.cashier.dal.bean.ExInnerTechInfo;
+import com.xmd.cashier.dal.bean.ExInnerTechStatusInfo;
 import com.xmd.cashier.dal.bean.InnerHandInfo;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRoomInfo;
@@ -27,7 +31,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscription;
@@ -97,7 +107,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
             @Override
             public void onCallbackSuccess(InnerRoomListResult result) {
                 mView.hideLoading();
-                mView.showRoomData(result.getRespData());
+                mView.showExRoomData(formatRoomInfos(result.getRespData()));
             }
 
             @Override
@@ -106,6 +116,32 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
                 mView.showToast(e.getLocalizedMessage());
             }
         });
+    }
+
+    private List<ExInnerRoomInfo> formatRoomInfos(List<InnerRoomInfo> list) {
+        Map<Long, List<InnerRoomInfo>> tempListMap = new HashMap<>();
+        Map<Long, String> tempStrMap = new HashMap<>();
+        for (InnerRoomInfo roomInfo : list) {
+            if (tempListMap.containsKey(roomInfo.roomTypeId)) {
+                tempListMap.get(roomInfo.roomTypeId).add(roomInfo);
+            } else {
+                List<InnerRoomInfo> tempList = new ArrayList<>();
+                tempList.add(roomInfo);
+                tempListMap.put(roomInfo.roomTypeId, tempList);
+                tempStrMap.put(roomInfo.roomTypeId, roomInfo.roomTypeName);
+            }
+        }
+        List<ExInnerRoomInfo> resultList = new ArrayList<>();
+        Iterator<Map.Entry<Long, List<InnerRoomInfo>>> it = tempListMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Long, List<InnerRoomInfo>> entry = it.next();
+            ExInnerRoomInfo exRoomInfo = new ExInnerRoomInfo();
+            exRoomInfo.roomTypeId = entry.getKey();
+            exRoomInfo.roomTypeName = tempStrMap.get(entry.getKey());
+            exRoomInfo.rooms = entry.getValue();
+            resultList.add(exRoomInfo);
+        }
+        return resultList;
     }
 
     private void getHandInfos(String userIdentify) {
@@ -142,7 +178,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
             @Override
             public void onCallbackSuccess(InnerTechListResult result) {
                 mView.hideLoading();
-                mView.showTechData(result.getRespData());
+                mView.showTechStatusData(formatTechInfos(result.getRespData()));
             }
 
             @Override
@@ -153,6 +189,70 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         });
     }
 
+    private List<ExInnerTechStatusInfo> formatTechInfos(List<InnerTechInfo> innerTechInfos) {
+        Map<String, List<InnerTechInfo>> tempMap = new HashMap<>();
+        for (InnerTechInfo techInfo : innerTechInfos) {
+            if (tempMap.containsKey(techInfo.status)) {
+                tempMap.get(techInfo.status).add(techInfo);
+            } else {
+                List<InnerTechInfo> tempList = new ArrayList<>();
+                tempList.add(techInfo);
+                tempMap.put(techInfo.status, tempList);
+            }
+        }
+        List<ExInnerTechStatusInfo> resultList = new ArrayList<>();
+        Iterator<Map.Entry<String, List<InnerTechInfo>>> it = tempMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, List<InnerTechInfo>> entry = it.next();
+            ExInnerTechStatusInfo techStatusInfo = new ExInnerTechStatusInfo();
+            techStatusInfo.status = entry.getKey();
+            techStatusInfo.exInfos = formatExTechInfos(entry.getValue());
+            resultList.add(techStatusInfo);
+        }
+        Collections.sort(resultList, new Comparator<ExInnerTechStatusInfo>() {
+            @Override
+            public int compare(ExInnerTechStatusInfo o1, ExInnerTechStatusInfo o2) {
+                return o1.status.compareTo(o2.status);
+            }
+        });
+        return resultList;
+    }
+
+    private List<ExInnerTechInfo> formatExTechInfos(List<InnerTechInfo> infos) {
+        Map<EmployeeGroupInfo, List<InnerTechInfo>> tempMap = new HashMap<>();
+        for (InnerTechInfo techInfo : infos) {
+            if (techInfo.employeeGroupInfo == null) {
+                EmployeeGroupInfo tempGroup = new EmployeeGroupInfo();
+                tempGroup.groupId = -1;
+                tempGroup.groupName = "未分类";
+                techInfo.employeeGroupInfo = tempGroup;
+            }
+            if (tempMap.containsKey(techInfo.employeeGroupInfo)) {
+                tempMap.get(techInfo.employeeGroupInfo).add(techInfo);
+            } else {
+                List<InnerTechInfo> tempList = new ArrayList<>();
+                tempList.add(techInfo);
+                tempMap.put(techInfo.employeeGroupInfo, tempList);
+            }
+        }
+        List<ExInnerTechInfo> resultList = new ArrayList<>();
+        Iterator<Map.Entry<EmployeeGroupInfo, List<InnerTechInfo>>> it = tempMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<EmployeeGroupInfo, List<InnerTechInfo>> entry = it.next();
+            ExInnerTechInfo exInnerTechInfo = new ExInnerTechInfo();
+            exInnerTechInfo.groupInfo = entry.getKey();
+            exInnerTechInfo.techInfos = entry.getValue();
+            resultList.add(exInnerTechInfo);
+        }
+        Collections.sort(resultList, new Comparator<ExInnerTechInfo>() {
+            @Override
+            public int compare(ExInnerTechInfo o1, ExInnerTechInfo o2) {
+                return Long.valueOf(o2.groupInfo.groupId).compareTo(o1.groupInfo.groupId);
+            }
+        });
+        return resultList;
+    }
+
     @Override
     public void onStart() {
         updateSum();
@@ -161,7 +261,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
     private void updateSum() {
         int count = InnerManager.getInstance().getInnerOrderInfos().size();
         if (count > 0) {
-            mView.showSum("已选:" + count);
+            mView.showSum("已选：" + count);
         } else {
             mView.hideSum();
         }
@@ -322,13 +422,8 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
     }
 
     @Override
-    public void onTechSelect(InnerTechInfo info, int position) {
-        //tech
-        if (info.selected) {
-            // TODO do nothing
-        } else {
-            UiNavigation.gotoInnerOrderTechActivity(mContext, info.id);
-        }
+    public void onTechSelect(InnerTechInfo info) {
+        UiNavigation.gotoInnerOrderTechActivity(mContext, info.id);
     }
 
     @Override

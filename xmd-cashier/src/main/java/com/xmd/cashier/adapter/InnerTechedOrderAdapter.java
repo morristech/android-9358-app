@@ -21,12 +21,12 @@ import java.util.List;
  * Created by zr on 17-11-7.
  */
 
-public class InnerOrderTechAdapter extends RecyclerView.Adapter<InnerOrderTechAdapter.ViewHolder> {
+public class InnerTechedOrderAdapter extends RecyclerView.Adapter<InnerTechedOrderAdapter.ViewHolder> {
     private Context mContext;
     private List<InnerOrderInfo> mData = new ArrayList<>();
     private CallBack mCallBack;
 
-    public InnerOrderTechAdapter(Context context) {
+    public InnerTechedOrderAdapter(Context context) {
         mContext = context;
     }
 
@@ -43,7 +43,7 @@ public class InnerOrderTechAdapter extends RecyclerView.Adapter<InnerOrderTechAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inner_order_tech, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inner_teched_order, parent, false));
     }
 
     @Override

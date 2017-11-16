@@ -18,8 +18,8 @@ import com.xmd.cashier.activity.DiscountCouponActivity;
 import com.xmd.cashier.activity.GiftActActivity;
 import com.xmd.cashier.activity.InnerDetailActivity;
 import com.xmd.cashier.activity.InnerMethodActivity;
-import com.xmd.cashier.activity.InnerOrderSelectActivity;
-import com.xmd.cashier.activity.InnerOrderTechActivity;
+import com.xmd.cashier.activity.InnerSelectedOrderActivity;
+import com.xmd.cashier.activity.InnerTechedOrderActivity;
 import com.xmd.cashier.activity.InnerPaymentActivity;
 import com.xmd.cashier.activity.InnerRecordActivity;
 import com.xmd.cashier.activity.InnerResultActivity;
@@ -337,12 +337,12 @@ public class UiNavigation {
     }
 
     public static void gotoInnerOrderSelectActivity(Context context) {
-        Intent intent = new Intent(context, InnerOrderSelectActivity.class);
+        Intent intent = new Intent(context, InnerSelectedOrderActivity.class);
         context.startActivity(intent);
     }
 
     public static void gotoInnerOrderTechActivity(Context context, String empId) {
-        Intent intent = new Intent(context, InnerOrderTechActivity.class);
+        Intent intent = new Intent(context, InnerTechedOrderActivity.class);
         intent.putExtra(AppConstants.EXTRA_INNER_EMP_ID, empId);
         context.startActivity(intent);
     }

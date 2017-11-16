@@ -13,10 +13,10 @@
         android:id="@+id/sv_step_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_small_margin"
+        android:layout_marginBottom="@dimen/activity_little_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/activity_normal_margin"
-        android:paddingTop="@dimen/activity_normal_margin"
+        android:paddingBottom="@dimen/activity_little_margin"
+        android:paddingTop="@dimen/activity_little_margin"
         app:svLineWidth="1dp" />
 
     <View
@@ -78,8 +78,9 @@
     <LinearLayout
         android:id="@+id/layout_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_margin="@dimen/activity_little_margin"
+        android:padding="1px"
         android:background="@drawable/bg_area_line"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -112,6 +113,8 @@
         android:id="@+id/rv_select_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin"
         android:layout_weight="1"
         android:scrollbars="none" />
 

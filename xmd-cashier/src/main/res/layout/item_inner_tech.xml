@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_little_margin"
+    android:layout_marginBottom="@dimen/activity_little_margin"
+    android:background="@drawable/bg_area_line_light"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_item_tech_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1px"
+        android:layout_marginRight="1px"
+        android:layout_marginTop="1px"
+        android:gravity="center"
+        android:padding="@dimen/activity_little_margin"
+        android:textSize="@dimen/font_size_16" />
+
+    <View
+        android:id="@+id/view_item_divide"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorDivide" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_item_tech_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_little_margin"
+        android:scrollbars="none" />
+</LinearLayout>

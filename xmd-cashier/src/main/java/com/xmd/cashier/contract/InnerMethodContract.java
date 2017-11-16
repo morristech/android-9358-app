@@ -16,6 +16,10 @@ public interface InnerMethodContract {
         void onVerifySelect();
 
         void onPayClick();
+
+        void onSelectChange();
+
+        void onOrderClick(InnerOrderInfo info, int position);
     }
 
     interface View extends BaseView<Presenter> {
@@ -36,5 +40,15 @@ public interface InnerMethodContract {
         void showExitAnim();
 
         void showStepView();
+
+        void setStatusLayout(boolean show);
+
+        void updateStatus(boolean selected);
+
+        void showSelectCount(int count);
+
+        void updateItem(int position);
+
+        void updateAll();
     }
 }
