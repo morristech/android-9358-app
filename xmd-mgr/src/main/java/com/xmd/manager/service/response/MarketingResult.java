@@ -35,5 +35,9 @@ public class MarketingResult extends BaseResult {
         public int value02;
         @SerializedName("03")
         public int value03;
+        @SerializedName("09")
+        public int value09;
+        @SerializedName("10")
+        public int value10;
     }
 }

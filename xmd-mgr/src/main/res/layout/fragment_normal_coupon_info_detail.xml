@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <com.xmd.manager.widget.EmptyView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    android:visibility="gone"/>
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_space"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+        >
+            <include layout="@layout/coupon_list_coupon_item"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+            >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                >
+
+                    <TextView
+                        android:id="@+id/limit_project"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_project"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:text="限定项目"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                    />
+
+                    <com.xmd.manager.widget.FlowLayout
+                        android:id="@+id/limit_project_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/limit_project"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="20dp"
+                    />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="@dimen/small_space"
+                    android:background="@color/colorLineDivide"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                >
+
+                    <TextView
+                        android:id="@+id/limit_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_time"
+                        android:drawablePadding="10dp"
+                        android:text="@string/user_time"
+                        android:textColor="#212121"/>
+
+                    <TextView
+                        android:id="@+id/tv_coupon_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/limit_time"
+                        android:layout_marginLeft="27dp"
+                        android:paddingBottom="17dp"
+                        android:paddingRight="20dp"
+                        android:paddingTop="10dp"
+                    />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="25dp"
+                    android:background="@color/colorLineDivide"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp">
+
+                    <TextView
+                        android:id="@+id/limit_rule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_rule"
+                        android:drawablePadding="10dp"
+                        android:text="@string/normal_coupon_detail_activity_act_content_desc"
+                        android:textColor="#212121"
+                        android:textSize="16sp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/limit_rule">
+
+                        <WebView
+                            android:id="@+id/wv_act_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                        />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

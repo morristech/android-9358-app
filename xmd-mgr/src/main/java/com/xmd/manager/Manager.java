@@ -21,36 +21,6 @@ public class Manager {
 
     private Context mAppContext;
 
-//    private EMMessageListener mMessageListener = new SimpleEMMessageListener() {
-//        @Override
-//        public void onMessageReceived(List<EMMessage> list) {
-//            for (EMMessage message : list) {
-//                try {
-//                    String name = message.getStringAttribute(EmchatConstant.KEY_NAME);
-//                    String head = message.getStringAttribute(EmchatConstant.KEY_HEADER);
-//                    String userName = message.getUserName();
-//                    EmchatUser user = new EmchatUser(userName, name, head);
-//                    EmchatUserDao mEmchatUserDao = new EmchatUserDao(ManagerApplication.getAppContext());
-//                    mEmchatUserDao.saveOrUpdate(user);
-//
-//                } catch (HyphenateException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> RxBus.getInstance().post(new EmchatMsgResult(list)));
-//        }
-//
-//        @Override
-//        public void onMessageRead(List<EMMessage> list) {
-//
-//        }
-//
-//        @Override
-//        public void onMessageDelivered(List<EMMessage> list) {
-//
-//        }
-//    };
 
     private Manager() {
     }
@@ -78,12 +48,6 @@ public class Manager {
 
         ControllerRegister.initialize();
 
-        // EaseMob Chatting
-//        EMOptions emOptions = new EMOptions();
-//        EMClient.getInstance().init(appContext, emOptions);
-//        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-//        EMClient.getInstance().setDebugMode(true);
-//        EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
     }
 
     public void prepareBeforeUserLogout() {

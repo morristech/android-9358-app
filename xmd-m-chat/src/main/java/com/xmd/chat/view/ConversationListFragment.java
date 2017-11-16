@@ -229,7 +229,7 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void onReceiveNewMessages(EventNewMessages messages) {
-        XLogger.i(">>>", "接收到消息...");
+
         for (EMMessage message : messages.getList()) {
             processMessageReceiveOrSend(new ChatMessage(message));
         }

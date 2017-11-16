@@ -75,6 +75,14 @@ public class Constant {
         put("每天", TIME_FILTER_EVERY_DAY);
         put("累计", TIME_FILTER_ALL);
     }};
+
+    public static final Map<String, String> COUPON_TYPE_FILTER_LABELS = new LinkedHashMap<String, String>() {{
+        put("全部", COUPON_ALL_TYPE);
+        put("现金券", COUPON_CASH_TYPE);
+        put("体验券", COUPON_COUPON_TYPE);
+        put("礼品券", COUPON_GIFT_TYPE);
+        put("折扣券", COUPON_DISCOUNT_TYPE);
+    }};
     /**
      * 已接受
      */
@@ -374,5 +382,40 @@ public class Constant {
     public static final String ONLINE_ORDER_STATUS = "orderStatus";
     public static final String ONLINE_ORDER_PROJECT = "orderProject";
     public static final String ONLINE_ORDER_TECH_NO = "techNo";
+
+    public static final int COUPON_FILTER_TIME_TYPE_ALL = 0;
+    public static final int COUPON_FILTER_TIME_TYPE_USER = 1;
+    public static final int COUPON_RECORD_TIME_TYPE_VERIFICATION = 2;
+
+    public static final String COUPON_RECORD_START_TIME = "startTime";
+    public static final String COUPON_RECORD_END_TIME = "endTime";
+    public static final int COUPON_TYPE_RECORD_ALL = 0;
+    public static final int COUPON_TYPE_RECORD_USABLE = 1; //领取
+    public static final int COUPON_TYPE_RECORD_USED = 2; //核销
+    public static final int COUPON_TYPE_RECORD_OVER_TIME = 3;//过期
+
+    public static final String COUPON_STATUS_CAN_USE = "canUse";
+    public static final String COUPON_STATUS_VERIFIED = "verified";
+    public static final String COUPON_STATUS_EXPIRED = "expired";
+    public static final String COUPON_STATUS_ALL = "";
+    public static final String COUPON_TIME_TYPE_ALL = "";
+    public static final String COUPON_TIME_TYPE_GET_TIME = "getTime";
+    public static final String COUPON_TIME_TYPE_VERIFY_TIME = "verifyTime";
+    public static final String COUPON_CASH_TYPE = "cash";
+    public static final String COUPON_COUPON_TYPE = "coupon";
+    public static final String COUPON_GIFT_TYPE = "gift";
+    public static final String COUPON_DISCOUNT_TYPE = "discount";
+    public static final String COUPON_PAID_TYPE = "paid";
+    public static final String COUPON_ONLINE_TRUE = "Y";
+    public static final String COUPON_ONLINE_FALSE = "N";
+    public static final String COUPON_ALL_TYPE = "cash,coupon,gift,discount";
+
+    public static final String COUPON_ONLINE_TYPE = "online";
+    public static final String COUPON_OFFLINE_TYPE = "offline";
+    //0:未被选中，1：被选中
+    public static final int COUPON_IS_SELECTED_TRUE = 1;
+    public static final int COUPON_IS_SELECTED_FALSE = 0;
+
+
 }
 

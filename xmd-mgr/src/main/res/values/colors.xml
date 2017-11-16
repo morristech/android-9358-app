@@ -6,36 +6,28 @@
 
     <color name="primary_color_normal">#ddff6666</color>
     <color name="app_bg">#EFEFF4</color>
-
     <color name="transparent">#00000000</color>
     <color name="white_p">#EEEEEE</color>
     <color name="white">#FFF</color>
     <color name="dark">#4C4C4C</color>
-
     <color name="btn_background">#FF7E00</color>
     <color name="btn_pressed_bg">#FFA64F</color>
     <color name="bg_stroke">#D1D1D1</color>
-
+    <color name="colorServiceDivide">#00e0e0e0</color>
     <color name="empty_view_textview_color">#999999</color>
-
     <color name="dialog_title_text_color">#333</color>
     <color name="dialog_content_text_color">#666</color>
-
     <color name="tab_bg">#FFF</color>
     <color name="tab_bg_clicked">#d2d2d2</color>
     <color name="tab_indicator_color">@color/colorPrimary</color>
     <color name="tab_text_checked_color">@color/colorPrimary</color>
     <color name="tab_text_normal_color">#666</color>
     <color name="tab_bottom_line_color">#dadada</color>
-
-
     <color name="text_color_hint">#999999</color>
     <color name="text_color">#4D4D4D</color>
-
     <color name="possible_result_points">#c0ffff00</color>
     <color name="result_view">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>
-
     <color name="divider_color">#eeeeee</color>
     <color name="label_color">#999999</color>
     <color name="desc_color">#666</color>
@@ -46,62 +38,45 @@
     <color name="border_line_color">@color/colorPrimary</color>
     <color name="dialog_line_gray">#DDD</color>
     <color name="comment_name">#4d4d4d</color>
-
-
     <!-- listitem operation button -->
 
     <color name="operation_button_positive_bg_normal">#66cc66</color>
     <color name="operation_button_positive_bg_pressed">#8866cc66</color>
     <color name="operation_button_positive_text_normal">#fff</color>
     <color name="operation_button_positive_text_pressed">#fff</color>
-
-
     <color name="operation_button_negative_bg_normal">#ff6666</color>
     <color name="operation_button_negative_bg_pressed">#88ff6666</color>
-
 
     <!-- Custom Dialog-->
     <color name="dialog_button_negative_text_normal">#FF6666</color>
     <color name="dialog_button_negative_text_pressed">#FFF</color>
-
     <color name="primary_button_color_normal">@color/colorPrimary</color>
     <color name="primary_button_color_pressed">#70ff6666</color>
     <color name="primary_button_text_color">#FFF</color>
-
     <color name="drawer_button_pressed">#ff6666</color>
-
     <color name="popup_window_button_normal">#FFF</color>
     <color name="popup_window_button_pressed">#ff6666</color>
     <color name="popup_window_button_text_normal">#333</color>
     <color name="popup_window_button_text_pressed">#FFF</color>
-
     <color name="toolbar_title_color">#FFF</color>
-
     <color name="about_us_activity_version_text_color">#4d4d4d</color>
-
     <color name="coupon_activity_desc_text_color">#ff9d09</color>
     <color name="coupon_list_item_coupon_text_color">#ff6666</color>
-
     <color name="customer_technician_list_background_color">#f2f2f2</color>
     <color name="customer_list_item_header_background_color">#eaeaeaea</color>
     <color name="customer_list_item_header_text_color">#666</color>
-
     <color name="customer_type_label_weixin">#5fc39f</color>
     <color name="customer_type_label_temp">#ff6666</color>
     <color name="customer_type_label_user">#ff9d09</color>
-
     <color name="customer_technician_list_item_text_color">#333</color>
-
     <color name="customer_comment_score_text_color">#fd902a</color>
     <color name="customer_comment_reward_text_color">#f8564f</color>
-
     <color name="main_fragment_layout_number_color">#956767</color>
     <color name="main_fragment_layout_order_submit_line_color">#ff6666</color>
     <color name="main_fragment_layout_order_accept_line_color">#e8a824</color>
     <color name="main_fragment_layout_order_complete_line_color">#5fc39f</color>
     <color name="main_fragment_layout_coupon_complete_line_color">#31BAE8</color>
     <color name="register_detail_fragment_user_count_color">#687888</color>
-
     <color name="colorMain">#fb5549</color>
     <color name="colorBackground">#f0f0f0</color>
     <color name="colorTitle">#333333</color>
@@ -113,7 +88,6 @@
     <color name="colorLineDivide">#d9d9d9</color>
     <color name="colorBtnSelector">#ff6666</color>
     <color name="colorBtnChecked">#fb5549</color>
-
     <color name="colorClubItemTitle">#212121</color>
     <color name="colorClubItemBody">#616161</color>
     <color name="select_time_bg">#F1F1F1</color>
@@ -128,13 +102,11 @@
     <color name="colorTimeLimit">#b2A083</color>
     <color name="colorGroupChecked">#f85c5c</color>
     <color name="colorVisitFromText">#757575</color>
-
     <color name="colorSubTitle">#212121</color>
     <color name="color_tech_name">#323232</color>
     <color name="colorFont1">#212121</color>
     <color name="colorFont2">#616161</color>
     <color name="colorHint">@color/light_gray</color>
-
     <color name="light_gray">#999999</color>
     <color name="light_green">#9ccc65</color>
     <color name="light_yellow">#ff9b09</color>

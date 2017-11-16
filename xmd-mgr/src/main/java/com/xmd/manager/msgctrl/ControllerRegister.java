@@ -140,7 +140,12 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_REPORT_LIST,
                 MsgDef.MSG_DEF_GET_REPORT_CONFIG,
                 MsgDef.MSG_DEF_GET_REPORT_NEWS,
-                MsgDef.MSG_DEF_GET_REPORT_BY_ID
+                MsgDef.MSG_DEF_GET_REPORT_BY_ID,
+                MsgDef.MSG_DEF_COUPON_OPERATE_DATA_TOTAL,
+                MsgDef.MSG_DEF_COUPON_OPERATE_LIST_DATA,
+                MsgDef.MSG_DEF_COUPON_RECORD_DATA,
+                MsgDef.MSG_DEF_COUPON_LIST_DATA
+
 
         });
     }

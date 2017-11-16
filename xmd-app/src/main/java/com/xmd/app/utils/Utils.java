@@ -1,6 +1,7 @@
 package com.xmd.app.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Spannable;
@@ -9,6 +10,8 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.WindowManager;
+
+import com.shidou.commonlibrary.helper.XLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -173,6 +176,25 @@ public class Utils {
             }
         }
         return stringBuffer.toString();
+    }
+
+    public static boolean isAppRunningForeground(Context var0) {
+        ActivityManager var1 = (ActivityManager)var0.getSystemService("activity");
+
+        try {
+            List var2 = var1.getRunningTasks(1);
+            if(var2 != null && var2.size() >= 1) {
+                boolean var3 = var0.getPackageName().equalsIgnoreCase(((ActivityManager.RunningTaskInfo)var2.get(0)).baseActivity.getPackageName());
+                XLogger.d("utils", "app running in foregroud：" + var3);
+                return var3;
+            } else {
+                return false;
+            }
+        } catch (SecurityException var4) {
+            XLogger.d("EasyUtils", "Apk doesn\'t hold GET_TASKS permission");
+            var4.printStackTrace();
+            return false;
+        }
     }
 
     public static String replaceBlank(String str) {

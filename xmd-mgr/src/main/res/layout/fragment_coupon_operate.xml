@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="35dp"
+                  android:layout_gravity="center_vertical"
+                  android:background="#f9f9f9"
+                  android:orientation="horizontal"
+                  >
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:layout_gravity="center_vertical"
+                  android:text="@string/coupon_data_date"
+                  android:textColor="@color/colorBody"
+                  android:textSize="@dimen/inter_text_size"/>
+
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:layout_gravity="center_vertical"
+                  android:text="@string/coupon_receive_data"
+                  android:textColor="@color/colorBody"
+                  android:textSize="@dimen/inter_text_size"/>
+
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:layout_gravity="center_vertical"
+                  android:text="@string/coupon_verification_data"
+                  android:textColor="@color/colorBody"
+                  android:textSize="@dimen/inter_text_size"/>
+
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:layout_gravity="center_vertical"
+                  android:text="@string/coupon_over_time_data"
+                  android:textColor="@color/colorBody"
+                  android:textSize="@dimen/inter_text_size"/>
+
+    </LinearLayout>
+    <include layout="@layout/layout_swipe_refresh_list"/>
+
+</LinearLayout>

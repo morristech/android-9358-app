@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <LinearLayout
+        android:id="@+id/ll_all_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fafafa"
+        android:padding="@dimen/inter_space">
+        <TextView
+            android:id="@+id/tv_coupon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coupon_data_all_coupon"
+            android:textColor="@color/colorFont2"
+            android:textSize="@dimen/inter_text_size"/>
+        <TextView
+            android:id="@+id/coupon_filter_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textColor="#ffaf50"
+            android:textSize="@dimen/inter_text_size"
+            tools:text="8月23日-9月30日"/>
+
+    </LinearLayout>
+    <View android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="@color/colorServiceDivide"/>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:layout_marginTop="@dimen/margin_10"
+          android:background="@color/colorServiceDivide"/>
+    <LinearLayout
+        android:id="@+id/ll_data_record"
+        android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+    android:background="@color/white">
+        <LinearLayout
+            android:id="@+id/ll_receive_record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/img_coupon_receive"/>
+
+            <TextView
+                style="@style/coupon_operate_content_type"
+                android:text="@string/coupon_data_receive"/>
+
+            <TextView
+                android:id="@+id/tv_coupon_receive"
+                style="@style/coupon_operate_data_type"
+                tools:text="92456"/>
+        </LinearLayout>
+        <View style="@style/line_vertical"/>
+        <LinearLayout
+            android:id="@+id/ll_verification_record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/img_coupon_verification"/>
+
+            <TextView
+                style="@style/coupon_operate_content_type"
+                android:text="@string/coupon_data_verification"/>
+
+            <TextView
+                android:id="@+id/tv_coupon_verification"
+                style="@style/coupon_operate_data_type"
+                tools:text="1820"/>
+        </LinearLayout>
+        <View style="@style/line_vertical"/>
+        <LinearLayout
+            android:id="@+id/ll_over_time_record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_pressed"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/img_coupon_over_time"/>
+
+            <TextView
+                style="@style/coupon_operate_content_type"
+                android:text="@string/coupon_data_over_time"/>
+
+            <TextView
+                android:id="@+id/tv_coupon_overtime"
+                style="@style/coupon_operate_data_type"
+                android:textColor="#666666"
+                tools:text="106"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fm_coupon_operate_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"></FrameLayout>
+</LinearLayout>

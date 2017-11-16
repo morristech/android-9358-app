@@ -122,7 +122,6 @@ public class AliveReportService extends Service {
     }
 
     private static void reportAlive(final String token) {
-        XLogger.i(">>>reportAlive: " + token);
         Observable<BaseBean> observable = XmdNetwork.getInstance()
                 .getService(CommonNetService.class)
                 .reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext()));

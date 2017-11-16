@@ -1,6 +1,7 @@
 package com.xmd.manager.service;
 
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
@@ -25,103 +26,7 @@ import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.AbstractController;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.RxBus;
-import com.xmd.manager.service.response.AccountDataResult;
-import com.xmd.manager.service.response.AddGroupResult;
-import com.xmd.manager.service.response.AlbumUploadResult;
-import com.xmd.manager.service.response.AppCommentListResult;
-import com.xmd.manager.service.response.AppUpdateConfigResult;
-import com.xmd.manager.service.response.AwardVerificationResult;
-import com.xmd.manager.service.response.BadCommentListResult;
-import com.xmd.manager.service.response.BadCommentResult;
-import com.xmd.manager.service.response.BaseResult;
-import com.xmd.manager.service.response.ChangeStatusResult;
-import com.xmd.manager.service.response.CheckVerificationTypeResult;
-import com.xmd.manager.service.response.ClubAuthConfigResult;
-import com.xmd.manager.service.response.ClubCouponResult;
-import com.xmd.manager.service.response.ClubCouponViewResult;
-import com.xmd.manager.service.response.ClubEnterResult;
-import com.xmd.manager.service.response.ClubListResult;
-import com.xmd.manager.service.response.ClubResult;
-import com.xmd.manager.service.response.CommentAndComplaintListResult;
-import com.xmd.manager.service.response.CommentDeleteResult;
-import com.xmd.manager.service.response.CouponDataResult;
-import com.xmd.manager.service.response.CouponUseDataResult;
-import com.xmd.manager.service.response.CustomerCouponsResult;
-import com.xmd.manager.service.response.CustomerFilterResult;
-import com.xmd.manager.service.response.CustomerListResult;
-import com.xmd.manager.service.response.CustomerOrdersResult;
-import com.xmd.manager.service.response.CustomerResult;
-import com.xmd.manager.service.response.CustomerSearchListResult;
-import com.xmd.manager.service.response.CustomerSortCompletedResult;
-import com.xmd.manager.service.response.DefaultVerificationDetailResult;
-import com.xmd.manager.service.response.DeleteGroupResult;
-import com.xmd.manager.service.response.FavourableActivityListResult;
-import com.xmd.manager.service.response.FeedbackResult;
-import com.xmd.manager.service.response.GMessageStatSwitchResult;
-import com.xmd.manager.service.response.GroupInfoResult;
-import com.xmd.manager.service.response.GroupListResult;
-import com.xmd.manager.service.response.GroupMessageResult;
-import com.xmd.manager.service.response.GroupTagListResult;
-import com.xmd.manager.service.response.GroupUserListResult;
-import com.xmd.manager.service.response.LineChartDataResult;
-import com.xmd.manager.service.response.LoginResult;
-import com.xmd.manager.service.response.LogoutResult;
-import com.xmd.manager.service.response.MarketingIncomeListResult;
-import com.xmd.manager.service.response.MarketingResult;
-import com.xmd.manager.service.response.ModifyPasswordResult;
-import com.xmd.manager.service.response.NewOrderCountResult;
-import com.xmd.manager.service.response.OnlinePayListResult;
-import com.xmd.manager.service.response.OrderDataResult;
-import com.xmd.manager.service.response.OrderFilterChangeResult;
-import com.xmd.manager.service.response.OrderListFilterResult;
-import com.xmd.manager.service.response.OrderListResult;
-import com.xmd.manager.service.response.OrderManageResult;
-import com.xmd.manager.service.response.OrderOrCouponResult;
-import com.xmd.manager.service.response.OrderProjectListResult;
-import com.xmd.manager.service.response.OrderResult;
-import com.xmd.manager.service.response.OrderSearchListResult;
-import com.xmd.manager.service.response.OrderSummaryResult;
-import com.xmd.manager.service.response.OrderTechListResult;
-import com.xmd.manager.service.response.PKActivityListResult;
-import com.xmd.manager.service.response.PKPersonalListResult;
-import com.xmd.manager.service.response.PKTeamListResult;
-import com.xmd.manager.service.response.PaidOrderSwitchResult;
-import com.xmd.manager.service.response.PayOrderDetailResult;
-import com.xmd.manager.service.response.PropagandaDataResult;
-import com.xmd.manager.service.response.RecordTypeListResult;
-import com.xmd.manager.service.response.RegisterListResult;
-import com.xmd.manager.service.response.RegisterStatisticsResult;
-import com.xmd.manager.service.response.RegistryDataResult;
-import com.xmd.manager.service.response.ReportCreateResult;
-import com.xmd.manager.service.response.ReportDeleteResult;
-import com.xmd.manager.service.response.ReportInfoResult;
-import com.xmd.manager.service.response.ReportNewsResult;
-import com.xmd.manager.service.response.ReportSettingResult;
-import com.xmd.manager.service.response.SaveChatUserResult;
-import com.xmd.manager.service.response.SendGroupMessageResult;
-import com.xmd.manager.service.response.StaffDataResult;
-import com.xmd.manager.service.response.StatisticsHomeDataResult;
-import com.xmd.manager.service.response.StatisticsMainPageResult;
-import com.xmd.manager.service.response.TechBadCommentListResult;
-import com.xmd.manager.service.response.TechListResult;
-import com.xmd.manager.service.response.TechPKRankingResult;
-import com.xmd.manager.service.response.TechRankDataResult;
-import com.xmd.manager.service.response.TechRankingListResult;
-import com.xmd.manager.service.response.TokenExpiredResult;
-import com.xmd.manager.service.response.UseCouponResult;
-import com.xmd.manager.service.response.UserCouponListResult;
-import com.xmd.manager.service.response.UserCouponViewResult;
-import com.xmd.manager.service.response.UserEditGroupResult;
-import com.xmd.manager.service.response.UserGetCouponResult;
-import com.xmd.manager.service.response.UserGroupDetailListResult;
-import com.xmd.manager.service.response.UserGroupSaveResult;
-import com.xmd.manager.service.response.VerificationCouponDetailResult;
-import com.xmd.manager.service.response.VerificationRecordDetailResult;
-import com.xmd.manager.service.response.VerificationRecordListResult;
-import com.xmd.manager.service.response.VerificationSaveResult;
-import com.xmd.manager.service.response.VerificationServiceCouponResult;
-import com.xmd.manager.service.response.VisitDataResult;
-import com.xmd.manager.service.response.WifiDataResult;
+import com.xmd.manager.service.response.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -500,11 +405,22 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM:
                 createFinancialReport((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_COUPON_OPERATE_LIST_DATA:
+                getCouponOperateData((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_COUPON_OPERATE_DATA_TOTAL:
+                getCouponOperateTotal((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_COUPON_RECORD_DATA:
+                getCouponRecordData((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_COUPON_LIST_DATA:
+                getCouponListData((Map<String, String>) msg.obj);
+                break;
         }
 
         return true;
     }
-
 
 
     private void doSwitchIndex(Map<String, String> params) {
@@ -2730,9 +2646,10 @@ public class RequestController extends AbstractController {
     private void getFinancialReportList(Map<String, String> obj) {
 
     }
+
     //报表详情
     private void getFinancialReportById(String reportId) {
-        Call<ReportInfoResult> call = getSpaService().getReportInfo(SharedPreferenceHelper.getUserToken(),reportId);
+        Call<ReportInfoResult> call = getSpaService().getReportInfo(SharedPreferenceHelper.getUserToken(), reportId);
         call.enqueue(new TokenCheckedCallback<ReportInfoResult>() {
             @Override
             protected void postResult(ReportInfoResult result) {
@@ -2740,15 +2657,16 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
     //删除报表
-      private void deleteFinancialReportById(String reportId) {
-          Call<ReportDeleteResult> call = getSpaService().deleteReport(SharedPreferenceHelper.getUserToken(),reportId);
-          call.enqueue(new TokenCheckedCallback<ReportDeleteResult>() {
-              @Override
-              protected void postResult(ReportDeleteResult result) {
-                  super.postResult(result);
-              }
-          });
+    private void deleteFinancialReportById(String reportId) {
+        Call<ReportDeleteResult> call = getSpaService().deleteReport(SharedPreferenceHelper.getUserToken(), reportId);
+        call.enqueue(new TokenCheckedCallback<ReportDeleteResult>() {
+            @Override
+            protected void postResult(ReportDeleteResult result) {
+                super.postResult(result);
+            }
+        });
 
     }
 
@@ -2760,8 +2678,8 @@ public class RequestController extends AbstractController {
 
     //创建自定义报表
     private void createFinancialReport(Map<String, String> params) {
-        Call<ReportCreateResult> call = getSpaService().createReport(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_REPORT_CUSTOM_START_TIME),
-                params.get(RequestConstant.KEY_REPORT_CUSTOM_END_TIME),params.get(RequestConstant.KEY_REPORT_CUSTOM_NAME));
+        Call<ReportCreateResult> call = getSpaService().createReport(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_REPORT_CUSTOM_START_TIME),
+                params.get(RequestConstant.KEY_REPORT_CUSTOM_END_TIME), params.get(RequestConstant.KEY_REPORT_CUSTOM_NAME));
         call.enqueue(new TokenCheckedCallback<ReportCreateResult>() {
             @Override
             protected void postResult(ReportCreateResult result) {
@@ -2771,7 +2689,68 @@ public class RequestController extends AbstractController {
 
     }
 
+    //优惠券数据统计总数
+    private void getCouponOperateTotal(Map<String, String> params) {
+        Call<CouponOperateDataResult> call = getSpaService().getOperateDataTotal(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_COUPON_ID), params.get(RequestConstant.KEY_START_DATE),
+                params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<CouponOperateDataResult>() {
+            @Override
+            protected void postResult(CouponOperateDataResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
 
+    //优惠券数据统计
+    private void getCouponOperateData(Map<String, String> params) {
+        Call<CouponOperateDataListResult> call = getSpaService().getOperateDataList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE), params.get(RequestConstant.KEY_COUPON_ID), params.get(RequestConstant.KEY_START_DATE),
+                params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<CouponOperateDataListResult>() {
+            @Override
+            protected void postResult(CouponOperateDataListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    //优惠券记录
+
+    private void getCouponRecordData(Map<String, String> params) {
+        Call<CouponRecordResult> call = getSpaService().getCouponRecordData(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
+                params.get(RequestConstant.KEY_COUPON_START_TIME), params.get(RequestConstant.KEY_COUPON_END_TIME), params.get(RequestConstant.KEY_COUPON_ID), params.get(RequestConstant.KEY_COUPON_PHONE_NUM_OR_COUPON_NO),
+                params.get(RequestConstant.KEY_COUPON_STATUS), params.get(RequestConstant.KEY_COUPON_TIME_TYPE));
+        call.enqueue(new TokenCheckedCallback<CouponRecordResult>() {
+            @Override
+            protected void postResult(CouponRecordResult result) {
+                if (TextUtils.isEmpty(params.get(RequestConstant.KEY_COUPON_SEARCH_MARK))) {
+                    result.isSearch = false;
+                } else {
+                    result.isSearch = true;
+                }
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                CouponRecordResult recordResult = new CouponRecordResult();
+                recordResult.msg = errorMsg;
+                RxBus.getInstance().post(recordResult);
+            }
+        });
+    }
+
+    //
+    private void getCouponListData(Map<String, String> params) {
+        Call<CouponListResult> call = getSpaService().getCouponListData(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
+                params.get(RequestConstant.KEY_COUPON_TYPE), params.get(RequestConstant.KEY_COUPON_ONLINE));
+        call.enqueue(new TokenCheckedCallback<CouponListResult>() {
+            @Override
+            protected void postResult(CouponListResult result) {
+                result.onLineType = params.get(RequestConstant.KEY_COUPON_LIST_TYPE);
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
 
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {

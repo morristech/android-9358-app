@@ -36,7 +36,10 @@ import com.xmd.manager.beans.BadComment;
 import com.xmd.manager.beans.BadCommentRateListBean;
 import com.xmd.manager.beans.ClubInfo;
 import com.xmd.manager.beans.CommentDetailBean;
+import com.xmd.manager.beans.CouponBean;
 import com.xmd.manager.beans.CouponInfo;
+import com.xmd.manager.beans.CouponRecordBean;
+import com.xmd.manager.beans.CouponStatisticsBean;
 import com.xmd.manager.beans.Customer;
 import com.xmd.manager.beans.GroupBean;
 import com.xmd.manager.beans.GroupMessage;
@@ -130,7 +133,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 18;
     private static final int TYPE_TECH_PERSONAL_RANKING = 19;
     private static final int TYPE_STAFF_DATA_ITEM = 20;
-    private static final int TYPE_OPERATE_REPORT_ITEM = 21;
+    private static final int TYPE_COUPON_OPERATE_ITEM = 21;
+    private static final int TYPE_OPERATE_REPORT_ITEM = 22;
+    private static final int TYPE_COUPON_RECORD_ITEM = 23;
+    private static final int TYPE_NORMAL_COUPON_LIST_ITEM = 24;
+    private static final int TYPE_PAID_COUPON_LIST_ITEM = 25;
     private static final int TYPE_FOOTER = 99;
     private static final int TYPE_DADA_IS_EMPTY = 100;
 
@@ -187,12 +194,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mData.get(position) instanceof Order) {
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof Customer) {
-                Customer customer = (Customer) mData.get(position);
-                /*if (Constant.CUSTOMER_TYPE_ITEM == customer.type) {
-                    return TYPE_CUSTOMER_ITEM;
-                } else {
-                    return TYPE_CUSTOMER_ITEM_HEADER;
-                }*/
                 return TYPE_CUSTOMER_ITEM;
             } else if (mData.get(position) instanceof EMConversation) {
                 return TYPE_CONVERSATION_ITEM;
@@ -224,8 +225,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PERSONAL_RANKING;
             } else if (mData.get(position) instanceof StaffDataBean) {
                 return TYPE_STAFF_DATA_ITEM;
+            } else if (mData.get(position) instanceof CouponStatisticsBean) {
+                return TYPE_COUPON_OPERATE_ITEM;
             } else if (mData.get(position) instanceof OperateReportBean) {
                 return TYPE_OPERATE_REPORT_ITEM;
+            } else if (mData.get(position) instanceof CouponRecordBean) {
+                return TYPE_COUPON_RECORD_ITEM;
+            } else if (mData.get(position) instanceof CouponBean) {
+                if (((CouponBean) mData.get(position)).couponType.equals(Constant.COUPON_PAID_TYPE)) {
+                    return TYPE_PAID_COUPON_LIST_ITEM;
+                } else {
+                    return TYPE_NORMAL_COUPON_LIST_ITEM;
+                }
+
             }
         }
         return TYPE_DADA_IS_EMPTY;
@@ -276,9 +288,21 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_STAFF_DATA_ITEM:
                 View staffData = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_staff_data_item, parent, false);
                 return new StaffDataListItemViewHolder(staffData);
+            case TYPE_COUPON_OPERATE_ITEM:
+                View couponOperateView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_coupon_operate_item, parent, false);
+                return new CouponOperateListItemViewHolder(couponOperateView);
             case TYPE_OPERATE_REPORT_ITEM:
                 View operateReportView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_operate_item, parent, false);
                 return new OperateReportListItemViewHolder(operateReportView);
+            case TYPE_COUPON_RECORD_ITEM:
+                View couponRecordItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_coupon_record_item, parent, false);
+                return new CouponRecordListItemViewHolder(couponRecordItem);
+            case TYPE_NORMAL_COUPON_LIST_ITEM:
+                View normalCouponItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_coupon_item, parent, false);
+                return new CouponListItemViewHolder(normalCouponItem);
+            case TYPE_PAID_COUPON_LIST_ITEM:
+                View paidCouponItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_paid_item, parent, false);
+                return new CouponListItemViewHolder(paidCouponItem);
             default:
                 return null;
         }
@@ -395,13 +419,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 bindTechPersonalRankingViewHolder(holder, obj, position);
             } else if (holder instanceof StaffDataListItemViewHolder) {
                 bindStaffDataRankingViewHolder(holder, obj, position);
-            } else if(holder instanceof OperateReportListItemViewHolder){
-                bindOperateReportListViewHolder(holder,obj);
+            } else if (holder instanceof CouponOperateListItemViewHolder) {
+                bindCouponOperateItemViewHolder(holder, obj);
+            } else if (holder instanceof OperateReportListItemViewHolder) {
+                bindOperateReportListViewHolder(holder, obj);
+            } else if (holder instanceof CouponRecordListItemViewHolder) {
+                bindCouponRecordListViewHolder(holder, obj);
+            } else if (holder instanceof CouponListItemViewHolder) {
+                bindCouponListItemViewHolder(holder, obj);
             }
         }
 
     }
-
 
 
     /**
@@ -636,12 +665,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         itemHolder.mCouponStatus.setText(couponInfo.actStatusName);
         itemHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponInfo));
     }
-
-
-//    private void bindDataisEmptyItemViewHolder(RecyclerView.ViewHolder holder) {
-//        DataisEmptyViewHolder mHolder = (DataisEmptyViewHolder) holder;
-//        ((DataisEmptyViewHolder) holder).mAlertText.setText("您尚未拥有可用优惠券/现金券");
-//    }
 
     private void bindClubItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
         ClubListItemViewHolder clubHolder = (ClubListItemViewHolder) holder;
@@ -1187,11 +1210,82 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+    private void bindCouponOperateItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
+        final CouponStatisticsBean operateBean = (CouponStatisticsBean) obj;
+        CouponOperateListItemViewHolder viewHolder = (CouponOperateListItemViewHolder) holder;
+        viewHolder.tvCouponOperateDate.setText(operateBean.reportDate);
+        viewHolder.tvCouponOperateReceive.setText(operateBean.getTotal);
+        viewHolder.tvCouponOperateOverTime.setText(operateBean.expireTotal);
+        viewHolder.tvCouponOperateVerification.setText(operateBean.haveUseTotal);
+    }
+
     private void bindOperateReportListViewHolder(RecyclerView.ViewHolder holder, Object obj) {
         final OperateReportBean reoprtBean = (OperateReportBean) obj;
         OperateReportListItemViewHolder viewHolder = (OperateReportListItemViewHolder) holder;
 
 
+    }
+
+    private void bindCouponRecordListViewHolder(RecyclerView.ViewHolder holder, Object obj) {
+        final CouponRecordBean recordBean = (CouponRecordBean) obj;
+        CouponRecordListItemViewHolder viewHolder = (CouponRecordListItemViewHolder) holder;
+        Glide.with(mContext).load(recordBean.userHeadImage).error(R.drawable.icon22).into(viewHolder.imgRecordUserHead);
+        viewHolder.tvRecordUserName.setText(TextUtils.isEmpty(recordBean.userName) ? "匿名用户" : recordBean.userName);
+        viewHolder.tvRecordUserPhone.setText(TextUtils.isEmpty(recordBean.userPhoneNum) ? "" : recordBean.userPhoneNum);
+        viewHolder.tvRecordCouponStatus.setText(TextUtils.isEmpty(recordBean.statusName) ? "" : recordBean.statusName);
+        if (!TextUtils.isEmpty(recordBean.statusName) && recordBean.statusName.equals("已过期")) {
+            viewHolder.tvRecordCouponStatus.setEnabled(false);
+        } else {
+            viewHolder.tvRecordCouponStatus.setEnabled(true);
+        }
+        viewHolder.tvCouponName.setText(TextUtils.isEmpty(recordBean.title) ? "优惠券" : recordBean.title);
+        viewHolder.tvCouponNo.setText(String.format("[ %s ]", recordBean.businessNo));
+        viewHolder.tvCouponVerificationNum.setText(recordBean.couponNo);
+        viewHolder.tvCouponGetTime.setText(TextUtils.isEmpty(recordBean.getTime) ? "-" : recordBean.getTime);
+        viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(recordBean));
+    }
+
+    private void bindCouponListItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
+        final CouponBean couponBean = (CouponBean) obj;
+        CouponListItemViewHolder viewHolder = (CouponListItemViewHolder) holder;
+        if (couponBean.couponType.equals(Constant.COUPON_PAID_TYPE)) {
+            viewHolder.tvCouponTitle.setText(couponBean.couponTypeName);
+            viewHolder.couponType.setText("");
+        } else {
+            viewHolder.tvCouponTitle.setText(Utils.StrSubstring(8, couponBean.actTitle, true));
+            viewHolder.couponType.setText(String.format("（%s）", couponBean.couponTypeName));
+        }
+        if (couponBean.commissionAmount > 0) {
+            viewHolder.tvCouponReward.setVisibility(View.VISIBLE);
+            String text = String.format("提成 %1.1f元", couponBean.commissionAmount / 100f);
+            SpannableString spannableString = new SpannableString(text);
+            spannableString.setSpan(new TextAppearanceSpan(mContext, R.style.text_bold), 3, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            viewHolder.tvCouponReward.setText(spannableString);
+        } else {
+            viewHolder.tvCouponReward.setVisibility(View.GONE);
+        }
+
+        if (couponBean.couponType.equals(Constant.COUPON_DISCOUNT_TYPE)) { //折扣券
+            viewHolder.imgMoneyMark.setVisibility(View.GONE);
+            viewHolder.couponEmptyView.setVisibility(View.VISIBLE);
+            viewHolder.couponAmount.setText(String.format("%s 折", couponBean.amount));
+            viewHolder.tvConsumeMoneyDescription.setText(TextUtils.isEmpty(couponBean.consumeMoneyDescription) ? "" : couponBean.consumeMoneyDescription);
+        } else if (couponBean.couponType.equals(Constant.COUPON_GIFT_TYPE)) {//礼品券
+            viewHolder.couponEmptyView.setVisibility(View.VISIBLE);
+            viewHolder.imgMoneyMark.setVisibility(View.GONE);
+            viewHolder.couponAmount.setText(TextUtils.isEmpty(couponBean.actSubTitle) ? couponBean.actId : couponBean.actSubTitle);
+            viewHolder.tvConsumeMoneyDescription.setText("");
+        } else {
+            viewHolder.couponEmptyView.setVisibility(View.GONE);
+            viewHolder.imgMoneyMark.setVisibility(View.VISIBLE);
+            viewHolder.couponAmount.setText(couponBean.amount);
+            viewHolder.tvConsumeMoneyDescription.setText(TextUtils.isEmpty(couponBean.consumeMoneyDescription) ? "" : couponBean.consumeMoneyDescription);
+        }
+
+        viewHolder.tvCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, couponBean.couponPeriod, true));
+        viewHolder.btnShareCoupon.setVisibility(couponBean.online.equals(Constant.COUPON_ONLINE_TRUE) && !couponBean.couponType.equals(Constant.COUPON_PAID_TYPE) ? View.VISIBLE : View.GONE);
+        viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponBean));
+        viewHolder.btnShareCoupon.setOnClickListener(v -> mCallback.onPositiveButtonClicked(couponBean));
     }
 
 
@@ -1310,10 +1404,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mTime;
         @BindView(R.id.unread)
         TextView mUnread;
-        /*   @BindView(R.id.operation_conversion)
-           LinearLayout mOperation;
-           @BindView(R.id.tvDelete)
-           Button delete;*/
+
         public boolean isOperationVisible;
 
         public ConversationListItemViewHolder(View itemView) {
@@ -1348,16 +1439,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-
-//    static class DataisEmptyViewHolder extends RecyclerView.ViewHolder {
-//        @BindView(R.id.data_is_empty)
-//        TextView mAlertText;
-//
-//        DataisEmptyViewHolder(View itemView) {
-//            super(itemView);
-//            ButterKnife.bind(this, itemView);
-//        }
-//    }
 
     static class ClubListItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -1718,6 +1799,22 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+    static class CouponOperateListItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_coupon_operate_date)
+        TextView tvCouponOperateDate;
+        @BindView(R.id.tv_coupon_operate_receive)
+        TextView tvCouponOperateReceive;
+        @BindView(R.id.tv_coupon_operate_verification)
+        TextView tvCouponOperateVerification;
+        @BindView(R.id.tv_coupon_operate_over_time)
+        TextView tvCouponOperateOverTime;
+
+        CouponOperateListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
     static class OperateReportListItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_report_name)
         TextView tvReportName;
@@ -1727,6 +1824,56 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         ImageView imgOperateNewRemark;
 
         OperateReportListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class CouponRecordListItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.img_record_user_head)
+        CircleImageView imgRecordUserHead;
+        @BindView(R.id.tv_record_user_name)
+        TextView tvRecordUserName;
+        @BindView(R.id.tv_record_user_phone)
+        TextView tvRecordUserPhone;
+        @BindView(R.id.tv_record_coupon_status)
+        TextView tvRecordCouponStatus;
+        @BindView(R.id.tv_coupon_name)
+        TextView tvCouponName;
+        @BindView(R.id.tv_coupon_no)
+        TextView tvCouponNo;
+        @BindView(R.id.tv_coupon_verification_num)
+        TextView tvCouponVerificationNum;
+        @BindView(R.id.tv_coupon_get_time)
+        TextView tvCouponGetTime;
+
+        CouponRecordListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class CouponListItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_coupon_title)
+        TextView tvCouponTitle;
+        @BindView(R.id.coupon_type)
+        TextView couponType;
+        @BindView(R.id.tv_coupon_reward)
+        TextView tvCouponReward;
+        @BindView(R.id.coupon_empty_view)
+        View couponEmptyView;
+        @BindView(R.id.img_money_mark)
+        ImageView imgMoneyMark;
+        @BindView(R.id.coupon_amount)
+        TextView couponAmount;
+        @BindView(R.id.tv_consume_money_description)
+        TextView tvConsumeMoneyDescription;
+        @BindView(R.id.tv_coupon_period)
+        TextView tvCouponPeriod;
+        @BindView(R.id.btn_share_coupon)
+        TextView btnShareCoupon;
+
+        CouponListItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

@@ -1119,11 +1119,13 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT_BY_ID)
     Call<ReportInfoResult> getReportInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                          @Path(RequestConstant.KEY_ID) String id);
+
     //删除报表
     @FormUrlEncoded
     @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_DELETE)
     Call<ReportDeleteResult> deleteReport(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                           @Field(RequestConstant.KEY_ID) String id);
+
     //报表设置
     @FormUrlEncoded
     @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_CONFIG)
@@ -1146,6 +1148,42 @@ public interface SpaService {
     //检查
     @GET(RequestConstant.URL_CLUB_INFO)
     Observable<BaseBean> checkToken(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    //优惠券数据统计
+    @GET(RequestConstant.URL_GET_USE_EXPIRE_COUNT_TOTAL)
+    Call<CouponOperateDataResult> getOperateDataTotal(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                      @Query(RequestConstant.KEY_COUPON_ID) String couponId,
+                                                      @Query(RequestConstant.KEY_COUPON_START_DATE) String startDate,
+                                                      @Query(RequestConstant.KEY_COUPON_END_DATE) String endDate);
+
+    //优惠券数据统计
+    @GET(RequestConstant.URL_GET_USE_EXPIRE_COUNT_LIST)
+    Call<CouponOperateDataListResult> getOperateDataList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Query(RequestConstant.KEY_PAGE) String page,
+                                                         @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                         @Query(RequestConstant.KEY_COUPON_ID) String couponId,
+                                                         @Query(RequestConstant.KEY_COUPON_START_DATE) String startDate,
+                                                         @Query(RequestConstant.KEY_COUPON_END_DATE) String endDate);
+
+    //优惠券记录
+    @GET(RequestConstant.URL_GET_MANAGER_COUPON_RECORD)
+    Call<CouponRecordResult> getCouponRecordData(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Query(RequestConstant.KEY_PAGE) String page,
+                                                 @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                 @Query(RequestConstant.KEY_COUPON_START_TIME) String startTime,
+                                                 @Query(RequestConstant.KEY_COUPON_END_TIME) String endTime,
+                                                 @Query(RequestConstant.KEY_COUPON_ID) String couponId,
+                                                 @Query(RequestConstant.KEY_COUPON_PHONE_NUM_OR_COUPON_NO) String phoneNumOrCouponNo,
+                                                 @Query(RequestConstant.KEY_COUPON_STATUS) String status,
+                                                 @Query(RequestConstant.KEY_COUPON_TIME_TYPE) String timeType);
+
+    //优惠券点钟券列表
+    @GET(RequestConstant.URL_GET_ONLINE_COUPON_LIST)
+    Call<CouponListResult> getCouponListData(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Query(RequestConstant.KEY_PAGE) String page,
+                                             @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                             @Query(RequestConstant.KEY_COUPON_TYPE) String couponType,
+                                             @Query(RequestConstant.KEY_COUPON_ONLINE) String online);
 
 
 }

@@ -27,7 +27,7 @@ public class ClearableEditText extends EditText {
     private Drawable delImg;
 
     // 判断是否获取焦点
-    private boolean hasFoucs;
+    private boolean hasFocus;
 
     private int mBgColorFilter;
 
@@ -117,7 +117,7 @@ public class ClearableEditText extends EditText {
      */
     @OnFocusChange
     public void onFocusChange(View v, boolean hasFocus) {
-        this.hasFoucs = hasFocus;
+        this.hasFocus = hasFocus;
         if (hasFocus) {
             setClearIconVisible(getText().length() > 0);
         } else {
@@ -130,9 +130,13 @@ public class ClearableEditText extends EditText {
      */
     @OnTextChanged
     public void onTextChanged(CharSequence s, int start, int count, int after) {
-        if (hasFoucs) {
+        if (hasFocus) {
             setClearIconVisible(s.length() > 0);
         }
+    }
+
+    public boolean viewhasFocus(){
+        return  hasFocus;
     }
 
 }

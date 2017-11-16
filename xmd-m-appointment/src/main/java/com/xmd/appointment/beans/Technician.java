@@ -180,6 +180,9 @@ public class Technician implements Serializable {
         } else if (Constants.TECH_STATUS_BUSY.equals(status)) {
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(R.drawable.ic_status_busy);
+        } else if(Constants.TECH_STATUS_REST.equals(status)){
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(R.drawable.ic_status_rest);
         } else {
             imageView.setVisibility(View.GONE);
         }

@@ -198,6 +198,13 @@ public class RequestConstant {
     public static final String URL_CLUB_FINANCIAL_REPORT_CONFIG = BASE_URL + "/v2/club/financial/report/config";
     public static final String URL_GET_CLUB_FINANCIAL_REPORT_NEWS = BASE_URL + "/v2/club/financial/report/news";
     public static final String URL_GET_CLUB_FINANCIAL_REPORT_BY_ID = BASE_URL + "/v2/club/financial/report/{id}";
+    /**
+     * 优惠券改版
+     */
+    public static final String URL_GET_USE_EXPIRE_COUNT_TOTAL = BASE_URL + "/v2/manager/datastatistics/coupon/get_use_expire/total/count";
+    public static final String URL_GET_USE_EXPIRE_COUNT_LIST = BASE_URL + "/v2/manager/datastatistics/coupon/get_use_expire/count";
+    public static final String URL_GET_MANAGER_COUPON_RECORD = BASE_URL + "/v2/manager/coupon/record";
+    public static final String URL_GET_ONLINE_COUPON_LIST = BASE_URL + "/v2/manager/club/online/coupon/list";
 
 
     /**********************************************************************dengyixia***********************/
@@ -473,6 +480,23 @@ public class RequestConstant {
     public static final String KEY_REPORT_CUSTOM_NAME = "name";
     public static final String KEY_REPORT_DATE = "date";
     public static final String KEY_REPORT_TYPE = "type";
+
+    /**
+     * 优惠券优化
+     */
+
+    public static final String KEY_COUPON_ID = "couponId";
+    public static final String KEY_COUPON_START_DATE = "startDate";
+    public static final String KEY_COUPON_END_DATE = "endDate";
+    public static final String KEY_COUPON_START_TIME = "startTime";
+    public static final String KEY_COUPON_END_TIME = "endTime";
+    public static final String KEY_COUPON_TIME_TYPE = "timeType";
+    public static final String KEY_COUPON_STATUS = "status";
+    public static final String KEY_COUPON_PHONE_NUM_OR_COUPON_NO = "phoneNumOrCouponNo";
+    public static final String KEY_COUPON_SEARCH_MARK = "searchMark";
+    public static final String KEY_COUPON_TYPE = "couponType";
+    public static final String KEY_COUPON_ONLINE = "online";
+    public static final String KEY_COUPON_LIST_TYPE = "listType";
 
 }
 

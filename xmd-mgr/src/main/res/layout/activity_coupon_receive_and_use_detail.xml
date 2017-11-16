@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/fragment_coupon_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_user_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/inter_space"
+                android:paddingLeft="16dp"
+                android:paddingRight="@dimen/inter_space"
+                android:paddingTop="@dimen/inter_space">
+                <com.xmd.manager.widget.CircleImageView
+                    android:id="@+id/img_user_avatar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/icon22"/>
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@id/img_user_avatar"
+                    android:singleLine="true"
+                    android:textColor="#212121"
+                    android:textSize="19sp"
+                    tools:text="Lily"/>
+                <TextView
+                    android:id="@+id/tv_user_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_user_name"
+                    android:layout_alignStart="@+id/tv_user_name"
+                    android:layout_below="@+id/tv_user_name"
+                    android:textColor="#616161"
+                    android:textSize="15sp"
+                    tools:text="13178945612"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"/>
+            </RelativeLayout>
+            <View style="@style/horizontal_divider_line"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:background="@color/white"
+                          android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+                    <TextView
+                        android:id="@+id/receiveTime"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="领取时间："
+                        android:textColor="#212121"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:id="@+id/tv_receive_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/receiveTime"
+                        android:textColor="#666666"
+                        android:textSize="15sp"
+                        tools:text="2017.01.02 18:22:30"/>
+                    <TextView
+                        android:id="@+id/useAbleTime"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/receiveTime"
+                        android:layout_marginTop="@dimen/small_space"
+                        android:text="有效时间："
+                        android:textColor="#212121"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_use_able_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_receive_time"
+                        android:layout_marginTop="@dimen/small_space"
+                        android:layout_toRightOf="@id/useAbleTime"
+                        android:textColor="#666666"
+                        android:textSize="15sp"
+                        tools:text="2017.01.02 18:22:30"/>
+
+                    <TextView
+                        android:id="@+id/shareName"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/useAbleTime"
+                        android:layout_marginTop="@dimen/small_space"
+                        android:text="分享者    ："
+                        android:textColor="#212121"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_share_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_use_able_time"
+                        android:layout_marginTop="@dimen/small_space"
+                        android:layout_toRightOf="@id/useAbleTime"
+                        android:textColor="#666666"
+                        android:textSize="15sp"
+                        tools:text="米妮 [008]"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/ll_verification_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="16sp"
+                        android:layout_marginRight="16sp"
+                        android:background="@drawable/shape_split_line"
+                        android:layerType="software"/>
+                    <RelativeLayout
+                        android:id="@+id/rl_verification_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+                        <TextView
+                            android:id="@+id/VerificationTime"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="核销时间："
+                            android:textColor="#212121"
+                            android:textSize="15sp"/>
+                        <TextView
+                            android:id="@+id/tv_verification_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/VerificationTime"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            tools:text="2017.01.02 18:22:30"/>
+                        <TextView
+                            android:id="@+id/VerificationName"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/VerificationTime"
+                            android:layout_marginTop="@dimen/small_space"
+                            android:text="核销人    ："
+                            android:textColor="#212121"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_verification_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_verification_time"
+                            android:layout_marginTop="@dimen/small_space"
+                            android:layout_toRightOf="@id/VerificationName"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            tools:text="2017.01.02 18:22:30"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:orientation="vertical"
+                  android:paddingBottom="@dimen/small_space"
+                  android:paddingLeft="20dp"
+                  android:paddingRight="20dp"
+                  android:paddingTop="@dimen/small_space">
+        <Button
+            android:id="@+id/btn_to_do"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="返回"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

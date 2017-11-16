@@ -36,6 +36,7 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
+
 import rx.Observable;
 
 /**
@@ -94,18 +95,25 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
             @Override
             public void onError(int i, String s) {
-               //当技师被用户拉入黑名单时不进行错误提示
-                if(i==210){
-                    ChatSettingManager.getInstance().judgeInCustomerBlack(chatMessage.getToChatId(),true);
-                    chatMessage.getEmMessage().setStatus(EMMessage.Status.SUCCESS);
-                    progress.set(false);
-                    error.set(false);
-                }else{
-                    XToast.show("发送失败：" + s);
-                    progress.set(false);
-                    error.set(true);
+                //当技师被用户拉入黑名单时不进行错误提示
+                switch (i) {
+                    case 201:
+                        XToast.show("聊天帐号登录失败，请重新登录");
+                        progress.set(false);
+                        error.set(true);
+                        break;
+                    case 210:
+                        ChatSettingManager.getInstance().judgeInCustomerBlack(chatMessage.getToChatId(), true);
+                        chatMessage.getEmMessage().setStatus(EMMessage.Status.SUCCESS);
+                        progress.set(false);
+                        error.set(false);
+                        break;
+                    default:
+                        XToast.show("发送失败：" + s);
+                        progress.set(false);
+                        error.set(true);
+                        break;
                 }
-
             }
 
             @Override
@@ -122,9 +130,9 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                 error.set(false);
                 break;
             case FAIL:
-                if(ChatSettingManager.getInstance().isInCustomerBlackList(chatMessage.getToChatId())){
+                if (ChatSettingManager.getInstance().isInCustomerBlackList(chatMessage.getToChatId())) {
                     error.set(false);
-                }else {
+                } else {
                     error.set(true);
                 }
 

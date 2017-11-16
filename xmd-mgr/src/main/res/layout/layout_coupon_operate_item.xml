@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/white"
+              android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="45dp"
+                  android:layout_gravity="center_vertical"
+                  android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_coupon_operate_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            tools:text="1月20日"
+            android:gravity="center"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/inter_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_coupon_operate_receive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="1312"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/inter_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_coupon_operate_verification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="555"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/inter_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_coupon_operate_over_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="321"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/inter_text_size"/>
+
+    </LinearLayout>
+    <View style="@style/horizontal_divider_line"/>
+
+</LinearLayout>

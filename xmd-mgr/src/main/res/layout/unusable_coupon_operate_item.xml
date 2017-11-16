@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/ll_coupon_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginLeft="@dimen/inter_space"
+              android:layout_marginTop="@dimen/inter_space"
+              android:background="@drawable/selector_unusable_coupon_operate_bg"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/small_space"
+              android:paddingTop="@dimen/small_space">
+    <TextView
+        android:id="@+id/tv_coupon_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/selected_coupon_record_text_color"
+        android:textSize="14sp"
+        tools:text="限时按摩券"
+    />
+    <TextView
+        android:id="@+id/tv_coupon_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/selected_coupon_record_text_color"
+        android:textSize="11sp"
+        tools:text="[123456]"
+    />
+
+</LinearLayout>

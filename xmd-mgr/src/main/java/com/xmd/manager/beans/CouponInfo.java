@@ -59,6 +59,9 @@ public class CouponInfo implements Parcelable, Cloneable {
     public String consumeMoneyDescription;
     public String useTypeName;
     public String couponTypeName;
+    public String consumeMoney;
+    public int userGetCount;
+    public String techCommission;
     public int isSelected; //0,可被选中且未被选中，1，可被选中且已被选中，2，不可被选中
 
     public CouponInfo(String actTitle, String actId) {
@@ -129,6 +132,7 @@ public class CouponInfo implements Parcelable, Cloneable {
         dest.writeString(this.useTypeName);
         dest.writeString(this.couponTypeName);
         dest.writeInt(this.isSelected);
+        dest.writeString(this.techCommission);
     }
 
     protected CouponInfo(Parcel in) {
@@ -164,6 +168,7 @@ public class CouponInfo implements Parcelable, Cloneable {
         this.useTypeName = in.readString();
         this.couponTypeName = in.readString();
         this.isSelected = in.readInt();
+        this.techCommission = in.readString();
     }
 
     public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {

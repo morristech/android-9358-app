@@ -377,6 +377,31 @@
         <activity
             android:name=".window.OrderFilterActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.CouponOperateDataActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.CouponFilterActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.OperateCouponListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.CouponReceiveAndUseDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.CouponRecordActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.SearchCouponActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.CouponRecordFilterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".window.CouponInfoDetailActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".window.PaidCouponListActivity"
+                  android:screenOrientation="portrait"/>
 
     </application>
 

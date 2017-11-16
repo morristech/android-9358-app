@@ -252,7 +252,8 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="main_fragment_layout_statistics_value_style" parent="@style/wh_wrap_content_layout">
+    <style name="main_fragment_layout_statistics_value_style"
+           parent="@style/wh_wrap_content_layout">
         <item name="android:textSize">@dimen/x_large_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/main_fragment_layout_number_color</item>
@@ -260,25 +261,29 @@
         <item name="android:layout_marginRight">@dimen/small_space</item>
     </style>
 
-    <style name="main_fragment_layout_statistics_unit_style" parent="@style/main_fragment_layout_statistics_value_style">
+    <style name="main_fragment_layout_statistics_unit_style"
+           parent="@style/main_fragment_layout_statistics_value_style">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:textColor">@color/label_color</item>
         <item name="android:layout_marginTop">3dp</item>
     </style>
 
-    <style name="main_fragment_layout_statistic_subfix_style" parent="@style/wh_wrap_content_layout">
+    <style name="main_fragment_layout_statistic_subfix_style"
+           parent="@style/wh_wrap_content_layout">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:textColor">@color/desc_color</item>
     </style>
 
-    <style name="main_fragment_layout_statistics_accumulate_style" parent="@style/wh_wrap_content_layout">
+    <style name="main_fragment_layout_statistics_accumulate_style"
+           parent="@style/wh_wrap_content_layout">
         <item name="android:textSize">@dimen/inter_text_size</item>
         <item name="android:textColor">@color/colorClubItemBody</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="main_fragment_layout_statistics_accumulate_value_style" parent="@style/wh_wrap_content_layout">
+    <style name="main_fragment_layout_statistics_accumulate_value_style"
+           parent="@style/wh_wrap_content_layout">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:textColor">@color/colorClubItemBody</item>
         <item name="android:gravity">center</item>
@@ -378,7 +383,8 @@
         <item name="android:layout_alignParentTop">true</item>
     </style>
 
-    <style name="register_detail_fragment_layout_user_label_style" parent="@style/wh_wrap_content_layout">
+    <style name="register_detail_fragment_layout_user_label_style"
+           parent="@style/wh_wrap_content_layout">
         <item name="android:textSize">@dimen/inter_text_size</item>
         <item name="android:textColor">@color/label_color</item>
         <item name="android:paddingLeft">@dimen/tab_indicator_text_padding</item>
@@ -446,7 +452,8 @@
         <item name="android:padding">@dimen/small_space</item>
     </style>
 
-    <style name="statistics_activity_section_layout_style" parent="@style/wh_match_parent_wrap_content_layout">
+    <style name="statistics_activity_section_layout_style"
+           parent="@style/wh_match_parent_wrap_content_layout">
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/selector_round_corner_list_item_clicked</item>
     </style>
@@ -644,8 +651,6 @@
         <item name="android:textColor">@color/colorClubItemBody</item>
         <item name="android:textSize">@dimen/fontBody</item>
         <item name="android:gravity">center_horizontal</item>
-
-
     </style>
 
     <style name="order_detail_fragment_content_type">
@@ -656,6 +661,25 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:paddingTop">@dimen/small_space</item>
         <item name="android:paddingBottom">@dimen/margin_2</item>
+    </style>
+
+    <style name="coupon_operate_content_type">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorClubItemTitle</item>
+        <item name="android:textSize">@dimen/inter_text_size</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="coupon_operate_data_type">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ff9d98</item>
+        <item name="android:textSize">@dimen/xh_large_text_size</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="verification_record_content_type">

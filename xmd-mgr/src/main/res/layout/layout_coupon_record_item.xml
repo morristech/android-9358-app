@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/inter_space"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:background="@color/white"
+>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="40dp"
+                      android:gravity="center_vertical"
+                      android:orientation="horizontal">
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/img_record_user_head"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:src="@drawable/icon22"/>
+            <TextView
+                android:id="@+id/tv_record_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLength="8"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                tools:text="周先生"/>
+            <TextView
+                android:id="@+id/tv_record_user_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:gravity="center_vertical"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                tools:text="13137508140"/>
+            <TextView
+                android:id="@+id/tv_record_coupon_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="@dimen/margin_10"
+                android:textColor="@color/selected_coupon_record_status"
+                android:textSize="14sp"
+                tools:text="已核销"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/shape_split_line"
+            android:layerType="software"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:paddingBottom="8dp"
+                      android:paddingLeft="45dp"
+                      android:paddingTop="@dimen/inter_space">
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_coupon_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_coupon_ticket"
+                    android:drawablePadding="8dp"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    tools:text="金秋送礼优惠券"
+                />
+                <TextView
+                    android:id="@+id/tv_coupon_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:drawablePadding="8dp"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    tools:text="[ 00024 ]"
+                />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_coupon_verification_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:drawableLeft="@drawable/icon_coupon_number"
+                android:drawablePadding="8dp"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                tools:text="1254 2452 3641"
+            />
+
+            <TextView
+                android:id="@+id/tv_coupon_get_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:drawableLeft="@drawable/icon_coupon_time"
+                android:drawablePadding="8dp"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                tools:text="1254 2452 3641"
+            />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

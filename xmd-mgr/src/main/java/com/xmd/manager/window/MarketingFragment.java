@@ -46,6 +46,8 @@ public class MarketingFragment extends BaseFragment {
     TextView marketingDepriveText;
     @BindView(R.id.marketing_deprive)
     RelativeLayout marketingDeprive;
+    @BindView(R.id.marketing_paid_coupon_text)
+    TextView marketingPaidCouponText;
     @BindView(R.id.marketing_purchase_text)
     TextView marketingPurchaseText;
     @BindView(R.id.marketing_purchase)
@@ -60,6 +62,8 @@ public class MarketingFragment extends BaseFragment {
     RelativeLayout marketingCoupon;
     @BindView(R.id.marketing_bottom_text)
     RelativeLayout marketingBottomText;
+    @BindView(R.id.marketing_paid_coupon)
+    RelativeLayout marketPaidCoupon;
 
     private Subscription mMarketingItemsSubscription;
     private Subscription mSendGroupMessageResultSubscription;
@@ -153,18 +157,24 @@ public class MarketingFragment extends BaseFragment {
         } else {
             marketingCreditShopping.setVisibility(View.GONE);
         }
-        if (Utils.isNotEmpty(String.valueOf(result.respData.value07))) {
-            String couponText = "当前有 " + result.respData.value07 + " 种优惠券在线";
+        if (Utils.isNotEmpty(String.valueOf(result.respData.value09))) {
+            String couponText = "当前有 " + result.respData.value09 + " 种优惠券在线";
             marketingCouponText.setText(Utils.changeColor(couponText, ResourceUtils.getColor(R.color.btn_pressed_bg), 3, couponText.length() - 6));
         } else {
             marketingCoupon.setVisibility(View.GONE);
         }
 
+        if (Utils.isNotEmpty(String.valueOf(result.respData.value10))) {
+            String paidCouponText = "当前有 " + result.respData.value10 + " 种点钟券在线";
+            marketingPaidCouponText.setText(Utils.changeColor(paidCouponText, ResourceUtils.getColor(R.color.btn_pressed_bg), 3, paidCouponText.length() - 6));
+        } else {
+            marketPaidCoupon.setVisibility(View.GONE);
+        }
 
     }
 
     @OnClick({R.id.marketing_journal, R.id.marketing_group_message, R.id.marketing_reward, R.id.marketing_purchase, R.id.marketing_deprive, R.id.marketing_credit_shopping,
-            R.id.marketing_coupon})
+            R.id.marketing_coupon, R.id.marketing_paid_coupon})
     public void marketingItemClicked(View view) {
         switch (view.getId()) {
             case R.id.marketing_journal:
@@ -185,8 +195,12 @@ public class MarketingFragment extends BaseFragment {
             case R.id.marketing_credit_shopping:
 
                 break;
+            case R.id.marketing_paid_coupon:
+                //      startActivity(new Intent(getActivity(), CouponListActivity.class));
+                startActivity(new Intent(getActivity(), PaidCouponListActivity.class));
+                break;
             case R.id.marketing_coupon:
-                startActivity(new Intent(getActivity(), CouponListActivity.class));
+                startActivity(new Intent(getActivity(), OperateCouponListActivity.class));
                 break;
         }
     }

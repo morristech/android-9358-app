@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;

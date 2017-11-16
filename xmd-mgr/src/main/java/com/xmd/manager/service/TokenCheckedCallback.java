@@ -1,5 +1,8 @@
 package com.xmd.manager.service;
 
+import android.text.TextUtils;
+
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.msgctrl.RxBus;
@@ -53,6 +56,10 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
     }
 
     protected void postError(String errorMsg) {
+        if (!TextUtils.isEmpty(errorMsg)) {
+            XToast.show(errorMsg);
+        }
+
         RxBus.getInstance().post(new Throwable(errorMsg));
     }
 }

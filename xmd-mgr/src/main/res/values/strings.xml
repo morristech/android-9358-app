@@ -175,7 +175,7 @@
     <string name="layout_statistics_visit">网店访问：</string>
     <string name="layout_statistics_new_register">新增客户：</string>
     <string name="layout_statistics_coupon_get">领券数量：</string>
-    <string name="layout_statistics_visit_detail"> 网店网访问详情</string>
+    <string name="layout_statistics_visit_detail">网店网访问详情</string>
     <string name="layout_account_title">线上流水</string>
     <string name="layout_main_publicity_yesterday">（昨天）</string>
     <string name="layout_main_publicity_today">（今天）</string>
@@ -248,7 +248,7 @@
     <string name="purchased_dianzhong">购买</string>
     <string name="used_dianzhong">使用</string>
     <string name="shared_dianzhong">分享</string>
-    <string name="pasted_dianzhong">过期 </string>
+    <string name="pasted_dianzhong">过期</string>
     <string name="coupons_delivery">领取</string>
 
     <string name="user_type_weixin">微信用户</string>
@@ -318,6 +318,7 @@
     <string name="club_journal">电子期刊</string>
     <string name="club_group_message">微信群发</string>
     <string name="club_coupon">优惠券</string>
+    <string name="club_paid_coupon">点钟券</string>
     <string name="club_time_limit">限时抢</string>
     <string name="club_lucky_wheel">大转盘</string>
     <string name="club_one_yuan">夺宝</string>
@@ -358,7 +359,7 @@
     >
     ]]>
     <string name="order_verification_info">订单信息</string>
-    <string name="verification_name">预约人：       </string>
+    <string name="verification_name">预约人：</string>
     <string name="verification_start_time">到店时间：</string>
     <string name="verification_end_time">下单时间：</string>
     <string name="verification_tech_name">预约技师：</string>
@@ -378,7 +379,7 @@
     <string name="verification_default">核销</string>
     <string name="verification_reward">奖品核销</string>
     <string name="verification_coupon_action">项目券</string>
-    <string name="verification_success"> 操作成功</string>
+    <string name="verification_success">操作成功</string>
     <string name="verification_failed">核销失败</string>
     <string name="verification_default_remark">注：</string>
     <string name="action_manager">活动管理</string>
@@ -501,6 +502,7 @@
     <string name="new_add_operate_end_time_hint">结束时间</string>
     <string name="operate_cycle_setting_title">报表周期设置</string>
     <string name="has_none_new_data">已无更多数据</string>
+    <string name="operate_coupon_data">优惠券</string>
     <!--订单数据-->
     <string name="reserve_data_table_yesterday">天</string>
     <string name="reserve_data_table_week">周</string>
@@ -530,8 +532,37 @@
     <string name="order_filter_completed">已到店</string>
     <string name="order_filter_nullity">已爽约</string>
     <string name="order_filter_activity_title">订单筛选</string>
-
-
+    <!--优惠券-->
+    <string name="coupon_operate_date_title">优惠券数据</string>
+    <string name="coupon_operate_list_date_title">优惠券</string>
+    <string name="coupon_data_all_coupon">全部优惠券</string>
+    <string name="coupon_data_receive">领取</string>
+    <string name="coupon_data_verification">核销</string>
+    <string name="coupon_data_over_time">过期</string>
+    <string name="coupon_data_date">日期</string>
+    <string name="coupon_receive_data">领取数</string>
+    <string name="coupon_verification_data">核销数</string>
+    <string name="coupon_over_time_data">过期数</string>
+    <string name="coupon_operate_usable">在线</string>
+    <string name="coupon_operate_unusable">已下线</string>
+    <string name="coupon_receive_and_use_info">领取使用详情</string>
+    <string name="coupon_record_activity_title">优惠券记录</string>
+    <string name="coupon_record_filter_activity_title">优惠券</string>
+    <string name="search_coupon_activity_search_hint">输入客户手机或核销码搜索</string>
+    <string name="coupon_data_can_use">可用</string>
+    <string name="search_coupon_is_empty">未查到相关数据</string>
+    <string name="delivery_coupon">点钟券</string>
+    <string name="user_time">使用时间段</string>
+    <string name="normal_coupon_detail_activity_act_content_desc">使用规则</string>
+    <string name="paid_coupon_detail_coupon_period">有效时间：</string>
+    <string name="paid_coupon_detail_act_content">活动说明：</string>
+    <string name="share_url_is_null">分享链接不存在</string>
+    <string name="review_data_btn">查看数据</string>
+    <string name="string_default_name">匿名用户</string>
+    <string name="coupon_filter_activity_title">优惠券筛选</string>
+    <string name="string_return">返回</string>
+    <string name="text_clear">清空</string>
+    <string name="change_status_alter_text">时间范围为核销时间，当前状态不可变更</string>
 
 
 </resources>

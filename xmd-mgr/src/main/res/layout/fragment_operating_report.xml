@@ -13,7 +13,8 @@
         android:layout_margin="@dimen/margin_10"
         android:background="@drawable/selector_bg_white"
         android:padding="@dimen/margin_10"
-        >
+        android:visibility="gone"
+    >
         <ImageView
             android:id="@+id/img_operate"
             android:layout_width="wrap_content"
@@ -117,6 +118,49 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="3dp"
             android:layout_toLeftOf="@id/img_all_right"
+            android:src="@drawable/icon_date_new"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_coupon_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/selector_bg_white"
+        android:padding="@dimen/margin_10">
+        <ImageView
+            android:id="@+id/img_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_coupon_data"/>
+        <TextView
+            android:id="@+id/tv_coupon_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/img_coupon"
+            android:padding="@dimen/margin_10"
+            android:text="@string/operate_coupon_data"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontSubheading"/>
+
+        <ImageView
+            android:id="@+id/img_coupon_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right"/>
+        <ImageView
+            android:id="@+id/img_coupon_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/img_coupon_right"
             android:src="@drawable/icon_date_new"
             android:visibility="gone"/>
     </RelativeLayout>

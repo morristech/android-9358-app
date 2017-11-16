@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/toolbar_img_width"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:contentDescription="@string/content_description"
+            android:scaleType="center"
+            android:src="@drawable/actionbar_back"/>
+        <com.xmd.manager.widget.ClearableEditText
+            android:id="@+id/search_word"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/small_space"
+            android:layout_weight="1"
+            android:background="@drawable/round_rect_white_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:hint="@string/search_coupon_activity_search_hint"
+            android:inputType="number"
+            android:paddingBottom="@dimen/small_space"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingTop="@dimen/small_space"
+            android:singleLine="true"
+            android:textColor="@color/value_color"
+            android:textColorHint="@color/label_color"/>
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fontTitleBar"/>
+    </LinearLayout>
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+    >
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_history_view"
+            android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="gone">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_search_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_clear_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E7EbF3"
+                android:gravity="center"
+                android:paddingBottom="@dimen/small_space"
+                android:paddingTop="@dimen/small_space"
+                android:text="清空历史记录"
+                android:textColor="#b0b1d2"
+                android:textSize="15sp"/>
+            <View android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:background="#E4E5E8"></View>
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+</LinearLayout>

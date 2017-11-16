@@ -10,18 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.event.OrderCountUpDate;
-import com.xmd.manager.msgctrl.MsgDef;
-import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.response.ReportNewsResult;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +52,7 @@ public class OperatingReportFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-     //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
+        //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
 
     }
 
@@ -65,7 +61,9 @@ public class OperatingReportFragment extends BaseFragment {
         view.findViewById(R.id.toolbar_left).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(ResourceUtils.getString(R.string.operate_data_title));
         mReportNewSubscribe = RxBus.getInstance().toObservable(ReportNewsResult.class).subscribe(
-                reportNewsResult -> {handlerReportNewsResult(reportNewsResult);}
+                reportNewsResult -> {
+                    handlerReportNewsResult(reportNewsResult);
+                }
         );
     }
 
@@ -80,10 +78,10 @@ public class OperatingReportFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void newOrderSubscribe(OrderCountUpDate orderCount){
-        if(orderCount.newOrder>0){
+    public void newOrderSubscribe(OrderCountUpDate orderCount) {
+        if (orderCount.newOrder > 0) {
             imgOrderNew.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             imgOrderNew.setVisibility(View.GONE);
         }
     }
@@ -91,7 +89,7 @@ public class OperatingReportFragment extends BaseFragment {
     //运营报表
     @OnClick(R.id.rl_operate)
     public void onRlOperateClicked() {
-       startActivity(new Intent(getActivity(), OperationReportActivity.class));
+        startActivity(new Intent(getActivity(), OperationReportActivity.class));
 
     }
 
@@ -105,5 +103,13 @@ public class OperatingReportFragment extends BaseFragment {
     @OnClick(R.id.rl_online_order)
     public void onRlOnlineOrderClicked() {
         startActivity(new Intent(getActivity(), ReserveDataActivity.class));
+    }
+
+    //优惠券
+    @OnClick(R.id.rl_coupon_data)
+    public void onRlCouponDataClicked() {
+        startActivity(new Intent(getActivity(), CouponOperateDataActivity.class));
+        //   startActivity(new Intent(getActivity(),CouponReceiveAndUseDetailActivity.class));
+
     }
 }

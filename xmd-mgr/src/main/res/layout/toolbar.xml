@@ -70,6 +70,21 @@
                 android:textSize="@dimen/fontButton"
                 android:visibility="gone" />
 
+            <!--<TextView-->
+                <!--android:id="@+id/toolbar_right_share"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingBottom="2dp"-->
+                <!--android:paddingLeft="@dimen/margin_10"-->
+                <!--android:paddingRight="@dimen/small_space"-->
+                <!--android:paddingTop="2dp"-->
+                <!--android:textColor="@color/select_toolbar_text"-->
+                <!--android:textSize="@dimen/fontButton"-->
+                <!--android:drawableRight="@drawable/ic_report_share"-->
+                <!--android:visibility="gone" />-->
+
             <ImageView
                 android:id="@+id/toolbar_right_image"
                 android:layout_width="wrap_content"

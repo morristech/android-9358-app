@@ -69,7 +69,6 @@ public class OnlineOrderActivity extends BaseActivity {
         intent.putExtra(Constant.ONLINE_ORDER_END_TIME, endTime);
         intent.putExtra(Constant.ONLINE_ORDER_STATUS, orderStatus);
         activity.startActivity(intent);
-
     }
 
     @Override
