@@ -82,15 +82,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/ll_tech_info"
         android:visibility="visible">
-        <ImageView
-            android:id="@+id/btn_main_tech_rest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
 
-            android:layout_marginRight="@dimen/margin_15"
-            android:src="@drawable/btn_main_rest_default"
-            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/btn_main_tech_free"
@@ -106,7 +98,14 @@
             android:layout_marginRight="@dimen/margin_10"
             android:src="@drawable/btn_main_busy_default"/>
 
-
+        <ImageView
+            android:id="@+id/btn_main_tech_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_15"
+            android:src="@drawable/btn_main_rest_default"
+            />
     </LinearLayout>
 
 

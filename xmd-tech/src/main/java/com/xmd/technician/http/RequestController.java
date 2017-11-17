@@ -62,6 +62,7 @@ import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
+import com.xmd.technician.http.gson.OrderCountResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.PKActivityListResult;
@@ -428,6 +429,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_TECH_POSTER_DETAIL:
                 getTechPosterDetail(msg.obj.toString());
                 break;
+            case MsgDef.MSG_DEF_TECH_ORDER_COUNT:
+                getTechOrderCount(msg.obj.toString());
+                break;
         }
 
         return true;
@@ -775,12 +779,22 @@ public class RequestController extends AbstractController {
     }
 
     private void updateWorkStatus(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().updateWorkStatus(params.get(RequestConstant.KEY_STATUS),
+        Call<UpdateWorkStatusResult> call = getSpaService().updateWorkStatus(params.get(RequestConstant.KEY_STATUS),
                 LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+        call.enqueue(new TokenCheckedCallback<UpdateWorkStatusResult>() {
             @Override
-            protected void postResult(BaseResult result) {
-                RxBus.getInstance().post(new UpdateWorkStatusResult());
+            protected void postResult(UpdateWorkStatusResult result) {
+                result.targetStatus = params.get(RequestConstant.KEY_STATUS);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                UpdateWorkStatusResult result = new UpdateWorkStatusResult();
+                result.msg = errorMsg;
+                result.statusCode = RequestConstant.RESP_ERROR;
+                result.targetStatus = params.get(RequestConstant.KEY_STATUS);
+                RxBus.getInstance().post(result);
             }
         });
     }
@@ -1760,7 +1774,6 @@ public class RequestController extends AbstractController {
 
             @Override
             public void onFailure(Call<AppUpdateConfigResult> call, Throwable t) {
-//                RxBus.getInstance().post(t);
                 Logger.e("create app update config failed:" + t.getMessage());
             }
         });
@@ -2088,6 +2101,21 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<TechPosterListResult>() {
             @Override
             protected void postResult(TechPosterListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param param：订单状态
+     */
+    //获取技师订单数
+    public void getTechOrderCount(String param){
+        Call<OrderCountResult> call = getSpaService().getOrderCount(LoginTechnician.getInstance().getToken(),param);
+        call.enqueue(new TokenCheckedCallback<OrderCountResult>() {
+            @Override
+            protected void postResult(OrderCountResult result) {
                 RxBus.getInstance().post(result);
             }
         });

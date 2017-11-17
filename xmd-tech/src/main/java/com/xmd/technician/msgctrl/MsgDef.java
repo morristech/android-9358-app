@@ -197,5 +197,8 @@ public class MsgDef {
     //分享图片到微信
     public static final int MSG_DEF_SHARE_IMAGE_TO_TIMELINE = 0x129;
     public static final int MSG_DEF_SHARE_IMAGE_TO_FRIENDS = 0x130;
+    //获取技师订单数量
+    public static final int MSG_DEF_TECH_ORDER_COUNT = 0x131;
+
 
 }

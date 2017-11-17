@@ -71,7 +71,7 @@ public class LoginTechnician {
     private String clubInviteCode;
     private String inviteCode;
     private String qrCodeUrl;
-    private String status; // "busy"|"free"|"uncert"|"valid"|"reject"
+    private String status; // "busy"|"free"|"uncert"|"valid"|"reject"|"rest"
     private String clubId;
     private String clubName;
     private String clubPosition;    //会所所在位置 add ZR

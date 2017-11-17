@@ -26,19 +26,14 @@ import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
-import com.xmd.technician.http.gson.ClubEmployeeDetailResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
-import com.xmd.technician.http.gson.ContactAllListResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
-import com.xmd.technician.http.gson.ContactRegisterListResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
-import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
-import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -46,7 +41,6 @@ import com.xmd.technician.http.gson.HelloReplyResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
-import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -57,6 +51,7 @@ import com.xmd.technician.http.gson.MarketingListResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
+import com.xmd.technician.http.gson.OrderCountResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.PKActivityListResult;
 import com.xmd.technician.http.gson.PKPersonalListResult;
@@ -85,6 +80,7 @@ import com.xmd.technician.http.gson.TechRankingListResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
+import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UploadTechPosterImageResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
@@ -279,9 +275,9 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_UPDATE_WORK_STATUS)
-    Call<BaseResult> updateWorkStatus(@Field(RequestConstant.KEY_STATUS) String status,
-                                      @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+    Call<UpdateWorkStatusResult> updateWorkStatus(@Field(RequestConstant.KEY_STATUS) String status,
+                                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_SERVICE_LIST)
@@ -392,21 +388,6 @@ public interface SpaService {
                                                      @Field(RequestConstant.KEY_ID) String id,
                                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
 
-//    @FormUrlEncoded
-//    @POST(RequestConstant.URL_GET_TECH_INFO_DETAIL)
-//    Call<TechDetailResult> getTechInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-//                                             @Field(RequestConstant.KEY_ID) String id,
-//                                             @Field(RequestConstant.KEY_TOKEN) String userToken);
-//
-//    @FormUrlEncoded
-//    @POST(RequestConstant.URL_GET_MANAGER_INFO_DETAIL)
-//    Call<ManagerDetailResult> getManagerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-//                                                   @Field(RequestConstant.KEY_ID) String id,
-//                                                   @Field(RequestConstant.KEY_TOKEN) String userToken);
-//@FormUrlEncoded
-//@POST(RequestConstant.URL_GET_CLUB_LIST)
-//Call<ClubContactResult> getClubList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-//                                    @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_DELETE_CONTACT)
@@ -871,4 +852,8 @@ public interface SpaService {
 
     @GET("/spa-manager/api/v2/tech/club/position/invite/count")
     Observable<BaseBean<Integer>> getClubInviteCount(@Query("status") String status);
+
+    @GET(RequestConstant.URL_GET_TECH_ORDER_COUNT)
+    Call<OrderCountResult> getOrderCount(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                         @Query(RequestConstant.KEY_ORDER_STATUS) String orderStatus);
 }

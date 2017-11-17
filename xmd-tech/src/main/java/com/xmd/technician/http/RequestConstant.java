@@ -128,6 +128,11 @@ public class RequestConstant {
     public static final String URL_GET_PK_TEAM_RANKING_LIST = BASE_URL + "/v1/tech/pk/activity/team/ranking/list";
     public static final String URL_GET_PK_PERSONAL_RANKING_LIST = BASE_URL + "/v1/tech/pk/activity/personal/ranking/list";
     public static final String URL_GET_PERSONAL_RANKING_LIST = BASE_URL + "/v2/manager/ranking_list";
+    /**
+     * 订单数量
+     */
+
+    public static final String URL_GET_TECH_ORDER_COUNT = BASE_URL + "/v2/tech/order/count";
 
 
     /**

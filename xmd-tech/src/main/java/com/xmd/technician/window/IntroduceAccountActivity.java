@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +13,7 @@ import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -160,16 +162,30 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCustomWebView.getSettings().setBuiltInZoomControls(true);
+        mCustomWebView.setVisibility(View.GONE);
+        long timeout = ViewConfiguration.getZoomControlsTimeout();
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mCustomWebView.destroy();
+            }
+        }, timeout);
+    }
+
     /**
      * 先保存到本地再广播到图库
      */
     public void saveImageToGallery(Context context) {
         // 其次把文件插入到系统图库
         try {
-            if(file.getAbsolutePath() != null){
+            if (file.getAbsolutePath() != null) {
                 MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
                 // 最后通知图库更新
-                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, FileProvider7.getUriForFile(context,file)));
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, FileProvider7.getUriForFile(context, file)));
                 makeShortToast("保存成功");
             }
         } catch (FileNotFoundException e) {

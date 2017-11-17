@@ -125,7 +125,8 @@ public class Constant {
     public static final String TECH_STATUS_REJECT = "reject";//加入会所后被会所拒绝
     public static final String TECH_STATUS_UNCERT = "uncert";//等待会所审核
     public static final String TECH_STATUS_BUSY = "busy";//已成功加入会所，忙状态
-    public static final String TECH_STATUS_FREE = "free";//已成功加入会所，休状态
+    public static final String TECH_STATUS_FREE = "free";//已成功加入会所，闲状态
+    public static final String TECH_STATUS_REST = "rest";//已成功加入会所，休状态
     public static final String TECH_STATUS = "status";
 
     /**
@@ -361,7 +362,7 @@ public class Constant {
     public static final String KEY_CURRENT_POSTER = "currentPoster";
     public static final String KEY_QR_CODE_URL = "qrCodeUrl";
 
-
+    public static final String ORDER_PENDING_TREATMENT = "submit,accept";//只查询待接收，已接受状态下的订单数量
     //小红点
     public static final String RED_POINT_CHAT_ALL_UNREAD = "chat_all_unread";
 

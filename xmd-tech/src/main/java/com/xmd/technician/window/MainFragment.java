@@ -67,12 +67,14 @@ import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
+import com.xmd.technician.http.gson.OrderCountResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechPKRankingResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
+import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -247,9 +249,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Context mContext;
     private List<Order> mAllTechOrderList = new ArrayList<>();
     private List<Order> mTechOrderList = new ArrayList<>();
-    private List<RecentlyVisitorBean> mTechVisitor = new ArrayList<>();
     private List<UserRecentBean> mAllTechVisitor = new ArrayList<>();
-    private List<View> visitViewList = new ArrayList<>();
     private List<DynamicDetail> mDynamicList = new ArrayList<>();
     private MainPageTechOrderListAdapter orderListAdapter;
     private boolean hasDynamic;
@@ -268,6 +268,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetHelloSetTemplateSubscription;  // 获取打招呼内容
     private Subscription mContactPermissionVisitorSubscription; // 获取聊天限制
     private Subscription mTechPKRankingSubscription;
+    private Subscription mUpdateWorkStatusSubscription;
+    private Subscription mTechOrderCountSubscription;
     private LoginTechnician mTech = LoginTechnician.getInstance();
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
 
@@ -283,7 +285,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         ButterKnife.bind(this, mRootView);
         initView(mRootView);
         registerRequestHandlers(); //注册监听器
-
         initStatistic();
         initOnlinePay();
         initOrder();
@@ -293,10 +294,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initWorkStatus();
         initNearbyUser();
         showHeadView();
-        //    HeartBeatTimer.getInstance().start(60, mTask);
+        //   HeartBeatTimer.getInstance().start(60, mTask);
         initPkRanking();
         initClubInvite();
-
         sendDataRequest();
         return mRootView;
     }
@@ -317,9 +317,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        //    HeartBeatTimer.getInstance().shutdown();
-
         RxBus.getInstance().unsubscribe(
                 mGetTechCurrentInfoSubscription,
                 mGetTechOrderListSubscription,
@@ -332,7 +329,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mGetNearbyCusCountSubscription,
                 mGetHelloSetTemplateSubscription,
                 mContactPermissionVisitorSubscription,
-                mTechPKRankingSubscription);
+                mTechPKRankingSubscription,
+                mUpdateWorkStatusSubscription,
+                mTechOrderCountSubscription);
     }
 
     private void initView(View view) {
@@ -345,7 +344,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                onScrollViewChanged(scrollX, scrollY);
+                // onScrollViewChanged(scrollX, scrollY);
             }
         });
         mMainSlidingLayout.setOnCloseOrOpenListener(new SlidingMenu.CloseOrOpenListener() {
@@ -408,7 +407,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mContactPermissionVisitorSubscription = RxBus.getInstance().toObservable(ContactPermissionVisitorResult.class).subscribe(contactPermissionVisitorResult -> {
             handleContactPermissionVisitor(contactPermissionVisitorResult);
         });
+
+        mTechOrderCountSubscription = RxBus.getInstance().toObservable(OrderCountResult.class).subscribe(orderCountResult -> handleOrderCount(orderCountResult));
     }
+
 
     @CheckBusinessPermission((PermissionConstants.QR_CODE))
     public void initQRCode() {
@@ -518,14 +520,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void loadVisitor() {
-//        Map<String, String> visitParams = new HashMap<>();
-//        visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-//        visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-//        visitParams.put(RequestConstant.KEY_PAGE_SIZE, "20");
-//        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE, "Y");//Y表示首页请求最近访客
-//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
-//        MsgDispatcher.dispatchMessage(m);
-        // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
     }
 
@@ -685,6 +679,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mMainHeadTechSerial.setText(mTech.getTechNo());
                 resetTechStatusView(R.id.btn_main_tech_busy);
                 break;
+            case Constant.TECH_STATUS_REST:
+                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                mMainHeadTechSerial.setText(mTech.getTechNo());
+                resetTechStatusView(R.id.btn_main_tech_rest);
+                break;
             default:
                 break;
         }
@@ -730,21 +729,23 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 if (Utils.isNotEmpty(mTech.getInnerProvider())) {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                 } else {
-                    resetTechStatusView(R.id.btn_main_tech_free);
+                    updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_FREE);
                 }
                 break;
             case R.id.btn_main_tech_busy:
                 if (Utils.isNotEmpty(mTech.getInnerProvider())) {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                 } else {
-                    resetTechStatusView(R.id.btn_main_tech_busy);
+                    updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_BUSY);
                 }
                 break;
             case R.id.btn_main_tech_rest:
                 if (Utils.isNotEmpty(mTech.getInnerProvider())) {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                 } else {
-                    resetTechStatusView(-1);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_ORDER_COUNT, Constant.ORDER_PENDING_TREATMENT);
+
+
                 }
                 break;
             case R.id.btn_main_credit_center:
@@ -759,19 +760,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_selected));
                 mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
                 mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_default));
-                updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_FREE);
                 break;
             case R.id.btn_main_tech_busy:
                 mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_default));
                 mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_selected));
                 mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_default));
-                updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_BUSY);
                 break;
             case R.id.btn_main_tech_rest:
                 mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_default));
                 mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
                 mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_selected));
-                updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_REST);
                 break;
             case -1:
                 mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_selected));
@@ -847,7 +845,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.menu_work_time:
                 Intent intent = new Intent(getActivity(), WorkTimeActivity.class);
                 startActivity(intent);
-
                 break;
             case R.id.menu_work_project:
                 Intent intentProject = new Intent(getActivity(), ServiceItemActivity.class);
@@ -911,7 +908,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.PERSONAL_EDIT)
     public void gotoEditPersonalData() {
         Intent intent = new Intent(getActivity(), TechUserCenterActivity.class);
-     //  Intent intent = new Intent(getActivity(),TechInfoActivity.class);
+        // Intent intent = new Intent(getActivity(),TechInfoActivity.class);
         getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
     }
 
@@ -1035,6 +1032,26 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
         mMainHeadTechName.setText(Utils.StrSubstring(10, mTech.getNickName(), true));
         showTechStatus(mTech.getStatus());
+        mUpdateWorkStatusSubscription = RxBus.getInstance().toObservable(UpdateWorkStatusResult.class).subscribe(
+                updateWorkStatusResult -> handlerUpdateStatusResult(updateWorkStatusResult));
+    }
+
+    private void handlerUpdateStatusResult(UpdateWorkStatusResult result) {
+        if (result.statusCode == 200) {
+            switch (result.targetStatus) {
+                case Constant.TECH_STATUS_FREE:
+                    resetTechStatusView(R.id.btn_main_tech_free);
+                    break;
+                case Constant.TECH_STATUS_BUSY:
+                    resetTechStatusView(R.id.btn_main_tech_busy);
+                    break;
+                case Constant.TECH_STATUS_REST:
+                    resetTechStatusView(R.id.btn_main_tech_rest);
+                    break;
+            }
+        } else {
+            XToast.show(result.msg);
+        }
     }
 
     private void initTechWorkView(TechStatisticsDataResult result) {
@@ -1218,6 +1235,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
+    //将状态变更为休假时，查询技师未处理订单数
+    private void handleOrderCount(OrderCountResult orderCountResult) {
+        if (orderCountResult.statusCode == 200) {
+            new RewardConfirmDialog(getActivity(), ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_change_status_alter_message), 0), "", true) {
+                @Override
+                public void onConfirmClick() {
+                    super.onConfirmClick();
+                    updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_REST);
+                }
+            }.show();
+        }
+    }
+
     private void initTechRankingView(TechRankDataResult result) {
         if (result.respData == null) {
             return;
@@ -1272,37 +1302,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     };
 
-//    public static void setListViewHeightBasedOnChildren(ListView listView) {
-//        if (listView == null) {
-//            return;
-//        }
-//        ListAdapter listAdapter = listView.getAdapter();
-//        if (listAdapter == null) {
-//            return;
-//        }
-//        int totalHeight = 0;
-//        for (int i = 0; i < listAdapter.getCount(); i++) {
-//            View listItem = listAdapter.getView(i, null, listView);
-//            listItem.measure(0, 0);
-//            totalHeight += listItem.getMeasuredHeight();
-//        }
-//        ViewGroup.LayoutParams params = listView.getLayoutParams();
-//        params.height = totalHeight + listView.getDividerHeight() * (listAdapter.getCount() - 1);
-//        listView.setLayoutParams(params);
-//    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-
-    public void onScrollViewChanged(int l, int t) {
-//        if (t > Utils.dip2px(getActivity(), 100)) {
-//            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
-//        } else {
-//            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
-//        }
     }
 
     public void doUpdateTechInfoSuccess() {

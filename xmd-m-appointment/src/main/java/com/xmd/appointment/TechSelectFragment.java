@@ -18,18 +18,18 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseDialogFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
-import com.xmd.app.Constants;
+
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.beans.TechnicianListResult;
 import com.xmd.appointment.databinding.FragmentTechSelectBinding;
 import com.xmd.m.network.NetworkSubscriber;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
 
 /**
  * Created by heyangya on 17-5-24.
@@ -108,7 +108,6 @@ public class TechSelectFragment extends BaseDialogFragment {
                 loading.set(false);
                 loadingError.set(null);
                 //增加到店选择数据
-                sortTechnician(result.getRespData());
                 Technician mock = new Technician();
                 mock.setId(mEmptyTechId);
                 mock.setName("到店选择");
@@ -139,21 +138,6 @@ public class TechSelectFragment extends BaseDialogFragment {
 
     }
 
-    private void sortTechnician(List<Technician> technicians){
-        Collections.sort(technicians, new Comparator<Technician>() {
-            @Override
-            public int compare(Technician o1, Technician o2) {
-                if(o1.getStatus().equals(Constants.TECH_STATUS_FREE)){
-                    return -1;
-                }else{
-                    return 1;
-                }
-
-            }
-        });
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -170,6 +154,10 @@ public class TechSelectFragment extends BaseDialogFragment {
         if (mSelectedTechnician == null || mSelectedTechnician.getId().equals(mEmptyTechId)) {
             ((Listener) getActivity()).onCleanTechnician();
         } else {
+            if(mSelectedTechnician.getStatus().equals("rest")){
+                XToast.show(ResourceUtils.getString(R.string.tech_rest_status_no_work_alter_message));
+                return;
+            }
             ((Listener) getActivity()).onSelectTechnician(mSelectedTechnician);
         }
         DataManager.getInstance().cancelLoadTechnicianList();

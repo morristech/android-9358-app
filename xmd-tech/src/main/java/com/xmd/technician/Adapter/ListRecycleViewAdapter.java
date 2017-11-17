@@ -1,7 +1,6 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
-import android.icu.text.RelativeDateTimeFormatter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -38,7 +37,6 @@ import com.xmd.technician.bean.PayForMeBean;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.bean.ShareCouponBean;
 import com.xmd.technician.bean.TechRankingBean;
-
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
@@ -698,9 +696,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 Glide.with(mContext).load(ResourceUtils.getDrawable(R.drawable.img_default_reward)).into(rewardHolder.mRewardHead);
             }
             rewardHolder.mRewardName.setText(String.format("赢取%s", rewardBean.firstPrizeName));
-            String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
-            String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
-            rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", st, et));
+            if(Utils.isNotEmpty(rewardBean.startTime) && Utils.isNotEmpty(rewardBean.endTime)){
+                String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
+                String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
+                rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", st, et));
+            }
             rewardHolder.mRewardShare.setOnClickListener(v -> mCallback.onShareClicked(rewardBean));
             rewardHolder.itemView.setOnClickListener(v -> {
                 try {

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -344,6 +344,10 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
             case R.id.ll_share_tech_card:
                 if (mTechInfo != null) {
+                    if (TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
+                        Toast.makeText(getContext(), "二维码为空！", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Boolean canShare = true;
                     if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
                         canShare = false;

@@ -134,7 +134,10 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_POSTER_DELETE,
                 MsgDef.MSG_DEF_TECH_POSTER_IMAGE_UPLOAD,
                 MsgDef.MSG_DEF_TECH_POSTER_LIST,
-                MsgDef.MSG_DEF_TECH_POSTER_DETAIL
+                MsgDef.MSG_DEF_TECH_POSTER_DETAIL,
+                //-------------------------------------> 技师订单数量 <---------------------------------
+                MsgDef.MSG_DEF_TECH_ORDER_COUNT
+
 
         };
         MsgDispatcher.register(controllerId, msgIds);

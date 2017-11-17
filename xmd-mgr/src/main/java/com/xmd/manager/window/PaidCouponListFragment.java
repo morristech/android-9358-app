@@ -58,6 +58,8 @@ public class PaidCouponListFragment extends BaseListFragment<CouponBean> {
             mParams.clear();
         }
         mParams.put(RequestConstant.KEY_COUPON_TYPE, mCouponType);
+        mParams.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        mParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
         mParams.put(RequestConstant.KEY_COUPON_ONLINE, mCouponListType.equals(COUPON_LIST_TYPE_ONLINE) ? Constant.COUPON_ONLINE_TRUE : Constant.COUPON_ONLINE_FALSE);
         mParams.put(RequestConstant.KEY_COUPON_LIST_TYPE, mCouponListType);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_LIST_DATA, mParams);

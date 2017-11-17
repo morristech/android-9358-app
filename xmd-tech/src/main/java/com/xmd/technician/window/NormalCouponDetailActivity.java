@@ -69,8 +69,6 @@ public class NormalCouponDetailActivity extends BaseActivity {
         mFlowLayout = (FlowLayout) findViewById(R.id.limit_project_list);
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
         mScrollView.setFillViewport(true);
-
-
         Intent intent = getIntent();
         if (intent == null) {
             finish();
@@ -87,8 +85,15 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        if (mWvActContent != null && mWvActContent.getParent() != null) {
+            mWvActContent.setVisibility(View.GONE);
+            ((ViewGroup) mWvActContent.getParent()).removeView(mWvActContent);
+            mWvActContent.destroy();
+            mWvActContent = null;
+
+        }
         RxBus.getInstance().unsubscribe(mGetCouponInfoSubscription);
+        super.onDestroy();
     }
 
     private void initView() {
@@ -112,8 +117,6 @@ public class NormalCouponDetailActivity extends BaseActivity {
     }
 
     private void onGetCouponInfoSucceeded(CouponInfo couponInfo) {
-
-
         int len = mCouponInfoResult.respData.items.size();
         for (int i = 0; i < len; i++) {
             limitList.add(mCouponInfoResult.respData.items.get(i).name);
@@ -146,7 +149,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
             mTvCommission.setText(String.valueOf(couponInfo.actValue));
         }
 
-        mTvCouponDuration.setText(couponInfo.useTimePeriod+"\n"+couponInfo.couponPeriod+"\n"+(couponInfo.userGetCount==0?"不限领取数量":String.format("每人限领%s张",String.valueOf(couponInfo.userGetCount))));
+        mTvCouponDuration.setText(couponInfo.useTimePeriod + "\n" + couponInfo.couponPeriod + "\n" + (couponInfo.userGetCount == 0 ? "不限领取数量" : String.format("每人限领%s张", String.valueOf(couponInfo.userGetCount))));
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);

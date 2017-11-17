@@ -106,6 +106,7 @@ public class TechShareCardActivity extends BaseActivity {
         if (Utils.isNotEmpty(codeUrl)) {
             Glide.with(TechShareCardActivity.this).load(codeUrl).into(mUserShareCode);
         } else {
+
             mUserShareCode.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -146,6 +147,7 @@ public class TechShareCardActivity extends BaseActivity {
             iae.printStackTrace();
             return null;
         }
+
         int width = result.getWidth();
         int height = result.getHeight();
         int[] pixels = new int[width * height];

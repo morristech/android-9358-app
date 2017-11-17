@@ -368,6 +368,11 @@
     <string name="tech_poster_edit_save">保存</string>
     <string name="tech_poster_edit">编辑</string>
     <string name="tech_poster_save_picture">保存图片</string>
+    <string name="personal_fragment_join_club">请先加入会所</string>
+    <string name="personal_fragment_wait_check">请等待会所审核</string>
+    <string name="personal_fragment_status_check">所在会所未开放该功能</string>
+    <string name="main_fragment_tech_status_select_fail">已开启内网功能，不可手动切换状态</string>
+    <string name="main_fragment_tech_status_club">您还尚未成功加入会所</string>
     <string name="tech_poster_alter_message">提示</string>
     <string name="tech_poster_alter_delete_message">删除后将无法恢复，确认删除该技师海报吗？</string>
     <string name="tech_poster_primary_title_default">欢迎您</string>
@@ -378,5 +383,8 @@
     <string name="tech_center_info_album_jurisdiction_all">（所有人均可查看）</string>
     <string name="tech_center_info_album_jurisdiction_vip">（仅到店客户&amp;VIP可见）</string>
     <string name="tech_info_edit_title">资料编辑</string>
+    <string name="tech_change_status_alter_message">"修改为“休假”状态后，您将不能被预约。目前您还有 %s 个预约订单待处理，确定切换状态吗?"</string>
+    <string name="tech_rest_status_no_work_alter_message">该技师现在正在休假中，请预约其他技师</string>
+
 
 </resources>

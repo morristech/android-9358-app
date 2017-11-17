@@ -366,6 +366,9 @@ public class ChatMessage {
 
 
     public static String getSafeStringAttribute(EMMessage emMessage, String key) {
+        if(emMessage == null || TextUtils.isEmpty(key)){
+            return "";
+        }
         try {
             return emMessage.getStringAttribute(key);
         } catch (HyphenateException e) {
