@@ -37,6 +37,7 @@ import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
@@ -271,14 +272,20 @@ public class TradeManager {
                     public void call(Subscriber<? super Void> subscriber) {
                         switch (mTrade.currentCashier) {
                             case AppConstants.CASHIER_TYPE_QRCODE:  //小摩豆买单支付
-                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
-                                    printOnlinePay(false, null);
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                                    printOnlinePay(true, null);
+                                    if (SPManager.getInstance().getPrintClientSwitch()) {
+                                        printOnlinePay(false, null);
+                                    }
                                 }
                                 newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_MEMBER:  //会员支付
-                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
-                                    printMemberPay(false, null);
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                                    printMemberPay(true, null);
+                                    if (SPManager.getInstance().getPrintClientSwitch()) {
+                                        printMemberPay(false, null);
+                                    }
                                 }
                                 newTrade();
                                 break;
@@ -295,19 +302,27 @@ public class TradeManager {
                                     }
                                 }
                                 reportTradeDataSync();   //汇报流水
-                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
-                                    printPosPay(false, null);
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                                    printPosPay(true, null);
+                                    if (SPManager.getInstance().getPrintClientSwitch()) {
+                                        printPosPay(false, null);
+                                    }
                                 }
                                 newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_CASH:
-                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isClient) {
-                                    printPosPay(false, null);
+                                if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                                    printPosPay(true, null);
+                                    if (SPManager.getInstance().getPrintClientSwitch()) {
+                                        printPosPay(false, null);
+                                    }
                                 }
                                 newTrade();
                             case AppConstants.CASHIER_TYPE_ERROR:
                                 printVerificationList(true);
-                                printVerificationList(false);
+                                if (SPManager.getInstance().getPrintClientSwitch()) {
+                                    printVerificationList(false);
+                                }
                                 newTrade();
                                 break;
                             default:

@@ -169,7 +169,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
                 mView.showToast("会员支付成功，正在出票...");
                 TradeManager.getInstance().getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                 TradeManager.getInstance().getCurrentTrade().memberRecordInfo = o.getRespData();
-                printStep();
+                finishMemberPay();
             }
 
             @Override

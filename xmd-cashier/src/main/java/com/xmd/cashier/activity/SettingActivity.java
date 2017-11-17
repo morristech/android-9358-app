@@ -17,6 +17,7 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
     private Switch mOrderRejectSwitch;
     private Switch mOnlinePassSwitch;
     private Switch mOnlineUnpassSwitch;
+    private Switch mPrintClientSwitch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,16 +32,19 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
         mOnlineUnpassSwitch = (Switch) findViewById(R.id.sw_online_unpass);
         mOrderAcceptSwitch = (Switch) findViewById(R.id.sw_order_accept);
         mOrderRejectSwitch = (Switch) findViewById(R.id.sw_order_reject);
+        mPrintClientSwitch = (Switch) findViewById(R.id.sw_print_client);
 
         mOnlinePassSwitch.setChecked(SPManager.getInstance().getOnlinePassSwitch());
         mOnlineUnpassSwitch.setChecked(SPManager.getInstance().getOnlineUnpassSwitch());
         mOrderAcceptSwitch.setChecked(SPManager.getInstance().getOrderAcceptSwitch());
         mOrderRejectSwitch.setChecked(SPManager.getInstance().getOrderRejectSwitch());
+        mPrintClientSwitch.setChecked(SPManager.getInstance().getPrintClientSwitch());
 
         mOnlinePassSwitch.setOnCheckedChangeListener(this);
         mOnlineUnpassSwitch.setOnCheckedChangeListener(this);
         mOrderAcceptSwitch.setOnCheckedChangeListener(this);
         mOrderRejectSwitch.setOnCheckedChangeListener(this);
+        mPrintClientSwitch.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -62,6 +66,10 @@ public class SettingActivity extends BaseActivity implements CompoundButton.OnCh
                 break;
             case R.id.sw_order_reject:
                 SPManager.getInstance().setOrderRejectSwitch(isChecked);
+                break;
+            case R.id.sw_print_client:
+                showToast(isChecked ? "打印客户联" : "不打印客户联");
+                SPManager.getInstance().setPrintClientSwitch(isChecked);
                 break;
             default:
                 break;

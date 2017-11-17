@@ -15,6 +15,8 @@ public interface MemberScanContract {
 
         void printStep();
 
+        void printNormal();
+
         void onKeyEventBack();
     }
 

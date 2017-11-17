@@ -41,7 +41,7 @@ public class ScanPayResultPresenter implements ScanPayResultContract.Presenter {
 
     @Override
     public void onConfirm() {
-        printStep();
+        finishOnlinePay();
     }
 
     private void printStep() {

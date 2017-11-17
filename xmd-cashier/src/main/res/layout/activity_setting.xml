@@ -182,6 +182,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/colorDivide" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_small_margin"
+                    android:layout_marginRight="@dimen/activity_small_margin"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="是否打印客户联"
+                    android:textSize="@dimen/font_size_16" />
+
+                <Switch
+                    android:id="@+id/sw_print_client"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOff=" "
+                    android:textOn=" "
+                    android:thumb="@drawable/selector_thumb"
+                    android:track="@drawable/selector_track" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorDivide" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

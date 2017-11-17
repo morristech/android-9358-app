@@ -8,6 +8,7 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyPrizeContract;
 import com.xmd.cashier.dal.bean.PrizeInfo;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
@@ -49,7 +50,8 @@ public class VerifyPrizePresenter implements VerifyPrizeContract.Presenter {
             public void onSuccess(BaseBean o) {
                 mView.hideLoadingView();
                 mView.showToast("操作成功");
-                printStep(info);
+                printNormal(info);
+                mView.finishSelf();
             }
 
             @Override
@@ -76,6 +78,24 @@ public class VerifyPrizePresenter implements VerifyPrizeContract.Presenter {
         if (mVerifyPrizeSubscription != null) {
             mVerifyPrizeSubscription.unsubscribe();
         }
+    }
+
+    private void printNormal(final PrizeInfo info) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printPrize(info, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            VerifyManager.getInstance().printPrize(info, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private void printStep(final PrizeInfo info) {

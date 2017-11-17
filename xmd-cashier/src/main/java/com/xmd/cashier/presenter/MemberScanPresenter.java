@@ -18,6 +18,7 @@ import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
@@ -263,6 +264,29 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                 mView.finishSelf();
             }
         });
+    }
+
+    @Override
+    public void printNormal() {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        // 扫码充值
+                        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        MemberManager.getInstance().newTrade();
+        MemberManager.getInstance().newRechargeProcess();
+        mView.finishSelf();
     }
 
     @Override

@@ -63,7 +63,7 @@ public class CashPayPresenter implements CashPayContract.Presenter {
             public void onSuccess(Void o) {
                 mView.hideLoading();
                 mView.showCashSuccess();
-                printStep();
+                finishCashPay();
             }
 
             @Override

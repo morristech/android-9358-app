@@ -135,7 +135,7 @@ public class CashierPresenter implements CashierContract.Presenter {
             public void onSuccess(Void o) {
                 mView.hideLoading();
                 mView.showToast("支付成功！");
-                printStep();
+                finishPosPay();
             }
 
             @Override

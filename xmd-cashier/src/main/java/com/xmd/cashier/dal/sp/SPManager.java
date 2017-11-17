@@ -38,6 +38,14 @@ public class SPManager {
         mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
 
+    public boolean getPrintClientSwitch() {
+        return mSharedPreferences.getBoolean(SPConstants.GLOBAL_PRINT_CLIENT_SWITCH, false);
+    }
+
+    public void setPrintClientSwitch(boolean status) {
+        mSharedPreferences.edit().putBoolean(SPConstants.GLOBAL_PRINT_CLIENT_SWITCH, status).apply();
+    }
+
     // ---订单接受
     public boolean getOrderAcceptSwitch() {
         return mSharedPreferences.getBoolean(SPConstants.ORDER_ACCEPT_PRINT_SWITCH, true);

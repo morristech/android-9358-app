@@ -17,6 +17,7 @@ import com.xmd.cashier.dal.bean.CheckInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
@@ -93,7 +94,10 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
             switch (requestCode) {
                 case REQUEST_CODE_CONSUME_CHECKINFO:
                     //核销结束
-                    printStep(VerifyManager.getInstance().getSuccessList());
+                    printNormal(VerifyManager.getInstance().getSuccessList());
+                    // 刷新列表
+                    resetList();
+                    onLoad();
                     break;
                 case REQUEST_CODE_CONSUME_COUPON:
                 case REQUEST_CODE_CONSUME_ORDER:
@@ -164,7 +168,11 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
                     gotoVerifyResultActivity(mContext);
                 } else {
                     mView.showToast("全部核销成功");
-                    printStep(VerifyManager.getInstance().getSuccessList());
+                    printNormal(VerifyManager.getInstance().getSuccessList());
+                    // 刷新列表
+                    resetList();
+                    onLoad();
+
                 }
             }
 
@@ -242,6 +250,24 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
     @Override
     public void onItemSelectValid(CheckInfo info) {
         mView.showError("该券不在可用时间段内");
+    }
+
+    private void printNormal(final List<CheckInfo> infos) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printCheckInfoList(infos, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            VerifyManager.getInstance().printCheckInfoList(infos, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private void printStep(final List<CheckInfo> infos) {

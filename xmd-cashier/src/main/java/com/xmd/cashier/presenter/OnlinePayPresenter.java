@@ -202,7 +202,9 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         NotifyManager.getInstance().printOnlinePayRecord(info, false, true);
-                        NotifyManager.getInstance().printOnlinePayRecord(info, false, false);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            NotifyManager.getInstance().printOnlinePayRecord(info, false, false);
+                        }
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

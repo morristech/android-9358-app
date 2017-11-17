@@ -9,6 +9,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerResultContract;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.TradeManager;
@@ -124,7 +125,8 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
                 public void onSuccess(InnerRecordInfo o) {
                     mView.hideLoading();
                     mRecordInfo = o;
-                    printStep();
+                    printNormal();
+                    newInnerTrade();
                 }
 
                 @Override
@@ -135,8 +137,28 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
                 }
             });
         } else {
-            printStep();
+            printNormal();
+            newInnerTrade();
         }
+    }
+
+    private void printNormal() {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        InnerManager.getInstance().printInnerRecordInfo(mRecordInfo, false, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            InnerManager.getInstance().printInnerRecordInfo(mRecordInfo, false, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
     }
 
     private void printStep() {

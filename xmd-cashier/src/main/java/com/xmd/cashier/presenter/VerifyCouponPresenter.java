@@ -9,6 +9,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCouponContract;
 import com.xmd.cashier.dal.bean.CouponInfo;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
@@ -86,7 +87,8 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
                     public void onSuccess(BaseBean o) {
                         mView.hideLoading();
                         mView.showToast("核销成功");
-                        printStep(info);
+                        printNormal(info);
+                        mView.finishSelf();
                     }
 
                     @Override
@@ -103,7 +105,8 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
                     public void onSuccess(BaseBean o) {
                         mView.hideLoading();
                         mView.showToast("核销成功");
-                        printStep(info);
+                        printNormal(info);
+                        mView.finishSelf();
                     }
 
                     @Override
@@ -139,6 +142,24 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
                 doVerifyOthers(info);
             }
         });
+    }
+
+    private void printNormal(final CouponInfo info) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printCoupon(info, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            VerifyManager.getInstance().printCoupon(info, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private void printStep(final CouponInfo info) {

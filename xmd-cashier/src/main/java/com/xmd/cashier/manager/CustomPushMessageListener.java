@@ -84,6 +84,9 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                             @Override
                             public void call(Subscriber<? super Void> subscriber) {
                                 NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, true);
+                                if (SPManager.getInstance().getPrintClientSwitch()) {
+                                    NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, false);
+                                }
                                 subscriber.onNext(null);
                                 subscriber.onCompleted();
                             }
@@ -137,7 +140,9 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                                         @Override
                                         public void call(Subscriber<? super Void> subscriber) {
                                             InnerManager.getInstance().printInnerRecordInfo(o, false, true, null);
-                                            InnerManager.getInstance().printInnerRecordInfo(o, false, false, null);
+                                            if (SPManager.getInstance().getPrintClientSwitch()) {
+                                                InnerManager.getInstance().printInnerRecordInfo(o, false, false, null);
+                                            }
                                             subscriber.onNext(null);
                                             subscriber.onCompleted();
                                         }

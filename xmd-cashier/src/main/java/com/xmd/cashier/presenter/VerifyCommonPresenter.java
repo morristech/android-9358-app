@@ -10,6 +10,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCommonContract;
 import com.xmd.cashier.dal.bean.CommonVerifyInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
@@ -63,7 +64,8 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
                     treatInfo.useMoney = Utils.stringToMoney(mView.getAmount());
                     treatInfo.authorizeCode = info.code;
                     treatInfo.setExtraMemberInfo(info.info.extra);
-                    printStep(treatInfo);
+                    printNormal(treatInfo);
+                    mView.finishSelf();
                 } else {
                     mView.finishSelf();
                 }
@@ -76,6 +78,24 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
                 mView.showError("操作失败：" + error);
             }
         });
+    }
+
+    private void printNormal(final TreatInfo info) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printTreat(info, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            VerifyManager.getInstance().printTreat(info, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private void printStep(final TreatInfo info) {
