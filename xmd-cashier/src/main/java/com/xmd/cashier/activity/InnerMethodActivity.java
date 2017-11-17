@@ -1,5 +1,6 @@
 package com.xmd.cashier.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -54,11 +55,32 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inner_method);
+        initView();
+        mPresenter = new InnerMethodPresenter(this, this);
+        mPresenter.onCreate();
+
+        processExtraData();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        processExtraData();
+    }
+
+    private void processExtraData() {
         mSource = getIntent().getStringExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE);
         mRecordInfo = (InnerRecordInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL);
-        mPresenter = new InnerMethodPresenter(this, this);
-        initView();
-        mPresenter.onCreate();
+        mAdapter = new InnerOrderAdapter(this, AppConstants.INNER_METHOD_SOURCE_NORMAL.equals(mSource));
+        mAdapter.setCallBack(new InnerOrderAdapter.ItemCallBack() {
+            @Override
+            public void onItemClick(InnerOrderInfo orderInfo, int position) {
+                mPresenter.onOrderClick(orderInfo, position);
+            }
+        });
+        mOrderList.setAdapter(mAdapter);
+        mPresenter.processData();
     }
 
     private void initView() {
@@ -79,16 +101,9 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
         mVerifyDescText = (TextView) findViewById(R.id.tv_verify_desc);
         mPayBtn = (Button) findViewById(R.id.btn_pay);
         mNeedPayAmount = (TextView) findViewById(R.id.tv_need_amount);
-        mAdapter = new InnerOrderAdapter(this, AppConstants.INNER_METHOD_SOURCE_NORMAL.equals(mSource));
-        mAdapter.setCallBack(new InnerOrderAdapter.ItemCallBack() {
-            @Override
-            public void onItemClick(InnerOrderInfo orderInfo, int position) {
-                mPresenter.onOrderClick(orderInfo, position);
-            }
-        });
+
         mOrderList = (RecyclerView) findViewById(R.id.rv_order_list);
         mOrderList.setLayoutManager(new LinearLayoutManager(this));
-        mOrderList.setAdapter(mAdapter);
 
         mVerifyDescText.setVisibility(View.GONE);
         mVerifySelectLayout.setOnClickListener(new View.OnClickListener() {

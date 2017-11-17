@@ -20,6 +20,8 @@ public interface InnerMethodContract {
         void onSelectChange();
 
         void onOrderClick(InnerOrderInfo info, int position);
+
+        void processData();
     }
 
     interface View extends BaseView<Presenter> {

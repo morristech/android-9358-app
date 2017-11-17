@@ -400,7 +400,7 @@ public class CustomService extends Service {
                         if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
                             SPManager.getInstance().updateOrderPushTag();
                             String tempStr = e.getLocalizedMessage();
-                            if (tempStr.contains("处理")) {
+                            if (tempStr.contains("处理")) {// FIXME 后台描述变更,则相应变更
                                 tempStr = "订单已被处理，详情请查看付费预约列表";
                             }
                             adapter.setNormalStatus(position, tempStr);
@@ -441,7 +441,7 @@ public class CustomService extends Service {
                             SPManager.getInstance().updateOrderPushTag();
                             // status=400
                             String tempStr = e.getLocalizedMessage();
-                            if (tempStr.contains("处理")) {
+                            if (tempStr.contains("处理")) {// FIXME 后台描述变更,则相应变更
                                 tempStr = "订单已被处理，详情请查看付费预约列表";
                             }
                             adapter.setNormalStatus(position, tempStr);
@@ -516,7 +516,7 @@ public class CustomService extends Service {
                             SPManager.getInstance().updateFastPayPushTag();
                             // status = 400
                             String tempStr = e.getLocalizedMessage();
-                            if (tempStr.contains("处理")) {
+                            if (tempStr.contains("处理")) {// FIXME 后台描述变更,则相应变更
                                 tempStr = "买单已被处理，详情请查看在线买单列表";
                             }
                             adapter.setNormalStatus(position, tempStr);
@@ -558,7 +558,7 @@ public class CustomService extends Service {
                             SPManager.getInstance().updateFastPayPushTag();
                             // status = 400
                             String tempStr = e.getLocalizedMessage();
-                            if (tempStr.contains("处理")) {
+                            if (tempStr.contains("处理")) {   // FIXME 后台描述变更,则相应变更
                                 tempStr = "买单已被处理，详情请查看在线买单列表";
                             }
                             adapter.setNormalStatus(position, tempStr);
@@ -650,7 +650,7 @@ public class CustomService extends Service {
                 Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerMethodActivity.class);
                 intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, AppConstants.INNER_METHOD_SOURCE_PUSH);
                 intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, recordInfo);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                 MainApplication.getInstance().getApplicationContext().startActivity(intent);
             }
         });

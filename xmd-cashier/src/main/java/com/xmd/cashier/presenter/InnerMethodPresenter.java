@@ -66,30 +66,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
 
     @Override
     public void onCreate() {
-        mView.showStepView();
-        mTradeManager.newTrade();
         EventBus.getDefault().register(this);
-        switch (mView.returnSource()) {
-            case AppConstants.INNER_METHOD_SOURCE_NORMAL:
-                mView.showOrderList(InnerManager.getInstance().getInnerOrderInfos());
-                int origin = InnerManager.getInstance().getOrderAmount();
-                mTradeManager.getCurrentTrade().setOriginMoney(origin);
-                mView.setStatusLayout(true);
-                mView.updateStatus(mHoleSelect);
-                mView.showSelectCount(InnerManager.getInstance().getSelectCount());
-                break;
-            case AppConstants.INNER_METHOD_SOURCE_RECORD:
-            case AppConstants.INNER_METHOD_SOURCE_PUSH:
-                InnerRecordInfo recordInfo = mView.returnRecordInfo();
-                mTradeManager.getCurrentTrade().payOrderId = recordInfo.payId;
-                mTradeManager.getCurrentTrade().batchNo = recordInfo.batchNo;
-                mTradeManager.getCurrentTrade().setOriginMoney(recordInfo.payAmount);
-                mView.showOrderList(recordInfo.details);
-                mView.setStatusLayout(false);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -201,6 +178,34 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
         updateAmount();
     }
 
+    @Override
+    public void processData() {
+        mView.showStepView();       //显示StepView
+        mTradeManager.newTrade();   //初始化交易
+        switch (mView.returnSource()) {
+            case AppConstants.INNER_METHOD_SOURCE_NORMAL:   //如果是正常查找
+                mView.showOrderList(InnerManager.getInstance().getInnerOrderInfos());   //显示列表
+                int origin = InnerManager.getInstance().getOrderAmount();
+                mTradeManager.getCurrentTrade().setOriginMoney(origin);     //设置订单金额
+                mView.setStatusLayout(true);            //显示其他项
+                mView.updateStatus(mHoleSelect);
+                mView.showSelectCount(InnerManager.getInstance().getSelectCount());
+                break;
+            case AppConstants.INNER_METHOD_SOURCE_RECORD:
+            case AppConstants.INNER_METHOD_SOURCE_PUSH:     //如果是推送
+                InnerRecordInfo recordInfo = mView.returnRecordInfo();
+                mTradeManager.getCurrentTrade().payOrderId = recordInfo.payId;
+                mTradeManager.getCurrentTrade().batchNo = recordInfo.batchNo;
+                mTradeManager.getCurrentTrade().setOriginMoney(recordInfo.payAmount);   //设置订单金额
+                mView.showOrderList(recordInfo.details);    //显示列表
+                mView.setStatusLayout(false);               //隐藏设置项
+                break;
+            default:
+                break;
+        }
+        updateAmount();     //更新页面金额
+    }
+
     private void showMethod() {
         ActionSheetDialog dialog = new ActionSheetDialog(mContext);
         dialog.setContents(new ArrayList<>(InnerManager.getInstance().getChannels().keySet()));
@@ -304,7 +309,29 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                     @Override
                     public void onError(String error) {
                         mView.hideLoading();
-                        mView.showError(error);
+                        // FIXME 如果后台描述修改,需要相应变更
+                        if (error.contains("订单已被支付锁定")) {
+                            new CustomAlertDialogBuilder(mContext)
+                                    .setMessage("支付订单已存在，请前往结账提醒列表完成支付")
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton("去支付", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            UiNavigation.gotoInnerRecordActivity(mContext);
+                                            mView.finishSelf();
+                                        }
+                                    })
+                                    .create()
+                                    .show();
+                        } else {
+                            mView.showError(error);
+                        }
                     }
                 });
     }
