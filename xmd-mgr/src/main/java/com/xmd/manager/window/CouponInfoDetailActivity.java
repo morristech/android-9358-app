@@ -124,7 +124,7 @@ public class CouponInfoDetailActivity extends BaseActivity implements View.OnCli
     @OnClick(R.id.btn_filter_coupon)
     public void onViewClicked() {
         Intent intent = new Intent(CouponInfoDetailActivity.this, CouponOperateDataActivity.class);
-        intent.putExtra(CouponOperateDataActivity.KEY_INTENT_COUPON_BEAN, mCouponBean);
+        intent.putExtra(Constant.KEY_INTENT_COUPON_BEAN, mCouponBean);
         startActivity(intent);
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.CouponBean;
@@ -39,7 +40,7 @@ public class CouponOperateDataFragment extends BaseListFragment<CouponStatistics
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mCouponBean = getArguments().getParcelable(CouponOperateDataActivity.KEY_INTENT_COUPON_BEAN);
+        mCouponBean = getArguments().getParcelable(Constant.KEY_INTENT_COUPON_BEAN);
         mCouponId = mCouponBean == null ? "" : mCouponBean.actId;
         return inflater.inflate(R.layout.fragment_coupon_operate, container, false);
     }
@@ -91,5 +92,17 @@ public class CouponOperateDataFragment extends BaseListFragment<CouponStatistics
     public void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mCouponOperateListDataSubscribe);
+    }
+
+    @Override
+    public void onPositiveButtonClicked(CouponStatisticsBean bean) {
+        //getTotal
+        CouponRecordActivity.startCouponRecordActivity(getActivity(), mCouponBean, bean.reportDate, bean.reportDate, Constant.COUPON_STATUS_CAN_USE, Constant.COUPON_TIME_TYPE_GET_TIME);
+    }
+
+    @Override
+    public void onNegativeButtonClicked(CouponStatisticsBean bean) {
+        //haveUseTotal
+        CouponRecordActivity.startCouponRecordActivity(getActivity(), mCouponBean, bean.reportDate, bean.reportDate, Constant.COUPON_STATUS_VERIFIED, Constant.COUPON_TIME_TYPE_VERIFY_TIME);
     }
 }

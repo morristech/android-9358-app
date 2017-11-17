@@ -416,6 +416,12 @@ public class Constant {
     public static final int COUPON_IS_SELECTED_TRUE = 1;
     public static final int COUPON_IS_SELECTED_FALSE = 0;
 
+    public static final String KEY_INTENT_COUPON_BEAN = "couponBean";
+    public static final String FILTER_COUPON_TIME_START_TIME = "start_time";
+    public static final String FILTER_COUPON_TIME_END_TIME = "end_time";
+    public static final String FILTER_COUPON_STATUS_TYPE = "statusType";
+    public static final String FILTER_COUPON_TIME_TYPE = "time_type";
+
 
 }
 

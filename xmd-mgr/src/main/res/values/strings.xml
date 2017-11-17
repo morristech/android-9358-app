@@ -536,7 +536,7 @@
     <string name="coupon_operate_date_title">优惠券数据</string>
     <string name="coupon_operate_list_date_title">优惠券</string>
     <string name="coupon_data_all_coupon">全部优惠券</string>
-    <string name="coupon_data_receive">领取</string>
+    <string name="coupon_data_receive">全部</string>
     <string name="coupon_data_verification">核销</string>
     <string name="coupon_data_over_time">过期</string>
     <string name="coupon_data_date">日期</string>
@@ -549,7 +549,7 @@
     <string name="coupon_record_activity_title">优惠券记录</string>
     <string name="coupon_record_filter_activity_title">优惠券</string>
     <string name="search_coupon_activity_search_hint">输入客户手机或核销码搜索</string>
-    <string name="coupon_data_can_use">可用</string>
+    <string name="coupon_data_can_use">领取</string>
     <string name="search_coupon_is_empty">未查到相关数据</string>
     <string name="delivery_coupon">点钟券</string>
     <string name="user_time">使用时间段</string>

@@ -101,10 +101,10 @@ public class CouponFilterActivity extends BaseActivity {
 
     public void getIntentData() {
         Intent data = getIntent();
-        mUserStartTime = data.getStringExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_START_TIME);
-        mUserEndTime = data.getStringExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_END_TIME);
-        mCurrentTimeFilterType = data.getIntExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_TYPE, 0);
-        mCouponSelectedBean = (CouponBean) data.getSerializableExtra(CouponOperateDataActivity.FILTER_COUPON_SELECTED);
+        mUserStartTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_START_TIME);
+        mUserEndTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_END_TIME);
+        mCurrentTimeFilterType = data.getIntExtra(Constant.FILTER_COUPON_TIME_TYPE, 0);
+        mCouponSelectedBean = (CouponBean) data.getSerializableExtra(Constant.KEY_INTENT_COUPON_BEAN);
         tvFilterTimeAllStart.setText(mTotalStartTime);
         tvFilterTimeAllEnd.setText(mTotalEndTime);
         tvUserStartTime.setText(TextUtils.isEmpty(mUserStartTime) ? DateUtil.getFirstDayOfMonth() : mUserStartTime);
@@ -129,10 +129,10 @@ public class CouponFilterActivity extends BaseActivity {
         mUserStartTime = tvUserStartTime.getText().toString();
         mUserEndTime = tvUserEndTime.getText().toString();
         Intent intent = new Intent();
-        intent.putExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_TYPE, mCurrentTimeFilterType);
-        intent.putExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_START_TIME, mCurrentTimeFilterType == Constant.COUPON_FILTER_TIME_TYPE_ALL ? mTotalStartTime : mUserStartTime);
-        intent.putExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_END_TIME, mCurrentTimeFilterType == Constant.COUPON_FILTER_TIME_TYPE_ALL ? mTotalEndTime : mUserEndTime);
-        intent.putExtra(CouponOperateDataActivity.FILTER_COUPON_SELECTED, getSelectBean());
+        intent.putExtra(Constant.FILTER_COUPON_TIME_TYPE, mCurrentTimeFilterType);
+        intent.putExtra(Constant.FILTER_COUPON_TIME_START_TIME, mCurrentTimeFilterType == Constant.COUPON_FILTER_TIME_TYPE_ALL ? mTotalStartTime : mUserStartTime);
+        intent.putExtra(Constant.FILTER_COUPON_TIME_END_TIME, mCurrentTimeFilterType == Constant.COUPON_FILTER_TIME_TYPE_ALL ? mTotalEndTime : mUserEndTime);
+        intent.putExtra(Constant.KEY_INTENT_COUPON_BEAN, getSelectBean());
         this.setResult(Activity.RESULT_OK, intent);
         this.finish();
     }
