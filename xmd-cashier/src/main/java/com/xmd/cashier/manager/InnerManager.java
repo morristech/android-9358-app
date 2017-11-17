@@ -362,7 +362,7 @@ public class InnerManager {
             }
         }
 
-        mPos.printText("交易号：", info.id);
+        mPos.printText("交易号：", info.payId);
         if (!TextUtils.isEmpty(info.transactionId)) {
             mPos.printText("流水号：", info.transactionId);
         }
