@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -52,12 +51,6 @@ public class CouponOperateDataActivity extends BaseActivity {
     FrameLayout fmCouponOperateDetail;
 
     public static final int FILTER_COUPON_REQUEST_CODE = 1;
-    public static final String KEY_INTENT_COUPON_BEAN = "couponBean";
-    public static final String FILTER_COUPON_TIME_TYPE = "filter_time";//0:累计，1：自定义
-    public static final String FILTER_COUPON_TIME_START_TIME = "start_time";
-    public static final String FILTER_COUPON_TIME_END_TIME = "end_time";
-    public static final String FILTER_COUPON_SELECTED = "selected_coupon";
-    public static final String FILTER_COUPON_STATUS_TYPE = "statusType";
 
     private CouponBean mFilterBean;
     private CouponOperateDataFragment mCouponOperateDataFragment;
@@ -65,6 +58,7 @@ public class CouponOperateDataActivity extends BaseActivity {
     private String mFilterEndTime;
     private Map<String, String> mParams;
     private Subscription mCouponOperateDataSubscription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +70,7 @@ public class CouponOperateDataActivity extends BaseActivity {
     }
 
     public void getIntentData() {
-        mFilterBean = getIntent().getParcelableExtra(KEY_INTENT_COUPON_BEAN);
+        mFilterBean = getIntent().getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
     }
 
     private void initView() {
@@ -107,7 +101,7 @@ public class CouponOperateDataActivity extends BaseActivity {
     private void initCouponDataFragment() {
         mCouponOperateDataFragment = new CouponOperateDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(KEY_INTENT_COUPON_BEAN, mFilterBean);
+        bundle.putParcelable(Constant.KEY_INTENT_COUPON_BEAN, mFilterBean);
         mCouponOperateDataFragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -140,9 +134,9 @@ public class CouponOperateDataActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILTER_COUPON_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null) {
-                mFilterBean = (CouponBean) data.getParcelableExtra(FILTER_COUPON_SELECTED);
-                mFilterStartTime = data.getStringExtra(FILTER_COUPON_TIME_START_TIME);
-                mFilterEndTime = data.getStringExtra(FILTER_COUPON_TIME_END_TIME);
+                mFilterBean = (CouponBean) data.getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
+                mFilterStartTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_START_TIME);
+                mFilterEndTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_END_TIME);
                 getOperateTotalData();
                 mCouponOperateDataFragment.notifyDataRefresh(mFilterBean == null ? "" : mFilterBean.actId, mFilterStartTime, mFilterEndTime);
             }
@@ -157,33 +151,16 @@ public class CouponOperateDataActivity extends BaseActivity {
         CouponDataFilterManager.getCouponFilterManagerInstance().onDestroyManager();
     }
 
-    @OnClick({R.id.ll_receive_record, R.id.ll_verification_record, R.id.ll_over_time_record})
+    @OnClick({R.id.ll_receive_record, R.id.ll_verification_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_receive_record:
-                Intent intentReceive = new Intent(CouponOperateDataActivity.this, CouponRecordActivity.class);
-                intentReceive.putExtra(KEY_INTENT_COUPON_BEAN, mFilterBean);
-                intentReceive.putExtra(FILTER_COUPON_TIME_START_TIME, TextUtils.isEmpty(mFilterStartTime) ? SharedPreferenceHelper.getCurrentClubCreateTime() : mFilterStartTime);
-                intentReceive.putExtra(FILTER_COUPON_TIME_END_TIME, TextUtils.isEmpty(mFilterEndTime) ? DateUtil.getCurrentDate() : mFilterEndTime);
-                intentReceive.putExtra(FILTER_COUPON_STATUS_TYPE, Constant.COUPON_STATUS_CAN_USE);
-                startActivity(intentReceive);
+                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, Constant.COUPON_STATUS_CAN_USE,Constant.COUPON_TIME_TYPE_ALL);
                 break;
             case R.id.ll_verification_record:
-                Intent intentVerification = new Intent(CouponOperateDataActivity.this, CouponRecordActivity.class);
-                intentVerification.putExtra(KEY_INTENT_COUPON_BEAN, mFilterBean);
-                intentVerification.putExtra(FILTER_COUPON_TIME_START_TIME, TextUtils.isEmpty(mFilterStartTime) ? SharedPreferenceHelper.getCurrentClubCreateTime() : mFilterStartTime);
-                intentVerification.putExtra(FILTER_COUPON_TIME_END_TIME, TextUtils.isEmpty(mFilterEndTime) ? DateUtil.getCurrentDate() : mFilterEndTime);
-                intentVerification.putExtra(FILTER_COUPON_STATUS_TYPE, Constant.COUPON_STATUS_VERIFIED);
-                startActivity(intentVerification);
+                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, Constant.COUPON_STATUS_VERIFIED,Constant.COUPON_TIME_TYPE_ALL);
                 break;
-            case R.id.ll_over_time_record:
-                Intent intentOverTime = new Intent(CouponOperateDataActivity.this, CouponRecordActivity.class);
-                intentOverTime.putExtra(KEY_INTENT_COUPON_BEAN, mFilterBean);
-                intentOverTime.putExtra(FILTER_COUPON_TIME_START_TIME, TextUtils.isEmpty(mFilterStartTime) ? SharedPreferenceHelper.getCurrentClubCreateTime() : mFilterStartTime);
-                intentOverTime.putExtra(FILTER_COUPON_TIME_END_TIME, TextUtils.isEmpty(mFilterEndTime) ? DateUtil.getCurrentDate() : mFilterEndTime);
-                intentOverTime.putExtra(FILTER_COUPON_STATUS_TYPE, Constant.COUPON_STATUS_EXPIRED);
-                startActivity(intentOverTime);
-                break;
+
         }
     }
 }

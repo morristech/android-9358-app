@@ -58,6 +58,7 @@ public class CouponRecordListFragment extends BaseListFragment<CouponRecordBean>
         mCouponId = (String) getArguments().get(RequestConstant.KEY_COUPON_ID);
         mStartTime = (String) getArguments().get(RequestConstant.KEY_START_DATE);
         mEndTime = (String) getArguments().get(RequestConstant.KEY_END_DATE);
+        mStatus = (String) getArguments().get(RequestConstant.KEY_COUPON_STATUS);
         mTimeType = (String) getArguments().get(RequestConstant.KEY_COUPON_TIME_TYPE);
         return view;
     }
@@ -82,14 +83,14 @@ public class CouponRecordListFragment extends BaseListFragment<CouponRecordBean>
         } else {
             mParams.clear();
         }
+        mParams.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        mParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
         mParams.put(RequestConstant.KEY_COUPON_ID, TextUtils.isEmpty(mCouponId) ? "" : mCouponId);
         mParams.put(RequestConstant.KEY_COUPON_START_TIME, TextUtils.isEmpty(mStartTime) ? SharedPreferenceHelper.getCurrentClubCreateTime() : mStartTime);
         mParams.put(RequestConstant.KEY_COUPON_END_TIME, TextUtils.isEmpty(mEndTime) ? DateUtil.getCurrentDate() : mEndTime);
         mParams.put(RequestConstant.KEY_COUPON_STATUS, TextUtils.isEmpty(mStatus) ? "" : mStatus);
         mParams.put(RequestConstant.KEY_COUPON_TIME_TYPE, TextUtils.isEmpty(mTimeType) ? "" : mTimeType);
         mParams.put(RequestConstant.KEY_COUPON_PHONE_NUM_OR_COUPON_NO, TextUtils.isEmpty(mPhoneNumOrCouponNo) ? "" : mPhoneNumOrCouponNo);
-        mParams.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
-        mParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_RECORD_DATA, mParams);
     }
 

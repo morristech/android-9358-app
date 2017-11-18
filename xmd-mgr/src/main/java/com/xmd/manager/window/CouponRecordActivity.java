@@ -1,6 +1,7 @@
 package com.xmd.manager.window;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
+import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.CouponBean;
+import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.event.CouponRecordFilterEvent;
 import com.xmd.manager.service.RequestConstant;
@@ -39,6 +42,18 @@ public class CouponRecordActivity extends BaseActivity {
     private String mFilterStatusType;
     private String mStartTime;
     private String mEndTime;
+    private String mFilterTimeType;
+
+    public static void startCouponRecordActivity(Activity activity, CouponBean bean, String startTime, String endTime, String statusType, String timeFilterType) {
+        Intent intent = new Intent(activity, CouponRecordActivity.class);
+        intent.putExtra(Constant.KEY_INTENT_COUPON_BEAN, bean);
+        intent.putExtra(Constant.FILTER_COUPON_TIME_START_TIME, TextUtils.isEmpty(startTime) ? SharedPreferenceHelper.getCurrentClubCreateTime() : startTime);
+        intent.putExtra(Constant.FILTER_COUPON_TIME_END_TIME, TextUtils.isEmpty(endTime) ? DateUtil.getCurrentDate() : endTime);
+        intent.putExtra(Constant.FILTER_COUPON_STATUS_TYPE, statusType);
+        intent.putExtra(Constant.FILTER_COUPON_TIME_TYPE, timeFilterType);
+        activity.startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +66,11 @@ public class CouponRecordActivity extends BaseActivity {
     }
 
     public void getIntentData() {
-        mCouponBean = getIntent().getParcelableExtra(CouponOperateDataActivity.KEY_INTENT_COUPON_BEAN);
-        mStartTime = getIntent().getStringExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_START_TIME);
-        mEndTime = getIntent().getStringExtra(CouponOperateDataActivity.FILTER_COUPON_TIME_END_TIME);
-        mFilterStatusType = getIntent().getStringExtra(CouponOperateDataActivity.FILTER_COUPON_STATUS_TYPE);
+        mCouponBean = getIntent().getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
+        mStartTime = getIntent().getStringExtra(Constant.FILTER_COUPON_TIME_START_TIME);
+        mEndTime = getIntent().getStringExtra(Constant.FILTER_COUPON_TIME_END_TIME);
+        mFilterStatusType = getIntent().getStringExtra(Constant.FILTER_COUPON_STATUS_TYPE);
+        mFilterTimeType = getIntent().getStringExtra(Constant.FILTER_COUPON_TIME_TYPE);
     }
 
     private void initView() {
@@ -74,7 +90,8 @@ public class CouponRecordActivity extends BaseActivity {
         bundle.putSerializable(RequestConstant.KEY_COUPON_ID, mCouponBean == null ? "" : mCouponBean.actId);
         bundle.putSerializable(RequestConstant.KEY_START_DATE, mStartTime);
         bundle.putSerializable(RequestConstant.KEY_END_DATE, mEndTime);
-        bundle.putSerializable(RequestConstant.KEY_COUPON_TIME_TYPE, mFilterStatusType);
+        bundle.putSerializable(RequestConstant.KEY_COUPON_STATUS, mFilterStatusType);
+        bundle.putSerializable(RequestConstant.KEY_COUPON_TIME_TYPE,mFilterTimeType);
         mCouponRecordListFragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

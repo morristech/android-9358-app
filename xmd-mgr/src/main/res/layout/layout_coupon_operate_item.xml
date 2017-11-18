@@ -12,7 +12,7 @@
         <TextView
             android:id="@+id/tv_coupon_operate_date"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             tools:text="1月20日"
@@ -23,7 +23,7 @@
         <TextView
             android:id="@+id/tv_coupon_operate_receive"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/tv_coupon_operate_verification"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"

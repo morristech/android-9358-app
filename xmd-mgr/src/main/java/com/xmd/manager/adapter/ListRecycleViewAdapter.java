@@ -1217,6 +1217,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         viewHolder.tvCouponOperateReceive.setText(operateBean.getTotal);
         viewHolder.tvCouponOperateOverTime.setText(operateBean.expireTotal);
         viewHolder.tvCouponOperateVerification.setText(operateBean.haveUseTotal);
+        viewHolder.tvCouponOperateReceive.setOnClickListener(v -> mCallback.onPositiveButtonClicked(operateBean));
+        viewHolder.tvCouponOperateVerification.setOnClickListener(v -> mCallback.onNegativeButtonClicked(operateBean));
     }
 
     private void bindOperateReportListViewHolder(RecyclerView.ViewHolder holder, Object obj) {
