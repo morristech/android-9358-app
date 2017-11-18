@@ -287,7 +287,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlineUnpassSwitch()) {
-                    print(info, false, true);
+                    printTwice(info);
                 }
             }
 
