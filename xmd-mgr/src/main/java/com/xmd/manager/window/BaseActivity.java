@@ -194,12 +194,6 @@ public class BaseActivity extends com.xmd.app.BaseActivity {
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     mRightText.setCompoundDrawablePadding(5);
                     mRightText.setCompoundDrawables(null, null, drawableRight, null);
-//                    if (isBadComment) {
-//                        mRightText.setBackgroundResource(R.color.right_btn_color);
-//                    } else {
-//                        mRightText.setBackgroundResource(R.drawable.shape_r4_stoke_white);
-//                    }
-
                 }
             }
             if (listener != null) {

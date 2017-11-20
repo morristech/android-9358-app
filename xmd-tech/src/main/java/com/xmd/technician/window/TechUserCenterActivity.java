@@ -375,8 +375,8 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
         tvTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);
         editLlTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
         //   editTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
-        tvTechNickName.setText(mTechInfo.getName());
-        editTechNickName.setText(mTechInfo.getName());
+        tvTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName()) ? "" : mTechInfo.getName());
+        editTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName()) ? "" : mTechInfo.getName());
 
         imgTechGender.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);
         tvTechGender.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);

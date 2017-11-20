@@ -63,6 +63,7 @@ public class CouponFilterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon_filter);
         ButterKnife.bind(this);
+        getIntentData();
         initView();
     }
 
@@ -93,9 +94,17 @@ public class CouponFilterActivity extends BaseActivity {
         });
         mTotalStartTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         mTotalEndTime = DateUtil.getCurrentDate();
-        mUserStartTime = DateUtil.getFirstDayOfMonth();
-        mUserEndTime = DateUtil.getCurrentDate();
-        getIntentData();
+        mUserStartTime = TextUtils.isEmpty(mUserStartTime) ? DateUtil.getFirstDayOfMonth() : mUserStartTime;
+        mUserEndTime = TextUtils.isEmpty(mUserEndTime) ? DateUtil.getCurrentDate() : mUserEndTime;
+        tvFilterTimeAllStart.setText(mTotalStartTime);
+        tvFilterTimeAllEnd.setText(mTotalEndTime);
+        tvUserStartTime.setText(TextUtils.isEmpty(mUserStartTime) ? DateUtil.getFirstDayOfMonth() : mUserStartTime);
+        tvUserEndTime.setText(TextUtils.isEmpty(mUserEndTime) ? DateUtil.getCurrentDate() : mUserEndTime);
+        if (mCurrentTimeFilterType == Constant.COUPON_FILTER_TIME_TYPE_ALL) {
+            buttonTotal.setChecked(true);
+        } else {
+            buttonUser.setChecked(true);
+        }
         initSelectCouponFragment();
     }
 
@@ -105,10 +114,6 @@ public class CouponFilterActivity extends BaseActivity {
         mUserEndTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_END_TIME);
         mCurrentTimeFilterType = data.getIntExtra(Constant.FILTER_COUPON_TIME_TYPE, 0);
         mCouponSelectedBean = (CouponBean) data.getSerializableExtra(Constant.KEY_INTENT_COUPON_BEAN);
-        tvFilterTimeAllStart.setText(mTotalStartTime);
-        tvFilterTimeAllEnd.setText(mTotalEndTime);
-        tvUserStartTime.setText(TextUtils.isEmpty(mUserStartTime) ? DateUtil.getFirstDayOfMonth() : mUserStartTime);
-        tvUserEndTime.setText(TextUtils.isEmpty(mUserEndTime) ? DateUtil.getCurrentDate() : mUserEndTime);
     }
 
     private void initSelectCouponFragment() {
@@ -120,7 +125,6 @@ public class CouponFilterActivity extends BaseActivity {
         scf.setArguments(bundle);
         ft.replace(R.id.fm_coupon_select, scf);
         ft.commit();
-
     }
 
 

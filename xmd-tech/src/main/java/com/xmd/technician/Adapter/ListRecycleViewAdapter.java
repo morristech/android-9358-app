@@ -155,7 +155,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mData.get(position) instanceof Order) {
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
-              if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
+                if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
                     return TYPE_COUPON_INFO_ITEM_DELIVERY;
                 } else {
                     return TYPE_COUPON_INFO_ITEM_FAVORABLE;
@@ -428,10 +428,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 couponListItemViewHolder.imgMoneyMark.setVisibility(View.GONE);
                 couponListItemViewHolder.emptyView.setVisibility(View.VISIBLE);
                 couponListItemViewHolder.mCouponAmount.setText(String.format("%1.1f折", couponInfo.actValue / 100f));
-            }else if(couponInfo.couponType.equals("gift")){
+            } else if (couponInfo.couponType.equals("gift")) {
                 couponListItemViewHolder.emptyView.setVisibility(View.VISIBLE);
                 couponListItemViewHolder.imgMoneyMark.setVisibility(View.GONE);
-                couponListItemViewHolder.mCouponAmount.setText(TextUtils.isEmpty(couponInfo.actSubTitle)?couponInfo.actTitle:couponInfo.actSubTitle);
+                couponListItemViewHolder.mCouponAmount.setText(TextUtils.isEmpty(couponInfo.actSubTitle) ? couponInfo.actTitle : couponInfo.actSubTitle);
             } else {
                 couponListItemViewHolder.emptyView.setVisibility(View.GONE);
                 couponListItemViewHolder.imgMoneyMark.setVisibility(View.VISIBLE);
@@ -543,12 +543,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
 
-            if (Utils.isNotEmpty(dynamicDetail.userName)&&dynamicDetail.userName.endsWith("**(匿名)")) {
+            if (Utils.isNotEmpty(dynamicDetail.userName) && dynamicDetail.userName.endsWith("**(匿名)")) {
                 viewHolder.dynamicItemAvatar.setImageResource(R.drawable.img_default_avatar);
             } else {
                 viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl, false);
             }
-            viewHolder.dynamicItemName.setText(TextUtils.isEmpty(dynamicDetail.userName)?"匿名用户":Utils.StrSubstring(6, dynamicDetail.userName, true));
+            viewHolder.dynamicItemName.setText(TextUtils.isEmpty(dynamicDetail.userName) ? "匿名用户" : Utils.StrSubstring(6, dynamicDetail.userName, true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
                 viewHolder.btnThanks.setClickable(true);
@@ -696,10 +696,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 Glide.with(mContext).load(ResourceUtils.getDrawable(R.drawable.img_default_reward)).into(rewardHolder.mRewardHead);
             }
             rewardHolder.mRewardName.setText(String.format("赢取%s", rewardBean.firstPrizeName));
-            if(Utils.isNotEmpty(rewardBean.startTime) && Utils.isNotEmpty(rewardBean.endTime)){
-                String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
-                String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
-                rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", st, et));
+            if (Utils.isNotEmpty(rewardBean.startTime) && Utils.isNotEmpty(rewardBean.endTime)) {
+//                String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
+//                String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
+                rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", rewardBean.startTime, rewardBean.endTime));
             }
             rewardHolder.mRewardShare.setOnClickListener(v -> mCallback.onShareClicked(rewardBean));
             rewardHolder.itemView.setOnClickListener(v -> {
@@ -734,7 +734,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             });
             Glide.with(mContext).load(clubJournal.image).into(clubJournalHolder.mJournalHead);
             clubJournalHolder.mJournalName.setText(clubJournal.title);
-            clubJournalHolder.mTvJournalNo.setText(String.format("No %s",String.valueOf(clubJournal.sequenceNo)));
+            clubJournalHolder.mTvJournalNo.setText(String.format("No %s", String.valueOf(clubJournal.sequenceNo)));
             clubJournalHolder.mJournalReleaseTime.setText(String.format("发布时间：%s", clubJournal.modifyDate.substring(0, 10)));
             return;
         }

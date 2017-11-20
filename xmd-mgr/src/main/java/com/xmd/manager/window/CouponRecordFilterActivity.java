@@ -3,6 +3,7 @@ package com.xmd.manager.window;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -71,6 +72,8 @@ public class CouponRecordFilterActivity extends BaseActivity {
     private String mCurrentStateType;//选择当前状态类型：0:全部，1：可用，2：已核销，3：已过期
     private String mStartTime;//开始时间
     private String mEndTime;//结束时间
+    private String mUserStartTime;
+    private String mUserEndTime;
     private SelectCouponFragment scf;
 
     @Override
@@ -78,7 +81,13 @@ public class CouponRecordFilterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon_record_filter);
         ButterKnife.bind(this);
+        getIntentData();
         initView();
+    }
+
+    public void getIntentData() {
+        mUserStartTime = getIntent().getStringExtra(Constant.COUPON_RECORD_START_TIME);
+        mUserEndTime = getIntent().getStringExtra(Constant.COUPON_RECORD_END_TIME);
     }
 
     private void initView() {
@@ -159,8 +168,8 @@ public class CouponRecordFilterActivity extends BaseActivity {
         mEndTime = DateUtil.getCurrentDate();
         tvFilterTimeAllStart.setText(mStartTime);
         tvFilterTimeAllEnd.setText(mEndTime);
-        tvUserStartTime.setText(mStartTime);
-        tvUserEndTime.setText(mEndTime);
+        tvUserStartTime.setText(TextUtils.isEmpty(mUserStartTime) ? mStartTime : mUserStartTime);
+        tvUserEndTime.setText(TextUtils.isEmpty(mUserEndTime) ? mEndTime : mUserEndTime);
     }
 
     //清空
@@ -183,7 +192,7 @@ public class CouponRecordFilterActivity extends BaseActivity {
             filterEndTime = tvUserEndTime.getText().toString();
         }
         if (couponBean == null) {
-            EventBus.getDefault().post(new CouponRecordFilterEvent(filterStartTime, filterEndTime, "", "全部优惠券", mCurrentStateType, mCurrentTimeFilterType));
+            EventBus.getDefault().post(new CouponRecordFilterEvent(filterStartTime, filterEndTime, "", ResourceUtils.getString(R.string.coupon_data_all_coupon), mCurrentStateType, mCurrentTimeFilterType));
         } else {
             EventBus.getDefault().post(new CouponRecordFilterEvent(filterStartTime, filterEndTime, couponBean.actId, couponBean.actTitle, mCurrentStateType, mCurrentTimeFilterType));
         }

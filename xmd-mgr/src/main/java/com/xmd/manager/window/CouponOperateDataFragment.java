@@ -30,7 +30,6 @@ import rx.Subscription;
 
 public class CouponOperateDataFragment extends BaseListFragment<CouponStatisticsBean> {
 
-    public String mCouponId;
     public String mFilterStartTime;
     public String mFilterEndTime;
     public Map<String, String> mParams;
@@ -41,7 +40,6 @@ public class CouponOperateDataFragment extends BaseListFragment<CouponStatistics
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mCouponBean = getArguments().getParcelable(Constant.KEY_INTENT_COUPON_BEAN);
-        mCouponId = mCouponBean == null ? "" : mCouponBean.actId;
         return inflater.inflate(R.layout.fragment_coupon_operate, container, false);
     }
 
@@ -55,7 +53,7 @@ public class CouponOperateDataFragment extends BaseListFragment<CouponStatistics
         mParams.clear();
         mParams.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         mParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        mParams.put(RequestConstant.KEY_COUPON_ID, TextUtils.isEmpty(mCouponId) ? "" : mCouponId);
+        mParams.put(RequestConstant.KEY_COUPON_ID, mCouponBean == null ? "" : mCouponBean.actId);
         mParams.put(RequestConstant.KEY_COUPON_START_DATE, TextUtils.isEmpty(mFilterStartTime) ? SharedPreferenceHelper.getCurrentClubCreateTime() : mFilterStartTime);
         mParams.put(RequestConstant.KEY_COUPON_END_DATE, TextUtils.isEmpty(mFilterEndTime) ? DateUtil.getCurrentDate() : mFilterEndTime);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_OPERATE_LIST_DATA, mParams);
@@ -81,8 +79,8 @@ public class CouponOperateDataFragment extends BaseListFragment<CouponStatistics
         return true;
     }
 
-    public void notifyDataRefresh(String couponId, String startTime, String endTime) {
-        this.mCouponId = couponId;
+    public void notifyDataRefresh(CouponBean couponBean, String startTime, String endTime) {
+        this.mCouponBean = couponBean;
         this.mFilterStartTime = startTime;
         this.mFilterEndTime = endTime;
         onRefresh();

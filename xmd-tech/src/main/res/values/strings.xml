@@ -384,7 +384,7 @@
     <string name="tech_center_info_album_jurisdiction_vip">（仅到店客户&amp;VIP可见）</string>
     <string name="tech_info_edit_title">资料编辑</string>
     <string name="tech_change_status_alter_message">"修改为“休假”状态后，您将不能被预约。目前您还有 %s 个预约订单待处理，确定切换状态吗?"</string>
-    <string name="tech_rest_status_no_work_alter_message">该技师现在正在休假中，请预约其他技师</string>
+    <string name="tech_rest_status_no_work_alter_message">该技师现在正休假中，请预约其他技师</string>
 
 
 </resources>

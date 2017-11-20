@@ -39,6 +39,7 @@
             android:paddingTop="@dimen/small_space"
             android:singleLine="true"
             android:textColor="@color/value_color"
+            android:imeOptions="actionSearch"
             android:textColorHint="@color/label_color"/>
 
         <TextView

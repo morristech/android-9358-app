@@ -1,5 +1,6 @@
 package com.xmd.manager.window;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,7 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -95,6 +99,17 @@ public class SearchCouponActivity extends BaseActivity {
 
             }
         });
+        searchWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchCoupon();
+                    return true;
+                }
+                return false;
+                //return false;
+            }
+        });
         initFragmentView();
     }
 
@@ -113,20 +128,25 @@ public class SearchCouponActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.tv_search:
-                mSearchText = searchWord.getText().toString();
-                if (TextUtils.isEmpty(mSearchText)) {
-                    XToast.show(ResourceUtils.getString(R.string.customer_search_alter));
-                    return;
-                }
-                showOrHideSearchHistoryList(false);
-                mHistoryManager.addData(mSearchText);
-                mCouponRecordListFragment.searchText(mSearchText);
+                searchCoupon();
                 break;
             case R.id.tv_clear_all:
                 mHistoryManager.clecarData();
                 showOrHideSearchHistoryList(false);
                 break;
         }
+    }
+
+    private void searchCoupon() {
+        mSearchText = searchWord.getText().toString();
+        if (TextUtils.isEmpty(mSearchText)) {
+            XToast.show(ResourceUtils.getString(R.string.customer_search_alter));
+            return;
+        }
+         ((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        showOrHideSearchHistoryList(false);
+        mHistoryManager.addData(mSearchText);
+        mCouponRecordListFragment.searchText(mSearchText);
     }
 
     private void showOrHideSearchHistoryList(boolean isShow) {

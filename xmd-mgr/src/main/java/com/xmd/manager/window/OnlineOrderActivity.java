@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
-
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.common.OrderFilterManager;
@@ -61,7 +60,6 @@ public class OnlineOrderActivity extends BaseActivity {
     private String mSearchPhone;
     private OrderListFilterFragment mOrderListFilterFragment;
     private OrderFilterManager mOrderFilterManager;
-    private boolean mCurrentStatusIsSearch;
 
     public static void startOnlineOrderActivity(Activity activity, String startTime, String endTime, String orderStatus) {
         Intent intent = new Intent(activity, OnlineOrderActivity.class);
@@ -106,11 +104,9 @@ public class OnlineOrderActivity extends BaseActivity {
         if (TextUtils.isEmpty(mSearchPhone)) {
             XToast.show(ResourceUtils.getString(R.string.search_pay_activity_search_hint));
         } else {
-            mCurrentStatusIsSearch = true;
             btnSearchCancel.setVisibility(View.VISIBLE);
             mOrderListFilterFragment.searchOrder(mSearchPhone);
-            ((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
+            ((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
     }
 

@@ -78,7 +78,10 @@ public class CouponRecordActivity extends BaseActivity {
         setRightVisible(true, ResourceUtils.getDrawable(R.drawable.ic_record_filter), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CouponRecordActivity.this, CouponRecordFilterActivity.class));
+                Intent intent = new Intent(CouponRecordActivity.this, CouponRecordFilterActivity.class);
+                intent.putExtra(Constant.COUPON_RECORD_START_TIME,mStartTime);
+                intent.putExtra(Constant.COUPON_RECORD_END_TIME,mEndTime);
+                startActivity(intent);
             }
         });
         setViewData(TextUtils.isEmpty(mFilterStatusType) ? "" : mFilterStatusType);
@@ -91,7 +94,7 @@ public class CouponRecordActivity extends BaseActivity {
         bundle.putSerializable(RequestConstant.KEY_START_DATE, mStartTime);
         bundle.putSerializable(RequestConstant.KEY_END_DATE, mEndTime);
         bundle.putSerializable(RequestConstant.KEY_COUPON_STATUS, mFilterStatusType);
-        bundle.putSerializable(RequestConstant.KEY_COUPON_TIME_TYPE,mFilterTimeType);
+        bundle.putSerializable(RequestConstant.KEY_COUPON_TIME_TYPE, mFilterTimeType);
         mCouponRecordListFragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -106,13 +109,16 @@ public class CouponRecordActivity extends BaseActivity {
         } else {
             tvCouponTitle.setText(TextUtils.isEmpty(mCouponBean.actTitle) ? "优惠券" : mCouponBean.actTitle);
         }
-        tvCouponTime.setText(String.format("%s - %s", mStartTime, mEndTime));
+        tvCouponTime.setText(String.format("%s ~ %s", mStartTime, mEndTime));
         setViewStatus(viewStatus);
     }
 
     @Subscribe
     public void onCouponRecordFilter(CouponRecordFilterEvent event) {
         tvCouponTitle.setText(event.couponTitle);
+        mStartTime = event.filterStartTime;
+        mEndTime = event.filterEndTime;
+        tvCouponTime.setText(String.format("%s ~ %s", mStartTime, mEndTime));
         setViewStatus(event.couponStatus);
         mCouponRecordListFragment.notifyDataChangeRefresh(event.couponId, event.filterStartTime, event.filterEndTime, event.couponStatus, event.timeFilter, "");
     }
@@ -124,6 +130,8 @@ public class CouponRecordActivity extends BaseActivity {
     }
 
     private void setViewStatus(String viewStatus) {
+
+        tvCouponTime.setText(String.format("%s - %s", mStartTime, mEndTime));
         switch (viewStatus) {
             case Constant.COUPON_STATUS_ALL:
                 tvCouponStatus.setText(ResourceUtils.getString(R.string.coupon_data_receive));
