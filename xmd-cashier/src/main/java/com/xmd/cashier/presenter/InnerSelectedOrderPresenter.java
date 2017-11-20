@@ -4,7 +4,10 @@ import android.content.Context;
 
 import com.xmd.cashier.contract.InnerSelectedOrderContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
+import com.xmd.cashier.dal.event.InnerUpdateOrderEvent;
 import com.xmd.cashier.manager.InnerManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by zr on 17-11-8.
@@ -47,11 +50,13 @@ public class InnerSelectedOrderPresenter implements InnerSelectedOrderContract.P
 
     @Override
     public void onNegative() {
+        EventBus.getDefault().post(new InnerUpdateOrderEvent());
         mView.finishSelf();
     }
 
     @Override
     public void onPositive() {
+        EventBus.getDefault().post(new InnerUpdateOrderEvent());
         mView.finishSelf();
     }
 

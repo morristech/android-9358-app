@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.xmd.cashier.R;
 import com.xmd.cashier.dal.bean.ExInnerRoomInfo;
 import com.xmd.cashier.dal.bean.InnerRoomInfo;
+import com.xmd.cashier.manager.InnerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,15 @@ public class ExInnerRoomAdapter extends RecyclerView.Adapter<ExInnerRoomAdapter.
 
     public void setExCallBack(ExCallBack callback) {
         mExCallBack = callback;
+    }
+
+    public void updateData() {
+        for (ExInnerRoomInfo exRoomInfo : mData) {
+            for (InnerRoomInfo roomInfo : exRoomInfo.rooms) {
+                roomInfo.selected = InnerManager.getInstance().findOrderByRoom(roomInfo.id);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public void setData(List<ExInnerRoomInfo> list) {

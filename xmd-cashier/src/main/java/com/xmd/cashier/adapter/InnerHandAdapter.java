@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.dal.bean.InnerHandInfo;
+import com.xmd.cashier.manager.InnerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,13 @@ public class InnerHandAdapter extends RecyclerView.Adapter<InnerHandAdapter.View
     public void setData(List<InnerHandInfo> list) {
         mData.clear();
         mData.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void updateData() {
+        for (InnerHandInfo handInfo : mData) {
+            handInfo.selected = InnerManager.getInstance().findOrderByHand(handInfo.id);
+        }
         notifyDataSetChanged();
     }
 

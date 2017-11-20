@@ -16,6 +16,7 @@ import com.xmd.cashier.dal.bean.InnerRoomInfo;
 import com.xmd.cashier.dal.bean.InnerTechInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
 import com.xmd.cashier.dal.event.InnerPushEvent;
+import com.xmd.cashier.dal.event.InnerUpdateOrderEvent;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerHandListResult;
 import com.xmd.cashier.dal.net.response.InnerOrderListResult;
@@ -107,6 +108,10 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
             @Override
             public void onCallbackSuccess(InnerRoomListResult result) {
                 mView.hideLoading();
+                // 对房间设置选中和未选中状态
+                for (InnerRoomInfo roomInfo : result.getRespData()) {
+                    roomInfo.selected = InnerManager.getInstance().findOrderByRoom(roomInfo.id);
+                }
                 mView.showExRoomData(formatRoomInfos(result.getRespData()));
             }
 
@@ -155,6 +160,10 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
             @Override
             public void onCallbackSuccess(InnerHandListResult result) {
                 mView.hideLoading();
+                // 对订单设置选中和未选中状态
+                for (InnerHandInfo handInfo : result.getRespData()) {
+                    handInfo.selected = InnerManager.getInstance().findOrderByHand(handInfo.id);
+                }
                 mView.showHandData(result.getRespData());
             }
 
@@ -492,5 +501,20 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InnerPushEvent event) {
         getInnerUnpaidCount();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InnerUpdateOrderEvent event) {
+        switch (mSelectType) {
+            case AppConstants.INNER_SEARCH_TYPE_ROOM:
+                mView.updateAllRoom();
+                break;
+            case AppConstants.INNER_SEARCH_TYPE_ORDER:
+                mView.updateAllHand();
+                break;
+            case AppConstants.INNER_SEARCH_TYPE_TECH:
+            default:
+                break;
+        }
     }
 }

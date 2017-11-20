@@ -162,28 +162,52 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
 
     @Override
     public void showExRoomData(List<ExInnerRoomInfo> list) {
-        mExRoomAdapter.setData(list);
+        if (mExRoomAdapter != null) {
+            mExRoomAdapter.setData(list);
+        }
     }
 
     @Override
     public void updateRoom(int position) {
-        mExRoomAdapter.notifyItemChanged(position);
+        if (mExRoomAdapter != null) {
+            mExRoomAdapter.notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void updateAllRoom() {
+        if (mExRoomAdapter != null) {
+            mExRoomAdapter.updateData();
+        }
     }
 
     @Override
     public void showHandData(List<InnerHandInfo> list) {
-        mHandAdapter.setData(list);
+        if (mHandAdapter != null) {
+            mHandAdapter.setData(list);
+        }
     }
 
     @Override
     public void updateHand(int position) {
-        mHandAdapter.notifyItemChanged(position);
+        if (mHandAdapter != null) {
+            mHandAdapter.notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void updateAllHand() {
+        if (mHandAdapter != null) {
+            mHandAdapter.updateData();
+        }
     }
 
 
     @Override
     public void showTechStatusData(List<ExInnerTechStatusInfo> techStatusInfos) {
-        mExTechStatusAdapter.setData(techStatusInfos);
+        if (mExTechStatusAdapter != null) {
+            mExTechStatusAdapter.setData(techStatusInfos);
+        }
     }
 
     @Override

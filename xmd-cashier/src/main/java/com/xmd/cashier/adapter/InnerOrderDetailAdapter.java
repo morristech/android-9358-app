@@ -44,7 +44,7 @@ public class InnerOrderDetailAdapter extends RecyclerView.Adapter<InnerOrderDeta
         switch (info.itemType) {
             case AppConstants.INNER_ORDER_ITEM_TYPE_SPA:
                 holder.mItemInfoLayout.setVisibility(View.VISIBLE);
-                holder.mItemTechText.setText("[技师]：" + info.employeeNo);
+                holder.mItemTechText.setText("技师：" + "[" + info.employeeNo + "]");
                 holder.mItemTypeText.setText(info.itemBellName);
                 break;
             case AppConstants.INNER_ORDER_ITEM_TYPE_GOODS:

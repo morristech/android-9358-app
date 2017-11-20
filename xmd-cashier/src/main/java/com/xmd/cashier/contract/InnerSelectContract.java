@@ -44,9 +44,13 @@ public interface InnerSelectContract {
 
         void updateRoom(int position);
 
+        void updateAllRoom();
+
         void showHandData(List<InnerHandInfo> list);
 
         void updateHand(int position);
+
+        void updateAllHand();
 
         void showTechStatusData(List<ExInnerTechStatusInfo> techStatusInfos);
 

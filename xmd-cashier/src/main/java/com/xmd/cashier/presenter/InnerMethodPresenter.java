@@ -161,17 +161,23 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
     @Override
     public void onOrderClick(InnerOrderInfo info, int position) {
         info.selected = !info.selected;
+
+        int select = InnerManager.getInstance().getSelectCount();
+        int total = InnerManager.getInstance().getInnerOrderInfos().size();
+
         mView.updateItem(position);
-        mView.showSelectCount(InnerManager.getInstance().getSelectCount());
-        if (InnerManager.getInstance().getSelectCount() == 0) {
+        mView.showSelectCount(select);
+
+        if (select == 0 || select < total) {
             mHoleSelect = false;
             mView.updateStatus(mHoleSelect);
-        } else if (InnerManager.getInstance().getSelectCount() == InnerManager.getInstance().getInnerOrderInfos().size()) {
+        } else if (select == total) {
             mHoleSelect = true;
             mView.updateStatus(mHoleSelect);
         } else {
             // do nothing
         }
+
         // 订单金额|核销金额
         mTradeManager.getCurrentTrade().setOriginMoney(InnerManager.getInstance().getOrderAmount());
         mTradeManager.setDiscountOriginAmount();

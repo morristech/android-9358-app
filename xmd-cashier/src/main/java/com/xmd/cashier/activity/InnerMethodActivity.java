@@ -19,9 +19,12 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerMethodContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.event.InnerUpdateOrderEvent;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.presenter.InnerMethodPresenter;
 import com.xmd.cashier.widget.StepView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -183,6 +186,7 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     @Override
     public boolean onKeyEventBack() {
         InnerManager.getInstance().removeUnselectedInfos();
+        EventBus.getDefault().post(new InnerUpdateOrderEvent());
         finishSelf();
         showExitAnim();
         return true;

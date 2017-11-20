@@ -66,6 +66,24 @@ public class InnerManager {
         innerOrderInfos.clear();
     }
 
+    public boolean findOrderByRoom(long roomId) {
+        for (InnerOrderInfo orderInfo : innerOrderInfos) {
+            if (roomId == orderInfo.roomId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findOrderByHand(long handId) {
+        for (InnerOrderInfo orderInfo : innerOrderInfos) {
+            if (handId == orderInfo.id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addInnerOrderInfo(InnerOrderInfo info) {
         if (!innerOrderInfos.contains(info)) {
             innerOrderInfos.add(info);
