@@ -103,7 +103,12 @@ public class AccountManager {
     }
 
     public String getClubCreateTime() {
-        return mUser.clubCreateTime;
+        if (TextUtils.isEmpty(mUser.clubCreateTime)) {
+            // 返回小摩豆注册时间
+            return AppConstants.TIME_XMD_REGISTER;
+        } else {
+            return mUser.clubCreateTime;
+        }
     }
 
     public Subscription login(String username, String password, final Callback<LoginResult> callback) {

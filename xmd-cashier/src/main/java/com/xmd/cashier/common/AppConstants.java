@@ -13,6 +13,8 @@ public class AppConstants {
     public static String SESSION_TYPE = "app";
     public static final String ACTION_CUSTOM_NOTIFY_RECEIVER = "com.xmd.cashier.CUSTOM_NOTIFY";
 
+    public static final String TIME_XMD_REGISTER = "2014-07-23 00:00:00";
+
     // 核销类型
     public static final String TYPE_COUPON = "coupon";      // 优惠券-->体验券
     public static final String TYPE_CASH_COUPON = "cash_coupon";    //现金券
