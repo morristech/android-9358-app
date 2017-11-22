@@ -10,6 +10,7 @@ import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.InnerChannelInfo;
+import com.xmd.cashier.dal.bean.InnerEmployeeInfo;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerOrderItemInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
@@ -318,6 +319,18 @@ public class InnerManager {
             mPos.printText("[" + orderInfo.roomName + " " + orderInfo.roomTypeName + "]" + orderInfo.userIdentify + "手牌", Utils.moneyToStringEx(orderInfo.amount));
             for (InnerOrderItemInfo orderItemInfo : orderInfo.itemList) {
                 mPos.printText("  " + orderItemInfo.itemName + " * " + orderItemInfo.itemCount, Utils.moneyToString(orderItemInfo.itemAmount) + "元" + "/" + orderItemInfo.itemUnit);
+                switch (orderItemInfo.itemType) {
+                    case AppConstants.INNER_ORDER_ITEM_TYPE_SPA:
+                        if (orderItemInfo.employeeList != null && !orderItemInfo.employeeList.isEmpty()) {
+                            for (InnerEmployeeInfo employeeInfo : orderItemInfo.employeeList) {
+                                mPos.printText("  |--[" + employeeInfo.employeeNo + "]   " + employeeInfo.bellName);
+                            }
+                        }
+                        break;
+                    case AppConstants.INNER_ORDER_ITEM_TYPE_GOODS:
+                    default:
+                        break;
+                }
             }
         }
 
