@@ -1186,5 +1186,49 @@ public interface SpaService {
                                              @Query(RequestConstant.KEY_COUPON_ONLINE) String online);
 
 
+    //*******************************************技师工资报表****************************************
+    //获取指定时间段技师工资汇总列表
+    @GET(RequestConstant.URL_GET_COMMISSION_SUM_LIST)
+    Call<CommissionNormalListResult> getCommissionSumList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                          @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                          @Query(RequestConstant.KEY_END_DATE) String endDate);
+
+    //获取指定时间段会所提成汇总金额
+    @GET(RequestConstant.URL_GET_COMMISSION_SUM_AMOUNT)
+    Call<CommissionAmountResult> getCommissionSumAmount(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                        @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                        @Query(RequestConstant.KEY_END_DATE) String endDate);
+
+    //获取具体某天会所所有技师提成列表
+    @GET(RequestConstant.URL_GET_ALL_TECH_COMMISSION_LIST)
+    Call<CommissionAmountListResult> getCommissionAmountList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                             @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                             @Query(RequestConstant.KEY_END_DATE) String endDate);
+
+    //获取具体某天某技师提成汇总金额
+    @GET(RequestConstant.URL_GET_TECH_COMMISSION_AMOUNT)
+    Call<CommissionAmountResult> getTechCommissionAmount(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                         @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                         @Query(RequestConstant.KEY_TECH_ID) String techId);
+
+    //获取具体某天某技师提成明细列表
+    @GET(RequestConstant.URL_GET_TECH_COMMISSION_DETAIL_LIST)
+    Call<TechCommissionListResult> getTechCommissionDetailList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                               @Query(RequestConstant.KEY_TECH_ID) String techId,
+                                                               @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                               @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                               @Query(RequestConstant.KEY_TYPE) String type,
+                                                               @Query(RequestConstant.KEY_PAGE) String page,
+                                                               @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    //获取提成明细的具体详情
+    @GET(RequestConstant.URL_GET_TECH_COMMISSION_DETAIL_INFO)
+    Call<TechCommissionDetailResult> getTechCommissionDetailInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                                 @Query(RequestConstant.KEY_ID) String id);
+
+    //获取会所技师列表
+    @GET(RequestConstant.URL_TECHNICIAN_LIST)
+    Call<TechBaseListResult> getTechList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }
 

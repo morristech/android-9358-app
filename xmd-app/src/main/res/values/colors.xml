@@ -39,6 +39,7 @@
     <color name="colorMemberPayFailed">#E53939</color>
 
     <color name="colorPink">#ff6666</color>
+    <color name="colorBlue">#5d92ce</color>
 
     <color name="colorStatusYellow">#ff9a0c</color>
     <color name="colorStatusGray">#999999</color>

@@ -144,8 +144,14 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_COUPON_OPERATE_DATA_TOTAL,
                 MsgDef.MSG_DEF_COUPON_OPERATE_LIST_DATA,
                 MsgDef.MSG_DEF_COUPON_RECORD_DATA,
-                MsgDef.MSG_DEF_COUPON_LIST_DATA
-
+                MsgDef.MSG_DEF_COUPON_LIST_DATA,
+                MsgDef.MSG_DEF_GET_COMMISSION_SUM_LIST,
+                MsgDef.MSG_DEF_GET_COMMISSION_SUM_AMOUNT,
+                MsgDef.MSG_DEF_GET_ALL_TECH_COMMISSION_LIST,
+                MsgDef.MSG_DEF_GET_TECH_COMMISSION_AMOUNT,
+                MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_LIST,
+                MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO,
+                MsgDef.MSG_DEF_GET_TECH_BASE_LIST
 
         });
     }

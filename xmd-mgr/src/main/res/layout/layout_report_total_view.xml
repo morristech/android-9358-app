@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_total_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingBottom="@dimen/small_padding"
+        android:paddingLeft="@dimen/activity_normal_margin"
+        android:paddingRight="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/small_padding"
+        android:textColor="@color/colorText5"
+        android:textSize="@dimen/inter_text_size" />
+
+    <TextView
+        android:id="@+id/tv_total_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/colorStatusYellow"
+        android:textSize="@dimen/xx_large_text_size"
+        android:textStyle="bold" />
+
+    <include layout="@layout/layout_report_total_sub_view" />
+</LinearLayout>

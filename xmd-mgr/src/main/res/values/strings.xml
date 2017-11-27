@@ -503,6 +503,13 @@
     <string name="operate_cycle_setting_title">报表周期设置</string>
     <string name="has_none_new_data">已无更多数据</string>
     <string name="operate_coupon_data">优惠券</string>
+
+    <string name="cashier_title">买单收银</string>
+    <string name="salary_title">技师工资</string>
+    <string name="tech_salary_detail_title">技师统计明细</string>
+    <string name="report_tab_day">日</string>
+    <string name="report_tab_month">月</string>
+    <string name="report_tab_user">自定义</string>
     <!--订单数据-->
     <string name="reserve_data_table_yesterday">天</string>
     <string name="reserve_data_table_week">周</string>
@@ -564,5 +571,17 @@
     <string name="text_clear">清空</string>
     <string name="change_status_alter_text">时间范围为核销时间，当前状态不可变更</string>
 
+    <!--报表-->
+    <string name="report_cashier_explain_head">买单收银：仅统计通过水牌买单、工牌买单、POS收银、管理者后台记账收银成功的数据。</string>
+    <string name="report_cashier_explain_one">买单收银按营业时间进行统计</string>
+    <string name="report_cashier_explain_two">买单收银已按足浴按摩、实物商品进行分类，金额显示的是订单金额，非实收金额</string>
+    <string name="report_cashier_explain_three">如需查看营业额，请前往“数据>>经营报表”进行查看</string>
 
+    <string name="report_salary_explain_head">技师工资：统计记账周期内技师发放的工资金额</string>
+    <string name="report_salary_explain_one">技师工资按营业时间进行统计</string>
+    <string name="report_salary_explain_two">如需查看技师上钟数，请前往“数据>>经营报表”进行查看</string>
+
+    <string name="report_sum_title">工资合计(元)</string>
+    <string name="report_service_title">服务提成</string>
+    <string name="report_sales_title">推销提成</string>
 </resources>

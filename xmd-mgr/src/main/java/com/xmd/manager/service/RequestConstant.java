@@ -207,6 +207,16 @@ public class RequestConstant {
     public static final String URL_GET_ONLINE_COUPON_LIST = BASE_URL + "/v2/manager/club/online/coupon/list";
 
 
+    /**
+     * 管理者 技师工资报表
+     */
+    public static final String URL_GET_COMMISSION_SUM_LIST = BASE_URL + "/v2/manager/native/commission/sum/data";   //获取指定时间段会所所有技师工资汇总列表
+    public static final String URL_GET_COMMISSION_SUM_AMOUNT = BASE_URL + "/v2/manager/native/commission/tech/all/sum"; //获取指定时间段会所提成汇总金额
+    public static final String URL_GET_ALL_TECH_COMMISSION_LIST = BASE_URL + "/v2/manager/native/commission/tech/list"; //获取具体某天会所所有技师提成列表
+    public static final String URL_GET_TECH_COMMISSION_AMOUNT = BASE_URL + "/v2/manager/native/commission/tech/detail/sum"; //获取具体某天某技师提成汇总金额
+    public static final String URL_GET_TECH_COMMISSION_DETAIL_LIST = BASE_URL + "/v2/manager/native/commission/tech/detail/records"; //获取具体某天某技师提成明细列表
+    public static final String URL_GET_TECH_COMMISSION_DETAIL_INFO = BASE_URL + "/v2/manager/native/commission/detail"; //获取提成明细的具体详情
+
     /**********************************************************************dengyixia***********************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -402,6 +412,10 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_EMCHAT_ID = "emchatId";
     public static final String KEY_USER_COUPON_INFO = "couponInfo";
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
+
+    //报表
+    public static final String KEY_REQUEST_TYPE = "requestType";
+    public static final String KEY_EVENT_TYPE = "eventType";
 
 
     /*********************************************************************************************/

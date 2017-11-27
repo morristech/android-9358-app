@@ -214,4 +214,14 @@ public class MsgDef {
     public static final int MSG_DEF_COUPON_RECORD_DATA = 0x0144;
     public static final int MSG_DEF_COUPON_LIST_DATA = 0x0145;
 
+
+    //*******************************************管理者报表*****************************************
+    public static final int MSG_DEF_GET_COMMISSION_SUM_LIST = 0x146;
+    public static final int MSG_DEF_GET_COMMISSION_SUM_AMOUNT = 0x147;
+    public static final int MSG_DEF_GET_ALL_TECH_COMMISSION_LIST = 0x148;
+    public static final int MSG_DEF_GET_TECH_COMMISSION_AMOUNT = 0x149;
+    public static final int MSG_DEF_GET_TECH_COMMISSION_DETAIL_LIST = 0x150;
+    public static final int MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO = 0x151;
+
+    public static final int MSG_DEF_GET_TECH_BASE_LIST = 0x152;
 }

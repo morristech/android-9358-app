@@ -26,6 +26,7 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener {
     private String dateTime;
     private String initDateTime;
     private Activity activity;
+    private OnButtonClickListener buttonClickListener;
 
     public DateTimePickDialog(Activity activity, String initDateTime) {
         this.activity = activity;
@@ -64,10 +65,15 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         int today = Utils.dateToInt(DateUtil.getCurrentDate());
                         int current = Utils.dateToInt(dateTime);
+                        String returnDate = null;
                         if (current <= today) {
-                            inputDate.setText(dateTime);
+                            returnDate = dateTime;
                         } else {
-                            inputDate.setText(DateUtil.getCurrentDate());
+                            returnDate = DateUtil.getCurrentDate();
+                        }
+                        inputDate.setText(returnDate);
+                        if (buttonClickListener != null) {
+                            buttonClickListener.onPositive(returnDate);
                         }
                     }
                 })
@@ -142,5 +148,12 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener {
         return result;
     }
 
+    public void setButtonClickListener(OnButtonClickListener listener) {
+        buttonClickListener = listener;
+    }
+
+    public interface OnButtonClickListener {
+        void onPositive(String date);
+    }
 }
 

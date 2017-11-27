@@ -417,8 +417,29 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_COUPON_LIST_DATA:
                 getCouponListData((Map<String, String>) msg.obj);
                 break;
-        }
 
+            case MsgDef.MSG_DEF_GET_COMMISSION_SUM_LIST:    //获取指定时间段技师工资汇总列表
+                getCommissionSumList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_COMMISSION_SUM_AMOUNT:  //获取指定时间段会所提成汇总金额
+                getCommissionSumAmount((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_ALL_TECH_COMMISSION_LIST:   //获取具体某天会所所有技师提成列表
+                getCommissionAmountList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_COMMISSION_AMOUNT: //获取具体某天某技师提成汇总金额
+                getTechCommissionAmount((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_LIST:    //获取具体某天某技师提成明细列表
+                getTechCommissionDetailList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO:    //获取提成明细的具体详情
+                getTechCommissionDetailInfo((String) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_BASE_LIST:
+                getTechBaseList();
+                break;
+        }
         return true;
     }
 
@@ -2832,6 +2853,150 @@ public class RequestController extends AbstractController {
 //                result.msg = errorMsg;
 //                RxBus.getInstance().post(result);
 
+            }
+        });
+    }
+
+
+    //*********************************************技师工资报表***************************************
+    //获取指定时间段技师工资汇总列表
+    private void getCommissionSumList(Map<String, String> params) {
+        Call<CommissionNormalListResult> call = getSpaService().getCommissionSumList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<CommissionNormalListResult>() {
+            @Override
+            protected void postResult(CommissionNormalListResult result) {
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                CommissionNormalListResult result = new CommissionNormalListResult();
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取指定时间段会所提成汇总金额
+    private void getCommissionSumAmount(Map<String, String> params) {
+        Call<CommissionAmountResult> call = getSpaService().getCommissionSumAmount(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<CommissionAmountResult>() {
+            @Override
+            protected void postResult(CommissionAmountResult result) {
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                CommissionAmountResult result = new CommissionAmountResult();
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取具体某天会所所有技师提成列表
+    private void getCommissionAmountList(Map<String, String> params) {
+        Call<CommissionAmountListResult> call = getSpaService().getCommissionAmountList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<CommissionAmountListResult>() {
+            @Override
+            protected void postResult(CommissionAmountListResult result) {
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                CommissionAmountListResult result = new CommissionAmountListResult();
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取具体某天某技师提成汇总金额
+    private void getTechCommissionAmount(Map<String, String> params) {
+        Call<CommissionAmountResult> call = getSpaService().getTechCommissionAmount(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_TECH_ID));
+        call.enqueue(new TokenCheckedCallback<CommissionAmountResult>() {
+            @Override
+            protected void postResult(CommissionAmountResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                CommissionAmountResult result = new CommissionAmountResult();
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取具体某天某技师提成明细列表
+    private void getTechCommissionDetailList(Map<String, String> params) {
+        Call<TechCommissionListResult> call = getSpaService().getTechCommissionDetailList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_TECH_ID),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE),
+                params.get(RequestConstant.KEY_TYPE),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<TechCommissionListResult>() {
+            @Override
+            protected void postResult(TechCommissionListResult result) {
+                result.requestType = params.get(RequestConstant.KEY_REQUEST_TYPE);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                TechCommissionListResult result = new TechCommissionListResult();
+                result.requestType = params.get(RequestConstant.KEY_REQUEST_TYPE);
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取提成明细的具体详情
+    private void getTechCommissionDetailInfo(String id) {
+        Call<TechCommissionDetailResult> call = getSpaService().getTechCommissionDetailInfo(SharedPreferenceHelper.getUserToken(), id);
+        call.enqueue(new TokenCheckedCallback<TechCommissionDetailResult>() {
+            @Override
+            protected void postResult(TechCommissionDetailResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                TechCommissionDetailResult result = new TechCommissionDetailResult();
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取会所技师列表
+    private void getTechBaseList() {
+        Call<TechBaseListResult> call = getSpaService().getTechList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<TechBaseListResult>() {
+            @Override
+            protected void postResult(TechBaseListResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                TechBaseListResult result = new TechBaseListResult();
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
             }
         });
     }

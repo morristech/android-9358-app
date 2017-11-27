@@ -90,7 +90,18 @@ public class OperatingReportFragment extends BaseFragment {
     @OnClick(R.id.rl_operate)
     public void onRlOperateClicked() {
         startActivity(new Intent(getActivity(), OperationReportActivity.class));
+    }
 
+    // 买单收银报表
+    @OnClick(R.id.rl_cashier)
+    public void onRlCashierClicked() {
+        startActivity(new Intent(getActivity(), CashierReportActivity.class));
+    }
+
+    // 技师工资报表
+    @OnClick(R.id.rl_salary)
+    public void onRlSalaryClicked() {
+        startActivity(new Intent(getActivity(), SalaryReportActivity.class));
     }
 
     //核销记录
