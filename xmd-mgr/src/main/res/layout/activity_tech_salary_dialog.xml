@@ -305,12 +305,12 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/tv_origin_amount_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_little_margin"
                         android:layout_marginRight="@dimen/activity_little_margin"
                         android:gravity="right|center"
-                        android:text="订单金额："
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/inter_text_size" />
 

@@ -76,6 +76,10 @@ public class TechSalaryDialogActivity extends BaseActivity {
     TableRow mBellTypeRow;
     @BindView(R.id.tv_bell_type)
     TextView mBellType;
+    @BindView(R.id.tr_origin_amount)
+    TableRow mOriginAmountRow;
+    @BindView(R.id.tv_origin_amount_title)
+    TextView mOriginAmountTitle;
     @BindView(R.id.tv_origin_amount)
     TextView mOriginAmount;
     @BindView(R.id.tv_commission_amount)
@@ -163,12 +167,16 @@ public class TechSalaryDialogActivity extends BaseActivity {
                 case BUSINESS_TYPE_PAID_ORDER:  //付费预约
                     mNameTitle.setText("预约类型：");
                     mName.setText(detailInfo.businessName);
-                    // TODO 预约类型 预约定金
+                    mOriginAmountRow.setVisibility(View.VISIBLE);
+                    mOriginAmountTitle.setText("预约定金：");
+                    mOriginAmount.setText(Utils.moneyToStringEx(detailInfo.price) + "元");
                     break;
                 case BUSINESS_TYPE_RECHARGE:    //会员充值
                     mNameTitle.setText("活动名称：");
                     mName.setText(detailInfo.businessName);
-                    // TODO 活动名称 充值金额
+                    mOriginAmountRow.setVisibility(View.VISIBLE);
+                    mOriginAmountTitle.setText("充值金额：");
+                    mOriginAmount.setText(Utils.moneyToStringEx(detailInfo.price) + "元");
                     break;
                 default:
                     break;
