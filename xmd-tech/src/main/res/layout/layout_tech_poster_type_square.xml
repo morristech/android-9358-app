@@ -75,6 +75,11 @@
                 android:textColor="#dfc092"
                 android:textSize="14sp"
                 tools:text="小摩豆休闲养生会所" />
+            <TextView
+                android:id="@+id/tv_poster_tech_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

@@ -386,5 +386,7 @@
     <string name="tech_change_status_alter_message">"修改为“休假”状态后，您将不能被预约。目前您还有 %s 个预约订单待处理，确定切换状态吗?"</string>
     <string name="tech_rest_status_no_work_alter_message">该技师现在正休假中，请预约其他技师</string>
 
+    <string name="tech_poster_deleter_success">删除成功</string>
+    <string name="tech_poster_deleter_failed">删除失败</string>
 
 </resources>

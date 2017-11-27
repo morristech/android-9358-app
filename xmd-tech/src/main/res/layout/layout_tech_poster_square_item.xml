@@ -109,6 +109,13 @@
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_poster_delete" />
+            <TextView
+                android:id="@+id/tv_poster_tech_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <include layout="@layout/layout_poster_bottom_btn" />

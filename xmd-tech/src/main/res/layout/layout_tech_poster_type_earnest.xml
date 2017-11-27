@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="@dimen/poster_dialog_width"
+              android:layout_height="wrap_content"
+              android:background="@drawable/round_rect_white_bg"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_view"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/poster_earnest">
+
+        <TextView
+            android:id="@+id/tv_poster_tech_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#7d602d"
+            android:textSize="18sp"
+            tools:text="叶鲁尼"/>
+
+        <TextView
+            android:id="@+id/tv_poster_tech_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_poster_tech_name"
+            android:gravity="center"
+            android:paddingLeft="18dp"
+            android:textColor="#7d602d"
+            android:textSize="14sp"
+            tools:text="·A008「"/>
+
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="-15dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/poster_earnest_photo_bg"
+            android:padding="3dp">
+
+            <com.xmd.technician.widget.RoundImageView
+                android:id="@+id/img_poster_tech_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon22"
+                app:type="circle"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:paddingBottom="5dp">
+            <TextView
+                android:id="@+id/tv_poster_minor_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="60dp"
+                android:background="#F17654"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="12dp"
+                android:paddingTop="5dp"
+                android:textColor="#FFF"
+                android:textSize="16sp"
+                tools:text="关注9358快来预约我吧"/>
+
+            <TextView
+                android:id="@+id/tv_poster_primary_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_poster_minor_title"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="15dp"
+                android:textColor="#4b535c"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="艺无止境，精益求精"/>
+            <TextView
+                android:id="@+id/tv_poster_club_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_poster_primary_title"
+                android:paddingLeft="15dp"
+                android:paddingTop="3dp"
+                android:textColor="#4b535c"
+                android:textSize="14sp"
+                tools:text="小摩豆休闲养生会所"/>
+            <RelativeLayout android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#EE8264">
+                <ImageView
+                    android:id="@+id/img_poster_qr_code"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginLeft="-2dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/icon23"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img_poster_dismiss"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_dialog_dismiss"/>
+    </RelativeLayout>
+
+    <include layout="@layout/layout_poster_dialog_bottom_btn"/>
+</LinearLayout>
+
+

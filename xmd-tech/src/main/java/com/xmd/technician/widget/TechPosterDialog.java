@@ -31,6 +31,8 @@ public class TechPosterDialog extends Dialog {
     RoundImageView imgPosterTechPhoto;
     @BindView(R.id.tv_poster_tech_name)
     TextView tvPosterTechName;
+    @BindView(R.id.tv_poster_tech_no)
+    TextView tvPosterTechNo;
     @BindView(R.id.tv_poster_primary_title)
     TextView tvPosterPrimaryTitle;
     @BindView(R.id.tv_poster_minor_title)
@@ -71,7 +73,7 @@ public class TechPosterDialog extends Dialog {
 
         void posterEdit();
 
-        void posterShare(View view,View dismiss);
+        void posterShare(View view, View dismiss);
 
     }
 
@@ -93,7 +95,7 @@ public class TechPosterDialog extends Dialog {
         super(context, cancelable, cancelListener);
     }
 
-    public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, Bitmap image, String imageUrl,String shareUrl) {
+    public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, Bitmap image, String imageUrl, String shareUrl) {
 
         if (Utils.isNotEmpty(primaryTitle)) {
             if (style == Constant.TECH_POSTER_SQUARE_MODEL) {
@@ -111,39 +113,54 @@ public class TechPosterDialog extends Dialog {
         } else {
             tvPosterMinorTitle.setText("");
         }
-        String techNameAndNo = "";
-        if (Utils.isNotEmpty(techName)) {
-            if (Utils.isNotEmpty(techNo)) {
-                techNameAndNo = String.format("%s/%s", techName, techNo);
+        if (style == Constant.TECH_POSTER_BLUE_MODEL || style == Constant.TECH_POSTER_EARNEST_MODEL) {
+            if (Utils.isNotEmpty(techName)) {
+                tvPosterTechName.setVisibility(View.VISIBLE);
+                tvPosterTechName.setText(techName);
             } else {
-                techNameAndNo = techName;
+                tvPosterTechName.setVisibility(View.GONE);
             }
+            tvPosterTechNo.setText(Utils.isNotEmpty(techNo) ? techNo : "");
         } else {
-            if (Utils.isNotEmpty(techNo)) {
-                techNameAndNo = techNo;
+            String techNameAndNo = "";
+            if (Utils.isNotEmpty(techName)) {
+                if (Utils.isNotEmpty(techNo)) {
+                    techNameAndNo = String.format("%s/%s", techName, techNo);
+                } else {
+                    techNameAndNo = techName;
+                }
             } else {
-                techNameAndNo = "";
+                if (Utils.isNotEmpty(techNo)) {
+                    techNameAndNo = techNo;
+                } else {
+                    techNameAndNo = "";
+                }
+            }
+            if (Utils.isNotEmpty(techNameAndNo)) {
+                tvPosterTechName.setVisibility(View.VISIBLE);
+                tvPosterTechName.setText(techNameAndNo);
+            } else {
+                tvPosterTechName.setVisibility(View.GONE);
             }
         }
-        if (Utils.isNotEmpty(techNameAndNo)) {
-            tvPosterTechName.setVisibility(View.VISIBLE);
-            tvPosterTechName.setText(techNameAndNo);
-        } else {
-            tvPosterTechName.setVisibility(View.GONE);
-        }
+
         if (Utils.isNotEmpty(clubName)) {
-            tvPosterClubName.setText(clubName);
+            if (style == Constant.TECH_POSTER_BLUE_MODEL) {
+                tvPosterClubName.setText(String.format("——— %s ———", clubName));
+            } else {
+                tvPosterClubName.setText(clubName);
+            }
         } else {
             tvPosterClubName.setText("");
         }
-        if(image != null){
+        if (image != null) {
             imgPosterTechPhoto.setImageBitmap(image);
-        }else{
+        } else {
             Glide.with(mContext).load(imageUrl).into(imgPosterTechPhoto);
         }
-        if(Utils.isNotEmpty(shareUrl)){
+        if (Utils.isNotEmpty(shareUrl)) {
             Glide.with(mContext).load(shareUrl).into(imgPosterQrCode);
-        }else{
+        } else {
             Glide.with(mContext).load(LoginTechnician.getInstance().getQrCodeUrl()).into(imgPosterQrCode);
         }
 
@@ -161,6 +178,12 @@ public class TechPosterDialog extends Dialog {
                 break;
             case Constant.TECH_POSTER_FLOWER_MODEL:
                 setContentView(R.layout.layout_tech_poster_type_flower);
+                break;
+            case Constant.TECH_POSTER_BLUE_MODEL:
+                setContentView(R.layout.layout_tech_poster_type_blue);
+                break;
+            case Constant.TECH_POSTER_EARNEST_MODEL:
+                setContentView(R.layout.layout_tech_poster_type_earnest);
                 break;
         }
         ButterKnife.bind(this);

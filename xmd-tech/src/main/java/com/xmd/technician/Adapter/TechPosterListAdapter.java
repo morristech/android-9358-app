@@ -2,6 +2,7 @@ package com.xmd.technician.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,11 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private PosterCallBack mCallBack;
 
-    private final int poster_type_flower = 1; //花型海报
-    private final int poster_type_circular = 2;//圆型海报
-    private final int poster_type_square = 3;//方型海报
+    private final int POSTER_TYPE_FLOWER = 1; //花型海报
+    private final int POSTER_TYPE_CIRCULAR = 2;//圆型海报
+    private final int POSTER_TYPE_SQUARE = 3;//方型海报
+    private final int POSTER_TYPE_BLUE = 4; // 蓝色
+    private final int POSTER_TYPE_EARNEST = 5; //真认真
 
     public TechPosterListAdapter(Context context, List<PosterBean> posters) {
         this.mContext = context;
@@ -63,15 +66,21 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case poster_type_flower:
+            case POSTER_TYPE_FLOWER:
                 View flowerType = LayoutInflater.from(mContext).inflate(R.layout.layout_tech_poster_flower_item, parent, false);
                 return new PoserViewHolder(flowerType);
-            case poster_type_circular:
+            case POSTER_TYPE_CIRCULAR:
                 View circularType = LayoutInflater.from(mContext).inflate(R.layout.layout_tech_poster_circular_item, parent, false);
                 return new PoserViewHolder(circularType);
-            case poster_type_square:
+            case POSTER_TYPE_SQUARE:
                 View squareType = LayoutInflater.from(mContext).inflate(R.layout.layout_tech_poster_square_item, parent, false);
                 return new PoserViewHolder(squareType);
+            case POSTER_TYPE_BLUE:
+                View blueType = LayoutInflater.from(mContext).inflate(R.layout.layout_tech_poster_blue_item, parent, false);
+                return new PoserViewHolder(blueType);
+            case POSTER_TYPE_EARNEST:
+                View earnestType = LayoutInflater.from(mContext).inflate(R.layout.layout_tech_poster_earnest_item, parent, false);
+                return new PoserViewHolder(earnestType);
         }
         return null;
     }
@@ -82,15 +91,21 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
         PosterBean bean = mPosters.get(position);
         viewHolder.tvPosterClubName.setText(bean.name);
         if (Utils.isNotEmpty(bean.name)) {
-            String nameMessage = "";
-            if (Utils.isNotEmpty(bean.techNo)) {
-                nameMessage = String.format("%s/%s", bean.name, bean.techNo);
+            if (bean.style.equals(Constant.TECH_POSTER_TYPE_BLUE) || bean.style.equals(Constant.TECH_POSTER_TYPE_EARNEST)) {
+                viewHolder.tvPosterTechName.setText(bean.name);
+                viewHolder.tvPosterTechName.setVisibility(View.VISIBLE);
+                viewHolder.tvPosterTechNo.setText(TextUtils.isEmpty(bean.techNo) ? "" : bean.techNo);
             } else {
-                nameMessage = bean.name;
+                String nameMessage = "";
+                if (Utils.isNotEmpty(bean.techNo)) {
+                    nameMessage = String.format("%s/%s", bean.name, bean.techNo);
+                } else {
+                    nameMessage = bean.name;
+                }
+                viewHolder.tvPosterClubName.setVisibility(View.VISIBLE);
+                viewHolder.tvPosterTechName.setVisibility(View.VISIBLE);
+                viewHolder.tvPosterTechName.setText(nameMessage);
             }
-            viewHolder.tvPosterClubName.setVisibility(View.VISIBLE);
-            viewHolder.tvPosterTechName.setVisibility(View.VISIBLE);
-            viewHolder.tvPosterTechName.setText(nameMessage);
         } else {
             if (Utils.isNotEmpty(bean.techNo)) {
                 viewHolder.tvPosterClubName.setVisibility(View.VISIBLE);
@@ -111,7 +126,6 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
             } else {
                 viewHolder.tvPosterPrimaryTitle.setText(title);
             }
-
         } else {
             viewHolder.tvPosterPrimaryTitle.setText("");
         }
@@ -122,11 +136,12 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
             viewHolder.tvPosterMinorTitle.setText("");
         }
 
-        if (Utils.isNotEmpty(bean.clubName)) {
-            viewHolder.tvPosterClubName.setText(bean.clubName);
+        if (bean.style.equals(Constant.TECH_POSTER_TYPE_BLUE)) {
+            viewHolder.tvPosterClubName.setText(Utils.isNotEmpty(bean.clubName) ? String.format("--%s--", bean.clubName) : "");
         } else {
-            viewHolder.tvPosterClubName.setText("");
+            viewHolder.tvPosterClubName.setText(TextUtils.isEmpty(bean.clubName) ? "" : bean.clubName);
         }
+
         Glide.with(mContext).load(bean.imageUrl).into(viewHolder.imgPosterTechPhoto);
         Glide.with(mContext).load(bean.qrCodeUrl).into(viewHolder.imgPosterQrCode);
 
@@ -145,15 +160,21 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (Utils.isEmpty(mPosters.get(position).style)) {
-            return poster_type_flower;
+        if (mPosters == null || mPosters.size() == 0) {
+            return POSTER_TYPE_FLOWER;
         }
-        if (mPosters.get(position).style.equals(Constant.TECH_POSTER_TYPE_CIRCULAR)) {
-            return poster_type_circular;
-        } else if (mPosters.get(position).style.equals(Constant.TECH_POSTER_TYPE_SQUARE)) {
-            return poster_type_square;
-        } else {
-            return poster_type_flower;
+        String style = mPosters.get(position).style;
+        switch (style) {
+            case Constant.TECH_POSTER_TYPE_CIRCULAR:
+                return POSTER_TYPE_CIRCULAR;
+            case Constant.TECH_POSTER_TYPE_SQUARE:
+                return POSTER_TYPE_SQUARE;
+            case Constant.TECH_POSTER_TYPE_BLUE:
+                return POSTER_TYPE_BLUE;
+            case Constant.TECH_POSTER_TYPE_EARNEST:
+                return POSTER_TYPE_EARNEST;
+            default:
+                return POSTER_TYPE_FLOWER;
         }
     }
 
@@ -176,6 +197,8 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
         LinearLayout llPosterEdit;
         @BindView(R.id.ll_poster_share)
         LinearLayout llPosterShare;
+        @BindView(R.id.tv_poster_tech_no)
+        TextView tvPosterTechNo;
 
         PoserViewHolder(View view) {
             super(view);

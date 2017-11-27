@@ -57,7 +57,7 @@ import butterknife.OnClick;
 import rx.Subscription;
 
 /**
- * Created by Lhj on AlbumListAdapter.ALBUM_STATUS_NORMAL7-AlbumListAdapter.ALBUM_STATUS_NORMALAlbumListAdapter.ALBUM_STATUS_NORMAL-4.
+ * Created by Lhj
  */
 
 public class TechUserCenterActivity extends BaseActivity implements View.OnClickListener {

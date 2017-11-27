@@ -17,7 +17,6 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Adapter.TechPosterListAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.PosterBean;
 import com.xmd.technician.common.DateUtil;
 import com.xmd.technician.common.ResourceUtils;
@@ -113,9 +112,9 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     private void handlerTechPosterDeleterResult(DeleteTechPosterResult result) {
         if (result.statusCode == 200) {
-            makeShortToast("删除成功");
+            XToast.show(ResourceUtils.getString(R.string.tech_poster_deleter_success));
         } else {
-            makeShortToast("删除失败");
+            XToast.show(ResourceUtils.getString(R.string.tech_poster_deleter_failed));
         }
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_POSTER_LIST);
     }
@@ -166,6 +165,12 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
                 break;
             case Constant.TECH_POSTER_TYPE_FLOWER:
                 mCurrentModel = Constant.TECH_POSTER_FLOWER_MODEL;
+                break;
+            case Constant.TECH_POSTER_TYPE_BLUE:
+                mCurrentModel = Constant.TECH_POSTER_BLUE_MODEL;
+                break;
+            case Constant.TECH_POSTER_TYPE_EARNEST:
+                mCurrentModel = Constant.TECH_POSTER_EARNEST_MODEL;
                 break;
         }
         mDialog = new TechPosterDialog(this, mCurrentModel, true, true);

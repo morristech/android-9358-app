@@ -355,10 +355,14 @@ public class Constant {
     public static final String TECH_POSTER_TYPE_SQUARE = "01";
     public static final String TECH_POSTER_TYPE_CIRCULAR = "02";
     public static final String TECH_POSTER_TYPE_FLOWER = "03";
+    public static final String TECH_POSTER_TYPE_BLUE = "04";
+    public static final String TECH_POSTER_TYPE_EARNEST = "05";
 
     public static final int TECH_POSTER_SQUARE_MODEL = 1;
     public static final int TECH_POSTER_CIRCULAR_MODEL = 2;
     public static final int TECH_POSTER_FLOWER_MODEL = 3;
+    public static final int TECH_POSTER_BLUE_MODEL = 4;
+    public static final int TECH_POSTER_EARNEST_MODEL = 5;
     public static final String KEY_CURRENT_POSTER = "currentPoster";
     public static final String KEY_QR_CODE_URL = "qrCodeUrl";
 

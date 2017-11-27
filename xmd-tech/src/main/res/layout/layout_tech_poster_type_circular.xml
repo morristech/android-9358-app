@@ -74,6 +74,7 @@
             android:textSize="12sp"
             tools:text="小摩豆休闲养生会所" />
 
+
         <ImageView
             android:id="@+id/img_poster_qr_code"
             android:layout_width="75dp"
@@ -94,6 +95,10 @@
             android:scaleType="fitXY"
             android:src="@drawable/icon_dialog_dismiss" />
     </RelativeLayout>
-
+    <TextView
+        android:id="@+id/tv_poster_tech_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <include layout="@layout/layout_poster_dialog_bottom_btn" />
 </LinearLayout>

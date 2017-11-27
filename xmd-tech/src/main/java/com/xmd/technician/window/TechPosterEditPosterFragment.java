@@ -71,6 +71,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     View ivPosterClubName;
     @BindView(R.id.edit_poster_club_name)
     TextView editPosterClubName;
+
     private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
     private boolean primaryTitleIsSelected, minorTitleIsSelected, nickNameIsSelected, techNumberIsSelected, clubNameIsSelect;
     private String mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mPosterImageUrl;
@@ -131,6 +132,10 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 setModel(Constant.TECH_POSTER_SQUARE_MODEL);
             } else if (mPosterBean.style.equals(Constant.TECH_POSTER_TYPE_CIRCULAR)) {
                 setModel(Constant.TECH_POSTER_CIRCULAR_MODEL);
+            } else if (mPosterBean.style.equals(Constant.TECH_POSTER_TYPE_BLUE)) {
+                setModel(Constant.TECH_POSTER_BLUE_MODEL);
+            } else if (mPosterBean.style.equals(Constant.TECH_POSTER_TYPE_EARNEST)) {
+                setModel(Constant.TECH_POSTER_EARNEST_MODEL);
             } else {
                 setModel(Constant.TECH_POSTER_FLOWER_MODEL);
             }
@@ -189,6 +194,18 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                     Glide.with(getActivity()).load(R.drawable.img_poster_square_small).into(imgPosterPreview);
                     mAspect_X = 5;
                     mAspect_Y = 7;
+                    break;
+                case Constant.TECH_POSTER_BLUE_MODEL:
+                    posterStyle = Constant.TECH_POSTER_TYPE_BLUE;
+                    Glide.with(getActivity()).load(R.drawable.img_poster_blue_small).into(imgPosterPreview);
+                    mAspect_X = 1;
+                    mAspect_Y = 1;
+                    break;
+                case Constant.TECH_POSTER_EARNEST_MODEL:
+                    posterStyle = Constant.TECH_POSTER_TYPE_EARNEST;
+                    Glide.with(getActivity()).load(R.drawable.img_poster_earnest_small).into(imgPosterPreview);
+                    mAspect_X = 1;
+                    mAspect_Y = 1;
                     break;
                 default:
                     posterStyle = Constant.TECH_POSTER_TYPE_FLOWER;
@@ -424,10 +441,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
             @Override
-            //tech_poster_save_alter_message
             public void onConfirmClick() {
                 super.onConfirmClick();
-
                 if (mDialog != null) {
                     mDialog.dismiss();
                     dismiss.setVisibility(View.GONE);

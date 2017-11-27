@@ -33,6 +33,10 @@ public class TechPosterChoiceModelFragment extends BaseFragment {
     ImageView imgModelCircular;
     @BindView(R.id.img_model_flower)
     ImageView imgModelFlower;
+    @BindView(R.id.img_model_blue)
+    ImageView imgModelBlue;
+    @BindView(R.id.img_model_earnest)
+    ImageView imgModelEarnest;
 
     private List<View> mViews;
     private int selectedMode; //被选中的模型
@@ -51,6 +55,8 @@ public class TechPosterChoiceModelFragment extends BaseFragment {
         mViews.add(imgModelSquare);
         mViews.add(imgModelCircular);
         mViews.add(imgModelFlower);
+        mViews.add(imgModelBlue);
+        mViews.add(imgModelEarnest);
         selectedMode = Constant.TECH_POSTER_FLOWER_MODEL;
         selectedModelView(imgModelFlower);
     }
@@ -60,7 +66,7 @@ public class TechPosterChoiceModelFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    @OnClick({R.id.img_model_square, R.id.img_model_circular, R.id.img_model_flower})
+    @OnClick({R.id.img_model_square, R.id.img_model_circular, R.id.img_model_flower, R.id.img_model_blue, R.id.img_model_earnest})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_model_square:
@@ -77,6 +83,16 @@ public class TechPosterChoiceModelFragment extends BaseFragment {
                 selectedMode = Constant.TECH_POSTER_FLOWER_MODEL;
                 selectedModelView(imgModelFlower);
                 Glide.with(getActivity()).load(R.drawable.img_poster_flower_big).into(imgselectedModel);
+                break;
+            case R.id.img_model_blue:
+                selectedMode = Constant.TECH_POSTER_BLUE_MODEL;
+                selectedModelView(imgModelBlue);
+                Glide.with(getActivity()).load(R.drawable.img_poster_blue_big).into(imgselectedModel);
+                break;
+            case R.id.img_model_earnest:
+                selectedMode = Constant.TECH_POSTER_EARNEST_MODEL;
+                selectedModelView(imgModelEarnest);
+                Glide.with(getActivity()).load(R.drawable.img_poster_earnest_big).into(imgselectedModel);
                 break;
         }
     }
