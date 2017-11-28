@@ -32,6 +32,7 @@ import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
+import com.xmd.app.event.UserInfoChangedEvent;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
@@ -641,6 +642,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (result.statusCode >= 200 && result.statusCode <= 299) {
             mTech.onLoadTechInfo(result);
             showHeadView();
+            EventBus.getDefault().post(new UserInfoChangedEvent(result.respData.imageUrl));
         }
     }
 

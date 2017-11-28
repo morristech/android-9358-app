@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
@@ -36,6 +35,7 @@ import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.IBusinessPermissionManager;
 import com.xmd.permission.PermissionConstants;
+import com.xmd.salary.TechSalaryFragment;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -92,6 +92,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 if (error == null) {
                     addFragmentHome();
                     addFragmentMessage();
+                    addFragmentSalary();
                     addFragmentContacts();
                     addFragmentMarketing();
                     if (mFragmentList.size() == 0) {
@@ -106,13 +107,13 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     UINavigation.gotoLogin(MainActivity.this);
                 }
             }
+
         });
         UmengStatisticsManager.getStatisticsManagerInstance();
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
         );
 
-        //requestPermissions();
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
 
@@ -164,6 +165,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @CheckBusinessPermission(PermissionConstants.MESSAGE)
     public void addFragmentMessage() {
         addFragment(R.id.main_button_message, TechChatConversationListFragment.class);
+    }
+
+    //技师工资报表
+    @CheckBusinessPermission(PermissionConstants.COMMISSION)
+    public void addFragmentSalary() {
+        addFragment(R.id.main_button_salary, TechSalaryFragment.class);
     }
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
@@ -250,7 +257,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
      */
     @Subscribe
     public void updateUnreadMsgLabel(EventTotalUnreadCount event) {
-        XLogger.i(">>>", "刷新未读消息总数" + event.getCount());
         int count = event.getCount();
         if (count > 0) {
             if (count > 99) {
@@ -312,9 +318,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                         XToast.show("请先设置打招呼模板！");
                         return;
                     }
-                    //    XLogger.i(">>>","integer>"+HelloSettingManager.getInstance().getTemplateParentId());
-                    //    ;
-                     sayHello(event.bean.emChatId, 9999);
+                    sayHello(event.bean.emChatId, 9999);
                     break;
             }
         }

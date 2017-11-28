@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/toolbarBackground"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rl_toolbar_left"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical">
+
+                <com.xmd.app.widget.RoundImageView
+                    android:id="@+id/img_toolbar_left"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="4dp"
+                    android:padding="4dp"
+                />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/toolbarTitleColor"
+                android:textSize="@dimen/toolbarTitleFontSize"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_toolbar_right"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/activity_normal_margin"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/img_toolbar_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_what"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+    <!--<com.xmd.app.widget.StationaryScrollView-->
+        <!--android:id="@+id/stationary_scroll_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="50dp"
+                          android:orientation="horizontal"
+            android:background="@color/white">
+                <RelativeLayout
+                    android:id="@+id/ll_table_day"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_table_day"
+                        style="@style/salary_table_text_style"
+                        android:text="@string/table_text_day"/>
+                    <View
+                        android:id="@+id/table_day_line"
+                        style="@style/reserve_data_table_line_style"
+                        android:layout_alignParentBottom="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_table_month"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_table_month"
+                        style="@style/salary_table_text_style"
+                        android:text="@string/table_text_month"/>
+                    <View
+                        android:id="@+id/table_month_line"
+                        style="@style/reserve_data_table_line_style"
+                        android:layout_alignParentBottom="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_table_customer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_table_customer"
+                        style="@style/salary_table_text_style"
+                        android:text="@string/table_text_customer"/>
+                    <View
+                        android:id="@+id/table_customer_line"
+                        style="@style/reserve_data_table_line_style"
+                        android:layout_alignParentBottom="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="0.5dp"
+            android:background="#c3c3c3"/>
+            <FrameLayout
+                android:id="@+id/fragment_time_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <FrameLayout
+                android:id="@+id/fragment_salary_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <FrameLayout
+                android:id="@+id/fragment_salary_list_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    <!--</com.xmd.app.widget.StationaryScrollView>-->
+
+
+</LinearLayout>

@@ -15,7 +15,8 @@
         android:background="#eeeeee"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -40,6 +41,7 @@
                     android:textSize="@dimen/toolbarTitleFontSize" />
 
                 <com.xmd.app.widget.CircleAvatarView
+                    android:id="@+id/circle_avatar"
                     android:layout_width="@dimen/avatarSize"
                     android:layout_height="@dimen/avatarSize"
                     android:layout_gravity="center_vertical"

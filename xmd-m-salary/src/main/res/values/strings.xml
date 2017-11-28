@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">xmd-m-salary</string>
+    <string name="table_text_day">日</string>
+    <string name="table_text_month">月</string>
+    <string name="table_text_customer">自定义</string>
+    <string name="salary_title">工资</string>
+    <string name="commission_commodities_text">实物商品</string>
+    <string name="commission_card_text">会员卡（店内充值优惠）</string>
+    <string name="commission_package_text">特惠商城：项目次卡、混合套餐</string>
+    <string name="commission_order_text">预约</string>
+    <string name="order_commission_introduce">需主动接单成功才可获得提成</string>
+    <string name="package_commission_rule">通过分享链接，二维码等销售服务给客户的角色</string>
+    <string name="search_is_empty">查询日期内无相关数据</string>
+    <string name="all_data_load_finish">----------已经全部加载完毕----------</string>
+    <string name="salary_detail_title">工资明细</string>
+    <string name="salary_introduce_title">工资说明</string>
+    <string name="card_commission_alter_message">会员充值金店内充值套餐才可获得提成</string>
+
+</resources>

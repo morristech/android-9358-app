@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.CircleAvatarView;
+import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.technician.R;
 
 /**
@@ -78,12 +81,21 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    public void showAvatarInTitleBar() {
+    public void showAvatarInTitleBar(String url) {
         avatarView = (CircleAvatarView) getView().findViewById(R.id.avatarView);
-        if (avatarView != null) {
-            avatarView.setVisibility(View.VISIBLE);
-            avatarView.setUserInfo(UserInfoServiceImpl.getInstance().getCurrentUser());
+        if (!TextUtils.isEmpty(url)) {
+            if (avatarView != null) {
+                avatarView.setVisibility(View.VISIBLE);
+                Glide.with(getActivity()).load(url).transform(new GlideCircleTransform(getActivity())).error(com.xmd.app.R.drawable.img_default_avatar).into(avatarView);
+            }
+        } else {
+            if (avatarView != null) {
+                avatarView.setVisibility(View.VISIBLE);
+                avatarView.setUserInfo(UserInfoServiceImpl.getInstance().getCurrentUser());
+            }
         }
+
+
     }
 
     /**

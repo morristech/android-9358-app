@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+    <include layout="@layout/layout_toolbar"/>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView style="@style/salary_introduce_title_style"
+                      android:drawableLeft="@drawable/icon_structure"
+                      android:text="工资结构说明"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_margin="12dp"
+                          android:background="@drawable/shape_salary_structure"
+                          android:orientation="vertical"
+                          android:paddingBottom="12dp"
+                          android:paddingLeft="12dp"
+                          android:paddingTop="20dp">
+                <TextView
+                    android:id="@+id/tv_salary_structure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#333333"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    tools:text="工资合计 = 服务提成 + 推销提成"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:drawableLeft="@drawable/icon_salary_mode"
+                    android:drawablePadding="6dp"
+                    android:text="工资按营业时间进行统计"
+                    android:textColor="#c3c3c3"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+            <TextView style="@style/salary_introduce_title_style"
+                      android:drawableLeft="@drawable/icon_service_salary"
+                      android:text="服务提成（元）"/>
+            <include layout="@layout/layout_service_commission"/>
+            <TextView style="@style/salary_introduce_title_style"
+                      android:drawableLeft="@drawable/icon_sell_salary"
+                      android:text="推销提成（元）"/>
+            <LinearLayout
+                android:id="@+id/ll_commodities"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView style="@style/salary_commission_title_style"
+                          android:text="@string/commission_commodities_text"/>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="12dp"
+                              android:layout_marginRight="12dp"
+                              android:background="@drawable/shape_bg_white_with_stoke"
+                              android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:padding="0.5dp">
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="项目名称"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="提成（元）"/>
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commodities_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="0.5dp"
+                        android:paddingLeft="0.5dp"
+                        android:paddingRight="0.5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView style="@style/salary_commission_title_style"
+                          android:text="@string/commission_card_text"/>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="12dp"
+                              android:layout_marginRight="12dp"
+                              android:background="@drawable/shape_bg_white_with_stoke"
+                              android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:padding="0.5dp">
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="项目名称"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="赠送"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="提成（元）"/>
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commodities_cards"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="0.5dp"
+                        android:paddingLeft="0.5dp"
+                        android:paddingRight="0.5dp"/>
+
+                </LinearLayout>
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:drawableLeft="@drawable/icon_alter"
+                          android:drawablePadding="5dp"
+                          android:paddingBottom="5dp"
+                          android:paddingLeft="20dp"
+                          android:paddingTop="5dp"
+                          android:text="@string/card_commission_alter_message"
+                          android:textColor="#ff6666"
+                          android:textSize="14sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_package"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_package_title"
+                    style="@style/salary_commission_title_style"
+                    android:text="@string/commission_package_text"/>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="12dp"
+                              android:layout_marginRight="12dp"
+                              android:background="@drawable/shape_bg_white_with_stoke"
+                              android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:padding="0.5dp">
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="项目名称"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="角色"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:layout_weight="2"
+                                  android:text="角色定义"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:gravity="center_vertical"
+                                  android:orientation="horizontal">
+                        <TextView style="@style/salary_commission_package_style"
+                                  android:layout_weight="1"
+                                  android:text="100%"/>
+                        <TextView style="@style/salary_commission_package_style"
+                                  android:layout_weight="1"
+                                  android:text="销售者"/>
+                        <TextView style="@style/salary_commission_package_style"
+                                  android:layout_weight="2"
+                                  android:gravity="left"
+                                  android:text="@string/package_commission_rule"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_order"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView style="@style/salary_commission_title_style"
+                          android:text="@string/commission_order_text"/>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="12dp"
+                              android:layout_marginRight="12dp"
+                              android:background="@drawable/shape_bg_white_with_stoke"
+                              android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:padding="0.5dp">
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="类型"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="提成（元）"/>
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commodities_orders"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="0.5dp"
+                        android:paddingLeft="0.5dp"
+                        android:paddingRight="0.5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

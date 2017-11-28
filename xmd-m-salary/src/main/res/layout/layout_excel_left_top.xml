@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/type_root"
+              android:layout_width="@dimen/excel_row_width"
+              android:layout_height="@dimen/excel_cell_height"
+              android:orientation="vertical"
+              android:paddingLeft="0.5dp">
+
+    <TextView
+        android:id="@+id/tv_service_type_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C3D8E8"
+        android:gravity="center"
+        android:text="项目"
+        android:textColor="#212121"
+        android:textSize="14sp"/>
+
+</LinearLayout>

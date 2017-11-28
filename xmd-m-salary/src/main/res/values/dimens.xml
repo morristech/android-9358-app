@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="excel_text_padding">8dp</dimen>
+    <dimen name="excel_text_name">12sp</dimen>
+    <dimen name="excel_text_commission">14sp</dimen>
+    <dimen name="excel_text_title">13sp</dimen>
+    <dimen name="excel_row_width">120dp</dimen>
+    <dimen name="excel_cell_width">100dp</dimen>
+    <dimen name="excel_cell_height">40dp</dimen>
+</resources>

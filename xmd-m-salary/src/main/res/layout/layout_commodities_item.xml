@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/ll_commodities_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_excel_item_bg"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/tv_commodities_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/excel_text_padding"
+            android:textColor="@color/excel_item_name_color"
+            android:textSize="@dimen/excel_text_name"
+            tools:text="果盘"/>
+
+        <TextView
+            android:id="@+id/tv_commodities_commission"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/excel_text_padding"
+            android:textColor="@color/excel_item_commission_color"
+            android:textSize="@dimen/excel_text_commission"
+            tools:text="5"/>
+    </LinearLayout>
+    <View style="@style/horizontal_divider_line"/>
+
+</LinearLayout>

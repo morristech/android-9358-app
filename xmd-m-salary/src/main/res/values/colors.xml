@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="stroke_color">#e0e0e0</color>
+    <color name="excel_item_name_color">#333333</color>
+    <color name="excel_item_commission_color">#ff8400</color>
+</resources>

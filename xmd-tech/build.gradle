@@ -163,6 +163,7 @@ dependencies {
     compile project(':image-tool')
     compile 'org.greenrobot:greendao:3.2.2'
     compile project(':xmd-file-provider')
+    compile project(':xmd-m-salary')
 
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"

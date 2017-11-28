@@ -19,6 +19,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -210,7 +211,7 @@ public class TechShareCardActivity extends BaseActivity {
     public void saveUserCard() {
         String filePath = Environment.getExternalStorageDirectory() + "/" + ResourceUtils.getString(R.string.save_tech_card_path) + ".jpg";
         if (FileUtils.checkFileExist(filePath, false)) {
-            makeShortToast(ResourceUtils.getString(R.string.had_saved_tech_card));
+            XToast.show(ResourceUtils.getString(R.string.had_saved_tech_card));
         } else {
             ThreadPoolManager.run(new Runnable() {
                 @Override

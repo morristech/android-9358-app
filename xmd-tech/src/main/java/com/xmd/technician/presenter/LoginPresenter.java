@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
@@ -178,6 +179,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     private void handleLoadTechInfo(TechInfoResult result) {
+        XLogger.i(">>>","此处数据有变化");
         mView.hideLoading();
         if (result.statusCode < 200 || result.statusCode > 299) {
             mView.showAlertDialog(result.msg);

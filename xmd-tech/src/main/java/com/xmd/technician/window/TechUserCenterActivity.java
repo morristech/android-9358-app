@@ -277,7 +277,6 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
             } else {
                 llAlbumList.setVisibility(View.VISIBLE);
                 albumsIsNull.setVisibility(View.GONE);
-                ;
             }
             if (mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_EDIT) {
                 mAdapter.refreshDataSet(mAdapter.ALBUM_STATUS_EDIT, mAlbums);

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.Pageable;
@@ -25,8 +26,10 @@ import com.xmd.app.BaseFragment;
 import com.xmd.app.BaseViewModel;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.event.UserInfoChangedEvent;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.chat.BR;
 import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ConversationManager;
@@ -263,7 +266,6 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void onUnreadCountEvent(EventUnreadCount event) {
-        XLogger.i(">>>","未读消息单聊数》"+event.getConversationViewModel().getUnReadMsgCount());
         int position = mAdapter.getDataList().indexOf(event.getConversationViewModel());
         if (position >= 0) {
             mAdapter.notifyItemChanged(position);
@@ -292,5 +294,12 @@ public class ConversationListFragment extends BaseFragment {
 
     public User getUser() {
         return UserInfoServiceImpl.getInstance().getCurrentUser();
+    }
+
+    @Subscribe
+    public void userInfoChangedEvent(UserInfoChangedEvent event) {
+        if(!TextUtils.isEmpty(event.userHeadUrl)){
+            Glide.with(getActivity()).load(event.userHeadUrl).transform(new GlideCircleTransform(getActivity())).error(R.drawable.img_default_avatar).into( mBinding.circleAvatar);
+        }
     }
 }

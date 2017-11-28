@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-9358-app.iml" filepath="$PROJECT_DIR$/android-9358-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonlibrary/commonlibrary.iml" filepath="$PROJECT_DIR$/commonlibrary/commonlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/excelpanel/excelpanel.iml" filepath="$PROJECT_DIR$/excelpanel/excelpanel.iml" />
       <module fileurl="file://$PROJECT_DIR$/image-crop/image-crop.iml" filepath="$PROJECT_DIR$/image-crop/image-crop.iml" />
       <module fileurl="file://$PROJECT_DIR$/image-selector/image-selector.iml" filepath="$PROJECT_DIR$/image-selector/image-selector.iml" />
       <module fileurl="file://$PROJECT_DIR$/image-tool/image-tool.iml" filepath="$PROJECT_DIR$/image-tool/image-tool.iml" />
@@ -20,6 +21,7 @@
       <module fileurl="file://$PROJECT_DIR$/xmd-m-network/xmd-m-network.iml" filepath="$PROJECT_DIR$/xmd-m-network/xmd-m-network.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-notify/xmd-m-notify.iml" filepath="$PROJECT_DIR$/xmd-m-notify/xmd-m-notify.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-permission/xmd-m-permission.iml" filepath="$PROJECT_DIR$/xmd-m-permission/xmd-m-permission.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmd-m-salary/xmd-m-salary.iml" filepath="$PROJECT_DIR$/xmd-m-salary/xmd-m-salary.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-mgr/xmd-mgr.iml" filepath="$PROJECT_DIR$/xmd-mgr/xmd-mgr.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-tech/xmd-tech.iml" filepath="$PROJECT_DIR$/xmd-tech/xmd-tech.iml" />
     </modules>

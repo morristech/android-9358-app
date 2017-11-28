@@ -9,6 +9,7 @@ public class PermissionConstants {
     public final static String MESSAGE = "message";//信息
     public final static String CONTACTS = "contacts";//联系人
     public final static String MARKETING = "marketing";//营销
+    public final static String COMMISSION = "commission";//工资
     public final static String WORK_TIME = "work_time";//工作时间
     public final static String WORK_PROJECT = "work_project";//工作项目
     public final static String WORK_STATUS = "work_status";//工作状态（休/忙）

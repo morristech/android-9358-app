@@ -196,8 +196,8 @@ public class SharedPreferenceHelper {
      */
     public static String getServerHost() {
 //         return "http://192.168.2.74:8080";
- //        return "http://192.168.1.103:9880";
-         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
+//        return "http://192.168.2.93:8080";
+        return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 
     public static void setLastAutoCheckUpgrade(long mill) {
@@ -405,7 +405,9 @@ public class SharedPreferenceHelper {
     }
 
 
-    /******************************权限*************************************/
+    /******************************
+     * 权限
+     *************************************/
     public static Set<String> getPermissionList() {
         return mSettingPreference.getStringSet(KEY_PERMISSION, null);
     }
@@ -422,7 +424,9 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getLong(KEY_PERMISSION_SYNC_DATE, 0);
     }
 
-    /************************客服*****************************************/
+    /************************
+     * 客服
+     *****************************************/
     public static void setCustomerService(String roles) {
         mSettingPreference.edit().putString(KEY_CUSTOMER_SERVICE, roles).apply();
     }

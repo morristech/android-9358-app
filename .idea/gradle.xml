@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/commonlibrary" />
+            <option value="$PROJECT_DIR$/excelpanel" />
             <option value="$PROJECT_DIR$/image-crop" />
             <option value="$PROJECT_DIR$/image-selector" />
             <option value="$PROJECT_DIR$/image-tool" />
@@ -25,6 +26,7 @@
             <option value="$PROJECT_DIR$/xmd-m-network" />
             <option value="$PROJECT_DIR$/xmd-m-notify" />
             <option value="$PROJECT_DIR$/xmd-m-permission" />
+            <option value="$PROJECT_DIR$/xmd-m-salary" />
             <option value="$PROJECT_DIR$/xmd-mgr" />
             <option value="$PROJECT_DIR$/xmd-tech" />
           </set>

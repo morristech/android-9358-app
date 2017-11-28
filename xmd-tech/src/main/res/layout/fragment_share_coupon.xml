@@ -10,9 +10,6 @@
 
     <include layout="@layout/toolbar"/>
 
-
-
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
@@ -69,8 +66,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:src="@drawable/img_default_square"
-                            app:type="round"
-                        />
+                            app:type="round"/>
 
                         <LinearLayout
                             android:layout_width="0dp"

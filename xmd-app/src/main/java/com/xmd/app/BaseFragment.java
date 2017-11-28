@@ -1,20 +1,23 @@
 package com.xmd.app;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
+import com.shidou.commonlibrary.widget.XProgressDialog;
+
 
 /**
  * Created by mo on 17-6-21.
  */
 
 public class BaseFragment extends Fragment {
+
+    protected XProgressDialog progressDialog;
 
     public void setBackVisible(boolean visible) {
         RelativeLayout rlBack = (RelativeLayout) getView().findViewById(R.id.rl_toolbar_back);
@@ -54,5 +57,33 @@ public class BaseFragment extends Fragment {
     }
 
     protected void onRightImageClickedListener() {
+
+    }
+
+    public void showLoading(Context context,String message) {
+        if (progressDialog == null) {
+            progressDialog = new XProgressDialog(context);
+        }
+        progressDialog.setTitle(message);
+        progressDialog.show(message);
+    }
+
+    public void showLoading(Context context) {
+        showLoading(context,"");
+    }
+
+    public void showLoading(Context context,String message, boolean cancelAble) {
+        if (progressDialog == null) {
+            progressDialog = new XProgressDialog(context);
+        }
+        progressDialog.setCancelable(cancelAble);
+        progressDialog.setTitle(message);
+        progressDialog.show(message);
+    }
+
+    public void hideLoading() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }

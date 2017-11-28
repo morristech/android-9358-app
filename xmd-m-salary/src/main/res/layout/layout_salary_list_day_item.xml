@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="8dp">
+        <ImageView
+            android:id="@+id/img_salary_type"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_commission_type"/>
+        <TextView
+            android:id="@+id/tv_commission_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_salary_type"
+            android:textColor="#333333"
+            android:textSize="17sp"
+            tools:text="微信预约"/>
+        <TextView
+            android:id="@+id/tv_commission_pay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_commission_type"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_salary_type"
+            android:paddingTop="@dimen/small_padding"
+            android:textColor="#666666"
+            tools:text="微信"/>
+        <TextView
+            android:id="@+id/tv_salary_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/img_salary_type"
+            android:gravity="right"
+            android:paddingRight="12dp"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="+68.59"/>
+
+        <TextView
+            android:id="@+id/tv_salary_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_salary_total"
+            android:layout_toRightOf="@id/img_salary_type"
+            android:gravity="right"
+            android:paddingTop="@dimen/small_padding"
+            android:textColor="#a9a9a9"
+            android:textSize="16sp"
+            tools:text="+68.59"/>
+    </RelativeLayout>
+    <View style="@style/horizontal_divider_line"/>
+
+</LinearLayout>
+
+
+

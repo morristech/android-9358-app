@@ -5,16 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.Constants;
+import com.xmd.app.event.UserInfoChangedEvent;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.DropDownMenuDialog;
+import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.black.AddFriendActivity;
 import com.xmd.black.BlackListActivity;
@@ -22,6 +26,7 @@ import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.httprequest.ConstantResources;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 
 /**
@@ -50,6 +55,7 @@ public class ContactFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_contact, container, false);
+        EventBus.getDefault().register(this);
         isFromManager = getArguments().getString(ConstantResources.INTENT_APP_TYPE).equals(ConstantResources.APP_TYPE_MANAGER) ? true : false;
         rlRightMore = (RelativeLayout) view.findViewById(R.id.rl_toolbar_right);
         mRoundImageHead = (RoundImageView) view.findViewById(R.id.img_toolbar_right_back);
@@ -66,7 +72,7 @@ public class ContactFragment extends BaseFragment {
         setTitle("联系人");
         setBackVisible(false);
         setRightVisible(true, R.drawable.contact_icon_more);
-        if(!isFromManager){
+        if (!isFromManager) {
             Glide.with(getActivity()).load(UserInfoServiceImpl.getInstance().getCurrentUser().getAvatar()).into(mRoundImageHead);
         }
         initFragmentView();
@@ -131,5 +137,13 @@ public class ContactFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void userInfoChangedEvent(UserInfoChangedEvent event) {
+        if (!TextUtils.isEmpty(event.userHeadUrl)) {
+            Glide.with(getActivity()).load(event.userHeadUrl).transform(new GlideCircleTransform(getActivity())).error(R.drawable.img_default_avatar).into(mRoundImageHead);
+        }
     }
 }
