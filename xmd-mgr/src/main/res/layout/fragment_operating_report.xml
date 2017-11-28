@@ -71,8 +71,7 @@
                 android:layout_marginRight="@dimen/margin_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:background="@drawable/selector_bg_white"
-                android:padding="@dimen/margin_10"
-                android:visibility="gone">
+                android:padding="@dimen/margin_10">
 
                 <ImageView
                     android:id="@+id/img_cashier"

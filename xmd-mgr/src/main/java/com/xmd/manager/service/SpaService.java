@@ -1185,7 +1185,6 @@ public interface SpaService {
                                              @Query(RequestConstant.KEY_COUPON_TYPE) String couponType,
                                              @Query(RequestConstant.KEY_COUPON_ONLINE) String online);
 
-
     //*******************************************技师工资报表****************************************
     //获取指定时间段技师工资汇总列表
     @GET(RequestConstant.URL_GET_COMMISSION_SUM_LIST)
@@ -1230,5 +1229,10 @@ public interface SpaService {
     //获取会所技师列表
     @GET(RequestConstant.URL_TECHNICIAN_LIST)
     Call<TechBaseListResult> getTechList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    //*******************会所内网开关******************
+    @GET(RequestConstant.URL_GET_CLUB_NATIVE_SWITCH)
+    Call<ClubSwitchResult> getClubNativeSwitch(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                           @Query(RequestConstant.KEY_SWITCH_CODE) String code);
 }
 

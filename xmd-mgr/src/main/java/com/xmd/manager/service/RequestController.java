@@ -439,6 +439,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_TECH_BASE_LIST:
                 getTechBaseList();
                 break;
+            case MsgDef.MSG_DEF_GET_CLUB_NATIVE_SWITCH:
+                getClubNativeSwitch();
+                break;
         }
         return true;
     }
@@ -2997,6 +3000,22 @@ public class RequestController extends AbstractController {
                 TechBaseListResult result = new TechBaseListResult();
                 result.msg = errorMsg;
                 RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取会所内网开关
+    private void getClubNativeSwitch() {
+        Call<ClubSwitchResult> call = getSpaService().getClubNativeSwitch(SharedPreferenceHelper.getUserToken(), "native_system");
+        call.enqueue(new TokenCheckedCallback<ClubSwitchResult>() {
+            @Override
+            protected void postResult(ClubSwitchResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.e("getClubNativeSwitch failed:" + errorMsg);
             }
         });
     }

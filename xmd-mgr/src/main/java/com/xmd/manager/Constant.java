@@ -422,6 +422,6 @@ public class Constant {
     public static final String FILTER_COUPON_STATUS_TYPE = "statusType";
     public static final String FILTER_COUPON_TIME_TYPE = "time_type";
 
-
+    public static final String REQUEST_YES = "Y";
 }
 

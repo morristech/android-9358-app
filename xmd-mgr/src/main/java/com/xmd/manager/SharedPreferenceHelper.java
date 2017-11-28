@@ -33,6 +33,8 @@ public class SharedPreferenceHelper {
     private static final String KEY_CURRENT_CLUB_NAME = "EB8329FF8AAC026A306E3C0A811D0D96";//updateServer
     private static final String KEY_CURRENT_CLUB_CreateTime = "EB8329FF8AAC03A306E3C0A811D0D96";//createTime
     private static final String KEY_CLUB_ID = "EB832AF8AAC026D20cE3C0A811D0D96";
+
+    private static final String KEY_CLUB_NATIVE_SWITCH = "5155259d37897c45f345d91f0b94c9a6";
     /**
      * Last time to check the upgrade automatically
      */
@@ -99,6 +101,7 @@ public class SharedPreferenceHelper {
         setUserRole("");
         setMultiClubToken("");
         SharedPreferenceHelper.setCurrentClubName("");
+        SharedPreferenceHelper.setClubNativeSwitch(false);  //帐号退出后内网开关默认设置为false
     }
 
     public static void setDevelopMode(boolean debugMode) {
@@ -287,11 +290,19 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putInt(KEY_LAST_VIEW_FAST_PAY_VALUE, count).apply();
     }
 
-    public static void setClubId(String clubId){
-        mSettingPreference.edit().putString(KEY_CLUB_ID,clubId).apply();
+    public static void setClubId(String clubId) {
+        mSettingPreference.edit().putString(KEY_CLUB_ID, clubId).apply();
     }
 
-    public static String getClubId(){
-       return mSettingPreference.getString(KEY_CLUB_ID,"");
+    public static String getClubId() {
+        return mSettingPreference.getString(KEY_CLUB_ID, "");
+    }
+
+    public static void setClubNativeSwitch(boolean sw) {
+        mSettingPreference.edit().putBoolean(KEY_CLUB_NATIVE_SWITCH, sw).apply();
+    }
+
+    public static boolean getClubNativeSwitch() {
+        return mSettingPreference.getBoolean(KEY_CLUB_NATIVE_SWITCH, false);
     }
 }

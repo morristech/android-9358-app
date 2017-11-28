@@ -224,4 +224,5 @@ public class MsgDef {
     public static final int MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO = 0x151;
 
     public static final int MSG_DEF_GET_TECH_BASE_LIST = 0x152;
+    public static final int MSG_DEF_GET_CLUB_NATIVE_SWITCH = 0x153;
 }

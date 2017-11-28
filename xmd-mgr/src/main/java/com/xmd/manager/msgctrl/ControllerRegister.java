@@ -151,7 +151,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_TECH_COMMISSION_AMOUNT,
                 MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_LIST,
                 MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO,
-                MsgDef.MSG_DEF_GET_TECH_BASE_LIST
+                MsgDef.MSG_DEF_GET_TECH_BASE_LIST,
+                MsgDef.MSG_DEF_GET_CLUB_NATIVE_SWITCH
 
         });
     }
