@@ -111,17 +111,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 }
             }
         });
-
-
         Manager.getInstance().checkUpgrade(true);
-
-//        mGetNewOrderCountSubscription = RxBus.getInstance().toObservable(NewOrderCountResult.class).subscribe(
-//                result -> {
-//                    pendingOrderCount = result.respData;
-//                    mViewPagerTabIndicator.setNotice(sTabOrder, pendingOrderCount);
-//                }
-//        );
-
         mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
                 clubResult -> handleGetClubResult(clubResult)
         );
@@ -194,7 +184,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     @CheckBusinessPermission(PermissionConstants.MG_TAB_INDEX)
     public void initPageIndex() {
         mPageFragmentPagerAdapter.addFragment(new MainPageFragment());
-        tabTexts.add("首页");
+        tabTexts.add(ResourceUtils.getString(R.string.menu_main_page));
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_index));
         sTabIndex = tabTexts.size() - 1;
     }
@@ -203,7 +193,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void initPageChat() {
         ConversationListFragment fragment = ConversationListFragment.newInstance("消息");
         mPageFragmentPagerAdapter.addFragment(fragment);
-        tabTexts.add("消息");
+        tabTexts.add(ResourceUtils.getString(R.string.menu_message));
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_chat));
         sTabChat = tabTexts.size() - 1;
         mViewPagerTabIndicator.setNotice(sTabChat, XmdChat.getInstance().getTotalUnreadCount());
@@ -212,9 +202,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     @CheckBusinessPermission(PermissionConstants.MG_TAB_CUSTOMER)
     public void initPageCustomerManager() {
         mPageFragmentPagerAdapter.addFragment(ContactFragment.newInstance(com.xmd.contact.httprequest.ConstantResources.APP_TYPE_MANAGER));
-        // mPageFragmentPagerAdapter.addFragment(new CustomerManagementFragment());
-        // tabTexts.add("客户");
-        tabTexts.add("联系人");
+        tabTexts.add(ResourceUtils.getString(R.string.menu_contact));
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_customer_management));
         sTabCustomerManagement = tabTexts.size() - 1;
     }
@@ -223,7 +211,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void initPageOrder() {
         mPageFragmentPagerAdapter.addFragment(new OperatingReportFragment());
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_operate));
-        tabTexts.add("数据");
+        tabTexts.add(ResourceUtils.getString(R.string.menu_data));
         sTabOrder = tabTexts.size() - 1;
     }
 
@@ -231,7 +219,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void initPageMarketing() {
         mPageFragmentPagerAdapter.addFragment(new MarketingFragment());
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_marketing));
-        tabTexts.add("营销");
+        tabTexts.add(ResourceUtils.getString(R.string.menu_marketing));
         sTabCoupon = tabTexts.size() - 1;
     }
 

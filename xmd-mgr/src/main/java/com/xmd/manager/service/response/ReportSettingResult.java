@@ -5,4 +5,5 @@ package com.xmd.manager.service.response;
  */
 
 public class ReportSettingResult extends BaseResult {
+
 }

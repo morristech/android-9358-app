@@ -5,18 +5,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.utils.ResourceUtils;
 import com.xmd.manager.R;
 import com.xmd.manager.common.DateUtil;
-import com.xmd.manager.msgctrl.MsgDef;
-import com.xmd.manager.msgctrl.MsgDispatcher;
+import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.ReportCreateResult;
 import com.xmd.manager.widget.ClearableEditText;
-import com.xmd.manager.widget.DateTimePickDialog;
 import com.xmd.manager.widget.DateTimePickDialogUtil;
 
 import java.util.HashMap;
@@ -29,6 +25,7 @@ import rx.Subscription;
 
 /**
  * Created by Lhj on 17-9-12.
+ * 新增自定义报表
  */
 
 public class NewAddOperateActivity extends BaseActivity {
@@ -102,25 +99,26 @@ public class NewAddOperateActivity extends BaseActivity {
         mOperateEndTime = tvEndTime.getText().toString();
 
         if (TextUtils.isEmpty(mOperateName)) {
-            XToast.show("请输入报表名称");
+            XToast.show(ResourceUtils.getString(R.string.operate_name_alter));
             return;
         }
         if (TextUtils.isEmpty(mOperateStartTime)) {
-            XToast.show("请输入报表开始时间");
+            XToast.show(ResourceUtils.getString(R.string.operate_start_time_alter));
             return;
         }
         if (TextUtils.isEmpty(mOperateEndTime)) {
-            XToast.show("请输入报表结束时间");
+            XToast.show(ResourceUtils.getString(R.string.operate_end_time_alter));
             return;
         }
-        if(DateUtil.stringDateToLong(mOperateEndTime) < DateUtil.stringDateToLong(mInitStartTime)){
-            XToast.show("结束时间要大于开始时间");
+        if (DateUtil.stringDateToLong(mOperateEndTime) < DateUtil.stringDateToLong(mInitStartTime)) {
+            XToast.show(ResourceUtils.getString(R.string.operate_time_role_alter));
             return;
         }
         mParams.clear();
         mParams.put(RequestConstant.KEY_REPORT_CUSTOM_START_TIME, mOperateStartTime + ":00");
         mParams.put(RequestConstant.KEY_REPORT_CUSTOM_NAME, mOperateEndTime + ":59");
         mParams.put(RequestConstant.KEY_REPORT_CUSTOM_NAME, mOperateName);
-     //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM, mParams);
+        //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM, mParams);
+
     }
 }

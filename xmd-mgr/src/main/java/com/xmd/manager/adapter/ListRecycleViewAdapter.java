@@ -1222,10 +1222,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     private void bindOperateReportListViewHolder(RecyclerView.ViewHolder holder, Object obj) {
-        final OperateReportBean reoprtBean = (OperateReportBean) obj;
+        final OperateReportBean operateBean = (OperateReportBean) obj;
         OperateReportListItemViewHolder viewHolder = (OperateReportListItemViewHolder) holder;
-
-
+        viewHolder.tvReportName.setText(operateBean.name + operateBean.id + ">>" + operateBean.startTime);
+        viewHolder.tvReportShare.setOnClickListener(v -> mCallback.onPositiveButtonClicked(operateBean));
+        viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(operateBean));
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mCallback.onLongClicked(operateBean);
+                return false;
+            }
+        });
     }
 
     private void bindCouponRecordListViewHolder(RecyclerView.ViewHolder holder, Object obj) {

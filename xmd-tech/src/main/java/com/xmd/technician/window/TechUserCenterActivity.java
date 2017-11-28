@@ -366,14 +366,15 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
     }
 
     private void viewStateChanged() {
-
+        if (mTechInfo == null) {
+            return;
+        }
         editTechHeadMask.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
         toolbarRight.setText(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? ResourceUtils.getString(R.string.tech_center_info_edit) : ResourceUtils.getString(R.string.tech_center_info_save));
 
         imgTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);
         tvTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.VISIBLE : View.GONE);
         editLlTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
-        //   editTechNickName.setVisibility(mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_NORMAL ? View.GONE : View.VISIBLE);
         tvTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName()) ? "" : mTechInfo.getName());
         editTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName()) ? "" : mTechInfo.getName());
 

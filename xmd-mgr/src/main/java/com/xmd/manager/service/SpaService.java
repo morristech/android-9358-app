@@ -1120,6 +1120,12 @@ public interface SpaService {
     Call<ReportInfoResult> getReportInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                          @Path(RequestConstant.KEY_ID) String id);
 
+    //报表列表
+    @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT)
+    Call<FinancialReportResult>getFinancialReportList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                      @Query(RequestConstant.KEY_DATE) String date,
+                                                      @Query(RequestConstant.KEY_TYPE) String type);
+
     //删除报表
     @FormUrlEncoded
     @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_DELETE)

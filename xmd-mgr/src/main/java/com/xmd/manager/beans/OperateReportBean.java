@@ -17,18 +17,20 @@ public class OperateReportBean {
      */
 
     public String endTime;
-    public int id;
+    public String id;
     public String name;
     public int read;
     public String separateTime;
     public String shareId;
     public String startTime;
 
-    public OperateReportBean(){
-
+    public OperateReportBean(String id, String name, String date) {
+        this.id = id;
+        this.name = name;
+        this.startTime = date;
     }
 
-    public OperateReportBean(String endTime, int id, String name, int read, String separateTime, String shareId, String startTime) {
+    public OperateReportBean(String endTime, String id, String name, int read, String separateTime, String shareId, String startTime) {
         this.endTime = endTime;
         this.id = id;
         this.name = name;

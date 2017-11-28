@@ -92,7 +92,9 @@ public class OperatingReportFragment extends BaseFragment {
     }
 
     private void handlerReportNewsResult(ReportNewsResult reportNewsResult) {
-
+        if (reportNewsResult.statusCode == 200) {
+            imageOperateNew.setVisibility(reportNewsResult.respData.count > 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -143,9 +145,5 @@ public class OperatingReportFragment extends BaseFragment {
 
     //优惠券
     @OnClick(R.id.rl_coupon_data)
-    public void onRlCouponDataClicked() {
-        startActivity(new Intent(getActivity(), CouponOperateDataActivity.class));
-        //   startActivity(new Intent(getActivity(),CouponReceiveAndUseDetailActivity.class));
-
-    }
+    public void onRlCouponDataClicked() { startActivity(new Intent(getActivity(), CouponOperateDataActivity.class)); }
 }

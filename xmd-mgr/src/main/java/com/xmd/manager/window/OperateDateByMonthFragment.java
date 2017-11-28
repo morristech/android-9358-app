@@ -56,7 +56,8 @@ public class OperateDateByMonthFragment extends BaseFragment {
     private void initFragmentView() {
         mOperateListFragment = new OperateListFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_MONTH_TYPE);
+        bundle.putString(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_MONTH_TYPE);
+        bundle.putString(OperateListFragment.OPERATE_LIST_DATE, String.valueOf(mSearchYear));
         mOperateListFragment.setArguments(bundle);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -74,18 +75,18 @@ public class OperateDateByMonthFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.operate_time_add:
-                if(mCurrentYear == mSearchYear){
+                if (mCurrentYear == mSearchYear) {
                     XToast.show(ResourceUtils.getString(R.string.has_none_new_data));
-                }else{
+                } else {
                     mSearchYear++;
                     tvOperateTime.setText(String.valueOf(mSearchYear));
                 }
-
+                mOperateListFragment.notifyDataChanged(String.valueOf(mSearchYear));
                 break;
             case R.id.operate_time_reduce:
                 mSearchYear--;
                 tvOperateTime.setText(String.valueOf(mSearchYear));
-
+                mOperateListFragment.notifyDataChanged(String.valueOf(mSearchYear));
                 break;
         }
     }

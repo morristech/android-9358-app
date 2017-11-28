@@ -196,7 +196,6 @@ public class MarketingFragment extends BaseFragment {
 
                 break;
             case R.id.marketing_paid_coupon:
-                //      startActivity(new Intent(getActivity(), CouponListActivity.class));
                 startActivity(new Intent(getActivity(), PaidCouponListActivity.class));
                 break;
             case R.id.marketing_coupon:

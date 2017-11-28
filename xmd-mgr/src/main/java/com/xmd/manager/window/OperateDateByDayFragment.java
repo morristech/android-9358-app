@@ -14,8 +14,6 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.manager.R;
 import com.xmd.manager.common.DateUtil;
-import com.xmd.manager.common.DateUtils;
-import com.xmd.manager.widget.EmptyView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +34,6 @@ public class OperateDateByDayFragment extends BaseFragment {
     RelativeLayout operateTimeAdd;
     @BindView(R.id.operate_time_reduce)
     RelativeLayout operateTimeReduce;
-    @BindView(R.id.empty_view)
-    EmptyView emptyView;
     Unbinder unbinder;
 
 
@@ -57,14 +53,15 @@ public class OperateDateByDayFragment extends BaseFragment {
     protected void initView() {
         mCurrentMonth = DateUtil.getCurrentDate();
         mSearchMonth = mCurrentMonth;
-        tvOperateTime.setText(mSearchMonth.substring(0,7));
+        tvOperateTime.setText(mSearchMonth.substring(0, 7));
         initFragmentView();
     }
 
     private void initFragmentView() {
         mOperateListFragment = new OperateListFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_DAY_TYPE);
+        bundle.putString(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_DAY_TYPE);
+        bundle.putString(OperateListFragment.OPERATE_LIST_DATE, mSearchMonth);
         mOperateListFragment.setArguments(bundle);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -82,18 +79,18 @@ public class OperateDateByDayFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.operate_time_add:
-                if(mSearchMonth.substring(0,7).equals(mCurrentMonth.substring(0,7))){
+                if (mSearchMonth.substring(0, 7).equals(mCurrentMonth.substring(0, 7))) {
                     XToast.show(ResourceUtils.getString(R.string.has_none_new_data));
-                }else {
-                    mSearchMonth = DateUtil.getFirstDayOfNextMonth(mSearchMonth,"yyyy-MM-dd");
-                    tvOperateTime.setText(mSearchMonth.substring(0,7));
+                } else {
+                    mSearchMonth = DateUtil.getFirstDayOfNextMonth(mSearchMonth, "yyyy-MM-dd");
+                    tvOperateTime.setText(mSearchMonth.substring(0, 7));
                 }
+                mOperateListFragment.notifyDataChanged(mSearchMonth);
                 break;
             case R.id.operate_time_reduce:
-                mSearchMonth = DateUtil.getFirstDayOfLastMonth(mSearchMonth,"yyyy-MM-dd");
-                tvOperateTime.setText(mSearchMonth.substring(0,7));
-                emptyView.setStatus(EmptyView.Status.Loading);
-                emptyView.setLoadingTip("正在加载中...");
+                mSearchMonth = DateUtil.getFirstDayOfLastMonth(mSearchMonth, "yyyy-MM-dd");
+                tvOperateTime.setText(mSearchMonth.substring(0, 7));
+                mOperateListFragment.notifyDataChanged(mSearchMonth);
                 break;
 
         }

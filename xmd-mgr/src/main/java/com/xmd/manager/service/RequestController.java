@@ -2667,7 +2667,16 @@ public class RequestController extends AbstractController {
     }
 
     //报表列表
-    private void getFinancialReportList(Map<String, String> obj) {
+    private void getFinancialReportList(Map<String, String> params) {
+        Call<FinancialReportResult> call = getSpaService().getFinancialReportList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_DATE),params.get(RequestConstant.KEY_TYPE));
+        call.enqueue(new TokenCheckedCallback<FinancialReportResult>() {
+            @Override
+            protected void postResult(FinancialReportResult result) {
+                result.dateType = params.get(RequestConstant.KEY_TYPE);
+                RxBus.getInstance().post(result);
+            }
+        });
 
     }
 

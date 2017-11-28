@@ -47,24 +47,13 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     @BindView(R.id.menu_LinearLayout)
     LinearLayout mMenuBar;
 
-    //    private View mCustomView;
-//    private WebChromeClient.CustomViewCallback mCustomViewCallback;
     private WebSettings ws;
-
     private boolean mShowMenu;
     private String mCurrentUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        boolean fullScreen = getIntent().getBooleanExtra(EXTRA_FULLSCREEN, false);
-//        if (fullScreen) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//        } else {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }
         setContentView(R.layout.activity_browser);
 
         mShowMenu = getIntent().getBooleanExtra(EXTRA_SHOW_MENU, true);
@@ -93,10 +82,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         //注入android接口到js中
         ws.setJavaScriptEnabled(true);
         ws.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
-
         //支持flash播放
-
-
         //mainWebView.addJavascriptInterface(new ShareJavaScriptInterface(), "AppInterface");
 
         mainWebView.setWebChromeClient(new WebChromeClient() {
@@ -110,7 +96,6 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         });
 
         mainWebView.setDownloadListener(new DownloadListener() {
-
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
                 Uri uri = Uri.parse(url);

@@ -405,22 +405,23 @@
 
         <!--报表-->
         <activity android:name=".window.CashierReportActivity"
-            android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"/>
         <activity android:name=".window.TechSalaryDetailActivity"
-            android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"/>
         <activity android:name=".window.TechSalaryTotalActivity"
-            android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"/>
         <activity android:name=".window.SalaryReportActivity"
-            android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"/>
         <activity android:name=".window.ReportExplainDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/default_dialog_activity"/>
+                  android:screenOrientation="portrait"
+                  android:theme="@style/default_dialog_activity"/>
         <activity android:name=".window.TechListDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/default_dialog_activity"/>
+                  android:screenOrientation="portrait"
+                  android:theme="@style/default_dialog_activity"/>
         <activity android:name=".window.TechSalaryDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/default_dialog_activity"/>
+                  android:screenOrientation="portrait"
+                  android:theme="@style/default_dialog_activity"/>
+
     </application>
 
 </manifest>
