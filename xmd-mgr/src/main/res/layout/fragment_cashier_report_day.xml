@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <include 
+    <include
         android:id="@+id/layout_amount"
         layout="@layout/layout_report_total_view" />
 

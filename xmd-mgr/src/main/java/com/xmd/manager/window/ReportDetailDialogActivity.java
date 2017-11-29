@@ -179,6 +179,7 @@ public class ReportDetailDialogActivity extends BaseActivity {
             }
 
             if (info.techList != null && !info.techList.isEmpty()) {
+                mTechDetailList.setVisibility(View.VISIBLE);
                 ReportTechDetailAdapter detailAdapter = new ReportTechDetailAdapter(ReportDetailDialogActivity.this, info.scope);
                 detailAdapter.setCallBack(techInfo -> {
                     Intent intent = new Intent(ReportDetailDialogActivity.this, TechSalaryDetailActivity.class);
@@ -192,6 +193,8 @@ public class ReportDetailDialogActivity extends BaseActivity {
                 mTechDetailList.setHasFixedSize(true);
                 mTechDetailList.setAdapter(detailAdapter);
                 detailAdapter.setData(info.techList);
+            } else {
+                mTechDetailList.setVisibility(View.GONE);
             }
         } else {
             mScrollLayout.setVisibility(View.GONE);
