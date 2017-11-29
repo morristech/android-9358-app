@@ -1122,9 +1122,9 @@ public interface SpaService {
 
     //报表列表
     @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT)
-    Call<FinancialReportResult>getFinancialReportList(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                      @Query(RequestConstant.KEY_DATE) String date,
-                                                      @Query(RequestConstant.KEY_TYPE) String type);
+    Call<FinancialReportResult> getFinancialReportList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Query(RequestConstant.KEY_DATE) String date,
+                                                       @Query(RequestConstant.KEY_TYPE) String type);
 
     //删除报表
     @FormUrlEncoded
@@ -1245,6 +1245,20 @@ public interface SpaService {
     //*******************会所内网开关******************
     @GET(RequestConstant.URL_GET_CLUB_NATIVE_SWITCH)
     Call<ClubSwitchResult> getClubNativeSwitch(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                           @Query(RequestConstant.KEY_SWITCH_CODE) String code);
+                                               @Query(RequestConstant.KEY_SWITCH_CODE) String code);
+
+    //*********************************************买单收银报表***************************************
+    @GET(RequestConstant.URL_GET_CASHIER_SUM_LIST)
+    Call<CashierStatisticResult> getCashierStatisticInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                         @Query(RequestConstant.KEY_END_DATE) String endDate);
+
+    @GET(RequestConstant.URL_GET_CLUB_CASHIER_DETAIL_LIST)
+    Call<CashierClubDetailListResult> getCashierClubDetailList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                               @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                               @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                               @Query(RequestConstant.KEY_PAGE) String page,
+                                                               @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                               @Query(RequestConstant.KEY_SCOPE) String scope);
 }
 

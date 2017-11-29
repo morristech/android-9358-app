@@ -226,4 +226,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_TECH_BASE_LIST = 0x152;
     public static final int MSG_DEF_GET_CLUB_NATIVE_SWITCH = 0x153;
+
+    public static final int MSG_DEF_GET_CASHIER_STATISTIC_INFO = 0x154;
+    public static final int MSG_DEF_GET_CASHIER_CLUB_DETAIL_LIST = 0x155;
 }

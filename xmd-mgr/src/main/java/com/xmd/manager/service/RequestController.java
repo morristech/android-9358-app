@@ -421,6 +421,12 @@ public class RequestController extends AbstractController {
                 getCouponListData((Map<String, String>) msg.obj);
                 break;
 
+            case MsgDef.MSG_DEF_GET_CLUB_NATIVE_SWITCH:
+                getClubNativeSwitch();
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_BASE_LIST:
+                getTechBaseList();
+                break;
             case MsgDef.MSG_DEF_GET_COMMISSION_SUM_LIST:    //获取指定时间段技师工资汇总列表
                 getCommissionSumList((Map<String, String>) msg.obj);
                 break;
@@ -439,11 +445,11 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO:    //获取提成明细的具体详情
                 getTechCommissionDetailInfo((String) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_TECH_BASE_LIST:
-                getTechBaseList();
+            case MsgDef.MSG_DEF_GET_CASHIER_STATISTIC_INFO: //获取买单收银日汇总
+                getCashierStatisticInfo((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_CLUB_NATIVE_SWITCH:
-                getClubNativeSwitch();
+            case MsgDef.MSG_DEF_GET_CASHIER_CLUB_DETAIL_LIST:   //获取买单收银明细列表
+                getCashierClubDetailList((Map<String, String>) msg.obj);
                 break;
         }
         return true;
@@ -2672,7 +2678,7 @@ public class RequestController extends AbstractController {
     //报表列表
     private void getFinancialReportList(Map<String, String> params) {
         Call<FinancialReportResult> call = getSpaService().getFinancialReportList(SharedPreferenceHelper.getUserToken(),
-                params.get(RequestConstant.KEY_DATE),params.get(RequestConstant.KEY_TYPE));
+                params.get(RequestConstant.KEY_DATE), params.get(RequestConstant.KEY_TYPE));
         call.enqueue(new TokenCheckedCallback<FinancialReportResult>() {
             @Override
             protected void postResult(FinancialReportResult result) {
@@ -2888,6 +2894,22 @@ public class RequestController extends AbstractController {
     }
 
 
+    // 获取会所内网开关
+    private void getClubNativeSwitch() {
+        Call<ClubSwitchResult> call = getSpaService().getClubNativeSwitch(SharedPreferenceHelper.getUserToken(), "native_system");
+        call.enqueue(new TokenCheckedCallback<ClubSwitchResult>() {
+            @Override
+            protected void postResult(ClubSwitchResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.e("getClubNativeSwitch failed:" + errorMsg);
+            }
+        });
+    }
+
     //*********************************************技师工资报表***************************************
     //获取指定时间段技师工资汇总列表
     private void getCommissionSumList(Map<String, String> params) {
@@ -3031,18 +3053,46 @@ public class RequestController extends AbstractController {
         });
     }
 
-    // 获取会所内网开关
-    private void getClubNativeSwitch() {
-        Call<ClubSwitchResult> call = getSpaService().getClubNativeSwitch(SharedPreferenceHelper.getUserToken(), "native_system");
-        call.enqueue(new TokenCheckedCallback<ClubSwitchResult>() {
+    //********************************************* 买单收银报表***************************************
+    private void getCashierStatisticInfo(Map<String, String> params) {
+        Call<CashierStatisticResult> call = getSpaService().getCashierStatisticInfo(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<CashierStatisticResult>() {
             @Override
-            protected void postResult(ClubSwitchResult result) {
+            protected void postResult(CashierStatisticResult result) {
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
                 RxBus.getInstance().post(result);
             }
 
             @Override
             protected void postError(String errorMsg) {
-                Logger.e("getClubNativeSwitch failed:" + errorMsg);
+                CashierStatisticResult result = new CashierStatisticResult();
+                result.msg = errorMsg;
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void getCashierClubDetailList(Map<String, String> params) {
+        Call<CashierClubDetailListResult> call = getSpaService().getCashierClubDetailList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE), params.get(RequestConstant.KEY_SCOPE));
+        call.enqueue(new TokenCheckedCallback<CashierClubDetailListResult>() {
+            @Override
+            protected void postResult(CashierClubDetailListResult result) {
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                result.requestType = params.get(RequestConstant.KEY_REQUEST_TYPE);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                CashierClubDetailListResult result = new CashierClubDetailListResult();
+                result.msg = errorMsg;
+                result.eventType = params.get(RequestConstant.KEY_EVENT_TYPE);
+                result.requestType = params.get(RequestConstant.KEY_REQUEST_TYPE);
+                RxBus.getInstance().post(result);
             }
         });
     }

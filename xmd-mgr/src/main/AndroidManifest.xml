@@ -418,10 +418,11 @@
         <activity android:name=".window.TechListDialogActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/default_dialog_activity"/>
-        <activity android:name=".window.TechSalaryDialogActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/default_dialog_activity"/>
-
+        <activity android:name=".window.ReportDetailDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/default_dialog_activity"/>
+        <activity android:name=".window.ClubCashierDetailActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

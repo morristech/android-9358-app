@@ -590,7 +590,11 @@
     <string name="report_salary_explain_one">技师工资按营业时间进行统计</string>
     <string name="report_salary_explain_two">如需查看技师上钟数，请前往“数据>>经营报表”进行查看</string>
 
-    <string name="report_sum_title">工资合计(元)</string>
+    <string name="report_salary_sum_title">工资合计(元)</string>
     <string name="report_service_title">服务提成</string>
     <string name="report_sales_title">推销提成</string>
+
+    <string name="report_cashier_sum_title">买单合计(元)</string>
+    <string name="report_spa_title">足浴按摩</string>
+    <string name="report_goods_title">实物商品</string>
 </resources>

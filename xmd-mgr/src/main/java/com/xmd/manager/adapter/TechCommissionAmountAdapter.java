@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by zr on 17-11-24.
+ * 技师工资:会所某天所有技师提成
  */
 
 public class TechCommissionAmountAdapter extends RecyclerView.Adapter<TechCommissionAmountAdapter.ViewHolder> {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xmd.manager.R;
+import com.xmd.manager.beans.CashierNormalInfo;
 import com.xmd.manager.beans.CommissionNormalInfo;
 import com.xmd.manager.common.Utils;
 
@@ -19,14 +20,15 @@ import butterknife.ButterKnife;
 
 /**
  * Created by zr on 17-11-24.
+ * 报表按天
  */
 
-public class CommissionNormalAdapter extends RecyclerView.Adapter<CommissionNormalAdapter.ViewHolder> {
+public class ReportNormalAdapter<T> extends RecyclerView.Adapter<ReportNormalAdapter<T>.ViewHolder> {
     private Context mContext;
-    private List<CommissionNormalInfo> mData = new ArrayList<>();
+    private List<T> mData = new ArrayList<>();
     private CallBack mCallBack;
 
-    public CommissionNormalAdapter(Context context) {
+    public ReportNormalAdapter(Context context) {
         mContext = context;
     }
 
@@ -34,7 +36,7 @@ public class CommissionNormalAdapter extends RecyclerView.Adapter<CommissionNorm
         mCallBack = callback;
     }
 
-    public void setData(List<CommissionNormalInfo> list) {
+    public void setData(List<T> list) {
         mData.addAll(list);
         notifyDataSetChanged();
     }
@@ -50,10 +52,17 @@ public class CommissionNormalAdapter extends RecyclerView.Adapter<CommissionNorm
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        CommissionNormalInfo info = mData.get(position);
-        holder.mDateText.setText(info.workDate);
-        holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.sumCommission));
-        holder.itemView.setOnClickListener(v -> mCallBack.onItemClick(info.workDate));
+        if (mData.get(position) instanceof CommissionNormalInfo) {
+            CommissionNormalInfo info = (CommissionNormalInfo) mData.get(position);
+            holder.mDateText.setText(info.workDate);
+            holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.sumCommission));
+            holder.itemView.setOnClickListener(v -> mCallBack.onItemClick(info.workDate));
+        } else if (mData.get(position) instanceof CashierNormalInfo) {
+            CashierNormalInfo info = (CashierNormalInfo) mData.get(position);
+            holder.mDateText.setText(info.date);
+            holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.amount));
+            holder.itemView.setOnClickListener(v -> mCallBack.onItemClick(info.date));
+        }
     }
 
     @Override

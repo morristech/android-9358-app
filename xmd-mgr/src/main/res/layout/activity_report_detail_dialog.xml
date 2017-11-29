@@ -204,6 +204,12 @@
                         android:textSize="@dimen/inter_text_size" />
                 </TableRow>
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_tech_detail_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"/>
+
                 <TableRow
                     android:id="@+id/tr_name"
                     android:layout_marginTop="@dimen/activity_little_margin">

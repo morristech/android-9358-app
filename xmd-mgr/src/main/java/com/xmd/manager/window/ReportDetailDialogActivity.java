@@ -1,6 +1,9 @@
 package com.xmd.manager.window;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ScrollView;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.manager.R;
+import com.xmd.manager.adapter.ReportTechDetailAdapter;
+import com.xmd.manager.beans.CashierClubDetailInfo;
 import com.xmd.manager.beans.CommissionTechDetailInfo;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
@@ -27,7 +32,7 @@ import rx.Subscription;
  * Created by zr on 17-11-25.
  */
 
-public class TechSalaryDialogActivity extends BaseActivity {
+public class ReportDetailDialogActivity extends BaseActivity {
     private static final String BUSINESS_TYPE_SPA = "spa";
     private static final String BUSINESS_TYPE_GOODS = "goods";
     private static final String BUSINESS_TYPE_CARD = "item_card";
@@ -86,24 +91,113 @@ public class TechSalaryDialogActivity extends BaseActivity {
     TextView mCommissionAmount;
     @BindView(R.id.tv_user)
     TextView mUser;
+    @BindView(R.id.rv_tech_detail_list)
+    RecyclerView mTechDetailList;
 
+    public static final String TYPE_DETAIL_SALARY = "type_salary";
+    public static final String TYPE_DETAIL_CASHIER = "type_cashier";
 
+    public static final String EXTRA_TYPE_DETAIL = "type_detail";
     public static final String EXTRA_TECH_COMMISSION_ID = "commission_id";
+    public static final String EXTRA_CASHIER_DETAIL_INFO = "cashier_info";
+    private String mType;
+    private CashierClubDetailInfo mCashierDetailInfo;
     private String mCommissionId;
-
     private Subscription mGetTechCommissionDetailInfoSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tech_salary_dialog);
-        mCommissionId = getIntent().getStringExtra(EXTRA_TECH_COMMISSION_ID);
+        setContentView(R.layout.activity_report_detail_dialog);
+        mType = getIntent().getStringExtra(EXTRA_TYPE_DETAIL);
+        switch (mType) {
+            case TYPE_DETAIL_CASHIER:
+                mCashierDetailInfo = (CashierClubDetailInfo) getIntent().getSerializableExtra(EXTRA_CASHIER_DETAIL_INFO);
+                handleCashierDetailInfo(mCashierDetailInfo);
+                break;
+            case TYPE_DETAIL_SALARY:
+                mCommissionId = getIntent().getStringExtra(EXTRA_TECH_COMMISSION_ID);
+                mGetTechCommissionDetailInfoSubscription = RxBus.getInstance().toObservable(TechCommissionDetailResult.class).subscribe(
+                        techCommissionDetailResult -> handleTechCommissionDetailInfo(techCommissionDetailResult)
+                );
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO, mCommissionId);
+                break;
+            default:
+                break;
+        }
+    }
 
-        mGetTechCommissionDetailInfoSubscription = RxBus.getInstance().toObservable(TechCommissionDetailResult.class).subscribe(
-                techCommissionDetailResult -> handleTechCommissionDetailInfo(techCommissionDetailResult)
-        );
+    private void handleCashierDetailInfo(CashierClubDetailInfo info) {
+        if (info != null) {
+            mErrorDesc.setVisibility(View.GONE);
+            mScrollLayout.setVisibility(View.VISIBLE);
+            mTime.setText(info.orderTime);      //时间
+            if (!TextUtils.isEmpty(info.payNo)) {   //流水号
+                mFlowRow.setVisibility(View.VISIBLE);
+                mFlowNo.setText(info.payNo);
+            } else {
+                mFlowRow.setVisibility(View.GONE);
+            }
+            mTradeNo.setText(info.batchNo);     //交易号
+            if (!TextUtils.isEmpty(info.payChannel)) {    //支付方式
+                mPayChannelRow.setVisibility(View.VISIBLE);
+                mPayChannel.setText(info.payChannel);
+            } else {
+                mPayChannelRow.setVisibility(View.GONE);
+            }
+            mRoomRow.setVisibility(View.VISIBLE);
+            mRoom.setText(info.roomName);
+            mIdentifyRow.setVisibility(View.VISIBLE);
+            mIdentify.setText(info.userIdentify);
+            if (!TextUtils.isEmpty(info.userName)) {
+                mUser.setText(info.userName);
+                mUser.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
+                mUser.setOnClickListener(v ->
+                        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(ReportDetailDialogActivity.this, info.userId, ConstantResources.APP_TYPE_MANAGER, false));
+            } else {
+                mUser.setText("散客");
+            }
+            switch (info.scope) {
+                case BUSINESS_TYPE_GOODS:
+                    mNameTitle.setText("实物商品：");
+                    mName.setText(info.itemName);
+                    mCountRow.setVisibility(View.VISIBLE);
+                    mCount.setText(String.valueOf(info.count));
+                    mOriginAmountRow.setVisibility(View.VISIBLE);
+                    mOriginAmount.setText(Utils.moneyToStringEx(info.amount * info.count) + "元");
+                    mOriginAmountTitle.setText("订单金额：");
+                    break;
+                case BUSINESS_TYPE_SPA:
+                    mNameTitle.setText("所选项目：");
+                    mName.setText(info.itemName);
+                    mOriginAmountRow.setVisibility(View.VISIBLE);
+                    mOriginAmount.setText(Utils.moneyToStringEx(info.amount) + "元");
+                    mOriginAmountTitle.setText("订单金额：");
+                    break;
+                default:
+                    break;
+            }
 
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO, mCommissionId);
+            if (info.techList != null && !info.techList.isEmpty()) {
+                ReportTechDetailAdapter detailAdapter = new ReportTechDetailAdapter(ReportDetailDialogActivity.this, info.scope);
+                detailAdapter.setCallBack(techInfo -> {
+                    Intent intent = new Intent(ReportDetailDialogActivity.this, TechSalaryDetailActivity.class);
+                    intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_FROM, TechSalaryDetailActivity.TECH_FROM_SALARY);
+                    intent.putExtra(TechSalaryDetailActivity.EXTRA_CURRENT_DATE, mCashierDetailInfo.orderTime.substring(0, 7));
+                    intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_ID, techInfo.techId);
+                    startActivity(intent);
+                    finish();
+                });
+                mTechDetailList.setLayoutManager(new LinearLayoutManager(ReportDetailDialogActivity.this));
+                mTechDetailList.setHasFixedSize(true);
+                mTechDetailList.setAdapter(detailAdapter);
+                detailAdapter.setData(info.techList);
+            }
+        } else {
+            mScrollLayout.setVisibility(View.GONE);
+            mErrorDesc.setVisibility(View.VISIBLE);
+            mErrorDesc.setText("获取详情失败");
+        }
     }
 
     private void handleTechCommissionDetailInfo(TechCommissionDetailResult result) {
@@ -131,7 +225,7 @@ public class TechSalaryDialogActivity extends BaseActivity {
                 mUser.setText(detailInfo.userName);
                 mUser.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
                 mUser.setOnClickListener(v ->
-                        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(TechSalaryDialogActivity.this, detailInfo.userId, ConstantResources.APP_TYPE_MANAGER, false));
+                        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(ReportDetailDialogActivity.this, detailInfo.userId, ConstantResources.APP_TYPE_MANAGER, false));
             } else {
                 mUser.setText("散客");
             }

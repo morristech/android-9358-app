@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_time_view_select" />
+    <include layout="@layout/toolbar" />
 
     <com.xmd.manager.widget.EmptyView
         android:id="@+id/ev_empty"
@@ -12,9 +12,12 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <include 
+    <include
         android:id="@+id/layout_amount"
-        layout="@layout/layout_report_total_view" />
+        layout="@layout/layout_report_total_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_little_margin" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_cashier_day_data"

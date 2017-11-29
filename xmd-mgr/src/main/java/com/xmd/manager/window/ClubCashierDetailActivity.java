@@ -2,19 +2,15 @@ package com.xmd.manager.window;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportDetailAdapter;
 import com.xmd.manager.beans.CashierClubDetailInfo;
-import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
@@ -32,17 +28,16 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import rx.Subscription;
 
 /**
- * Created by zr on 17-11-21.
- * 买单收银按日查看
+ * Created by zr on 17-11-28.
+ * 某会所某天买单收银明细
  */
 
-public class CashierReportByDayFragment extends BaseFragment {
-    private static final String FORMAT = "yyyy-MM-dd";
-    private static final String EVENT_TYPE = "CashierReportByDayFragment";
+public class ClubCashierDetailActivity extends BaseActivity {
+    public static final String EXTRA_CURRENT_TIME = "current_time";
+    private static final String EVENT_TYPE = "ClubCashierDetailActivity";
     private static final int DEFAULT_PAGE_SIZE = 10;
 
     private static final String REQUEST_TYPE_INIT = "init";
@@ -51,8 +46,24 @@ public class CashierReportByDayFragment extends BaseFragment {
     private static final String SCOPE_TYPE_SPA = "spa";
     private static final String SCOPE_TYPE_GOODS = "goods";
 
-    @BindView(R.id.tv_show_time)
-    TextView mShowTime;
+    private ReportDetailAdapter<CashierClubDetailInfo> mAdapter;
+
+    private String mCurrentDate;
+    private int mCurrentPage;
+    private int mPageSize;
+    private String mScope;
+    private String mRequestType;
+
+    private boolean mSpaSelected;
+    private boolean mGoodsSelected;
+
+    private int mLastVisibleItem;
+    private LinearLayoutManager mLayoutManager;
+    private boolean isLoadMore;
+    private boolean hasMore;
+
+    private Subscription mGetCashierStatisticAmountSubscription;
+    private Subscription mGetCashierClubDetailListSubscription;
 
     @BindView(R.id.ev_empty)
     EmptyView mEmptyView;
@@ -78,49 +89,13 @@ public class CashierReportByDayFragment extends BaseFragment {
 
     @BindView(R.id.rv_cashier_day_data)
     RecyclerView mCashierDayList;
-
-    private Unbinder unbinder;
-    private View view;
-
-    private boolean isInit; //fragment是否已初始化
-    private boolean isLoad; //是否正在加载数据
-
-    private boolean mSpaSelected;
-    private boolean mGoodsSelected;
-
-    private ReportDetailAdapter<CashierClubDetailInfo> mAdapter;
-
-    private String mCurrentDate;
-    private int mCurrentPage;
-    private int mPageSize;
-    private String mScope;
-    private String mRequestType;
-
-    private int mLastVisibleItem;
-    private LinearLayoutManager mLayoutManager;
-    private boolean isLoadMore;
-    private boolean hasMore;
-
-    private Subscription mGetCashierStatisticAmountSubscription;
-    private Subscription mGetCashierClubDetailListSubscription;
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_cashier_report_day, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        isInit = true;
-        return view;
-    }
-
-    @Override
-    protected void initView() {
-        mScope = null;
-        mRequestType = REQUEST_TYPE_INIT;
-        mPageSize = DEFAULT_PAGE_SIZE;
-        mCurrentPage = 1;
-        mCurrentDate = DateUtil.getCurrentDate();
-        mShowTime.setText(mCurrentDate);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_club_cashier_detail);
+        mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_TIME);
+        ButterKnife.bind(this);
+        setTitle(mCurrentDate);
 
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
@@ -129,11 +104,11 @@ public class CashierReportByDayFragment extends BaseFragment {
         mSpaTitle.setText(ResourceUtils.getString(R.string.report_spa_title));
         mGoodsTitle.setText(ResourceUtils.getString(R.string.report_goods_title));
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(this);
         mCashierDayList.setLayoutManager(mLayoutManager);
         mCashierDayList.setHasFixedSize(true);
         mCashierDayList.addItemDecoration(new CustomRecycleViewDecoration(1));
-        mAdapter = new ReportDetailAdapter<>(getActivity());
+        mAdapter = new ReportDetailAdapter<>(this);
         mAdapter.setCallBack(new ReportDetailAdapter.CallBack() {
             @Override
             public void onLoadMore() {
@@ -144,7 +119,7 @@ public class CashierReportByDayFragment extends BaseFragment {
             @Override
             public void onItemClick(Object info) {
                 CashierClubDetailInfo detailInfo = (CashierClubDetailInfo) info;
-                Intent intent = new Intent(getActivity(), ReportDetailDialogActivity.class);
+                Intent intent = new Intent(ClubCashierDetailActivity.this, ReportDetailDialogActivity.class);
                 intent.putExtra(ReportDetailDialogActivity.EXTRA_TYPE_DETAIL, ReportDetailDialogActivity.TYPE_DETAIL_CASHIER);
                 intent.putExtra(ReportDetailDialogActivity.EXTRA_CASHIER_DETAIL_INFO, detailInfo);
                 startActivity(intent);
@@ -176,19 +151,40 @@ public class CashierReportByDayFragment extends BaseFragment {
                 cashierClubDetailListResult -> handleCashierDetailList(cashierClubDetailListResult)
         );
 
-        initData();
+        requestAmount();
+        requestDetailList();
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        initData();
+    private void requestAmount() {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_START_DATE, mCurrentDate);
+        params.put(RequestConstant.KEY_END_DATE, mCurrentDate);
+        params.put(RequestConstant.KEY_EVENT_TYPE, EVENT_TYPE);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CASHIER_STATISTIC_INFO, params);
+    }
+
+    private void requestDetailList() {
+        if (REQUEST_TYPE_LOAD_MORE.equals(mRequestType)) {
+            if (isLoadMore || !hasMore) {
+                return;
+            } else {
+                isLoadMore = true;
+            }
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_START_DATE, mCurrentDate);
+        params.put(RequestConstant.KEY_END_DATE, mCurrentDate);
+        params.put(RequestConstant.KEY_PAGE, String.valueOf(mCurrentPage));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(mPageSize));
+        params.put(RequestConstant.KEY_SCOPE, mScope);
+        params.put(RequestConstant.KEY_REQUEST_TYPE, mRequestType);
+        params.put(RequestConstant.KEY_EVENT_TYPE, EVENT_TYPE);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CASHIER_CLUB_DETAIL_LIST, params);
     }
 
     private void handleCashierStatistic(CashierStatisticResult result) {
         if (EVENT_TYPE.equals(result.eventType)) {
             mEmptyView.setVisibility(View.GONE);
-            isLoad = false;
             if (result.statusCode == 200) {
                 mAmountLayout.setVisibility(View.VISIBLE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.amount));
@@ -206,7 +202,6 @@ public class CashierReportByDayFragment extends BaseFragment {
                 switch (result.requestType) {
                     case REQUEST_TYPE_INIT:
                         mEmptyView.setVisibility(View.GONE);
-                        isLoad = false;
                         mAdapter.clearData();
                         mCashierDayList.removeAllViews();
                         if (result.respData != null && !result.respData.isEmpty()) {
@@ -245,7 +240,6 @@ public class CashierReportByDayFragment extends BaseFragment {
                 switch (result.requestType) {
                     case REQUEST_TYPE_INIT:
                         mEmptyView.setVisibility(View.GONE);
-                        isLoad = false;
                         mCashierDayList.removeAllViews();
                         mCashierDayList.setVisibility(View.GONE);
                         break;
@@ -260,81 +254,10 @@ public class CashierReportByDayFragment extends BaseFragment {
         }
     }
 
-    private void initData() {
-        if (!isInit) {
-            return;
-        }
-        if (getUserVisibleHint() && !isLoad) {
-            isLoad = true;
-            dispatchRequest();
-        }
-    }
-
-    private void requestAmount() {
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_START_DATE, mCurrentDate);
-        params.put(RequestConstant.KEY_END_DATE, mCurrentDate);
-        params.put(RequestConstant.KEY_EVENT_TYPE, EVENT_TYPE);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CASHIER_STATISTIC_INFO, params);
-    }
-
-    private void requestDetailList() {
-        if (REQUEST_TYPE_LOAD_MORE.equals(mRequestType)) {
-            if (isLoadMore || !hasMore) {
-                return;
-            } else {
-                isLoadMore = true;
-            }
-        }
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_START_DATE, mCurrentDate);
-        params.put(RequestConstant.KEY_END_DATE, mCurrentDate);
-        params.put(RequestConstant.KEY_PAGE, String.valueOf(mCurrentPage));
-        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(mPageSize));
-        params.put(RequestConstant.KEY_SCOPE, mScope);
-        params.put(RequestConstant.KEY_REQUEST_TYPE, mRequestType);
-        params.put(RequestConstant.KEY_EVENT_TYPE, EVENT_TYPE);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CASHIER_CLUB_DETAIL_LIST, params);
-    }
-
-    private void dispatchRequest() {
-        requestAmount();
-        requestDetailList();
-    }
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        isInit = false;
-        isLoad = false;
+    protected void onDestroy() {
+        super.onDestroy();
         RxBus.getInstance().unsubscribe(mGetCashierClubDetailListSubscription, mGetCashierStatisticAmountSubscription);
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.tv_reduce_time, R.id.tv_add_time})
-    public void onTimeChange(View view) {
-        switch (view.getId()) {
-            case R.id.tv_reduce_time:
-                mCurrentDate = DateUtil.getLastDate(DateUtil.stringDateToLong(mCurrentDate), FORMAT);
-                mShowTime.setText(mCurrentDate);
-                break;
-            case R.id.tv_add_time:
-                mCurrentDate = DateUtil.getNextDate(DateUtil.stringDateToLong(mCurrentDate), FORMAT);
-                mShowTime.setText(mCurrentDate);
-                break;
-            default:
-                break;
-        }
-
-        mAdapter.clearData();
-        mCashierDayList.removeAllViews();
-        mEmptyView.setVisibility(View.VISIBLE);
-        mEmptyView.setStatus(EmptyView.Status.Loading);
-        mCurrentPage = 1;
-        mPageSize = DEFAULT_PAGE_SIZE;
-        mRequestType = REQUEST_TYPE_INIT;
-        mScope = null;
-        initData();
     }
 
     @OnClick({R.id.layout_left_data, R.id.layout_right_data})

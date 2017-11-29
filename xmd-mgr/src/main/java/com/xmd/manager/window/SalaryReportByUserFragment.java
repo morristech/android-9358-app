@@ -13,7 +13,8 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.R;
-import com.xmd.manager.adapter.CommissionNormalAdapter;
+import com.xmd.manager.adapter.ReportNormalAdapter;
+import com.xmd.manager.beans.CommissionNormalInfo;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
@@ -79,7 +80,7 @@ public class SalaryReportByUserFragment extends BaseFragment {
     private String mStartDate;
     private String mEndDate;
 
-    private CommissionNormalAdapter mAdapter;
+    private ReportNormalAdapter<CommissionNormalInfo> mAdapter;
     private Map<String, String> mParams;
     private Subscription mGetCommissionSumAmountSubscription;
     private Subscription mGetCustomDateSumCommissionSubscription;
@@ -103,14 +104,14 @@ public class SalaryReportByUserFragment extends BaseFragment {
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
 
-        mTotalTitle.setText(ResourceUtils.getString(R.string.report_sum_title));
+        mTotalTitle.setText(ResourceUtils.getString(R.string.report_salary_sum_title));
         mServiceTitle.setText(ResourceUtils.getString(R.string.report_service_title));
         mSaleTitle.setText(ResourceUtils.getString(R.string.report_sales_title));
 
         mSalaryCustomList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSalaryCustomList.setHasFixedSize(true);
         mSalaryCustomList.addItemDecoration(new CustomRecycleViewDecoration(1));
-        mAdapter = new CommissionNormalAdapter(getActivity());
+        mAdapter = new ReportNormalAdapter<>(getActivity());
         mAdapter.setCallBack(date -> {
             Intent intent = new Intent(getActivity(), TechSalaryTotalActivity.class);
             intent.putExtra(TechSalaryTotalActivity.EXTRA_CURRENT_DATE, date);

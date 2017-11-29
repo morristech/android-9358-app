@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.manager.R;
-import com.xmd.manager.adapter.TechCommissionDetailAdapter;
+import com.xmd.manager.adapter.ReportDetailAdapter;
 import com.xmd.manager.beans.CommissionAmountInfo;
 import com.xmd.manager.beans.CommissionTechInfo;
 import com.xmd.manager.beans.TechBaseInfo;
@@ -42,8 +42,13 @@ import rx.Subscription;
 
 public class TechSalaryDetailActivity extends BaseActivity {
     private static final int DEFAULT_PAGE_SIZE = 10;
+    public static final String EXTRA_TECH_FROM = "tech_from";
     public static final String EXTRA_TECH_COMMISSION_INFO = "tech_commission_info";
     public static final String EXTRA_CURRENT_DATE = "current_date";
+    public static final String EXTRA_TECH_ID = "tech_id";
+
+    public static final String TECH_FROM_SALARY = "salary";
+    public static final String TECH_FROM_CASHIER = "cashier";
 
     public static final String TYPE_SERVICE = "serviceCommission";
     public static final String TYPE_SALES = "salesCommission";
@@ -87,6 +92,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
     @BindView(R.id.rv_detail_data)
     RecyclerView mTechDetailList;
 
+    private String mFromType;
     // 参数
     private String mCurrentDate;
     private String mTechId;
@@ -99,7 +105,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
     private LinearLayoutManager mLayoutManager;
     private boolean isLoadMore;
     private boolean hasMore;
-    private TechCommissionDetailAdapter mAdapter;
+    private ReportDetailAdapter<CommissionTechInfo> mAdapter;
 
     private CommissionAmountInfo mAmountInfo;
 
@@ -114,9 +120,22 @@ public class TechSalaryDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_salary_detail);
-        mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
-        mAmountInfo = (CommissionAmountInfo) getIntent().getSerializableExtra(EXTRA_TECH_COMMISSION_INFO);
-        mTechId = mAmountInfo.techId;
+        mFromType = getIntent().getStringExtra(EXTRA_TECH_FROM);
+        switch (mFromType) {
+            case TECH_FROM_CASHIER:
+                mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
+                mTechId = getIntent().getStringExtra(EXTRA_TECH_ID);
+                break;
+            case TECH_FROM_SALARY:
+                mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
+                mAmountInfo = (CommissionAmountInfo) getIntent().getSerializableExtra(EXTRA_TECH_COMMISSION_INFO);
+                mTechId = mAmountInfo.techId;
+                break;
+            default:
+                break;
+        }
+
+
         ButterKnife.bind(this);
 
         mGetTechCommissionAmountSubscription = RxBus.getInstance().toObservable(CommissionAmountResult.class).subscribe(
@@ -137,7 +156,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
         mServiceTitle.setText(ResourceUtils.getString(R.string.report_service_title));
         mSaleTitle.setText(ResourceUtils.getString(R.string.report_sales_title));
 
-        mAdapter = new TechCommissionDetailAdapter(this);
+        mAdapter = new ReportDetailAdapter<>(this);
         mLayoutManager = new LinearLayoutManager(this);
         mTechDetailList.setHasFixedSize(true);
         mTechDetailList.setLayoutManager(mLayoutManager);
@@ -158,7 +177,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
                 mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
             }
         });
-        mAdapter.setCallBack(new TechCommissionDetailAdapter.CallBack() {
+        mAdapter.setCallBack(new ReportDetailAdapter.CallBack() {
             @Override
             public void onLoadMore() {
                 mRequestType = TYPE_REQUEST_LOAD_MORE;
@@ -166,9 +185,11 @@ public class TechSalaryDetailActivity extends BaseActivity {
             }
 
             @Override
-            public void onItemClick(CommissionTechInfo info) {
-                Intent intent = new Intent(TechSalaryDetailActivity.this, TechSalaryDialogActivity.class);
-                intent.putExtra(TechSalaryDialogActivity.EXTRA_TECH_COMMISSION_ID, String.valueOf(info.id));
+            public void onItemClick(Object info) {
+                CommissionTechInfo commissionTechInfo = (CommissionTechInfo) info;
+                Intent intent = new Intent(TechSalaryDetailActivity.this, ReportDetailDialogActivity.class);
+                intent.putExtra(ReportDetailDialogActivity.EXTRA_TYPE_DETAIL, ReportDetailDialogActivity.TYPE_DETAIL_SALARY);
+                intent.putExtra(ReportDetailDialogActivity.EXTRA_TECH_COMMISSION_ID, String.valueOf(commissionTechInfo.id));
                 startActivity(intent);
             }
         });
@@ -208,10 +229,10 @@ public class TechSalaryDetailActivity extends BaseActivity {
                         if (mCurrentPage < result.pageCount) {
                             mCurrentPage++;
                             hasMore = true;
-                            mAdapter.setStatus(TechCommissionDetailAdapter.FOOTER_STATUS_SUCCESS);
+                            mAdapter.setStatus(ReportDetailAdapter.FOOTER_STATUS_SUCCESS);
                         } else {
                             hasMore = false;
-                            mAdapter.setStatus(TechCommissionDetailAdapter.FOOTER_STATUS_NONE);
+                            mAdapter.setStatus(ReportDetailAdapter.FOOTER_STATUS_NONE);
                         }
                         mAdapter.setData(result.respData);
                         mAdapter.notifyDataSetChanged();
@@ -223,10 +244,10 @@ public class TechSalaryDetailActivity extends BaseActivity {
                     if (mCurrentPage < result.pageCount) {
                         mCurrentPage++;
                         hasMore = true;
-                        mAdapter.setStatus(TechCommissionDetailAdapter.FOOTER_STATUS_SUCCESS);
+                        mAdapter.setStatus(ReportDetailAdapter.FOOTER_STATUS_SUCCESS);
                     } else {
                         hasMore = false;
-                        mAdapter.setStatus(TechCommissionDetailAdapter.FOOTER_STATUS_NONE);
+                        mAdapter.setStatus(ReportDetailAdapter.FOOTER_STATUS_NONE);
                     }
                     isLoadMore = false;
                     mAdapter.setData(result.respData);
@@ -235,7 +256,6 @@ public class TechSalaryDetailActivity extends BaseActivity {
                 default:
                     break;
             }
-            mTechDetailList.setVisibility(View.VISIBLE);
         } else {
             //请求失败
             switch (result.requestType) {
@@ -245,7 +265,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
                     mTechDetailList.setVisibility(View.GONE);
                     break;
                 case TYPE_REQUEST_LOAD_MORE:
-                    mAdapter.setStatus(TechCommissionDetailAdapter.FOOTER_STATUS_ERROR);
+                    mAdapter.setStatus(ReportDetailAdapter.FOOTER_STATUS_ERROR);
                     mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
                     break;
                 default:
@@ -363,8 +383,6 @@ public class TechSalaryDetailActivity extends BaseActivity {
                 } else {
                     mType = TYPE_ALL;
                 }
-                updateServiceLayout(mServiceSelected);
-                updateSaleLayout(mSaleSelected);
                 break;
             case R.id.layout_right_data:
                 mSaleSelected = !mSaleSelected;
@@ -374,12 +392,13 @@ public class TechSalaryDetailActivity extends BaseActivity {
                 } else {
                     mType = TYPE_ALL;
                 }
-                updateServiceLayout(mServiceSelected);
-                updateSaleLayout(mSaleSelected);
                 break;
             default:
                 break;
         }
+
+        updateServiceLayout(mServiceSelected);
+        updateSaleLayout(mSaleSelected);
 
         mCurrentPage = 1;
         mPageSize = DEFAULT_PAGE_SIZE;

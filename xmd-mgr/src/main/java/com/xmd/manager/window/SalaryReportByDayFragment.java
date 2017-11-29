@@ -111,7 +111,7 @@ public class SalaryReportByDayFragment extends BaseFragment {
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
 
-        mTotalTitle.setText(ResourceUtils.getString(R.string.report_sum_title));
+        mTotalTitle.setText(ResourceUtils.getString(R.string.report_salary_sum_title));
         mServiceTitle.setText(ResourceUtils.getString(R.string.report_service_title));
         mSaleTitle.setText(ResourceUtils.getString(R.string.report_sales_title));
 
@@ -121,6 +121,7 @@ public class SalaryReportByDayFragment extends BaseFragment {
         mAdapter = new TechCommissionAmountAdapter(getActivity());
         mAdapter.setCallBack(info -> {
             Intent intent = new Intent(getActivity(), TechSalaryDetailActivity.class);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_FROM, TechSalaryDetailActivity.TECH_FROM_SALARY);
             intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_COMMISSION_INFO, info);
             intent.putExtra(TechSalaryDetailActivity.EXTRA_CURRENT_DATE, mCurrentDate);
             startActivity(intent);

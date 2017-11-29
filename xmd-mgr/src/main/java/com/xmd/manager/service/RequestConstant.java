@@ -221,6 +221,10 @@ public class RequestConstant {
     public static final String URL_GET_TECH_COMMISSION_DETAIL_LIST = BASE_URL + "/v2/manager/native/commission/tech/detail/records"; //获取具体某天某技师提成明细列表
     public static final String URL_GET_TECH_COMMISSION_DETAIL_INFO = BASE_URL + "/v2/manager/native/commission/detail"; //获取提成明细的具体详情
 
+    // 买单收银
+    public static final String URL_GET_CASHIER_SUM_LIST = BASE_URL + "/v2/manager/native/statistic/summary/day";    //获取指定时间段会所买单收银按日汇总
+    public static final String URL_GET_CLUB_CASHIER_DETAIL_LIST = BASE_URL + "/v2/manager/native/statistic/item/details";   //获取具体某天会所买单详情列表
+
     /**********************************************************************dengyixia***********************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -422,6 +426,7 @@ public class RequestConstant {
 
     public static final String KEY_REQUEST_TYPE = "requestType";
     public static final String KEY_EVENT_TYPE = "eventType";
+    public static final String KEY_SCOPE = "scope";
 
 
     /*********************************************************************************************/

@@ -145,5 +145,7 @@ public class OperatingReportFragment extends BaseFragment {
 
     //优惠券
     @OnClick(R.id.rl_coupon_data)
-    public void onRlCouponDataClicked() { startActivity(new Intent(getActivity(), CouponOperateDataActivity.class)); }
+    public void onRlCouponDataClicked() {
+        startActivity(new Intent(getActivity(), CouponOperateDataActivity.class));
+    }
 }
