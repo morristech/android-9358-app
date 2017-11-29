@@ -1135,7 +1135,13 @@ public interface SpaService {
     //报表设置
     @FormUrlEncoded
     @POST(RequestConstant.URL_CLUB_FINANCIAL_REPORT_CONFIG)
-    Call<ReportSettingResult> reportSetting(@Field(RequestConstant.KEY_TOKEN) String userToken);
+    Call<ReportSettingResult> settingReport(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Field(RequestConstant.KEY_TIME) String time);
+
+    //报表获取
+
+    @GET(RequestConstant.URL_CLUB_FINANCIAL_REPORT_CONFIG)
+    Call<ReportSettingResult> getReportSetting(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     //创建报表
     @FormUrlEncoded

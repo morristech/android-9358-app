@@ -206,8 +206,9 @@ public class MsgDef {
     public static final int MSG_DEF_DELETE_REPORT = 0x0137;
     public static final int MSG_DEF_GET_REPORT_LIST = 0x0138;
     public static final int MSG_DEF_GET_REPORT_CONFIG = 0x0139;
+    public static final int MSG_DEF_SETTING_REPORT_CONFIG = 0x141;
     public static final int MSG_DEF_GET_REPORT_NEWS = 0x0140;
-    public static final int MSG_DEF_GET_REPORT_BY_ID = 0x0141;
+ //   public static final int MSG_DEF_GET_REPORT_BY_ID = 0x0141;
     //优惠券数据
     public static final int MSG_DEF_COUPON_OPERATE_LIST_DATA = 0x0142;
     public static final int MSG_DEF_COUPON_OPERATE_DATA_TOTAL = 0x0143;

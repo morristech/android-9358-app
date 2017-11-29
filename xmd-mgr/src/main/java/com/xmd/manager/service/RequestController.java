@@ -394,11 +394,14 @@ public class RequestController extends AbstractController {
                 getFinancialReportList((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_REPORT_CONFIG:
-                getFinancialReportConfig((Map<String, String>) msg.obj);
+                setFinancialReportConfig((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_REPORT_BY_ID:
-                getFinancialReportById(msg.obj.toString());
+            case MsgDef.MSG_DEF_SETTING_REPORT_CONFIG:
+                getFinancialReportConfig();
                 break;
+//            case MsgDef.MSG_DEF_GET_REPORT_BY_ID:
+//                getFinancialReportById(msg.obj.toString());
+//                break;
             case MsgDef.MSG_DEF_DELETE_REPORT:
                 deleteFinancialReportById(msg.obj.toString());
                 break;
@@ -2681,15 +2684,15 @@ public class RequestController extends AbstractController {
     }
 
     //报表详情
-    private void getFinancialReportById(String reportId) {
-        Call<ReportInfoResult> call = getSpaService().getReportInfo(SharedPreferenceHelper.getUserToken(), reportId);
-        call.enqueue(new TokenCheckedCallback<ReportInfoResult>() {
-            @Override
-            protected void postResult(ReportInfoResult result) {
-                super.postResult(result);
-            }
-        });
-    }
+//    private void getFinancialReportById(String reportId) {
+//        Call<ReportInfoResult> call = getSpaService().getReportInfo(SharedPreferenceHelper.getUserToken(), reportId);
+//        call.enqueue(new TokenCheckedCallback<ReportInfoResult>() {
+//            @Override
+//            protected void postResult(ReportInfoResult result) {
+//                super.postResult(result);
+//            }
+//        });
+//    }
 
     //删除报表
     private void deleteFinancialReportById(String reportId) {
@@ -2704,11 +2707,26 @@ public class RequestController extends AbstractController {
     }
 
     //设置报表 未确定
-    private void getFinancialReportConfig(Map<String, String> params) {
-        Call<ReportSettingResult> call = getSpaService().reportSetting(SharedPreferenceHelper.getUserToken());
+    private void setFinancialReportConfig(Map<String, String> params) {
+        Call<ReportSettingResult> call = getSpaService().settingReport(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_TIME));
+        call.enqueue(new TokenCheckedCallback<ReportSettingResult>() {
+            @Override
+            protected void postResult(ReportSettingResult result) {
+                super.postResult(result);
+            }
+        });
 
     }
-
+    //获取报表时间
+    private void getFinancialReportConfig(){
+        Call<ReportSettingResult> call = getSpaService().getReportSetting(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<ReportSettingResult>() {
+            @Override
+            protected void postResult(ReportSettingResult result) {
+                super.postResult(result);
+            }
+        });
+    }
     //创建自定义报表
     private void createFinancialReport(Map<String, String> params) {
         Call<ReportCreateResult> call = getSpaService().createReport(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_REPORT_CUSTOM_START_TIME),
