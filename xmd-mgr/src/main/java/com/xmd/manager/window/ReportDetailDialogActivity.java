@@ -87,6 +87,8 @@ public class ReportDetailDialogActivity extends BaseActivity {
     TextView mOriginAmountTitle;
     @BindView(R.id.tv_origin_amount)
     TextView mOriginAmount;
+    @BindView(R.id.tr_commission_amount)
+    TableRow mCommissionRow;
     @BindView(R.id.tv_commission_amount)
     TextView mCommissionAmount;
     @BindView(R.id.tv_user)
@@ -164,28 +166,29 @@ public class ReportDetailDialogActivity extends BaseActivity {
                     mCountRow.setVisibility(View.VISIBLE);
                     mCount.setText(String.valueOf(info.count));
                     mOriginAmountRow.setVisibility(View.VISIBLE);
-                    mOriginAmount.setText(Utils.moneyToStringEx(info.amount * info.count) + "元");
+                    mOriginAmount.setText(Utils.moneyToStringEx(info.totalAmount) + "元");
                     mOriginAmountTitle.setText("订单金额：");
                     break;
                 case BUSINESS_TYPE_SPA:
                     mNameTitle.setText("所选项目：");
                     mName.setText(info.itemName);
                     mOriginAmountRow.setVisibility(View.VISIBLE);
-                    mOriginAmount.setText(Utils.moneyToStringEx(info.amount) + "元");
+                    mOriginAmount.setText(Utils.moneyToStringEx(info.totalAmount) + "元");
                     mOriginAmountTitle.setText("订单金额：");
                     break;
                 default:
                     break;
             }
-
+            mCommissionRow.setVisibility(View.GONE);
             if (info.techList != null && !info.techList.isEmpty()) {
                 mTechDetailList.setVisibility(View.VISIBLE);
                 ReportTechDetailAdapter detailAdapter = new ReportTechDetailAdapter(ReportDetailDialogActivity.this, info.scope);
                 detailAdapter.setCallBack(techInfo -> {
                     Intent intent = new Intent(ReportDetailDialogActivity.this, TechSalaryDetailActivity.class);
-                    intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_FROM, TechSalaryDetailActivity.TECH_FROM_SALARY);
-                    intent.putExtra(TechSalaryDetailActivity.EXTRA_CURRENT_DATE, mCashierDetailInfo.orderTime.substring(0, 7));
+                    intent.putExtra(TechSalaryDetailActivity.EXTRA_CURRENT_DATE, mCashierDetailInfo.orderTime.substring(0, 10));
                     intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_ID, techInfo.techId);
+                    intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_NAME, techInfo.techName);
+                    intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_NO, techInfo.techNo);
                     startActivity(intent);
                     finish();
                 });
@@ -232,6 +235,7 @@ public class ReportDetailDialogActivity extends BaseActivity {
             } else {
                 mUser.setText("散客");
             }
+            mCommissionRow.setVisibility(View.VISIBLE);
             mCommissionAmount.setText(Utils.moneyToStringEx(detailInfo.totalCommission) + "元");
             switch (detailInfo.businessType) {
                 case BUSINESS_TYPE_GOODS:   //实物商品

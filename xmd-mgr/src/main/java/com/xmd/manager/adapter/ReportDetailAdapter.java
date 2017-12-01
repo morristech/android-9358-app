@@ -140,12 +140,12 @@ public class ReportDetailAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
                     case CASHIER_TYPE_GOODS:
                         itemHolder.mTypeImage.setImageResource(R.drawable.ic_type_goods);
                         itemHolder.mTitleText.setText(info.itemName + " * " + info.count);
-                        itemHolder.mAmountText.setText("+" + Utils.moneyToStringEx(info.amount * info.count));
+                        itemHolder.mAmountText.setText("+" + Utils.moneyToStringEx(info.totalAmount));
                         break;
                     case CASHIER_TYPE_SPA:
                         itemHolder.mTitleText.setText(info.itemName);
                         itemHolder.mTypeImage.setImageResource(R.drawable.ic_type_spa);
-                        itemHolder.mAmountText.setText("+" + Utils.moneyToStringEx(info.amount));
+                        itemHolder.mAmountText.setText("+" + Utils.moneyToStringEx(info.totalAmount));
                         break;
                     default:
                         itemHolder.mTitleText.setText("未知");

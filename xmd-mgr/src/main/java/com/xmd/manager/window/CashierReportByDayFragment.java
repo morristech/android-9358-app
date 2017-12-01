@@ -326,6 +326,8 @@ public class CashierReportByDayFragment extends BaseFragment {
                 break;
         }
 
+        updateGoodsLayout(false);
+        updateSpaLayout(false);
         mAdapter.clearData();
         mCashierDayList.removeAllViews();
         mEmptyView.setVisibility(View.VISIBLE);

@@ -121,9 +121,10 @@ public class SalaryReportByDayFragment extends BaseFragment {
         mAdapter = new TechCommissionAmountAdapter(getActivity());
         mAdapter.setCallBack(info -> {
             Intent intent = new Intent(getActivity(), TechSalaryDetailActivity.class);
-            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_FROM, TechSalaryDetailActivity.TECH_FROM_SALARY);
-            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_COMMISSION_INFO, info);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_ID, info.techId);
             intent.putExtra(TechSalaryDetailActivity.EXTRA_CURRENT_DATE, mCurrentDate);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_NAME, info.techName);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_NO, info.techNo);
             startActivity(intent);
         });
         mSalaryDayList.setAdapter(mAdapter);

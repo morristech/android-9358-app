@@ -42,13 +42,10 @@ import rx.Subscription;
 
 public class TechSalaryDetailActivity extends BaseActivity {
     private static final int DEFAULT_PAGE_SIZE = 10;
-    public static final String EXTRA_TECH_FROM = "tech_from";
-    public static final String EXTRA_TECH_COMMISSION_INFO = "tech_commission_info";
     public static final String EXTRA_CURRENT_DATE = "current_date";
     public static final String EXTRA_TECH_ID = "tech_id";
-
-    public static final String TECH_FROM_SALARY = "salary";
-    public static final String TECH_FROM_CASHIER = "cashier";
+    public static final String EXTRA_TECH_NAME = "tech_name";
+    public static final String EXTRA_TECH_NO = "tech_no";
 
     public static final String TYPE_SERVICE = "serviceCommission";
     public static final String TYPE_SALES = "salesCommission";
@@ -60,9 +57,9 @@ public class TechSalaryDetailActivity extends BaseActivity {
     @BindView(R.id.img_tech_avatar)
     CircleImageView mTechAvatar;
     @BindView(R.id.tv_tech_nick)
-    TextView mTechNick;
+    TextView mTechNickText;
     @BindView(R.id.tv_tech_no)
-    TextView mTechNo;
+    TextView mTechNoText;
     @BindView(R.id.tv_tech_phone)
     TextView mTechPhone;
 
@@ -92,10 +89,11 @@ public class TechSalaryDetailActivity extends BaseActivity {
     @BindView(R.id.rv_detail_data)
     RecyclerView mTechDetailList;
 
-    private String mFromType;
     // 参数
     private String mCurrentDate;
     private String mTechId;
+    private String mTechName;
+    private String mTechNo;
     private String mType;
     private int mCurrentPage;
     private int mPageSize;
@@ -106,8 +104,6 @@ public class TechSalaryDetailActivity extends BaseActivity {
     private boolean isLoadMore;
     private boolean hasMore;
     private ReportDetailAdapter<CommissionTechInfo> mAdapter;
-
-    private CommissionAmountInfo mAmountInfo;
 
     private boolean mServiceSelected;
     private boolean mSaleSelected;
@@ -120,21 +116,10 @@ public class TechSalaryDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_salary_detail);
-        mFromType = getIntent().getStringExtra(EXTRA_TECH_FROM);
-        switch (mFromType) {
-            case TECH_FROM_CASHIER:
-                mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
-                mTechId = getIntent().getStringExtra(EXTRA_TECH_ID);
-                break;
-            case TECH_FROM_SALARY:
-                mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
-                mAmountInfo = (CommissionAmountInfo) getIntent().getSerializableExtra(EXTRA_TECH_COMMISSION_INFO);
-                mTechId = mAmountInfo.techId;
-                break;
-            default:
-                break;
-        }
-
+        mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
+        mTechId = getIntent().getStringExtra(EXTRA_TECH_ID);
+        mTechName = getIntent().getStringExtra(EXTRA_TECH_NAME);
+        mTechNo = getIntent().getStringExtra(EXTRA_TECH_NO);
 
         ButterKnife.bind(this);
 
@@ -145,10 +130,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
                 techCommissionListResult -> handleTechCommissionDetailList(techCommissionListResult)
         );
         mReceiveTechBaseInfoSubscription = RxBus.getInstance().toObservable(TechBaseInfo.class).subscribe(
-                techBaseInfo -> {
-                    mTechId = techBaseInfo.techId;
-                    initDataByTechInfo(techBaseInfo);
-                }
+                techBaseInfo -> initDataByTechInfo(techBaseInfo)
         );
 
         setTitle(ResourceUtils.getString(R.string.tech_salary_detail_title));
@@ -196,7 +178,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
         mTechDetailList.setAdapter(mAdapter);
 
         initView();
-        initDataByCommissionInfo(mAmountInfo);
+        initData();
     }
 
     private void handleTechCommissionAmount(CommissionAmountResult result) {
@@ -281,9 +263,9 @@ public class TechSalaryDetailActivity extends BaseActivity {
         mTotalAmount.setVisibility(View.GONE);
     }
 
-    private void initDataByCommissionInfo(CommissionAmountInfo commissionAmountInfo) {
-        mTechNick.setText(commissionAmountInfo.techName);
-        mTechNo.setText("[" + commissionAmountInfo.techNo + "]");
+    private void initData() {
+        mTechNickText.setText(mTechName);
+        mTechNoText.setText("[" + mTechNo + "]");
         requestAmountInfo();   // 获取提成金额
 
         mCurrentPage = 1;
@@ -294,8 +276,11 @@ public class TechSalaryDetailActivity extends BaseActivity {
     }
 
     private void initDataByTechInfo(TechBaseInfo techBaseInfo) {
-        mTechNick.setText(techBaseInfo.techName);
-        mTechNo.setText("[" + techBaseInfo.techNo + "]");
+        mTechId = techBaseInfo.techId;
+        mTechName = techBaseInfo.techName;
+        mTechNo = techBaseInfo.techNo;
+        mTechNickText.setText(mTechName);
+        mTechNoText.setText("[" + mTechNo + "]");
 
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);

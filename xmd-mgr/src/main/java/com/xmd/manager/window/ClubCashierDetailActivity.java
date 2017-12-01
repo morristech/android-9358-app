@@ -97,6 +97,11 @@ public class ClubCashierDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(mCurrentDate);
 
+        mScope = null;
+        mRequestType = REQUEST_TYPE_INIT;
+        mCurrentPage = 1;
+        mPageSize = DEFAULT_PAGE_SIZE;
+
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
 

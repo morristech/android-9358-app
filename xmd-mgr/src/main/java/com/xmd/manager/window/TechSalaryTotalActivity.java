@@ -101,9 +101,10 @@ public class TechSalaryTotalActivity extends BaseActivity {
         mAdapter = new TechCommissionAmountAdapter(this);
         mAdapter.setCallBack(info -> {
             Intent intent = new Intent(TechSalaryTotalActivity.this, TechSalaryDetailActivity.class);
-            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_FROM, TechSalaryDetailActivity.TECH_FROM_CASHIER);
-            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_COMMISSION_INFO, info);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_ID, info.techId);
             intent.putExtra(TechSalaryDetailActivity.EXTRA_CURRENT_DATE, mCurrentDate);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_NAME, info.techName);
+            intent.putExtra(TechSalaryDetailActivity.EXTRA_TECH_NO, info.techNo);
             startActivity(intent);
         });
         mSalaryDayList.setAdapter(mAdapter);

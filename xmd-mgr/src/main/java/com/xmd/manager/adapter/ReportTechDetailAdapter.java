@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.xmd.manager.R;
 import com.xmd.manager.beans.CashierClubDetailInfo;
+import com.xmd.manager.common.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,15 +55,16 @@ public class ReportTechDetailAdapter extends RecyclerView.Adapter<ReportTechDeta
         switch (mType) {
             case TYPE_GOODS:
                 holder.mTechTitle.setText("营销人员：");
-                holder.mTechInfo.setText(techInfo.techNo + "[" + techInfo.bellName + "]");
+                holder.mTechInfo.setText(techInfo.techName + "[" + techInfo.techNo + "]");
                 break;
             case TYPE_SPA:
                 holder.mTechTitle.setText("服务技师：");
-                holder.mTechInfo.setText(techInfo.techName + "[" + techInfo.techNo + "]");
+                holder.mTechInfo.setText(techInfo.techNo + "[" + techInfo.bellName + "]");
                 break;
             default:
                 break;
         }
+        holder.mTechInfo.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
         holder.mTechInfo.setOnClickListener(v -> mCallBack.onItemClick(techInfo));
     }
 

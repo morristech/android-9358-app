@@ -20,6 +20,7 @@ public class CashierClubDetailInfo implements Serializable {
     public String userIdentify;    //手牌号	string
     public String userName;    //客户名字，没有则‘’
     public long amount;     //单价
+    public long totalAmount;    //订单金额
     public String itemName; //项目名
 
     public List<CashierTechInfo> techList;
