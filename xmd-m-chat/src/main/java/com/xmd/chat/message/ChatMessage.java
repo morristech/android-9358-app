@@ -61,6 +61,8 @@ public class ChatMessage {
     public static final String MSG_TYPE_PAID_COUPON_TIP = "paidCouponTip";//用户购买点钟券
     public static final String MSG_TYPE_CREDIT_GIFT = "gift"; //积分礼物
     public static final String MSG_TYPE_DICE_GAME = "diceGame"; //骰子游戏
+    public static final String MSG_TYPE_INVITE_GIFT_TYPE = "inviteGift"; //邀请有礼
+
 
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息

@@ -36,6 +36,7 @@ public class ChatMessageFactory {
             case ChatMessage.MSG_TYPE_TIME_LIMIT_TYPE:
             case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
             case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
+            case ChatMessage.MSG_TYPE_INVITE_GIFT_TYPE:
                 return new ShareChatMessage(message);
             case ChatMessage.MSG_TYPE_COUPON_TIP:
             case ChatMessage.MSG_TYPE_PAID_COUPON_TIP:

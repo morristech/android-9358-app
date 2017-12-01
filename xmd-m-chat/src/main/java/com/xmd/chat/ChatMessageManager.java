@@ -35,6 +35,7 @@ import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.chat.message.RevokeChatMessage;
+import com.xmd.chat.message.ShareChatMessage;
 import com.xmd.chat.message.TipChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.m.network.BaseBean;
@@ -196,6 +197,11 @@ public class ChatMessageManager {
     public ChatMessage sendLocationMessage(User remoteUser, Location location) {
         CustomLocationMessage message = CustomLocationMessage.create(
                 remoteUser, location.latitude, location.longitude, location.street, location.staticMapUrl);
+        return sendMessage(message);
+    }
+    //发送邀请有礼
+    public ChatMessage sendInviteGiftMessage(String remoteChatId){
+        ShareChatMessage message = ShareChatMessage.createInvitationMessage(remoteChatId);
         return sendMessage(message);
     }
 

@@ -71,6 +71,7 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_TIME_LIMIT_TYPE:
             case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
             case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
+            case ChatMessage.MSG_TYPE_INVITE_GIFT_TYPE:
                 baseType = CHAT_ROW_VIEW_SHARE;
                 break;
             case ChatMessage.MSG_TYPE_ORDER_START:

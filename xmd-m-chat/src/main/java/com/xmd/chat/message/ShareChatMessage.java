@@ -82,6 +82,14 @@ public class ShareChatMessage extends ChatMessage {
         return message;
     }
 
+    public static ShareChatMessage createInvitationMessage(String remoteChatId) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage("邀请好友赢豪礼～", remoteChatId);
+        ShareChatMessage message = new ShareChatMessage(emMessage);
+        message.setMsgType(MSG_TYPE_INVITE_GIFT_TYPE);
+        return message;
+    }
+
+
     public String getActName() {
         return getSafeStringAttribute(ATTR_ACT_NAME);
     }

@@ -44,7 +44,6 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
 
     }
 
-
     @BindingAdapter("image")
     public static void bindImage(ImageView imageView, ChatRowViewModelShare data) {
         switch (data.getChatMessage().getMsgType()) {
@@ -59,6 +58,9 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
                 break;
             case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
                 imageView.setImageResource(R.drawable.message_share_luck_wheel);
+                break;
+            case ChatMessage.MSG_TYPE_INVITE_GIFT_TYPE:
+                imageView.setImageResource(R.drawable.message_share_invite_gift);
                 break;
             case ChatMessage.MSG_TYPE_ONCE_CARD: {
                 switch (((ShareChatMessage) data.getChatMessage()).getCardType()) {
@@ -83,6 +85,11 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
     }
 
     public CharSequence name() {
-        return ((ShareChatMessage) chatMessage).getActName();
+        if (chatMessage.getSafeStringAttribute(ChatMessage.ATTRIBUTE_MESSAGE_TYPE).equals(ChatMessage.MSG_TYPE_INVITE_GIFT_TYPE)) {
+            return "邀请有礼";
+        } else {
+            return ((ShareChatMessage) chatMessage).getActName();
+        }
+
     }
 }

@@ -28,6 +28,7 @@ public class ShareDataManager {
     public static final String DATA_TYPE_ONCE_CARD_SINGLE = "单项次卡";
     public static final String DATA_TYPE_ONCE_CARD_MIX = "混合套餐";
     public static final String DATA_TYPE_ONCE_CARD_CREDIT = "积分礼包";
+    public static final String DATA_TYPE_INVITE_GIFT = "邀请有礼";
 
     private static final ShareDataManager ourInstance = new ShareDataManager();
 
@@ -82,6 +83,10 @@ public class ShareDataManager {
                 shareMarketingList(chatId, shareData.get(type));
             }
         }
+    }
+
+    public void sentInviteGiftMessage(String chatId) {
+        ChatMessageManager.getInstance().sendMessage(ShareChatMessage.createInvitationMessage(chatId));
     }
 
     //分享电子期刊

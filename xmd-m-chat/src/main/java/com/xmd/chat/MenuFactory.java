@@ -75,10 +75,12 @@ public class MenuFactory {
         createMoreMallMenu(activity, remoteUser);
         createMoreDiceGameMenu(activity, remoteUser);
         createMoreLocationMenu(activity, remoteUser);
+        createMoreInvitationMenu(activity, remoteUser);
         createMoreMenu(activity);
 
         return menus;
     }
+
 
     public ChatMenu findMenuByName(String name) {
         for (ChatMenu menu : menus) {
@@ -283,6 +285,17 @@ public class MenuFactory {
         }, null));
     }
 
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_INVITE_GIFT)
+    private void createMoreInvitationMenu(final BaseActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "邀请有礼", R.drawable.chat_menu_invitation, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatMessageManager.getInstance().sendInviteGiftMessage(remoteUser.getChatId());
+                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_INVITATION));
+            }
+        }, null));
+    }
+
     //创建更多-求预约菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
     public void createMoreRequestOrderMenu(final BaseActivity activity, final User remoteUser) {
@@ -347,7 +360,7 @@ public class MenuFactory {
                         ArrayList<String> dataTypeList = new ArrayList<>();
                         dataTypeList.add(ShareDataManager.DATA_TYPE_JOURNAL);
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
-                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE,"电子期刊");
+                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE, "电子期刊");
                         activity.startActivity(intent);
                     }
 
@@ -380,7 +393,7 @@ public class MenuFactory {
                         dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_MIX);
                         dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_CREDIT);
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
-                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE,"特惠商城");
+                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE, "特惠商城");
                         activity.startActivity(intent);
                     }
 
@@ -410,7 +423,7 @@ public class MenuFactory {
                         intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST,
                                 (ArrayList<String>) ShareDataManager.getInstance().getMarketingDataTypeList());
-                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE,"营销活动");
+                        intent.putExtra(ShareListActivity.ACTIVITY_TITLE, "营销活动");
                         activity.startActivity(intent);
 
                     }
@@ -425,6 +438,7 @@ public class MenuFactory {
             }
         }, null));
     }
+
 
     //创建更多-营销活动菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_PLAY_CREDIT_GAME)
