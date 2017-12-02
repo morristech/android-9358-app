@@ -16,9 +16,9 @@ import com.xmd.app.Constants;
 import com.xmd.app.widget.ClearableEditText;
 import com.xmd.contact.bean.TagListResult;
 import com.xmd.contact.bean.TreatedTagList;
+import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.event.SwitchTableToContactRecentEvent;
 import com.xmd.contact.event.SwitchTableToContactRegisterEvent;
-import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.contact.httprequest.ConstantResources;
 import com.xmd.contact.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -232,6 +232,10 @@ public class TechContactFragment extends BaseFragment {
     }
 
     private void changeViewState(int index) {
+        if (mFragmentController.getFragments().size() == 0) {
+            return;
+        }
+
         for (View v : tableViews) {
             v.setSelected(false);
         }

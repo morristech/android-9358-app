@@ -1,7 +1,6 @@
 package com.xmd.technician.umengstatistics;
 
 import android.content.Context;
-import android.service.vr.VrListenerService;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.Constants;
@@ -9,8 +8,6 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.black.event.EditOrAddCustomerStatisticsEvent;
 import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.contact.event.ContactUmengStatisticsEvent;
-import com.xmd.technician.Constant;
-import com.xmd.technician.contract.CompleteRegisterInfoContract;
 import com.xmd.technician.event.MainPageStatistics;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -114,71 +111,73 @@ public class UmengStatisticsManager {
     public void chatUmengStatisticsSubscribe(ChatUmengStatisticsEvent event) {
         switch (event.index) {
             case Constants.UMENG_STATISTICS_PICTURE_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_PICTURE_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_PICTURE_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_PICTURE_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_PICTURE_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_PICTURE_SEND);
                 break;
             case Constants.UMENG_STATISTICS_EMOJI_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_EMOJI_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_EMOJI_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_EMOJI_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_EMOJI_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_EMOJI_SEND);
                 break;
             case Constants.UMENG_STATISTICS_QUICK_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_QUICK_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_QUICK_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_QUICK_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_QUICK_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_QUICK_SEND);
                 break;
             case Constants.UMENG_STATISTICS_COUPON_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_COUPON_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_COUPON_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_COUPON_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_COUPON_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_COUPON_SEND);
                 break;
             case Constants.UMENG_STATISTICS_BOOK_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_BOOK_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_BOOK_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_BOOKED_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_BOOKED_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_BOOKED_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_BOOKED_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_BOOKED_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_BOOKED_SEND);
                 break;
             case Constants.UMENG_STATISTICS_REWARDED_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_REWARDED_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_REWARDED_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_REWARDED_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_REWARDED_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_REWARDED_SEND);
                 break;
             case Constants.UMENG_STATISTICS_ACTIVITY_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_ACTIVITY_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_ACTIVITY_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_ACTIVITY_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_ACTIVITY_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_ACTIVITY_SEND);
                 break;
             case Constants.UMENG_STATISTICS_JOURNAL_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_JOURNAL_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_JOURNAL_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_JOURNAL_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_JOURNAL_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_JOURNAL_SEND);
                 break;
             case Constants.UMENG_STATISTICS_MALL_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_MALL_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_MALL_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_MALL_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_MALL_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_MALL_SEND);
                 break;
             case Constants.UMENG_STATISTICS_LOCATION_CLICK:
-                MobclickAgent.onEvent(mContext,Constants.KEY_LOCATION_CLICK);
+                MobclickAgent.onEvent(mContext, Constants.KEY_LOCATION_CLICK);
                 break;
             case Constants.UMENG_STATISTICS_BOOK_COMPLETE:
-                MobclickAgent.onEvent(mContext,Constants.KEY_BOOK_COMPLETE);
+                MobclickAgent.onEvent(mContext, Constants.KEY_BOOK_COMPLETE);
                 break;
             case Constants.UMENG_STATISTICS_BOOK_CANCEL:
-                MobclickAgent.onEvent(mContext,Constants.KEY_BOOK_CANCEL);
-
+                MobclickAgent.onEvent(mContext, Constants.KEY_BOOK_CANCEL);
+                break;
+            case Constants.UMENG_STATISTICS_INVITATION:
+                MobclickAgent.onEvent(mContext, Constants.KEY_INVITATION_CLICK);
                 break;
 
         }
@@ -188,7 +187,7 @@ public class UmengStatisticsManager {
     public void appointmentUmengStatisticsSubscribe(ChatUmengStatisticsEvent event) {
         switch (event.index) {
             case Constants.UMENG_STATISTICS_BOOK_SEND:
-                MobclickAgent.onEvent(mContext,Constants.KEY_BOOK_SEND);
+                MobclickAgent.onEvent(mContext, Constants.KEY_BOOK_SEND);
                 break;
         }
     }

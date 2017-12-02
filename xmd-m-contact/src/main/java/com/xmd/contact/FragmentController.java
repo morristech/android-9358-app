@@ -101,6 +101,9 @@ public class FragmentController {
     }
 
     public void showFragment(int position) {
+        if(mFragments.size()<position){
+            return;
+        }
         hideFragments();
         Fragment fragment = mFragments.get(position);
         FragmentTransaction ft = mFragmentManager.beginTransaction();
@@ -118,6 +121,10 @@ public class FragmentController {
 
     public Fragment getFragment(int position) {
         return mFragments.get(position);
+    }
+
+    public ArrayList<Fragment> getFragments(){
+        return mFragments;
     }
 
     public static void destroyController() {

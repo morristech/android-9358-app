@@ -62,7 +62,7 @@ public class Constants {
     public static final String KEY_FILTER_VIP_CHOOSE = "key_filtervip_choose";//会员等级使用次数
     public static final String KEY_FILTER_TYPE_CHOOSE = "key_filtertype_choose";//帐号类型使用次数
     public static final String KEY_FILTER_BELONG_CHOOSE = "key_filterbelong_choose";//拓客者使用次数
-    public static final String KEY_FILTER_BTN_CLICK= "key_filter_btn_click";//进行筛选
+    public static final String KEY_FILTER_BTN_CLICK = "key_filter_btn_click";//进行筛选
 
 
     public static final String KEY_PICTURE_CLICK = "key_picture_click";//图片
@@ -88,8 +88,7 @@ public class Constants {
     public static final String KEY_MALL_CLICK = "key_mall_click";//特惠商城
     public static final String KEY_MALL_SEND = "key_mall_send";//特惠商城分享次数
     public static final String KEY_LOCATION_CLICK = "key_location_click";//会所位置
-
-
+    public static final String KEY_INVITATION_CLICK = "key_invitation_click";//邀请有礼
 
 
     public static final int UMENG_STATISTICS_HOME_BROWSE = 0x001;
@@ -117,7 +116,7 @@ public class Constants {
     public static final int UMENG_STATISTICS_COUPON_CLICK = 0x0018;
     public static final int UMENG_STATISTICS_COUPON_SEND = 0x0019;
     public static final int UMENG_STATISTICS_BOOK_CLICK = 0x001A;
-    public static final int UMENG_STATISTICS_BOOK_SEND= 0x001B;
+    public static final int UMENG_STATISTICS_BOOK_SEND = 0x001B;
     public static final int UMENG_STATISTICS_BOOKED_CLICK = 0x001C;
     public static final int UMENG_STATISTICS_BOOKED_SEND = 0x001D;
     public static final int UMENG_STATISTICS_REWARDED_CLICK = 0x001E;
@@ -125,13 +124,13 @@ public class Constants {
     public static final int UMENG_STATISTICS_ACTIVITY_CLICK = 0x0021;
     public static final int UMENG_STATISTICS_ACTIVITY_SEND = 0x0022;
     public static final int UMENG_STATISTICS_JOURNAL_CLICK = 0x0023;
-    public static final int UMENG_STATISTICS_JOURNAL_SEND  = 0x0024;
+    public static final int UMENG_STATISTICS_JOURNAL_SEND = 0x0024;
     public static final int UMENG_STATISTICS_MALL_CLICK = 0x0025;
     public static final int UMENG_STATISTICS_MALL_SEND = 0x0026;
     public static final int UMENG_STATISTICS_LOCATION_CLICK = 0x0027;
     public static final int UMENG_STATISTICS_BOOK_COMPLETE = 0x0028;
     public static final int UMENG_STATISTICS_BOOK_CANCEL = 0x0029;
-
+    public static final int UMENG_STATISTICS_INVITATION = 0x0030;
 
 
 }
