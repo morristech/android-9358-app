@@ -362,12 +362,17 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printText("  微信：", formatAmount(mOnlineInfo.totalWx));
                 mPos.printText("  支付宝：", formatAmount(mOnlineInfo.totalAli));
                 mPos.printText("  银联：", formatAmount(mOnlineInfo.totalUnion));
-                mPos.printBoldText("其他交易记账", formatAmount(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos));
+                mPos.printBoldText("其他营业记账", formatAmount(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos));
                 mPos.printText("  微信(记账)：", formatAmount(mOfflineInfo.wxMember));
                 mPos.printText("  支付宝(记账)：", formatAmount(mOfflineInfo.aliMember));
                 mPos.printText("  银联(记账)：", formatAmount(mOfflineInfo.unionMember));
                 mPos.printText("  现金(记账)：", formatAmount(mOfflineInfo.cashMember + mOfflineInfo.cashPos));
                 mPos.printText("  其他(记账)：", formatAmount(mOfflineInfo.otherMember));
+                if (mOfflineInfo.nativeList != null && !mOfflineInfo.nativeList.isEmpty()) {
+                    for (OfflineStatisticInfo.OfflineNativeInfo nativeInfo : mOfflineInfo.nativeList) {
+                        mPos.printText("  " + nativeInfo.name + "(记账)：", formatAmount(nativeInfo.amount));
+                    }
+                }
                 mPos.printDivide();
                 break;
             case STYLE_MONEY:
@@ -394,14 +399,19 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printBoldText("其他交易金额", formatAmount(mOfflineInfo.totalRecharge + mOfflineInfo.cashPos + mOfflineInfo.totalDiscount + mOfflineInfo.totalRefund));
                 mPos.printText("  优惠减免：", "-￥" + Utils.moneyToStringEx(Math.abs(mOfflineInfo.totalDiscount)));
                 mPos.printText("  退款：", "-￥" + Utils.moneyToStringEx(Math.abs(mOfflineInfo.totalRefund)));
-                mPos.printText("  POS收银", formatAmount(mOfflineInfo.cashPos));
-                mPos.printText("    现金支付：", formatAmount(mOfflineInfo.cashPos));
-                mPos.printText("  管理者后台(会员充值)", formatAmount(mOfflineInfo.totalRecharge));
+                mPos.printText("  会员充值(管理者后台)", formatAmount(mOfflineInfo.totalRecharge));
                 mPos.printText("    微信(记账)：", formatAmount(mOfflineInfo.wxMember));
                 mPos.printText("    支付宝(记账)：", formatAmount(mOfflineInfo.aliMember));
                 mPos.printText("    银联(记账)：", formatAmount(mOfflineInfo.unionMember));
                 mPos.printText("    现金(记账)：", formatAmount(mOfflineInfo.cashMember));
                 mPos.printText("    其他(记账)：", formatAmount(mOfflineInfo.otherMember));
+                mPos.printText("  买单收银(管理者后台和POS)", formatAmount(mOfflineInfo.cashPos));
+                mPos.printText("    现金(记账)：", formatAmount(mOfflineInfo.cashPos));
+                if (mOfflineInfo.nativeList != null && !mOfflineInfo.nativeList.isEmpty()) {
+                    for (OfflineStatisticInfo.OfflineNativeInfo nativeInfo : mOfflineInfo.nativeList) {
+                        mPos.printText("    " + nativeInfo.name + "(记账)：", formatAmount(nativeInfo.amount));
+                    }
+                }
                 mPos.printDivide();
                 break;
             default:

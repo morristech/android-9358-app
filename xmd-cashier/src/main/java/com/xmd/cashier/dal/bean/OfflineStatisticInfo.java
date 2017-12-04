@@ -1,5 +1,7 @@
 package com.xmd.cashier.dal.bean;
 
+import java.util.List;
+
 /**
  * Created by zr on 17-9-29.
  */
@@ -20,4 +22,11 @@ public class OfflineStatisticInfo {
     public long totalSubtract;    //【子】错充扣除	number
     public long unionMember;    //【子】会员充值-银联	number
     public long wxMember;    //【子】会员充值-微信	number
+
+    public List<OfflineNativeInfo> nativeList;
+
+    public class OfflineNativeInfo {
+        public String name;
+        public long amount;
+    }
 }

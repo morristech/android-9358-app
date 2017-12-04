@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,14 @@ import android.widget.TextView;
 
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
+import com.xmd.cashier.adapter.StatisticsNativeAdapter;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.StatisticsDetailContract;
 import com.xmd.cashier.dal.bean.OfflineStatisticInfo;
 import com.xmd.cashier.dal.bean.OnlineStatisticInfo;
 import com.xmd.cashier.presenter.StatisticsDetailPresenter;
+import com.xmd.cashier.widget.FullyGridLayoutManager;
 
 /**
  * Created by zr on 17-9-19.
@@ -80,7 +83,9 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
     private TextView mOtherUnion;
     private TextView mOtherCash;
     private TextView mOtherElse;
+    private RecyclerView mSettleNativeList;
     private TextView mSwitchToMoney;
+    private StatisticsNativeAdapter mSettleAdapter;
 
     private LinearLayout mDataMoneyLayout;
     private TextView mTotalAmount;
@@ -114,7 +119,9 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
     private TextView mOtherMemberRechargeUnion;
     private TextView mOtherMemberRechargeCash;
     private TextView mOtherMemberRechargeElse;
+    private RecyclerView mMoneyNativeList;
     private TextView mSwitchToSettle;
+    private StatisticsNativeAdapter mMoneyAdapter;
 
     // ******************************异常提醒******************************
     private ViewStub mErrorStub;
@@ -423,6 +430,12 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
         mOtherUnion = (TextView) mView.findViewById(R.id.no_other_union);
         mOtherCash = (TextView) mView.findViewById(R.id.no_other_cash);
         mOtherElse = (TextView) mView.findViewById(R.id.no_other_else);
+        mSettleAdapter = new StatisticsNativeAdapter(getActivity());
+        mSettleNativeList = (RecyclerView) mView.findViewById(R.id.settle_native_pay_channel);
+        mSettleNativeList.setHasFixedSize(true);
+        mSettleNativeList.setNestedScrollingEnabled(false);
+        mSettleNativeList.setLayoutManager(new FullyGridLayoutManager(getActivity(), 1));
+        mSettleNativeList.setAdapter(mSettleAdapter);
         mSwitchToMoney = (TextView) mView.findViewById(R.id.tv_switch_to_money);
         mSwitchToMoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -464,6 +477,12 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
         mOtherMemberRechargeCash = (TextView) mView.findViewById(R.id.no_other_member_cash);
         mOtherMemberRechargeElse = (TextView) mView.findViewById(R.id.no_other_member_else);
         mSwitchToSettle = (TextView) mView.findViewById(R.id.tv_switch_to_settle);
+        mMoneyNativeList = (RecyclerView) mView.findViewById(R.id.money_native_pay_channel);
+        mMoneyAdapter = new StatisticsNativeAdapter(getActivity());
+        mMoneyNativeList.setHasFixedSize(true);
+        mMoneyNativeList.setNestedScrollingEnabled(false);
+        mMoneyNativeList.setLayoutManager(new FullyGridLayoutManager(getActivity(), 1));
+        mMoneyNativeList.setAdapter(mMoneyAdapter);
         mSwitchToSettle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -500,6 +519,11 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
         mOtherUnion.setText(mPresenter.formatAmount(offline.unionMember));
         mOtherCash.setText(mPresenter.formatAmount(offline.cashMember + offline.cashPos));
         mOtherElse.setText(mPresenter.formatAmount(offline.otherMember));
+        if (offline.nativeList != null) {
+            mSettleAdapter.setData(offline.nativeList);
+        } else {
+            mSettleNativeList.removeAllViews();
+        }
 
         mTotalAmount.setText(mPresenter.formatAmount(online.totalAmount));
         mInternalDiscount.setText("-￥" + Utils.moneyToStringEx(Math.abs(online.totalDiscount)));
@@ -532,6 +556,11 @@ public class StatisticsDetailFragment extends Fragment implements StatisticsDeta
         mOtherMemberRechargeUnion.setText(mPresenter.formatAmount(offline.unionMember));
         mOtherMemberRechargeCash.setText(mPresenter.formatAmount(offline.cashMember));
         mOtherMemberRechargeElse.setText(mPresenter.formatAmount(offline.otherMember));
+        if (offline.nativeList != null) {
+            mMoneyAdapter.setData(offline.nativeList);
+        } else {
+            mMoneyNativeList.removeAllViews();
+        }
     }
 
     @Override
