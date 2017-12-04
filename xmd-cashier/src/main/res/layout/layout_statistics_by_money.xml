@@ -583,6 +583,7 @@
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -619,58 +620,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="POS收银"
-                android:textColor="@color/colorText4"
-                android:textSize="@dimen/font_size_16" />
-
-            <TextView
-                android:id="@+id/no_other_pos"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/colorText4"
-                android:textSize="@dimen/font_size_16" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_normal_margin"
-            android:layout_marginTop="@dimen/activity_normal_margin"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="现金支付："
-                android:textColor="@color/colorText4"
-                android:textSize="@dimen/font_size_16" />
-
-            <TextView
-                android:id="@+id/no_other_pos_cash"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/colorText4"
-                android:textSize="@dimen/font_size_16" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_normal_margin"
-            android:layout_marginTop="@dimen/activity_normal_margin"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="管理者后台(会员充值)"
+                android:text="会员充值(管理者后台)"
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
 
@@ -813,6 +763,65 @@
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="买单收银(管理者后台和POS)"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_pos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:text="现金(记账)："
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/no_other_pos_cash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/money_native_pay_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:scrollbars="none" />
     </LinearLayout>
 
 

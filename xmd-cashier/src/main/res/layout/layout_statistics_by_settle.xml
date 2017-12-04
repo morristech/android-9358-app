@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_normal_margin"
-                android:text="其他交易记账"
+                android:text="其他营业记账"
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/small_font_size"
                 android:textStyle="bold" />
@@ -262,6 +262,12 @@
                 android:textColor="@color/colorText4"
                 android:textSize="@dimen/font_size_16" />
         </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/settle_native_pay_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
 
     </LinearLayout>
 
