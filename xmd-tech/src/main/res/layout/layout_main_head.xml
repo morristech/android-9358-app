@@ -105,7 +105,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin_15"
             android:src="@drawable/btn_main_rest_default"
-            />
+            android:visibility="gone"
+        />
     </LinearLayout>
 
 
