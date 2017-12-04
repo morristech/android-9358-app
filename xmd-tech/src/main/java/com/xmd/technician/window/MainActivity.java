@@ -92,7 +92,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 if (error == null) {
                     addFragmentHome();
                     addFragmentMessage();
-                    addFragmentSalary();
+         //           addFragmentSalary();
                     addFragmentContacts();
                     addFragmentMarketing();
                     if (mFragmentList.size() == 0) {

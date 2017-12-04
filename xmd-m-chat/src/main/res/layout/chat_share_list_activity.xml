@@ -51,7 +51,6 @@
                 android:textSize="20sp" />
 
             <Button
-                style="@style/AppTheme.Button.Main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
@@ -59,6 +58,8 @@
                 android:enabled="@{data.selectCount>0}"
                 android:minHeight="30dp"
                 android:minWidth="64dp"
+                android:textColor="@color/white"
+                android:background="@drawable/chat_share_selector_bg"
                 android:onClick="@{()->data.onClick()}"
                 android:text='@{"分享"+(data.selectCount>0?"("+data.selectCount+")":"")}' />
         </android.support.v7.widget.Toolbar>

@@ -285,7 +285,7 @@ public class MenuFactory {
         }, null));
     }
 
-//    @CheckBusinessPermission(PermissionConstants.MESSAGE_INVITE_GIFT)
+ //   @CheckBusinessPermission(PermissionConstants.MESSAGE_INVITE_GIFT)
     private void createMoreInvitationMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "邀请有礼", R.drawable.chat_menu_invitation, new View.OnClickListener() {
             @Override

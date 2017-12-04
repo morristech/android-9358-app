@@ -73,12 +73,12 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/btn_rectangle_with_rounded_corners"
                 android:gravity="center"
                 android:paddingBottom="@dimen/small_space"
                 android:paddingTop="@dimen/small_space"
                 android:text="分享"
-                android:textColor="@color/selector_toolbar_share_text"
+                android:textColor="@color/white"
+                android:background="@drawable/chat_share_selector_bg"
                 android:textSize="13sp"
                 android:visibility="gone" />
 
