@@ -78,8 +78,9 @@
             android:layout_height="36dp"
             android:layout_weight="3"
             android:background="@android:drawable/editbox_background_normal"
+            android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_normal_margin"
-            android:paddingRight="@dimen/activity_normal_margin" />
+            android:paddingRight="@dimen/activity_normal_margin"/>
     </LinearLayout>
 
     <LinearLayout
@@ -103,6 +104,7 @@
             android:layout_height="36dp"
             android:layout_weight="3"
             android:background="@android:drawable/editbox_background_normal"
+            android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_normal_margin"
             android:paddingRight="@dimen/activity_normal_margin" />
     </LinearLayout>

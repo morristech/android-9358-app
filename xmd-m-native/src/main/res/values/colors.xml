@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="stroke_color">#e0e0e0</color>
-
     <color name="status_color_green">#8ccf74</color>
     <color name="status_color_yellow">#ffc541</color>
     <color name="status_color_pink">#f89292</color>
