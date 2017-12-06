@@ -72,14 +72,15 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT3);
         return format.format(new Date());
     }
+
     /**
      * 获取昨天
      *
      * @return
      */
-    public static String getYesterdayDate(){
+    public static String getYesterdayDate() {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
-        return format.format(new Date(System.currentTimeMillis()-24*60*60*1000));
+        return format.format(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000));
     }
 
 
@@ -111,6 +112,7 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
         return format.format(cal.getTime());
     }
+
     /**
      * @return
      */
@@ -202,6 +204,11 @@ public class DateUtil {
     public static String dateToString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat(FORMAT);
         return format.format(date);
+    }
+
+    public static String dateToString(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
     }
 
     public static String dateToStringMinite(Date date) {
@@ -697,7 +704,7 @@ public class DateUtil {
         return format.format(nextDate);
     }
 
-    public static String getNextDate(long currentTime,String dateFormat) {
+    public static String getNextDate(long currentTime, String dateFormat) {
 
         SimpleDateFormat format = new SimpleDateFormat(dateFormat);
         long nowTime = currentTime;
@@ -720,7 +727,7 @@ public class DateUtil {
         return format.format(nextDate);
     }
 
-    public static String getLastDate(long currentTime,String formatStr) {
+    public static String getLastDate(long currentTime, String formatStr) {
 
         SimpleDateFormat format = new SimpleDateFormat(formatStr);
         long nowTime = currentTime;
