@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_native_mgr"
+    style="@style/main_page_margin_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_round_corner_list_item_clicked"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/tv_title_native_mgr"
+        style="@style/relative_layout_title_style"
+        android:layout_width="match_parent">
+
+        <TextView
+            style="@style/main_fragment_layout_title_left_style"
+            android:drawableLeft="@drawable/ic_native_mgr"
+            android:text="@string/layout_native_mgr_title" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_native_mgr_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/shape_split_line"
+        android:layerType="software" />
+
+    <TextView
+        android:id="@+id/tv_count_native_mgr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="@dimen/activity_little_margin"
+        android:textColor="@color/colorText2"
+        android:textSize="@dimen/inter_text_size" />
+</LinearLayout>

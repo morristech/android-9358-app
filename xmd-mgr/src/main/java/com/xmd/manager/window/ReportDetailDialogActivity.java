@@ -2,7 +2,7 @@ package com.xmd.manager.window;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.xmd.contact.httprequest.ConstantResources;
+import com.xmd.inner.widget.FullyGridLayoutManager;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportTechDetailAdapter;
@@ -192,8 +193,11 @@ public class ReportDetailDialogActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
                 });
-                mTechDetailList.setLayoutManager(new LinearLayoutManager(ReportDetailDialogActivity.this));
+
                 mTechDetailList.setHasFixedSize(true);
+                mTechDetailList.setNestedScrollingEnabled(false);
+                mTechDetailList.setLayoutManager(new FullyGridLayoutManager(ReportDetailDialogActivity.this, 1));
+                mTechDetailList.setItemAnimator(new DefaultItemAnimator());
                 mTechDetailList.setAdapter(detailAdapter);
                 detailAdapter.setData(info.techList);
             } else {

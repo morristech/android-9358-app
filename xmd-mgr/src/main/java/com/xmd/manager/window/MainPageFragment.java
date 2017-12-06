@@ -3,10 +3,8 @@ package com.xmd.manager.window;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -29,7 +27,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.XmdChat;
+import com.xmd.inner.NativeRoomActivity;
+import com.xmd.inner.adapter.RoomStatisticsAdapter;
+import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.bean.CommentBean;
@@ -82,6 +84,8 @@ import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.PermissionConstants;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -251,7 +255,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     @BindView(R.id.main_bad_comment_list)
     RecyclerView badCommentList;
-       @BindView(R.id.toolbar_right_text)
+    @BindView(R.id.toolbar_right_text)
     TextView mToolbarRightText;
     //线上流水
     @BindView(R.id.tv_title_account)
@@ -323,6 +327,12 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.view_transparent)
     View mViewTransparent;
 
+    //房间管理
+    @BindView(R.id.main_native_mgr_status)
+    RecyclerView mRoomStatisticsList;
+    @BindView(R.id.tv_count_native_mgr)
+    TextView mRoomStatisticsCount;
+
     private static final int REQUEST_CODE_PHONE = 0x0001;
     private static final int REQUEST_CODE_CAMERA = 0x002;
 
@@ -342,6 +352,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private MainPageBadCommentListAdapter badCommentListAdapter;
     private List<CommentBean> mCommentList;
     private boolean isHasPk;
+    private RoomStatisticsAdapter mRoomStatisticsAdapter;
 
     private Subscription mIndexOrderDataSubscription;
     private Subscription mQrResultSubscription;
@@ -356,6 +367,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private Subscription mAccountDataSubSubscription;
     private Subscription mTechPKRankingSubscription;
     private Subscription mSwitchChangedSubscription;
+    private Subscription mGetRoomStatisticsSubscription;
 
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
@@ -368,6 +380,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main_page, container, false);
         ButterKnife.bind(this, view);
+        EventBusSafeRegister.register(this);
         initView(view);
         redPointService.bind(Constant.RED_POINT_NEW_ORDER, newOrderMark, RedPointService.SHOW_TYPE_POINT);
         redPointService.bind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark, RedPointService.SHOW_TYPE_POINT);
@@ -382,12 +395,13 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
                 mCommentAndComplaintSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
                 mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
-                mTechPKRankingSubscription, mSwitchChangedSubscription);
+                mTechPKRankingSubscription, mSwitchChangedSubscription, mGetRoomStatisticsSubscription);
         mVerificationHelper.destroySubscription();
         redPointService.unBind(Constant.RED_POINT_NEW_ORDER, newOrderMark);
         redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark);
         redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_NEW_CUSTOMER, customerCountMark);
         XmdPushManager.getInstance().removeListener(xmdPushMessageListener);
+        EventBusSafeRegister.unregister(this);
     }
 
     @Override
@@ -434,6 +448,12 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 }
             }
         });
+
+        // 房间管理
+        initRoomStatisticsView();
+        mGetRoomStatisticsSubscription = RxBus.getInstance().toObservable(RoomStatisticResult.class).subscribe(
+                roomStatisticResult -> handleRoomStatisticsInfo(roomStatisticResult)
+        );
 
         mPropagandaDataSubscription = RxBus.getInstance().toObservable(PropagandaDataResult.class).subscribe(
                 result -> handlerPropagandaDataResult(result)
@@ -806,7 +826,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initTitleView(View view) {
-     //   view.findViewById(R.id.toolbar).setBackgroundColor(Color.parseColor("#FF826c"));
+        //   view.findViewById(R.id.toolbar).setBackgroundColor(Color.parseColor("#FF826c"));
         imageLeft = (ImageView) view.findViewById(R.id.toolbar_left);
         imageLeft.setImageResource(R.drawable.mainpage_imgleft_selected);
         imageLeft.setVisibility(View.VISIBLE);
@@ -996,8 +1016,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     @OnClick({R.id.main_marketing_time_switch, R.id.main_publicity_time_switch, R.id.main_account_time_switch,
             R.id.main_bad_comment, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking, R.id.layout_order, R.id.ll_wifi_today, R.id.ll_visit_today,
-            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code,R.id.toolbar_right_text,
-            R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view, R.id.newOrderLayout})
+            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code, R.id.toolbar_right_text,
+            R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view, R.id.newOrderLayout, R.id.tv_title_native_mgr, R.id.main_native_mgr_status, R.id.tv_count_native_mgr})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.main_publicity_time_switch:
@@ -1010,7 +1030,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 switchMainAccountTimeData();
                 break;
             case R.id.layout_order:
-                startActivity(new Intent(getActivity(),ReserveDataActivity.class));
+                startActivity(new Intent(getActivity(), ReserveDataActivity.class));
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -1071,9 +1091,13 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             case R.id.newOrderLayout:
                 redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
                 startActivity(new Intent(getActivity(), ReserveDataActivity.class));
-               // ((MainActivity) getActivity()).switchTo(MainActivity.sTabOrder);
+                // ((MainActivity) getActivity()).switchTo(MainActivity.sTabOrder);
                 break;
-
+            case R.id.tv_title_native_mgr:
+            case R.id.tv_count_native_mgr:
+            case R.id.main_native_mgr_status:
+                //房间管理
+                startActivity(new Intent(getActivity(), NativeRoomActivity.class));
         }
     }
 
@@ -1252,4 +1276,27 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         }
     };
 
+    // 初始化房间管理
+    private void initRoomStatisticsView() {
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        layoutManager.setSmoothScrollbarEnabled(true);
+        layoutManager.setAutoMeasureEnabled(true);
+        mRoomStatisticsAdapter = new RoomStatisticsAdapter(getActivity(), RoomStatisticsAdapter.PAGE_MAIN);
+        mRoomStatisticsList.setLayoutManager(layoutManager);
+        mRoomStatisticsList.setHasFixedSize(true);
+        mRoomStatisticsList.setNestedScrollingEnabled(false);
+        mRoomStatisticsList.setAdapter(mRoomStatisticsAdapter);
+    }
+
+    // 处理房间统计数据
+    private void handleRoomStatisticsInfo(RoomStatisticResult result) {
+        mRoomStatisticsAdapter.clearData();
+        mRoomStatisticsAdapter.setData(result.getRespData().statusList);
+        mRoomStatisticsCount.setText("当前客户总数：" + result.getRespData().usingSeatCount);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RoomStatisticResult result) {
+        handleRoomStatisticsInfo(result);
+    }
 }

@@ -1,12 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.xmd.inner">
+    package="com.xmd.inner">
 
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:supportsRtl="true">
-        <activity android:name=".SeatBillActivity"
-                  android:label="开单"
-                  android:screenOrientation="portrait"/>
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <activity
+            android:name=".SeatBillActivity"
+            android:label="开单"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NativeRoomActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".NativeSeatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NativeSeatBookActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

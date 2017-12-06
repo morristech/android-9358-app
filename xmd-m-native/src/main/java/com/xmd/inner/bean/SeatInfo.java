@@ -1,10 +1,12 @@
 package com.xmd.inner.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by zr on 17-12-1.
  */
 
-public class SeatInfo {
+public class SeatInfo implements Serializable {
     public String appointTime;    //预定时间	yyyy-MM-dd HH:mm:ss, 只有是预定状态有效
     public long id;    //座位ID
     public String name;    //座位名称/编号

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_little_margin"
+    android:background="@drawable/selector_bg_white_radius"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_room_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:singleLine="true"
+        android:text="4/5"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/fontTitle"
+        android:textStyle="bold" />
+
+    <!--FIXME -->
+    <TextView
+        android:id="@+id/tv_room_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_radius"
+        android:gravity="center"
+        android:paddingBottom="@dimen/activity_little_margin"
+        android:paddingLeft="@dimen/tiny_padding"
+        android:paddingRight="@dimen/tiny_padding"
+        android:paddingTop="@dimen/activity_little_margin"
+        android:singleLine="true"
+        android:text="1008"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/fontBody" />
+</LinearLayout>

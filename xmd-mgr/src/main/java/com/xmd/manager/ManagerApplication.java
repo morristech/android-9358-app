@@ -24,6 +24,7 @@ import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
+import com.xmd.inner.NativeManager;
 import com.xmd.m.comment.XmdComment;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
@@ -136,6 +137,8 @@ public class ManagerApplication extends MultiDexApplication {
                 ManagerAccountManager.getInstance().init(this);
 
                 XmdComment.getInstance().init();
+
+                NativeManager.getInstance().init();
             }
         }
     }

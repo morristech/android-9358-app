@@ -208,6 +208,7 @@
     <string name="customer_activity_button_text_sms">发短信</string>
     <string name="customer_activity_button_text_coupon">发券</string>
 
+    <string name="layout_native_mgr_title">房间管理</string>
 
     <string name="conversation_list_activity_title">消息列表</string>
     <!-- chat -->

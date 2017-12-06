@@ -16,6 +16,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +81,7 @@ public class Utils {
         return prefix + "..." + subfix;
 
     }
+
     public static List<String> StringToList(String textString, String delimiter) {
         List<String> strings = new ArrayList<>();
         strings.clear();
@@ -179,12 +181,12 @@ public class Utils {
     }
 
     public static boolean isAppRunningForeground(Context var0) {
-        ActivityManager var1 = (ActivityManager)var0.getSystemService("activity");
+        ActivityManager var1 = (ActivityManager) var0.getSystemService("activity");
 
         try {
             List var2 = var1.getRunningTasks(1);
-            if(var2 != null && var2.size() >= 1) {
-                boolean var3 = var0.getPackageName().equalsIgnoreCase(((ActivityManager.RunningTaskInfo)var2.get(0)).baseActivity.getPackageName());
+            if (var2 != null && var2.size() >= 1) {
+                boolean var3 = var0.getPackageName().equalsIgnoreCase(((ActivityManager.RunningTaskInfo) var2.get(0)).baseActivity.getPackageName());
                 XLogger.d("utils", "app running in foregroud：" + var3);
                 return var3;
             } else {
@@ -208,4 +210,9 @@ public class Utils {
     }
 
 
+    public static String moneyToStringEx(int value) {
+        int d1 = value / 100;
+        int d2 = value % 100;
+        return String.format(Locale.CHINA, "%d.%02d", d1, d2);
+    }
 }

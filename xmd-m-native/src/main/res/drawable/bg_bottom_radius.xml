@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/status_color_green" />
+    <corners
+        android:bottomLeftRadius="@dimen/activity_little_margin"
+        android:bottomRightRadius="@dimen/activity_little_margin" />
+</shape>

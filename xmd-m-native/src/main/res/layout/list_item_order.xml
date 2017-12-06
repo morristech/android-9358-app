@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_consume_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_bg_white"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/activity_small_margin"
+        android:paddingLeft="@dimen/activity_normal_margin"
+        android:paddingRight="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_small_margin">
+
+        <TextView
+            android:id="@+id/tv_consume_identify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:drawableLeft="@drawable/ic_hand"
+            android:drawablePadding="@dimen/activity_little_margin"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/tv_consume_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/fontBody" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_consume_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:scrollbars="none" />
+</LinearLayout>

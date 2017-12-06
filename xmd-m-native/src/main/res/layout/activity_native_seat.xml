@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_seat_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:scrollbars="none" />
+
+            <RelativeLayout
+                android:id="@+id/layout_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_little_margin"
+                android:background="@color/colorWhite"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_amount_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/activity_normal_margin"
+                    android:layout_marginLeft="@dimen/activity_normal_margin"
+                    android:layout_marginTop="@dimen/activity_normal_margin"
+                    android:text="消费合计："
+                    android:textColor="@color/colorText4"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_amount_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/activity_normal_margin"
+                    android:layout_marginRight="@dimen/activity_normal_margin"
+                    android:layout_marginTop="@dimen/activity_normal_margin"
+                    android:textColor="@color/colorPink"
+                    android:textSize="@dimen/fontTitleBar"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorStoke" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/colorWhite"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_normal_margin"
+                android:paddingRight="@dimen/activity_normal_margin"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_consume_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_bg_white"
+                    android:padding="@dimen/activity_small_margin"
+                    android:text="增加消费"
+                    android:textColor="@color/colorBlue" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_small_margin"
+                    android:layout_marginLeft="@dimen/activity_little_margin"
+                    android:layout_marginRight="@dimen/activity_little_margin"
+                    android:layout_marginTop="@dimen/activity_small_margin"
+                    android:background="@color/colorStoke" />
+
+                <TextView
+                    android:id="@+id/tv_consume_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_bg_white"
+                    android:padding="@dimen/activity_small_margin"
+                    android:text="修改"
+                    android:textColor="@color/colorBlue" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_order_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:visibility="gone" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
+
+        <LinearLayout
+            android:id="@+id/layout_seat_operate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btn_seat_left"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_margin="@dimen/activity_normal_margin"
+                android:layout_weight="1"
+                android:background="@drawable/selector_bg_pink_radius"
+                android:text="开单"
+                android:textColor="@color/colorPink" />
+
+            <Button
+                android:id="@+id/btn_seat_right"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_margin="@dimen/activity_normal_margin"
+                android:layout_weight="1"
+                android:text="结账"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_room_operate"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_margin="@dimen/activity_normal_margin"
+            android:text="结账"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</LinearLayout>

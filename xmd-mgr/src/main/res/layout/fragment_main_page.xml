@@ -48,6 +48,8 @@
 
                             <include layout="@layout/layout_statistics" />
 
+                            <include layout="@layout/layout_native_mgr" />
+
                             <include layout="@layout/layout_obtain_client" />
 
                             <include layout="@layout/layout_account_data" />

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_little_margin"
+    android:paddingTop="@dimen/activity_little_margin"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/view_status_color"
+        android:layout_width="36dp"
+        android:layout_height="18dp"
+        android:layout_marginBottom="@dimen/activity_little_margin"
+        android:background="@drawable/bg_radius" />
+
+    <TextView
+        android:id="@+id/tv_status_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText2"
+        android:singleLine="true"
+        android:textSize="@dimen/fontBody" />
+</LinearLayout>

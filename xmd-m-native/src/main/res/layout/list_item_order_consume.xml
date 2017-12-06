@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/activity_little_margin"
+    android:layout_marginBottom="@dimen/activity_little_margin"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="@dimen/activity_little_margin"
+    android:background="@drawable/bg_circle_line_gray"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_normal_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_consume_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/tv_consume_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorText3"
+            android:textSize="@dimen/fontCaption" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_small_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_consume_tech_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/tv_consume_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/fontTitleBar"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

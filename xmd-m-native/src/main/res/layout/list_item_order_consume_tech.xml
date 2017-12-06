@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/tiny_padding"
+    android:paddingTop="@dimen/tiny_padding">
+
+    <TextView
+        android:id="@+id/tv_tech_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_person"
+        android:drawablePadding="@dimen/activity_little_margin"
+        android:textColor="@color/colorText2"
+        android:textSize="@dimen/fontBody" />
+
+    <TextView
+        android:id="@+id/tv_tech_bell_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_circle_line_golden"
+        android:paddingBottom="@dimen/tiny_padding"
+        android:paddingLeft="@dimen/activity_small_margin"
+        android:paddingRight="@dimen/activity_small_margin"
+        android:paddingTop="@dimen/tiny_padding"
+        android:text="bell"
+        android:textColor="#ff9a0c" />
+</LinearLayout>
