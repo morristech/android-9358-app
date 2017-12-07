@@ -32,6 +32,7 @@ import com.xmd.chat.XmdChat;
 import com.xmd.inner.NativeManager;
 import com.xmd.inner.NativeRoomActivity;
 import com.xmd.inner.adapter.RoomStatisticsAdapter;
+import com.xmd.inner.event.JumpManagerRoomEvent;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
@@ -411,15 +412,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        NativeManager.getInstance().stopLoopNativeStatistics();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        NativeManager.getInstance().startLoopNativeStatistics();
+        NativeManager.getInstance().refreshNativeStatistics();
     }
 
     @Override
@@ -441,6 +436,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET__INDEX_ORDER_DATA);
         getBadCommentData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
+        NativeManager.getInstance().refreshNativeStatistics();
     }
 
 
@@ -1307,5 +1303,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mRoomStatisticsAdapter.clearData();
         mRoomStatisticsAdapter.setData(NativeManager.getInstance().getRoomStatisticInfos());
         mRoomStatisticsCount.setText("当前客户总数：" + NativeManager.getInstance().getUsingSeatCount() + "人");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(JumpManagerRoomEvent event) {
+        startActivity(new Intent(getActivity(), NativeRoomActivity.class));
     }
 }

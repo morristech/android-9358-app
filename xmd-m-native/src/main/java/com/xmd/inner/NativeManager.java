@@ -1,9 +1,7 @@
 package com.xmd.inner;
 
-import com.shidou.commonlibrary.helper.RetryPool;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
-import com.xmd.app.event.EventLogout;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.inner.bean.RoomSettingInfo;
 import com.xmd.inner.bean.RoomStatisticInfo;
@@ -19,8 +17,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import rx.Subscription;
 
 /**
  * Created by zr on 17-12-6.
@@ -64,12 +60,7 @@ public class NativeManager {
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
         getNativeSetting();
-    }
-
-    @Subscribe(sticky = true)
-    public void onLogout(EventLogout eventLogout) {
-        // 登出
-        stopLoopNativeStatistics();
+        refreshNativeStatistics();
     }
 
     private void getNativeSetting() {
@@ -90,38 +81,8 @@ public class NativeManager {
         });
     }
 
-
-    private Subscription mStatisticsSubscription;
-    private RetryPool.RetryRunnable mStatisticsRunnable;
-
-    public void startLoopNativeStatistics() {
-        if (mStatisticsRunnable == null) {
-            mStatisticsRunnable = new RetryPool.RetryRunnable(6 * 10 * 1000, 1f, new RetryPool.RetryExecutor() {
-                @Override
-                public boolean run() {
-                    getNativeStatistics();
-                    return false;
-                }
-            });
-            RetryPool.getInstance().postWork(mStatisticsRunnable);
-        }
-    }
-
-    public void stopLoopNativeStatistics() {
-        if (mStatisticsSubscription != null) {
-            mStatisticsSubscription.unsubscribe();
-        }
-        if (mStatisticsRunnable != null) {
-            RetryPool.getInstance().removeWork(mStatisticsRunnable);
-            mStatisticsRunnable = null;
-        }
-    }
-
-    private void getNativeStatistics() {
-        if (mStatisticsSubscription != null) {
-            mStatisticsSubscription.unsubscribe();
-        }
-        mStatisticsSubscription = DataManager.getInstance().getRoomStatistics(new NetworkSubscriber<RoomStatisticResult>() {
+    public void refreshNativeStatistics() {
+        DataManager.getInstance().getRoomStatistics(new NetworkSubscriber<RoomStatisticResult>() {
             @Override
             public void onCallbackSuccess(RoomStatisticResult result) {
                 roomStatisticInfos = result.getRespData().statusList;
