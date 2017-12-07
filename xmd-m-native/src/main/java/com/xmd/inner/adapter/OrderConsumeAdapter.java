@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.xmd.app.Constants;
 import com.xmd.app.utils.Utils;
 import com.xmd.inner.ConstantResource;
 import com.xmd.inner.R;
@@ -74,7 +75,7 @@ public class OrderConsumeAdapter extends RecyclerView.Adapter<OrderConsumeAdapte
         } else {
             holder.mConsumeTechList.setVisibility(View.GONE);
         }
-        holder.mConsumeMoney.setText("￥" + Utils.moneyToStringEx(consumeInfo.itemAmount));
+        holder.mConsumeMoney.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(consumeInfo.itemAmount));
     }
 
     @Override

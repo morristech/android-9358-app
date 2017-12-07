@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportNormalAdapter;
 import com.xmd.manager.beans.CashierNormalInfo;
@@ -160,8 +161,8 @@ public class CashierReportByUserFragment extends BaseFragment {
             if (result.statusCode == 200) {
                 mEmptyView.setVisibility(View.GONE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.amount));
-                mSpaAmount.setText("￥" + Utils.moneyToStringEx(result.respData.spaAmount));
-                mGoodsAmount.setText("￥" + Utils.moneyToStringEx(result.respData.goodsAmount));
+                mSpaAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.spaAmount));
+                mGoodsAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.goodsAmount));
                 mAdapter.setData(result.respData.list);
             } else {
                 mEmptyView.setStatus(EmptyView.Status.Failed);

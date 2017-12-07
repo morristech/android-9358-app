@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.Constants;
 import com.xmd.app.utils.Utils;
 import com.xmd.inner.adapter.OrderAdapter;
 import com.xmd.inner.adapter.SeatAdapter;
@@ -154,7 +155,7 @@ public class NativeSeatActivity extends BaseActivity {
                 if (mOrderInfoList != null && !mOrderInfoList.isEmpty()) {
                     mAmountLayout.setVisibility(View.VISIBLE);
                     mAmountTitle.setText("房间消费合计");
-                    mAmountValue.setText("￥" + Utils.moneyToStringEx(getTotalAmount(mOrderInfoList)));
+                    mAmountValue.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(getTotalAmount(mOrderInfoList)));
                     mOrderList.setVisibility(View.VISIBLE);
                     mOrderList.removeAllViews();
                     mOrderAdapter.clearData();
@@ -203,7 +204,7 @@ public class NativeSeatActivity extends BaseActivity {
                 if (mSelectedOrderInfo != null) {
                     mAmountLayout.setVisibility(View.VISIBLE);
                     mAmountTitle.setText("消费合计");
-                    mAmountValue.setText("￥" + Utils.moneyToStringEx(mSelectedOrderInfo.amount));
+                    mAmountValue.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(mSelectedOrderInfo.amount));
                     mOrderList.setVisibility(View.VISIBLE);
                     mOrderList.removeAllViews();
                     mOrderAdapter.clearData();

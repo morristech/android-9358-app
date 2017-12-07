@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xmd.app.Constants;
 import com.xmd.app.utils.Utils;
 import com.xmd.inner.R;
 import com.xmd.inner.R2;
@@ -61,7 +62,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, int position) {
         OrderInfo orderInfo = mData.get(position);
         holder.mConsumeIdentify.setText(orderInfo.userIdentify);
-        holder.mConsumeAmount.setText("￥" + Utils.moneyToStringEx(orderInfo.amount));
+        holder.mConsumeAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(orderInfo.amount));
         if (orderInfo.itemList != null && !orderInfo.itemList.isEmpty()) {
             holder.mConsumeItems.setVisibility(View.VISIBLE);
             OrderConsumeAdapter orderConsumeAdapter = new OrderConsumeAdapter(mContext);

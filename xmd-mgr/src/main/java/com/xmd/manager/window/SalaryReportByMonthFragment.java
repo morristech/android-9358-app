@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.xmd.app.Constants;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportNormalAdapter;
 import com.xmd.manager.beans.CommissionNormalInfo;
@@ -161,8 +162,8 @@ public class SalaryReportByMonthFragment extends BaseFragment {
             if (result.statusCode == 200) {
                 mAmountLayout.setVisibility(View.VISIBLE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.getTotalCommission()));
-                mServiceAmount.setText("￥" + Utils.moneyToStringEx(result.respData.serviceCommission));
-                mSaleAmount.setText("￥" + Utils.moneyToStringEx(result.respData.salesCommission));
+                mServiceAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.serviceCommission));
+                mSaleAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.salesCommission));
             } else {
                 mAmountLayout.setVisibility(View.GONE);
             }
