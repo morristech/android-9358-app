@@ -333,9 +333,9 @@ public class TechSalaryDetailActivity extends BaseActivity {
     public void onTimeFilter() {
         DateTimePickDialog timePickDialog = new DateTimePickDialog(TechSalaryDetailActivity.this, mTimeText.getText().toString());
         timePickDialog.setButtonClickListener(date -> {
+            mTimeText.setText(date);
             if (!mCurrentDate.equals(date)) {
                 mCurrentDate = date;
-
                 mEmptyView.setVisibility(View.VISIBLE);
                 mEmptyView.setStatus(EmptyView.Status.Loading);
                 updateServiceLayout(false);
