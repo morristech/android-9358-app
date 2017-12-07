@@ -51,7 +51,6 @@ import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.ClubResult;
-import com.xmd.manager.service.response.ClubSwitchResult;
 import com.xmd.manager.widget.ViewPagerTabIndicator;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
@@ -84,7 +83,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private Subscription mGetClubSubscription;
     private Subscription mSwitchIndex;
-    private Subscription mGetClubNativeSwitchSubscription;//获取会所内网开关
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
     private List<String> tabTexts = new ArrayList<>();
@@ -122,9 +120,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 }
         );
 
-        mGetClubNativeSwitchSubscription = RxBus.getInstance().toObservable(ClubSwitchResult.class).subscribe(
-                clubSwitchResult -> handleClubNativeSwitch(clubSwitchResult)
-        );
         loadData();
         processXmdDisplay(getIntent());
 
@@ -137,7 +132,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSwitchIndex, mGetClubSubscription, mGetClubNativeSwitchSubscription);
+        RxBus.getInstance().unsubscribe(mSwitchIndex, mGetClubSubscription);
         EventBusSafeRegister.unregister(this);
         XmdPushManager.getInstance().removeListener(xmdPushMessageListener);
     }
@@ -241,7 +236,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
     private void loadData() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_INFO);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_NATIVE_SWITCH);
     }
 
 
@@ -397,10 +391,4 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         }
     };
-
-    private void handleClubNativeSwitch(ClubSwitchResult result) {
-        if (result.respData != null) {
-            SharedPreferenceHelper.setClubNativeSwitch(Constant.REQUEST_YES.equals(result.respData.status));
-        }
-    }
 }

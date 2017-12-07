@@ -421,9 +421,6 @@ public class RequestController extends AbstractController {
                 getCouponListData((Map<String, String>) msg.obj);
                 break;
 
-            case MsgDef.MSG_DEF_GET_CLUB_NATIVE_SWITCH:
-                getClubNativeSwitch();
-                break;
             case MsgDef.MSG_DEF_GET_TECH_BASE_LIST:
                 getTechBaseList();
                 break;
@@ -2893,22 +2890,6 @@ public class RequestController extends AbstractController {
         });
     }
 
-
-    // 获取会所内网开关
-    private void getClubNativeSwitch() {
-        Call<ClubSwitchResult> call = getSpaService().getClubNativeSwitch(SharedPreferenceHelper.getUserToken(), "native_system");
-        call.enqueue(new TokenCheckedCallback<ClubSwitchResult>() {
-            @Override
-            protected void postResult(ClubSwitchResult result) {
-                RxBus.getInstance().post(result);
-            }
-
-            @Override
-            protected void postError(String errorMsg) {
-                Logger.e("getClubNativeSwitch failed:" + errorMsg);
-            }
-        });
-    }
 
     //*********************************************技师工资报表***************************************
     //获取指定时间段技师工资汇总列表

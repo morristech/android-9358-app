@@ -330,6 +330,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     View mViewTransparent;
 
     //房间管理
+    @BindView(R.id.layout_native_mgr)
+    LinearLayout mNativeMgrLayout;
     @BindView(R.id.main_native_mgr_status)
     RecyclerView mRoomStatisticsList;
     @BindView(R.id.tv_count_native_mgr)
@@ -412,12 +414,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        NativeManager.getInstance().refreshNativeStatistics();
-    }
-
-    @Override
     protected void initView() {
         if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
             mMenuChoiceClub.setVisibility(View.VISIBLE);
@@ -445,6 +441,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         initVisibilityForViews();
         initTitleView(view);
         initBadCommentView();
+        // 房间管理
+        initRoomStatisticsView();
         mSlidingMenu.setOnCloseOrOpenListener(new SlidingMenu.CloseOrOpenListener() {
             @Override
             public void isOpen(boolean isOpen) {
@@ -456,8 +454,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             }
         });
 
-        // 房间管理
-        initRoomStatisticsView();
 
         mPropagandaDataSubscription = RxBus.getInstance().toObservable(PropagandaDataResult.class).subscribe(
                 result -> handlerPropagandaDataResult(result)
@@ -813,6 +809,11 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mCouponGetLayout.setVisibility(View.VISIBLE);
     }
 
+    @CheckBusinessPermission(PermissionConstants.NATIVE_ROOM_MANAGE)
+    public void initNativeMgrLayout() {
+        mNativeMgrLayout.setVisibility(View.VISIBLE);
+    }
+
     private void initVisibilityForViews() {
         //核销
         initVerify();
@@ -824,6 +825,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         initOrderLayout();
         //差评
         initBadComments();
+
+        //房间管理
+        initNativeMgrLayout();
 
         //排行榜
         //  WidgetUtils.setViewVisibleOrGone(mRankingLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_RANKING) != null, false);

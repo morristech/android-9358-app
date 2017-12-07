@@ -1242,11 +1242,6 @@ public interface SpaService {
     @GET(RequestConstant.URL_TECHNICIAN_LIST)
     Call<TechBaseListResult> getTechList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
-    //*******************会所内网开关******************
-    @GET(RequestConstant.URL_GET_CLUB_NATIVE_SWITCH)
-    Call<ClubSwitchResult> getClubNativeSwitch(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                               @Query(RequestConstant.KEY_SWITCH_CODE) String code);
-
     //*********************************************买单收银报表***************************************
     @GET(RequestConstant.URL_GET_CASHIER_SUM_LIST)
     Call<CashierStatisticResult> getCashierStatisticInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,

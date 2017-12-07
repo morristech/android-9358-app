@@ -58,6 +58,10 @@ public class PermissionConstants {
     public final static String MG_TAB_ORDER = "order";//订单
     public final static String MG_TAB_COUPON = "coupon";//营销
 
+    public final static String NATIVE_ROOM_MANAGE = "native_room_manage";
+    public final static String NATIVE_TECH_COMMISSION = "tech_commission";
+    public final static String NATIVE_FAST_PAY = "native_fast_pay";
+
     /**********************         Level 2  start      ******************************/
 
     /**

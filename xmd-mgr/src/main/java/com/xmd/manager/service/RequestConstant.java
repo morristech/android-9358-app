@@ -210,9 +210,6 @@ public class RequestConstant {
     /**
      * 管理者报表
      */
-    // 内网开关
-    public static final String URL_GET_CLUB_NATIVE_SWITCH = BASE_URL + "/v2/manager/settings/switch/get";
-
     // 技师工资
     public static final String URL_GET_COMMISSION_SUM_LIST = BASE_URL + "/v2/manager/native/commission/sum/data";   //获取指定时间段会所所有技师工资汇总列表
     public static final String URL_GET_COMMISSION_SUM_AMOUNT = BASE_URL + "/v2/manager/native/commission/tech/all/sum"; //获取指定时间段会所提成汇总金额
@@ -422,8 +419,6 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
 
     //报表
-    public static final String KEY_SWITCH_CODE = "code";
-
     public static final String KEY_REQUEST_TYPE = "requestType";
     public static final String KEY_EVENT_TYPE = "eventType";
     public static final String KEY_SCOPE = "scope";

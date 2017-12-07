@@ -11,14 +11,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.xmd.manager.Constant;
 import com.xmd.manager.R;
-import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.event.OrderCountUpDate;
 import com.xmd.manager.msgctrl.RxBus;
-import com.xmd.manager.service.response.ClubSwitchResult;
 import com.xmd.manager.service.response.ReportNewsResult;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,16 +46,12 @@ public class OperatingReportFragment extends BaseFragment {
     Unbinder unbinder;
     View view;
     public Subscription mReportNewSubscribe;
-    public Subscription mGetClubNativeSwitchSubscription;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_operating_report, container, false);
         unbinder = ButterKnife.bind(this, view);
-        mGetClubNativeSwitchSubscription = RxBus.getInstance().toObservable(ClubSwitchResult.class).subscribe(
-                result -> handleClubNativeSwitch(result)
-        );
         EventBus.getDefault().register(this);
         return view;
     }
@@ -78,17 +73,8 @@ public class OperatingReportFragment extends BaseFragment {
                 }
         );
 
-        mCashierLayout.setVisibility(SharedPreferenceHelper.getClubNativeSwitch() ? View.VISIBLE : View.GONE);
-        mSalaryLayout.setVisibility(SharedPreferenceHelper.getClubNativeSwitch() ? View.VISIBLE : View.GONE);
-    }
-
-    private void handleClubNativeSwitch(ClubSwitchResult result) {
-        // 内网开关控制
-        if (result.respData != null) {
-            boolean sw = Constant.REQUEST_YES.equals(result.respData.status);
-            mCashierLayout.setVisibility(sw ? View.VISIBLE : View.GONE);
-            mSalaryLayout.setVisibility(sw ? View.VISIBLE : View.GONE);
-        }
+        initNativeCashierReport();
+        initNativeSalaryReport();
     }
 
     private void handlerReportNewsResult(ReportNewsResult reportNewsResult) {
@@ -101,7 +87,6 @@ public class OperatingReportFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        RxBus.getInstance().unsubscribe(mGetClubNativeSwitchSubscription);
     }
 
     @Subscribe
@@ -119,10 +104,20 @@ public class OperatingReportFragment extends BaseFragment {
         startActivity(new Intent(getActivity(), OperationReportActivity.class));
     }
 
+    @CheckBusinessPermission(PermissionConstants.NATIVE_FAST_PAY)
+    public void initNativeCashierReport() {
+        mCashierLayout.setVisibility(View.VISIBLE);
+    }
+
     // 买单收银报表
     @OnClick(R.id.rl_cashier)
     public void onRlCashierClicked() {
         startActivity(new Intent(getActivity(), CashierReportActivity.class));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.NATIVE_TECH_COMMISSION)
+    public void initNativeSalaryReport() {
+        mSalaryLayout.setVisibility(View.VISIBLE);
     }
 
     // 技师工资报表

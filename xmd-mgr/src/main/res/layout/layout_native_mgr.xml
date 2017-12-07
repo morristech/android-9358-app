@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_round_corner_list_item_clicked"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <RelativeLayout
         android:id="@+id/tv_title_native_mgr"

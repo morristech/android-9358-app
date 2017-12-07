@@ -26,6 +26,7 @@ import com.xmd.inner.httprequest.response.RoomSeatListResult;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.m.network.NetworkSubscriber;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -91,6 +92,11 @@ public class NativeRoomActivity extends BaseActivity {
         mGetRoomStatisticsSubscription = DataManager.getInstance().getRoomStatistics(new NetworkSubscriber<RoomStatisticResult>() {
             @Override
             public void onCallbackSuccess(RoomStatisticResult result) {
+                // 更新首页房间状态统计
+                NativeManager.getInstance().setRoomStatisticInfos(result.getRespData().statusList);
+                NativeManager.getInstance().setUsingSeatCount(result.getRespData().usingSeatCount);
+                EventBus.getDefault().post(result);
+
                 if (result.getRespData().statusList != null && !result.getRespData().statusList.isEmpty()) {
                     List<RoomStatisticInfo> tempList = result.getRespData().statusList;
                     Iterator<RoomStatisticInfo> it = tempList.iterator();

@@ -208,7 +208,7 @@ public class MsgDef {
     public static final int MSG_DEF_GET_REPORT_CONFIG = 0x0139;
     public static final int MSG_DEF_SETTING_REPORT_CONFIG = 0x141;
     public static final int MSG_DEF_GET_REPORT_NEWS = 0x0140;
- //   public static final int MSG_DEF_GET_REPORT_BY_ID = 0x0141;
+    //   public static final int MSG_DEF_GET_REPORT_BY_ID = 0x0141;
     //优惠券数据
     public static final int MSG_DEF_COUPON_OPERATE_LIST_DATA = 0x0142;
     public static final int MSG_DEF_COUPON_OPERATE_DATA_TOTAL = 0x0143;
@@ -225,7 +225,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_TECH_COMMISSION_DETAIL_INFO = 0x151;
 
     public static final int MSG_DEF_GET_TECH_BASE_LIST = 0x152;
-    public static final int MSG_DEF_GET_CLUB_NATIVE_SWITCH = 0x153;
 
     public static final int MSG_DEF_GET_CASHIER_STATISTIC_INFO = 0x154;
     public static final int MSG_DEF_GET_CASHIER_CLUB_DETAIL_LIST = 0x155;

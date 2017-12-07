@@ -53,8 +53,16 @@ public class NativeManager {
         return roomStatisticInfos;
     }
 
+    public void setRoomStatisticInfos(List<RoomStatisticInfo> list) {
+        roomStatisticInfos = list;
+    }
+
     public int getUsingSeatCount() {
         return usingSeatCount;
+    }
+
+    public void setUsingSeatCount(int count) {
+        usingSeatCount = count;
     }
 
     @Subscribe(sticky = true)
