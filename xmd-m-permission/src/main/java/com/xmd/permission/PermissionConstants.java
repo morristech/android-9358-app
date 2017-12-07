@@ -41,7 +41,7 @@ public class PermissionConstants {
     public final static String MESSAGE_SEND_MALL_INFO = "message_send_mall_info";//发送商城信息
     public final static String MESSAGE_SEND_LOCATION = "message_send_location"; //发送位置
     public final static String MESSAGE_PLAY_CREDIT_GAME = "message_play_credit_game";//积分游戏
-    public final static String MESSAGE_INVITE_GIFT = "message_invite_gift";
+    public final static String MESSAGE_INVITE_GIFT = "message_invite_gift"; //邀请有礼
 
     public final static String CONTACTS_VISITOR = "contacts_visitor";//最近访客
     public final static String CONTACTS_CUSTOMER = "contacts_customer";//全部客户

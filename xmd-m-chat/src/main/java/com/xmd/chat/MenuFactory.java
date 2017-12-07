@@ -19,6 +19,7 @@ import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
 import com.xmd.appointment.beans.Technician;
@@ -35,7 +36,9 @@ import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
 import com.xmd.chat.view.SubmenuMoreFragment;
 import com.xmd.image_tool.ImageTool;
+import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.PermissionConstants;
 
@@ -43,6 +46,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-7-6.
@@ -285,13 +290,32 @@ public class MenuFactory {
         }, null));
     }
 
- //   @CheckBusinessPermission(PermissionConstants.MESSAGE_INVITE_GIFT)
-    private void createMoreInvitationMenu(final BaseActivity activity, final User remoteUser) {
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_INVITE_GIFT)
+    public void createMoreInvitationMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "邀请有礼", R.drawable.chat_menu_invitation, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatMessageManager.getInstance().sendInviteGiftMessage(remoteUser.getChatId());
-                EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_INVITATION));
+                Observable<BaseBean> observable = XmdNetwork.getInstance()
+                        .getService(NetService.class)
+                        .getInviteEnable(UserInfoServiceImpl.getInstance().getCurrentUser().getClubId());
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        if ((Boolean) result.getRespData()) {
+                            ChatMessageManager.getInstance().sendInviteGiftMessage(remoteUser.getChatId());
+                            EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_INVITATION));
+                        } else {
+                            XToast.show("当前没有进行中的活动");
+                        }
+
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XToast.show(e.getLocalizedMessage());
+                    }
+                });
+
             }
         }, null));
     }

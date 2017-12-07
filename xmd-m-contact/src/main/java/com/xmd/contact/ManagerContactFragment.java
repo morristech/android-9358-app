@@ -24,7 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by Lhj on 17-7-26.
@@ -143,6 +142,12 @@ public class ManagerContactFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mFragmentController != null) {
+            FragmentController.destroyController();
+        }
+        if (contactFilter != null) {
+            contactFilter = null;
+        }
     }
 
     @OnClick(R2.id.img_btn_search)
@@ -228,6 +233,7 @@ public class ManagerContactFragment extends BaseFragment {
             contactFilter = null;
         }
     }
+
 
     public void getAllTags() {
         DataManager.getInstance().loadAllTags(new NetworkSubscriber<TagListResult>() {

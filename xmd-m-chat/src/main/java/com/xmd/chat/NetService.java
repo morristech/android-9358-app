@@ -120,4 +120,9 @@ public interface NetService {
     @POST("/spa-manager/api/v2/credit/game/dice/accept")
     Observable<BaseBean<DiceGameResult>> diceGamePlayOrCancel(@Field("gameId") String gameId,
                                                               @Field("status") String status);
+    /**
+     * 获取是否有在线的邀请有礼活动
+     */
+    @GET("/spa-manager/api/v2/club/user/invite/enable")
+    Observable<BaseBean> getInviteEnable(@Query("clubId") String clubId);
 }
