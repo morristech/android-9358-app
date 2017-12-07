@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#f5f5f5"
+              android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:paddingBottom="3dp"
+                  android:paddingTop="3dp">
+        <TextView
+            android:id="@+id/tech_position"
+            style="@style/native_employee_title_style"
+            tools:text="技师1*"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edit_text_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+            <TextView
+                android:id="@+id/tv_tech_choice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="请选择技师工号"/>
+            <ImageView android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/icon_pull_down"/>
+        </LinearLayout>
+    </LinearLayout>
+    <RadioGroup
+        android:id="@+id/rg_time_radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+    </RadioGroup>
+    <RelativeLayout
+        android:id="@+id/rl_handle_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="visible">
+        <View
+            android:id="@+id/dot_line"
+            style="@style/dotted_line"/>
+        <TextView
+            android:id="@+id/tv_add_tech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/dot_line"
+            android:drawableLeft="@drawable/icon_bill_add"
+            android:drawablePadding="5dp"
+            android:text="@string/add_item"
+            android:textColor="#757575"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_delete_tech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dot_line"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/tv_add_tech"
+            android:drawableLeft="@drawable/icon_bill_delete"
+            android:drawablePadding="5dp"
+            android:text="@string/delete_item"
+            android:textColor="#757575"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+    <View style="@style/horizontal_divider_line"
+          android:layout_marginTop="8dp"/>
+
+</LinearLayout>

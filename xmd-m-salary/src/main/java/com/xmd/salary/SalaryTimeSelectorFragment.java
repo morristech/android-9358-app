@@ -123,6 +123,7 @@ public class SalaryTimeSelectorFragment extends BaseFragment {
 
     @OnClick(R2.id.rl_time_reduce)
     public void onRlTimeReduceClicked() {
+
         switch (mCurrentType) {
             case TechSalaryFragment.TIME_FILTER_TYPE_DAY:
                 mCurrentStartTime = DateUtil.getLastDate(DateUtil.stringDateToLong(mCurrentDateYesterdayTime), DATE_FORMAT);
@@ -140,6 +141,7 @@ public class SalaryTimeSelectorFragment extends BaseFragment {
                 notifyDateChanged(mCurrentStartTime, mCurrentEndTime);
                 break;
         }
+
     }
 
     @OnClick(R2.id.rl_time_add)

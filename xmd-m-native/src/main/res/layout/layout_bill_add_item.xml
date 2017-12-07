@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ll_add_item"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="40dp"
+              android:layout_marginRight="40dp"
+              android:layout_marginTop="16dp"
+              android:layout_marginBottom="16dp"
+              android:orientation="vertical">
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/dotted_line_frame"
+              android:gravity="center"
+              android:paddingBottom="8dp"
+              android:paddingTop="8dp"
+              android:text="+新增消费项"
+              android:textColor="#15bc5d"
+              android:textSize="14sp"/>
+
+</LinearLayout>

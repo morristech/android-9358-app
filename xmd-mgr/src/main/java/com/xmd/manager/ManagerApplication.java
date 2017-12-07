@@ -32,6 +32,7 @@ import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.window.DeliveryCouponActivity;
+import com.xmd.permission.BusinessPermissionManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +82,8 @@ public class ManagerApplication extends MultiDexApplication {
 
                 //初始化线程池
                 ThreadPoolManager.init(this);
-
+                //初始化权限模块
+                BusinessPermissionManager.getInstance().init();
                 SharedPreferenceHelper.initialize();
 
                 //初始化网络库

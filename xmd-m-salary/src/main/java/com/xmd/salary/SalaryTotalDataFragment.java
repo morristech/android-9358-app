@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.utils.DateUtil;
@@ -59,9 +60,13 @@ public class SalaryTotalDataFragment extends BaseFragment {
         mStartDate = DateUtil.getFirstDayOfMonth();
         mEndDate = DateUtil.getCurrentDate();
         mSalaryDataManager = SalaryDataManager.getSalaryDataInstance();
-        //     getSalarySetting();
-        getSalarySumAmount(mStartDate, mEndDate);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getSalarySumAmount(mStartDate, mEndDate);
     }
 
     @OnClick(R2.id.ll_tech_sell_commission)
@@ -111,8 +116,8 @@ public class SalaryTotalDataFragment extends BaseFragment {
     }
 
     public void getSalarySumAmount(String startDate, String endDate) {
+      //  showLoading(getActivity(),"正在加载...",false);
         timeKey = startDate + endDate;
-        //缓存中有数据的话从缓存中获取
         if (mSalaryDataManager.salaryContainKey(timeKey)) {
             setViewData(mSalaryDataManager.getSalaryBean(timeKey));
             return;
@@ -127,12 +132,15 @@ public class SalaryTotalDataFragment extends BaseFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
+                hideLoading();
+                XLogger.e(e.getLocalizedMessage());
                 XToast.show(e.getLocalizedMessage());
             }
         });
     }
 
     public void setViewData(SalaryBean bean) {
+        hideLoading();
         if (bean == null) {
             return;
         }
@@ -140,6 +148,4 @@ public class SalaryTotalDataFragment extends BaseFragment {
         tvTechServiceCommission.setText(String.format("￥%1.1f", bean.serviceCommission / 100f));
         tvTechSellCommission.setText(String.format("￥%1.1f", bean.salesCommission / 100f));
     }
-
-
 }

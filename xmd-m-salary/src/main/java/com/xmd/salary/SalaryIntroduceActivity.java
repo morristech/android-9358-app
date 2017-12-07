@@ -72,7 +72,6 @@ public class SalaryIntroduceActivity extends BaseActivity {
         commoditiesList.setHasFixedSize(true);
         commoditiesList.setLayoutManager(new LinearLayoutManager(SalaryIntroduceActivity.this));
         commoditiesList.setItemAnimator(new DefaultItemAnimator());
-        //   commoditiesList.addItemDecoration(new DividerDecoration(DividerDecoration.HORIZONTAL_LIST, ResourceUtils.getDrawable(R.drawable.list_item_divider)));
         commoditiesList.setAdapter(mCommodityAdapter);
         commoditiesCards.setHasFixedSize(true);
         commoditiesCards.setLayoutManager(new LinearLayoutManager(SalaryIntroduceActivity.this));
@@ -127,9 +126,10 @@ public class SalaryIntroduceActivity extends BaseActivity {
         mOrderAdapter.setData(mSalaryIntroduceDataManager.getOrderCommissionList());
         showServiceExcelView();
     }
+
     //服务项目Excel
     private void showServiceExcelView() {
-        mServiceCommissionAdapter.setAllData(mSalaryIntroduceDataManager.getServiceItemList(),mSalaryIntroduceDataManager.getBellList(), mSalaryIntroduceDataManager.getServiceCellList());
+        mServiceCommissionAdapter.setAllData(mSalaryIntroduceDataManager.getServiceItemList(), mSalaryIntroduceDataManager.getBellList(), mSalaryIntroduceDataManager.getServiceCellList());
     }
 
 }

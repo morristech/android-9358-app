@@ -79,20 +79,20 @@ public class SalaryIntroduceDataManager {
     }
 
     private void ServiceCellListDataChanged() {
-
+        mServiceCellList.clear();
         for (int i = 0; i < mCommissionListBeanX.size(); i++) {
             List<ServiceCellBean> cellList = new ArrayList<>();
             for (int j = 0; j < mSettingBean.bellList.size(); j++) {
                 Boolean hasItem = false;
                 for (int k = 0; k < mCommissionListBeanX.get(i).bellCommissionList.size(); k++) {
-                    if ((mSettingBean.bellList.get(j).id)==(mCommissionListBeanX.get(i).bellCommissionList.get(k).bellId)) {
+                    if ((mSettingBean.bellList.get(j).id) == (mCommissionListBeanX.get(i).bellCommissionList.get(k).bellId)) {
                         hasItem = true;
-                        cellList.add(new ServiceCellBean(i,String.valueOf(String.format("%1.1f", mCommissionListBeanX.get(i).bellCommissionList.get(k).commission / 100f))));
+                        cellList.add(new ServiceCellBean(i, String.valueOf(String.format("%1.1f", mCommissionListBeanX.get(i).bellCommissionList.get(k).commission / 100f))));
                         continue;
                     }
                 }
                 if (!hasItem) {
-                    cellList.add(new ServiceCellBean(i,"无"));
+                    cellList.add(new ServiceCellBean(i, "无"));
                 }
             }
             mServiceCellList.add(cellList);

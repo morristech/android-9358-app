@@ -293,16 +293,19 @@ public class NativeSeatActivity extends BaseActivity {
     @OnClick(R2.id.tv_consume_add)
     public void onConsumeAdd() {
         // TODO 跳转 增加消费
+        AddSeatBillActivity.startAddSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mSelectedOrderInfo);
     }
 
     @OnClick(R2.id.tv_consume_modify)
     public void onConsumeModify() {
         // TODO 跳转 修改
+        ModifySeatBillActivity.startModifySeatBillActivity(this,getIntent().getStringExtra(EXTRA_ROOM_TITLE),mSelectedOrderInfo);
     }
 
     @OnClick(R2.id.btn_seat_left)
     public void onSeatLeftClick() {
         // TODO 跳转 开单
+        CreateNewSeatBillActivity.startCreateNewSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mRoomInfo.id, mSelectedSeatInfo.id);
     }
 
     @OnClick(R2.id.btn_seat_right)

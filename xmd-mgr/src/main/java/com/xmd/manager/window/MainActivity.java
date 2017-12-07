@@ -104,8 +104,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                     XToast.show("加载权限失败！");
                     UINavigation.gotoLogin(MainActivity.this);
                 } else {
-                    initView();
                     BusinessPermissionManager.getInstance().syncPermissionsImmediately(null);
+                    initView();
                 }
             }
         });

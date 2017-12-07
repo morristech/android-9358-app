@@ -99,9 +99,13 @@ public class TechSalaryFragment extends BaseFragment {
 
     @Subscribe
     public void userInfoChangedEvent(UserInfoChangedEvent event) {
-        if(!TextUtils.isEmpty(event.userHeadUrl)){
-            Glide.with(getActivity()).load(event.userHeadUrl).error(R.drawable.img_default_avatar).into(imgToolbarLeft);
-        }
+      try {
+          if(!TextUtils.isEmpty(event.userHeadUrl)){
+              Glide.with(getActivity()).load(event.userHeadUrl).error(R.drawable.img_default_avatar).into(imgToolbarLeft);
+          }
+      }catch (Exception e){
+          e.toString();
+      }
     }
 
     private void initializationTime() {
