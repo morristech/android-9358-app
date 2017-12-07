@@ -65,10 +65,10 @@ public class RoomStatisticsAdapter extends RecyclerView.Adapter<RoomStatisticsAd
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final RoomStatisticInfo statisticInfo = mData.get(position);
-        holder.mStatusDesc.setText(statisticInfo.name + ":" + statisticInfo.roomCount);
         GradientDrawable mGrad = (GradientDrawable) holder.mStatusColor.getBackground();
         mGrad.setColor(ConstantResource.STATUS_TYPE_COLOR.get(statisticInfo.color));
         if (PAGE_OTHER.equals(mPageType)) {
+            holder.mStatusDesc.setText(statisticInfo.name + ":" + statisticInfo.roomCount);
             if (statisticInfo.filter) {
                 holder.mStatusDesc.setTextColor(ResourceUtils.getColor(R.color.colorText3));
                 holder.mStatusColor.getBackground().setAlpha(60);
@@ -83,6 +83,8 @@ public class RoomStatisticsAdapter extends RecyclerView.Adapter<RoomStatisticsAd
                     mListener.onItemClick(statisticInfo, position);
                 }
             });
+        } else {
+            holder.mStatusDesc.setText(statisticInfo.name + ": " + statisticInfo.roomCount);
         }
     }
 

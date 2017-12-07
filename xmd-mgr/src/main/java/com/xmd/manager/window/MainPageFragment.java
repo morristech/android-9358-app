@@ -29,6 +29,7 @@ import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.XmdChat;
+import com.xmd.inner.NativeManager;
 import com.xmd.inner.NativeRoomActivity;
 import com.xmd.inner.adapter.RoomStatisticsAdapter;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
@@ -367,7 +368,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private Subscription mAccountDataSubSubscription;
     private Subscription mTechPKRankingSubscription;
     private Subscription mSwitchChangedSubscription;
-    private Subscription mGetRoomStatisticsSubscription;
 
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
@@ -395,7 +395,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
                 mCommentAndComplaintSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
                 mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
-                mTechPKRankingSubscription, mSwitchChangedSubscription, mGetRoomStatisticsSubscription);
+                mTechPKRankingSubscription, mSwitchChangedSubscription);
         mVerificationHelper.destroySubscription();
         redPointService.unBind(Constant.RED_POINT_NEW_ORDER, newOrderMark);
         redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark);
@@ -410,6 +410,17 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mSlidingMenu.closeMenu();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        NativeManager.getInstance().stopLoopNativeStatistics();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        NativeManager.getInstance().startLoopNativeStatistics();
+    }
 
     @Override
     protected void initView() {
@@ -451,9 +462,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
         // 房间管理
         initRoomStatisticsView();
-        mGetRoomStatisticsSubscription = RxBus.getInstance().toObservable(RoomStatisticResult.class).subscribe(
-                roomStatisticResult -> handleRoomStatisticsInfo(roomStatisticResult)
-        );
 
         mPropagandaDataSubscription = RxBus.getInstance().toObservable(PropagandaDataResult.class).subscribe(
                 result -> handlerPropagandaDataResult(result)
@@ -1276,7 +1284,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         }
     };
 
-    // 初始化房间管理
+    // *****房间管理*****
     private void initRoomStatisticsView() {
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         layoutManager.setSmoothScrollbarEnabled(true);
@@ -1286,17 +1294,18 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mRoomStatisticsList.setHasFixedSize(true);
         mRoomStatisticsList.setNestedScrollingEnabled(false);
         mRoomStatisticsList.setAdapter(mRoomStatisticsAdapter);
-    }
-
-    // 处理房间统计数据
-    private void handleRoomStatisticsInfo(RoomStatisticResult result) {
-        mRoomStatisticsAdapter.clearData();
-        mRoomStatisticsAdapter.setData(result.getRespData().statusList);
-        mRoomStatisticsCount.setText("当前客户总数：" + result.getRespData().usingSeatCount);
+        setRoomStatisticsData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RoomStatisticResult result) {
-        handleRoomStatisticsInfo(result);
+        setRoomStatisticsData();
+    }
+
+    private void setRoomStatisticsData() {
+        mRoomStatisticsList.removeAllViews();
+        mRoomStatisticsAdapter.clearData();
+        mRoomStatisticsAdapter.setData(NativeManager.getInstance().getRoomStatisticInfos());
+        mRoomStatisticsCount.setText("当前客户总数：" + NativeManager.getInstance().getUsingSeatCount() + "人");
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="native_room_title">房间管理</string>
+    <string name="native_seat_book">房间预订</string>
 </resources>

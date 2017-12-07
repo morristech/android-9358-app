@@ -1,9 +1,12 @@
 package com.xmd.inner;
 
+import com.shidou.commonlibrary.helper.RetryPool;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.inner.bean.RoomSettingInfo;
+import com.xmd.inner.bean.RoomStatisticInfo;
 import com.xmd.inner.httprequest.DataManager;
 import com.xmd.inner.httprequest.response.RoomSettingResult;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
@@ -12,8 +15,12 @@ import com.xmd.m.network.NetworkSubscriber;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import rx.Subscription;
 
 /**
  * Created by zr on 17-12-6.
@@ -21,6 +28,8 @@ import java.util.Map;
 
 public class NativeManager {
     private Map<String, Integer> mStatusTypeMap = new LinkedHashMap<>();
+    private List<RoomStatisticInfo> roomStatisticInfos = new ArrayList<>();
+    private int usingSeatCount = 0;
 
     private static final NativeManager ourInstance = new NativeManager();
 
@@ -44,12 +53,23 @@ public class NativeManager {
         }
     }
 
+    public List<RoomStatisticInfo> getRoomStatisticInfos() {
+        return roomStatisticInfos;
+    }
+
+    public int getUsingSeatCount() {
+        return usingSeatCount;
+    }
+
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
         getNativeSetting();
+    }
 
-        // TODO 轮询 获取统计的数据
-        loopNativeStatistics();
+    @Subscribe(sticky = true)
+    public void onLogout(EventLogout eventLogout) {
+        // 登出
+        stopLoopNativeStatistics();
     }
 
     private void getNativeSetting() {
@@ -70,11 +90,43 @@ public class NativeManager {
         });
     }
 
-    private void loopNativeStatistics() {
-        DataManager.getInstance().getRoomStatistics(new NetworkSubscriber<RoomStatisticResult>() {
+
+    private Subscription mStatisticsSubscription;
+    private RetryPool.RetryRunnable mStatisticsRunnable;
+
+    public void startLoopNativeStatistics() {
+        if (mStatisticsRunnable == null) {
+            mStatisticsRunnable = new RetryPool.RetryRunnable(6 * 10 * 1000, 1f, new RetryPool.RetryExecutor() {
+                @Override
+                public boolean run() {
+                    getNativeStatistics();
+                    return false;
+                }
+            });
+            RetryPool.getInstance().postWork(mStatisticsRunnable);
+        }
+    }
+
+    public void stopLoopNativeStatistics() {
+        if (mStatisticsSubscription != null) {
+            mStatisticsSubscription.unsubscribe();
+        }
+        if (mStatisticsRunnable != null) {
+            RetryPool.getInstance().removeWork(mStatisticsRunnable);
+            mStatisticsRunnable = null;
+        }
+    }
+
+    private void getNativeStatistics() {
+        if (mStatisticsSubscription != null) {
+            mStatisticsSubscription.unsubscribe();
+        }
+        mStatisticsSubscription = DataManager.getInstance().getRoomStatistics(new NetworkSubscriber<RoomStatisticResult>() {
             @Override
             public void onCallbackSuccess(RoomStatisticResult result) {
-                EventBus.getDefault().postSticky(result);
+                roomStatisticInfos = result.getRespData().statusList;
+                usingSeatCount = result.getRespData().usingSeatCount;
+                EventBus.getDefault().post(result);
             }
 
             @Override

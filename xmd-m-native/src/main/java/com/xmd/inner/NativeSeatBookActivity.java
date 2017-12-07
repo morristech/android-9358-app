@@ -1,9 +1,11 @@
 package com.xmd.inner;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
@@ -56,6 +58,8 @@ public class NativeSeatBookActivity extends BaseActivity {
         mSeatInfo = (SeatInfo) getIntent().getSerializableExtra(EXTRA_SEAT_INFO);
         setContentView(R.layout.activity_native_seat_book);
         ButterKnife.bind(this);
+
+        setTitle(ResourceUtils.getString(R.string.native_seat_book));
         initTimePicker();
         mBookSeatText.setText(mSeatInfo.name);
         mBookPhoneEdit.setHint("请输入手机号码");
@@ -127,6 +131,7 @@ public class NativeSeatBookActivity extends BaseActivity {
 
     @OnClick(R2.id.tv_book_time)
     public void onTimeSelect() {
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         mPickerView.setDate(Calendar.getInstance());
         mPickerView.show();
     }
