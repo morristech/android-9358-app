@@ -1202,7 +1202,8 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_COMMISSION_SUM_LIST)
     Call<CommissionNormalListResult> getCommissionSumList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                           @Query(RequestConstant.KEY_START_DATE) String startDate,
-                                                          @Query(RequestConstant.KEY_END_DATE) String endDate);
+                                                          @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                          @Query(RequestConstant.KEY_TYPE) String type);
 
     //获取指定时间段会所提成汇总金额
     @GET(RequestConstant.URL_GET_COMMISSION_SUM_AMOUNT)

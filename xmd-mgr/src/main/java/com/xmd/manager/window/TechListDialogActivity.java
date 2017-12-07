@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.TechBaseAdapter;
+import com.xmd.manager.beans.TechBaseInfo;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
@@ -39,10 +41,6 @@ public class TechListDialogActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         mAdapter = new TechBaseAdapter(this);
-        mAdapter.setCallBack(info -> {
-            RxBus.getInstance().post(info);
-            finish();
-        });
         mTechList.setLayoutManager(new LinearLayoutManager(this));
         mTechList.setHasFixedSize(true);
         mTechList.setAdapter(mAdapter);
@@ -81,5 +79,17 @@ public class TechListDialogActivity extends BaseActivity {
     @OnClick({R.id.img_dialog_close, R.id.tv_dialog_close})
     public void onTechCancel() {
         finish();
+    }
+
+    @OnClick(R.id.tv_dialog_confirm)
+    public void onTechConfirm() {
+        TechBaseInfo tech = mAdapter.getSelectInfo();
+        if (tech == null) {
+            XToast.show("请选择技师");
+            return;
+        } else {
+            RxBus.getInstance().post(tech);
+            finish();
+        }
     }
 }

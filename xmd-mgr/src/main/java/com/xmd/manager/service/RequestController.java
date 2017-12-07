@@ -2711,7 +2711,7 @@ public class RequestController extends AbstractController {
 
     //设置报表 未确定
     private void setFinancialReportConfig(Map<String, String> params) {
-        Call<ReportSettingResult> call = getSpaService().settingReport(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_TIME));
+        Call<ReportSettingResult> call = getSpaService().settingReport(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_TIME));
         call.enqueue(new TokenCheckedCallback<ReportSettingResult>() {
             @Override
             protected void postResult(ReportSettingResult result) {
@@ -2720,8 +2720,9 @@ public class RequestController extends AbstractController {
         });
 
     }
+
     //获取报表时间
-    private void getFinancialReportConfig(){
+    private void getFinancialReportConfig() {
         Call<ReportSettingResult> call = getSpaService().getReportSetting(SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<ReportSettingResult>() {
             @Override
@@ -2730,6 +2731,7 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
     //创建自定义报表
     private void createFinancialReport(Map<String, String> params) {
         Call<ReportCreateResult> call = getSpaService().createReport(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_REPORT_CUSTOM_START_TIME),
@@ -2895,7 +2897,7 @@ public class RequestController extends AbstractController {
     //获取指定时间段技师工资汇总列表
     private void getCommissionSumList(Map<String, String> params) {
         Call<CommissionNormalListResult> call = getSpaService().getCommissionSumList(SharedPreferenceHelper.getUserToken(),
-                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE));
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_TYPE));
         call.enqueue(new TokenCheckedCallback<CommissionNormalListResult>() {
             @Override
             protected void postResult(CommissionNormalListResult result) {

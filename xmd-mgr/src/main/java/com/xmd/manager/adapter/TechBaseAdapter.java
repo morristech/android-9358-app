@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.xmd.manager.R;
 import com.xmd.manager.beans.TechBaseInfo;
+import com.xmd.manager.common.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +24,10 @@ import butterknife.ButterKnife;
 public class TechBaseAdapter extends RecyclerView.Adapter<TechBaseAdapter.ViewHolder> {
     private Context mContext;
     private List<TechBaseInfo> mData = new ArrayList<>();
-    private CallBack mCallBack;
+    private int selectPosition = -1;
 
     public TechBaseAdapter(Context context) {
         mContext = context;
-    }
-
-    public void setCallBack(CallBack callback) {
-        mCallBack = callback;
     }
 
     public void setData(List<TechBaseInfo> list) {
@@ -49,7 +46,29 @@ public class TechBaseAdapter extends RecyclerView.Adapter<TechBaseAdapter.ViewHo
         TechBaseInfo info = mData.get(position);
         holder.mTechNo.setText("[" + info.techNo + "]");
         holder.mTechName.setText(info.techName);
-        holder.itemView.setOnClickListener(v -> mCallBack.onItemClick(info));
+        if (selectPosition == position) {
+            holder.itemView.setBackgroundColor(ResourceUtils.getColor(R.color.colorStoke));
+        } else {
+            holder.itemView.setBackgroundColor(ResourceUtils.getColor(R.color.colorWhite));
+        }
+        holder.itemView.setOnClickListener(v -> {
+            if (selectPosition == position) {
+                selectPosition = -1;
+                notifyItemChanged(position);
+            } else {
+                int temp = selectPosition;
+                selectPosition = position;
+                notifyItemChanged(temp);
+                notifyItemChanged(selectPosition);
+            }
+        });
+    }
+
+    public TechBaseInfo getSelectInfo() {
+        if (selectPosition == -1) {
+            return null;
+        }
+        return mData.get(selectPosition);
     }
 
     @Override
@@ -71,9 +90,5 @@ public class TechBaseAdapter extends RecyclerView.Adapter<TechBaseAdapter.ViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public interface CallBack {
-        void onItemClick(TechBaseInfo info);
     }
 }

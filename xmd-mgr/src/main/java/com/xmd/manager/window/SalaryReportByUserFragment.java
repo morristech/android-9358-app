@@ -46,6 +46,13 @@ import rx.Subscription;
 public class SalaryReportByUserFragment extends BaseFragment {
     private static final String FORMAT = "yyyy-MM-dd";
     private static final String EVENT_TYPE = "SalaryReportByUserFragment";
+    public static final String TYPE_SERVICE = "serviceCommission";
+    public static final String TYPE_SALES = "salesCommission";
+    public static final String TYPE_ALL = TYPE_SERVICE + "," + TYPE_SALES;
+
+    private boolean mServiceSelected;
+    private boolean mSaleSelected;
+
     private View view;
     private Unbinder unbinder;
 
@@ -59,10 +66,14 @@ public class SalaryReportByUserFragment extends BaseFragment {
 
     @BindView(R.id.layout_amount)
     LinearLayout mAmountLayout;
+    @BindView(R.id.layout_left_data)
+    LinearLayout mServiceLayout;
     @BindView(R.id.tv_left_title)
     TextView mServiceTitle;
     @BindView(R.id.tv_left_content)
     TextView mServiceAmount;
+    @BindView(R.id.layout_right_data)
+    LinearLayout mSaleLayout;
     @BindView(R.id.tv_right_title)
     TextView mSaleTitle;
     @BindView(R.id.tv_right_content)
@@ -80,9 +91,9 @@ public class SalaryReportByUserFragment extends BaseFragment {
 
     private String mStartDate;
     private String mEndDate;
+    private String mFilterType;
 
     private ReportNormalAdapter<CommissionNormalInfo> mAdapter;
-    private Map<String, String> mParams;
     private Subscription mGetCommissionSumAmountSubscription;
     private Subscription mGetCustomDateSumCommissionSubscription;
 
@@ -148,8 +159,8 @@ public class SalaryReportByUserFragment extends BaseFragment {
         if (EVENT_TYPE.equals(result.eventType)) {
             isLoad = false;
             mEmptyView.setVisibility(View.GONE);
-            mAdapter.clearData();
             mSalaryCustomList.removeAllViews();
+            mAdapter.clearData();
             if (result.statusCode == 200) {
                 mAdapter.setData(result.respData);
             }
@@ -173,15 +184,24 @@ public class SalaryReportByUserFragment extends BaseFragment {
     }
 
     private void dispatchRequest() {
-        if (mParams == null) {
-            mParams = new HashMap<>();
-        } else {
-            mParams.clear();
-        }
+        requestAmount();
+        requestList();
+    }
+
+    private void requestAmount() {
+        Map<String, String> mParams = new HashMap<>();
         mParams.put(RequestConstant.KEY_START_DATE, mStartDate);
         mParams.put(RequestConstant.KEY_END_DATE, mEndDate);
         mParams.put(RequestConstant.KEY_EVENT_TYPE, EVENT_TYPE);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COMMISSION_SUM_AMOUNT, mParams);
+    }
+
+    private void requestList() {
+        Map<String, String> mParams = new HashMap<>();
+        mParams.put(RequestConstant.KEY_START_DATE, mStartDate);
+        mParams.put(RequestConstant.KEY_END_DATE, mEndDate);
+        mParams.put(RequestConstant.KEY_TYPE, mFilterType);
+        mParams.put(RequestConstant.KEY_EVENT_TYPE, EVENT_TYPE);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COMMISSION_SUM_LIST, mParams);
     }
 
@@ -219,9 +239,69 @@ public class SalaryReportByUserFragment extends BaseFragment {
         } else {
             mAdapter.clearData();
             mSalaryCustomList.removeAllViews();
+            mSaleSelected = false;
+            mServiceSelected = false;
+            updateServiceLayout(mServiceSelected);
+            updateSaleLayout(mSaleSelected);
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setStatus(EmptyView.Status.Loading);
+            mFilterType = TYPE_ALL;
             initData();
+        }
+    }
+
+    @OnClick({R.id.layout_left_data, R.id.layout_right_data})
+    public void onLayoutClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_left_data:
+                mServiceSelected = !mServiceSelected;
+                if (mServiceSelected) {
+                    mSaleSelected = !mServiceSelected;
+                    mFilterType = TYPE_SERVICE;
+                } else {
+                    mFilterType = TYPE_ALL;
+                }
+                break;
+            case R.id.layout_right_data:
+                mSaleSelected = !mSaleSelected;
+                if (mSaleSelected) {
+                    mServiceSelected = !mSaleSelected;
+                    mFilterType = TYPE_SALES;
+                } else {
+                    mFilterType = TYPE_ALL;
+                }
+                break;
+            default:
+                break;
+        }
+
+        updateServiceLayout(mServiceSelected);
+        updateSaleLayout(mSaleSelected);
+        requestList();
+    }
+
+
+    private void updateServiceLayout(boolean selected) {
+        if (selected) {
+            mServiceLayout.setBackgroundResource(R.drawable.bg_report_select);
+            mServiceAmount.setTextColor(ResourceUtils.getColor(R.color.colorStatusYellow));
+            mServiceTitle.setTextColor(ResourceUtils.getColor(R.color.colorText5));
+        } else {
+            mServiceLayout.setBackgroundResource(R.color.colorWhite);
+            mServiceAmount.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
+            mServiceTitle.setTextColor(ResourceUtils.getColor(R.color.colorText3));
+        }
+    }
+
+    private void updateSaleLayout(boolean selected) {
+        if (selected) {
+            mSaleLayout.setBackgroundResource(R.drawable.bg_report_select);
+            mSaleAmount.setTextColor(ResourceUtils.getColor(R.color.colorStatusYellow));
+            mSaleTitle.setTextColor(ResourceUtils.getColor(R.color.colorText5));
+        } else {
+            mSaleLayout.setBackgroundResource(R.color.colorWhite);
+            mSaleAmount.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
+            mSaleTitle.setTextColor(ResourceUtils.getColor(R.color.colorText3));
         }
     }
 }
