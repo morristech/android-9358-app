@@ -2,11 +2,11 @@ package com.xmd.manager.window;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -45,7 +45,7 @@ public class ReportDetailDialogActivity extends BaseActivity {
     TextView mErrorDesc;
 
     @BindView(R.id.sv_data_layout)
-    ScrollView mScrollLayout;
+    NestedScrollView mScrollLayout;
     @BindView(R.id.tv_time)
     TextView mTime;
     @BindView(R.id.tr_flow)

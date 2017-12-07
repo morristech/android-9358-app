@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
@@ -47,6 +48,8 @@ import rx.Subscription;
 public class NativeRoomActivity extends BaseActivity {
     @BindView(R2.id.edt_search_room)
     ClearableEditText mSearchEdit;
+    @BindView(R2.id.layout_blank_page)
+    RelativeLayout mBlankLayout;
     @BindView(R2.id.rv_room_list)
     RecyclerView mRoomList;
     @BindView(R2.id.rv_room_status)
@@ -135,9 +138,16 @@ public class NativeRoomActivity extends BaseActivity {
             @Override
             public void onCallbackSuccess(RoomSeatListResult result) {
                 hideLoading();
-                mRoomList.removeAllViews();
-                mExRoomAdapter.clearData();
-                mExRoomAdapter.setData(formatRoomInfo(result.getRespData()));
+                if (result.getRespData() != null && !result.getRespData().isEmpty()) {
+                    mRoomList.setVisibility(View.VISIBLE);
+                    mBlankLayout.setVisibility(View.GONE);
+                    mRoomList.removeAllViews();
+                    mExRoomAdapter.clearData();
+                    mExRoomAdapter.setData(formatRoomInfo(result.getRespData()));
+                } else {
+                    mRoomList.setVisibility(View.GONE);
+                    mBlankLayout.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
