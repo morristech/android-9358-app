@@ -31,6 +31,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -194,8 +196,20 @@ public class NativeRoomActivity extends BaseActivity {
             exRoomInfo.roomTypeId = entry.getKey();
             exRoomInfo.roomTypeName = tempStrMap.get(entry.getKey());
             exRoomInfo.rooms = entry.getValue();
+            Collections.sort(exRoomInfo.rooms, new Comparator<RoomInfo>() {
+                @Override
+                public int compare(RoomInfo o1, RoomInfo o2) {
+                    return Long.valueOf(o1.id).compareTo(Long.valueOf(o2.id));
+                }
+            });
             resultList.add(exRoomInfo);
         }
+        Collections.sort(resultList, new Comparator<ExRoomInfo>() {
+            @Override
+            public int compare(ExRoomInfo o1, ExRoomInfo o2) {
+                return Long.valueOf(o1.roomTypeId).compareTo(Long.valueOf(o2.roomTypeId));
+            }
+        });
         return resultList;
     }
 
