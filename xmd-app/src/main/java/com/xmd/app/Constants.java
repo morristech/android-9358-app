@@ -132,6 +132,6 @@ public class Constants {
     public static final int UMENG_STATISTICS_BOOK_CANCEL = 0x0029;
     public static final int UMENG_STATISTICS_INVITATION = 0x0030;
 
-    // 金钱符号:¥(统一的)   ￥(随系统自体有所不同)
+    // 金钱符号:¥(统一的:部分手机不适用)   ￥(随系统自体有所不同) Currency.getInstance(Locale.CHINA).getSymbol()
     public static final String MONEY_TAG = "¥";
 }

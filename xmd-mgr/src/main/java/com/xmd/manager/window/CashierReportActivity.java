@@ -46,7 +46,7 @@ public class CashierReportActivity extends BaseActivity {
         mPageFragmentAdapter.addFragment(new CashierReportByMonthFragment());
         mPageFragmentAdapter.addFragment(new CashierReportByUserFragment());
         mPager.setAdapter(mPageFragmentAdapter);
-        mPager.setOffscreenPageLimit(3);
+        mPager.setOffscreenPageLimit(2);
         mTabIndicator.setTabTexts(mTabTexts);
         mTabIndicator.setWithIndicator(false);
         mTabIndicator.setTextSize(Utils.dip2px(CashierReportActivity.this, 16));

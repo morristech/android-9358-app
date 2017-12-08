@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.Constants;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportNormalAdapter;
 import com.xmd.manager.beans.CommissionNormalInfo;
@@ -143,12 +142,11 @@ public class SalaryReportByUserFragment extends BaseFragment {
     private void handleAmountResult(CommissionAmountResult result) {
         if (EVENT_TYPE.equals(result.eventType)) {
             mEmptyView.setVisibility(View.GONE);
-            isLoad = false;
             if (result.statusCode == 200) {
                 mAmountLayout.setVisibility(View.VISIBLE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.getTotalCommission()));
-                mServiceAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.serviceCommission));
-                mSaleAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.salesCommission));
+                mServiceAmount.setText(Utils.moneyToStringEx(result.respData.serviceCommission));
+                mSaleAmount.setText(Utils.moneyToStringEx(result.respData.salesCommission));
             } else {
                 mAmountLayout.setVisibility(View.GONE);
             }
@@ -157,7 +155,6 @@ public class SalaryReportByUserFragment extends BaseFragment {
 
     private void handleNormalListResult(CommissionNormalListResult result) {
         if (EVENT_TYPE.equals(result.eventType)) {
-            isLoad = false;
             mEmptyView.setVisibility(View.GONE);
             mSalaryCustomList.removeAllViews();
             mAdapter.clearData();
@@ -246,7 +243,7 @@ public class SalaryReportByUserFragment extends BaseFragment {
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setStatus(EmptyView.Status.Loading);
             mFilterType = TYPE_ALL;
-            initData();
+            dispatchRequest();
         }
     }
 

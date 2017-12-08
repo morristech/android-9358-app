@@ -89,6 +89,7 @@ public class ClubCashierDetailActivity extends BaseActivity {
 
     @BindView(R.id.rv_cashier_day_data)
     RecyclerView mCashierDayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,8 +194,8 @@ public class ClubCashierDetailActivity extends BaseActivity {
             if (result.statusCode == 200) {
                 mAmountLayout.setVisibility(View.VISIBLE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.amount));
-                mSpaAmount.setText("￥" + Utils.moneyToStringEx(result.respData.spaAmount));
-                mGoodsAmount.setText("￥" + Utils.moneyToStringEx(result.respData.goodsAmount));
+                mSpaAmount.setText(Utils.moneyToStringEx(result.respData.spaAmount));
+                mGoodsAmount.setText(Utils.moneyToStringEx(result.respData.goodsAmount));
             } else {
                 mAmountLayout.setVisibility(View.GONE);
             }

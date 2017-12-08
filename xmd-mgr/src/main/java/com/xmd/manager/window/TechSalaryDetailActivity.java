@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.xmd.app.Constants;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportDetailAdapter;
 import com.xmd.manager.beans.CommissionTechInfo;
@@ -186,9 +185,9 @@ public class TechSalaryDetailActivity extends BaseActivity {
         if (result.statusCode == 200) {
             mAmountLayout.setVisibility(View.VISIBLE);
             mTotalAmount.setVisibility(View.VISIBLE);
-            mTotalAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.getTotalCommission()));
-            mServiceAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.serviceCommission));
-            mSaleAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.salesCommission));
+            mTotalAmount.setText(Utils.moneyToStringEx(result.respData.getTotalCommission()));
+            mServiceAmount.setText(Utils.moneyToStringEx(result.respData.serviceCommission));
+            mSaleAmount.setText(Utils.moneyToStringEx(result.respData.salesCommission));
             // 设置头像和手机号码
             Glide.with(this).load(result.respData.techAvatar).dontAnimate().placeholder(R.drawable.img_default_avatar).into(mTechAvatar);
             mTechPhone.setText("手机号：" + result.respData.techPhone);

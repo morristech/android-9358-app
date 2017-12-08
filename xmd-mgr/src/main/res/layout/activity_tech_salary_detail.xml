@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_current_time"
-            android:text=" 工资合计"
+            android:text=" 工资合计(元)"
             android:textColor="@color/colorText5"
             android:textSize="@dimen/inter_text_size" />
 

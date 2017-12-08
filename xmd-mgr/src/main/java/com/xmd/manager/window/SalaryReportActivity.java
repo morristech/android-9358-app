@@ -46,7 +46,7 @@ public class SalaryReportActivity extends BaseActivity {
         mPageFragmentAdapter.addFragment(new SalaryReportByMonthFragment());
         mPageFragmentAdapter.addFragment(new SalaryReportByUserFragment());
         mPager.setAdapter(mPageFragmentAdapter);
-        mPager.setOffscreenPageLimit(3);
+        mPager.setOffscreenPageLimit(2);
         mTabIndicator.setTabTexts(mTabTexts);
         mTabIndicator.setWithIndicator(false);
         mTabIndicator.setTextSize(Utils.dip2px(SalaryReportActivity.this, 16));
