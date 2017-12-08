@@ -134,7 +134,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     public void initServerHost() {
         mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
-
         ArrayAdapter<String> serverHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerHosts);
         serverHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mSpServerHost.setAdapter(serverHosts);

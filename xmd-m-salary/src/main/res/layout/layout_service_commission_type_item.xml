@@ -12,6 +12,7 @@
         android:background="#CAE0F1"
         android:ellipsize="end"
         android:gravity="center"
+        android:paddingLeft="5dp"
         android:singleLine="true"
         android:text="无"
         android:textColor="#212121"

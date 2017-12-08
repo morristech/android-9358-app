@@ -57,4 +57,8 @@ public class SalaryDataManager {
         return mCommissionListCache.containsKey(timeKey);
     }
 
+    public void destroyData(){
+        mSalaryDataInstance = null;
+    }
+
 }

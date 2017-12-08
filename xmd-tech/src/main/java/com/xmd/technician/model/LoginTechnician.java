@@ -310,7 +310,7 @@ public class LoginTechnician {
         setEmchatId(result.emchatId);
         setEmchatPassword(result.emchatPassword);
 
-        loadTechInfo();
+     //   loadTechInfo();
 
         //发送登录事件
         EventBus.getDefault().removeStickyEvent(EventLogout.class);

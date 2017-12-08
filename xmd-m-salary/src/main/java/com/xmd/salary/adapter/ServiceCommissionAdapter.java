@@ -105,6 +105,11 @@ public class ServiceCommissionAdapter extends BaseExcelPanelAdapter<BellListBean
         }
         ColViewHolder viewHolder = (ColViewHolder) holder;
         viewHolder.tvServiceName.setText(serviceItem.serviceItemName);
+        if (position % 2 == 0) {
+            viewHolder.tvServiceName.setSelected(true);
+        } else {
+            viewHolder.tvServiceName.setSelected(false);
+        }
         ViewGroup.LayoutParams lp = viewHolder.rootView.getLayoutParams();
         viewHolder.rootView.setLayoutParams(lp);
 

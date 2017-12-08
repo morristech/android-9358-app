@@ -1,6 +1,7 @@
 package com.xmd.technician.window;
 
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +25,9 @@ public class JoinClubActivity extends BaseActivity implements JoinClubContract.V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_join_club);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(0xffff7d6b);
+        }
         mPresenter = new JoinClubPresenter(this, this, mBinding);
         mPresenter.onCreate();
     }

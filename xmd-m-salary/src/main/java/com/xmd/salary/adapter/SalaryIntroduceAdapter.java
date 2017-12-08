@@ -158,13 +158,4 @@ public class SalaryIntroduceAdapter<T> extends RecyclerView.Adapter {
     }
 
 
-    static class ServiceItemViewHolder extends RecyclerView.ViewHolder {
-        TextView tvServiceName;
-
-        public ServiceItemViewHolder(View itemView) {
-            super(itemView);
-            tvServiceName = (TextView) itemView.findViewById(R.id.tv_service_name);
-        }
-    }
-
 }

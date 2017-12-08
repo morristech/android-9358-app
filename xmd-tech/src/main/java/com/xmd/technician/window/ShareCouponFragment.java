@@ -31,6 +31,7 @@ import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechPosterListResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -135,7 +136,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount;
     private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
     private boolean isFirst;
-    private String emptyViewDes;
     private TechInfo mTechInfo;
     private Subscription mPosterListSubscription;
 
@@ -172,7 +172,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         mPosterListSubscription = RxBus.getInstance().toObservable(TechPosterListResult.class).subscribe(
                 result -> handlerTechPosterListResult(result)
         );
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+        LoginTechnician.getInstance().loadTechInfo();
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMainBtn));
         mSwipeRefreshLayout.setOnRefreshListener(this);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_POSTER_LIST);

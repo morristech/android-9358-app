@@ -8,15 +8,20 @@
         android:id="@+id/tv_service_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="无"
         android:gravity="center"
+        android:paddingLeft="5dp"
+        android:text="项目"
+        android:lines="1"
+        android:ellipsize="end"
+        android:background="@drawable/selector_excel_item_bg"
         android:textColor="#212121"
         android:textSize="14sp"/>
     <View android:layout_width="match_parent"
           android:layout_height="0.5dp"
           android:layout_alignParentBottom="true"
           android:background="#E0E0E0"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent"
+    <View android:layout_width="0.5dp"
+          android:layout_height="match_parent"
           android:layout_alignParentRight="true"
           android:background="#c3c3c3"/>
 </RelativeLayout>

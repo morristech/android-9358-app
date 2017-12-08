@@ -51,6 +51,7 @@ public class SalaryTotalDataFragment extends BaseFragment {
     private String mEndDate;
     private SalaryDataManager mSalaryDataManager;
     private String timeKey;
+    private boolean onCreate;
 
     @Nullable
     @Override
@@ -60,6 +61,7 @@ public class SalaryTotalDataFragment extends BaseFragment {
         mStartDate = DateUtil.getFirstDayOfMonth();
         mEndDate = DateUtil.getCurrentDate();
         mSalaryDataManager = SalaryDataManager.getSalaryDataInstance();
+        onCreate = true;
         return view;
     }
 
@@ -116,9 +118,11 @@ public class SalaryTotalDataFragment extends BaseFragment {
     }
 
     public void getSalarySumAmount(String startDate, String endDate) {
-      //  showLoading(getActivity(),"正在加载...",false);
+        if (onCreate) {
+            showLoading(getActivity(), "正在加载...", false);
+        }
         timeKey = startDate + endDate;
-        if (mSalaryDataManager.salaryContainKey(timeKey)) {
+        if (mSalaryDataManager != null && mSalaryDataManager.salaryContainKey(timeKey)) {
             setViewData(mSalaryDataManager.getSalaryBean(timeKey));
             return;
         }
@@ -144,8 +148,14 @@ public class SalaryTotalDataFragment extends BaseFragment {
         if (bean == null) {
             return;
         }
-        tvTechCommissionTotal.setText(String.valueOf(String.format("%1.1f", (bean.serviceCommission + bean.salesCommission) / 100f)));
-        tvTechServiceCommission.setText(String.format("￥%1.1f", bean.serviceCommission / 100f));
-        tvTechSellCommission.setText(String.format("￥%1.1f", bean.salesCommission / 100f));
+        tvTechCommissionTotal.setText(String.valueOf(String.format("%1.2f", (bean.serviceCommission + bean.salesCommission) / 100f)));
+        tvTechServiceCommission.setText(String.format("￥%1.2f", bean.serviceCommission / 100f));
+        tvTechSellCommission.setText(String.format("￥%1.2f", bean.salesCommission / 100f));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mSalaryDataManager.destroyData();
     }
 }

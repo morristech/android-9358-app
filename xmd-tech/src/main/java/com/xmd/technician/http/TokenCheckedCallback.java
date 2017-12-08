@@ -3,11 +3,8 @@ package com.xmd.technician.http;
 
 import android.text.TextUtils;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.network.EventTokenExpired;
-
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.QuitClubResult;
@@ -63,10 +60,7 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
     }
 
     protected void postError(String errorMsg) {
-        if (!TextUtils.isEmpty(errorMsg)) {
-            XLogger.d("9358", errorMsg);
-            XToast.show(ResourceUtils.getString(com.xmd.app.R.string.service_exception));
-        }
+        XToast.show(errorMsg);
         RxBus.getInstance().post(new Throwable(errorMsg));
     }
 }

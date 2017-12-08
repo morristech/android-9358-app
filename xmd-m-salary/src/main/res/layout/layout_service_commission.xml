@@ -5,15 +5,16 @@
               android:layout_height="wrap_content"
               android:layout_margin="12dp"
               android:background="@drawable/shape_bg_white_with_stoke"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:padding="0.5dp">
 
     <cn.zhouchaoyuan.excelpanel.ExcelPanel
         android:id="@+id/service_excel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="0.5dp"
         android:paddingRight="0.5dp"
-        app:left_cell_width="@dimen/excel_cell_width"
+        android:paddingTop="0.5dp"
+        app:left_cell_width="@dimen/excel_row_width"
         app:normal_cell_width="@dimen/excel_cell_width"
         app:top_cell_height="@dimen/excel_cell_height"
     />

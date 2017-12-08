@@ -139,6 +139,7 @@ public class TechContactFragment extends BaseFragment {
             changeViewState(ConstantResources.CONTACT_VISITOR_INDEX);
         }
     }
+
     //首页拓客
     @Subscribe
     public void switchTableToRecent(SwitchTableToContactRegisterEvent event) {
@@ -169,6 +170,9 @@ public class TechContactFragment extends BaseFragment {
      * @param searchText
      */
     private void filterOrSearchCustomer(String searchText) {
+        if (getChildFragmentManager().getFragments() == null) {
+            return;
+        }
         switch (mCurrentFragmentIndex) {
             case ConstantResources.CONTACT_ALL_INDEX:
                 ((ContactsAllFragment) (getChildFragmentManager().getFragments().get(mCurrentFragmentIndex))).filterOrSearchCustomer(searchText, mTagName, mUserGroup, mCustomerLevel, mCustomerType, mSerialNo);

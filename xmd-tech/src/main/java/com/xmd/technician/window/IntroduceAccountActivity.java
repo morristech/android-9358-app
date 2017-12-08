@@ -47,7 +47,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
     private Result result;//二维码解析结果
     private String url;
     private File file;
-    private String mIntruduceUrl;
+    private String mIntroduceUrl;
     private LayoutInflater layoutInflater;
     private View viewM;
     private View view;
@@ -66,8 +66,8 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         setTitle("提现说明");
         ll_layout = (LinearLayout) findViewById(R.id.ll_layout);
         mCustomWebView = new CustomWebView(this, this);
-        mIntruduceUrl = SharedPreferenceHelper.getServerHost() + RequestConstant.URL_INTRODUCE_BIND;
-        mCustomWebView.loadUrl(mIntruduceUrl);//加载页面
+        mIntroduceUrl = SharedPreferenceHelper.getServerHost() + RequestConstant.URL_INTRODUCE_BIND;
+        mCustomWebView.loadUrl(mIntroduceUrl);//加载页面
         mCustomWebView.setFocusable(true);
         mCustomWebView.setFocusableInTouchMode(true);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

@@ -158,7 +158,9 @@ public class ImageTool {
 
     //裁剪图片
     private void doCropImage(Uri uri) {
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
         Crop crop = Crop.of(uri, null).onlyBitmap(true).withAspect(mAspect_X,mAspect_Y);
         if (maxSize > 0) {
             crop.withMaxSize(maxWidth, maxHeight).onlyBitmap(true);

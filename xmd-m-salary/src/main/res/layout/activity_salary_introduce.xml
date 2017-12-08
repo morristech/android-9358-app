@@ -148,7 +148,7 @@
                                   android:orientation="horizontal"
                                   android:padding="0.5dp">
                         <TextView style="@style/salary_commission_menu_style"
-                                  android:text="项目名称"/>
+                                  android:text="提成（%）"/>
                         <TextView style="@style/salary_commission_menu_style"
                                   android:text="角色"/>
                         <TextView style="@style/salary_commission_menu_style"
