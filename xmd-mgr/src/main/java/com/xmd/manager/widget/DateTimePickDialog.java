@@ -73,7 +73,7 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener {
                         }
                         inputDate.setText(returnDate);
                         if (buttonClickListener != null) {
-                            buttonClickListener.onPositive(returnDate);
+                            buttonClickListener.onPositive(dateTime);
                         }
                     }
                 })

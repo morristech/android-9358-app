@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.xmd.app.Constants;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportDetailAdapter;
 import com.xmd.manager.beans.CashierClubDetailInfo;
@@ -84,7 +83,7 @@ public class CashierReportByDayFragment extends BaseFragment {
     private View view;
 
     private boolean isInit; //fragment是否已初始化
-    private boolean isLoad; //是否正在加载数据
+    private boolean isLoad; //是否已经加载数据
 
     private boolean mSpaSelected;
     private boolean mGoodsSelected;
@@ -189,12 +188,11 @@ public class CashierReportByDayFragment extends BaseFragment {
     private void handleCashierStatistic(CashierStatisticResult result) {
         if (EVENT_TYPE.equals(result.eventType)) {
             mEmptyView.setVisibility(View.GONE);
-            isLoad = false;
             if (result.statusCode == 200) {
                 mAmountLayout.setVisibility(View.VISIBLE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.amount));
-                mSpaAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.spaAmount));
-                mGoodsAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.goodsAmount));
+                mSpaAmount.setText(Utils.moneyToStringEx(result.respData.spaAmount));
+                mGoodsAmount.setText(Utils.moneyToStringEx(result.respData.goodsAmount));
             } else {
                 mAmountLayout.setVisibility(View.GONE);
             }
@@ -207,7 +205,6 @@ public class CashierReportByDayFragment extends BaseFragment {
                 switch (result.requestType) {
                     case REQUEST_TYPE_INIT:
                         mEmptyView.setVisibility(View.GONE);
-                        isLoad = false;
                         mAdapter.clearData();
                         mCashierDayList.removeAllViews();
                         if (result.respData != null && !result.respData.isEmpty()) {
@@ -246,7 +243,6 @@ public class CashierReportByDayFragment extends BaseFragment {
                 switch (result.requestType) {
                     case REQUEST_TYPE_INIT:
                         mEmptyView.setVisibility(View.GONE);
-                        isLoad = false;
                         mCashierDayList.removeAllViews();
                         mCashierDayList.setVisibility(View.GONE);
                         break;
@@ -337,7 +333,7 @@ public class CashierReportByDayFragment extends BaseFragment {
         mPageSize = DEFAULT_PAGE_SIZE;
         mRequestType = REQUEST_TYPE_INIT;
         mScope = null;
-        initData();
+        dispatchRequest();
     }
 
     @OnClick({R.id.layout_left_data, R.id.layout_right_data})

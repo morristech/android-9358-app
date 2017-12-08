@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.xmd.app.Constants;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ReportNormalAdapter;
 import com.xmd.manager.beans.CashierNormalInfo;
@@ -105,7 +104,7 @@ public class CashierReportByMonthFragment extends BaseFragment {
         mEmptyView.setStatus(EmptyView.Status.Loading);
         mEmptyView.setOnRefreshListener(() -> {
             mEmptyView.setStatus(EmptyView.Status.Loading);
-            initData();
+            dispatchRequest();
         });
 
         mTotalTitle.setText(ResourceUtils.getString(R.string.report_cashier_sum_title));
@@ -163,12 +162,13 @@ public class CashierReportByMonthFragment extends BaseFragment {
 
     private void handleCashierStatisticResult(CashierStatisticResult result) {
         if (EVENT_TYPE.equals(result.eventType)) {
-            isLoad = false;
             if (result.statusCode == 200) {
                 mEmptyView.setVisibility(View.GONE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.amount));
-                mSpaAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.spaAmount));
-                mGoodsAmount.setText(Constants.MONEY_TAG + Utils.moneyToStringEx(result.respData.goodsAmount));
+                mSpaAmount.setText(Utils.moneyToStringEx(result.respData.spaAmount));
+                mGoodsAmount.setText(Utils.moneyToStringEx(result.respData.goodsAmount));
+                mCashierMonthList.removeAllViews();
+                mAdapter.clearData();
                 mAdapter.setData(result.respData.list);
             } else {
                 mEmptyView.setStatus(EmptyView.Status.Failed);
@@ -197,6 +197,6 @@ public class CashierReportByMonthFragment extends BaseFragment {
         mCashierMonthList.removeAllViews();
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
-        initData();
+        dispatchRequest();
     }
 }
