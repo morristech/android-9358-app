@@ -279,6 +279,7 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
                 albumsIsNull.setVisibility(View.GONE);
             }
             if (mCurrentInfoState == AlbumListAdapter.ALBUM_STATUS_EDIT) {
+                Glide.with(this).load(result.respData.info.avatarUrl).into(imgTechCenterHead);
                 mAdapter.refreshDataSet(mAdapter.ALBUM_STATUS_EDIT, mAlbums);
             } else {
                 mTechInfo = result.respData.info;

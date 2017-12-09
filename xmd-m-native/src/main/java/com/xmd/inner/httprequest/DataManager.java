@@ -110,7 +110,7 @@ public class DataManager {
 
     public void getIdentifyList(NetworkSubscriber<UserIdentifyListResult> listener) {
         cancelUserIdentifyList();
-        mUserIdentifyList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getUserIdentifyList(), listener);
+        mUserIdentifyList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getUserIdentifyList("free"), listener);
     }
 
     public void cancelUserIdentifyList() {

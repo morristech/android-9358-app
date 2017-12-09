@@ -17,7 +17,6 @@ import com.xmd.inner.httprequest.response.HaveIdentifyResult;
 import com.xmd.inner.httprequest.response.OrderTimeListResult;
 import com.xmd.inner.httprequest.response.ProjectListAvailableResult;
 import com.xmd.inner.httprequest.response.TechnicianListResult;
-import com.xmd.inner.httprequest.response.UserIdentifyListResult;
 import com.xmd.m.network.NetworkSubscriber;
 
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ public class SeatBillDataManager {
         getTechListData();
         getOrderItemBellList();
         getHaveIdentify();
-        getIdentifyList();
     }
 
     public static SeatBillDataManager getManagerInstance() {
@@ -125,19 +123,9 @@ public class SeatBillDataManager {
     }
 
 
-    public void getIdentifyList() {
-        DataManager.getInstance().getIdentifyList(new NetworkSubscriber<UserIdentifyListResult>() {
-            @Override
-            public void onCallbackSuccess(UserIdentifyListResult result) {
-                mUserIdentifyBeenList.addAll(result.getRespData());
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-
-            }
-        });
-
+    public void setUserIdentifyBeenList(List<NativeUserIdentifyBean> identifyList){
+        mUserIdentifyBeenList.clear();
+        mUserIdentifyBeenList.addAll(identifyList);
     }
 
     public List<NativeCategoryBean> getCategoryList() {

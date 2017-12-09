@@ -11,7 +11,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
@@ -30,6 +32,7 @@ import com.xmd.inner.event.UpdateSeatEvent;
 import com.xmd.inner.event.UserIdentifyChangedEvent;
 import com.xmd.inner.httprequest.DataManager;
 import com.xmd.inner.httprequest.response.CreateSeatOrderResult;
+import com.xmd.inner.httprequest.response.UserIdentifyListResult;
 import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,15 +60,18 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
     RecyclerView rvBill;
     @BindView(R2.id.btn_save)
     Button btnSave;
+    @BindView(R2.id.ll_identify_view)
+    LinearLayout llIdentifyView;
 
     public static final String INTENT_KEY_ROOM_NAME = "roomName";
+    public static final String INTENT_KEY_SEAT_NAME = "seatName";
     public static final String INTENT_KEY_SEAT_ID = "seatId";
     public static final String INTENT_KEY_ROOM_ID = "roomId";
 
     private String roomTitle;
-    private long seatId;
+    private String seatName;
     private long roomId;
-    private String userIdentify;
+    private long seatId;
     private List<NativeItemBean> mItemsList;
     private List<NativeEmployeeBean> employeeList;
     private SeatBillListAdapter mSeatBillListAdapter;
@@ -79,11 +85,12 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
 
     private FragmentTransaction ft;
 
-    public static void startCreateNewSeatBillActivity(Activity activity, String roomName, long roomId, long seatId) {
+    public static void startCreateNewSeatBillActivity(Activity activity, String roomName, long roomId, String seatName, long seatId) {
         Intent intent = new Intent(activity, CreateNewSeatBillActivity.class);
         intent.putExtra(INTENT_KEY_ROOM_NAME, roomName);
-        intent.putExtra(INTENT_KEY_SEAT_ID, seatId);
+        intent.putExtra(INTENT_KEY_SEAT_NAME, seatName);
         intent.putExtra(INTENT_KEY_ROOM_ID, roomId);
+        intent.putExtra(INTENT_KEY_SEAT_ID, seatId);
         activity.startActivity(intent);
     }
 
@@ -97,20 +104,22 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
 
     private void initView() {
         roomTitle = getIntent().getStringExtra(INTENT_KEY_ROOM_NAME);
-        seatId = getIntent().getLongExtra(INTENT_KEY_SEAT_ID, 0);
+        seatName = getIntent().getStringExtra(INTENT_KEY_SEAT_NAME);
         roomId = getIntent().getLongExtra(INTENT_KEY_ROOM_ID, 0);
+        seatId = getIntent().getLongExtra(INTENT_KEY_SEAT_ID, 0);
         setTitle(roomTitle);
-        tvSeatNum.setText(String.valueOf(seatId));
+        tvSeatNum.setText(seatName);
         setBackVisible(true);
         mSeatBillDataManager = SeatBillDataManager.getManagerInstance();
         nativeBill = new NativeCreateBill();
         initListData();
+        getIdentifyList();
     }
 
     private void initListData() {
         mItemsList = new ArrayList<>();
         addFirstNativeItem();
-        mSeatBillListAdapter = new SeatBillListAdapter(this, mItemsList,SeatBillListAdapter.HANDLE_BILL_TYPE_CREATE);
+        mSeatBillListAdapter = new SeatBillListAdapter(this, mItemsList, SeatBillListAdapter.HANDLE_BILL_TYPE_CREATE);
         mSeatBillListAdapter.setBillCallBack(this);
         rvBill.setHasFixedSize(true);
         rvBill.setLayoutManager(new LinearLayoutManager(this));
@@ -320,6 +329,10 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
 
     @OnClick(R2.id.et_tech_hand)
     public void onTechHandClicked() {
+        if (mSeatBillDataManager.getUserIdentifyBeenList().size() == 0) {
+            XToast.show("会所未提供手牌");
+            return;
+        }
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag("UserIdentifySelectFragment");
@@ -360,6 +373,26 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
                 }
             });
         }
+
+    }
+
+    private void getIdentifyList() {
+        DataManager.getInstance().getIdentifyList(new NetworkSubscriber<UserIdentifyListResult>() {
+            @Override
+            public void onCallbackSuccess(UserIdentifyListResult result) {
+                if (result.getRespData() != null && result.getRespData().size() != 0) {
+                    llIdentifyView.setVisibility(View.VISIBLE);
+                } else {
+                    llIdentifyView.setVisibility(View.GONE);
+                }
+                mSeatBillDataManager.setUserIdentifyBeenList(result.getRespData());
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+
+            }
+        });
 
     }
 }

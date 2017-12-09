@@ -67,7 +67,7 @@ public interface NetService {
      * 获取手牌列表
      */
     @GET(RequestConstant.USER_IDENTIFY_LIST)
-    Observable<UserIdentifyListResult> getUserIdentifyList();
+    Observable<UserIdentifyListResult> getUserIdentifyList(@Query("status") String status);
 
     /**
      * 更新订单信息

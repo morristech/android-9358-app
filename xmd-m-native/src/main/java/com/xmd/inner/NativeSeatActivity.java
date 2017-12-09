@@ -305,7 +305,7 @@ public class NativeSeatActivity extends BaseActivity {
     @OnClick(R2.id.btn_seat_left)
     public void onSeatLeftClick() {
         // TODO 跳转 开单
-        CreateNewSeatBillActivity.startCreateNewSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mRoomInfo.id, mSelectedSeatInfo.id);
+        CreateNewSeatBillActivity.startCreateNewSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mRoomInfo.id, mSelectedSeatInfo.name,mSelectedSeatInfo.id);
     }
 
     @OnClick(R2.id.btn_seat_right)

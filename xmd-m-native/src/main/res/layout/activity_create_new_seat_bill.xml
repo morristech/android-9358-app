@@ -16,24 +16,26 @@
             android:id="@+id/tv_seat_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:paddingLeft="12dp"
             android:textColor="#333333"
             android:textSize="16sp"
-            android:inputType="number"
             tools:text="2"/>
     </LinearLayout>
     <View style="@style/horizontal_divider_line"/>
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="5dp"
-                  android:background="@color/white"
-                  android:gravity="center_vertical"
-                  android:orientation="horizontal"
-                  android:paddingBottom="@dimen/small_padding"
-                  android:paddingLeft="12dp"
-                  android:paddingRight="12dp"
-                  android:paddingTop="@dimen/small_padding">
+    <LinearLayout
+        android:id="@+id/ll_identify_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/small_padding"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="@dimen/small_padding">
         <TextView style="@style/native_title_style"
                   android:text="@string/tech_hand"/>
         <TextView
@@ -41,11 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/edit_text_bg"
-            android:paddingLeft="20dp"
-            android:textColor="#4a4a4a"
             android:gravity="center_vertical"
-            android:textSize="16sp"
-            android:text="请选择手牌"/>
+            android:paddingLeft="20dp"
+            android:text="请选择手牌"
+            android:textColor="#4a4a4a"
+            android:textSize="16sp"/>
     </LinearLayout>
     <View style="@style/horizontal_divider_line"/>
     <android.support.v7.widget.RecyclerView

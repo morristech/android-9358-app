@@ -83,9 +83,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".window.TechInfoActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".window.ModifyPasswordActivity"
             android:screenOrientation="portrait"/>
         <activity
