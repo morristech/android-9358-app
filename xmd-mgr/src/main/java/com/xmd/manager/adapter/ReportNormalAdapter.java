@@ -24,9 +24,14 @@ import butterknife.ButterKnife;
  */
 
 public class ReportNormalAdapter<T> extends RecyclerView.Adapter<ReportNormalAdapter<T>.ViewHolder> {
+    public static final String SCOPE_TYPE_SPA = "spa";
+    public static final String SCOPE_TYPE_GOODS = "goods";
+    public static final String SCOPE_TYPE_ALL = "all";
+
     private Context mContext;
     private List<T> mData = new ArrayList<>();
     private CallBack mCallBack;
+    private String mScope;
 
     public ReportNormalAdapter(Context context) {
         mContext = context;
@@ -45,6 +50,10 @@ public class ReportNormalAdapter<T> extends RecyclerView.Adapter<ReportNormalAda
         mData.clear();
     }
 
+    public void setScope(String scope) {
+        mScope = scope;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_report_day, parent, false));
@@ -60,7 +69,18 @@ public class ReportNormalAdapter<T> extends RecyclerView.Adapter<ReportNormalAda
         } else if (mData.get(position) instanceof CashierNormalInfo) {
             CashierNormalInfo info = (CashierNormalInfo) mData.get(position);
             holder.mDateText.setText(info.date);
-            holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.amount));
+            switch (mScope) {
+                case SCOPE_TYPE_GOODS:
+                    holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.goodsAmount));
+                    break;
+                case SCOPE_TYPE_SPA:
+                    holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.spaAmount));
+                    break;
+                case SCOPE_TYPE_ALL:
+                default:
+                    holder.mAmountText.setText("+" + Utils.moneyToStringEx(info.amount));
+                    break;
+            }
             holder.itemView.setOnClickListener(v -> mCallBack.onItemClick(info.date));
         }
     }

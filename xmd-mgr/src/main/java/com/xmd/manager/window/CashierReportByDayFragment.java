@@ -323,8 +323,10 @@ public class CashierReportByDayFragment extends BaseFragment {
                 break;
         }
 
-        updateGoodsLayout(false);
-        updateSpaLayout(false);
+        mSpaSelected = false;
+        mGoodsSelected = false;
+        updateGoodsLayout(mGoodsSelected);
+        updateSpaLayout(mSpaSelected);
         mAdapter.clearData();
         mCashierDayList.removeAllViews();
         mEmptyView.setVisibility(View.VISIBLE);

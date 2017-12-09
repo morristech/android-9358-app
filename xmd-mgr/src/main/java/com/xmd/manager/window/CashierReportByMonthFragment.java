@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.manager.R;
@@ -24,7 +25,9 @@ import com.xmd.manager.service.response.CashierStatisticResult;
 import com.xmd.manager.widget.CustomRecycleViewDecoration;
 import com.xmd.manager.widget.EmptyView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -48,10 +51,14 @@ public class CashierReportByMonthFragment extends BaseFragment {
     @BindView(R.id.ev_empty)
     EmptyView mEmptyView;
 
+    @BindView(R.id.layout_left_data)
+    LinearLayout mSpaLayout;
     @BindView(R.id.tv_left_title)
     TextView mSpaTitle;
     @BindView(R.id.tv_left_content)
     TextView mSpaAmount;
+    @BindView(R.id.layout_right_data)
+    LinearLayout mGoodsLayout;
     @BindView(R.id.tv_right_title)
     TextView mGoodsTitle;
     @BindView(R.id.tv_right_content)
@@ -73,10 +80,15 @@ public class CashierReportByMonthFragment extends BaseFragment {
     private String mStartDate;
     private String mEndDate;
 
+    private boolean mSpaSelected;
+    private boolean mGoodsSelected;
+
     private ReportNormalAdapter<CashierNormalInfo> mAdapter;
     private Map<String, String> mParams;
 
     private Subscription mGetCashierStatisticSubscription;
+
+    private List<CashierNormalInfo> mDataList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -163,13 +175,15 @@ public class CashierReportByMonthFragment extends BaseFragment {
     private void handleCashierStatisticResult(CashierStatisticResult result) {
         if (EVENT_TYPE.equals(result.eventType)) {
             if (result.statusCode == 200) {
+                mDataList.addAll(result.respData.list);
                 mEmptyView.setVisibility(View.GONE);
                 mTotalAmount.setText(Utils.moneyToStringEx(result.respData.amount));
                 mSpaAmount.setText(Utils.moneyToStringEx(result.respData.spaAmount));
                 mGoodsAmount.setText(Utils.moneyToStringEx(result.respData.goodsAmount));
                 mCashierMonthList.removeAllViews();
                 mAdapter.clearData();
-                mAdapter.setData(result.respData.list);
+                mAdapter.setScope(ReportNormalAdapter.SCOPE_TYPE_ALL);
+                mAdapter.setData(mDataList);
             } else {
                 mEmptyView.setStatus(EmptyView.Status.Failed);
                 mEmptyView.setEmptyTip(result.msg);
@@ -193,10 +207,93 @@ public class CashierReportByMonthFragment extends BaseFragment {
             default:
                 break;
         }
+        mSpaSelected = false;
+        mGoodsSelected = false;
+        updateGoodsLayout(mGoodsSelected);
+        updateSpaLayout(mSpaSelected);
+        mDataList.clear();
         mAdapter.clearData();
         mCashierMonthList.removeAllViews();
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
         dispatchRequest();
+    }
+
+    @OnClick({R.id.layout_left_data, R.id.layout_right_data})
+    public void onLayoutClick(View view) {
+        mCashierMonthList.removeAllViews();
+        mAdapter.clearData();
+        switch (view.getId()) {
+            case R.id.layout_left_data:
+                mSpaSelected = !mSpaSelected;
+                if (mSpaSelected) {
+                    mGoodsSelected = !mSpaSelected;
+                    mAdapter.setScope(ReportNormalAdapter.SCOPE_TYPE_SPA);
+                    mAdapter.setData(getSpaCashierDataList(mDataList));
+                } else {
+                    mAdapter.setScope(ReportNormalAdapter.SCOPE_TYPE_ALL);
+                    mAdapter.setData(mDataList);
+                }
+                break;
+            case R.id.layout_right_data:
+                mGoodsSelected = !mGoodsSelected;
+                if (mGoodsSelected) {
+                    mSpaSelected = !mGoodsSelected;
+                    mAdapter.setScope(ReportNormalAdapter.SCOPE_TYPE_GOODS);
+                    mAdapter.setData(getGoodsCashierDataList(mDataList));
+                } else {
+                    mAdapter.setScope(ReportNormalAdapter.SCOPE_TYPE_ALL);
+                    mAdapter.setData(mDataList);
+                }
+                break;
+            default:
+                break;
+        }
+        updateSpaLayout(mSpaSelected);
+        updateGoodsLayout(mGoodsSelected);
+    }
+
+    private void updateSpaLayout(boolean selected) {
+        if (selected) {
+            mSpaLayout.setBackgroundResource(R.drawable.bg_report_select);
+            mSpaAmount.setTextColor(ResourceUtils.getColor(R.color.colorStatusYellow));
+            mSpaTitle.setTextColor(ResourceUtils.getColor(R.color.colorText5));
+        } else {
+            mSpaLayout.setBackgroundResource(R.color.colorWhite);
+            mSpaAmount.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
+            mSpaTitle.setTextColor(ResourceUtils.getColor(R.color.colorText3));
+        }
+    }
+
+    private void updateGoodsLayout(boolean selected) {
+        if (selected) {
+            mGoodsLayout.setBackgroundResource(R.drawable.bg_report_select);
+            mGoodsAmount.setTextColor(ResourceUtils.getColor(R.color.colorStatusYellow));
+            mGoodsTitle.setTextColor(ResourceUtils.getColor(R.color.colorText5));
+        } else {
+            mGoodsLayout.setBackgroundResource(R.color.colorWhite);
+            mGoodsAmount.setTextColor(ResourceUtils.getColor(R.color.colorBlue));
+            mGoodsTitle.setTextColor(ResourceUtils.getColor(R.color.colorText3));
+        }
+    }
+
+    private List<CashierNormalInfo> getSpaCashierDataList(List<CashierNormalInfo> list) {
+        List<CashierNormalInfo> tempList = new ArrayList<>();
+        for (CashierNormalInfo cashierNormalInfo : list) {
+            if (cashierNormalInfo.spaAmount > 0) {
+                tempList.add(cashierNormalInfo);
+            }
+        }
+        return tempList;
+    }
+
+    private List<CashierNormalInfo> getGoodsCashierDataList(List<CashierNormalInfo> list) {
+        List<CashierNormalInfo> tempList = new ArrayList<>();
+        for (CashierNormalInfo cashierNormalInfo : list) {
+            if (cashierNormalInfo.goodsAmount > 0) {
+                tempList.add(cashierNormalInfo);
+            }
+        }
+        return tempList;
     }
 }

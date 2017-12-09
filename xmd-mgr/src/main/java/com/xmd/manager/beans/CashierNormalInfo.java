@@ -8,4 +8,6 @@ package com.xmd.manager.beans;
 public class CashierNormalInfo {
     public long amount;
     public String date;
+    public long goodsAmount;
+    public long spaAmount;
 }
