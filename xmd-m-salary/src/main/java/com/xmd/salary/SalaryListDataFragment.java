@@ -102,11 +102,11 @@ public class SalaryListDataFragment extends BaseFragment implements SalaryListAd
     //提成明细列表(每天详情)
     private void getCommissionDetailList(String workDate, String type) {
 
-        timeKey = workDate + type;
-        if (mSalaryDataManager.commissionContainKey(timeKey)) {
-            mSalaryAdapter.setData(mSalaryDataManager.getCommissionList(timeKey));
-            return;
-        }
+ //       timeKey = workDate + type;
+//        if (mSalaryDataManager.commissionContainKey(timeKey)) {
+//            mSalaryAdapter.setData(mSalaryDataManager.getCommissionList(timeKey));
+//            return;
+//        }
         DataManager.getInstance().getTechCommissionDetail("1", "1000", workDate, workDate, type, new NetworkSubscriber<CommissionDetailResult>() {
             @Override
             public void onCallbackSuccess(CommissionDetailResult result) {

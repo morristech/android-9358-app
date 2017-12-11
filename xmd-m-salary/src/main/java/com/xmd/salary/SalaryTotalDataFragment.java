@@ -121,11 +121,11 @@ public class SalaryTotalDataFragment extends BaseFragment {
         if (onCreate) {
             showLoading(getActivity(), "正在加载...", false);
         }
-        timeKey = startDate + endDate;
-        if (mSalaryDataManager != null && mSalaryDataManager.salaryContainKey(timeKey)) {
-            setViewData(mSalaryDataManager.getSalaryBean(timeKey));
-            return;
-        }
+//        timeKey = startDate + endDate;
+//        if (mSalaryDataManager != null && mSalaryDataManager.salaryContainKey(timeKey)) {
+//            setViewData(mSalaryDataManager.getSalaryBean(timeKey));
+//            return;
+//        }
 
         DataManager.getInstance().getTechCommissionSumAmount(startDate, endDate, new NetworkSubscriber<CommissionSumAmountResult>() {
             @Override
