@@ -63,7 +63,7 @@ public class SalaryIntroduceAdapter<T> extends RecyclerView.Adapter {
             CommodityItemBean bean = (CommodityItemBean) mData.get(position);
             CommoditiesViewHolder viewHolder = (CommoditiesViewHolder) holder;
             viewHolder.tvCommoditiesType.setText(bean.commodityName);
-            viewHolder.tvCommoditiesCommission.setText(String.valueOf(String.format("%1.1f", bean.commodityCommission / 100f)));
+            viewHolder.tvCommoditiesCommission.setText(String.valueOf(String.format("%1.2f", bean.commodityCommission / 100f)));
             if (position % 2 == 0) {
                 viewHolder.llCommoditiesView.setSelected(true);
             } else {
@@ -73,9 +73,10 @@ public class SalaryIntroduceAdapter<T> extends RecyclerView.Adapter {
             CardItemBean bean = (CardItemBean) mData.get(position);
             CardViewHolder viewHolder = (CardViewHolder) holder;
             viewHolder.tvCardTypeName.setText(bean.cardName);
-            viewHolder.tvCardTypeDetail.setText("充" + bean.cardPay);
-            viewHolder.tvCardDetailName.setText(bean.carItem);
-            viewHolder.tvCommoditiesCommission.setText(String.valueOf(String.format("%1.1f", bean.techCommission / 100f)));
+            viewHolder.tvCardTypeDetail.setText("充" + bean.cardPay / 100f);
+            //viewHolder.tvCardDetailName.setText(bean.cardName);
+            viewHolder.tvCommoditiesCommission.setText(String.valueOf(String.format("%1.2f", bean.techCommission / 100f)));
+            viewHolder.tvCardItemDetail.setText(bean.carItem);
             if (position % 2 == 0) {
                 viewHolder.llCardView.setSelected(true);
             } else {

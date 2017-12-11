@@ -9,7 +9,6 @@ import com.xmd.salary.bean.CommodityItemBean;
 import com.xmd.salary.bean.MemberActivityDetailBean;
 import com.xmd.salary.bean.OrderItemBean;
 import com.xmd.salary.bean.OrderParameterBean;
-import com.xmd.salary.bean.PackageItemsBean;
 import com.xmd.salary.bean.PackageListBean;
 import com.xmd.salary.bean.SalesCommissionListBean;
 import com.xmd.salary.bean.ServiceCellBean;
@@ -87,7 +86,7 @@ public class SalaryIntroduceDataManager {
                 for (int k = 0; k < mCommissionListBeanX.get(i).bellCommissionList.size(); k++) {
                     if ((mSettingBean.bellList.get(j).id) == (mCommissionListBeanX.get(i).bellCommissionList.get(k).bellId)) {
                         hasItem = true;
-                        cellList.add(new ServiceCellBean(i, String.valueOf(String.format("%1.1f", mCommissionListBeanX.get(i).bellCommissionList.get(k).commission / 100f))));
+                        cellList.add(new ServiceCellBean(i, String.valueOf(String.format("%1.2f", mCommissionListBeanX.get(i).bellCommissionList.get(k).commission / 100f))));
                         continue;
                     }
                 }
@@ -122,12 +121,13 @@ public class SalaryIntroduceDataManager {
     }
 
     private String getPackageItem(PackageListBean packageBean) {
-        StringBuilder strBuilder = new StringBuilder();
-        for (PackageItemsBean packageItemBean : packageBean.packageItems) {
-            strBuilder.append(packageItemBean.name).append("*").append(String.valueOf(packageItemBean.itemCount));
-        }
-
-        return strBuilder.toString();
+//        StringBuilder strBuilder = new StringBuilder();
+//        for (PackageItemsBean packageItemBean : packageBean.packageItems) {
+//            strBuilder.append(packageItemBean.name).append("*").append(String.valueOf(packageItemBean.itemCount));
+//        }
+//
+//        return strBuilder.toString();
+        return String.format("现金：%1.2f元",packageBean.packageItems.get(0).oriAmount/100f);
     }
 
     private void CommodityCommissionListDataChanged() {
