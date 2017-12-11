@@ -1,6 +1,7 @@
 package com.xmd.inner.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import com.xmd.inner.SeatBillDataManager;
 import com.xmd.inner.bean.NativeEmployeeBean;
 import com.xmd.inner.bean.OrderBillBean;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -219,7 +221,17 @@ public class MarketingTechListAdapter extends RecyclerView.Adapter {
         codeBtn.setBackgroundResource(R.drawable.checked_time_type_bg);
         codeBtn.setTextColor(ResourceUtils.getColor(R.color.radio_button_bill_text_color_selector));
         codeBtn.setId(id);
-        codeBtn.setButtonDrawable(null);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                Field field = codeBtn.getClass().getSuperclass().getDeclaredField("mButtonDrawable");
+                field.setAccessible(true);
+                field.set(codeBtn, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            codeBtn.setButtonDrawable(null);
+        }
         codeBtn.setText(btnContent);
         codeBtn.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, Utils.dip2px(mContext, 25));

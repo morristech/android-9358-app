@@ -355,5 +355,6 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mSeatBillDataManager.onDestroyData();
     }
 }

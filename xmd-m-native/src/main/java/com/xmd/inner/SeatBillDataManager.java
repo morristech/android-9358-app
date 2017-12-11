@@ -61,6 +61,8 @@ public class SeatBillDataManager {
         DataManager.getInstance().getAvailableProjectList(new NetworkSubscriber<ProjectListAvailableResult>() {
             @Override
             public void onCallbackSuccess(ProjectListAvailableResult result) {
+                mCateGoryList.clear();
+                mServiceItemListList.clear();
                 for (int i = 0; i < result.getRespData().size(); i++) {
                     mCateGoryList.add(result.getRespData().get(i).category);
                     mServiceItemListList.add(result.getRespData().get(i).serviceItem);
@@ -77,8 +79,10 @@ public class SeatBillDataManager {
 
     public void getTechListData() {
         DataManager.getInstance().loadTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
+
             @Override
             public void onCallbackSuccess(TechnicianListResult result) {
+                mTechList.clear();
                 for (NativeTechnician technician : result.getRespData()) {
                     if (!TextUtils.isEmpty(technician.name)) {
                         mTechList.add(technician);
@@ -98,6 +102,7 @@ public class SeatBillDataManager {
         DataManager.getInstance().loadOrderItemBellList(new NetworkSubscriber<OrderTimeListResult>() {
             @Override
             public void onCallbackSuccess(OrderTimeListResult result) {
+                mOrderBellList.clear();
                 mOrderBellList.addAll(result.getRespData());
             }
 
@@ -123,7 +128,7 @@ public class SeatBillDataManager {
     }
 
 
-    public void setUserIdentifyBeenList(List<NativeUserIdentifyBean> identifyList){
+    public void setUserIdentifyBeenList(List<NativeUserIdentifyBean> identifyList) {
         mUserIdentifyBeenList.clear();
         mUserIdentifyBeenList.addAll(identifyList);
     }
@@ -263,9 +268,19 @@ public class SeatBillDataManager {
                 }
             }
         }
-
-
         return true;
+    }
+
+    public void clearCateGorySelected() {
+        for (NativeCategoryBean categoryBean : mCateGoryList) {
+            categoryBean.isSelected = false;
+        }
+    }
+
+    public void onDestroyData() {
+        if (mManagerInstance != null) {
+            mManagerInstance = null;
+        }
     }
 
 

@@ -94,7 +94,7 @@ public class ServiceSelectAdapter<T> extends RecyclerView.Adapter {
                 }
             });
 
-        }else if(mData.get(position) instanceof NativeUserIdentifyBean){
+        } else if (mData.get(position) instanceof NativeUserIdentifyBean) {
             final NativeUserIdentifyBean bean = (NativeUserIdentifyBean) mData.get(position);
             viewHolder.tvServiceItem.setText(bean.userIdentify);
             viewHolder.tvServiceItem.setSelected(bean.isSelected);

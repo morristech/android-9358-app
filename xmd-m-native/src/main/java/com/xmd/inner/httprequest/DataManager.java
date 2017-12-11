@@ -62,7 +62,7 @@ public class DataManager {
     public void loadTechnicianList(final NetworkSubscriber<TechnicianListResult> listener) {
         cancelLoadTechnicianList();
         mLoadTechnicianList = XmdNetwork.getInstance().request(
-                XmdNetwork.getInstance().getService(NetService.class).getTechnicianList("tech"), listener);
+                XmdNetwork.getInstance().getService(NetService.class).getTechnicianList("tech","free"), listener);
     }
 
     public void cancelLoadTechnicianList() {

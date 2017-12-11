@@ -1,6 +1,8 @@
 package com.xmd.app;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -195,5 +197,14 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             super.setTitle(titleId);
         }
+    }
+
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config = new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+        return res;
     }
 }

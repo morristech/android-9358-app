@@ -112,7 +112,10 @@ public class SeatBillCategorySelectFragment extends BaseDialogFragment {
             this.dismiss();
             return;
         }
+
         EventBus.getDefault().post(new CategoryChangedEvent(categoryName, categoryType, billItemPosition, selectedPosition));
+        mDataManager.clearCateGorySelected();
+        mAdapter.setData(mDataManager.getCategoryList());
         this.dismiss();
     }
 }

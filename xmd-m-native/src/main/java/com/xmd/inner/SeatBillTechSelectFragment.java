@@ -108,6 +108,8 @@ public class SeatBillTechSelectFragment extends BaseDialogFragment {
         String techName = mTechnician.name;
         String techId = mTechnician.id;
         EventBus.getDefault().post(new EmployeeChangedEvent(techId,techNo,techName,parentPosition,billItemPosition));
+        mDataManager.getTechListData();
+        mAdapter.setData(mDataManager.getTechList());
         this.dismiss();
     }
 }

@@ -109,7 +109,7 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
     private void initListData() {
         mItemsList = new ArrayList<>();
         addFirstNativeItem();
-        mSeatBillListAdapter = new SeatBillListAdapter(this, mItemsList,SeatBillListAdapter.HANDLE_BILL_TYPE_ADD);
+        mSeatBillListAdapter = new SeatBillListAdapter(this, mItemsList, SeatBillListAdapter.HANDLE_BILL_TYPE_ADD);
         mSeatBillListAdapter.setBillCallBack(this);
         rvBill.setHasFixedSize(true);
         rvBill.setLayoutManager(new LinearLayoutManager(this));
@@ -354,12 +354,13 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
             mItemsList.add(bean);
 
         }
-       addBill.setItemList(mItemsList);
+        addBill.setItemList(mItemsList);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mSeatBillDataManager.onDestroyData();
     }
 }

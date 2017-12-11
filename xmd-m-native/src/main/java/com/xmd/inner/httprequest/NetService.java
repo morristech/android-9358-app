@@ -43,7 +43,8 @@ public interface NetService {
      * 获取技师列表
      */
     @GET(RequestConstant.TECHNICIAN_LIST)
-    Observable<TechnicianListResult> getTechnicianList(@Query("role") String role);
+    Observable<TechnicianListResult> getTechnicianList(@Query("role") String role,
+                                                       @Query("status") String status);
 
     /**
      * 获取上钟类别

@@ -247,6 +247,9 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
 
     @Override
     public void billSellTotal(int parentPosition, int total) {
+        if(mItemsList.size() < parentPosition){
+            return;
+        }
         NativeItemBean bean = mItemsList.get(parentPosition);
         bean.setItemCount(total);
     }
@@ -394,5 +397,11 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSeatBillDataManager.onDestroyData();
     }
 }

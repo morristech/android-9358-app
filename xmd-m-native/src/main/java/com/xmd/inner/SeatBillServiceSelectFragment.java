@@ -87,6 +87,9 @@ public class SeatBillServiceSelectFragment extends BaseDialogFragment {
             return;
         }
         billItemPosition = position;
+        for (NativeServiceItemBean bean : serviceItems){
+            bean.isSelected =false;
+        }
         mAdapter.setData(serviceItems);
     }
 
