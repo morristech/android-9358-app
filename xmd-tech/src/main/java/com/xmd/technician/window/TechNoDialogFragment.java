@@ -100,7 +100,6 @@ public class TechNoDialogFragment extends DialogFragment {
     private void handleUnusedTechNoListResult(UnusedTechNoListResult result) {
         mShowProgressView.set(false);
         List<TechNo> data = new ArrayList<>();
-        data.add(TechNo.DEFAULT_TECH_NO);
         if (result.statusCode != 200) {
             //错误
             mDataLoadError.set(true);
@@ -114,6 +113,7 @@ public class TechNoDialogFragment extends DialogFragment {
                 }
             }
         }
+        data.add(TechNo.DEFAULT_TECH_NO);
         mAdapter.setData(mPresenter, data, mSelectedTechNo);
         mAdapter.notifyDataSetChanged();
     }

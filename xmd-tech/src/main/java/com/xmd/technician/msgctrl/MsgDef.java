@@ -71,8 +71,6 @@ public class MsgDef {
 
     public static final int MSG_DEF_UPDATE_WORK_STATUS = 0x0021;
 
-    public static final int MSG_DEF_GET_TECH_CURRENT_INFO = 0x0022;
-
     public static final int MSG_DEF_RESET_PASSWORD = 0x0023;
 
     public static final int MSG_DEF_UPDATE_TECH_INFO = 0x0024;
@@ -199,6 +197,10 @@ public class MsgDef {
     public static final int MSG_DEF_SHARE_IMAGE_TO_FRIENDS = 0x130;
     //获取技师订单数量
     public static final int MSG_DEF_TECH_ORDER_COUNT = 0x131;
+    //加入会所申请
+    public static final int MSG_DEF_TECH_AUDIT_MODIFY = 0x132;
+    public static final int MSG_DEF_TECH_AUDIT_CANCEL = 0x133;
+    public static final int MSG_DEF_TECH_AUDIT_CONFIRM = 0x134;
 
 
 }

@@ -81,8 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/ll_tech_info"
-        android:visibility="visible">
-
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/btn_main_tech_free"

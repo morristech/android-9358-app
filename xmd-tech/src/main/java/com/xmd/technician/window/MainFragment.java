@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
@@ -63,6 +64,7 @@ import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.event.MainPageStatistics;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.SpaService;
+import com.xmd.technician.http.gson.AuditConfirmResult;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
@@ -235,11 +237,40 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     //空View
     @BindView(R.id.view_transparent)
     View mViewTransparent;
-
     @BindView(R.id.menu_club_invite)
     View mMenuClubInvite;
     @BindView(R.id.menu_club_invite_count)
     TextView mMenuClubInviteCount;
+    //邀请入职
+    @BindView(R.id.tech_audit_view)
+    LinearLayout techAuditView;
+    @BindView(R.id.ll_audit_des)
+    LinearLayout llAuditDes;
+    @BindView(R.id.img_status)
+    ImageView imgStatus;
+    @BindView(R.id.tv_tech_status_des)
+    TextView tvTechStatusDes;
+    @BindView(R.id.club_avatar)
+    CircleImageView clubAvatar;
+    @BindView(R.id.tv_club_name)
+    TextView tvClubName;
+    @BindView(R.id.tv_tech_role)
+    TextView tvTechRole;
+    @BindView(R.id.tv_tech_num)
+    TextView tvTechNum;
+    @BindView(R.id.ll_handle_status_audit)
+    LinearLayout llHandleStatusAudit;
+    @BindView(R.id.ll_audit_cancel)
+    LinearLayout llAuditCancel;
+    @BindView(R.id.ll_audit_confirm)
+    LinearLayout llAuditConfirm;
+    @BindView(R.id.ll_handle_status_reject)
+    LinearLayout llHandleStatusReject;
+    @BindView(R.id.ll_audit_apply)
+    LinearLayout llAuditApply;
+    @BindView(R.id.ll_audit_sure)
+    LinearLayout llAuditSure;
+
 
     private OnlinePayNotifyFragment mPayNotifyFragment;
 
@@ -271,6 +302,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mTechPKRankingSubscription;
     private Subscription mUpdateWorkStatusSubscription;
     private Subscription mTechOrderCountSubscription;
+    private Subscription mTechAuditConfirmSubscription; // 申请被拒，确认
+
     private LoginTechnician mTech = LoginTechnician.getInstance();
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
 
@@ -292,7 +325,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initVisitor();
         initMoment();
         initCredit();
-        initWorkStatus();
         initNearbyUser();
         showHeadView();
         //   HeartBeatTimer.getInstance().start(60, mTask);
@@ -332,7 +364,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mContactPermissionVisitorSubscription,
                 mTechPKRankingSubscription,
                 mUpdateWorkStatusSubscription,
-                mTechOrderCountSubscription);
+                mTechOrderCountSubscription,
+                mTechAuditConfirmSubscription);
     }
 
     private void initView(View view) {
@@ -410,6 +443,17 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         });
 
         mTechOrderCountSubscription = RxBus.getInstance().toObservable(OrderCountResult.class).subscribe(orderCountResult -> handleOrderCount(orderCountResult));
+
+        mTechAuditConfirmSubscription = RxBus.getInstance().toObservable(AuditConfirmResult.class).subscribe(
+                result -> handleAuditConfirmResult(result)
+        );
+
+    }
+
+    private void handleAuditConfirmResult(AuditConfirmResult result) {
+            if(result.statusCode == 200){
+                mTech.loadTechInfo();
+            }
     }
 
 
@@ -651,6 +695,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mTechStatus.setVisibility(View.GONE);
         mJoinOrQuitClub.setText("退出会所");
         mMenuClubName.setText(Utils.StrSubstring(6, mTech.getClubName(), true));
+        showStatusAuditView(status);
         switch (status) {
             case Constant.TECH_STATUS_VALID:
                 mTechStatus.setVisibility(View.VISIBLE);
@@ -659,34 +704,102 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mMenuClubName.setText("");
                 break;
             case Constant.TECH_STATUS_REJECT:
-                mTechStatus.setVisibility(View.VISIBLE);
-                mTechStatus.setText(ResourceUtils.getString(R.string.club_reject_apply));
                 mJoinOrQuitClub.setText("加入会所");
                 mMenuClubName.setText("");
                 break;
             case Constant.TECH_STATUS_UNCERT:
-                mMainHeadTechSerial.setVisibility(View.VISIBLE);
                 mMainHeadTechSerial.setText(mTech.getTechNo());
-                mTechStatus.setVisibility(View.VISIBLE);
-                mTechStatus.setText(ResourceUtils.getString(R.string.wait_club_examine));
+                mMainHeadTechSerial.setVisibility(TextUtils.isEmpty(mTech.getTechNo()) ? View.GONE : View.VISIBLE);
                 mJoinOrQuitClub.setText("取消申请");
                 break;
             case Constant.TECH_STATUS_FREE:
-                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                initWorkStatus();
                 mMainHeadTechSerial.setText(mTech.getTechNo());
+                mMainHeadTechSerial.setVisibility(TextUtils.isEmpty(mTech.getTechNo()) ? View.GONE : View.VISIBLE);
                 resetTechStatusView(R.id.btn_main_tech_free);
                 break;
             case Constant.TECH_STATUS_BUSY:
-                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                initWorkStatus();
                 mMainHeadTechSerial.setText(mTech.getTechNo());
+                mMainHeadTechSerial.setVisibility(TextUtils.isEmpty(mTech.getTechNo()) ? View.GONE : View.VISIBLE);
                 resetTechStatusView(R.id.btn_main_tech_busy);
                 break;
             case Constant.TECH_STATUS_REST:
-                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                initWorkStatus();
                 mMainHeadTechSerial.setText(mTech.getTechNo());
+                mMainHeadTechSerial.setVisibility(TextUtils.isEmpty(mTech.getTechNo()) ? View.GONE : View.VISIBLE);
                 resetTechStatusView(R.id.btn_main_tech_rest);
                 break;
             default:
+                break;
+        }
+
+    }
+
+    private void showStatusAuditView(String status) {
+        switch (status) {
+            case Constant.TECH_STATUS_UNCERT:
+                mRootView.findViewById(R.id.statistic_layout).setVisibility(View.GONE);
+                techAuditView.setVisibility(View.VISIBLE);
+                llAuditDes.setBackgroundResource(R.drawable.state_bg_default);
+                imgStatus.setVisibility(View.INVISIBLE);
+                tvTechStatusDes.setText(ResourceUtils.getString(R.string.tech_wait_audit));
+                Glide.with(getActivity()).load(mTech.getClubImageUrl()).error(R.drawable.icon22).into(clubAvatar);
+                tvClubName.setText(mTech.getClubName());
+                tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
+                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? "管理员指定" : mTech.getTechNo());
+                llHandleStatusAudit.setVisibility(View.VISIBLE);
+                llHandleStatusReject.setVisibility(View.GONE);
+                break;
+            case Constant.TECH_STATUS_REJECT:
+                mRootView.findViewById(R.id.statistic_layout).setVisibility(View.GONE);
+                techAuditView.setVisibility(View.VISIBLE);
+                llAuditDes.setBackgroundResource(R.drawable.state_bg_refuse);
+                imgStatus.setVisibility(View.VISIBLE);
+                tvTechStatusDes.setText(ResourceUtils.getString(R.string.tech_club_reject));
+                Glide.with(getActivity()).load(mTech.getClubImageUrl()).error(R.drawable.icon22).into(clubAvatar);
+                tvClubName.setText(mTech.getClubName());
+                tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
+                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? "管理员指定" : mTech.getTechNo());
+                llHandleStatusAudit.setVisibility(View.GONE);
+                llHandleStatusReject.setVisibility(View.VISIBLE);
+                break;
+            case Constant.TECH_STATUS_VALID:
+            case Constant.TECH_STATUS_FREE:
+            case Constant.TECH_STATUS_BUSY:
+            case Constant.TECH_STATUS_REST:
+                mRootView.findViewById(R.id.statistic_layout).setVisibility(View.VISIBLE);
+                techAuditView.setVisibility(View.GONE);
+                break;
+        }
+
+    }
+
+    @OnClick({R.id.ll_audit_cancel, R.id.ll_audit_confirm, R.id.ll_audit_apply, R.id.ll_audit_sure})
+    public void onAuditManager(View view) {
+        switch (view.getId()) {
+            case R.id.ll_audit_cancel: //取消申请
+                XLogger.i(">>>", "cancel");
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                Fragment prev = fragmentManager.findFragmentByTag("quit_club");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                QuitClubDialogFragment newFragment = new QuitClubDialogFragment();
+                newFragment.setListener(() -> showTechStatus(mTech.getStatus()));
+                newFragment.show(ft, "quit_club");
+                break;
+            case R.id.ll_audit_confirm: //修改申请
+                XLogger.i(">>>", "confirm");
+                UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
+                break;
+            case R.id.ll_audit_apply: //再次申请
+                UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
+                break;
+            case R.id.ll_audit_sure: //拒绝确认
+                XLogger.i(">>>", "sure");
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM);
                 break;
         }
     }
@@ -1389,4 +1502,5 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
         }
     }
+
 }

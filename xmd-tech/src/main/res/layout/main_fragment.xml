@@ -47,6 +47,9 @@
 
                             <include layout="@layout/layout_main_head"/>
 
+                            <include layout="@layout/layout_tech_audit_view"
+                                     android:visibility="gone"/>
+
                             <include
                                 android:id="@+id/statistic_layout"
                                 layout="@layout/layout_main_tech_work_item"

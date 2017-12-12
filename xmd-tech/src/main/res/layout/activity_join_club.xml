@@ -27,13 +27,14 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_button_height"
                 android:background="@null"
                 android:gravity="center"
                 android:text="加入会所"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontTitle2" />
+                android:textSize="@dimen/fontSubheading" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -178,6 +179,7 @@
                     android:visibility="@{presenter.mShowSkip?View.VISIBLE:View.GONE}" />
 
                 <Button
+                    android:id="@+id/btn_sure"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/home_button_height"
                     android:layout_marginLeft="8dp"

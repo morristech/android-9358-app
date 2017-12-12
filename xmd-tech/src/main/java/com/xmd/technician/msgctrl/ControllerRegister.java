@@ -55,7 +55,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_UPLOAD_ALBUM,
                 MsgDef.MSG_DEF_MODIFY_PASSWORD,
                 MsgDef.MSG_DEF_UPDATE_WORK_STATUS,
-                MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO,
                 MsgDef.MSG_DEF_RESET_PASSWORD,
                 MsgDef.MSG_DEF_UPDATE_TECH_INFO,
                 MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST,
@@ -136,7 +135,11 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_POSTER_LIST,
                 MsgDef.MSG_DEF_TECH_POSTER_DETAIL,
                 //-------------------------------------> 技师订单数量 <---------------------------------
-                MsgDef.MSG_DEF_TECH_ORDER_COUNT
+                MsgDef.MSG_DEF_TECH_ORDER_COUNT,
+                //-------------------------------------> 技师入职 <---------------------------------
+                MsgDef.MSG_DEF_TECH_AUDIT_MODIFY,
+                MsgDef.MSG_DEF_TECH_AUDIT_CANCEL,
+                MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM
 
 
         };

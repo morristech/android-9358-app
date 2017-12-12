@@ -86,7 +86,7 @@ public class LoginTechnician {
 
     private String roles;
     private String customerService;//rest,working
-
+    private String clubImageUrl;
 
     private LoginTechnician() {
 
@@ -249,7 +249,8 @@ public class LoginTechnician {
         setQrCodeUrl(techInfo.qrCodeUrl);
         setShareUrl(techInfo.shareUrl);
         setCustomerService(techInfo.customerService);
-
+        setClubImageUrl(techInfo.clubImageUrl);
+        setClubInviteCode(techInfo.clubInviteCode);
         UserInfoServiceImpl.getInstance().saveCurrentUser(getUserInfo());
     }
 
@@ -309,9 +310,6 @@ public class LoginTechnician {
         setUserId(result.userId);
         setEmchatId(result.emchatId);
         setEmchatPassword(result.emchatPassword);
-
-     //   loadTechInfo();
-
         //发送登录事件
         EventBus.getDefault().removeStickyEvent(EventLogout.class);
         EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
@@ -347,12 +345,24 @@ public class LoginTechnician {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOIN_CLUB, params);
     }
 
+    public void sendJoinClubAuditModify(String techId, String roleCode) {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_SPARE_TECH_ID, techId);
+        params.put(RequestConstant.KEY_ROLE_CODE, roleCode);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_AUDIT_MODIFY, params);
+    }
+
     //加入会所申请成功
     public void onSendJoinClubRequest(String inviteCode, String techNo, JoinClubResult result) {
         setClubInviteCode(inviteCode);
         setClubName(result.name);
         setTechNo(techNo);
         setClubId(result.id);
+        setStatus(Constant.TECH_STATUS_UNCERT);
+    }
+
+    public void onModifyRequest(String techNo) {
+        setTechNo(techNo);
         setStatus(Constant.TECH_STATUS_UNCERT);
     }
 
@@ -366,7 +376,11 @@ public class LoginTechnician {
     public void exitClub(String password) {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PASSWORD, password);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB, params);
+        if (getStatus().equals(Constant.TECH_STATUS_UNCERT)) {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_AUDIT_CANCEL, params);
+        } else {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB, params);
+        }
     }
 
     public void onExitClub(QuitClubResult result) {
@@ -376,6 +390,7 @@ public class LoginTechnician {
         setClubName(null);
         setClubPosition(null);
         setStatus(Constant.TECH_STATUS_VALID);
+        setClubImageUrl(null);
         //请求同步权限
         EventBus.getDefault().post(new EventRequestSyncPermission());
     }
@@ -408,9 +423,7 @@ public class LoginTechnician {
     public void logout() {
         String token = getToken();
         String userId = getUserId();
-
         cleanWhenLogout();
-
         //发送登出事件
         EventBus.getDefault().postSticky(new EventLogout(token, userId));
         RxBus.getInstance().post(new EventLogout(token, userId));
@@ -684,7 +697,7 @@ public class LoginTechnician {
 
     public boolean isActiveStatus(String status) {
         return TextUtils.equals(status, Constant.TECH_STATUS_FREE)
-                || TextUtils.equals(status, Constant.TECH_STATUS_BUSY);
+                || TextUtils.equals(status, Constant.TECH_STATUS_BUSY) || TextUtils.equals(status, Constant.TECH_STATUS_REST);
     }
 
     public String getRoles() {
@@ -703,5 +716,13 @@ public class LoginTechnician {
     public void setCustomerService(String customerService) {
         this.customerService = customerService;
         SharedPreferenceHelper.setCustomerService(customerService);
+    }
+
+    public void setClubImageUrl(String clubUrl) {
+        this.clubImageUrl = clubUrl;
+    }
+
+    public String getClubImageUrl() {
+        return clubImageUrl;
     }
 }

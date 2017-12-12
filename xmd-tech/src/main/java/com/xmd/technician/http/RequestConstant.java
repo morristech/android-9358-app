@@ -186,6 +186,16 @@ public class RequestConstant {
     public static final String URL_TECH_POSTER_LIST = BASE_URL + "/v2/tech/poster/list";
     //海报详情
     public static final String URL_TECH_POSTER_DETAIL = BASE_URL + "/v2/tech/poster/detail";
+    /**
+     * --------------------------------------> 加入会所 <----------------------------------------
+     */
+    //修改加入会所申请
+    public static final String URL_TECH_AUDIT_MODIFY = BASE_URL + "/v1/profile/tech/audit/modify";
+    //取消加入会所申请
+    public static final String URL_TECH_AUDIT_CANCEL = BASE_URL + "/v1/profile/tech/audit/cancel";
+    //被拒绝后确认
+    public static final String URL_TECH_AUDIT_CONFIRM = BASE_URL + "/v1/profile/tech/audit/confirm";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -418,6 +428,7 @@ public class RequestConstant {
     public static final String KEY_POSTER_TITLE = "title";
     public static final String KEY_POSTER_IMAGE_CATEGORY = "category";
     public static final String KEY_POSTER_IMAGE_IMG_FILE = "imgFile";
+
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/

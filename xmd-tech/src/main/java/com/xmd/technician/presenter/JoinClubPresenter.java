@@ -16,6 +16,7 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.ActivityJoinClubBinding;
 import com.xmd.technician.event.EventRequestJoinClub;
+import com.xmd.technician.http.gson.AuditModifyResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.model.LoginTechnician;
@@ -47,6 +48,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     private TechNoDialogFragment mTechNoDialogFragment;
     private Subscription mSubscription;
     private Subscription mRoleListSubscription;
+    private Subscription mModifySubscription;
     private int mOpenFrom;
     private List<RoleListResult.Item> mRoleList;
     private RoleListResult.Item mSelectRole;
@@ -64,13 +66,27 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             mShowSkip = true;
             mShowBack = false;
         }
+
         mTechNo.set("选择技师编号");
         mBinding.setPresenter(this);
         mSubscription = RxBus.getInstance().toObservable(JoinClubResult.class)
                 .subscribe(this::handleJoinClubResult);
         mRoleListSubscription = RxBus.getInstance().toObservable(RoleListResult.class)
                 .subscribe(this::handleGetRoleList);
+        mModifySubscription = RxBus.getInstance().toObservable(AuditModifyResult.class)
+                .subscribe(this::handleModifyResult);
         mView.showLoading("加载角色列表");
+        if (!TextUtils.isEmpty(mTech.getClubInviteCode())) {
+            mInviteCode = mTech.getClubInviteCode();
+            mBinding.tvTitle.setText(" 修改申请");
+            mBinding.btnSure.setText("确定");
+            mBinding.phoneNumber.setText(mTech.getClubInviteCode());
+            mBinding.phoneNumber.setEnabled(false);
+            mBinding.phoneNumber.setFocusable(false);
+        } else {
+            mBinding.tvTitle.setText("加入会所");
+            mBinding.btnSure.setText("申请加入");
+        }
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ROLE_LIST);
     }
 
@@ -109,7 +125,12 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             return;
         }
         mView.showLoading("正在提交申请...");
-        mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId, mSelectRole.code);
+        if(TextUtils.isEmpty(mTech.getClubInviteCode())){
+            mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId, mSelectRole.code);
+        }else {
+            mTech.sendJoinClubAuditModify(mSelectedTechId, mSelectRole.code);
+        }
+
     }
 
     private void handleGetRoleList(RoleListResult result) {
@@ -144,6 +165,20 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         }
     }
 
+    private void handleModifyResult(AuditModifyResult result) {
+        mView.hideLoading();
+        if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
+            mView.showAlertDialog(result.msg);
+        } else {
+            //申请加入成功，跳转到完善资料页面
+            mView.showToast("申请成功，等待管理员审核");
+            mTech.onModifyRequest(mSelectedTechNo);
+            mView.setResult(Activity.RESULT_OK, null);
+            mView.finishSelf();
+            RxBus.getInstance().post(new EventRequestJoinClub());
+        }
+    }
+
     @Override
     public void setInviteCode(Editable s) {
         mInviteCode = s.toString();
@@ -170,7 +205,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
 
     @Override
     public void onClickShowTechNos() {
-        if (!Utils.matchClubInviteCode(mInviteCode)) {
+        if (TextUtils.isEmpty(mTech.getClubInviteCode()) && !Utils.matchClubInviteCode(mInviteCode)) {
             mView.showToast("请先填写正确的会所邀请码！");
         } else {
             FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();

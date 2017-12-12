@@ -31,6 +31,9 @@ import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
+import com.xmd.technician.http.gson.AuditCancelResult;
+import com.xmd.technician.http.gson.AuditConfirmResult;
+import com.xmd.technician.http.gson.AuditModifyResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
@@ -170,9 +173,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_TECH_EDIT_INFO:
                 getTechEditInfo();
                 break;
-            case MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO:
-                getTechCurrentInfo();
-                break;
+//            case MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO:
+//                getTechCurrentInfo();
+//                break;
             case MsgDef.MSG_DEF_UPDATE_TECH_INFO:
                 updateTechInfo((Map<String, String>) msg.obj);
                 break;
@@ -431,6 +434,15 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_TECH_ORDER_COUNT:
                 getTechOrderCount(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_TECH_AUDIT_MODIFY:
+                techAuditModify((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_AUDIT_CANCEL:
+                techAuditCancel((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM:
+                techAuditConfirm();
                 break;
         }
 
@@ -724,6 +736,7 @@ public class RequestController extends AbstractController {
         });
     }
 
+    @Deprecated
     private void getTechCurrentInfo() {
         Call<TechCurrentResult> call = getSpaService().getTechCurrentInfo(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
@@ -2107,15 +2120,56 @@ public class RequestController extends AbstractController {
     }
 
     /**
-     *
      * @param param：订单状态
      */
     //获取技师订单数
-    public void getTechOrderCount(String param){
-        Call<OrderCountResult> call = getSpaService().getOrderCount(LoginTechnician.getInstance().getToken(),param);
+    public void getTechOrderCount(String param) {
+        Call<OrderCountResult> call = getSpaService().getOrderCount(LoginTechnician.getInstance().getToken(), param);
         call.enqueue(new TokenCheckedCallback<OrderCountResult>() {
             @Override
             protected void postResult(OrderCountResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //修改加入会所信息
+    public void techAuditModify(Map<String, String> params) {
+        Call<AuditModifyResult> call = getSpaService().techAuditModify(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_ROLE_CODE), params.get(RequestConstant.KEY_SPARE_TECH_ID));
+        call.enqueue(new TokenCheckedCallback<AuditModifyResult>() {
+            @Override
+            protected void postResult(AuditModifyResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //技师申请加入会所后取消
+    public void techAuditCancel(Map<String, String> params) {
+        Call<AuditCancelResult> call = getSpaService().techAuditCancel(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PASSWORD));
+        call.enqueue(new TokenCheckedCallback<AuditCancelResult>() {
+            @Override
+            protected void postResult(AuditCancelResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                AuditCancelResult cancelResult = new AuditCancelResult();
+                cancelResult.statusCode = 400;
+                cancelResult.msg = errorMsg;
+                RxBus.getInstance().post(cancelResult);
+            }
+        });
+    }
+
+    //申请被会所拒绝后确认
+    public void techAuditConfirm() {
+        Call<AuditConfirmResult> call = getSpaService().techAuditConfirm(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<AuditConfirmResult>() {
+            @Override
+            protected void postResult(AuditConfirmResult result) {
                 RxBus.getInstance().post(result);
             }
         });

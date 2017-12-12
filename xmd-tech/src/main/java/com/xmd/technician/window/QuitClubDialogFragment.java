@@ -16,9 +16,13 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.databinding.FragmentQuitClubBinding;
+import com.xmd.technician.http.gson.AuditCancelResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
@@ -37,6 +41,7 @@ public class QuitClubDialogFragment extends DialogFragment {
     public ObservableBoolean cancelButtonEnable = new ObservableBoolean(true);
 
     private Subscription mQuitClubSubscription;
+    private Subscription mAuditCancelSubscription;
 
     private FragmentQuitClubBinding mBinding;
 
@@ -47,8 +52,17 @@ public class QuitClubDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = FragmentQuitClubBinding.inflate(inflater, container, false);
         mBinding.setFragment(this);
+        if(technician.getStatus().equals(Constant.TECH_STATUS_UNCERT)){
+            mBinding.dialogTitle.setText(ResourceUtils.getString(R.string.cancel_join_club_title));
+            mBinding.tvDialogDes.setText(ResourceUtils.getString(R.string.cancel_join_club_tip));
+        }else {
+            mBinding.dialogTitle.setText(ResourceUtils.getString(R.string.quit_club_title));
+            mBinding.tvDialogDes.setText(ResourceUtils.getString(R.string.quit_club_tip));
+        }
         mQuitClubSubscription = RxBus.getInstance().toObservable(QuitClubResult.class).subscribe(
                 this::doQuitClubResult);
+        mAuditCancelSubscription = RxBus.getInstance().toObservable(AuditCancelResult.class).subscribe(
+                this::doCancelJoinClubResult);
         return mBinding.getRoot();
     }
 
@@ -56,6 +70,7 @@ public class QuitClubDialogFragment extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mQuitClubSubscription.unsubscribe();
+        mAuditCancelSubscription.unsubscribe();
     }
 
     @Override
@@ -86,6 +101,7 @@ public class QuitClubDialogFragment extends DialogFragment {
         cancelButtonEnable.set(false);
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mBinding.editPassword.getWindowToken(), 0);
+        XLogger.i(">>>","mPassword"+mPassword);
         technician.exitClub(mPassword);
     }
 
@@ -108,6 +124,23 @@ public class QuitClubDialogFragment extends DialogFragment {
                 Toast.makeText(getActivity(), getString(R.string.cancel_join_success_tips), Toast.LENGTH_LONG).show();
             }
             LoginTechnician.getInstance().onExitClub(result);
+            if (mListener != null) {
+                mListener.onQuitClubSuccess();
+            }
+            getDialog().dismiss();
+        }
+    }
+
+    //取消加入会所申请
+    private void doCancelJoinClubResult(AuditCancelResult result) {
+        okButtonEnable.set(true);
+        cancelButtonEnable.set(true);
+        if (result.statusCode < 200 || result.statusCode > 299) {
+            errorString.set("请求失败：" + result.msg);
+        } else {
+            errorString.set(null);
+            Toast.makeText(getActivity(), getString(R.string.cancel_join_success_tips), Toast.LENGTH_LONG).show();
+            LoginTechnician.getInstance().onExitClub(null);
             if (mListener != null) {
                 mListener.onQuitClubSuccess();
             }

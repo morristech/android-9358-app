@@ -21,6 +21,9 @@ import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.AlbumResult;
+import com.xmd.technician.http.gson.AuditCancelResult;
+import com.xmd.technician.http.gson.AuditConfirmResult;
+import com.xmd.technician.http.gson.AuditModifyResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
@@ -160,6 +163,7 @@ public interface SpaService {
     Call<TechEditResult> getTechEditInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                          @Query(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
+    @Deprecated
     @GET(RequestConstant.URL_CURRENT_INFO)
     Call<TechCurrentResult> getTechCurrentInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                @Query(RequestConstant.KEY_SESSION_TYPE) String sessionType);
@@ -837,6 +841,21 @@ public interface SpaService {
     @GET(RequestConstant.URL_TECH_POSTER_DETAIL)
     Call<TechPosterDetailResult> techPosterDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Query(RequestConstant.KEY_POSTER_ID) String id);
+    //修改申请信息
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_AUDIT_MODIFY)
+    Call<AuditModifyResult> techAuditModify(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Field(RequestConstant.KEY_ROLE_CODE) String roleCode,
+                                            @Field(RequestConstant.KEY_SPARE_TECH_ID) String spareTechId);
+    //取消加入会所申请
+
+    @GET(RequestConstant.URL_TECH_AUDIT_CANCEL)
+    Call<AuditCancelResult> techAuditCancel(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Query(RequestConstant.KEY_PASSWORD) String password);
+    //被会所拒绝后确认
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_AUDIT_CONFIRM)
+    Call<AuditConfirmResult> techAuditConfirm(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
 
     //获取订单详情

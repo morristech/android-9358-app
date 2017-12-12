@@ -79,7 +79,7 @@ public class Constant {
     public static final Map<String, String> COUPON_TYPE_FILTER_LABELS = new LinkedHashMap<String, String>() {{
         put("全部", COUPON_ALL_TYPE);
         put("现金券", COUPON_CASH_TYPE);
-        put("体验券", COUPON_COUPON_TYPE);
+     //   put("体验券", COUPON_COUPON_TYPE);
         put("礼品券", COUPON_GIFT_TYPE);
         put("折扣券", COUPON_DISCOUNT_TYPE);
     }};
