@@ -87,6 +87,9 @@ public class NativeRoomActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mStatus = null;
+                mTempRoomName = null;
+                mSearchEdit.setText("");
                 getRoomSeatList(mStatus, mTempRoomName);
                 getRoomStatistics();
             }

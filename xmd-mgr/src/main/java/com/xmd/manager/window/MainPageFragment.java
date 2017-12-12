@@ -32,7 +32,6 @@ import com.xmd.chat.XmdChat;
 import com.xmd.inner.NativeManager;
 import com.xmd.inner.NativeRoomActivity;
 import com.xmd.inner.adapter.RoomStatisticsAdapter;
-import com.xmd.inner.event.JumpManagerRoomEvent;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
@@ -1025,7 +1024,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     @OnClick({R.id.main_marketing_time_switch, R.id.main_publicity_time_switch, R.id.main_account_time_switch,
             R.id.main_bad_comment, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking, R.id.layout_order, R.id.ll_wifi_today, R.id.ll_visit_today,
             R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code, R.id.toolbar_right_text,
-            R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view, R.id.newOrderLayout, R.id.tv_title_native_mgr, R.id.main_native_mgr_status, R.id.tv_count_native_mgr})
+            R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view, R.id.newOrderLayout, R.id.tv_title_native_mgr, R.id.tv_count_native_mgr})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.main_publicity_time_switch:
@@ -1103,7 +1102,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.tv_title_native_mgr:
             case R.id.tv_count_native_mgr:
-            case R.id.main_native_mgr_status:
                 //房间管理
                 startActivity(new Intent(getActivity(), NativeRoomActivity.class));
         }
@@ -1291,6 +1289,12 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         layoutManager.setAutoMeasureEnabled(true);
         mRoomStatisticsAdapter = new RoomStatisticsAdapter(getActivity(), RoomStatisticsAdapter.PAGE_MAIN);
         mRoomStatisticsList.setLayoutManager(layoutManager);
+        mRoomStatisticsList.setOnTouchListener((v, event) -> {
+            if (event.getAction() == event.ACTION_UP) {
+                startActivity(new Intent(getActivity(), NativeRoomActivity.class));
+            }
+            return false;
+        });
         mRoomStatisticsList.setHasFixedSize(true);
         mRoomStatisticsList.setNestedScrollingEnabled(false);
         mRoomStatisticsList.setAdapter(mRoomStatisticsAdapter);
@@ -1307,10 +1311,5 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mRoomStatisticsAdapter.clearData();
         mRoomStatisticsAdapter.setData(NativeManager.getInstance().getRoomStatisticInfos());
         mRoomStatisticsCount.setText("当前客户总数：" + NativeManager.getInstance().getUsingSeatCount() + "人");
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(JumpManagerRoomEvent event) {
-        startActivity(new Intent(getActivity(), NativeRoomActivity.class));
     }
 }

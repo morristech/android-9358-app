@@ -13,9 +13,6 @@ import com.xmd.inner.ConstantResource;
 import com.xmd.inner.R;
 import com.xmd.inner.R2;
 import com.xmd.inner.bean.RoomStatisticInfo;
-import com.xmd.inner.event.JumpManagerRoomEvent;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,12 +85,6 @@ public class RoomStatisticsAdapter extends RecyclerView.Adapter<RoomStatisticsAd
             });
         } else {
             holder.mStatusDesc.setText(statisticInfo.name + ": " + statisticInfo.roomCount);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new JumpManagerRoomEvent());
-                }
-            });
         }
     }
 

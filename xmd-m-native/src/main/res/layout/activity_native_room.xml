@@ -8,31 +8,39 @@
 
     <include layout="@layout/layout_search_native" />
 
-    <RelativeLayout
-        android:id="@+id/layout_blank_page"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_blank_page" />
-    </RelativeLayout>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/layout_refresh_room"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_room_list"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none" />
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_blank_page"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_blank_page" />
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_room_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="none" />
+        </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
