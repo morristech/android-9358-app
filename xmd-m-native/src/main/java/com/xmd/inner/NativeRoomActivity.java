@@ -3,6 +3,7 @@ package com.xmd.inner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,8 @@ public class NativeRoomActivity extends BaseActivity {
     ClearableEditText mSearchEdit;
     @BindView(R2.id.layout_blank_page)
     RelativeLayout mBlankLayout;
+    @BindView(R2.id.layout_refresh_room)
+    SwipeRefreshLayout mRefreshLayout;
     @BindView(R2.id.rv_room_list)
     RecyclerView mRoomList;
     @BindView(R2.id.rv_room_status)
@@ -79,6 +82,15 @@ public class NativeRoomActivity extends BaseActivity {
         mRoomList.setLayoutManager(new LinearLayoutManager(NativeRoomActivity.this));
         mRoomList.setHasFixedSize(true);
         mRoomList.setAdapter(mExRoomAdapter);
+
+        mRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorPink));
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRoomSeatList(mStatus, mTempRoomName);
+                getRoomStatistics();
+            }
+        });
 
         getRoomSeatList(mStatus, mTempRoomName);
         getRoomStatistics();
@@ -141,11 +153,11 @@ public class NativeRoomActivity extends BaseActivity {
     }
 
     private void getRoomSeatList(String status, String roomName) {
-        showLoading();
+        mRefreshLayout.setRefreshing(true);
         mGetRoomSeatListSubscription = DataManager.getInstance().getRoomSeatInfoList(status, roomName, new NetworkSubscriber<RoomSeatListResult>() {
             @Override
             public void onCallbackSuccess(RoomSeatListResult result) {
-                hideLoading();
+                mRefreshLayout.setRefreshing(false);
                 if (result.getRespData() != null && !result.getRespData().isEmpty()) {
                     mRoomList.setVisibility(View.VISIBLE);
                     mBlankLayout.setVisibility(View.GONE);
@@ -160,7 +172,7 @@ public class NativeRoomActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                hideLoading();
+                mRefreshLayout.setRefreshing(false);
                 XToast.show(e.getLocalizedMessage());
             }
         });

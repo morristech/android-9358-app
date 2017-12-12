@@ -3,6 +3,7 @@ package com.xmd.inner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.utils.Utils;
 import com.xmd.inner.adapter.OrderAdapter;
 import com.xmd.inner.adapter.SeatAdapter;
@@ -53,6 +55,9 @@ public class NativeSeatActivity extends BaseActivity {
     RecyclerView mSeatList;
     @BindView(R2.id.rv_order_list)
     RecyclerView mOrderList;
+
+    @BindView(R2.id.layout_refresh_seat)
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R2.id.layout_amount)
     RelativeLayout mAmountLayout;
@@ -121,16 +126,24 @@ public class NativeSeatActivity extends BaseActivity {
         mOrderList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mOrderList.setItemAnimator(new DefaultItemAnimator());
         mOrderList.setAdapter(mOrderAdapter);
+        
+        mRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorPink));
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getOrderInfo(mRoomId);
+            }
+        });
 
         getOrderInfo(mRoomId);
     }
 
     private void getOrderInfo(final String roomId) {
-        showLoading();
+        mRefreshLayout.setRefreshing(true);
         mGetOrderInfoByRoomSubscription = DataManager.getInstance().getOrderInfoByName(roomId, new NetworkSubscriber<RoomOrderInfoResult>() {
             @Override
             public void onCallbackSuccess(RoomOrderInfoResult result) {
-                hideLoading();
+                mRefreshLayout.setRefreshing(false);
                 mRoomInfo = result.getRespData().room;
                 mOrderInfoList = result.getRespData().orderList;
                 if (mRoomInfo != null) {
@@ -143,7 +156,7 @@ public class NativeSeatActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                hideLoading();
+                mRefreshLayout.setRefreshing(false);
                 XToast.show(e.getLocalizedMessage());
             }
         });
@@ -299,13 +312,13 @@ public class NativeSeatActivity extends BaseActivity {
     @OnClick(R2.id.tv_consume_modify)
     public void onConsumeModify() {
         // TODO 跳转 修改
-        ModifySeatBillActivity.startModifySeatBillActivity(this,getIntent().getStringExtra(EXTRA_ROOM_TITLE),mSelectedOrderInfo);
+        ModifySeatBillActivity.startModifySeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mSelectedOrderInfo);
     }
 
     @OnClick(R2.id.btn_seat_left)
     public void onSeatLeftClick() {
         // TODO 跳转 开单
-        CreateNewSeatBillActivity.startCreateNewSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mRoomInfo.id, mSelectedSeatInfo.name,mSelectedSeatInfo.id);
+        CreateNewSeatBillActivity.startCreateNewSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mRoomInfo.id, mSelectedSeatInfo.name, mSelectedSeatInfo.id);
     }
 
     @OnClick(R2.id.btn_seat_right)
