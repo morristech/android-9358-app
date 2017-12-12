@@ -119,7 +119,7 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
 
     private void addFirstNativeItem() {
         employeeList = new ArrayList<>();
-        NativeItemBean bean = new NativeItemBean(employeeList, "", 0, "", "", "");
+        NativeItemBean bean = new NativeItemBean(employeeList, "", 1, "", "", "");
         mItemsList.add(bean);
     }
 
@@ -172,7 +172,7 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
 
     private void newAddNativeItem() {
         List<NativeEmployeeBean> employeeList = new ArrayList<>();
-        NativeItemBean bean = new NativeItemBean(employeeList, "", 0, "", "", "");
+        NativeItemBean bean = new NativeItemBean(employeeList, "", 1, "", "", "");
         mItemsList.add(bean);
         mSeatBillListAdapter.setNativeData(mItemsList);
     }
@@ -231,6 +231,22 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
         }
         techFragment = new SeatBillTechSelectFragment();
         techFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_Dialog_Alert);
+        Bundle bundle = new Bundle();
+        bundle.putString(SeatBillTechSelectFragment.KEY_CURRENT_SEAT_STATUS,ConstantResource.HANDLE_SEAT_STATUS_ADD);
+        if( mItemsList.get(parentPosition).getItemType().equals(ConstantResource.BILL_GOODS_TYPE)){
+            bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE,ConstantResource.BILL_GOODS_TYPE);
+            if(mSeatBillDataManager.getAllTechList().size() == 0){
+                XToast.show("无可用营销人员");
+                return;
+            }
+        }else {
+            bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE,ConstantResource.BILL_SPA_TYPE);
+            if(mSeatBillDataManager.getFreeTechList().size() == 0){
+                XToast.show("无可用营销人员");
+                return;
+            }
+        }
+        techFragment.setArguments(bundle);
         techFragment.show(ft, "SeatBillTechSelectFragment");
         techFragment.setTechData(parentPosition, position);
     }
@@ -252,25 +268,25 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
     public void CategoryChangedEvent(CategoryChangedEvent event) {
         int position = event.getPosition();
         NativeItemBean bean = mItemsList.get(position);
+        if (bean.getConsumeName().equals(event.getName())) {
+            return;
+        }
         bean.setConsumeName(event.getName());
         bean.setItemType(event.getType());
         bean.setSelectedPosition(event.getSelectedPosition());
+        bean.setServiceName("");
+        bean.setItemId("");
+        List<NativeEmployeeBean> employeeList = bean.getEmployeeList();
+        employeeList.clear();
         if (bean.getEmployeeList().size() == 0) {
-            List<NativeEmployeeBean> employeeList = new ArrayList<>();
             NativeEmployeeBean employee = new NativeEmployeeBean();
             employee.setServiceType(event.getType());
-            employee.setBellId(null);
+            employee.setBellId(0);
             employee.setEmployeeId("");
             employee.setEmployeeName("");
             employeeList.add(employee);
             bean.setEmployeeList(employeeList);
-        } else {
-            List<NativeEmployeeBean> employeeList = bean.getEmployeeList();
-            for (NativeEmployeeBean beanType : employeeList) {
-                beanType.setServiceType(event.getType());
-            }
         }
-
         mSeatBillListAdapter.notifyItemChanged(position);
     }
 

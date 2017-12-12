@@ -79,12 +79,12 @@ public class CouponRecordActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CouponRecordActivity.this, CouponRecordFilterActivity.class);
-                intent.putExtra(Constant.COUPON_RECORD_START_TIME,mStartTime);
-                intent.putExtra(Constant.COUPON_RECORD_END_TIME,mEndTime);
+                intent.putExtra(Constant.COUPON_RECORD_START_TIME, mStartTime);
+                intent.putExtra(Constant.COUPON_RECORD_END_TIME, mEndTime);
                 startActivity(intent);
             }
         });
-        setViewData(TextUtils.isEmpty(mFilterStatusType) ? "" : mFilterStatusType);
+        setViewData(TextUtils.isEmpty(mFilterTimeType) ? "" : mFilterTimeType);
     }
 
     private void initFragmentView() {
@@ -119,7 +119,7 @@ public class CouponRecordActivity extends BaseActivity {
         mStartTime = event.filterStartTime;
         mEndTime = event.filterEndTime;
         tvCouponTime.setText(String.format("%s ~ %s", mStartTime, mEndTime));
-        setViewStatus(event.couponStatus);
+        setViewStatus(event.timeFilter);
         mCouponRecordListFragment.notifyDataChangeRefresh(event.couponId, event.filterStartTime, event.filterEndTime, event.couponStatus, event.timeFilter, "");
     }
 
@@ -130,16 +130,17 @@ public class CouponRecordActivity extends BaseActivity {
     }
 
     private void setViewStatus(String viewStatus) {
-
         tvCouponTime.setText(String.format("%s - %s", mStartTime, mEndTime));
         switch (viewStatus) {
             case Constant.COUPON_STATUS_ALL:
                 tvCouponStatus.setText(ResourceUtils.getString(R.string.coupon_data_receive));
                 break;
             case Constant.COUPON_STATUS_CAN_USE:
+            case Constant.COUPON_TIME_TYPE_GET_TIME:
                 tvCouponStatus.setText(ResourceUtils.getString(R.string.coupon_data_can_use));
                 break;
             case Constant.COUPON_STATUS_VERIFIED:
+            case Constant.COUPON_TIME_TYPE_VERIFY_TIME:
                 tvCouponStatus.setText(ResourceUtils.getString(R.string.coupon_data_verification));
                 break;
             case Constant.COUPON_STATUS_EXPIRED:

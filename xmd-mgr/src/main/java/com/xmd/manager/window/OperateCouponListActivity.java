@@ -25,6 +25,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Lhj on 17-10-19.
+ * 营销->优惠券
  */
 
 public class OperateCouponListActivity extends BaseActivity {

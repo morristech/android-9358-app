@@ -79,7 +79,6 @@ public class CouponOperateDataActivity extends BaseActivity {
         setRightVisible(true, R.drawable.ic_record_filter, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // startActivityForResult(new Intent(CouponOperateDataActivity.this, CouponFilterActivity.class), FILTER_COUPON_REQUEST_CODE);
                 Intent intent = new Intent(CouponOperateDataActivity.this,CouponFilterActivity.class);
                 intent.putExtra(Constant.FILTER_COUPON_TIME_START_TIME,mFilterStartTime);
                 intent.putExtra(Constant.FILTER_COUPON_TIME_END_TIME,mFilterEndTime);
@@ -164,12 +163,11 @@ public class CouponOperateDataActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_receive_record:
-                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, Constant.COUPON_STATUS_CAN_USE,Constant.COUPON_TIME_TYPE_ALL);
+                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, "",Constant.COUPON_TIME_TYPE_ALL);
                 break;
             case R.id.ll_verification_record:
                 CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, Constant.COUPON_STATUS_VERIFIED,Constant.COUPON_TIME_TYPE_ALL);
                 break;
-
         }
     }
 }

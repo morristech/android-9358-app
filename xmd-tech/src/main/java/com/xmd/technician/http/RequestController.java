@@ -722,7 +722,16 @@ public class RequestController extends AbstractController {
             protected void postResult(JoinClubResult result) {
                 RxBus.getInstance().post(result);
             }
+
+            @Override
+            protected void postError(String errorMsg) {
+                JoinClubResult result = new JoinClubResult();
+                result.msg = errorMsg;
+                result.statusCode = 400;
+                RxBus.getInstance().post(result);
+            }
         });
+
     }
 
     private void getTechEditInfo() {
@@ -2140,6 +2149,14 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<AuditModifyResult>() {
             @Override
             protected void postResult(AuditModifyResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                AuditConfirmResult result = new AuditConfirmResult();
+                result.msg = errorMsg;
+                result.statusCode = 400;
                 RxBus.getInstance().post(result);
             }
         });

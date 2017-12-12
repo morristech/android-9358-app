@@ -40,11 +40,17 @@ public class SeatBillTechSelectFragment extends BaseDialogFragment {
     TextView dialogMakeSure;
     Unbinder unbinder;
 
+
+    public static final String KEY_CURRENT_SEAT_STATUS = "seatStatus";
+    public static final String KEY_SERVICE_ITEM_TYPE = "itemType";
     private ServiceSelectAdapter mAdapter;
     private SeatBillDataManager mDataManager;
     private NativeTechnician mTechnician;
     private int billItemPosition;
     private int parentPosition;
+    private String mSeatStatus;
+    private String mServiceItemType;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,13 +61,20 @@ public class SeatBillTechSelectFragment extends BaseDialogFragment {
     }
 
     private void initView() {
+        mSeatStatus = getArguments().getString(KEY_CURRENT_SEAT_STATUS);
+        mServiceItemType = getArguments().getString(KEY_SERVICE_ITEM_TYPE);
+        mDataManager = SeatBillDataManager.getManagerInstance();
         fragmentTitle.setText("选择营销人员");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ServiceSelectAdapter();
         recyclerView.setAdapter(mAdapter);
-        mDataManager = SeatBillDataManager.getManagerInstance();
-        mAdapter.setData(mDataManager.getTechList());
+        if (mSeatStatus.equals(ConstantResource.HANDLE_SEAT_STATUS_CREATE) && !mServiceItemType.equals(ConstantResource.BILL_GOODS_TYPE)) {
+            mAdapter.setData(mDataManager.getFreeTechList());
+        } else {
+            mAdapter.setData(mDataManager.getAllTechList());
+        }
+
         mAdapter.setItemSelectedListener(new ServiceSelectAdapter.ItemSelectedListener() {
             @Override
             public void itemSelected(Object data, int position) {
@@ -73,7 +86,9 @@ public class SeatBillTechSelectFragment extends BaseDialogFragment {
     public void setTechData(int parent, int position) {
         billItemPosition = position;
         parentPosition = parent;
+
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -100,16 +115,15 @@ public class SeatBillTechSelectFragment extends BaseDialogFragment {
 
     @OnClick(R2.id.dialog_make_sure)
     public void onDialogMakeSureClicked() {
-        if(mTechnician == null){
+        if (mTechnician == null) {
             this.dismiss();
             return;
         }
         String techNo = mTechnician.techNo;
         String techName = mTechnician.name;
         String techId = mTechnician.id;
-        EventBus.getDefault().post(new EmployeeChangedEvent(techId,techNo,techName,parentPosition,billItemPosition));
-        mDataManager.getTechListData();
-        mAdapter.setData(mDataManager.getTechList());
+        EventBus.getDefault().post(new EmployeeChangedEvent(techId, techNo, techName, parentPosition, billItemPosition));
+        mDataManager.getFreeTechList();
         this.dismiss();
     }
 }

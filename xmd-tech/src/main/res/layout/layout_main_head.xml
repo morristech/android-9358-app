@@ -42,7 +42,7 @@
             android:lines="1"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontHead"
-            tools:text="张三里斯王无马子拉大"/>
+            tools:text="张三"/>
 
         <TextView
             android:id="@+id/main_head_tech_serial"

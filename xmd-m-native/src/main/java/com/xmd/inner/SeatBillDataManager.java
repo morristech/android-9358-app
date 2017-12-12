@@ -20,7 +20,9 @@ import com.xmd.inner.httprequest.response.TechnicianListResult;
 import com.xmd.m.network.NetworkSubscriber;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Lhj on 17-12-4.
@@ -30,7 +32,8 @@ public class SeatBillDataManager {
     List<NativeCategoryBean> mCateGoryList; //服务分类列表
     List<List<NativeServiceItemBean>> mServiceItemListList; //服务子项列表
     List<NativeServiceItemBean> mServiceItemList; //服务项目列表
-    List<NativeTechnician> mTechList;   //会所技师列表
+    List<NativeTechnician> mFreeTechList;   //会所状态闲技师列表
+    List<NativeTechnician> mAllTechList;   //会所所有技师列表
     List<OrderBillBean> mOrderBellList; //轮钟类型列表
     List<NativeUserIdentifyBean> mUserIdentifyBeenList;//手牌列表
 
@@ -41,11 +44,13 @@ public class SeatBillDataManager {
         mCateGoryList = new ArrayList<>();
         mServiceItemListList = new ArrayList<>();
         mServiceItemList = new ArrayList<>();
-        mTechList = new ArrayList<>();
+        mFreeTechList = new ArrayList<>();
+        mAllTechList = new ArrayList<>();
         mOrderBellList = new ArrayList<>();
         mUserIdentifyBeenList = new ArrayList<>();
         getProjectList();
-        getTechListData();
+        getFreeTechListData();
+        getAllTechListData();
         getOrderItemBellList();
         getHaveIdentify();
     }
@@ -77,15 +82,37 @@ public class SeatBillDataManager {
         });
     }
 
-    public void getTechListData() {
-        DataManager.getInstance().loadTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
+    public void getFreeTechListData() {
+        DataManager.getInstance().loadFreeTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
 
             @Override
             public void onCallbackSuccess(TechnicianListResult result) {
-                mTechList.clear();
+                mFreeTechList.clear();
                 for (NativeTechnician technician : result.getRespData()) {
                     if (!TextUtils.isEmpty(technician.name)) {
-                        mTechList.add(technician);
+                        mFreeTechList.add(technician);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XToast.show(e.getLocalizedMessage());
+            }
+        });
+    }
+
+
+    public void getAllTechListData() {
+        DataManager.getInstance().loadAllTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
+
+            @Override
+            public void onCallbackSuccess(TechnicianListResult result) {
+                mAllTechList.clear();
+                for (NativeTechnician technician : result.getRespData()) {
+                    if (!TextUtils.isEmpty(technician.name)) {
+                        mAllTechList.add(technician);
                     }
                 }
 
@@ -148,8 +175,15 @@ public class SeatBillDataManager {
         return mServiceItemListList.get(position);
     }
 
-    public List<NativeTechnician> getTechList() {
-        return mTechList;
+    public List<NativeTechnician> getFreeTechList() {
+        for (NativeTechnician tech : mFreeTechList) {
+            tech.isSelected = false;
+        }
+        return mFreeTechList;
+    }
+
+    public List<NativeTechnician> getAllTechList() {
+        return mAllTechList;
     }
 
     public List<OrderBillBean> getOrderBellList() {
@@ -169,26 +203,22 @@ public class SeatBillDataManager {
             XToast.show("请选择手牌");
             return false;
         }
-
+        int i = 0;
         for (NativeItemBean itemBean : bill.getItemList()) {
+            i++;
             if (itemBean.getItemType().equals(ConstantResource.BILL_GOODS_TYPE)) {
                 if (itemBean.getItemCount() == 0 || TextUtils.isEmpty(itemBean.getItemId())) {
                     XToast.show("请输入完整订单信息");
                     return false;
                 }
-                for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
-                    employeeBean.setBellId(null);
-                    if (TextUtils.isEmpty(employeeBean.getEmployeeId())) {
-                        XToast.show("请输入完整订单信息");
-                        return false;
-                    }
-                }
+
             } else {
                 if (TextUtils.isEmpty(itemBean.getItemId())) {
                     XToast.show("请输入完整订单信息");
                     return false;
                 }
                 boolean hadAddBill = false;
+                Map<String, String> employeeIdMap = new HashMap<>();
                 for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
                     if (!TextUtils.isEmpty(employeeBean.getEmployeeId()) && employeeBean.getBellId() == 4) {
                         hadAddBill = true;
@@ -203,6 +233,13 @@ public class SeatBillDataManager {
                         XToast.show("请输入完整订单信息");
                         return false;
                     }
+                    if (!employeeIdMap.containsKey(employeeBean.getEmployeeId())) {
+                        employeeIdMap.put(employeeBean.getEmployeeId(), employeeBean.getEmployeeName());
+                    } else {
+                        XToast.show("消费" + i + "的服务技师重复");
+                        return false;
+                    }
+
                     if (hadAddBill) {
                         if (!TextUtils.isEmpty(employeeBean.getEmployeeId()) && employeeBean.getBellId() != 4) {
                             XToast.show("上钟类型不符合规定");
@@ -220,7 +257,7 @@ public class SeatBillDataManager {
     }
 
     public boolean canToAddBill(NativeUpdateBill bill) {
-
+        int i = 0;
         for (NativeItemBean itemBean : bill.getItemList()) {
             if (itemBean == null) {
                 return false;
@@ -230,19 +267,14 @@ public class SeatBillDataManager {
                     XToast.show("请输入完整订单信息");
                     return false;
                 }
-                for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
-                    if (TextUtils.isEmpty(employeeBean.getEmployeeId())) {
-                        employeeBean.setBellId(null);
-                        XToast.show("请输入完整订单信息");
-                        return false;
-                    }
-                }
+
             } else {
                 if (TextUtils.isEmpty(itemBean.getItemId())) {
                     XToast.show("请输入完整订单信息");
                     return false;
                 }
                 boolean hadAddBill = false;
+                Map<String, String> employeeIdMap = new HashMap<>();
                 for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
                     if (!TextUtils.isEmpty(employeeBean.getEmployeeId()) && employeeBean.getBellId() == 4) {
                         hadAddBill = true;
@@ -255,6 +287,12 @@ public class SeatBillDataManager {
                     }
                     if (!TextUtils.isEmpty(employeeBean.getEmployeeId()) && employeeBean.getBellId() == 0) {
                         XToast.show("请输入完整订单信息");
+                        return false;
+                    }
+                    if (!employeeIdMap.containsKey(employeeBean.getEmployeeId())) {
+                        employeeIdMap.put(employeeBean.getEmployeeId(), employeeBean.getEmployeeName());
+                    } else {
+                        XToast.show("消费" + i + "的服务技师重复");
                         return false;
                     }
                     if (hadAddBill) {

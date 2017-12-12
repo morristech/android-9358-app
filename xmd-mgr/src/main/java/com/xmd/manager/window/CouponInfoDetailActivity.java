@@ -29,6 +29,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Lhj on 17-11-10.
+ * 优惠券详情
  */
 
 public class CouponInfoDetailActivity extends BaseActivity implements View.OnClickListener {

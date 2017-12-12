@@ -139,11 +139,6 @@
             android:name=".verification.VerificationActivity"
             android:label="@string/customer_coupon_list_title"
             android:screenOrientation="portrait"/>
-
-        <activity
-            android:name=".window.CouponActivity"
-            android:label="@string/coupon_activity_title"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".window.CouponUseDataActivity"
             android:label="@string/coupon_use_data_activity_title"
@@ -254,10 +249,6 @@
         <activity
             android:name=".window.SendCouponDetailActivity"
             android:label="@string/send_group_detail"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".window.CouponListActivity"
-            android:label="@string/coupon_tips"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".window.ModifyPasswordActivity"

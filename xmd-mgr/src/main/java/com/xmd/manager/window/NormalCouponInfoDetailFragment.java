@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -142,6 +143,7 @@ public class NormalCouponInfoDetailFragment extends BaseFragment {
         tvCouponDuration.setText(coupon.useTimePeriod + "\n" + coupon.couponPeriod + "\n" + (coupon.userGetCount == 0 ? "不限领取数量" : String.format("每人限领%s张", String.valueOf(coupon.userGetCount))));
         wvActContent.getSettings().setJavaScriptEnabled(false);
         wvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
+        wvActContent.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
         wvActContent.loadDataWithBaseURL(null, coupon.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
     }
 

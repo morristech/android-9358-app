@@ -295,6 +295,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 SharedPreferenceHelper.setCurrentClubName(clubInfo.name);
                 SharedPreferenceHelper.setCurrentClubCreateTime(Utils.StrSubstring(10, clubInfo.createTime, false));
                 SharedPreferenceHelper.setClubId(clubInfo.clubId);
+
             });
         }
     }

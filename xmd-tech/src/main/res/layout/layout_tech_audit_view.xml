@@ -23,15 +23,16 @@
                 android:id="@+id/img_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_edit_delete"
+                android:src="@drawable/icon_alter"
                 android:visibility="invisible"/>
             <TextView
                 android:id="@+id/tv_tech_status_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:paddingRight="20dp"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:paddingRight="20dp"
                 tools:text="正在等待管理员审批，请稍后"/>
         </LinearLayout>
 

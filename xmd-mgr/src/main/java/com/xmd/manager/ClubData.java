@@ -26,6 +26,9 @@ public class ClubData {
 
     private List<AuthData> mAuthList;
 
+
+    private String inviteCode;
+
     private static class AccountDataHolder {
         private static ClubData sInstance = new ClubData();
     }
@@ -39,7 +42,7 @@ public class ClubData {
             mClubInfo = clubInfo;
             DiskCacheManager.getInstance().put("current_club_info", mClubInfo);
             mClubImageLocalPath = AppConfig.getAvatarFolder() + File.separator + clubInfo.clubId;
-
+            setInviteCode(clubInfo.inviteCode);
             User currentUser = UserInfoServiceImpl.getInstance().getCurrentUser();
             if (currentUser != null) {
                 currentUser.setClubId(clubInfo.clubId);
@@ -79,5 +82,13 @@ public class ClubData {
 
     public List<AuthData> getAuthDataList() {
         return mAuthList;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 }

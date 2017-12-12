@@ -39,7 +39,8 @@ public class DataManager {
     }
 
     private Subscription mAvailableProjectListSubscription;
-    private Subscription mLoadTechnicianList;
+    private Subscription mLoadFreeTechnicianList;
+    private Subscription mLoadAllTechnicianList;
     private Subscription mLoadOrderItemBellList;
     private Subscription mCreateSeatOrder;
     private Subscription mUserHaveIdentify;
@@ -59,18 +60,32 @@ public class DataManager {
         }
     }
 
-    public void loadTechnicianList(final NetworkSubscriber<TechnicianListResult> listener) {
-        cancelLoadTechnicianList();
-        mLoadTechnicianList = XmdNetwork.getInstance().request(
-                XmdNetwork.getInstance().getService(NetService.class).getTechnicianList("tech","free"), listener);
+    public void loadFreeTechnicianList(final NetworkSubscriber<TechnicianListResult> listener) {
+        cancelLoadFreeTechnicianList();
+        mLoadFreeTechnicianList = XmdNetwork.getInstance().request(
+                XmdNetwork.getInstance().getService(NetService.class).getAllTechnicianList("tech", "free"), listener);
     }
 
-    public void cancelLoadTechnicianList() {
-        if (mLoadTechnicianList != null) {
-            mLoadTechnicianList.unsubscribe();
-            mLoadTechnicianList = null;
+    public void cancelLoadFreeTechnicianList() {
+        if (mLoadFreeTechnicianList != null) {
+            mLoadFreeTechnicianList.unsubscribe();
+            mLoadFreeTechnicianList = null;
         }
     }
+
+    public void loadAllTechnicianList(final NetworkSubscriber<TechnicianListResult> listener) {
+        cancelLoadAllTechnicianList();
+        mLoadAllTechnicianList = XmdNetwork.getInstance().request(
+                XmdNetwork.getInstance().getService(NetService.class).getFreeTechnicianList("tech"), listener);
+    }
+
+    public void cancelLoadAllTechnicianList() {
+        if (mLoadAllTechnicianList != null) {
+            mLoadAllTechnicianList.unsubscribe();
+            mLoadAllTechnicianList = null;
+        }
+    }
+
 
     public void loadOrderItemBellList(NetworkSubscriber<OrderTimeListResult> listener) {
         cancelLoadOrderItemBellList();

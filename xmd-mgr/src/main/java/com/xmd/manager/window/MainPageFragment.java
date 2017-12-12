@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import com.xmd.m.notify.redpoint.RedPointService;
 import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
+import com.xmd.manager.ClubData;
 import com.xmd.manager.Constant;
 import com.xmd.manager.ManagerAccountManager;
 import com.xmd.manager.R;
@@ -335,6 +337,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     RecyclerView mRoomStatisticsList;
     @BindView(R.id.tv_count_native_mgr)
     TextView mRoomStatisticsCount;
+    //会所邀请码
+    @BindView(R.id.club_invitation)
+    TextView clubInvitation;
 
     private static final int REQUEST_CODE_PHONE = 0x0001;
     private static final int REQUEST_CODE_CAMERA = 0x002;
@@ -512,6 +517,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         refreshMainPageData();
         mVerificationHelper = VerificationManagementHelper.getInstance();
         mVerificationHelper.initializeHelper(getActivity());
+        clubInvitation.setText(TextUtils.isEmpty(ClubData.getInstance().getInviteCode()) ? "" : ClubData.getInstance().getInviteCode());
     }
 
 

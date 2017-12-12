@@ -1,6 +1,5 @@
 package com.xmd.manager.window;
 
-import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -15,7 +14,6 @@ import android.view.SurfaceView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.QrResult;
 import com.xmd.manager.common.GsonUtils;
@@ -213,10 +211,5 @@ public class CaptureActivity extends BaseActivity implements Callback {
      */
     private final OnCompletionListener beepListener = (mediaPlayer) -> mediaPlayer.seekTo(0);
 
-    private void gotoActivityForUserCouponView(String couponNo) {
-        Intent intent = new Intent(this, CouponActivity.class);
-        intent.putExtra(Constant.PARAM_COUPON_NUMBER, couponNo);
-        intent.putExtra(Constant.PARAM_COUPON_DISPLAY_TYPE, Constant.COUPON_DISPLAY_TYPE_USER);
-        startActivity(intent);
-    }
+
 }

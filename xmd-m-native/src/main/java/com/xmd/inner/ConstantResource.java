@@ -61,4 +61,8 @@ public class ConstantResource {
         }
     };
 
+    public static final String HANDLE_SEAT_STATUS_CREATE = "create";
+    public static final String HANDLE_SEAT_STATUS_ADD = "add";
+    public static final String HANDLE_SEAT_STATUS_EDIT = "edit";
+
 }

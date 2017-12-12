@@ -105,7 +105,27 @@
     </RelativeLayout>
 
     <View style="@style/line" />
+    <View style="@style/line" />
 
+    <RelativeLayout
+        android:id="@+id/menu_invitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/icon_invitation"
+            android:text="@string/action_invitation" />
+
+        <TextView
+            android:id="@+id/club_invitation"
+            style="@style/relative_layout_menu_right"
+        android:drawableRight="@null"/>
+    </RelativeLayout>
+
+    <View style="@style/line" />
 
     <RelativeLayout
         android:id="@+id/menu_choice_club"

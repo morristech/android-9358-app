@@ -40,11 +40,16 @@ public interface NetService {
     Observable<ProjectListAvailableResult> getAvailableProjectList();
 
     /**
-     * 获取技师列表
+     * 获取所有技师列表
      */
     @GET(RequestConstant.TECHNICIAN_LIST)
-    Observable<TechnicianListResult> getTechnicianList(@Query("role") String role,
+    Observable<TechnicianListResult> getAllTechnicianList(@Query("role") String role,
                                                        @Query("status") String status);
+    /**
+     * 获取闲技师列表
+     */
+    @GET(RequestConstant.TECHNICIAN_LIST)
+    Observable<TechnicianListResult> getFreeTechnicianList(@Query("role") String role);
 
     /**
      * 获取上钟类别

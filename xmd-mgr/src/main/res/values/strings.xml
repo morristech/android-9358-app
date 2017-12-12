@@ -64,6 +64,7 @@
     <string name="action_logout">退出登录</string>
     <string name="action_choice_club">选店查看</string>
     <string name="action_change_password">修改密码</string>
+    <string name="action_invitation">邀请码</string>
 
     <!-- Order Filter Popup Window -->
 
