@@ -859,8 +859,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                 } else {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_ORDER_COUNT, Constant.ORDER_PENDING_TREATMENT);
-
-
                 }
                 break;
             case R.id.btn_main_credit_center:
@@ -1353,7 +1351,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     //将状态变更为休假时，查询技师未处理订单数
     private void handleOrderCount(OrderCountResult orderCountResult) {
         if (orderCountResult.statusCode == 200) {
-            new RewardConfirmDialog(getActivity(), ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_change_status_alter_message), 0), "", true) {
+            new RewardConfirmDialog(getActivity(), ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_change_status_alter_message),
+                    String.valueOf(orderCountResult.respData)), "", true) {
                 @Override
                 public void onConfirmClick() {
                     super.onConfirmClick();

@@ -5,4 +5,10 @@ package com.xmd.technician.http.gson;
  */
 
 public class OrderCountResult extends BaseResult {
+
+    /**
+     * respData : 2
+     */
+
+    public int respData;
 }

@@ -180,3 +180,6 @@
 -keep class com.xmd.m.** {*;}
 
 -keep class com.xmd.**.beans.** { *; }
+
+-dontwarn com.xmd.salary.**
+-keep class com.xmd.salary.** {*;}

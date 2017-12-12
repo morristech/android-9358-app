@@ -127,11 +127,14 @@ public class SalaryIntroduceDataManager {
 //        }
 //
 //        return strBuilder.toString();
-        return String.format("现金：%1.2f元",packageBean.packageItems.get(0).oriAmount/100f);
+        return String.format("现金：%1.2f元", packageBean.packageItems.get(0).oriAmount / 100f);
     }
 
     private void CommodityCommissionListDataChanged() {
         mCommodityCommissionList.clear();
+        if (mSettingBean.serviceCommissionList == null) {
+            return;
+        }
         for (SalesCommissionListBean commission : mSettingBean.salesCommissionList) {
             for (CommissionListBean bean : commission.commissionList) {
                 CommodityItemBean itemBean = new CommodityItemBean(bean.businessName, bean.commission);
