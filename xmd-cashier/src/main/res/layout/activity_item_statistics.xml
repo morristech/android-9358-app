@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_statistics" />
+    <include layout="@layout/toolbar_item_statistics" />
 
     <com.xmd.app.widget.ViewPagerTabIndicator
         android:id="@+id/tab_indicator"

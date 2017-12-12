@@ -103,6 +103,50 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/layout_navigation_native_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_normal_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:layout_marginTop="@dimen/activity_normal_margin"
+                android:background="@drawable/bg_area_item"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/img_navigation_native_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_record_statistics_item" />
+
+                <ImageView
+                    android:id="@+id/img_navigation_native_item_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_navigation_native_item_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/img_navigation_native_item_arrow"
+                    android:layout_toRightOf="@id/img_navigation_native_item"
+                    android:text="项目汇总"
+                    android:textColor="@color/colorText4"
+                    android:textSize="@dimen/medium_font_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/layout_navigation_bill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

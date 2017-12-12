@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.OfflineStatisticInfo;
+import com.xmd.cashier.dal.bean.OfflineAccountStatisticInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +18,15 @@ import java.util.List;
  * Created by zr on 17-12-4.
  */
 
-public class StatisticsNativeAdapter extends RecyclerView.Adapter<StatisticsNativeAdapter.ItemViewHolder> {
+public class AccountStatisticsChannelAdapter extends RecyclerView.Adapter<AccountStatisticsChannelAdapter.ItemViewHolder> {
     private Context mContext;
-    private List<OfflineStatisticInfo.OfflineNativeInfo> mData = new ArrayList<>();
+    private List<OfflineAccountStatisticInfo.OfflineNativeInfo> mData = new ArrayList<>();
 
-    public StatisticsNativeAdapter(Context context) {
+    public AccountStatisticsChannelAdapter(Context context) {
         mContext = context;
     }
 
-    public void setData(List<OfflineStatisticInfo.OfflineNativeInfo> list) {
+    public void setData(List<OfflineAccountStatisticInfo.OfflineNativeInfo> list) {
         mData.clear();
         mData.addAll(list);
         notifyDataSetChanged();
@@ -34,12 +34,12 @@ public class StatisticsNativeAdapter extends RecyclerView.Adapter<StatisticsNati
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_statistic_native, parent, false));
+        return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_statistics_native_channel, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        OfflineStatisticInfo.OfflineNativeInfo offlineNativeInfo = mData.get(position);
+        OfflineAccountStatisticInfo.OfflineNativeInfo offlineNativeInfo = mData.get(position);
         holder.mChannelName.setText(offlineNativeInfo.name + "(记账)：");
         String temp = ((offlineNativeInfo.amount < 0) ? "-￥" : "￥") + Utils.moneyToStringEx(Math.abs(offlineNativeInfo.amount));
         holder.mChannelAmount.setText(temp);

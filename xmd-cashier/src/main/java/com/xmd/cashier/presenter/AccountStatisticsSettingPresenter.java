@@ -10,7 +10,7 @@ import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
-import com.xmd.cashier.contract.StatisticsSettingContract;
+import com.xmd.cashier.contract.AccountStatisticsSettingContract;
 import com.xmd.cashier.dal.sp.SPManager;
 
 import java.util.Calendar;
@@ -20,14 +20,14 @@ import java.util.Date;
  * Created by zr on 17-9-27.
  */
 
-public class StatisticsSettingPresenter implements StatisticsSettingContract.Presenter {
+public class AccountStatisticsSettingPresenter implements AccountStatisticsSettingContract.Presenter {
     private Context mContext;
-    private StatisticsSettingContract.View mView;
+    private AccountStatisticsSettingContract.View mView;
     private TimePickerView mPickerView;
     private String mStart;
     private String mEnd;
 
-    public StatisticsSettingPresenter(Context context, StatisticsSettingContract.View view) {
+    public AccountStatisticsSettingPresenter(Context context, AccountStatisticsSettingContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
@@ -122,7 +122,7 @@ public class StatisticsSettingPresenter implements StatisticsSettingContract.Pre
         SPManager.getInstance().setStatisticsEnd(mEnd);
         mView.showToast("设置成功");
         if (SPManager.getInstance().getFirstStatistic()) {
-            UiNavigation.gotoStatisticsActivity(mContext);
+            UiNavigation.gotoAccountStatisticsActivity(mContext);
             SPManager.getInstance().setFirstStatistic(false);
         }
         mView.finishSelf();

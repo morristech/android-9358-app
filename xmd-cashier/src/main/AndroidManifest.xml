@@ -181,10 +181,16 @@
             android:launchMode="singleTask"
             android:theme="@style/DialogActivity" />
         <activity
-            android:name=".activity.StatisticsActivity"
+            android:name=".activity.AccountStatisticsActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.StatisticsSettingActivity"
+            android:name=".activity.AccountStatisticsSettingActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ItemStatisticsActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ItemStatisticsExplainActivity"
             android:launchMode="singleTask" />
 
         <!-- 内网收银 -->
@@ -215,6 +221,9 @@
             android:name=".activity.InnerTechedOrderActivity"
             android:launchMode="singleTask"
             android:theme="@style/DialogActivity" />
+        <activity
+            android:name=".activity.InnerDiscountActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

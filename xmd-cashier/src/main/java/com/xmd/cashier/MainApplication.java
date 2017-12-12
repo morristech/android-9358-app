@@ -98,6 +98,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             MemberManager.getInstance().startGetMemberSetting();
             InnerManager.getInstance().startGetInnerSwitch();
             InnerManager.getInstance().startGetInnerChannel();
+            InnerManager.getInstance().getClubWorkTime();
         }
 
         // 开启服务

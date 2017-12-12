@@ -7,7 +7,7 @@ import com.xmd.cashier.BaseView;
  * Created by zr on 17-9-27.
  */
 
-public interface StatisticsSettingContract {
+public interface AccountStatisticsSettingContract {
     interface View extends BaseView<Presenter> {
         void showStart(String startTime);
 

@@ -1,5 +1,6 @@
 package com.xmd.cashier.dal.net;
 
+import com.xmd.cashier.dal.net.response.AccountStatisticsResult;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.ClubResult;
@@ -18,6 +19,7 @@ import com.xmd.cashier.dal.net.response.InnerRoomListResult;
 import com.xmd.cashier.dal.net.response.InnerSwitchResult;
 import com.xmd.cashier.dal.net.response.InnerTechListResult;
 import com.xmd.cashier.dal.net.response.InnerUnpaidResult;
+import com.xmd.cashier.dal.net.response.ItemStatisticsResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
@@ -37,12 +39,12 @@ import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
-import com.xmd.cashier.dal.net.response.StatisticsResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.TechListResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
+import com.xmd.cashier.dal.net.response.WorkTimeResult;
 import com.xmd.m.network.BaseBean;
 
 import okhttp3.ResponseBody;
@@ -702,13 +704,21 @@ public interface SpaService {
 
 
     // ****************************************** Pos对账单 **************************************
-    @GET(RequestConstant.URL_GET_TOTAL_STATISTICS)
-    Observable<StatisticsResult> getTotalStatistics(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                    @Query(RequestConstant.KEY_START_DATE) String startDate,
-                                                    @Query(RequestConstant.KEY_END_DATE) String endDate,
-                                                    @Query(RequestConstant.KEY_START_TIME) String startTime,
-                                                    @Query(RequestConstant.KEY_END_TIME) String endTime);
+    @GET(RequestConstant.URL_GET_ACCOUNT_STATISTICS)
+    Observable<AccountStatisticsResult> getAccountStatistics(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                             @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                             @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                             @Query(RequestConstant.KEY_START_TIME) String startTime,
+                                                             @Query(RequestConstant.KEY_END_TIME) String endTime);
 
+    // ****************************************** 经营项目 **************************************
+    @GET(RequestConstant.URL_GET_CLUB_WORK_TIME)
+    Observable<WorkTimeResult> getWorkTime(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_GET_ITEM_STATISTICS)
+    Observable<ItemStatisticsResult> getItemStatistics(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Query(RequestConstant.KEY_START_TIME) String startTime,
+                                                       @Query(RequestConstant.KEY_END_TIME) String endTime);
 
     // ****************************************** 内网收银 **************************************
     //获取内网开关

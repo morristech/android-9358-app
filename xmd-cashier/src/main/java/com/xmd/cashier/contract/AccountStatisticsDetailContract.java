@@ -2,14 +2,14 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
-import com.xmd.cashier.dal.bean.OfflineStatisticInfo;
-import com.xmd.cashier.dal.bean.OnlineStatisticInfo;
+import com.xmd.cashier.dal.bean.OfflineAccountStatisticInfo;
+import com.xmd.cashier.dal.bean.OnlineAccountStatisticInfo;
 
 /**
  * Created by zr on 17-9-19.
  */
 
-public interface StatisticsDetailContract {
+public interface AccountStatisticsDetailContract {
     interface Presenter extends BasePresenter {
         void initDate(int bizType);
 
@@ -81,7 +81,7 @@ public interface StatisticsDetailContract {
 
         void initDataLayout();
 
-        void setDataNormal(OnlineStatisticInfo online, OfflineStatisticInfo offline);
+        void setDataNormal(OnlineAccountStatisticInfo online, OfflineAccountStatisticInfo offline);
 
         void setDataError(String error);
 

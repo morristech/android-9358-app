@@ -107,8 +107,11 @@ public class RequestConstant {
     public static final String URL_GET_ONLINE_GIFT_ACTIVITY = SPA_SERVICE_BASE + "/v2/user/fastpay/package/online/act";
 
     // ****************************************** Pos对账单 **************************************
-    public static final String URL_GET_TOTAL_STATISTICS = SPA_SERVICE_BASE + "/v2/club/financial/settle/summary";
+    public static final String URL_GET_ACCOUNT_STATISTICS = SPA_SERVICE_BASE + "/v2/club/financial/settle/summary";
 
+    // ****************************************** 经营项目 **************************************
+    public static final String URL_GET_ITEM_STATISTICS = SPA_SERVICE_BASE + "/v2/manager/native/statistic/pos/item/summary";
+    public static final String URL_GET_CLUB_WORK_TIME = SPA_SERVICE_BASE + "/v2/manager/club/work-time";
 
     // ****************************************** 内网收银 **************************************
     public static final String URL_GET_INNER_SWITCH = SPA_SERVICE_BASE + "/v2/manager/settings/switch/get";// 获取内网开关

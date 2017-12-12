@@ -9,16 +9,16 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
-import com.xmd.cashier.contract.StatisticsSettingContract;
+import com.xmd.cashier.contract.AccountStatisticsSettingContract;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.presenter.StatisticsSettingPresenter;
+import com.xmd.cashier.presenter.AccountStatisticsSettingPresenter;
 
 /**
  * Created by zr on 17-9-26.
  */
 
-public class StatisticsSettingActivity extends BaseActivity implements StatisticsSettingContract.View {
-    private StatisticsSettingContract.Presenter mPresenter;
+public class AccountStatisticsSettingActivity extends BaseActivity implements AccountStatisticsSettingContract.View {
+    private AccountStatisticsSettingContract.Presenter mPresenter;
     private TextView mTextStart;
     private TextView mTextEnd;
     private Button mBtnConfirm;
@@ -26,8 +26,8 @@ public class StatisticsSettingActivity extends BaseActivity implements Statistic
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistics_setting);
-        mPresenter = new StatisticsSettingPresenter(this, this);
+        setContentView(R.layout.activity_account_statistics_setting);
+        mPresenter = new AccountStatisticsSettingPresenter(this, this);
         initView();
         mPresenter.onCreate();
     }
@@ -66,7 +66,7 @@ public class StatisticsSettingActivity extends BaseActivity implements Statistic
     }
 
     @Override
-    public void setPresenter(StatisticsSettingContract.Presenter presenter) {
+    public void setPresenter(AccountStatisticsSettingContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -92,7 +92,7 @@ public class StatisticsSettingActivity extends BaseActivity implements Statistic
     @Override
     public boolean onKeyEventBack() {
         if (SPManager.getInstance().getFirstStatistic()) {
-            UiNavigation.gotoStatisticsActivity(this);
+            UiNavigation.gotoAccountStatisticsActivity(this);
             SPManager.getInstance().setFirstStatistic(false);
         }
         return super.onKeyEventBack();

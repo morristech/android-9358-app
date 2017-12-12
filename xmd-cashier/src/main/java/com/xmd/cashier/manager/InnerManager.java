@@ -1,7 +1,10 @@
 package com.xmd.cashier.manager;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.google.zxing.WriterException;
+import com.google.zxing.client.android.MyQrEncoder;
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
@@ -22,12 +25,15 @@ import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerBatchHoleResult;
 import com.xmd.cashier.dal.net.response.InnerChannelListResult;
 import com.xmd.cashier.dal.net.response.InnerSwitchResult;
+import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.net.response.WorkTimeResult;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -154,6 +160,33 @@ public class InnerManager {
         return amount;
     }
 
+    //获取会所营业时间
+    private String startTime;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void getClubWorkTime() {
+        Observable<WorkTimeResult> observable = XmdNetwork.getInstance().getService(SpaService.class).getWorkTime(AccountManager.getInstance().getToken());
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<WorkTimeResult>() {
+            @Override
+            public void onCallbackSuccess(WorkTimeResult result) {
+                startTime = result.getRespData().startTime;
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                startTime = AppConstants.STATISTICS_DEFAULT_TIME;
+            }
+        });
+    }
+
+    public void resetClubWorkTime() {
+        startTime = AppConstants.STATISTICS_DEFAULT_TIME;
+    }
+
+
     //获取内网开关
     private boolean mInnerSwitch = false;
     private Call<InnerSwitchResult> mCallInnerSwitch;
@@ -182,6 +215,7 @@ public class InnerManager {
             RetryPool.getInstance().removeWork(mRetryGetInnerSwitch);
             mRetryGetInnerSwitch = null;
         }
+        mInnerSwitch = false;   //默认内网开关关闭
     }
 
     public boolean getInnerSwitchConfig() {
@@ -191,13 +225,13 @@ public class InnerManager {
             @Override
             public void onCallbackSuccess(InnerSwitchResult result) {
                 SwitchInfo switchInfo = result.getRespData();
-                EventBus.getDefault().post(switchInfo);
                 if (AppConstants.APP_REQUEST_YES.equals(switchInfo.status)) {
                     mInnerSwitch = true;
                 } else {
                     mInnerSwitch = false;
                 }
                 resultInnerSwitch = true;
+                EventBus.getDefault().post(switchInfo);
             }
 
             @Override
@@ -403,12 +437,58 @@ public class InnerManager {
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
 
         if (!keep) {
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = getInnerCodeBytes(info);
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
+                mPos.printCenter("微信扫码，选技师、抢优惠");
             }
-            mPos.printCenter("微信扫码，选技师、抢优惠");
         }
         mPos.printEnd();
+    }
+
+    private byte[] innnerQrcodeBytes;
+
+    private byte[] getInnerCodeBytes(InnerRecordInfo innerRecordInfo) {
+        innnerQrcodeBytes = null;
+        Call<StringResult> tradeCodeCall = XmdNetwork.getInstance().getService(SpaService.class)
+                .getTradeQrcode(AccountManager.getInstance().getToken(), innerRecordInfo.id, innerRecordInfo.payChannel, RequestConstant.DEFAULT_SIGN_VALUE);
+        XmdNetwork.getInstance().requestSync(tradeCodeCall, new NetworkSubscriber<StringResult>() {
+            @Override
+            public void onCallbackSuccess(StringResult result) {
+                String content = result.getRespData();
+                if (!TextUtils.isEmpty(content)) {
+                    XLogger.d("getInnerCodeBytes content:" + content);
+                    try {
+                        Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
+                        if (bitmap != null) {
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
+                                innnerQrcodeBytes = bos.toByteArray();
+                            } else {
+                                XLogger.d("getInnerCodeBytes--bitmap compress failed");
+                            }
+                            bitmap.recycle();
+                        } else {
+                            XLogger.d("getInnerCodeBytes--Qrcode encode failed");
+                        }
+                    } catch (WriterException e) {
+                        XLogger.d("getInnerCodeBytes--Qrcode encode exception:" + e.getLocalizedMessage());
+                    }
+                } else {
+                    XLogger.d("getInnerCodeBytes--request success && isEmpty");
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.d("getInnerCodeBytes--request error:" + e.getLocalizedMessage());
+            }
+        });
+
+        if (innnerQrcodeBytes == null) {
+            innnerQrcodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+        }
+
+        return innnerQrcodeBytes;
     }
 }

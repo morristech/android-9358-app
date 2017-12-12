@@ -15,11 +15,11 @@ import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.contract.StatisticsDetailContract;
-import com.xmd.cashier.dal.bean.OfflineStatisticInfo;
-import com.xmd.cashier.dal.bean.OnlineStatisticInfo;
+import com.xmd.cashier.contract.AccountStatisticsDetailContract;
+import com.xmd.cashier.dal.bean.OfflineAccountStatisticInfo;
+import com.xmd.cashier.dal.bean.OnlineAccountStatisticInfo;
 import com.xmd.cashier.dal.net.SpaService;
-import com.xmd.cashier.dal.net.response.StatisticsResult;
+import com.xmd.cashier.dal.net.response.AccountStatisticsResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -35,7 +35,7 @@ import rx.Subscription;
  * Created by zr on 17-9-19.
  */
 
-public class StatisticsDetailPresenter implements StatisticsDetailContract.Presenter {
+public class AccountStatisticsDetailPresenter implements AccountStatisticsDetailContract.Presenter {
     private IPos mPos;
 
     private Subscription mGetStatisticsSubscription;
@@ -49,7 +49,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
     public static final int STYLE_SETTLE = 0;
     public static final int STYLE_MONEY = 1;
 
-    private StatisticsDetailContract.View mView;
+    private AccountStatisticsDetailContract.View mView;
     private Context mContext;
     private String mStartDate = null;
     private String mEndDate = null;
@@ -58,12 +58,12 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
 
     private TimePickerView mPickerView;
 
-    private OnlineStatisticInfo mOnlineInfo;
-    private OfflineStatisticInfo mOfflineInfo;
+    private OnlineAccountStatisticInfo mOnlineInfo;
+    private OfflineAccountStatisticInfo mOfflineInfo;
 
     private int mStyleType = STYLE_SETTLE;
 
-    public StatisticsDetailPresenter(Context context, StatisticsDetailContract.View view) {
+    public AccountStatisticsDetailPresenter(Context context, AccountStatisticsDetailContract.View view) {
         mContext = context;
         mView = view;
         mPos = PosFactory.getCurrentCashier();
@@ -201,11 +201,11 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
     @Override
     public void loadData() {
         mView.showLoading();
-        Observable<StatisticsResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTotalStatistics(AccountManager.getInstance().getToken(), mStartDate, mEndDate, mStartTime, mEndTime);
-        mGetStatisticsSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StatisticsResult>() {
+        Observable<AccountStatisticsResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getAccountStatistics(AccountManager.getInstance().getToken(), mStartDate, mEndDate, mStartTime, mEndTime);
+        mGetStatisticsSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<AccountStatisticsResult>() {
             @Override
-            public void onCallbackSuccess(StatisticsResult result) {
+            public void onCallbackSuccess(AccountStatisticsResult result) {
                 mView.hideLoading();
                 mView.initDataLayout();
                 mOfflineInfo = result.getRespData().offline;
@@ -369,7 +369,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printText("  现金(记账)：", formatAmount(mOfflineInfo.cashMember + mOfflineInfo.cashPos));
                 mPos.printText("  其他(记账)：", formatAmount(mOfflineInfo.otherMember));
                 if (mOfflineInfo.nativeList != null && !mOfflineInfo.nativeList.isEmpty()) {
-                    for (OfflineStatisticInfo.OfflineNativeInfo nativeInfo : mOfflineInfo.nativeList) {
+                    for (OfflineAccountStatisticInfo.OfflineNativeInfo nativeInfo : mOfflineInfo.nativeList) {
                         mPos.printText("  " + nativeInfo.name + "(记账)：", formatAmount(nativeInfo.amount));
                     }
                 }
@@ -408,7 +408,7 @@ public class StatisticsDetailPresenter implements StatisticsDetailContract.Prese
                 mPos.printText("  买单收银(管理者后台和POS)", formatAmount(mOfflineInfo.cashPos));
                 mPos.printText("    现金(记账)：", formatAmount(mOfflineInfo.cashPos));
                 if (mOfflineInfo.nativeList != null && !mOfflineInfo.nativeList.isEmpty()) {
-                    for (OfflineStatisticInfo.OfflineNativeInfo nativeInfo : mOfflineInfo.nativeList) {
+                    for (OfflineAccountStatisticInfo.OfflineNativeInfo nativeInfo : mOfflineInfo.nativeList) {
                         mPos.printText("    " + nativeInfo.name + "(记账)：", formatAmount(nativeInfo.amount));
                     }
                 }

@@ -6,7 +6,7 @@ import java.util.List;
  * Created by zr on 17-9-29.
  */
 
-public class OfflineStatisticInfo {
+public class OfflineAccountStatisticInfo {
     public long aliMember;    //【子】会员充值-支付宝	number
     public long cashMember;    //【子】会员充值-现金	number
     public long cashPos;    //pos现金	number

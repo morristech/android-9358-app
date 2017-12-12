@@ -7,6 +7,8 @@ import android.content.Intent;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
+import com.xmd.cashier.activity.AccountStatisticsActivity;
+import com.xmd.cashier.activity.AccountStatisticsSettingActivity;
 import com.xmd.cashier.activity.BillDetailActivity;
 import com.xmd.cashier.activity.BillRecordActivity;
 import com.xmd.cashier.activity.BillSearchActivity;
@@ -18,12 +20,14 @@ import com.xmd.cashier.activity.DiscountCouponActivity;
 import com.xmd.cashier.activity.GiftActActivity;
 import com.xmd.cashier.activity.InnerDetailActivity;
 import com.xmd.cashier.activity.InnerMethodActivity;
-import com.xmd.cashier.activity.InnerSelectedOrderActivity;
-import com.xmd.cashier.activity.InnerTechedOrderActivity;
 import com.xmd.cashier.activity.InnerPaymentActivity;
 import com.xmd.cashier.activity.InnerRecordActivity;
 import com.xmd.cashier.activity.InnerResultActivity;
 import com.xmd.cashier.activity.InnerSelectActivity;
+import com.xmd.cashier.activity.InnerSelectedOrderActivity;
+import com.xmd.cashier.activity.InnerTechedOrderActivity;
+import com.xmd.cashier.activity.ItemStatisticsActivity;
+import com.xmd.cashier.activity.ItemStatisticsExplainActivity;
 import com.xmd.cashier.activity.LoginActivity;
 import com.xmd.cashier.activity.MainActivity;
 import com.xmd.cashier.activity.McardInfoActivity;
@@ -45,8 +49,6 @@ import com.xmd.cashier.activity.SettingActivity;
 import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
-import com.xmd.cashier.activity.StatisticsActivity;
-import com.xmd.cashier.activity.StatisticsSettingActivity;
 import com.xmd.cashier.activity.TechnicianActivity;
 import com.xmd.cashier.activity.VerificationActivity;
 import com.xmd.cashier.activity.VerifyCheckInfoActivity;
@@ -308,13 +310,23 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoStatisticsActivity(Context context) {
-        Intent intent = new Intent(context, StatisticsActivity.class);
+    public static void gotoAccountStatisticsActivity(Context context) {
+        Intent intent = new Intent(context, AccountStatisticsActivity.class);
         context.startActivity(intent);
     }
 
-    public static void gotoStatisticsSettingActivity(Context context) {
-        Intent intent = new Intent(context, StatisticsSettingActivity.class);
+    public static void gotoAccountStatisticsSettingActivity(Context context) {
+        Intent intent = new Intent(context, AccountStatisticsSettingActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoItemStatisticsActivity(Context context) {
+        Intent intent = new Intent(context, ItemStatisticsActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoItemStatisticsExplainActivity(Context context) {
+        Intent intent = new Intent(context, ItemStatisticsExplainActivity.class);
         context.startActivity(intent);
     }
 

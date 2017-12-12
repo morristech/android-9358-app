@@ -82,4 +82,8 @@
     <string name="settle_other_js_time">结算时间：%1$s</string>
 
     <string name="activity_copy_right_text">%1$s保留对此次活动法律范围内的最终解释权。若有其他疑问，请咨询%2$s客服。</string>
+
+    <string name="item_statistics_time_explain">经营项目汇总按营业时间进行统计。</string>
+    <string name="item_statistics_amount_explain">经营项目汇总按订单金额进行统计。</string>
+    <string name="item_statistics_unit_explain">(1) 足浴按摩类，中间的数字为上钟数，单位为次；\n(2) 实物商品类，中间的数字为销售数量，单位为件(此处仅作统计用途，单位以实际为准)；</string>
 </resources>

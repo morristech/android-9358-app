@@ -156,6 +156,7 @@ public class AccountManager {
                             MemberManager.getInstance().startGetMemberSetting();
                             InnerManager.getInstance().startGetInnerSwitch();
                             InnerManager.getInstance().startGetInnerChannel();
+                            InnerManager.getInstance().getClubWorkTime();
                         }
 
                         @Override
@@ -196,6 +197,7 @@ public class AccountManager {
         MemberManager.getInstance().stopGetMemberSetting();
         InnerManager.getInstance().stopGetInnerSwitch();
         InnerManager.getInstance().stopGetInnerChannel();
+        InnerManager.getInstance().resetClubWorkTime();
 
         Observable<LogoutResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .logout(getToken(), AppConstants.SESSION_TYPE);

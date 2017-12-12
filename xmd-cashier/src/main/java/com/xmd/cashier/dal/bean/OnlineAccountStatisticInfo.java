@@ -4,7 +4,7 @@ package com.xmd.cashier.dal.bean;
  * Created by zr on 17-9-29.
  */
 
-public class OnlineStatisticInfo {
+public class OnlineAccountStatisticInfo {
     public long fastPay; // 在线买单收入 number
     public long internalCommission;  // 优惠减免 number
     public long itemCard;    //项目次卡 number
