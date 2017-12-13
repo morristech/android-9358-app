@@ -328,12 +328,12 @@ public class ItemStatisticsDetailPresenter implements ItemStatisticsDetailContra
         }
         mPos.printText("订单总金额", "￥" + Utils.moneyToStringEx(amount));
         for (ItemStatisticsInfo itemStatisticsInfo : mStatisticsData) {
-            mPos.printText("   " + itemStatisticsInfo.categoryName + "   " + itemStatisticsInfo.totalSum, "￥" + Utils.moneyToStringEx(itemStatisticsInfo.totalAmount), true);
+            mPos.printText(itemStatisticsInfo.categoryName + "   " + itemStatisticsInfo.totalSum, "￥" + Utils.moneyToStringEx(itemStatisticsInfo.totalAmount), true);
             for (ItemStatisticsInfo.CategoryItem categoryItem : itemStatisticsInfo.list) {
-                mPos.printText("      " + categoryItem.name + "   " + categoryItem.sum, "￥" + Utils.moneyToStringEx(categoryItem.amount));
+                mPos.printText("   " + categoryItem.name + "   " + categoryItem.sum, "￥" + Utils.moneyToStringEx(categoryItem.amount));
                 if (mStyleTag == STYLE_DETAIL && AppConstants.INNER_ORDER_ITEM_TYPE_SPA.equals(itemStatisticsInfo.type)) {
                     for (ItemStatisticsInfo.CategoryItemBell categoryItemBell : categoryItem.bellList) {
-                        mPos.printText("         " + categoryItemBell.bellName + "   " + categoryItemBell.bellCount);
+                        mPos.printText("      " + categoryItemBell.bellName + "   " + categoryItemBell.bellCount);
                     }
                 }
             }
@@ -341,7 +341,7 @@ public class ItemStatisticsDetailPresenter implements ItemStatisticsDetailContra
         mPos.printText("开始时间：" + mStartTime);
         mPos.printText("结束时间：" + mEndTime);
         mPos.printText("打印时间：" + DateUtils.doDate2String(new Date()));
-        mPos.printText("打印人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
+        mPos.printText("打印人员：" + AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printEnd();
     }
 }
