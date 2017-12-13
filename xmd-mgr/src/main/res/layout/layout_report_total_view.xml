@@ -32,7 +32,7 @@
             android:textColor="@color/colorText5"
             android:textSize="@dimen/inter_text_size"
             android:layout_alignParentRight="true"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <TextView
