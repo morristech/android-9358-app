@@ -184,7 +184,11 @@ public class LoginTechnician {
         setEmchatPassword(loginResult.emchatPassword);
         setNickName(loginResult.name);
         setAvatarUrl(loginResult.avatarUrl);
-        setRoles(loginResult.roles);
+        if (!TextUtils.isEmpty(loginResult.roles)) {
+            setRoles(loginResult.roles);
+        }
+
+
         setClubId(loginResult.clubId);
         setClubName(loginResult.clubName);
 
@@ -358,11 +362,13 @@ public class LoginTechnician {
         setClubName(result.name);
         setTechNo(techNo);
         setClubId(result.id);
+        setRoles(result.role);
         setStatus(Constant.TECH_STATUS_UNCERT);
     }
 
-    public void onModifyRequest(String techNo) {
+    public void onModifyRequest(String techNo, String role) {
         setTechNo(techNo);
+        setRoles(role);
         setStatus(Constant.TECH_STATUS_UNCERT);
     }
 

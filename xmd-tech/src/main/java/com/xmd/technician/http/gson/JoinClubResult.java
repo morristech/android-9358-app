@@ -6,4 +6,5 @@ package com.xmd.technician.http.gson;
 public class JoinClubResult extends BaseResult {
     public String id;
     public String name;
+    public String role;
 }

@@ -1292,7 +1292,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.tvConsumeMoneyDescription.setText(TextUtils.isEmpty(couponBean.consumeMoneyDescription) ? "" : couponBean.consumeMoneyDescription);
         }
 
-        viewHolder.tvCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, couponBean.couponPeriod, true));
+        viewHolder.tvCouponPeriod.setText(Utils.StrSubstring(19, couponBean.couponPeriod, true));
         viewHolder.btnShareCoupon.setVisibility(couponBean.online.equals(Constant.COUPON_ONLINE_TRUE) && !couponBean.couponType.equals(Constant.COUPON_PAID_TYPE) ? View.VISIBLE : View.GONE);
         viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponBean));
         viewHolder.btnShareCoupon.setOnClickListener(v -> mCallback.onPositiveButtonClicked(couponBean));

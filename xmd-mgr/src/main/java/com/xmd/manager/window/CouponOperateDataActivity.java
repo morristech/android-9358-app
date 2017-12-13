@@ -79,11 +79,11 @@ public class CouponOperateDataActivity extends BaseActivity {
         setRightVisible(true, R.drawable.ic_record_filter, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CouponOperateDataActivity.this,CouponFilterActivity.class);
-                intent.putExtra(Constant.FILTER_COUPON_TIME_START_TIME,mFilterStartTime);
-                intent.putExtra(Constant.FILTER_COUPON_TIME_END_TIME,mFilterEndTime);
-                intent.putExtra(Constant.FILTER_COUPON_TIME_TYPE,mFilterTimeType);
-                startActivityForResult(intent,FILTER_COUPON_REQUEST_CODE);
+                Intent intent = new Intent(CouponOperateDataActivity.this, CouponFilterActivity.class);
+                intent.putExtra(Constant.FILTER_COUPON_TIME_START_TIME, mFilterStartTime);
+                intent.putExtra(Constant.FILTER_COUPON_TIME_END_TIME, mFilterEndTime);
+                intent.putExtra(Constant.FILTER_COUPON_TIME_TYPE, mFilterTimeType);
+                startActivityForResult(intent, FILTER_COUPON_REQUEST_CODE);
             }
         });
         mFilterStartTime = SharedPreferenceHelper.getCurrentClubCreateTime();
@@ -118,7 +118,8 @@ public class CouponOperateDataActivity extends BaseActivity {
 
     private void setViewData(CouponOperateDataBean bean) {
         tvCouponName.setText(mFilterBean == null ? ResourceUtils.getString(R.string.coupon_data_all_coupon) : mFilterBean.actTitle);
-        couponFilterTime.setText(String.format("%s ~ %s", mFilterStartTime, mFilterEndTime));
+        couponFilterTime.setText(String.format("%s - %s", DateUtil.getFromatDate(DateUtil.dateToLong(mFilterStartTime), "yyyy年MM月dd日"),
+                DateUtil.getFromatDate(DateUtil.dateToLong(mFilterEndTime), "yyyy年MM月dd日")));
         tvCouponReceive.setText(bean.getTotal);
         tvCouponVerification.setText(bean.haveUseTotal);
         tvCouponOvertime.setText(bean.expireTotal);
@@ -143,8 +144,9 @@ public class CouponOperateDataActivity extends BaseActivity {
                 mFilterBean = (CouponBean) data.getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
                 mFilterStartTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_START_TIME);
                 mFilterEndTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_END_TIME);
-                mFilterTimeType = data.getIntExtra(Constant.FILTER_COUPON_TIME_TYPE,Constant.COUPON_FILTER_TIME_TYPE_ALL);
-                couponFilterTime.setText(String.format("%s ~ %s", mFilterStartTime, mFilterEndTime));
+                mFilterTimeType = data.getIntExtra(Constant.FILTER_COUPON_TIME_TYPE, Constant.COUPON_FILTER_TIME_TYPE_ALL);
+                couponFilterTime.setText(String.format("%s - %s", DateUtil.getFromatDate(DateUtil.dateToLong(mFilterStartTime), "yyyy年MM月dd日"),
+                        DateUtil.getFromatDate(DateUtil.dateToLong(mFilterEndTime), "yyyy年MM月dd日")));
                 getOperateTotalData();
                 mCouponOperateDataFragment.notifyDataRefresh(mFilterBean, mFilterStartTime, mFilterEndTime);
             }
@@ -163,11 +165,12 @@ public class CouponOperateDataActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_receive_record:
-                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, "",Constant.COUPON_TIME_TYPE_ALL);
+                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, "", Constant.COUPON_TIME_TYPE_ALL);
                 break;
             case R.id.ll_verification_record:
-                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, Constant.COUPON_STATUS_VERIFIED,Constant.COUPON_TIME_TYPE_ALL);
+                CouponRecordActivity.startCouponRecordActivity(this, mFilterBean, mFilterStartTime, mFilterEndTime, Constant.COUPON_STATUS_VERIFIED, Constant.COUPON_TIME_TYPE_ALL);
                 break;
         }
     }
+
 }

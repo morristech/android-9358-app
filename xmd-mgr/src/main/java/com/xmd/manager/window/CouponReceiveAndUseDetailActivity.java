@@ -108,7 +108,7 @@ public class CouponReceiveAndUseDetailActivity extends BaseActivity {
         if (mCouponBean.status.equals(Constant.COUPON_STATUS_VERIFIED)) {
             rlVerificationDetail.setVisibility(View.VISIBLE);
             tvVerificationTime.setText(mCouponBean.verifyTime);
-            tvVerificationTime.setText(TextUtils.isEmpty(mCouponBean.verifyOperator) ? "-" : mCouponBean.verifyOperator);
+            tvVerificationName.setText(TextUtils.isEmpty(mCouponBean.verifyOperator) ? "-" : mCouponBean.verifyOperator);
         } else {
             rlVerificationDetail.setVisibility(View.INVISIBLE);
         }

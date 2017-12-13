@@ -23,6 +23,8 @@ import com.xmd.technician.model.TechNo;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rx.Subscription;
@@ -113,6 +115,12 @@ public class TechNoDialogFragment extends DialogFragment {
                 }
             }
         }
+        Collections.sort(data,new Comparator<TechNo>() {
+            @Override
+            public int compare(TechNo o1, TechNo o2) {
+              return o1.name.compareTo(o2.name);
+            }
+        });
         data.add(TechNo.DEFAULT_TECH_NO);
         mAdapter.setData(mPresenter, data, mSelectedTechNo);
         mAdapter.notifyDataSetChanged();

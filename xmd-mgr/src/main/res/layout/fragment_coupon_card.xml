@@ -48,19 +48,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginBottom="2dp"
+
                     android:text="￥"
-                    android:textSize="16sp"
-                    android:gravity="left"
-                    android:textColor="#c3c3c3"
+                    android:textSize="14sp"
+                    android:gravity="left|bottom"
+                    android:textColor="#999999"
                     />
                 <TextView
                     android:id="@+id/tv_coupon_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:textColor="#C3C3C3"
-                    android:textSize="16sp"
+                    android:textColor="#999999"
+                    android:textSize="21sp"
                     tools:text="123券"
                     android:layout_marginLeft="2dp"
                 />

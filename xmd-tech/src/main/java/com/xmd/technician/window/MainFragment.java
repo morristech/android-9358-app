@@ -746,8 +746,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 tvTechStatusDes.setText(ResourceUtils.getString(R.string.tech_wait_audit));
                 Glide.with(getActivity()).load(mTech.getClubImageUrl()).error(R.drawable.icon22).into(clubAvatar);
                 tvClubName.setText(mTech.getClubName());
-                tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
-                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? "管理员指定" : mTech.getTechNo());
+               tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
+                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? ResourceUtils.getString(R.string.tech_num_default) : mTech.getTechNo());
                 llHandleStatusAudit.setVisibility(View.VISIBLE);
                 llHandleStatusReject.setVisibility(View.GONE);
                 break;
@@ -760,7 +760,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 Glide.with(getActivity()).load(mTech.getClubImageUrl()).error(R.drawable.icon22).into(clubAvatar);
                 tvClubName.setText(mTech.getClubName());
                 tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
-                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? "管理员指定" : mTech.getTechNo());
+                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? ResourceUtils.getString(R.string.tech_num_default): mTech.getTechNo());
                 llHandleStatusAudit.setVisibility(View.GONE);
                 llHandleStatusReject.setVisibility(View.VISIBLE);
                 break;

@@ -136,7 +136,7 @@ public class PaidCouponInfoDetailFragment extends BaseFragment {
         imgMoneyMark.setVisibility(View.VISIBLE);
         couponAmount.setText(String.valueOf(coupon.actValue));
         tvConsumeMoneyDescription.setText(TextUtils.isEmpty(coupon.consumeMoneyDescription) ? "" : coupon.consumeMoneyDescription);
-        tvCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, coupon.couponPeriod, true));
+        tvCouponPeriod.setText(Utils.StrSubstring(19, coupon.couponPeriod, true));
         btnShareCoupon.setVisibility(coupon.actStatus.equals(Constant.COUPON_ONLINE_TYPE) && !coupon.couponType.equals(Constant.COUPON_PAID_TYPE) ? View.VISIBLE : View.GONE);
         couponPeriodTime.setText(coupon.useTimePeriod);
         wvActContent.getSettings().setJavaScriptEnabled(false);

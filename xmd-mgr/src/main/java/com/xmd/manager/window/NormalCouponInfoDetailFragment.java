@@ -62,6 +62,8 @@ public class NormalCouponInfoDetailFragment extends BaseFragment {
     TextView tvCouponPeriod;
     @BindView(R.id.btn_share_coupon)
     TextView btnShareCoupon;
+    @BindView(R.id.limit_project_null)
+    TextView limitProjectNull;
     @BindView(R.id.limit_project)
     TextView limitProject;
     @BindView(R.id.limit_project_list)
@@ -106,7 +108,15 @@ public class NormalCouponInfoDetailFragment extends BaseFragment {
         if (result.statusCode == 200) {
             emptyView.setStatus(EmptyView.Status.Gone);
             setViewData(result.respData.coupon);
-            setLimitItemsViewData(result.respData.items);
+            if (result.respData.items.size() > 0) {
+                setLimitItemsViewData(result.respData.items);
+                limitProjectList.setVisibility(View.VISIBLE);
+                limitProjectNull.setVisibility(View.GONE);
+            } else {
+                limitProjectList.setVisibility(View.GONE);
+                limitProjectNull.setVisibility(View.VISIBLE);
+            }
+
             mShareUrl = result.respData.shareUrl;
             mShareTitle = result.respData.coupon.actTitle;
         } else {
@@ -133,14 +143,14 @@ public class NormalCouponInfoDetailFragment extends BaseFragment {
             couponAmount.setText(String.valueOf(coupon.actValue));
         }
         tvConsumeMoneyDescription.setText(TextUtils.isEmpty(coupon.consumeMoneyDescription) ? "" : coupon.consumeMoneyDescription);
-        tvCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, coupon.couponPeriod, true));
+        tvCouponPeriod.setText(Utils.StrSubstring(19, coupon.couponPeriod, true));
         btnShareCoupon.setVisibility(View.GONE);
 
         if (Utils.isEmpty(coupon.useTimePeriod)) {
             coupon.useTimePeriod = "使用不限";
         }
-
-        tvCouponDuration.setText(coupon.useTimePeriod + "\n" + coupon.couponPeriod + "\n" + (coupon.userGetCount == 0 ? "不限领取数量" : String.format("每人限领%s张", String.valueOf(coupon.userGetCount))));
+        //+ (coupon.userGetCount == 0 ? "不限领取数量" : String.format("每人限领%s张", String.valueOf(coupon.userGetCount)))
+        tvCouponDuration.setText(coupon.useTimePeriod + "\n" + coupon.couponPeriod + "\n");
         wvActContent.getSettings().setJavaScriptEnabled(false);
         wvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
         wvActContent.getSettings().setTextSize(WebSettings.TextSize.NORMAL);

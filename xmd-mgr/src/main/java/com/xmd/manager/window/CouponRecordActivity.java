@@ -109,7 +109,8 @@ public class CouponRecordActivity extends BaseActivity {
         } else {
             tvCouponTitle.setText(TextUtils.isEmpty(mCouponBean.actTitle) ? "优惠券" : mCouponBean.actTitle);
         }
-        tvCouponTime.setText(String.format("%s ~ %s", mStartTime, mEndTime));
+        tvCouponTime.setText(String.format("%s - %s", DateUtil.getFromatDate(DateUtil.dateToLong(mStartTime), "yyyy年MM月dd日"),
+                DateUtil.getFromatDate(DateUtil.dateToLong(mEndTime), "yyyy年MM月dd日")));
         setViewStatus(viewStatus);
     }
 
@@ -118,7 +119,8 @@ public class CouponRecordActivity extends BaseActivity {
         tvCouponTitle.setText(event.couponTitle);
         mStartTime = event.filterStartTime;
         mEndTime = event.filterEndTime;
-        tvCouponTime.setText(String.format("%s ~ %s", mStartTime, mEndTime));
+        tvCouponTime.setText(String.format("%s - %s", DateUtil.getFromatDate(DateUtil.dateToLong(mStartTime), "yyyy年MM月dd日"),
+                DateUtil.getFromatDate(DateUtil.dateToLong(mEndTime), "yyyy年MM月dd日")));
         setViewStatus(event.timeFilter);
         mCouponRecordListFragment.notifyDataChangeRefresh(event.couponId, event.filterStartTime, event.filterEndTime, event.couponStatus, event.timeFilter, "");
     }
@@ -130,7 +132,8 @@ public class CouponRecordActivity extends BaseActivity {
     }
 
     private void setViewStatus(String viewStatus) {
-        tvCouponTime.setText(String.format("%s - %s", mStartTime, mEndTime));
+        tvCouponTime.setText(String.format("%s-%s", DateUtil.getFromatDate(DateUtil.dateToLong(mStartTime), "yyyy年MM月dd日"),
+                DateUtil.getFromatDate(DateUtil.dateToLong(mEndTime), "yyyy年MM月dd日")));
         switch (viewStatus) {
             case Constant.COUPON_STATUS_ALL:
                 tvCouponStatus.setText(ResourceUtils.getString(R.string.coupon_data_receive));

@@ -765,6 +765,12 @@ public class DateUtil {
         return format.format(nowTime);
     }
 
+    public static String getFromatDate(long currentTime,String userFormat) {
+
+        SimpleDateFormat format = new SimpleDateFormat(userFormat);
+        return format.format(currentTime);
+    }
+
     public static Long DateToLong(String data) {
         SimpleDateFormat format;
         format = new SimpleDateFormat("MM月dd日");

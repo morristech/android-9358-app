@@ -32,4 +32,6 @@ public class OrderParameterBean {
     public String modifyDate;
     public String appointType;
     public String description;
+    public String appointTypeName;
+
 }

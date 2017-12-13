@@ -697,8 +697,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             rewardHolder.mRewardName.setText(String.format("赢取%s", rewardBean.firstPrizeName));
             if (Utils.isNotEmpty(rewardBean.startTime) && Utils.isNotEmpty(rewardBean.endTime)) {
-//                String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
-//                String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
                 rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", rewardBean.startTime, rewardBean.endTime));
             }
             rewardHolder.mRewardShare.setOnClickListener(v -> mCallback.onShareClicked(rewardBean));

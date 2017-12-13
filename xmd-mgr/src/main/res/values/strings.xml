@@ -554,7 +554,7 @@
     <string name="coupon_operate_date_title">优惠券数据</string>
     <string name="coupon_operate_list_date_title">优惠券</string>
     <string name="coupon_data_all_coupon">全部优惠券</string>
-    <string name="coupon_data_receive">全部</string>
+    <string name="coupon_data_receive">领取</string>
     <string name="coupon_data_verification">核销</string>
     <string name="coupon_data_over_time">过期</string>
     <string name="coupon_data_date">日期</string>
