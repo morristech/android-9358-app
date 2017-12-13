@@ -80,7 +80,8 @@ public interface NetService {
                                                  @Field("friendChatId") String friendChatId,
                                                  @Field("friendUserType") String friendUserType,
                                                  @Field("msgId") String msgId,
-                                                 @Field("msgType") String msgType);
+                                                 @Field("msgType") String msgType,
+                                                 @Field("msgContent") String msgContent);
 
     //获取快速回复
     @GET("/spa-manager/api/v2/chat/setting/fastReply")
@@ -120,6 +121,7 @@ public interface NetService {
     @POST("/spa-manager/api/v2/credit/game/dice/accept")
     Observable<BaseBean<DiceGameResult>> diceGamePlayOrCancel(@Field("gameId") String gameId,
                                                               @Field("status") String status);
+
     /**
      * 获取是否有在线的邀请有礼活动
      */

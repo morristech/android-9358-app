@@ -61,15 +61,15 @@ public abstract class ChatRowViewModel extends BaseViewModel {
             public void onSuccess() {
                 progress.set(false);
                 error.set(false);
-                String msgType;
-                if (!chatMessage.getEmMessage().getType().equals(EMMessage.Type.TXT)) {
-                    msgType = "text";
-                } else {
-                    msgType = chatMessage.getMsgType();
-                    if (msgType.equals(ChatMessage.MSG_TYPE_ORIGIN_TXT)) {
-                        msgType = "text";
-                    }
-                }
+                String msgType =chatMessage.getMsgType();
+//                if (!.equals(EMMessage.Type.TXT)) {
+//                    msgType = "text";
+//                } else {
+//                    msgType = chatMessage.getMsgType();
+//                    if (msgType.equals(ChatMessage.MSG_TYPE_ORIGIN_TXT)) {
+//                        msgType = "text";
+//                    }
+//                }
                 //通知服务器有新的消息
                 Observable<BaseBean> observable = XmdNetwork.getInstance()
                         .getService(NetService.class)
@@ -79,7 +79,7 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                                 chatMessage.getRemoteChatId(),
                                 UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
                                 chatMessage.getEmMessage().getMsgId(),
-                                msgType);
+                                msgType, chatMessage.getContentText().toString());
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
                     @Override
                     public void onCallbackSuccess(BaseBean result) {
