@@ -3,7 +3,6 @@ package com.xmd.inner;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -122,10 +121,6 @@ public class NativeSeatBookActivity extends BaseActivity {
     @OnClick(R2.id.btn_book_confirm)
     public void onBookConfirm() {
         String phone = mBookPhoneEdit.getText().toString().trim();
-        if (TextUtils.isEmpty(phone)) {
-            XToast.show("请输入联系方式");
-            return;
-        }
         saveBook(String.valueOf(mSeatInfo.roomId), String.valueOf(mSeatInfo.id), phone, mDate);
     }
 
