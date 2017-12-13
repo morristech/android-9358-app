@@ -172,7 +172,7 @@ public class InnerManager {
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<WorkTimeResult>() {
             @Override
             public void onCallbackSuccess(WorkTimeResult result) {
-                startTime = result.getRespData().startTime;
+                startTime = result.getRespData().startTimeStr;
             }
 
             @Override

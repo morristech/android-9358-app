@@ -7,4 +7,6 @@ package com.xmd.cashier.dal.bean;
 public class WorkTimeInfo {
     public String endTime;
     public String startTime;
+    public String startTimeStr;
+    public String endTimeStr;
 }
