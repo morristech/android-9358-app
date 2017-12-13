@@ -132,7 +132,7 @@ public class CashierReportByDayFragment extends BaseFragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mCashierDayList.setLayoutManager(mLayoutManager);
         mCashierDayList.setHasFixedSize(true);
-        mCashierDayList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mCashierDayList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new ReportDetailAdapter<>(getActivity());
         mAdapter.setCallBack(new ReportDetailAdapter.CallBack() {
             @Override

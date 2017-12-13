@@ -116,7 +116,7 @@ public class SalaryReportByDayFragment extends BaseFragment {
         mSaleTitle.setText(ResourceUtils.getString(R.string.report_sales_title));
 
         mSalaryDayList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mSalaryDayList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mSalaryDayList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mSalaryDayList.setHasFixedSize(true);
         mAdapter = new TechCommissionAmountAdapter(getActivity());
         mAdapter.setCallBack(info -> {

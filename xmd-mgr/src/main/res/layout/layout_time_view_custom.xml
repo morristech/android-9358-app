@@ -5,10 +5,10 @@
     android:background="#fafafa"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingTop="@dimen/tiny_padding"
-    android:paddingBottom="@dimen/tiny_padding"
+    android:paddingBottom="@dimen/activity_little_margin"
+    android:paddingLeft="@dimen/activity_little_margin"
     android:paddingRight="@dimen/activity_small_margin"
-    android:paddingLeft="@dimen/activity_little_margin">
+    android:paddingTop="@dimen/activity_little_margin">
 
     <TextView
         android:id="@+id/tv_start_time"

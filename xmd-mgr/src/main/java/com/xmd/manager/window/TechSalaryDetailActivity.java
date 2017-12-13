@@ -141,7 +141,7 @@ public class TechSalaryDetailActivity extends BaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mTechDetailList.setHasFixedSize(true);
         mTechDetailList.setLayoutManager(mLayoutManager);
-        mTechDetailList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mTechDetailList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mTechDetailList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

@@ -3,8 +3,8 @@
     android:shape="oval"
     android:useLevel="false">
     <size
-        android:width="@dimen/activity_small_margin"
-        android:height="@dimen/activity_small_margin" />
+        android:width="4dp"
+        android:height="4dp" />
     <gradient
         android:endColor="#b1becb"
         android:startColor="#b1becb" />

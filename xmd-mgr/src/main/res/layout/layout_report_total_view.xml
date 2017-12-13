@@ -5,17 +5,35 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_total_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:paddingBottom="@dimen/small_padding"
-        android:paddingLeft="@dimen/activity_normal_margin"
-        android:paddingRight="@dimen/activity_normal_margin"
-        android:paddingTop="@dimen/small_padding"
-        android:textColor="@color/colorText5"
-        android:textSize="@dimen/inter_text_size" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_total_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:paddingTop="@dimen/small_padding"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/colorText5"
+            android:textSize="@dimen/inter_text_size" />
+
+        <TextView
+            android:id="@+id/tv_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:paddingTop="@dimen/small_padding"
+            android:textColor="@color/colorText5"
+            android:textSize="@dimen/inter_text_size"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_total_content"

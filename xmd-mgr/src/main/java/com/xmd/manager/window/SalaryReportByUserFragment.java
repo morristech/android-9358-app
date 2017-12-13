@@ -121,7 +121,7 @@ public class SalaryReportByUserFragment extends BaseFragment {
 
         mSalaryCustomList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSalaryCustomList.setHasFixedSize(true);
-        mSalaryCustomList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mSalaryCustomList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new ReportNormalAdapter<>(getActivity());
         mAdapter.setCallBack(date -> {
             Intent intent = new Intent(getActivity(), TechSalaryTotalActivity.class);

@@ -122,7 +122,7 @@ public class CashierReportByUserFragment extends BaseFragment {
 
         mCashierCustomList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mCashierCustomList.setHasFixedSize(true);
-        mCashierCustomList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mCashierCustomList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new ReportNormalAdapter<>(getActivity());
         mAdapter.setCallBack(date -> {
             Intent intent = new Intent(getActivity(), ClubCashierDetailActivity.class);

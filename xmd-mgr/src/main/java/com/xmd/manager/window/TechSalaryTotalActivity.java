@@ -56,6 +56,8 @@ public class TechSalaryTotalActivity extends BaseActivity {
     TextView mTotalTitle;
     @BindView(R.id.tv_total_content)
     TextView mTotalAmount;
+    @BindView(R.id.tv_total_time)
+    TextView mTotalTime;
 
     @BindView(R.id.layout_data)
     LinearLayout mDataLayout;
@@ -86,18 +88,20 @@ public class TechSalaryTotalActivity extends BaseActivity {
         mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_DATE);
         ButterKnife.bind(this);
 
-        setTitle(mCurrentDate);
+        setTitle("工资明细");
 
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
 
+        mTotalTime.setVisibility(View.VISIBLE);
+        mTotalTime.setText(mCurrentDate);
         mTotalTitle.setText(ResourceUtils.getString(R.string.report_salary_sum_title));
         mServiceTitle.setText(ResourceUtils.getString(R.string.report_service_title));
         mSaleTitle.setText(ResourceUtils.getString(R.string.report_sales_title));
 
         mSalaryDayList.setLayoutManager(new LinearLayoutManager(this));
         mSalaryDayList.setHasFixedSize(true);
-        mSalaryDayList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mSalaryDayList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new TechCommissionAmountAdapter(this);
         mAdapter.setCallBack(info -> {
             Intent intent = new Intent(TechSalaryTotalActivity.this, TechSalaryDetailActivity.class);

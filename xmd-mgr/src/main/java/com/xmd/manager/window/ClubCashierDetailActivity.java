@@ -86,6 +86,8 @@ public class ClubCashierDetailActivity extends BaseActivity {
     TextView mTotalTitle;
     @BindView(R.id.tv_total_content)
     TextView mTotalAmount;
+    @BindView(R.id.tv_total_time)
+    TextView mTotalTime;
 
     @BindView(R.id.rv_cashier_day_data)
     RecyclerView mCashierDayList;
@@ -96,7 +98,7 @@ public class ClubCashierDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_club_cashier_detail);
         mCurrentDate = getIntent().getStringExtra(EXTRA_CURRENT_TIME);
         ButterKnife.bind(this);
-        setTitle(mCurrentDate);
+        setTitle("买单收银明细");
 
         mScope = null;
         mRequestType = REQUEST_TYPE_INIT;
@@ -106,6 +108,8 @@ public class ClubCashierDetailActivity extends BaseActivity {
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setStatus(EmptyView.Status.Loading);
 
+        mTotalTime.setVisibility(View.VISIBLE);
+        mTotalTime.setText(mCurrentDate);
         mTotalTitle.setText(ResourceUtils.getString(R.string.report_cashier_sum_title));
         mSpaTitle.setText(ResourceUtils.getString(R.string.report_spa_title));
         mGoodsTitle.setText(ResourceUtils.getString(R.string.report_goods_title));
@@ -113,7 +117,7 @@ public class ClubCashierDetailActivity extends BaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mCashierDayList.setLayoutManager(mLayoutManager);
         mCashierDayList.setHasFixedSize(true);
-        mCashierDayList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mCashierDayList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new ReportDetailAdapter<>(this);
         mAdapter.setCallBack(new ReportDetailAdapter.CallBack() {
             @Override

@@ -125,7 +125,7 @@ public class CashierReportByMonthFragment extends BaseFragment {
 
         mCashierMonthList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mCashierMonthList.setHasFixedSize(true);
-        mCashierMonthList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mCashierMonthList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new ReportNormalAdapter<>(getActivity());
         mAdapter.setCallBack(date -> {
             Intent intent = new Intent(getActivity(), ClubCashierDetailActivity.class);

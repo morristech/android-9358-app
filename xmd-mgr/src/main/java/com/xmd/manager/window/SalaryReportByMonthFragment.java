@@ -123,7 +123,7 @@ public class SalaryReportByMonthFragment extends BaseFragment {
 
         mSalaryMonthList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSalaryMonthList.setHasFixedSize(true);
-        mSalaryMonthList.addItemDecoration(new CustomRecycleViewDecoration(1));
+        mSalaryMonthList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mAdapter = new ReportNormalAdapter<>(getActivity());
         mAdapter.setCallBack(date -> {
             Intent intent = new Intent(getActivity(), TechSalaryTotalActivity.class);
