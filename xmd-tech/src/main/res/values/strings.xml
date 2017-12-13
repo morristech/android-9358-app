@@ -393,4 +393,5 @@
     <string name="tech_poster_deleter_failed">删除失败</string>
     <string name="tech_wait_audit">正在等待管理员审批，请稍候！</string>
     <string name="tech_club_reject">会所管理员拒绝了您的加入申请</string>
+    <string name="tech_num_default">管理员指定</string>
 </resources>

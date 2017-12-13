@@ -149,8 +149,8 @@ public class SalaryTotalDataFragment extends BaseFragment {
             return;
         }
         tvTechCommissionTotal.setText(String.valueOf(String.format("%1.2f", (bean.serviceCommission + bean.salesCommission) / 100f)));
-        tvTechServiceCommission.setText(String.format("￥%1.2f", bean.serviceCommission / 100f));
-        tvTechSellCommission.setText(String.format("￥%1.2f", bean.salesCommission / 100f));
+        tvTechServiceCommission.setText(String.format("%1.2f", bean.serviceCommission / 100f));
+        tvTechSellCommission.setText(String.format("%1.2f", bean.salesCommission / 100f));
     }
 
     @Override

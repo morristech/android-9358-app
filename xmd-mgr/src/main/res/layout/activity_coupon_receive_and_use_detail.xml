@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/receiveTime"
                         android:layout_marginTop="@dimen/small_space"
-                        android:text="有效时间："
+                        android:text="有效期至："
                         android:textColor="#212121"
                         android:textSize="15sp"/>
 

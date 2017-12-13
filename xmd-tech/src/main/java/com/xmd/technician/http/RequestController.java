@@ -720,6 +720,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<JoinClubResult>() {
             @Override
             protected void postResult(JoinClubResult result) {
+                result.role = params.get(RequestConstant.KEY_ROLE_CODE);
                 RxBus.getInstance().post(result);
             }
 
@@ -2149,6 +2150,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<AuditModifyResult>() {
             @Override
             protected void postResult(AuditModifyResult result) {
+                result.role = params.get(RequestConstant.KEY_ROLE_CODE);
                 RxBus.getInstance().post(result);
             }
 

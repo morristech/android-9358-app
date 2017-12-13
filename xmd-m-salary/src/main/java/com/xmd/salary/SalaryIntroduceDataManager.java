@@ -101,6 +101,9 @@ public class SalaryIntroduceDataManager {
 
     private void BellListDataChanged() {
         mBellList.clear();
+        if (mSettingBean.bellList == null) {
+            return;
+        }
         mBellList.addAll(mSettingBean.bellList);
     }
 
@@ -114,6 +117,9 @@ public class SalaryIntroduceDataManager {
     private void CardCommissionListDataChanged() {
         mCardItemBeanList.clear();
         MemberActivityDetailBean memberActivityDetail = mSettingBean.memberActivityDetail;
+        if (memberActivityDetail == null) {
+            return;
+        }
         for (PackageListBean packageBean : memberActivityDetail.packageList) {
             CardItemBean cardItemBean = new CardItemBean(packageBean.name, packageBean.amount, getPackageItem(packageBean), packageBean.commissionAmount);
             mCardItemBeanList.add(cardItemBean);
@@ -121,12 +127,6 @@ public class SalaryIntroduceDataManager {
     }
 
     private String getPackageItem(PackageListBean packageBean) {
-//        StringBuilder strBuilder = new StringBuilder();
-//        for (PackageItemsBean packageItemBean : packageBean.packageItems) {
-//            strBuilder.append(packageItemBean.name).append("*").append(String.valueOf(packageItemBean.itemCount));
-//        }
-//
-//        return strBuilder.toString();
         return String.format("现金：%1.2f元", packageBean.packageItems.get(0).oriAmount / 100f);
     }
 
@@ -147,7 +147,10 @@ public class SalaryIntroduceDataManager {
     private void OrderCommissionListDataChanged() {
         mOrderItemBeanList.clear();
         OrderParameterBean orderParameter = mSettingBean.orderParameter;
-        OrderItemBean orderBean = new OrderItemBean(getAppointTypeName(orderParameter.appointType), orderParameter.techCommission);
+        if (orderParameter == null) {
+            return;
+        }
+        OrderItemBean orderBean = new OrderItemBean(getAppointTypeName(orderParameter.appointTypeName), orderParameter.techCommission);
         mOrderItemBeanList.add(orderBean);
     }
 

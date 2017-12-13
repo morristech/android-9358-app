@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:textColor="#ffaf50"
-            android:textSize="14sp"
+            android:textSize="12sp"
             tools:text="8月23日 - 9月30日"/>
         <TextView
             android:id="@+id/tv_coupon_status"

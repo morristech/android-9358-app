@@ -1,5 +1,9 @@
 package com.xmd.technician.model;
 
+
+import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
+
 /**
  * Created by heyangya on 16-12-23.
  */
@@ -13,5 +17,5 @@ public class TechNo {
         this.id = id;
     }
 
-    public static TechNo DEFAULT_TECH_NO = new TechNo("管理员指定", null);
+    public static TechNo DEFAULT_TECH_NO = new TechNo(ResourceUtils.getString(R.string.tech_num_default), null);
 }

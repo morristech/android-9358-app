@@ -305,13 +305,16 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
 
 
     private void initViewData() {
+        if(mTechInfo == null){
+            return;
+        }
         if (TextUtils.isEmpty(mTechInfo.avatarUrl)) {
             editTechHeadMask.setBackgroundResource(R.drawable.img_upload_head);
         } else {
             editTechHeadMask.setBackgroundResource(R.drawable.img_select_head);
         }
         Glide.with(this).load(mTechInfo.avatarUrl).error(R.drawable.img_default_avatar).into(imgTechCenterHead);
-        tvTechNickName.setText(mTechInfo.getName());
+        tvTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName())?"":mTechInfo.getName());
         tvTechGender.setText(mTechInfo.getGender());
         tvTechOrigin.setText(String.format("%s %s", mTechInfo.getProvince(), mTechInfo.getCity()));
         tvTechAutograph.setText(mTechInfo.getDescription());

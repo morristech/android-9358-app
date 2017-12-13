@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,8 +44,8 @@ public class SalaryDayDetailActivity extends BaseActivity {
     LinearLayout llTechSellCommission;
     @BindView(R2.id.salary_detail_list)
     RecyclerView salaryDetailList;
-//    @BindView(R2.id.stationary_scroll_view)
-//    StationaryScrollView stationaryScrollView;
+    @BindView(R2.id.tv_time)
+    TextView tvTime;
 
     private String mTimeDate;
     private List<CommissionBean> mCommissionBeans;
@@ -65,6 +66,7 @@ public class SalaryDayDetailActivity extends BaseActivity {
         setTitle(ResourceUtils.getString(R.string.salary_detail_title));
         setBackVisible(true);
         mTimeDate = getIntent().getStringExtra(SalaryListDataFragment.INTENT_TIME);
+        tvTime.setText(TextUtils.isEmpty(mTimeDate) ? "" : mTimeDate);
         getSalarySumAmount(mTimeDate);
         if (mCommissionBeans == null) {
             mCommissionBeans = new ArrayList<>();
@@ -72,7 +74,6 @@ public class SalaryDayDetailActivity extends BaseActivity {
         mSalaryAdapter = new SalaryListAdapter(SalaryDayDetailActivity.this, mCommissionBeans);
         mFilterType = ConstantResource.SALARY_TYPE_ALL;
         salaryDetailList.setLayoutManager(new LinearLayoutManager(SalaryDayDetailActivity.this));
-     //   salaryDetailList.addItemDecoration(new DividerDecoration(RecyclerView.VERTICAL, ResourceUtils.getDrawable(R.drawable.list_item_divider)));
         salaryDetailList.setHasFixedSize(true);
         salaryDetailList.setAdapter(mSalaryAdapter);
         getCommissionDetailList(mTimeDate, mFilterType);
@@ -118,14 +119,14 @@ public class SalaryDayDetailActivity extends BaseActivity {
     }
 
     public void setViewData(SalaryBean bean) {
-        tvTechCommissionTotal.setText(String.valueOf(String.format("%1.1f", (bean.serviceCommission + bean.salesCommission) / 100f)));
-        tvTechServiceCommission.setText(String.format("￥%1.1f", bean.serviceCommission / 100f));
-        tvTechSellCommission.setText(String.format("￥%1.1f", bean.salesCommission / 100f));
+        tvTechCommissionTotal.setText(String.valueOf(String.format("%1.2f", (bean.serviceCommission + bean.salesCommission) / 100f)));
+        tvTechServiceCommission.setText(String.format("%1.2f", bean.serviceCommission / 100f));
+        tvTechSellCommission.setText(String.format("%1.2f", bean.salesCommission / 100f));
     }
 
     private void getCommissionDetailList(String workDate, String type) {
 
-        DataManager.getInstance().getTechCommissionDetail("1", "1000", workDate,workDate, type, new NetworkSubscriber<CommissionDetailResult>() {
+        DataManager.getInstance().getTechCommissionDetail("1", "1000", workDate, workDate, type, new NetworkSubscriber<CommissionDetailResult>() {
             @Override
             public void onCallbackSuccess(CommissionDetailResult result) {
                 mSalaryAdapter.setData(result.getRespData());

@@ -5,5 +5,5 @@ package com.xmd.technician.http.gson;
  */
 
 public class AuditModifyResult extends BaseResult {
-
+    public String role;
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -44,6 +45,18 @@ public class SalaryIntroduceActivity extends BaseActivity {
     LinearLayout llOrder;
     @BindView(R2.id.service_excel)
     ExcelPanel serviceExcel;
+    @BindView(R2.id.ll_commodities_view)
+    LinearLayout llCommoditiesView;
+    @BindView(R2.id.tv_commodities)
+    TextView tvCommodities;
+    @BindView(R2.id.ll_card_view)
+    LinearLayout llCardView;
+    @BindView(R2.id.tv_card)
+    TextView tvCard;
+    @BindView(R2.id.tv_package)
+    TextView tvPackage;
+    @BindView(R2.id.ll_package_view)
+    LinearLayout llPackageView;
 
     private SalaryIntroduceAdapter mCommodityAdapter;
     private SalaryIntroduceAdapter mCardAdapter;
@@ -121,9 +134,32 @@ public class SalaryIntroduceActivity extends BaseActivity {
     }
 
     private void notifyAllDataChanged() {
-        mCommodityAdapter.setData(mSalaryIntroduceDataManager.getCommissionList());
-        mCardAdapter.setData(mSalaryIntroduceDataManager.getCardCommissionList());
-        mOrderAdapter.setData(mSalaryIntroduceDataManager.getOrderCommissionList());
+        if (mSalaryIntroduceDataManager.getCommissionList().size() > 0) {
+            mCommodityAdapter.setData(mSalaryIntroduceDataManager.getCommissionList());
+            llCommoditiesView.setVisibility(View.VISIBLE);
+            tvCommodities.setVisibility(View.GONE);
+        } else {
+            llCommoditiesView.setVisibility(View.GONE);
+            tvCommodities.setVisibility(View.VISIBLE);
+        }
+        if (mSalaryIntroduceDataManager.getCardCommissionList().size() > 0) {
+            mCardAdapter.setData(mSalaryIntroduceDataManager.getCardCommissionList());
+            llCardView.setVisibility(View.VISIBLE);
+            tvCard.setVisibility(View.GONE);
+        } else {
+            llCardView.setVisibility(View.GONE);
+            tvCard.setVisibility(View.VISIBLE);
+        }
+        if (mSalaryIntroduceDataManager.getOrderCommissionList().size() > 0) {
+            mOrderAdapter.setData(mSalaryIntroduceDataManager.getOrderCommissionList());
+            llPackageView.setVisibility(View.VISIBLE);
+            tvPackage.setVisibility(View.GONE);
+        } else {
+            llPackageView.setVisibility(View.GONE);
+            tvPackage.setVisibility(View.VISIBLE);
+        }
+
+
         showServiceExcelView();
     }
 

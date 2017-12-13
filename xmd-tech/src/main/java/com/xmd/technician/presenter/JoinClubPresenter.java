@@ -172,7 +172,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         } else {
             //申请加入成功，跳转到完善资料页面
             mView.showToast("申请成功，等待管理员审核");
-            mTech.onModifyRequest(mSelectedTechNo);
+            mTech.onModifyRequest(mSelectedTechNo,result.role);
             mView.setResult(Activity.RESULT_OK, null);
             mView.finishSelf();
             RxBus.getInstance().post(new EventRequestJoinClub());
