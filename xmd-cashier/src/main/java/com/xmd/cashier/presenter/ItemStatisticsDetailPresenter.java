@@ -24,6 +24,7 @@ import com.xmd.m.network.XmdNetwork;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import rx.Observable;
@@ -225,6 +226,15 @@ public class ItemStatisticsDetailPresenter implements ItemStatisticsDetailContra
             for (ItemStatisticsInfo.CategoryItem categoryItem : itemStatisticsInfo.list) {
                 tempSum += categoryItem.sum;
                 tempAmount += categoryItem.amount;
+                if (categoryItem.bellList != null && !categoryItem.bellList.isEmpty()) {
+                    Iterator<ItemStatisticsInfo.CategoryItemBell> it = categoryItem.bellList.iterator();
+                    while (it.hasNext()) {
+                        ItemStatisticsInfo.CategoryItemBell categoryItemBell = it.next();
+                        if (categoryItemBell.bellCount == 0) {
+                            it.remove();
+                        }
+                    }
+                }
             }
             itemStatisticsInfo.totalSum = tempSum;
             itemStatisticsInfo.totalAmount = tempAmount;

@@ -80,6 +80,19 @@ public class NativeRoomActivity extends BaseActivity {
 
         mExRoomAdapter = new ExRoomAdapter(NativeRoomActivity.this);
         mRoomList.setLayoutManager(new LinearLayoutManager(NativeRoomActivity.this));
+        mRoomList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                mRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         mRoomList.setHasFixedSize(true);
         mRoomList.setAdapter(mExRoomAdapter);
 

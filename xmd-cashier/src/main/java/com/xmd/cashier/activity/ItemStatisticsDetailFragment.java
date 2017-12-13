@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
@@ -51,8 +50,6 @@ public class ItemStatisticsDetailFragment extends Fragment implements ItemStatis
 
     private LinearLayout mDataLayout;
     private TextView mDataChangeText;
-    private LinearLayout mDetailTitle;
-    private RelativeLayout mSummaryTitle;
     private TextView mSummaryAmount;
     private RecyclerView mDataList;
     private TextView mStatisticsStart;
@@ -153,8 +150,6 @@ public class ItemStatisticsDetailFragment extends Fragment implements ItemStatis
                 mPresenter.onStyleChange();
             }
         });
-        mDetailTitle = (LinearLayout) mView.findViewById(R.id.layout_detail_title);
-        mSummaryTitle = (RelativeLayout) mView.findViewById(R.id.layout_summary_title);
         mSummaryAmount = (TextView) mView.findViewById(R.id.tv_summary_total_amount);
         mDataList = (RecyclerView) mView.findViewById(R.id.rv_statistics_list);
         mStatisticsStart = (TextView) mView.findViewById(R.id.tv_statistics_start);
@@ -306,13 +301,9 @@ public class ItemStatisticsDetailFragment extends Fragment implements ItemStatis
     public void showStyle(int style) {
         switch (style) {
             case STYLE_DETAIL:
-                mDetailTitle.setVisibility(View.VISIBLE);
-                mSummaryTitle.setVisibility(View.GONE);
                 mDataChangeText.setText("查看汇总");
                 break;
             case STYLE_SUMMARY:
-                mDetailTitle.setVisibility(View.GONE);
-                mSummaryTitle.setVisibility(View.VISIBLE);
                 mDataChangeText.setText("查看明细");
                 break;
             default:
