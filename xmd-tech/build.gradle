@@ -38,8 +38,8 @@ android {
         //1.8.10 app统一化
         //1.9.2 app埋点，个人中心优化
         //1.9.4 发送邀请有礼，新增技师海报，添加修改状态 63工资
-        versionCode 63
-        versionName "1.9.3"
+        versionCode 64
+        versionName "1.9.2"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
