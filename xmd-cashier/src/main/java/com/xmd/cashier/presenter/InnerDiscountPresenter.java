@@ -137,7 +137,6 @@ public class InnerDiscountPresenter implements InnerDiscountContract.Presenter {
 
     @Override
     public void onVerifyClick(VerificationItem item, int position) {
-        mView.hideKeyboard();
         switch (item.type) {
             case AppConstants.TYPE_COUPON:
             case AppConstants.TYPE_CASH_COUPON:

@@ -21,7 +21,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 23
-        versionName "1.4.1"
+        versionName "1.4.2"
 
         buildConfigField "String", "SERVER_SDCM100", SERVER_SDCM100
         buildConfigField "String", "SERVER_SDCM103", SERVER_SDCM103

@@ -54,6 +54,7 @@ public class InnerDiscountActivity extends BaseActivity implements InnerDiscount
     private TextView mVerifiedTitleDesc;
     private RecyclerView mVerifiedList;
 
+    private LinearLayout mOperateLayout;
     private TextView mDiscountAmountText;
     private TextView mDiscountConfirm;
 
@@ -85,6 +86,8 @@ public class InnerDiscountActivity extends BaseActivity implements InnerDiscount
         mKeyboardView.setKeyTextColor("清空", 0xffffffff);
         mKeyboardView.setKeyBackgroundDrawable("清空", getResources().getDrawable(R.drawable.state_keyboard_clear_del));
         mKeyboardView.setKeyBackgroundDrawable("delete", getResources().getDrawable(R.drawable.state_keyboard_clear_del));
+
+        mOperateLayout = (LinearLayout) findViewById(R.id.layout_operate);
 
         mReductionText = (CustomMoneyEditText) findViewById(R.id.tv_reduction_discount);
         mReductionText.setInputType(0);
@@ -182,6 +185,7 @@ public class InnerDiscountActivity extends BaseActivity implements InnerDiscount
 
             @Override
             public void onItemClick(VerificationItem item, int position) {
+                hideKeyboard();
                 mPresenter.onVerifyClick(item, position);
             }
         });
@@ -276,11 +280,13 @@ public class InnerDiscountActivity extends BaseActivity implements InnerDiscount
     @Override
     public void showKeyboard() {
         mKeyboardView.setVisibility(View.VISIBLE);
+        mOperateLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void hideKeyboard() {
         mKeyboardView.setVisibility(View.GONE);
+        mOperateLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

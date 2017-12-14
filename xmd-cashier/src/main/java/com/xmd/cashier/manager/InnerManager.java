@@ -392,7 +392,7 @@ public class InnerManager {
         }
         mPos.printDivide();
         mPos.printText("订单金额：", "￥" + Utils.moneyToStringEx(info.originalAmount));
-        mPos.printText("优惠抵扣：", "￥" + Utils.moneyToString(paidOrderAmount + paidMemberAmount + paidCouponAmount + paidReductionAmount));
+        mPos.printText("优惠减免：", "￥" + Utils.moneyToStringEx(paidOrderAmount + paidMemberAmount + paidCouponAmount + paidReductionAmount));
         mPos.printText("|--预约抵扣：", "-￥" + Utils.moneyToStringEx(paidOrderAmount));
         mPos.printText("|--用券抵扣：", "-￥" + Utils.moneyToStringEx(paidCouponAmount));
         mPos.printText("|--会员优惠：", "-￥" + Utils.moneyToStringEx(paidMemberAmount));
@@ -402,7 +402,7 @@ public class InnerManager {
         mPos.printDivide();
 
         if (keep) {
-            mPos.printText("优惠详情", "-" + Utils.moneyToString(paidOrderAmount + paidMemberAmount + paidCouponAmount + paidReductionAmount), true);
+            mPos.printText("优惠详情", "-" + Utils.moneyToStringEx(paidOrderAmount + paidMemberAmount + paidCouponAmount + paidReductionAmount), true);
             for (OrderDiscountInfo discountInfo : info.orderDiscountList) {
                 switch (discountInfo.type) {
                     case AppConstants.PAY_DISCOUNT_COUPON:
