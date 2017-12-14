@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.CouponOperateSelectAdapter;
@@ -176,9 +177,25 @@ public class SelectCouponFragment extends BaseFragment {
     CouponOperateSelectAdapter.CouponItemClickedListener usableCouponListener = new CouponOperateSelectAdapter.CouponItemClickedListener() {
         @Override
         public void couponItemClicked(CouponBean bean, int position) {
+            if (mSelectedCoupon != null && mSelectedCoupon.isUsable.equals("Y")) {
+                for (int i = 0; i < mDataFilterManager.getOnlineCoupons().size(); i++) {
+                    if (mDataFilterManager.getOnlineCoupons().get(i).actId.equals(mSelectedCoupon.actId)) {
+                        mSelectedPosition = i;
+                    }
+                }
+            }
+            if (mSelectedCoupon != null && mSelectedCoupon.isUsable.equals("N")) {
+                for (int i = 0; i < mDataFilterManager.getOfflineCoupons().size(); i++) {
+                    if (mDataFilterManager.getOfflineCoupons().get(i).actId.equals(mSelectedCoupon.actId)) {
+                        mSelectedPosition = i;
+                    }
+                }
+            }
+
             if (bean.isSelected == Constant.COUPON_IS_SELECTED_TRUE) {
                 setAllCouponSelected();
             } else {
+                XLogger.i(">>>","mSe>"+mSelectedPosition);
                 tvAllCoupon.setSelected(false);
                 if (mSelectedPosition == -1 || mSelectedCoupon == null) { //之前选中的全部
                     bean.isSelected = Constant.COUPON_IS_SELECTED_TRUE;
@@ -190,20 +207,15 @@ public class SelectCouponFragment extends BaseFragment {
                         mUnusableCouponAdapter.notifyItemChanged(position);
                     }
                 } else {
-                    mSelectedCoupon.isSelected = Constant.COUPON_IS_SELECTED_FALSE;
-                    if (mSelectedCoupon.isUsable.equals(Constant.COUPON_ONLINE_TRUE)) {
-                        mUsableCouponAdapter.notifyItemChanged(mSelectedPosition);
-                    } else {
-                        mUnusableCouponAdapter.notifyItemChanged(mSelectedPosition);
-                    }
                     mSelectedPosition = position;
-                    bean.isSelected = Constant.COUPON_IS_SELECTED_TRUE;
                     mSelectedCoupon = bean;
                     if (mSelectedCoupon.isUsable.equals(Constant.COUPON_ONLINE_TRUE)) {
-                        mUsableCouponAdapter.notifyItemChanged(mSelectedPosition);
+                        mDataFilterManager.setPositionSelectec(true,mSelectedPosition);
                     } else {
-                        mUnusableCouponAdapter.notifyItemChanged(mSelectedPosition);
+                        mDataFilterManager.setPositionSelectec(false,mSelectedPosition);
                     }
+                    mUsableCouponAdapter.setData(mDataFilterManager.getOnlineCoupons());
+                    mUnusableCouponAdapter.setData(mDataFilterManager.getOfflineCoupons());
 
                 }
 
