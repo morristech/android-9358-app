@@ -6,6 +6,8 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.chat.XmdChat;
+import com.xmd.m.notify.push.XmdPushManager;
 import com.xmd.technician.bean.Entry;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.Logger;
@@ -215,15 +217,15 @@ public class AppConfig {
     public static List<Entry> generateEntryList() {
         List<Entry> list = new ArrayList<>();
 
-        list.add(new Entry("client id", sClientId));
-        list.add(new Entry("bind client", sBindClientIdStatus));
+        list.add(new Entry("client id", XmdPushManager.getInstance().getClientId()));
+        list.add(new Entry("bind client", XmdPushManager.getInstance().isBound() ? "true" : "false"));
         list.add(new Entry("server host", SharedPreferenceHelper.getServerHost()));
         list.add(new Entry("emchat id", SharedPreferenceHelper.getEmchatId()));
         list.add(new Entry("avatar", SharedPreferenceHelper.getUserAvatar()));
         list.add(new Entry("easemob", Utils.getStringMetaData("EASEMOB_APPKEY")));
         list.add(new Entry("update server", sDefUpdateServer));
         list.add(new Entry("getui", Utils.getStringMetaData("GETUI_APP_ID")));
-
+        list.add(new Entry("emchat state", XmdChat.getInstance().isOnline() ? "onLine" : "offLine"));
         return list;
     }
 
