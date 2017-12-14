@@ -346,36 +346,40 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                     @Override
                     public void onSuccess(InnerBatchResult o) {
                         mView.hideLoading();
-                        InnerBatchInfo batchInfo = o.getRespData();
-                        trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                        trade.batchNo = batchInfo.batchNo;
-                        trade.payOrderId = batchInfo.payOrderId;
-                        trade.payUrl = batchInfo.payUrl;
-                        trade.setOriginMoney(batchInfo.oriAmount);
-                        trade.setWillDiscountMoney(batchInfo.discountAmount);
-                        trade.setWillPayMoney(batchInfo.payAmount);
-                        trade.tradeTime = DateUtils.getCurrentDate();
-                        if (AppConstants.APP_REQUEST_YES.equals(batchInfo.status)) {
-                            //核销金额已完成抵扣
-                            UiNavigation.gotoInnerResultActivity(mContext);
-                            mView.showEnterAnim();
-                            mView.finishSelf();
-                        } else {
-                            // 需要支付
-                            switch (mTradeManager.getCurrentTrade().currentCashier) {
-                                case AppConstants.CASHIER_TYPE_QRCODE:  //POS扫码
-                                case AppConstants.CASHIER_TYPE_CASH:    //现金
-                                case AppConstants.CASHIER_TYPE_MARK:    //自定义记账
-                                case AppConstants.CASHIER_TYPE_MEMBER:  //会员
-                                    UiNavigation.gotoInnerPaymentActivity(mContext);
-                                    mView.finishSelf();
-                                    break;
-                                case AppConstants.CASHIER_TYPE_POS:     //银联
-                                    posCashier(trade.getWillPayMoney());
-                                    break;
-                                default:
-                                    break;
+                        if (o != null && o.getRespData() != null) {
+                            InnerBatchInfo batchInfo = o.getRespData();
+                            trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                            trade.batchNo = batchInfo.batchNo;
+                            trade.payOrderId = batchInfo.payOrderId;
+                            trade.payUrl = batchInfo.payUrl;
+                            trade.setOriginMoney(batchInfo.oriAmount);
+                            trade.setWillDiscountMoney(batchInfo.discountAmount);
+                            trade.setWillPayMoney(batchInfo.payAmount);
+                            trade.tradeTime = DateUtils.getCurrentDate();
+                            if (AppConstants.APP_REQUEST_YES.equals(batchInfo.status)) {
+                                //核销金额已完成抵扣
+                                UiNavigation.gotoInnerResultActivity(mContext);
+                                mView.showEnterAnim();
+                                mView.finishSelf();
+                            } else {
+                                // 需要支付
+                                switch (mTradeManager.getCurrentTrade().currentCashier) {
+                                    case AppConstants.CASHIER_TYPE_QRCODE:  //POS扫码
+                                    case AppConstants.CASHIER_TYPE_CASH:    //现金
+                                    case AppConstants.CASHIER_TYPE_MARK:    //自定义记账
+                                    case AppConstants.CASHIER_TYPE_MEMBER:  //会员
+                                        UiNavigation.gotoInnerPaymentActivity(mContext);
+                                        mView.finishSelf();
+                                        break;
+                                    case AppConstants.CASHIER_TYPE_POS:     //银联
+                                        posCashier(trade.getWillPayMoney());
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
+                        } else {
+                            mView.showToast("数据异常，请联系业务管理员");
                         }
                     }
 
