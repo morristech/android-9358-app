@@ -86,7 +86,7 @@ public class CouponDataFilterManager {
         for (int i = 0; i < mOnlineCoupons.size(); i++) {
             mOnlineCoupons.get(i).isSelected = 0;
         }
-        for (int i = 0; i < mOnlineCoupons.size(); i++) {
+        for (int i = 0; i < mOfflineCoupons.size(); i++) {
             mOfflineCoupons.get(i).isSelected = 0;
         }
         if(online){
