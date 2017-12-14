@@ -331,7 +331,7 @@ public class ItemStatisticsDetailPresenter implements ItemStatisticsDetailContra
     @Override
     public void onPrint() {
         mPos.printCenter("经营项目汇总", true);
-        mPos.printText("\n");
+        mPos.printDivide();
         long amount = 0;
         for (ItemStatisticsInfo itemStatisticsInfo : mStatisticsData) {
             amount += itemStatisticsInfo.totalAmount;

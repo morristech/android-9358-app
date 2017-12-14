@@ -95,7 +95,7 @@ public class RoomStatisticsAdapter extends RecyclerView.Adapter<RoomStatisticsAd
                 filter.append(statisticInfo.code + ",");
             }
         }
-        return (filter.length() > 0) ? filter.substring(0, filter.length() - 1) : filter.toString();
+        return (filter.length() > 0) ? filter.substring(0, filter.length() - 1) : "empty";
     }
 
     @Override

@@ -20,5 +20,5 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorText2"
         android:singleLine="true"
-        android:textSize="@dimen/fontBody" />
+        android:textSize="@dimen/fontCaption" />
 </LinearLayout>

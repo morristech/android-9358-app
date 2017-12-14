@@ -80,19 +80,13 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatAdapter.ViewHolder> {
 
         switch (info.status) {
             case ConstantResource.STATUS_FREE:
-                holder.mSeatStatus.setText(ConstantResource.TEXT_STATUS_FREE);
+            case ConstantResource.STATUS_BOOKED:
+            case ConstantResource.STATUS_CLEAN:
+            case ConstantResource.STATUS_DISABLED:
+                holder.mSeatStatus.setText(info.name);
                 break;
             case ConstantResource.STATUS_USING:
                 holder.mSeatStatus.setText(info.userIdentify);
-                break;
-            case ConstantResource.STATUS_BOOKED:
-                holder.mSeatStatus.setText(ConstantResource.TEXT_STATUS_BOOKED);
-                break;
-            case ConstantResource.STATUS_CLEAN:
-                holder.mSeatStatus.setText(ConstantResource.TEXT_STATUS_CLEAN);
-                break;
-            case ConstantResource.STATUS_DISABLED:
-                holder.mSeatStatus.setText(ConstantResource.TEXT_STATUS_DISABLED);
                 break;
             default:
                 break;

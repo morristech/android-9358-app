@@ -17,6 +17,7 @@
     <dimen name="fontTitle">21sp</dimen>
     <dimen name="fontSubheading">17sp</dimen>
     <dimen name="fontTitleBar">17sp</dimen>
+    <dimen name="font_18">18sp</dimen>
     <dimen name="fontBody">15sp</dimen>
     <dimen name="fontButton">15sp</dimen>
     <dimen name="fontCaption">13sp</dimen>

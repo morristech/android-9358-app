@@ -1,7 +1,7 @@
 <resources>
     <string name="native_room_title">营业管理</string>
     <string name="native_seat_book">房间预订</string>
-<string name="seat_num">座位号</string>
+    <string name="seat_num">座位号</string>
     <string name="tech_hand">手牌</string>
     <string name="take_turns_time">轮钟</string>
     <string name="take_book_time">点钟</string>

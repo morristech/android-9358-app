@@ -15,9 +15,11 @@
         android:padding="@dimen/activity_normal_margin">
 
         <View
-            android:layout_width="@dimen/activity_little_margin"
+            android:layout_width="3dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_little_margin"
+            android:layout_marginBottom="@dimen/activity_little_margin"
+            android:layout_marginRight="@dimen/activity_little_margin"
             android:background="@color/colorPink" />
 
         <TextView
@@ -26,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="room_type_name"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/small_text_size" />
+            android:textSize="@dimen/fontTitleBar" />
     </LinearLayout>
 
     <View
