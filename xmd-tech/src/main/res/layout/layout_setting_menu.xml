@@ -195,15 +195,14 @@
         android:id="@+id/settings_activity_join_or_quit_club"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"
-        android:visibility="gone"
-    >
+        android:visibility="gone">
 
         <ImageView
+            android:id="@+id/img_join_or_quit_club"
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_quit"
-        />
+            android:src="@drawable/icon_quit"/>
 
         <TextView
             android:id="@+id/join_or_quit_club"
@@ -231,7 +230,7 @@
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_join"/>
+            android:src="@drawable/icon_join"/>
 
         <TextView
             style="@style/menu_setting_text_style"

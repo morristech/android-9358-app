@@ -63,6 +63,7 @@ import com.xmd.manager.common.ReturnVisitMenu;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.common.VerificationManagementHelper;
+import com.xmd.manager.event.OrderCountUpDate;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
@@ -70,6 +71,7 @@ import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.AccountDataResult;
 import com.xmd.manager.service.response.ChangeStatusResult;
 import com.xmd.manager.service.response.CheckVerificationTypeResult;
+import com.xmd.manager.service.response.ClubResult;
 import com.xmd.manager.service.response.CommentAndComplaintListResult;
 import com.xmd.manager.service.response.CouponDataResult;
 import com.xmd.manager.service.response.PropagandaDataResult;
@@ -375,6 +377,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private Subscription mAccountDataSubSubscription;
     private Subscription mTechPKRankingSubscription;
     private Subscription mSwitchChangedSubscription;
+    private Subscription mGetClubSubscription;
 
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
@@ -402,7 +405,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
                 mCommentAndComplaintSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
                 mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
-                mTechPKRankingSubscription, mSwitchChangedSubscription);
+                mTechPKRankingSubscription, mSwitchChangedSubscription, mGetClubSubscription);
         mVerificationHelper.destroySubscription();
         redPointService.unBind(Constant.RED_POINT_NEW_ORDER, newOrderMark);
         redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark);
@@ -514,6 +517,12 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         );
         mRankingDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
                 rankingDataResult -> handlerRankingResult(rankingDataResult));
+        mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
+                clubResult -> {
+                    clubInvitation.setText(TextUtils.isEmpty(clubResult.respData.inviteCode) ? "" : clubResult.respData.inviteCode);
+                    mMenuClubName.setText(Utils.StrSubstring(8, clubResult.respData.clubName, true));
+                }
+        );
         refreshMainPageData();
         mVerificationHelper = VerificationManagementHelper.getInstance();
         mVerificationHelper.initializeHelper(getActivity());
@@ -756,6 +765,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mTvCompletedOrderCount.setText(orderData.respData.acceptCount);
                 try {
                     ((MainActivity) getActivity()).setPendingOrderCount(Integer.parseInt(orderData.respData.submitCount));
+                    EventBus.getDefault().post(new OrderCountUpDate(Integer.parseInt(orderData.respData.submitCount)));
                 } catch (Exception ignore) {
 
                 }

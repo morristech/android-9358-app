@@ -124,7 +124,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             mView.showToast("角色加载失败，无法加入会所！");
             return;
         }
-        mView.showLoading("正在提交申请...");
+     //   mView.showLoading("正在提交申请...");
         if(TextUtils.isEmpty(mTech.getClubInviteCode())){
             mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId, mSelectRole.code);
         }else {
@@ -149,7 +149,6 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     }
 
     private void handleJoinClubResult(JoinClubResult result) {
-        mView.hideLoading();
         if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
             mView.showAlertDialog(result.msg);
         } else {
@@ -166,7 +165,6 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     }
 
     private void handleModifyResult(AuditModifyResult result) {
-        mView.hideLoading();
         if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
             mView.showAlertDialog(result.msg);
         } else {

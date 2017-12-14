@@ -116,6 +116,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mAppVersion;
     @BindView(R.id.join_or_quit_club)
     TextView mJoinOrQuitClub;
+    @BindView(R.id.img_join_or_quit_club)
+    ImageView imgJoinOrQuitClub;
     @BindView(R.id.settings_activity_join_or_quit_club)
     RelativeLayout mMenuJoinOrQuitClub;
     @BindView(R.id.menu_club_name)
@@ -695,6 +697,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         menuWorkProject.setVisibility(View.GONE);
         mTechStatus.setVisibility(View.GONE);
         mJoinOrQuitClub.setText("退出会所");
+        imgJoinOrQuitClub.setImageResource(R.drawable.icon_quit);
         mMenuClubName.setText(Utils.StrSubstring(6, mTech.getClubName(), true));
         showStatusAuditView(status);
         switch (status) {
@@ -703,10 +706,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mTechStatus.setText(ResourceUtils.getString(R.string.join_club_before));
                 mJoinOrQuitClub.setText("加入会所");
                 mMenuClubName.setText("");
+                imgJoinOrQuitClub.setImageResource(R.drawable.icon_join);
                 break;
             case Constant.TECH_STATUS_REJECT:
                 mJoinOrQuitClub.setText("加入会所");
                 mMenuClubName.setText("");
+                imgJoinOrQuitClub.setImageResource(R.drawable.icon_join);
                 break;
             case Constant.TECH_STATUS_UNCERT:
                 mJoinOrQuitClub.setText("取消申请");
@@ -901,7 +906,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     public void initMenu() {
         initMenuWorkTime();
-   //     initMenuWorkProject();
         initMenuHelloSetting();
         initMenuAbout();
         initMenuSuggest();
@@ -913,11 +917,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void initMenuWorkTime() {
         initMenuItem(R.id.menu_work_time);
     }
-
-//    @CheckBusinessPermission(PermissionConstants.WORK_PROJECT)
-//    public void initMenuWorkProject() {
-//        initMenuItem(R.id.menu_work_project);
-//    }
 
     @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
     public void initMenuHelloSetting() {

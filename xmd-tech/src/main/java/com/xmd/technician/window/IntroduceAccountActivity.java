@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -34,8 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -167,13 +164,13 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         super.onDestroy();
         mCustomWebView.getSettings().setBuiltInZoomControls(true);
         mCustomWebView.setVisibility(View.GONE);
-        long timeout = ViewConfiguration.getZoomControlsTimeout();
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                mCustomWebView.destroy();
-            }
-        }, timeout);
+//        long timeout = ViewConfiguration.getZoomControlsTimeout();
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                mCustomWebView.destroy();
+//            }
+//        }, timeout);
     }
 
     /**
