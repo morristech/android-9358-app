@@ -79,6 +79,10 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
 
 
     public static void startModifySeatBillActivity(Activity activity, String roomName, OrderInfo order) {
+        if(order == null){
+            XToast.show("所选座位数据异常");
+            return;
+        }
         Intent intent = new Intent(activity, ModifySeatBillActivity.class);
         intent.putExtra(INTENT_KEY_ROOM_NAME, roomName);
         intent.putExtra(INTENT_KEY_ORDER_INFO, order);

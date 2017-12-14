@@ -11,23 +11,25 @@
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:layout_marginTop="5dp"
                   android:background="@color/white"
                   android:gravity="center_vertical"
                   android:orientation="horizontal"
-                  android:paddingBottom="@dimen/small_padding"
+                  android:paddingBottom="@dimen/padding_dimen"
                   android:paddingLeft="12dp"
                   android:paddingRight="12dp"
-                  android:paddingTop="@dimen/small_padding">
+                  android:paddingTop="@dimen/padding_dimen"
+    >
         <TextView style="@style/native_title_style"
                   android:text="@string/tech_hand"/>
         <TextView
             android:id="@+id/et_tech_hand"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:textColor="#4a4a4a"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingLeft="20dp"
+            android:paddingTop="@dimen/small_padding"
+            android:textColor="#4a4a4a"
             android:textSize="16sp"
             tools:text="608"/>
     </LinearLayout>

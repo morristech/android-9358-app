@@ -96,7 +96,7 @@ public class SeatBillListAdapter extends RecyclerView.Adapter {
         if (holder instanceof BillItemViewHolder) {
             final BillItemViewHolder billHolder = (BillItemViewHolder) holder;
             NativeItemBean bean = mNativeItemList.get(parentPosition);
-            billHolder.consumeItemSelect.setVisibility(mHandleBillType == HANDLE_BILL_TYPE_MODIFY ? View.GONE : View.VISIBLE);
+        //    billHolder.consumeItemSelect.setVisibility(mHandleBillType == HANDLE_BILL_TYPE_MODIFY ? View.GONE : View.VISIBLE);
             billHolder.itemOrderNum.setText(String.format("消费%s", String.valueOf(parentPosition + 1)));
             billHolder.tvConsumeChoice.setText(TextUtils.isEmpty(bean.getConsumeName()) ? ResourceUtils.getString(R.string.consume_item_choice) : bean.getConsumeName());
             billHolder.tvConsumeChoice.setOnClickListener(new View.OnClickListener() {
