@@ -118,7 +118,7 @@ public class OperateListFragment extends BaseListFragment<OperateReportBean> {
     @Override
     public void onLongClicked(OperateReportBean bean) {
         super.onLongClicked(bean);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_REPORT,bean.id);
+      //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_REPORT,bean.id);
     }
 
     public void notifyDataChanged(String data) {

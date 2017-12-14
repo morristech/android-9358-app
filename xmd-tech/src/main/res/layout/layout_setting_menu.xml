@@ -218,7 +218,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="@dimen/small_space"
             android:textColor="@color/colorBtnChecked"
-            android:textSize="@dimen/fontBody"/>
+            android:textSize="12sp"/>
     </RelativeLayout>
 
     <RelativeLayout

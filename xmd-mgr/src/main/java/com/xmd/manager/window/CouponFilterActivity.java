@@ -108,12 +108,12 @@ public class CouponFilterActivity extends BaseActivity {
         initSelectCouponFragment();
     }
 
-    public void getIntentData() {
+    private void getIntentData() {
         Intent data = getIntent();
         mUserStartTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_START_TIME);
         mUserEndTime = data.getStringExtra(Constant.FILTER_COUPON_TIME_END_TIME);
         mCurrentTimeFilterType = data.getIntExtra(Constant.FILTER_COUPON_TIME_TYPE, 0);
-        mCouponSelectedBean = (CouponBean) data.getSerializableExtra(Constant.KEY_INTENT_COUPON_BEAN);
+        mCouponSelectedBean = (CouponBean) data.getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
     }
 
     private void initSelectCouponFragment() {

@@ -96,6 +96,7 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
     }
 
     private void initView() {
+        showLoading("正在加载...");
         roomTitle = getIntent().getStringExtra(INTENT_KEY_ROOM_NAME);
         mOrderInfo = getIntent().getParcelableExtra(INTENT_KEY_ORDER_INFO);
         etTechHand.setText(mOrderInfo.userIdentify);
@@ -104,6 +105,12 @@ public class AddSeatBillActivity extends BaseActivity implements SeatBillListAda
         mSeatBillDataManager = SeatBillDataManager.getManagerInstance();
         addBill = new NativeUpdateBill();
         initListData();
+        ThreadPoolManager.postToUIDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideLoading();
+            }
+        }, 1500);
     }
 
     private void initListData() {

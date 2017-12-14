@@ -229,13 +229,13 @@ public class MarketingTechListAdapter extends RecyclerView.Adapter {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             codeBtn.setButtonDrawable(null);
         }
         codeBtn.setText(btnContent);
         codeBtn.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, Utils.dip2px(mContext, 25));
-        codeBtn.setPadding(Utils.dip2px(mContext, 12), 0, Utils.dip2px(mContext, 12), 0);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, Utils.dip2px(mContext, 35));
+        codeBtn.setPadding(Utils.dip2px(mContext, 15), 0, Utils.dip2px(mContext, 15), 0);
         codeBtn.setLayoutParams(llp);
     }
 

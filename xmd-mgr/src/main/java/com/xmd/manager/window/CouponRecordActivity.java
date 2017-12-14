@@ -81,6 +81,7 @@ public class CouponRecordActivity extends BaseActivity {
                 Intent intent = new Intent(CouponRecordActivity.this, CouponRecordFilterActivity.class);
                 intent.putExtra(Constant.COUPON_RECORD_START_TIME, mStartTime);
                 intent.putExtra(Constant.COUPON_RECORD_END_TIME, mEndTime);
+                intent.putExtra(Constant.KEY_INTENT_COUPON_BEAN,mCouponBean);
                 startActivity(intent);
             }
         });

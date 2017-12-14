@@ -159,6 +159,7 @@
             android:gravity="center"
             android:text="@string/login_tech_no"
             android:textColor="#0084CF"
+            android:visibility="gone"
             android:textSize="@dimen/fontTitle_small" />
     </LinearLayout>
 

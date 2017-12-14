@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/view_bag"
+              android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+    <include layout="@layout/layout_toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="座位号" />
+            android:text="座位号"/>
 
         <TextView
             android:id="@+id/tv_book_seat"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:paddingLeft="@dimen/activity_normal_margin"
-            android:paddingRight="@dimen/activity_normal_margin" />
+            android:paddingRight="@dimen/activity_normal_margin"/>
     </LinearLayout>
 
     <LinearLayout
@@ -42,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="客人电话" />
+            android:text="客人电话"/>
 
         <com.xmd.app.widget.ClearableEditText
             android:id="@+id/tv_book_phone"
@@ -53,7 +54,7 @@
             android:inputType="number"
             android:maxLength="11"
             android:paddingLeft="@dimen/activity_normal_margin"
-            android:paddingRight="@dimen/activity_normal_margin" />
+            android:paddingRight="@dimen/activity_normal_margin"/>
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="到店时间" />
+            android:text="到店时间"/>
 
         <TextView
             android:id="@+id/tv_book_time"
@@ -79,7 +80,7 @@
             android:background="@android:drawable/editbox_background_normal"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_normal_margin"
-            android:paddingRight="@dimen/activity_normal_margin" />
+            android:paddingRight="@dimen/activity_normal_margin"/>
     </LinearLayout>
 
 
@@ -92,7 +93,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/colorStoke" />
+            android:background="@color/colorStoke"/>
 
         <Button
             android:id="@+id/btn_book_confirm"
@@ -103,6 +104,6 @@
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_marginTop="@dimen/activity_small_margin"
             android:text="确认"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"/>
     </LinearLayout>
 </LinearLayout>

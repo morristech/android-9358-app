@@ -399,9 +399,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_SETTING_REPORT_CONFIG:
                 getFinancialReportConfig();
                 break;
-//            case MsgDef.MSG_DEF_GET_REPORT_BY_ID:
-//                getFinancialReportById(msg.obj.toString());
-//                break;
+            case MsgDef.MSG_DEF_REPORT_READ:
+                makeReportRead((String) msg.obj);
+                break;
             case MsgDef.MSG_DEF_DELETE_REPORT:
                 deleteFinancialReportById(msg.obj.toString());
                 break;
@@ -448,6 +448,7 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CASHIER_CLUB_DETAIL_LIST:   //获取买单收银明细列表
                 getCashierClubDetailList((Map<String, String>) msg.obj);
                 break;
+
         }
         return true;
     }
@@ -2686,16 +2687,16 @@ public class RequestController extends AbstractController {
 
     }
 
-    //报表详情
-//    private void getFinancialReportById(String reportId) {
-//        Call<ReportInfoResult> call = getSpaService().getReportInfo(SharedPreferenceHelper.getUserToken(), reportId);
-//        call.enqueue(new TokenCheckedCallback<ReportInfoResult>() {
-//            @Override
-//            protected void postResult(ReportInfoResult result) {
-//                super.postResult(result);
-//            }
-//        });
-//    }
+    //报表标记为已读
+    private void makeReportRead(String reportId) {
+        Call<ReportReadResult> call = getSpaService().makeReportRead(SharedPreferenceHelper.getUserToken(), reportId);
+        call.enqueue(new TokenCheckedCallback<ReportReadResult>() {
+            @Override
+            protected void postResult(ReportReadResult result) {
+                super.postResult(result);
+            }
+        });
+    }
 
     //删除报表
     private void deleteFinancialReportById(String reportId) {
@@ -3079,4 +3080,5 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
 }

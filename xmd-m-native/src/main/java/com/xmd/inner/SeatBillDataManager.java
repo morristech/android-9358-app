@@ -211,6 +211,9 @@ public class SeatBillDataManager {
                     XToast.show("请输入完整订单信息");
                     return false;
                 }
+                for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
+                    employeeBean.setBellId(null);
+                }
 
             } else {
                 if (TextUtils.isEmpty(itemBean.getItemId())) {
@@ -259,6 +262,7 @@ public class SeatBillDataManager {
     public boolean canToAddBill(NativeUpdateBill bill) {
         int i = 0;
         for (NativeItemBean itemBean : bill.getItemList()) {
+            i++;
             if (itemBean == null) {
                 return false;
             }
@@ -266,6 +270,9 @@ public class SeatBillDataManager {
                 if (itemBean.getItemCount() == 0 || TextUtils.isEmpty(itemBean.getItemId())) {
                     XToast.show("请输入完整订单信息");
                     return false;
+                }
+                for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
+                    employeeBean.setBellId(null);
                 }
 
             } else {

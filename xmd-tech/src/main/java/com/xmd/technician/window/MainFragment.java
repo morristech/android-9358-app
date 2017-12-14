@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
@@ -246,8 +245,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     LinearLayout techAuditView;
     @BindView(R.id.ll_audit_des)
     LinearLayout llAuditDes;
-    @BindView(R.id.img_status)
-    ImageView imgStatus;
     @BindView(R.id.tv_tech_status_des)
     TextView tvTechStatusDes;
     @BindView(R.id.club_avatar)
@@ -270,6 +267,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     LinearLayout llAuditApply;
     @BindView(R.id.ll_audit_sure)
     LinearLayout llAuditSure;
+    @BindView(R.id.menu_work_project)
+    RelativeLayout menuWorkProject;
 
 
     private OnlinePayNotifyFragment mPayNotifyFragment;
@@ -451,9 +450,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void handleAuditConfirmResult(AuditConfirmResult result) {
-            if(result.statusCode == 200){
-                mTech.loadTechInfo();
-            }
+        if (result.statusCode == 200) {
+            mTech.loadTechInfo();
+        }
     }
 
 
@@ -627,6 +626,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.WORK_STATUS)
     public void initWorkStatus() {
         mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
+        mRootView.findViewById(R.id.menu_work_project).setVisibility(View.VISIBLE);
     }
 
 
@@ -692,6 +692,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     public void showTechStatus(String status) {
         mMainHeadTechSerial.setVisibility(View.GONE);
+        menuWorkProject.setVisibility(View.GONE);
         mTechStatus.setVisibility(View.GONE);
         mJoinOrQuitClub.setText("退出会所");
         mMenuClubName.setText(Utils.StrSubstring(6, mTech.getClubName(), true));
@@ -708,9 +709,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mMenuClubName.setText("");
                 break;
             case Constant.TECH_STATUS_UNCERT:
-                mMainHeadTechSerial.setText(mTech.getTechNo());
-                mMainHeadTechSerial.setVisibility(TextUtils.isEmpty(mTech.getTechNo()) ? View.GONE : View.VISIBLE);
                 mJoinOrQuitClub.setText("取消申请");
+                mMenuClubName.setText(String.format("%s（待审核）",Utils.StrSubstring(6, mTech.getClubName(), true)));
                 break;
             case Constant.TECH_STATUS_FREE:
                 initWorkStatus();
@@ -742,11 +742,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mRootView.findViewById(R.id.statistic_layout).setVisibility(View.GONE);
                 techAuditView.setVisibility(View.VISIBLE);
                 llAuditDes.setBackgroundResource(R.drawable.state_bg_default);
-                imgStatus.setVisibility(View.INVISIBLE);
                 tvTechStatusDes.setText(ResourceUtils.getString(R.string.tech_wait_audit));
                 Glide.with(getActivity()).load(mTech.getClubImageUrl()).error(R.drawable.icon22).into(clubAvatar);
                 tvClubName.setText(mTech.getClubName());
-               tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
+                tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
                 tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? ResourceUtils.getString(R.string.tech_num_default) : mTech.getTechNo());
                 llHandleStatusAudit.setVisibility(View.VISIBLE);
                 llHandleStatusReject.setVisibility(View.GONE);
@@ -755,12 +754,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mRootView.findViewById(R.id.statistic_layout).setVisibility(View.GONE);
                 techAuditView.setVisibility(View.VISIBLE);
                 llAuditDes.setBackgroundResource(R.drawable.state_bg_refuse);
-                imgStatus.setVisibility(View.VISIBLE);
                 tvTechStatusDes.setText(ResourceUtils.getString(R.string.tech_club_reject));
                 Glide.with(getActivity()).load(mTech.getClubImageUrl()).error(R.drawable.icon22).into(clubAvatar);
                 tvClubName.setText(mTech.getClubName());
                 tvTechRole.setText(mTech.getRoles().equals("tech") ? "技师" : "楼面");
-                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? ResourceUtils.getString(R.string.tech_num_default): mTech.getTechNo());
+                tvTechNum.setText(TextUtils.isEmpty(mTech.getTechNo()) ? ResourceUtils.getString(R.string.tech_num_default) : mTech.getTechNo());
                 llHandleStatusAudit.setVisibility(View.GONE);
                 llHandleStatusReject.setVisibility(View.VISIBLE);
                 break;
@@ -779,7 +777,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onAuditManager(View view) {
         switch (view.getId()) {
             case R.id.ll_audit_cancel: //取消申请
-                XLogger.i(">>>", "cancel");
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 Fragment prev = fragmentManager.findFragmentByTag("quit_club");
@@ -791,14 +788,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 newFragment.show(ft, "quit_club");
                 break;
             case R.id.ll_audit_confirm: //修改申请
-                XLogger.i(">>>", "confirm");
                 UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
                 break;
             case R.id.ll_audit_apply: //再次申请
                 UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
                 break;
             case R.id.ll_audit_sure: //拒绝确认
-                XLogger.i(">>>", "sure");
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM);
                 break;
         }
@@ -906,7 +901,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     public void initMenu() {
         initMenuWorkTime();
-        initMenuWorkProject();
+   //     initMenuWorkProject();
         initMenuHelloSetting();
         initMenuAbout();
         initMenuSuggest();
@@ -919,10 +914,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initMenuItem(R.id.menu_work_time);
     }
 
-    @CheckBusinessPermission(PermissionConstants.WORK_PROJECT)
-    public void initMenuWorkProject() {
-        initMenuItem(R.id.menu_work_project);
-    }
+//    @CheckBusinessPermission(PermissionConstants.WORK_PROJECT)
+//    public void initMenuWorkProject() {
+//        initMenuItem(R.id.menu_work_project);
+//    }
 
     @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
     public void initMenuHelloSetting() {

@@ -103,6 +103,7 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
     }
 
     private void initView() {
+        showLoading("正在加载...");
         roomTitle = getIntent().getStringExtra(INTENT_KEY_ROOM_NAME);
         seatName = getIntent().getStringExtra(INTENT_KEY_SEAT_NAME);
         roomId = getIntent().getLongExtra(INTENT_KEY_ROOM_ID, 0);
@@ -114,6 +115,12 @@ public class CreateNewSeatBillActivity extends BaseActivity implements SeatBillL
         nativeBill = new NativeCreateBill();
         initListData();
         getIdentifyList();
+        ThreadPoolManager.postToUIDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideLoading();
+            }
+        }, 1500);
     }
 
     private void initListData() {

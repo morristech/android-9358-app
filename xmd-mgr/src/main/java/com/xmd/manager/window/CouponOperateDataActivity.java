@@ -70,7 +70,7 @@ public class CouponOperateDataActivity extends BaseActivity {
         initView();
     }
 
-    public void getIntentData() {
+    private void getIntentData() {
         mFilterBean = getIntent().getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
     }
 
@@ -83,6 +83,7 @@ public class CouponOperateDataActivity extends BaseActivity {
                 intent.putExtra(Constant.FILTER_COUPON_TIME_START_TIME, mFilterStartTime);
                 intent.putExtra(Constant.FILTER_COUPON_TIME_END_TIME, mFilterEndTime);
                 intent.putExtra(Constant.FILTER_COUPON_TIME_TYPE, mFilterTimeType);
+                intent.putExtra(Constant.KEY_INTENT_COUPON_BEAN, mFilterBean);
                 startActivityForResult(intent, FILTER_COUPON_REQUEST_CODE);
             }
         });

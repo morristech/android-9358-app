@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.network.NetworkSubscriber;
@@ -112,7 +113,7 @@ public class SalaryIntroduceActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -121,14 +122,13 @@ public class SalaryIntroduceActivity extends BaseActivity {
         DataManager.getInstance().getCommissionSetting(new NetworkSubscriber<CommissionSettingResult>() {
             @Override
             public void onCallbackSuccess(CommissionSettingResult result) {
-                // mSalaryIntroduceAdapter.setData(result.getRespData().salesCommissionList.get(0).commissionList);
                 mSalaryIntroduceDataManager.setCommissionListBeen(result.getRespData());
                 notifyAllDataChanged();
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }

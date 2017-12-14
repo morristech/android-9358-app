@@ -74,8 +74,10 @@ public class SelectCouponFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        showLoading(getActivity(), "正在加载...");
+        mSelectedCoupon = getArguments().getParcelable(CouponFilterActivity.COUPON_FILTER_SELECTED_COUPON);
         unusableIsOpen = false;
-        tvAllCoupon.setSelected(true);
+        tvAllCoupon.setSelected(null == mSelectedCoupon ? true : false);
         initUsableCouponRecyclerView();
         initUnusableCouponRecyclerView();
         mCouponListSubscription = RxBus.getInstance().toObservable(CouponListResult.class).subscribe(
@@ -89,20 +91,15 @@ public class SelectCouponFragment extends BaseFragment {
         if (mUnusableParams == null) {
             mUnusableParams = new HashMap<>();
         }
-        if (mDataFilterManager.isNeedLoadData()) {
-            getOnlineCouponList();
-            getOfflineCouponList();
-        } else {
-            mUsableCouponAdapter.setData(mDataFilterManager.getOnlineCoupons());
-            mUnusableCouponAdapter.setData(mDataFilterManager.getOfflineCoupons());
-        }
+        getOnlineCouponList();
+        getOfflineCouponList();
 
     }
 
     private void getOnlineCouponList() {
         mUsableParams.clear();
         mUsableParams.put(RequestConstant.KEY_PAGE, String.valueOf(1));
-        mUsableParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(50));
+        mUsableParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(100));
         mUsableParams.put(RequestConstant.KEY_COUPON_TYPE, Constant.COUPON_ALL_TYPE);
         mUsableParams.put(RequestConstant.KEY_COUPON_ONLINE, Constant.COUPON_ONLINE_TRUE);
         mUsableParams.put(RequestConstant.KEY_COUPON_LIST_TYPE, Constant.COUPON_ONLINE_TYPE);
@@ -112,7 +109,7 @@ public class SelectCouponFragment extends BaseFragment {
     private void getOfflineCouponList() {
         mUnusableParams.clear();
         mUnusableParams.put(RequestConstant.KEY_PAGE, String.valueOf(1));
-        mUnusableParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(50));
+        mUnusableParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(100));
         mUnusableParams.put(RequestConstant.KEY_COUPON_TYPE, Constant.COUPON_ALL_TYPE);
         mUnusableParams.put(RequestConstant.KEY_COUPON_ONLINE, Constant.COUPON_ONLINE_FALSE);
         mUnusableParams.put(RequestConstant.KEY_COUPON_LIST_TYPE, Constant.COUPON_OFFLINE_TYPE);
@@ -120,14 +117,15 @@ public class SelectCouponFragment extends BaseFragment {
     }
 
     private void handleCouponListResult(CouponListResult result) {
+        hideLoading();
         if (result.statusCode == 200) {
             switch (result.onLineType) {
                 case Constant.COUPON_ONLINE_TYPE:
-                    mDataFilterManager.setOnlineCoupons(result.respData);
+                    mDataFilterManager.setOnlineCoupons(result.respData, mSelectedCoupon);
                     mUsableCouponAdapter.setData(mDataFilterManager.getOnlineCoupons());
                     break;
                 case Constant.COUPON_OFFLINE_TYPE:
-                    mDataFilterManager.setOfflineCoupons(result.respData);
+                    mDataFilterManager.setOfflineCoupons(result.respData, mSelectedCoupon);
                     mUnusableCouponAdapter.setData(mDataFilterManager.getOfflineCoupons());
                     break;
             }

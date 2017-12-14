@@ -37,17 +37,23 @@ public class CouponDataFilterManager {
         return couponDataFilterManager;
     }
 
-    public void setOnlineCoupons(List<CouponBean> onlineData) {
+    public void setOnlineCoupons(List<CouponBean> onlineData, CouponBean selectBean) {
         this.mOnlineCoupons = onlineData;
         for (CouponBean bean : mOnlineCoupons) {
             bean.isUsable = Constant.COUPON_ONLINE_TRUE;
+            if (selectBean != null && bean.actId .equals(selectBean.actId)) {
+                bean.isSelected = 1;
+            }
         }
     }
 
-    public void setOfflineCoupons(List<CouponBean> offlineCoupons) {
+    public void setOfflineCoupons(List<CouponBean> offlineCoupons, CouponBean selectBean) {
         this.mOfflineCoupons = offlineCoupons;
         for (CouponBean bean : mOfflineCoupons) {
             bean.isUsable = Constant.COUPON_ONLINE_FALSE;
+            if (selectBean != null && bean.actId.equals(selectBean.actId)) {
+                bean.isSelected = 1;
+            }
         }
     }
 

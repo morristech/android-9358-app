@@ -3,19 +3,20 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@color/view_bag"
               android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:gravity="center_vertical"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:gravity="center_vertical">
         <TextView
             android:id="@+id/item_order_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingBottom="@dimen/padding_dimen"
+            android:paddingTop="@dimen/padding_dimen"
             android:text="消费1"/>
         <ImageView
             android:id="@+id/img_delete"
@@ -33,11 +34,12 @@
     <LinearLayout
         android:id="@+id/ll_consume_item_select"
         android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="@color/white"
-                  android:orientation="horizontal"
-                  android:paddingBottom="3dp"
-                  android:paddingTop="3dp">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_dimen"
+        android:paddingRight="@dimen/padding_dimen"
+        android:paddingTop="@dimen/padding_dimen">
         <TextView
             style="@style/native_employee_title_style"
             android:text="消费项*"/>
@@ -56,7 +58,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="足浴按摩"/>
+                android:text="足浴按摩"
+                android:textColor="#999999"/>
             <ImageView android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:src="@drawable/icon_pull_down"/>
@@ -74,8 +77,9 @@
                       android:layout_height="wrap_content"
                       android:background="@color/white"
                       android:orientation="horizontal"
-                      android:paddingBottom="3dp"
-                      android:paddingTop="3dp">
+                      android:paddingBottom="@dimen/padding_dimen"
+                      android:paddingRight="@dimen/padding_dimen"
+                      android:paddingTop="@dimen/padding_dimen">
             <TextView
                 android:id="@+id/tv_service_item_title"
                 style="@style/native_employee_title_style"
@@ -95,7 +99,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="请选择服务项目"/>
+                    android:text="请选择服务项目"
+                    android:textColor="#999999"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -108,8 +113,9 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp">
+            android:paddingBottom="@dimen/padding_dimen"
+            android:paddingRight="@dimen/padding_dimen"
+            android:paddingTop="@dimen/padding_dimen">
             <TextView
                 style="@style/native_employee_title_style"
                 android:text="销售数量*"/>

@@ -8,8 +8,9 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:paddingBottom="3dp"
-                  android:paddingTop="3dp">
+                  android:paddingBottom="@dimen/padding_dimen"
+                  android:paddingRight="@dimen/padding_dimen"
+                  android:paddingTop="@dimen/padding_dimen">
         <TextView
             android:id="@+id/tech_position"
             style="@style/native_employee_title_style"
@@ -41,7 +42,6 @@
             android:id="@+id/rg_time_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
@@ -58,7 +58,8 @@
         android:visibility="visible">
         <View
             android:id="@+id/dot_line"
-            style="@style/dotted_line"/>
+            style="@style/dotted_line"
+            android:layout_marginTop="7dp"/>
         <TextView
             android:id="@+id/tv_add_tech"
             android:layout_width="wrap_content"

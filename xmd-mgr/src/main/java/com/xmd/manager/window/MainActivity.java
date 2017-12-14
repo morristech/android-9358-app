@@ -347,8 +347,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 user.setAvatar(event.bean.chatHeadUrl);
                 userInfoService.saveUser(user);
                 EventBus.getDefault().post(new EventStartChatActivity(event.bean.emChatId));
-            } else if (event.toDoType == 3) { //打招呼
-
             }
         }
     }

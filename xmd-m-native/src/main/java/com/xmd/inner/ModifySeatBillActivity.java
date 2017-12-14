@@ -94,6 +94,7 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
     }
 
     private void initView() {
+        showLoading("正在加载...");
         roomTitle = getIntent().getStringExtra(INTENT_KEY_ROOM_NAME);
         mOrderInfo = getIntent().getParcelableExtra(INTENT_KEY_ORDER_INFO);
         tvSeatNum.setText(mOrderInfo.roomName);
@@ -103,6 +104,12 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
         mSeatBillDataManager = SeatBillDataManager.getManagerInstance();
         addBill = new NativeUpdateBill();
         initListData();
+        ThreadPoolManager.postToUIDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideLoading();
+            }
+        }, 1500);
     }
 
     private void initListData() {

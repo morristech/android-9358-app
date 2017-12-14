@@ -75,6 +75,7 @@ public class CouponRecordFilterActivity extends BaseActivity {
     private String mUserStartTime;
     private String mUserEndTime;
     private SelectCouponFragment scf;
+    private CouponBean mCouponSelectedBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +86,10 @@ public class CouponRecordFilterActivity extends BaseActivity {
         initView();
     }
 
-    public void getIntentData() {
+    private  void getIntentData() {
         mUserStartTime = getIntent().getStringExtra(Constant.COUPON_RECORD_START_TIME);
         mUserEndTime = getIntent().getStringExtra(Constant.COUPON_RECORD_END_TIME);
+        mCouponSelectedBean = (CouponBean) getIntent().getParcelableExtra(Constant.KEY_INTENT_COUPON_BEAN);
     }
 
     private void initView() {
@@ -159,6 +161,9 @@ public class CouponRecordFilterActivity extends BaseActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fm_coupon_select, scf);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CouponFilterActivity.COUPON_FILTER_SELECTED_COUPON, mCouponSelectedBean);
+        scf.setArguments(bundle);
         ft.commit();
 
     }
