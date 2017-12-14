@@ -210,9 +210,9 @@ public class SelectCouponFragment extends BaseFragment {
                     mSelectedPosition = position;
                     mSelectedCoupon = bean;
                     if (mSelectedCoupon.isUsable.equals(Constant.COUPON_ONLINE_TRUE)) {
-                        mDataFilterManager.setPositionSelectec(true,mSelectedPosition);
+                        mDataFilterManager.setPositionSelected(true,mSelectedPosition);
                     } else {
-                        mDataFilterManager.setPositionSelectec(false,mSelectedPosition);
+                        mDataFilterManager.setPositionSelected(false,mSelectedPosition);
                     }
                     mUsableCouponAdapter.setData(mDataFilterManager.getOnlineCoupons());
                     mUnusableCouponAdapter.setData(mDataFilterManager.getOfflineCoupons());

@@ -82,7 +82,7 @@ public class CouponDataFilterManager {
         }
     }
 
-    public void setPositionSelectec(boolean online,int position){
+    public void setPositionSelected(boolean online,int position){
         for (int i = 0; i < mOnlineCoupons.size(); i++) {
             mOnlineCoupons.get(i).isSelected = 0;
         }

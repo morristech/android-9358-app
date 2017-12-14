@@ -39,14 +39,14 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="@dimen/padding_dimen"
-
-        android:visibility="gone">
+        android:visibility="gone"
+       >
         <TextView style="@style/native_title_style"
                   android:text="@string/tech_hand"/>
         <TextView
             android:id="@+id/et_tech_hand"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/edit_text_bg"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
