@@ -243,6 +243,7 @@ public class RequestConstant {
     public static final String KEY_VERIFY_CODES = "verifyCodes";
     public static final String KEY_PAY_ORDER_ID = "payOrderId";
     public static final String KEY_PUSH_DATA = "data";
+    public static final String KEY_REDUCTION_AMOUNT = "reductionAmount";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

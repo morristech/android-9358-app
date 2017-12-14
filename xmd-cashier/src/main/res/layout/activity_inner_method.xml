@@ -99,7 +99,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="优惠券"
+            android:text="添加优惠"
             android:textColor="@color/colorText2"
             android:textSize="@dimen/font_size_16" />
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginLeft="@dimen/activity_little_margin"
             android:src="@drawable/arrow_right" />
 
         <TextView
@@ -117,10 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/img_arrow"
-            android:background="@drawable/bg_area_golden"
-            android:paddingLeft="@dimen/activity_little_margin"
-            android:paddingRight="@dimen/activity_little_margin"
-            android:textColor="@color/colorGoldenDark"
+            android:textColor="@color/colorText2"
             android:textSize="@dimen/font_size_16" />
     </RelativeLayout>
 
@@ -148,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="$123"
+            android:layout_marginRight="@dimen/activity_normal_margin"
             android:textColor="@color/colorRed"
             android:textSize="@dimen/font_size_16"
             android:textStyle="bold" />

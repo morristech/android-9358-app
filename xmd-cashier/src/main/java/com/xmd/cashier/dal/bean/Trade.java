@@ -12,6 +12,7 @@ import java.util.List;
 public class Trade {
     public Trade() {
         couponList = new ArrayList<>();
+        verifiedList = new ArrayList<>();
         discountType = AppConstants.DISCOUNT_TYPE_COUPON;
     }
 
@@ -74,7 +75,33 @@ public class Trade {
     public String batchNo;      //批次号
     public String payOrderId;   //订单编号
     public String payUrl;
-    public InnerRecordInfo innerRecordInfo; //支付信息
+    private List<OrderDiscountInfo> verifiedList;
+    private int willReductionMoney;
+    private int alreadyDiscountMoney;
+
+    public void setAlreadyDiscountMoney(int money) {
+        alreadyDiscountMoney = money;
+    }
+
+    public int getAlreadyDiscountMoney() {
+        return alreadyDiscountMoney;
+    }
+
+    public List<OrderDiscountInfo> getVerifiedList() {
+        return verifiedList;
+    }
+
+    public void setVerifiedList(List<OrderDiscountInfo> list) {
+        verifiedList = list;
+    }
+
+    public int getWillReductionMoney() {
+        return willReductionMoney;
+    }
+
+    public void setWillReductionMoney(int money) {
+        willReductionMoney = money;
+    }
 
     public int getWillPayMoney() {
         return willPayMoney;

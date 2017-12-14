@@ -40,8 +40,10 @@ public class CustomEditText extends EditText {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     setTextColor(getResources().getColor(R.color.colorAccent));
+                    setHintTextColor(getResources().getColor(R.color.colorAccent));
                 } else {
                     setTextColor(getResources().getColor(R.color.colorText));
+                    setHintTextColor(getResources().getColor(R.color.colorText3));
                 }
                 if (mOnFocusChangeListener != null) {
                     mOnFocusChangeListener.onFocusChange(v, hasFocus);

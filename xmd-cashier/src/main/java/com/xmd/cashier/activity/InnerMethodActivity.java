@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -108,7 +107,6 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
         mOrderList = (RecyclerView) findViewById(R.id.rv_order_list);
         mOrderList.setLayoutManager(new LinearLayoutManager(this));
 
-        mVerifyDescText.setVisibility(View.GONE);
         mVerifySelectLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,21 +149,13 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     }
 
     @Override
-    public void showVerifyDesc(String desc) {
-        if (!TextUtils.isEmpty(desc)) {
-            mVerifyDescText.setVisibility(View.VISIBLE);
-            mVerifyDescText.setText(desc);
-        }
-    }
-
-    @Override
-    public void hideVerifyDesc() {
-        mVerifyDescText.setVisibility(View.GONE);
-    }
-
-    @Override
     public void showNeedPayAmount(int amount) {
         mNeedPayAmount.setText("￥" + Utils.moneyToStringEx(amount));
+    }
+
+    @Override
+    public void showDiscountAmount(int amount) {
+        mVerifyDescText.setText("￥" + Utils.moneyToStringEx(amount));
     }
 
     @Override

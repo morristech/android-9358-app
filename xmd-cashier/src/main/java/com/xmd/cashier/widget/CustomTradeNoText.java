@@ -32,8 +32,7 @@ public class CustomTradeNoText extends CustomEditText {
     }
 
     private void init(Context context) {
-        setFilters(new InputFilter[]{new TradeNoInputFilter()});
-    }
+        setFilters(new InputFilter[]{new TradeNoInputFilter()}); }
 
     /**
      * source:输入的字符串

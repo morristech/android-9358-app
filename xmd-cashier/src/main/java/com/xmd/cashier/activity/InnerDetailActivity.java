@@ -43,6 +43,8 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
     private TextView mCouponAmount;
     private LinearLayout mPaidMemberLayout;
     private TextView mMemberAmount;
+    private LinearLayout mPaidReductionLayout;
+    private TextView mReductionAmount;
     private TextView mNeedAmount;
 
     @Override
@@ -67,6 +69,8 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
         mCouponAmount = (TextView) findViewById(R.id.tv_coupon_amount);
         mPaidMemberLayout = (LinearLayout) findViewById(R.id.layout_paid_member);
         mMemberAmount = (TextView) findViewById(R.id.tv_member_amount);
+        mPaidReductionLayout = (LinearLayout) findViewById(R.id.layout_paid_reduction);
+        mReductionAmount = (TextView) findViewById(R.id.tv_reduction_amount);
         mNeedAmount = (TextView) findViewById(R.id.tv_need_amount);
 
         mOrderDetailNegative.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +123,7 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
         int paidOrderAmount = 0;
         int paidCouponAmount = 0;
         int paidMemberAmount = 0;
+        int paidReductionAmount = 0;
         for (OrderDiscountInfo discountInfo : recordInfo.orderDiscountList) {
             switch (discountInfo.type) {
                 case AppConstants.PAY_DISCOUNT_COUPON:
@@ -130,10 +135,14 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
                 case AppConstants.PAY_DISCOUNT_ORDER:
                     paidOrderAmount += discountInfo.amount;
                     break;
+                case AppConstants.PAY_DISCOUNT_REDUCTION:
+                    paidReductionAmount += discountInfo.amount;
+                    break;
                 default:
                     break;
             }
         }
+
         mOriginAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.originalAmount));
         if (paidOrderAmount > 0) {
             mPaidOrderLayout.setVisibility(View.VISIBLE);
@@ -152,6 +161,12 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
             mMemberAmount.setText("￥" + Utils.moneyToStringEx(paidMemberAmount));
         } else {
             mPaidMemberLayout.setVisibility(View.GONE);
+        }
+        if (paidReductionAmount > 0) {
+            mPaidReductionLayout.setVisibility(View.VISIBLE);
+            mReductionAmount.setText("￥" + Utils.moneyToStringEx(paidReductionAmount));
+        } else {
+            mPaidReductionLayout.setVisibility(View.GONE);
         }
         mNeedAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.payAmount));
     }

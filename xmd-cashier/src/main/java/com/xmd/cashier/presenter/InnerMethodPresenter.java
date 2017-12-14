@@ -13,6 +13,7 @@ import com.xmd.cashier.dal.bean.InnerBatchInfo;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.MemberInfo;
+import com.xmd.cashier.dal.bean.OrderDiscountInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
@@ -35,6 +36,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import retrofit2.Call;
 import rx.Observable;
@@ -76,19 +79,17 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
 
     private void updateAmount() {
         Trade trade = mTradeManager.getCurrentTrade();
-        if (trade.getVerificationCount() > 0) {
-            mView.showVerifyDesc("已选择" + trade.getVerificationCount() + "张");
-        } else {
-            mView.hideVerifyDesc();
-        }
         int origin = trade.getOriginMoney();
-        int discount = TradeManager.getInstance().getDiscountAmount(trade.getCouponList());
-        trade.setWillDiscountMoney(discount);
-        if (origin < discount) {
+        int reduction = trade.getWillReductionMoney();
+        int verify = TradeManager.getInstance().getDiscountAmount(trade.getCouponList());
+        int already = trade.getAlreadyDiscountMoney();
+        trade.setWillDiscountMoney(verify);
+        if (origin < verify + reduction + already) {
             trade.setWillPayMoney(0);
         } else {
-            trade.setWillPayMoney(origin - discount);
+            trade.setWillPayMoney(origin - verify - reduction - already);
         }
+        mView.showDiscountAmount(trade.getWillDiscountMoney() + trade.getWillReductionMoney() + trade.getAlreadyDiscountMoney());
         mView.showNeedPayAmount(trade.getWillPayMoney());
     }
 
@@ -106,7 +107,28 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
 
     @Override
     public void onVerifySelect() {
-        UiNavigation.gotoVerificationActivity(mContext);
+        Trade trade = mTradeManager.getCurrentTrade();
+        if (trade.getWillReductionMoney() > 0 || trade.getWillDiscountMoney() > 0 || trade.getAlreadyDiscountMoney() > 0) {
+            new CustomAlertDialogBuilder(mContext)
+                    .setMessage("已经添加优惠，是否继续添加?")
+                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            UiNavigation.gotoInnerDiscountActivity(mContext);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            UiNavigation.gotoInnerDiscountActivity(mContext);
+        }
     }
 
     @Override
@@ -197,12 +219,17 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                 mView.updateStatus(mHoleSelect);
                 mView.showSelectCount(InnerManager.getInstance().getSelectCount());
                 break;
-            case AppConstants.INNER_METHOD_SOURCE_RECORD:
+            case AppConstants.INNER_METHOD_SOURCE_RECORD:   //如果是记录列表
             case AppConstants.INNER_METHOD_SOURCE_PUSH:     //如果是推送
                 InnerRecordInfo recordInfo = mView.returnRecordInfo();
                 mTradeManager.getCurrentTrade().payOrderId = recordInfo.payId;
                 mTradeManager.getCurrentTrade().batchNo = recordInfo.batchNo;
-                mTradeManager.getCurrentTrade().setOriginMoney(recordInfo.payAmount);   //设置订单金额
+                mTradeManager.getCurrentTrade().setAlreadyDiscountMoney(getVerifiedAmount(recordInfo));
+                mTradeManager.getCurrentTrade().setWillReductionMoney(getReductionAmount(recordInfo));
+                formatVerifiedList(recordInfo.orderDiscountList);
+                mTradeManager.getCurrentTrade().setVerifiedList(recordInfo.orderDiscountList);
+                mTradeManager.getCurrentTrade().setOriginMoney(recordInfo.originalAmount);   //设置订单金额
+                mTradeManager.getCurrentTrade().setWillPayMoney(recordInfo.payAmount);
                 mView.showOrderList(recordInfo.details);    //显示列表
                 mView.setStatusLayout(false);               //隐藏设置项
                 break;
@@ -210,6 +237,45 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                 break;
         }
         updateAmount();     //更新页面金额
+    }
+
+    private void formatVerifiedList(List<OrderDiscountInfo> list) {
+        Iterator<OrderDiscountInfo> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            OrderDiscountInfo orderDiscountInfo = iterator.next();
+            if (AppConstants.PAY_DISCOUNT_MEMBER.equals(orderDiscountInfo.type) || AppConstants.PAY_DISCOUNT_REDUCTION.equals(orderDiscountInfo.type)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private int getVerifiedAmount(InnerRecordInfo innerRecordInfo) {
+        int amount = 0;
+        if (innerRecordInfo.orderDiscountList != null && !innerRecordInfo.orderDiscountList.isEmpty()) {
+            for (OrderDiscountInfo orderDiscountInfo : innerRecordInfo.orderDiscountList) {
+                switch (orderDiscountInfo.type) {
+                    case AppConstants.PAY_DISCOUNT_COUPON:
+                    case AppConstants.PAY_DISCOUNT_ORDER:
+                        amount += orderDiscountInfo.amount;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return amount;
+    }
+
+    private int getReductionAmount(InnerRecordInfo innerRecordInfo) {
+        int amount = 0;
+        if (innerRecordInfo.orderDiscountList != null && !innerRecordInfo.orderDiscountList.isEmpty()) {
+            for (OrderDiscountInfo orderDiscountInfo : innerRecordInfo.orderDiscountList) {
+                if (AppConstants.PAY_DISCOUNT_REDUCTION.equals(orderDiscountInfo.type)) {
+                    amount += orderDiscountInfo.amount;
+                }
+            }
+        }
+        return amount;
     }
 
     private void showMethod() {
@@ -275,6 +341,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
                 trade.currentCashierType,
                 InnerManager.getInstance().getOrderIds(),
                 mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                String.valueOf(trade.getWillReductionMoney()),
                 new Callback<InnerBatchResult>() {
                     @Override
                     public void onSuccess(InnerBatchResult o) {

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -31,7 +32,7 @@
             android:textSize="@dimen/font_size_16" />
 
         <com.xmd.cashier.widget.CustomMoneyEditText
-            android:id="@+id/tv_user_discount"
+            android:id="@+id/tv_reduction_discount"
             style="@style/AppTheme.MoneyEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -64,26 +65,35 @@
             android:text="用券抵扣"
             android:textSize="@dimen/font_size_16" />
 
-        <com.xmd.cashier.widget.ClearableEditText
+        <com.xmd.cashier.widget.CustomTradeNoText
             android:id="@+id/edt_search_discount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@null"
-            android:drawablePadding="4dp"
             android:hint="请输入手机号或核销码"
             android:lines="1"
+            android:maxLength="18"
             android:textColorHint="@color/colorText3"
             android:textSize="@dimen/font_size_16" />
+
+        <ImageView
+            android:id="@+id/img_search_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_area_item"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:src="@drawable/ic_input_delete" />
 
         <ImageView
             android:id="@+id/img_search_confirm"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/bg_area_item"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:src="@drawable/ic_search" />
     </LinearLayout>
 
@@ -103,6 +113,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.xmd.cashier.widget.TagFlowLayout
+                android:id="@+id/flow_tag_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:padding="@dimen/activity_normal_margin"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorStoke"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_search_discount"
                 android:layout_width="match_parent"
@@ -121,13 +143,15 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/activity_little_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_normal_margin"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_line_dot" />
+                    android:background="@drawable/bg_line_dot"
+                    android:layerType="software" />
 
                 <TextView
+                    android:id="@+id/tv_verified_title_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="已核销券(0)张"
@@ -135,12 +159,12 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/activity_little_margin"
                     android:layout_marginLeft="@dimen/activity_normal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_line_dot" />
-
+                    android:background="@drawable/bg_line_dot"
+                    android:layerType="software" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -181,6 +205,7 @@
                 android:textSize="@dimen/font_size_14" />
 
             <TextView
+                android:id="@+id/tv_discount_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="￥0.00"
@@ -191,6 +216,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_discount_confirm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -200,4 +226,11 @@
             android:text="确认"
             android:textColor="@color/colorWhite" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/keyboardview"
+        layout="@layout/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

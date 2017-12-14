@@ -58,4 +58,6 @@
         <attr name="svTextSize" format="dimension" />
         <attr name="svDrawablePadding" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="TagFlowLayout"></declare-styleable>
 </resources>

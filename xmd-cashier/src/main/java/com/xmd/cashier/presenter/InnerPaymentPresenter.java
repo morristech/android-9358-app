@@ -106,7 +106,9 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     public void onCreate() {
         mTradeManager = TradeManager.getInstance();
         mView.setOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney()));
-        mView.setDiscount(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()));
+        mView.setDiscount(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()
+                + mTradeManager.getCurrentTrade().getAlreadyDiscountMoney()
+                + mTradeManager.getCurrentTrade().getWillReductionMoney()));
         switch (mTradeManager.getCurrentTrade().currentCashier) {
             case AppConstants.CASHIER_TYPE_QRCODE:
                 mView.initScanStub();

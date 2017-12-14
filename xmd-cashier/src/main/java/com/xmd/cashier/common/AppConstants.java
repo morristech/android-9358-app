@@ -285,6 +285,7 @@ public class AppConstants {
     public static final String PAY_DISCOUNT_COUPON = "coupon";
     public static final String PAY_DISCOUNT_ORDER = "paid_order";
     public static final String PAY_DISCOUNT_MEMBER = "member";
+    public static final String PAY_DISCOUNT_REDUCTION = "reduction";
 
     public static final String INPUT_DIGITS = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

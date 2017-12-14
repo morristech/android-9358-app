@@ -19,6 +19,7 @@ import com.xmd.cashier.activity.ConfirmActivity;
 import com.xmd.cashier.activity.DiscountCouponActivity;
 import com.xmd.cashier.activity.GiftActActivity;
 import com.xmd.cashier.activity.InnerDetailActivity;
+import com.xmd.cashier.activity.InnerDiscountActivity;
 import com.xmd.cashier.activity.InnerMethodActivity;
 import com.xmd.cashier.activity.InnerPaymentActivity;
 import com.xmd.cashier.activity.InnerRecordActivity;
@@ -372,6 +373,11 @@ public class UiNavigation {
 
     public static void gotoInnerResultActivity(Context context) {
         Intent intent = new Intent(context, InnerResultActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerDiscountActivity(Context context) {
+        Intent intent = new Intent(context, InnerDiscountActivity.class);
         context.startActivity(intent);
     }
 }

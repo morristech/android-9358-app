@@ -769,7 +769,8 @@ public interface SpaService {
                                                          @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                                          @Field(RequestConstant.KEY_ORDER_IDS) String orderIds,
                                                          @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
-                                                         @Field(RequestConstant.KEY_VERIFY_CODES) String verifyCodes);
+                                                         @Field(RequestConstant.KEY_VERIFY_CODES) String verifyCodes,
+                                                         @Field(RequestConstant.KEY_REDUCTION_AMOUNT) String reductionAmount);
 
     //买单回调
     @FormUrlEncoded

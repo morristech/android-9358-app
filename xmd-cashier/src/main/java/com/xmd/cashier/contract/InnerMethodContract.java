@@ -25,11 +25,9 @@ public interface InnerMethodContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showVerifyDesc(String desc);
-
-        void hideVerifyDesc();
-
         void showNeedPayAmount(int amount);
+
+        void showDiscountAmount(int amount);
 
         void showOrderList(List<InnerOrderInfo> list);
 

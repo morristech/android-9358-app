@@ -20,6 +20,7 @@ import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.ClubQrcodeBytes;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.MemberInfo;
+import com.xmd.cashier.dal.bean.OrderDiscountInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.TempUser;
 import com.xmd.cashier.dal.bean.Trade;
@@ -685,6 +686,10 @@ public class TradeManager {
     }
 
     /********************************************其他功能********************************************/
+    public List<OrderDiscountInfo> getVerifiedList() {
+        return mTrade.getVerifiedList();
+    }
+
     // 核销列表
     public List<VerificationItem> getVerificationList() {
         return mTrade.getCouponList();
@@ -1371,10 +1376,10 @@ public class TradeManager {
     }
 
     //*********************************************内网***********************************************
-    public Subscription generateInnerBatch(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, final Callback<InnerBatchResult> callback) {
+    public Subscription generateInnerBatch(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, String reductionAmount, final Callback<InnerBatchResult> callback) {
         Observable<InnerBatchResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .generateInnerBatchOrder(AccountManager.getInstance().getToken(),
-                        batchNo, memberId, orderIds, payChannel, verifyCodes);
+                        batchNo, memberId, orderIds, payChannel, verifyCodes, reductionAmount);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerBatchResult>() {
             @Override
             public void onCallbackSuccess(InnerBatchResult result) {
