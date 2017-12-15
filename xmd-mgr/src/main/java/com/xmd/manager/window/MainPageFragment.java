@@ -519,6 +519,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 rankingDataResult -> handlerRankingResult(rankingDataResult));
         mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
                 clubResult -> {
+                    if(clubResult == null){
+                        return;
+                    }
                     clubInvitation.setText(TextUtils.isEmpty(clubResult.respData.inviteCode) ? "" : clubResult.respData.inviteCode);
                     mMenuClubName.setText(Utils.StrSubstring(8, clubResult.respData.clubName, true));
                 }
