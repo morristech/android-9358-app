@@ -17,6 +17,7 @@ import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.m.notify.push.XmdPushManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -148,6 +149,7 @@ public class AccountManager {
                             callback.onSuccess(loginResult);
 
                             // 绑定推送
+                            XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);
                             com.xmd.app.user.User user = new com.xmd.app.user.User(getUserId());
                             EventBus.getDefault().postSticky(new EventLogin(getToken(), user));
@@ -190,6 +192,7 @@ public class AccountManager {
 
     public Subscription logout(final Callback<LogoutResult> callback) {
         // 解绑推送
+        XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
         EventBus.getDefault().removeStickyEvent(EventLogin.class);
         EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
         NotifyManager.getInstance().stopGetFastPayCountAsync();

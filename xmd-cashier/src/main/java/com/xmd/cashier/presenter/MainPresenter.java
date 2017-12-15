@@ -96,7 +96,6 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onClickLogout() {
         // 退出登录
-        XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
         CustomService.refreshOnlinePayNotify(false);
         CustomService.refreshOrderRecordNotify(false);
         VerifyManager.getInstance().clearVerifyList();
