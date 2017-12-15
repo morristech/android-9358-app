@@ -27,8 +27,6 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 public class ImageTool {
     private ResultListener listener;
-//    String ASPECT_X = "aspect_x";
-//    String ASPECT_Y = "aspect_y";
     private int maxWidth = 0;
     private int maxHeight = 0;
     private int maxSize = 0;

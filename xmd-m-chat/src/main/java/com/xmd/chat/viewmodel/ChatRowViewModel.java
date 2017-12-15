@@ -61,15 +61,10 @@ public abstract class ChatRowViewModel extends BaseViewModel {
             public void onSuccess() {
                 progress.set(false);
                 error.set(false);
+                if(ChatMessage.MSG_TAG_HELLO.equals(chatMessage.getTag())){
+                    return;
+                }
                 String msgType =chatMessage.getMsgType();
-//                if (!.equals(EMMessage.Type.TXT)) {
-//                    msgType = "text";
-//                } else {
-//                    msgType = chatMessage.getMsgType();
-//                    if (msgType.equals(ChatMessage.MSG_TYPE_ORIGIN_TXT)) {
-//                        msgType = "text";
-//                    }
-//                }
                 //通知服务器有新的消息
                 Observable<BaseBean> observable = XmdNetwork.getInstance()
                         .getService(NetService.class)

@@ -107,13 +107,14 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
         setBackVisible(true);
         mSeatBillDataManager = SeatBillDataManager.getManagerInstance();
         addBill = new NativeUpdateBill();
-        initListData();
         ThreadPoolManager.postToUIDelayed(new Runnable() {
             @Override
             public void run() {
+                initListData();
                 hideLoading();
             }
-        }, 1500);
+        }, 2000);
+
     }
 
     private void initListData() {
@@ -134,6 +135,7 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
             bean.setItemId(info.itemId);
             bean.setItemType(info.itemType);
             bean.setServiceName(info.itemName);
+            bean.setConsumeName(mSeatBillDataManager.getConsumeName(info.itemId));
             List<NativeEmployeeBean> employeeList = new ArrayList<>();
 
             for (EmployeeInfo employeeInfo : info.employeeList) {

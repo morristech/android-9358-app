@@ -31,7 +31,6 @@ import java.util.Map;
 public class SeatBillDataManager {
     List<NativeCategoryBean> mCateGoryList; //服务分类列表
     List<List<NativeServiceItemBean>> mServiceItemListList; //服务子项列表
-    List<NativeServiceItemBean> mServiceItemList; //服务项目列表
     List<NativeTechnician> mFreeTechList;   //会所状态闲技师列表
     List<NativeTechnician> mAllTechList;   //会所所有技师列表
     List<OrderBillBean> mOrderBellList; //轮钟类型列表
@@ -43,7 +42,6 @@ public class SeatBillDataManager {
     public SeatBillDataManager() {
         mCateGoryList = new ArrayList<>();
         mServiceItemListList = new ArrayList<>();
-        mServiceItemList = new ArrayList<>();
         mFreeTechList = new ArrayList<>();
         mAllTechList = new ArrayList<>();
         mOrderBellList = new ArrayList<>();
@@ -54,6 +52,7 @@ public class SeatBillDataManager {
         getOrderItemBellList();
         getHaveIdentify();
     }
+
 
     public static SeatBillDataManager getManagerInstance() {
         if (mManagerInstance == null) {
@@ -326,6 +325,27 @@ public class SeatBillDataManager {
         if (mManagerInstance != null) {
             mManagerInstance = null;
         }
+    }
+
+
+    public String getConsumeName(String itemId) {
+        String categoryId = "";
+        String itemName = "";
+        for (List<NativeServiceItemBean> bean : mServiceItemListList) {
+            for (NativeServiceItemBean itemBean : bean) {
+                if (itemBean.id.equals(itemId)) {
+                    categoryId = itemBean.categoryId;
+                }
+            }
+
+        }
+        for (NativeCategoryBean categoryBean : mCateGoryList) {
+            if (categoryBean.id.equals(categoryId)) {
+                itemName = categoryBean.name;
+            }
+
+        }
+        return itemName;
     }
 
 

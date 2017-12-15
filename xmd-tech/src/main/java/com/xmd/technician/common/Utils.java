@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -31,8 +28,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -180,6 +175,10 @@ public class Utils {
 
     public static int getScreenWidth() {
         return getScreenWidthHeight(null)[0];
+    }
+
+    public static int getScreenHeight(){
+        return getScreenWidthHeight(null)[1];
     }
 
     /**

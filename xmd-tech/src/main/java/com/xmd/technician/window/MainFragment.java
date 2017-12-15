@@ -715,7 +715,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case Constant.TECH_STATUS_UNCERT:
                 mJoinOrQuitClub.setText("取消申请");
-                mMenuClubName.setText(String.format("%s（待审核）",Utils.StrSubstring(6, mTech.getClubName(), true)));
+                mMenuClubName.setText(String.format("%s（待审核）", Utils.StrSubstring(6, mTech.getClubName(), true)));
                 break;
             case Constant.TECH_STATUS_FREE:
                 initWorkStatus();
@@ -1015,7 +1015,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.PERSONAL_EDIT)
     public void gotoEditPersonalData() {
         Intent intent = new Intent(getActivity(), TechUserCenterActivity.class);
-        // Intent intent = new Intent(getActivity(),TechInfoActivity.class);
         getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
     }
 
@@ -1038,8 +1037,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.main_tech_who_care_all:
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.switchFragment(2);
-                EventBus.getDefault().post(new SwitchTableToContactRecentEvent());
+                if (mainActivity.getFragmentSize() == 5) {
+                    mainActivity.switchFragment(3);
+                    EventBus.getDefault().post(new SwitchTableToContactRecentEvent());
+                } else if (mainActivity.getFragmentSize() == 4) {
+                    mainActivity.switchFragment(2);
+                    EventBus.getDefault().post(new SwitchTableToContactRecentEvent());
+                }
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -1064,8 +1068,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.main_too_keen:
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.switchFragment(2);
-                EventBus.getDefault().post(new SwitchTableToContactRegisterEvent());
+                if (mainActivity.getFragmentSize() == 5) {
+                    mainActivity.switchFragment(3);
+                    EventBus.getDefault().post(new SwitchTableToContactRegisterEvent());
+                } else if (mainActivity.getFragmentSize() == 4) {
+                    mainActivity.switchFragment(2);
+                    EventBus.getDefault().post(new SwitchTableToContactRegisterEvent());
+                }
+
                 break;
             case R.id.main_send_coupon:
                 ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));

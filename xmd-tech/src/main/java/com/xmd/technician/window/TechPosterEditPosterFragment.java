@@ -186,14 +186,14 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 case Constant.TECH_POSTER_FLOWER_MODEL:
                     posterStyle = Constant.TECH_POSTER_TYPE_FLOWER;
                     Glide.with(getActivity()).load(R.drawable.img_poster_flower_small).into(imgPosterPreview);
-                    mAspect_X = 5;
                     mAspect_Y = 7;
+                    mAspect_X = 5;
                     break;
                 case Constant.TECH_POSTER_SQUARE_MODEL:
                     posterStyle = Constant.TECH_POSTER_TYPE_SQUARE;
                     Glide.with(getActivity()).load(R.drawable.img_poster_square_small).into(imgPosterPreview);
-                    mAspect_X = 5;
                     mAspect_Y = 7;
+                    mAspect_X = 5;
                     break;
                 case Constant.TECH_POSTER_BLUE_MODEL:
                     posterStyle = Constant.TECH_POSTER_TYPE_BLUE;
