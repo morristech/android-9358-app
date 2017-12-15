@@ -27,7 +27,7 @@ public class Constant {
     public static final String ORDER_STATUS_ALL = "";
     public static final String SHARE_CONTEXT = "context";
 
-    public static final int AVATAR_MAX_SIZE = 256;
+    public static final int AVATAR_MAX_SIZE = 512;
     public static final int ALBUM_MAX_SIZE = 512;
     public static final int POSTER_MAX_SIZE = 512;
 
