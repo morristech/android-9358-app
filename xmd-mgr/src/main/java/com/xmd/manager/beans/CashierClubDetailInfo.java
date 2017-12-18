@@ -22,6 +22,7 @@ public class CashierClubDetailInfo implements Serializable {
     public long amount;     //单价
     public long totalAmount;    //订单金额
     public String itemName; //项目名
+    public String url;  //图标URL
 
     public List<CashierTechInfo> techList;
 

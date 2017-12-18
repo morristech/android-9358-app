@@ -138,20 +138,18 @@ public class ReportDetailAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
                 CashierClubDetailInfo info = (CashierClubDetailInfo) mData.get(position);
                 switch (info.scope) {
                     case CASHIER_TYPE_GOODS:
-                        itemHolder.mTypeImage.setImageResource(R.drawable.ic_type_goods);
                         itemHolder.mTitleText.setText(info.itemName + " * " + info.count);
                         itemHolder.mAmountText.setText("+" + Utils.moneyToStringEx(info.totalAmount));
                         break;
                     case CASHIER_TYPE_SPA:
                         itemHolder.mTitleText.setText(info.itemName);
-                        itemHolder.mTypeImage.setImageResource(R.drawable.ic_type_spa);
                         itemHolder.mAmountText.setText("+" + Utils.moneyToStringEx(info.totalAmount));
                         break;
                     default:
                         itemHolder.mTitleText.setText("未知");
-                        itemHolder.mTypeImage.setImageResource(R.drawable.black_money);
                         break;
                 }
+                Glide.with(mContext).load(info.url).dontAnimate().placeholder(R.drawable.black_money).into(itemHolder.mTypeImage);
                 itemHolder.mSubTitleText.setText(info.payChannel);
                 itemHolder.mTimeText.setText(info.orderTime);
                 itemHolder.itemView.setOnClickListener(v -> mCallBack.onItemClick(info));

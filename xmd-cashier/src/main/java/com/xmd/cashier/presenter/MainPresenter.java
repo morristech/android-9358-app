@@ -28,7 +28,6 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
-import com.xmd.cashier.manager.CustomPushMessageListener;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
@@ -38,7 +37,6 @@ import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.XmdNetwork;
-import com.xmd.m.notify.push.XmdPushManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
