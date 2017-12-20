@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="设 置"
-            android:textColor="@color/colorHead"
+            android:text="@string/setting"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/fontHead"/>
 
     </RelativeLayout>
@@ -67,7 +67,7 @@
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/margin_2"
+            android:paddingLeft="@dimen/two_space"
             android:src="@drawable/icon_setting_menu"/>
 
         <TextView
@@ -83,12 +83,12 @@
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/margin_2"
+            android:paddingLeft="@dimen/two_space"
             android:src="@drawable/slide_menu_fast_reply"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="快捷回复设置"/>
+            android:text="@string/quick_reply_setting"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -114,7 +114,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingRight="@dimen/small_space"
-            android:textColor="@color/colorRemark"
+            android:textColor="@color/color_main_remark"
             android:textSize="@dimen/fontBody"/>
 
     </RelativeLayout>
@@ -158,7 +158,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/settings_model_sound"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"
         android:visibility="gone">
@@ -174,7 +173,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/settings_model_vibrate"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"
         android:visibility="gone">
@@ -216,7 +214,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingRight="@dimen/small_space"
-            android:textColor="@color/colorBtnChecked"
+            android:textColor="@color/color_btn_checked"
             android:textSize="12sp"/>
     </RelativeLayout>
 
@@ -249,12 +247,12 @@
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/margin_2"
+            android:paddingLeft="@dimen/two_space"
             android:src="@drawable/slide_menu_fast_reply"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="入职邀请"/>
+            android:text="@string/entry_invitation"/>
 
         <TextView
             android:id="@+id/menu_club_invite_count"

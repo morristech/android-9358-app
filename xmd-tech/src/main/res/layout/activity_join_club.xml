@@ -32,7 +32,7 @@
                 android:layout_height="@dimen/home_button_height"
                 android:background="@null"
                 android:gravity="center"
-                android:text="加入会所"
+                android:text="@string/setting_activity_join_club"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontSubheading" />
 
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="邀请码：" />
+                    android:text="@string/text_invitation" />
 
                 <com.xmd.technician.widget.ClearableEditText
                     android:id="@+id/phone_number"
@@ -81,16 +81,16 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:afterTextChanged="@{(s)->presenter.setInviteCode(s)}"
                     android:background="@android:color/transparent"
-                    android:hint="输入邀请码"
+                    android:hint="@string/hint_input_invitation"
                     android:inputType="phone"
                     android:maxLength="6"
-                    android:textColor="@color/colorBody" />
+                    android:textColor="@color/color_main_body" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="职位：" />
+                    android:text="@string/position" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/spinner"
@@ -122,7 +122,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="编号：" />
+                    android:text="@string/number" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -152,13 +152,13 @@
                     android:maxLength="11"
                     android:onClick="@{()->presenter.onClickShowTechNos()}"
                     android:text="@{presenter.mTechNo}"
-                    android:textColor="@color/colorBody" />
+                    android:textColor="@color/color_main_body" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,7 +174,7 @@
                     android:background="@drawable/shape_rect_w2r8_red"
                     android:gravity="center"
                     android:onClick="@{()->presenter.onClickSkip()}"
-                    android:text="跳过"
+                    android:text="@string/skip"
                     android:textColor="@color/colorPrimary"
                     android:visibility="@{presenter.mShowSkip?View.VISIBLE:View.GONE}" />
 
@@ -188,7 +188,7 @@
                     android:enabled="@{presenter.mCanJoin}"
                     android:gravity="center"
                     android:onClick="@{()->presenter.onClickJoin()}"
-                    android:text="申请加入"
+                    android:text="@string/apply_for_admission"
                     android:textColor="@color/color_white" />
             </LinearLayout>
         </LinearLayout>

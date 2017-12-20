@@ -25,10 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_2"
+        android:paddingBottom="@dimen/two_space"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
-        android:paddingTop="@dimen/margin_2"
+        android:paddingTop="@dimen/two_space"
         android:visibility="gone">
 
         <com.xmd.app.widget.CircleAvatarView
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/fontBody" />
 
         <TextView
@@ -73,10 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_2"
+        android:paddingBottom="@dimen/two_space"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
-        android:paddingTop="@dimen/margin_2"
+        android:paddingTop="@dimen/two_space"
         android:visibility="gone">
 
         <com.xmd.app.widget.CircleAvatarView
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/fontBody" />
 
         <TextView
@@ -121,10 +121,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_2"
+        android:paddingBottom="@dimen/two_space"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
-        android:paddingTop="@dimen/margin_2"
+        android:paddingTop="@dimen/two_space"
         android:visibility="gone">
 
         <com.xmd.app.widget.CircleAvatarView
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/fontBody" />
 
         <TextView
@@ -169,13 +169,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingBottom="@dimen/margin_2"
-        android:paddingTop="@dimen/margin_2">
+        android:paddingBottom="@dimen/two_space"
+        android:paddingTop="@dimen/two_space">
         <View
             style="@style/horizontal_divider_line"/>
 
         <TextView
-            android:id="@+id/main_dynamic_none"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

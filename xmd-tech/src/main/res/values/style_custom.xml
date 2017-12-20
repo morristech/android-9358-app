@@ -22,7 +22,7 @@
 
     <!-- Custom Alert Dialog -->
     <style name="custom_alert_dialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowBackground">@color/color_transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
@@ -49,7 +49,7 @@
     </style>
 
     <style name="list_item_vertical_line" parent="vertical_line">
-        <item name="android:background">@color/list_item_line_color</item>
+        <item name="android:background">@color/color_line_divide</item>
         <item name="android:layout_marginLeft">2dp</item>
         <item name="android:layout_marginRight">2dp</item>
     </style>
@@ -66,13 +66,13 @@
     </style>
 
     <style name="list_item_line" parent="line">
-        <item name="android:background">@color/list_item_line_color</item>
+        <item name="android:background">@color/color_line_divide</item>
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
     <style name="dialog_line" parent="line">
-        <item name="android:background">@color/colorMain</item>
+        <item name="android:background">@color/color_main</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginBottom">0dp</item>
     </style>
@@ -114,7 +114,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/fontTitle</item>
-        <item name="android:textColor">@color/colorBody</item>
+        <item name="android:textColor">@color/color_main_body</item>
         <item name="android:layout_marginRight">@dimen/large_space</item>
     </style>
 
@@ -123,7 +123,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/fontTitle</item>
-        <item name="android:textColor">@color/colorTitle</item>
+        <item name="android:textColor">@color/color_main_title</item>
     </style>
 
     <style name="paid_coupon_user_detail_header_text_view_style">
@@ -137,7 +137,7 @@
 
     <!-- -->
     <style name="default_spinner_style" parent="android:Widget.Spinner">
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/color_transparent</item>
         <item name="android:textSize">@dimen/spinner_item_text_size</item>
     </style>
 
@@ -158,13 +158,13 @@
     <style name="horizontal_divider_line_dialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/colorRemarkText_dialog</item>
+        <item name="android:background">@color/color_dialog_remark_text</item>
     </style>
 
     <style name="horizontal_divider_line_e0">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/colorRemarkText</item>
+        <item name="android:background">@color/color_remark_text</item>
     </style>
 
     <style name="vertical_divider_line">
@@ -194,13 +194,13 @@
     <style name="text_marked">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/fontSize</item>
-        <item name="android:textColor">@color/colorMainBtn</item>
+        <item name="android:textColor">@color/color_main_btn</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="text_credit">
         <item name="android:textSize">@dimen/fontBody</item>
-        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -211,7 +211,7 @@
         <item name="android:paddingLeft">@dimen/padding_12</item>
         <item name="android:ellipsize">end</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:background">@color/color_white</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/fontBody</item>
@@ -292,7 +292,7 @@
         <item name="android:textSize">@dimen/fontRemark</item>
         <item name="android:textColor">@color/dialog_content_text_color</item>
         <item name="android:background">@drawable/bg_main_tech_ranking_serial</item>
-        <item name="android:layout_marginTop">@dimen/margin_2</item>
+        <item name="android:layout_marginTop">@dimen/two_space</item>
         <item name="android:paddingRight">6dp</item>
         <item name="android:paddingLeft">6dp</item>
         <item name="android:gravity">center</item>
@@ -302,7 +302,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/fontBody</item>
         <item name="android:textColor">@color/number_of_groups</item>
-        <item name="android:layout_marginTop">@dimen/margin_2</item>
+        <item name="android:layout_marginTop">@dimen/two_space</item>
         <item name="android:paddingRight">6dp</item>
         <item name="android:paddingLeft">6dp</item>
         <item name="android:gravity">center</item>
@@ -312,7 +312,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/fontTitle</item>
-        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:layout_marginTop">-20dp</item>
     </style>
     <style name="main_fragment_layout_technician_pk_ranking_value_style">
@@ -336,7 +336,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/search_view_height</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/colorBody</item>
+        <item name="android:textColor">@color/color_main_body</item>
         <item name="android:textSize">@dimen/fontTitle</item>
     </style>
 
@@ -362,7 +362,7 @@
     <style name="main_info_number_text_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colorBody</item>
+        <item name="android:textColor">@color/color_main_body</item>
         <item name="android:textSize">@dimen/fontTechWork</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
@@ -413,7 +413,7 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_marginLeft">12dp</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#212121</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/colorMain"
+              android:background="@color/color_main"
               android:orientation="vertical"
     >
 
@@ -27,7 +27,7 @@
             android:drawablePadding="@dimen/small_space"
             android:drawableTop="@drawable/selector_share_once_card"
             android:gravity="center"
-            android:text="单项次卡"
+            android:text="@string/times_card_message"
             android:textColor="@color/selector_share_text_table"
             android:textSize="@dimen/fontCaption"/>
 
@@ -44,7 +44,7 @@
             android:drawablePadding="@dimen/small_space"
             android:drawableTop="@drawable/selector_share_package"
             android:gravity="center"
-            android:text="超值套餐"
+            android:text="@string/package_message"
             android:textColor="@color/selector_share_text_table"
             android:textSize="@dimen/fontCaption"/>
 
@@ -61,7 +61,7 @@
             android:drawablePadding="@dimen/small_space"
             android:drawableTop="@drawable/selector_share_credit_gift"
             android:gravity="center"
-            android:text="积分礼品"
+            android:text="@string/gift_message"
             android:textColor="@color/selector_share_text_table"
             android:textSize="@dimen/fontCaption"/>
     </LinearLayout>

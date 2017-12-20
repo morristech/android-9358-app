@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/personal_info_margin_top"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontBody"
         android:text="@string/app_name"/>
 

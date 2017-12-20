@@ -64,10 +64,10 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
         holder.rewardAmount.setText(Utils.getFloat2Str(String.valueOf(bean.amount / 100f)));
         if (mWithdrawal.equals("Y") && bean.status.equals("normal")) {
             holder.accountConsume.setBackgroundResource(R.drawable.account_button_selector_bg);
-            holder.accountConsume.setTextColor(ResourceUtils.getColor(R.color.colorBtnSelector));
+            holder.accountConsume.setTextColor(ResourceUtils.getColor(R.color.color_btn_selector));
         } else {
             holder.accountConsume.setBackgroundResource(R.drawable.account_button_none_selector_bg);
-            holder.accountConsume.setTextColor(ResourceUtils.getColor(R.color.colorBody));
+            holder.accountConsume.setTextColor(ResourceUtils.getColor(R.color.color_main_body));
         }
         Glide.with(mContext).load(bean.imageUrl).error(R.drawable.icon30).into(holder.imgAccountHead);
         holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean));

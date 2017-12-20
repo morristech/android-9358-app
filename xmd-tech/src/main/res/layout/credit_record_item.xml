@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_25"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/fontTitle" />
 
         <com.xmd.technician.widget.CircleImageView
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/avatar"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginBottom="@dimen/small_space"
             android:textColor="@color/indicator_selected_color"
             android:textSize="@dimen/fontNormal" />
 
@@ -52,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/margin_2"
-            android:textColor="@color/colorHead"
+            android:layout_marginTop="@dimen/two_space"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/fontBody" />
     </RelativeLayout>
 

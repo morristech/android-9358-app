@@ -50,7 +50,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorHead"
+                    android:textColor="@color/color_main_head"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
 
@@ -65,7 +65,6 @@
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
                     android:paddingTop="1dp"
-                    android:text="7折"
                     android:textColor="@color/primary_color"
                     android:textSize="12sp"
                     android:visibility="gone"
@@ -77,14 +76,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_2"
+                android:layout_marginTop="@dimen/two_space"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="套餐："
-                    android:textColor="@color/colorBody"
+                    android:text="@string/set_meal"
+                    android:textColor="@color/color_main_body"
                     android:textSize="@dimen/fontBiggerThanNormal"/>
 
                 <com.ms.square.android.expandabletextview.ExpandableTextView
@@ -100,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/inter_space"
-                        android:textColor="@color/colorBody"
+                        android:textColor="@color/color_main_body"
                         android:textSize="@dimen/fontBiggerThanNormal"/>
 
                     <ImageButton
@@ -117,7 +116,7 @@
                 android:id="@+id/once_card_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBody"
+                android:textColor="@color/color_main_body"
                 android:textSize="@dimen/fontBiggerThanNormal"
                 tools:text="特卖价：150元、259元"/>
 
@@ -132,7 +131,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBtnChecked"
+                    android:textColor="@color/color_btn_checked"
                     android:textSize="@dimen/fontBiggerThanNormal"
                     android:visibility="visible"
 

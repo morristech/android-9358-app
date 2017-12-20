@@ -3,7 +3,7 @@
     <!-- 第一层，露出个小边当分隔线 -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorBtnSelector"/>
+            <solid android:color="@color/color_btn_selector"/>
             <padding android:bottom="2dp"/>
         </shape>
     </item>

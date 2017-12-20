@@ -2,32 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/colorMain"
-              android:orientation="vertical"
-    >
+              android:background="@color/color_main"
+              android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_widget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_container">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-
-   <FrameLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-       <android.support.v4.widget.SwipeRefreshLayout
-           android:id="@+id/swipe_refresh_widget"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:layout_below="@+id/header_container">
-           <android.support.v7.widget.RecyclerView
-               android:id="@+id/list"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" />
-       </android.support.v4.widget.SwipeRefreshLayout>
-
-       <com.xmd.technician.widget.EmptyView
-           android:id="@+id/empty_view_widget"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:visibility="gone"/>
-   </FrameLayout>
-
+        <com.xmd.technician.widget.EmptyView
+            android:id="@+id/empty_view_widget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </FrameLayout>
 
 
 </LinearLayout>

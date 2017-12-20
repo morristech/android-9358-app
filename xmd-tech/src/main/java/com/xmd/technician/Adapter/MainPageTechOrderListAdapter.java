@@ -82,7 +82,7 @@ public class MainPageTechOrderListAdapter extends RecyclerView.Adapter {
             viewHolder.orderMoney.setVisibility(View.VISIBLE);
             viewHolder.orderMoneyDetail.setVisibility(View.VISIBLE);
             String orderMoney = order.downPayment + "元";
-            viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney, ResourceUtils.getColor(R.color.colorMainBtn), 0, orderMoney.length() - 1));
+            viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney, ResourceUtils.getColor(R.color.color_main_btn), 0, orderMoney.length() - 1));
             if (order.payType == 2) {
                 viewHolder.mPaidMark.setVisibility(View.VISIBLE);
             } else {

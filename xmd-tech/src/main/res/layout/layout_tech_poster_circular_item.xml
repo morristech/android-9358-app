@@ -94,9 +94,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="5dp"
-                android:layout_marginRight="@dimen/margin_2"
+                android:layout_marginRight="@dimen/two_space"
                 android:background="@drawable/poster_circular_qr_code_bg"
-                android:padding="@dimen/margin_2"
+                android:padding="@dimen/two_space"
                 android:src="@drawable/icon23" />
 
             <ImageView

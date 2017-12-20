@@ -106,7 +106,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     public void onItemClicked(ClubJournalBean bean) throws HyphenateException {
         super.onItemClicked(bean);
         if (Utils.isNotEmpty(bean.shareUrl)) {
-            ShareDetailActivity.startShareDetailActivity(getActivity(), bean.shareUrl, ResourceUtils.getString(R.string.club_journal_list_title), false);
+            ShareDetailActivity.startShareDetailActivity(getActivity(), bean.shareUrl, ResourceUtils.getString(R.string.club_journal), false);
 
         } else {
             return;

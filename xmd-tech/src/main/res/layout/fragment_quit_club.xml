@@ -22,7 +22,7 @@
             android:layout_marginTop="@dimen/common_v_margin"
             android:gravity="center"
             android:text="@string/quit_club_title"
-            android:textColor="@color/colorTitle"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontSubheading" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_marginRight="@dimen/common_v_margin"
             android:layout_marginTop="@dimen/common_v_margin"
             android:text="@string/quit_club_tip"
-            android:textColor="@color/colorBody" />
+            android:textColor="@color/color_main_body" />
 
         <EditText
             android:id="@+id/edit_password"
@@ -83,7 +83,7 @@
                 android:minHeight="40dp"
                 android:onClick="@{()->fragment.onClickOk()}"
                 android:padding="8dp"
-                android:text="确定"
+                android:text="@string/confirm"
                 android:textColor="@drawable/selector_link_button" />
 
             <View
@@ -100,7 +100,7 @@
                 android:minHeight="40dp"
                 android:onClick="@{()->fragment.onClickCancel()}"
                 android:padding="8dp"
-                android:text="取消"
+                android:text="@string/cancel"
                 android:textColor="@drawable/selector_link_button" />
         </LinearLayout>
     </LinearLayout>

@@ -1,88 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--colors的name命名使用下划线命名法，采用以下规则：模块名+逻辑名称 颜色(可不写)-->
 
     <color name="colorPrimaryDark">#ff8c86</color>
-    <color name="colorPrimary">#ff8c86</color>
+    <color name="colorPrimary">@color/colorPrimaryDark</color>
     <color name="colorAccent">#FF6666</color>
 
-    <color name="transparent">#00000000</color>
+    <color name="color_transparent">#00000000</color>
     <color name="app_bg">#EFEFF4</color>
     <color name="text_color_yellow">#ff9d09</color>
-    <color name="sideBarcolor">#303F9F</color>
-    <color name="tab_text_normal_color">#333</color>
-    <color name="dialog_content_text_color">#666</color>
 
-    <color name="colorMain">#f5f5f5</color>
-    <color name="colorMainBtn">#ff6666</color>
-    <color name="colorBackground">#f0f0f0</color>
-    <color name="colorServiceDivide">#00e0e0e0</color>
-    <color name="colorTitle">#333333</color>
-    <color name="colorBody">#666666</color>
-    <color name="colorRemark">#999999</color>
-    <color name="colorRemarkText">#E0E0E0</color>
-    <color name="colorRemarkText_dialog">#88E0E0E0</color>
-    <color name="colorHead">#212121</color>
 
-    <color name="colorLineDivide">#d9d9d9</color>
-    <color name="colorLineDivideTable">#CCCCCC</color>
-    <color name="colorBtnNormal">#333333</color>
-    <color name="colorBtnSelector">#ff5549</color>
+    <color name="color_white">#FFFFFF</color>
+
+
+    <color name="color_main">#f5f5f5</color>
+    <color name="color_main_btn">@color/colorAccent</color>
+    <color name="color_background">#f0f0f0</color>
+    <color name="color_service_divide">#00e0e0e0</color>
+    <color name="color_main_title">#333333</color>
+    <color name="color_main_head">#212121</color>
+    <color name="color_main_body">#666666</color>
+    <color name="color_main_remark">#999999</color>
+    <color name="color_remark_text">#E0E0E0</color>
+    <color name="color_main_hint">#CCCCCC</color>
+    <color name="tab_text_normal_color">@color/color_main_title</color>
+    <color name="color_dialog_remark_text">#88E0E0E0</color>
     <color name="colorBtnChat">#33ff6666</color>
-    <color name="colorBtnChecked">#fb5549</color>
-    <color name="border_line_color">@color/colorMain</color>
+
+
+    <color name="color_line_divide">#d9d9d9</color>
+    <color name="color_line_divide_table">@color/color_main_hint</color>
+    <color name="color_btn_normal">@color/color_main_title</color>
+    <color name="color_btn_selector">#ff5549</color>
+    <color name="color_btn_chat">#AAff6666</color>
+    <color name="color_btn_checked">#fb5549</color>
+    <color name="border_line_color">@color/color_main</color>
     <color name="dialog_line_gray">#DDD</color>
 
-    <color name="tab_bg">#FFF</color>
-    <color name="tab_text_checked_color">#fb5549</color>
+    <color name="tab_bg">@color/color_white</color>
+    <color name="tab_text_checked_color">@color/color_btn_checked</color>
     <color name="tab_bottom_line_color">#dadada</color>
 
-    <color name="list_item_bg">#FFF</color>
-    <color name="list_item_line_color">#d9d9d9</color>
-    <color name="list_item_label_color">#999</color>
+    <color name="list_item_bg">@color/color_white</color>
+    <color name="list_item_label_color">@color/color_main_remark</color>
 
 
-    <color name="order_list_item_remain_time_color">#fE6765</color>
+    <color name="order_list_item_remain_time_color">@color/colorAccent</color>
 
-    <!-- listitem operation button -->
-    <color name="operation_button_positive_bg_normal">#fE6765</color>
-    <color name="operation_button_positive_text_normal">#FFF</color>
+
+    <color name="operation_button_positive_bg_normal">@color/colorAccent</color>
+    <color name="operation_button_positive_text_normal">@color/color_white</color>
     <color name="operation_button_positive_text_pressed">#CAC7CB</color>
-
     <color name="operation_button_negative_bg_normal">#CAC7CB</color>
-    <color name="operation_button_negative_text_normal">#FFF</color>
-    <color name="operation_button_negative_text_pressed">#FFF</color>
-
+    <color name="operation_button_negative_text_normal">@color/color_white</color>
+    <color name="operation_button_negative_text_pressed">@color/color_white</color>
     <color name="operation_button_bg_pressed">#c9443a</color>
 
     <color name="colorServiceName">#f9f9f9</color>
     <color name="appColorTable">@color/colorPrimary</color>
     <color name="colorServiceHead">#f0eff5</color>
 
-    <color name="order_detail_section_bg_color">#fff</color>
+    <color name="order_detail_section_bg_color">@color/color_white</color>
     <color name="order_detail_step_view_done_color">#14bfad</color>
-    <color name="order_detail_step_view_todo_color">#d9d9d9</color>
-    <color name="order_detail_step_view_text_color">#666666</color>
+    <color name="order_detail_step_view_todo_color">@color/color_line_divide</color>
+    <color name="order_detail_step_view_text_color">@color/color_main_body</color>
 
     <!-- Custom Dialog-->
     <color name="dialog_button_negative_bg_normal">#CAC7CB</color>
-    <color name="dialog_button_negative_text_normal">#FFF</color>
-    <color name="dialog_button_negative_text_pressed">#FFF</color>
-
-    <color name="dialog_button_positive_text_normal">#FFF</color>
-    <color name="dialog_button_positive_text_pressed">#FFF</color>
-
+    <color name="dialog_button_negative_text_normal">@color/color_white</color>
+    <color name="dialog_button_negative_text_pressed">@color/color_white</color>
+    <color name="dialog_button_positive_text_normal">@color/color_white</color>
+    <color name="dialog_button_positive_text_pressed">@color/color_white</color>
     <color name="dialog_button_bg_pressed">#c9443a</color>
+    <color name="dialog_content_text_color">@color/color_main_body</color>
 
     <color name="primary_button_color_normal">#fb5549</color>
     <color name="primary_button_color_pressed">#70fb5549</color>
 
-    <color name="popup_window_button_normal">@color/transparent</color>
+    <color name="popup_window_button_normal">@color/color_transparent</color>
     <color name="popup_window_button_pressed">#fb5549</color>
-    <color name="popup_window_button_text_pressed">#FFF</color>
+    <color name="popup_window_button_text_pressed">@color/color_white</color>
 
     <color name="paid_coupon_user_detail_header_background_color">#f3f0eb</color>
 
-    <color name="side_bar_text">#666666</color>
+    <color name="side_bar_text">@color/color_main_body</color>
 
     <color name="shadow_bg">#66000000</color>
 
@@ -90,12 +92,12 @@
     <color name="divider_thin_color">#66bdbdbd</color>
     <color name="stroke_color">#E0E0E2</color>
     <color name="black">#000</color>
-    <color name="color_white">#FFF</color>
-    <color name="title_text">#333333</color>
+
+
     <color name="text_index">#4d4d4d</color>
 
     <color name="phone_number_text_color">#818181</color>
-    <color name="contact_info_unit">#999999</color>
+    <color name="contact_info_unit">@color/color_main_remark</color>
     <color name="text_color_can_chat">#777777</color>
     <color name="alert_text_color">#616161</color>
     <color name="coupon_delivery_bottom_color">#d75c63</color>
@@ -105,10 +107,10 @@
     <color name="coupon_detail_text_color">#424242</color>
     <color name="coupon_code_text_color">#4c4c4c</color>
     <color name="indicator_selected_color">#9e9e9e</color>
-    <color name="indicator_normal_color">#e0e0e0</color>
+    <color name="indicator_normal_color">@color/color_remark_text</color>
     <color name="credit_amount_color">#0abe07</color>
     <color name="divider_color">#ddd</color>
-    <color name="primary_color">#ff6666</color>
+    <color name="primary_color">@color/colorAccent</color>
     <color name="contact_marker">#ff9a0c</color>
     <color name="get_credit_color">#00aaee</color>
     <!-- mainPage-->
@@ -119,12 +121,9 @@
     <color name="ranking_server">#EA5191</color>
     <color name="ranking_sail">#FF7C41</color>
     <color name="recent_status_reward">#de5757</color>
-
     <color name="link_button">@android:color/holo_blue_light</color>
     <color name="link_button_disable">#808080</color>
-
     <color name="edit_text_stoke">#808080</color>
-
     <color name="color616161">#616161</color>
     <color name="share_coupon_dialog_top_color">#f3f3fc</color>
     <color name="share_coupon_btn_text_color">#0e7bd0</color>
@@ -137,8 +136,9 @@
     <color name="number_of_groups">#feb705</color>
     <color name="underway_color">#6ed745</color>
     <color name="bg_btn_color">#FEFEFE</color>
-
     <!-- toolbar 标题栏样式 -->
-    <color name="toolbarTitleColor">#ffffff</color>
+    <color name="toolbarTitleColor">@color/color_white</color>
     <color name="toolbarBackground">@color/colorPrimaryDark</color>
+    <!-- 已弃用资源文件-->
+    <color name="side_bar_color">#303F9F</color>
 </resources>

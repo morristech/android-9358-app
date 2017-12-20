@@ -26,7 +26,6 @@
             android:textSize="@dimen/fontSize" />
 
         <LinearLayout
-            android:id="@+id/ll_personal_ranking_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_white"
@@ -40,7 +39,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="排名"
-                android:textColor="#666666"
+                android:textColor="@color/color_main_body"
                 android:textSize="13sp" />
 
             <TextView
@@ -49,7 +48,7 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="姓名"
-                android:textColor="#666666"
+                android:textColor="@color/color_main_body"
                 android:textSize="13sp" />
 
             <LinearLayout
@@ -66,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/inter_space"
                     android:text="全部队伍"
-                    android:textColor="#666666"
+                    android:textColor="@color/color_main_body"
                     android:textSize="13sp" />
 
                 <ImageView
@@ -83,7 +82,7 @@
                 android:layout_weight="1.2"
                 android:gravity="center"
                 android:text="战绩"
-                android:textColor="#666666"
+                android:textColor="@color/color_main_body"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -112,7 +111,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="1"
-            android:textColor="@color/colorTitle"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontSize"
             android:visibility="gone"/>
 
@@ -160,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/small_space"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="@dimen/fontTitle"
                 tools:text="李佳绩"/>
 
@@ -170,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="6dp"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="@dimen/fontNormal"
                 tools:text="[ 0021 ]"/>
         </LinearLayout>
@@ -198,7 +197,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:paddingRight="@dimen/small_space"
-            android:textColor="@color/colorMainBtn"
+            android:textColor="@color/color_main_btn"
             android:textSize="@dimen/fontTitle"
             tools:text="157个"/>
 

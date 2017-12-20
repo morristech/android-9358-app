@@ -14,7 +14,7 @@
         android:layout_marginRight="@dimen/search_margin"
         android:background="@drawable/bg_main_tech_state"
         android:gravity="center"
-        android:padding="@dimen/margin_2">
+        android:padding="@dimen/two_space">
 
         <com.xmd.technician.widget.CircleImageView
             android:id="@+id/main_head_avatar"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/main_head_tech_name"
             android:layout_below="@id/main_head_tech_name"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/small_space"
             android:background="@drawable/bg_main_tech_serial"
             android:gravity="center"
             android:paddingLeft="8dp"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/main_head_tech_name"
             android:layout_below="@id/main_head_tech_serial"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/small_space"
             android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontNormal"

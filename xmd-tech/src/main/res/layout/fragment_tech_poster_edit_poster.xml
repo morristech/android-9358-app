@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_primary_title"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="16sp" />
 
             <com.xmd.technician.widget.ClearableEditText
@@ -118,7 +118,7 @@
                 android:maxLength="6"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:textColorHint="#cccccc"
+                android:textColorHint="@color/color_main_hint"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_minor_title"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="16sp" />
 
             <com.xmd.technician.widget.ClearableEditText
@@ -158,7 +158,7 @@
                 android:maxLength="12"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:textColorHint="#cccccc"
+                android:textColorHint="@color/color_main_hint"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_nick_name"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="16sp" />
 
             <com.xmd.technician.widget.ClearableEditText
@@ -198,7 +198,7 @@
                 android:maxLength="10"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:textColorHint="#cccccc"
+                android:textColorHint="@color/color_main_hint"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -223,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_tech_number"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="16sp" />
 
             <TextView
@@ -236,7 +236,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:textColor="#cccccc"
+                android:textColor="@color/color_main_hint"
                 android:textSize="14sp"
                 tools:text="A1008" />
 
@@ -264,7 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_club_name"
-                android:textColor="@color/colorTitle"
+                android:textColor="@color/color_main_title"
                 android:textSize="16sp" />
 
             <TextView
@@ -277,8 +277,8 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:textColor="#cccccc"
-                android:textColorHint="#cccccc"
+                android:textColor="@color/color_main_hint"
+                android:textColorHint="@color/color_main_hint"
                 android:textSize="14sp"
                 tools:text="会所名称" />
 

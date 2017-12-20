@@ -7,7 +7,7 @@
         <item name="toolbarStyle">@style/MyToolbar</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/color_background</item>
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -20,22 +20,6 @@
         <item name="android:spinnerStyle">@style/default_spinner_style</item>
     </style>
 
-
-    <style name="edit_activity_text_style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colorRemark</item>
-        <item name="android:textSize">@dimen/fontBody</item>
-    </style>
-
-    <style name="edit_activity_edit_text_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">@dimen/personal_margin</item>
-        <item name="android:background">@null</item>
-        <item name="android:textColor">@color/colorBody</item>
-        <item name="android:textSize">@dimen/fontBody</item>
-    </style>
 
     <style name="commentRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/rating_bar_bg</item>
@@ -51,7 +35,7 @@
         <item name="android:button">@null</item>
         <item name="android:drawableRight">@drawable/check_box_style_selector</item>
         <item name="android:textSize">@dimen/fontTitle</item>
-        <item name="android:textColor">@color/colorBody</item>
+        <item name="android:textColor">@color/color_main_body</item>
         <item name="android:background">@drawable/personal_item_selector</item>
     </style>
 
@@ -103,7 +87,7 @@
         <item name="android:visibility">gone</item>
     </style>
     <style name="coupon_type_style" parent="wh_wrap_content_layout">
-        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:textSize">@dimen/fontHead</item>
         <item name="android:layout_marginLeft">@dimen/inter_space</item>
         <item name="android:layout_alignParentTop">true</item>
@@ -112,7 +96,7 @@
 
     </style>
     <style name="coupon_total_style" parent="wh_wrap_content_layout">
-        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:textSize">@dimen/fontBody</item>
         <item name="android:layout_marginLeft">@dimen/inter_space</item>
         <item name="android:layout_alignParentBottom">true</item>
@@ -129,7 +113,7 @@
     <!-- 时间选择控件 -->
     <style name="DateSelectView">
         <item name="android:background">@drawable/shape_rect_r4_gray</item>
-        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textColor">@color/color_main_head</item>
         <item name="android:textSize">@dimen/fontBody2</item>
         <item name="android:minHeight">32dp</item>
         <item name="android:gravity">center</item>

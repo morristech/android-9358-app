@@ -43,7 +43,7 @@
                 android:background="@drawable/rect_white_bg"
                 android:gravity="center"
                 android:text="@string/tech_poster_edit_before"
-                android:textColor="#FF6666"
+                android:textColor="@color/colorAccent"
                 android:textSize="18sp" />
 
             <Button

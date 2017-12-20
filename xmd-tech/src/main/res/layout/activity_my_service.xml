@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_main_body"
             android:textSize="@dimen/fontBody"
             android:text="@string/service_item"/>
 
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_main_body"
             android:textSize="@dimen/fontBody"
             android:text="@string/service_price"/>
 
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_main_body"
             android:textSize="@dimen/fontBody"
             android:text="@string/service_time"/>
     </LinearLayout>

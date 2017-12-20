@@ -134,8 +134,8 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     }
 
     private void resetTextView() {
-        mTableApply.setTextColor(ResourceUtils.getColor(R.color.colorHead));
-        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.colorHead));
+        mTableApply.setTextColor(ResourceUtils.getColor(R.color.color_main_head));
+        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.color_main_head));
     }
 
     protected void setContentViewLayout() {
@@ -161,7 +161,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
         mPageFragmentPagerAdapter.addFragment(new ApplicationRecordFragment());
         mViewpagerContact.setAdapter(mPageFragmentPagerAdapter);
         mViewpagerContact.setCurrentItem(0);
-        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.color_main_btn));
         mViewpagerContact.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
@@ -181,12 +181,12 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        mTableApply.setTextColor(ResourceUtils.getColor(R.color.colorHead));
+                        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.color_main_btn));
+                        mTableApply.setTextColor(ResourceUtils.getColor(R.color.color_main_head));
                         break;
                     case 1:
-                        mTableApply.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.colorHead));
+                        mTableApply.setTextColor(ResourceUtils.getColor(R.color.color_main_btn));
+                        mTableRecord.setTextColor(ResourceUtils.getColor(R.color.color_main_head));
                         break;
                 }
 
@@ -229,13 +229,13 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
                 resetTextView();
                 mViewpagerContact.setCurrentItem(1);
                 currentIndex = 1;
-                mTableApply.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                mTableApply.setTextColor(ResourceUtils.getColor(R.color.color_main_btn));
                 break;
             case R.id.credit_record:
                 resetTextView();
                 mViewpagerContact.setCurrentItem(0);
                 currentIndex = 0;
-                mTableRecord.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                mTableRecord.setTextColor(ResourceUtils.getColor(R.color.color_main_btn));
                 break;
         }
     }

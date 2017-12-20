@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    android:id="@+id/customer_reward_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="@dimen/feedback_btn_width"
                                     android:layout_marginLeft="@dimen/search_margin"
@@ -30,7 +29,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/inter_space"
             android:text="@string/customer_reward"
-            android:textColor="@color/colorTitle"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontTitle"/>
     </LinearLayout>
 
@@ -42,7 +41,7 @@
         android:layout_marginBottom="@dimen/search_margin"
         android:layout_marginLeft="@dimen/personal_item_height"
         android:text="￥"
-        android:textColor="@color/colorRemark"
+        android:textColor="@color/color_main_remark"
         android:textSize="@dimen/fontTitle"/>
 
     <TextView
@@ -52,7 +51,7 @@
         android:layout_gravity="bottom"
         android:layout_marginLeft="@dimen/message_item_height"
         android:text="0"
-        android:textColor="@color/colorRemark"
+        android:textColor="@color/color_main_remark"
         android:textSize="@dimen/fontBig"/>
 
     <TextView

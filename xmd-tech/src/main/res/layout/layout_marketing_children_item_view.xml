@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/colorHead"
+                    android:textColor="@color/color_main_head"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
 
@@ -105,7 +105,7 @@
                     android:id="@+id/marketing_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBtnChecked"
+                    android:textColor="@color/color_btn_checked"
                     android:textSize="@dimen/fontHead"
                     android:textStyle="bold"
                     tools:text="1"/>
@@ -114,9 +114,9 @@
                     android:id="@+id/unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_2"
+                    android:layout_marginLeft="@dimen/two_space"
                     android:text="元"
-                    android:textColor="@color/colorBtnChecked"
+                    android:textColor="@color/color_btn_checked"
                     android:textSize="@dimen/fontNormal"/>
 
                 <TextView

@@ -24,7 +24,7 @@
                 android:gravity="center"
                 android:paddingLeft="@dimen/padding_10"
                 android:paddingTop="@dimen/padding_10"
-                android:textColor="@color/colorHead"
+                android:textColor="@color/color_main_head"
                 android:singleLine="true"
                 android:ellipsize="middle"
                 android:textSize="@dimen/fontTitle" />
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_coupon_title"
                 android:layout_alignBottom="@+id/tv_coupon_title"
-                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_marginLeft="@dimen/small_space"
                 android:textSize="@dimen/fontNormal"
                 android:visibility="gone"
 
@@ -58,7 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/small_space"
             android:orientation="horizontal">
             <View
                 android:id="@+id/coupon_empty_view"
@@ -101,7 +101,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/small_space"
             android:layerType="software"
             android:background="@drawable/coupon_line" />
 
@@ -134,7 +134,7 @@
                 android:layout_marginRight="@dimen/padding_5"
                 android:textColor="@color/coupon_delivery_text_color"
                 android:textSize="@dimen/fontNormal"
-                android:layout_marginTop="@dimen/margin_2"
+                android:layout_marginTop="@dimen/two_space"
                 />
         </LinearLayout>
     </LinearLayout>

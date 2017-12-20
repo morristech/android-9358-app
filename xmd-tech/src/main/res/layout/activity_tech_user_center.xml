@@ -59,12 +59,12 @@
                           android:background="#F2f2f2"
                           android:gravity="center_vertical"
                           android:paddingLeft="@dimen/inter_space"
-                          android:text="基本信息"
-                          android:textColor="#666666"
+                          android:text="@string/essential_information"
+                          android:textColor="@color/color_main_body"
                           android:textSize="14sp"/>
                 <View android:layout_width="match_parent"
                       android:layout_height="0.5dp"
-                      android:background="#E0E0E0"/>
+                      android:background="@color/color_remark_text"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,13 +100,13 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="请输入昵称..."
+                                android:hint="@string/hint_input_nick_name"
                                 android:maxLength="10"
                                 android:paddingBottom="@dimen/small_space"
                                 android:paddingLeft="@dimen/small_space"
-                                android:paddingRight="@dimen/margin_2"
+                                android:paddingRight="@dimen/two_space"
                                 android:paddingTop="@dimen/small_space"
-                                android:textColor="#333333"
+                                android:textColor="@color/color_main_title"
                                 android:textColorHint="#616161"
                                 android:background="@null"
                                 android:textSize="16sp"/>
@@ -283,8 +283,8 @@
                                 android:maxLength="200"
                                 android:minHeight="60dp"
                                 android:paddingLeft="@dimen/small_space"
-                                android:paddingRight="@dimen/margin_2"
-                                android:textColor="#333333"
+                                android:paddingRight="@dimen/two_space"
+                                android:textColor="@color/color_main_title"
                                 android:textColorHint="#616161"
                                 android:textSize="16sp"/>
                             <TextView
@@ -294,7 +294,7 @@
                                 android:gravity="right"
                                 android:paddingBottom="6dp"
                                 android:paddingTop="6dp"
-                                android:textColor="#333333"
+                                android:textColor="@color/color_main_title"
                                 android:textSize="14sp"
                                 tools:text="0/200"/>
                         </LinearLayout>
@@ -304,7 +304,7 @@
                 </LinearLayout>
                 <View android:layout_width="match_parent"
                       android:layout_height="0.5dp"
-                      android:background="#E0E0E0"/>
+                      android:background="@color/color_remark_text"/>
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:orientation="horizontal"
@@ -318,7 +318,7 @@
                               android:paddingLeft="@dimen/inter_space"
                               android:paddingTop="@dimen/small_space"
                               android:text="个人相册"
-                              android:textColor="#666666"
+                              android:textColor="@color/color_main_body"
                               android:textSize="14sp"/>
                     <TextView
                         android:id="@+id/tv_tech_alarm_number"
@@ -351,7 +351,7 @@
                         android:paddingBottom="10dp"
                         android:paddingRight="16dp"
                         android:paddingTop="12dp"
-                        android:textColor="#999999"
+                        android:textColor="@color/color_main_remark"
                         android:textSize="14sp"
                         tools:text="(所有人均可查看)"/>
                 </LinearLayout>
@@ -377,7 +377,7 @@
                           android:background="@color/white"/>
                     <View android:layout_width="match_parent"
                           android:layout_height="0.5dp"
-                          android:background="#E0E0E0"/>
+                          android:background="@color/color_remark_text"/>
                     <TextView android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:paddingLeft="24dp"

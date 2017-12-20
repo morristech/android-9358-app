@@ -10,7 +10,7 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginTop="@dimen/small_space"
         android:scrollbars="none"
         >
 
@@ -43,7 +43,7 @@
                         android:layout_height="0.5dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:background="@color/colorRemarkText"
+                        android:background="@color/color_remark_text"
                         />
 
                     <TextView
@@ -54,7 +54,7 @@
                         android:layout_marginRight="15dp"
                         android:gravity="center"
                         android:text="@string/share_with_red_packet"
-                        android:textColor="@color/colorMainBtn"
+                        android:textColor="@color/color_main_btn"
                         android:textSize="@dimen/fontSize"
                         />
 
@@ -63,7 +63,7 @@
                         android:layout_height="0.5dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:background="@color/colorRemarkText"
+                        android:background="@color/color_remark_text"
                         />
 
                 </LinearLayout>
@@ -118,7 +118,7 @@
                         android:layout_height="0.5dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:background="@color/colorRemarkText"
+                        android:background="@color/color_remark_text"
                         />
 
                     <TextView
@@ -129,7 +129,7 @@
                         android:layout_marginRight="15dp"
                         android:gravity="center"
                         android:text="@string/coupon_code"
-                        android:textColor="@color/colorMainBtn"
+                        android:textColor="@color/color_main_btn"
                         android:textSize="@dimen/fontSize"
 
                         />
@@ -139,7 +139,7 @@
                         android:layout_height="0.5dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:background="@color/colorRemarkText"
+                        android:background="@color/color_remark_text"
                         />
                 </LinearLayout>
 
@@ -175,7 +175,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/money_sign"
-                            android:textColor="@color/colorHead"
+                            android:textColor="@color/color_main_head"
                             android:layout_centerHorizontal="true"
                             android:textSize="18sp"
                             />
@@ -225,7 +225,7 @@
                         android:drawableLeft="@drawable/icon_project"
                         android:drawablePadding="@dimen/margin_right_10"
                         android:text="限定项目"
-                        android:textColor="@color/colorHead"
+                        android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontTitle"
                         />
 
@@ -244,7 +244,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="@dimen/margin_25"
                     android:layout_marginTop="@dimen/padding_5"
-                    android:background="@color/colorLineDivide"/>
+                    android:background="@color/color_line_divide"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -259,7 +259,7 @@
                         android:drawableLeft="@drawable/icon_time"
                         android:drawablePadding="@dimen/margin_right_10"
                         android:text="@string/user_time"
-                        android:textColor="@color/colorHead"
+                        android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontTitle"
 
                         />
@@ -280,7 +280,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="@dimen/margin_25"
-                    android:background="@color/colorLineDivide"/>
+                    android:background="@color/color_line_divide"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -295,7 +295,7 @@
                         android:drawableLeft="@drawable/icon_rule"
                         android:drawablePadding="@dimen/margin_right_10"
                         android:text="@string/normal_coupon_detail_activity_act_content_desc"
-                        android:textColor="@color/colorHead"
+                        android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontTitle"
                         />
 

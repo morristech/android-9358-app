@@ -54,7 +54,7 @@
             android:layout_below="@id/title"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
-            android:text="会所邀请码："
+            android:text="@string/club_invitation"
             android:textColor="@color/color_white"
             android:visibility="@{presenter.mShowTechNoAndClubInviteCode?View.VISIBLE:View.GONE}" />
 
@@ -75,7 +75,7 @@
             android:layout_below="@id/tip_invite_code"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
-            android:text="技师编号："
+            android:text="@string/tech_no"
             android:textColor="@color/color_white"
             android:visibility="@{presenter.mShowTechNoAndClubInviteCode?View.VISIBLE:View.GONE}" />
 
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="+86"
-                    android:textColor="@color/colorTitle"
+                    android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontBody" />
 
                 <com.xmd.technician.widget.ClearableEditText
@@ -130,13 +130,13 @@
                     android:inputType="phone"
                     android:maxLength="11"
                     android:text="@{tech.phoneNumber}"
-                    android:textColor="@color/colorBody" />
+                    android:textColor="@color/color_main_body" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,11 +156,11 @@
                     android:layout_weight="1"
                     android:afterTextChanged="@{(s)->presenter.setVerificationCode(s)}"
                     android:background="@android:color/transparent"
-                    android:hint="输入验证码"
+                    android:hint="@string/register_security_code_hint"
                     android:inputType="number"
                     android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:maxLength="6"
-                    android:textColor="@color/colorBody" />
+                    android:textColor="@color/color_main_body" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -178,7 +178,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <com.xmd.technician.widget.ClearablePasswordEditText
                 android:layout_width="match_parent"
@@ -190,12 +190,12 @@
                 android:hint="@string/register_password_hint"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:textColor="@color/colorBody"
+                android:textColor="@color/color_main_body"
                 android:textSize="@dimen/fontBody" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <Button
                 android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                 android:enabled="@{presenter.mCanGotoSetInfoView}"
                 android:gravity="center"
                 android:onClick="@{()->presenter.onClickNextStep()}"
-                android:text="下一步"
+                android:text="@string/tech_poster_edit_next"
                 android:textColor="@color/color_white" />
         </LinearLayout>
     </RelativeLayout>

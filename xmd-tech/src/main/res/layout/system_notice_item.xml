@@ -17,7 +17,7 @@
         android:layout_marginRight="@dimen/personal_margin"
         android:layout_marginTop="@dimen/personal_margin"
         android:textSize="@dimen/fontTitle"
-        android:textColor="@color/colorTitle"
+        android:textColor="@color/color_main_title"
         tools:text="title"/>
 
     <ImageView
@@ -37,6 +37,6 @@
         android:layout_marginRight="@dimen/personal_margin"
         android:layout_marginTop="@dimen/search_margin"
         android:textSize="@dimen/fontBody"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         tools:text="@string/normal_coupon_detail_activity_share_text"/>
 </LinearLayout>

@@ -36,7 +36,7 @@
                     android:gravity="center"
                     android:paddingLeft="@dimen/padding_10"
                     android:paddingTop="@dimen/padding_10"
-                    android:textColor="@color/colorHead"
+                    android:textColor="@color/color_main_head"
                     android:textSize="@dimen/fontTitle"/>
 
                 <TextView
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/tv_coupon_title"
-                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginLeft="@dimen/small_space"
                     android:layout_toRightOf="@+id/tv_coupon_title"
                     android:text="@string/coupon_code_item"
                     android:textSize="@dimen/fontNormal"
@@ -70,7 +70,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/small_space"
                 android:orientation="horizontal">
                 <View
                     android:id="@+id/coupon_empty_view"
@@ -112,7 +112,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/small_space"
                 android:background="@drawable/coupon_line"
                 android:layerType="software"/>
 
@@ -127,7 +127,7 @@
                     android:id="@+id/tv_coupon_period"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginTop="@dimen/small_space"
                     android:gravity="center"
                     android:textSize="@dimen/fontNormal"/>
             </RelativeLayout>

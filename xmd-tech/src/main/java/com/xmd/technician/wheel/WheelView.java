@@ -646,7 +646,7 @@ public class WheelView extends View {
         int center = getHeight() / 2;
         int offset = (int) (getItemHeight() / 2 * 1.2);
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.colorMain));
+        paint.setColor(getResources().getColor(R.color.color_main));
         // 设置线宽
         paint.setStrokeWidth((float) 3);
         // 绘制上边直线

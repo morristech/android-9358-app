@@ -76,7 +76,7 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/small_space"
                 android:paddingTop="@dimen/small_space"
-                android:text="分享"
+                android:text="@string/coupon_fragment_share"
                 android:textColor="@color/white"
                 android:background="@drawable/chat_share_selector_bg"
                 android:textSize="13sp"
@@ -88,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:gravity="right|center"
                 android:orientation="horizontal"
-                android:paddingRight="@dimen/margin_5"
+                android:paddingRight="@dimen/small_space"
                 android:visibility="gone">
 
                 <ImageView

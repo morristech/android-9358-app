@@ -4,6 +4,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMConversation;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -54,6 +55,7 @@ import com.xmd.technician.http.gson.HelloRecordListResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
+import com.xmd.technician.http.gson.InvitationRewardResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -334,6 +336,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_REWARD_ACTIVITY_LIST:
                 getRewardActivityList();
+                break;
+            case MsgDef.MSG_DEF_GET_INVITATION_REWARD_ACTIVITY_LIST:
+                getInvitationRewardActivityList();
                 break;
             case MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST:
                 getClubJournalList((Map<String, String>) msg.obj);
@@ -1624,6 +1629,20 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<RewardListResult>() {
             @Override
             protected void postResult(RewardListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 邀请有礼
+     */
+    private void getInvitationRewardActivityList() {
+        Call<InvitationRewardResult> call = getSpaService().invitationRewardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<InvitationRewardResult>() {
+            @Override
+            protected void postResult(InvitationRewardResult result) {
+                XLogger.i(">>>","此处有邀请有礼数据");
                 RxBus.getInstance().post(result);
             }
         });

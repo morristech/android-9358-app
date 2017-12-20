@@ -201,6 +201,7 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_AUDIT_MODIFY = 0x132;
     public static final int MSG_DEF_TECH_AUDIT_CANCEL = 0x133;
     public static final int MSG_DEF_TECH_AUDIT_CONFIRM = 0x134;
+    public static final int MSG_DEF_GET_INVITATION_REWARD_ACTIVITY_LIST = 0x0135;
 
 
 }

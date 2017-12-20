@@ -10,14 +10,14 @@
         android:layout_height="@dimen/avatar_head"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/app_default_padding"
-        android:text="请选择省市"
-        android:textColor="@color/colorRemark"
+        android:text="@string/choose_city"
+        android:textColor="@color/color_main_remark"
         android:textSize="@dimen/fontHead" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
         <View
             android:layout_width="@dimen/line_divide_height"
             android:layout_height="match_parent"
-            android:background="@color/colorLineDivide" />
+            android:background="@color/color_line_divide" />
 
         <Button
             android:id="@+id/select_confirm_button"

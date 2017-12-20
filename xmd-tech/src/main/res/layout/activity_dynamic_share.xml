@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_10"
         android:scaleType="center"
         android:src="@drawable/img_dynamic_empty" />
 
@@ -21,7 +21,7 @@
         android:layout_marginBottom="@dimen/margin_20"
         android:layout_marginLeft="@dimen/user_card_margin"
         android:layout_marginRight="@dimen/user_card_margin"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_10"
         android:layout_weight="1"
         android:background="@drawable/share_code_bg"
         android:orientation="vertical">
@@ -60,7 +60,7 @@
                         android:ellipsize="end"
                         android:maxEms="4"
                         android:singleLine="true"
-                        android:textColor="@color/colorHead"
+                        android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontHead" />
 
                     <LinearLayout
@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_10"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="@dimen/three_space"
                         android:orientation="horizontal">
 
                         <TextView
@@ -80,8 +80,8 @@
                             android:id="@+id/user_card_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_2"
-                            android:layout_marginRight="@dimen/margin_2"
+                            android:layout_marginLeft="@dimen/two_space"
+                            android:layout_marginRight="@dimen/two_space"
                             android:textColor="@color/text_color_yellow" />
 
                         <TextView
@@ -97,7 +97,7 @@
                     android:id="@+id/user_card_club"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginTop="@dimen/small_space"
                     android:textColor="@color/phone_number_text_color"
                     android:textSize="@dimen/fontBody" />
             </LinearLayout>
@@ -123,6 +123,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:background="@drawable/rect_bg"
+        android:gravity="center"
         android:text="@string/coupon_fragment_share"
         android:textColor="@color/color_white" />
 

@@ -12,11 +12,9 @@
         android:orientation="horizontal"
         >
         <LinearLayout
-            android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <FrameLayout
-                android:id="@+id/fl_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/small_space">
@@ -53,36 +51,34 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:gravity="center_vertical"
-                     android:textColor="@color/colorTitle"
+                     android:textColor="@color/color_main_title"
                      />
                  <TextView
-                     android:id="@+id/user_manager_type"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_toRightOf="@id/name"
-                     android:layout_marginLeft="@dimen/margin_5"
+                     android:layout_marginLeft="@dimen/small_space"
                      android:text="@string/contact_manager"
                      android:textColor="@color/color_white"
                      android:background="@drawable/chat_manager_type_bg"
                      android:textSize="@dimen/fontRemark"
-                     android:paddingBottom="@dimen/margin_2"
-                     android:paddingTop="@dimen/margin_2"
-                     android:paddingLeft="@dimen/margin_5"
-                     android:paddingRight="@dimen/margin_5"
+                     android:paddingBottom="@dimen/two_space"
+                     android:paddingTop="@dimen/two_space"
+                     android:paddingLeft="@dimen/small_space"
+                     android:paddingRight="@dimen/small_space"
                      android:visibility="gone"
                      />
                  <TextView
-                     android:id="@+id/user_tech_type"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_toRightOf="@id/name"
-                     android:layout_marginLeft="@dimen/margin_5"
-                     android:textColor="@color/colorTitle"
+                     android:layout_marginLeft="@dimen/small_space"
+                     android:textColor="@color/color_main_title"
                      android:textSize="@dimen/fontRemark"
-                     android:paddingBottom="@dimen/margin_2"
-                     android:paddingTop="@dimen/margin_2"
-                     android:paddingLeft="@dimen/margin_5"
-                     android:paddingRight="@dimen/margin_5"
+                     android:paddingBottom="@dimen/two_space"
+                     android:paddingTop="@dimen/two_space"
+                     android:paddingLeft="@dimen/small_space"
+                     android:paddingRight="@dimen/small_space"
                      android:visibility="gone"
                      />
                  <TextView
@@ -90,7 +86,7 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:paddingRight="@dimen/inter_space"
-                     android:textColor="@color/colorRemark"
+                     android:textColor="@color/color_main_remark"
                      android:layout_alignParentRight="true"
                      />
              </RelativeLayout>
@@ -104,7 +100,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:maxLength="36"
-                    android:textColor="@color/colorRemark"
+                    android:textColor="@color/color_main_remark"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -113,23 +109,8 @@
     <View
     android:layout_width="match_parent"
     android:layout_height="0.5dp"
-    android:layout_marginTop="@dimen/margin_2"
+    android:layout_marginTop="@dimen/two_space"
     android:background="@color/divider_thin_color"
     />
-    <!--<LinearLayout-->
-        <!--android:id="@+id/operation_conversion"-->
-        <!--android:layout_width="84dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="horizontal"-->
-        <!--&gt;-->
-        <!--<Button-->
-            <!--android:id="@+id/btnDelete"-->
-            <!--android:layout_width="84dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="删除"-->
-            <!--android:gravity="center"-->
-            <!--android:background="#FF0000"-->
-            <!--/>-->
-    <!--</LinearLayout>-->
 
 </LinearLayout>

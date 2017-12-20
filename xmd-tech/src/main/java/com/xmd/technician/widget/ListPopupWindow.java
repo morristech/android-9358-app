@@ -60,7 +60,7 @@ public class ListPopupWindow<T> extends BasePopupWindow {
                 int lineWidth = ResourceUtils.getDimenInt(R.dimen.line_width);
                 mContainer.addView(item, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 View line = new View(TechApplication.getAppContext());
-                line.setBackgroundColor(ResourceUtils.getColor(R.color.list_item_line_color));
+                line.setBackgroundColor(ResourceUtils.getColor(R.color.color_line_divide));
                 LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(
                         ResourceUtils.getDimenInt(R.dimen.popup_window_button_min_width),
                         lineWidth);

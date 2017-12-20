@@ -81,7 +81,7 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
                 mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
             }
         });
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMainBtn);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.color_main_btn);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mDetailSubscription = RxBus.getInstance().toObservable(ConsumeDetailResult.class).subscribe(

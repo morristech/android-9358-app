@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small_space"
             android:text="@string/tech_poster_share"
-            android:textColor="#FF6666"
+            android:textColor="@color/colorAccent"
             android:textSize="12sp" />
 
     </LinearLayout>

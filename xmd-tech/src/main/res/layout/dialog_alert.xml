@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/home_button_height"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorMain"
+        android:textColor="@color/color_main"
         android:textSize="@dimen/fontHead"
         android:gravity="center_vertical"
         android:text="@string/confirm"
@@ -19,7 +19,7 @@
         android:id="@+id/msg_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide"/>
+        android:background="@color/color_line_divide"/>
 
     <TextView
         android:id="@+id/dialog_alert_message"
@@ -30,7 +30,7 @@
         android:gravity="center_vertical"
         android:layout_below="@+id/msg_view"
         android:paddingLeft="@dimen/personal_margin"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontBody" />
 
     <View
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
         android:layout_marginTop="@dimen/app_default_padding"
-        android:background="@color/colorLineDivide"/>
+        android:background="@color/color_line_divide"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:background="@drawable/personal_item_selector"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_main_body"
             android:textSize="@dimen/fontTitle"
             android:text="@string/cancel"/>
         <Button
@@ -65,7 +65,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:background="@drawable/personal_item_selector"
-            android:textColor="@color/colorBtnChecked"
+            android:textColor="@color/color_btn_checked"
             android:textSize="@dimen/fontTitle"
             android:text="@string/confirm"/>
     </LinearLayout>
@@ -75,5 +75,5 @@
         android:layout_height="@dimen/personal_item_height"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/reset_view"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 </RelativeLayout>

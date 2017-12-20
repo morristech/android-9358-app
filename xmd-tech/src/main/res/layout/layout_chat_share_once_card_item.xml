@@ -55,7 +55,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorHead"
+                    android:textColor="@color/color_main_head"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
            <LinearLayout
@@ -66,13 +66,13 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="套餐："
-                   android:textColor="@color/colorBody"
+                   android:textColor="@color/color_main_body"
                    android:textSize="@dimen/fontBiggerThanNormal"/>
                <TextView
                    android:id="@+id/once_card_credit"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:textColor="@color/colorBody"
+                   android:textColor="@color/color_main_body"
                    android:textSize="@dimen/fontBiggerThanNormal"
                    tools:text="套餐：买10送4、买6送2"/>
            </LinearLayout>
@@ -81,7 +81,7 @@
                 android:id="@+id/once_card_discount_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBody"
+                android:textColor="@color/color_main_body"
                 android:textSize="@dimen/fontBiggerThanNormal"
                 tools:text="特卖价：150元、259元"/>
 
@@ -89,7 +89,7 @@
                 android:id="@+id/once_card_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBtnChecked"
+                android:textColor="@color/color_btn_checked"
                 android:textSize="@dimen/fontBiggerThanNormal"
                 android:visibility="visible"
                 tools:text="提成：1元、5元"/>

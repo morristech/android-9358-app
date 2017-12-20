@@ -18,7 +18,7 @@
         android:singleLine="true"
         android:button="@null"
         android:background="@null"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontBody"
         android:text="11"/>
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontBody"
         android:text="1"/>
 
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontBody"
         android:text="1"/>
 </LinearLayout>

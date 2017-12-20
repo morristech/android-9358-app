@@ -86,7 +86,7 @@ public class HelloRecordActivity extends BaseActivity {
             }
         });
 
-        mHelloRefresh.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMain));
+        mHelloRefresh.setColorSchemeColors(ResourceUtils.getColor(R.color.color_main));
         mHelloRefresh.setOnRefreshListener(() -> {
             mIsLoadingMore = false;
             mPages = 0;

@@ -44,6 +44,7 @@ import com.xmd.technician.http.gson.HelloReplyResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
+import com.xmd.technician.http.gson.InvitationRewardResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -652,6 +653,11 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_REWARD_ACTIVITY_LIST)
     Call<RewardListResult> rewardActivityListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                     @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+    //邀请有礼
+
+    @GET(RequestConstant.URL_GET_INVITATION_REWARD_ACTIVITY_LIST)
+    Call<InvitationRewardResult> invitationRewardListDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                            @Query(RequestConstant.KEY_USER_CLUB_ID) String clubId);
 
     //期刊列表
     @FormUrlEncoded

@@ -123,6 +123,12 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     TextView mUserName;
     @BindView(R.id.tv_poster_total)
     TextView mTvPosterTotal;
+    @BindView(R.id.invitation_reward_name)
+    TextView mInvitationRewardName;
+    @BindView(R.id.invitation_reward_total)
+    TextView mInvitationRewardTotal;
+    @BindView(R.id.rl_invitation_reward)
+    RelativeLayout rlInvitationReward;
 //    @BindView(R.id.btn_share_user_card)
 //    Button mBtnShareUserCard;
 
@@ -133,7 +139,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private List<String> mCards;
     private List<String> mAction;
-    private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount;
+    private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount, mInvitationRewardActivityAmount;
     private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
     private boolean isFirst;
     private TechInfo mTechInfo;
@@ -173,7 +179,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 result -> handlerTechPosterListResult(result)
         );
         LoginTechnician.getInstance().loadTechInfo();
-        mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMainBtn));
+        mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.color_main_btn));
         mSwipeRefreshLayout.setOnRefreshListener(this);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_POSTER_LIST);
         onRefresh();
@@ -282,6 +288,9 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                             mRewardTotal.setText(activityListResult.respData.get(i).count);
                             mRewardActivityAmount = Integer.parseInt(activityListResult.respData.get(i).count);
                             mClubJournalAmount = Integer.parseInt(activityListResult.respData.get(i).count);
+                        } else if (activityListResult.respData.get(i).actType.equals(Constant.INVITATION_TYPE)) {
+                            mInvitationRewardName.setText(activityListResult.respData.get(i).actName);
+                            mInvitationRewardTotal.setText(activityListResult.respData.get(i).count);
                         }
 
                     }
@@ -318,7 +327,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_tech_card, R.id.ll_share_tech_poster})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_invitation_reward, R.id.rl_publication, R.id.ll_share_tech_card, R.id.ll_share_tech_poster})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -338,6 +347,9 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 break;
             case R.id.rl_reward:
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.REWARD_ACTIVITY, mRewardName.getText().toString(), mRewardActivityAmount);
+                break;
+            case R.id.rl_invitation_reward:
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.INVITATION_REWARD_ACTIVITY, mInvitationRewardName.getText().toString(), mInvitationRewardActivityAmount);
                 break;
             case R.id.rl_publication:
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString(), mClubJournalAmount);
@@ -436,6 +448,12 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         } else {
             mRlReward.setVisibility(View.GONE);
         }
+        if (mAction.contains(Constant.INVITATION_TYPE)) {
+            rlInvitationReward.setVisibility(View.VISIBLE);
+        } else {
+            rlInvitationReward.setVisibility(View.GONE);
+        }
+
     }
 
     private void updateViewSate() {

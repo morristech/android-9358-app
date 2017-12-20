@@ -20,7 +20,6 @@
             android:background="@drawable/state_bg_default"
             android:gravity="center_vertical">
             <ImageView
-                android:id="@+id/img_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_join_alter"
@@ -50,11 +49,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:textColor="#333333"
+            android:textColor="@color/color_main_title"
             android:textSize="18sp"
             tools:text="小摩豆健康养生演示会所"/>
         <LinearLayout
-            android:id="@+id/ll_tech_role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -69,8 +67,8 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="10dp"
-                      android:text="职位"
-                      android:textColor="#666666"
+                      android:text="@string/tech_position"
+                      android:textColor="@color/color_main_body"
                       android:textSize="16sp"/>
 
             <TextView
@@ -79,12 +77,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1.5"
-                android:text="技师"
-                android:textColor="#333333"
+                android:textColor="@color/color_main_title"
                 android:textSize="18sp"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_tech_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -99,8 +95,8 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="10dp"
-                      android:text="工号"
-                      android:textColor="#666666"
+                      android:text="@string/tech_number"
+                      android:textColor="@color/color_main_body"
                       android:textSize="16sp"/>
 
             <TextView
@@ -109,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1.5"
-                android:textColor="#333333"
+                android:textColor="@color/color_main_title"
                 android:textSize="18sp"
                 tools:text="000238"/>
         </LinearLayout>
@@ -134,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/apply_ic_withdraw"
                     android:drawablePadding="10dp"
-                    android:text="撤销申请"
+                    android:text="@string/revocation_application"
                     android:textColor="#639de8"
                     android:textSize="16sp"/>
             </LinearLayout>
@@ -154,7 +150,7 @@
                     android:drawableLeft="@drawable/apply_ic_modify"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="修改申请"
+                    android:text="@string/amend_the_application"
                     android:textColor="#639de8"
                     android:textSize="16sp"/>
             </LinearLayout>
@@ -180,7 +176,7 @@
                     android:drawableLeft="@drawable/apply_ic_modify_again"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="再次申请"
+                    android:text="@string/application_again"
                     android:textColor="#639de8"
                     android:textSize="16sp"/>
             </LinearLayout>
@@ -200,7 +196,7 @@
                     android:drawableLeft="@drawable/apply_ic_yes"
                     android:drawablePadding="@dimen/margin_10"
                     android:gravity="center_vertical"
-                    android:text="确定"
+                    android:text="@string/confirm"
                     android:textColor="#639de8"
                     android:textSize="16sp"/>
             </LinearLayout>

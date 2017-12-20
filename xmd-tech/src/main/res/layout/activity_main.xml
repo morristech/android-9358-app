@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBackground"
+                android:background="@color/color_background"
                 tools:context="com.xmd.technician.window.MainActivity">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_alignParentBottom="true"
         android:background="#F9F9F9"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/margin_5">
+        android:paddingTop="@dimen/small_space">
 
         <RelativeLayout
             android:id="@+id/main_button_home"
@@ -34,7 +34,6 @@
                 android:textSize="@dimen/fontRemark"/>
 
             <TextView
-                android:id="@+id/main_unread_personal"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
@@ -98,7 +97,6 @@
                 android:textSize="@dimen/fontRemark"/>
 
             <TextView
-                android:id="@+id/main_salary_message"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
@@ -130,7 +128,6 @@
                 android:textSize="@dimen/fontRemark"/>
 
             <TextView
-                android:id="@+id/main_unread_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
@@ -163,7 +160,6 @@
                 android:textSize="@dimen/fontRemark"/>
 
             <TextView
-                android:id="@+id/main_unread_marketing"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
@@ -183,7 +179,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/stroke_width"
         android:layout_above="@+id/main_bottom_bar"
-        android:background="@color/colorLineDivideTable"/>
+        android:background="@color/color_line_divide_table"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"

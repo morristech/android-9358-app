@@ -68,7 +68,7 @@ public class ShareCouponDialog extends Dialog {
         mDialogTitle = (TextView) findViewById(R.id.dialog_title_text);
         mDialogDes = (TextView) findViewById(R.id.des_share_text);
         mDialogTitle.setText(String.format("%s二维码", dialogTitle));
-        if (dialogTitle.equals(ResourceUtils.getString(R.string.chat_gift_message_type))) {
+        if (dialogTitle.equals(ResourceUtils.getString(R.string.gift_message))) {
             mDialogDes.setText(String.format("扫码关注9358,兑换%s", dialogTitle));
         } else {
             mDialogDes.setText(String.format("扫码关注9358,购买%s", dialogTitle));

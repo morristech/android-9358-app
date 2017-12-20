@@ -29,7 +29,7 @@
             android:layout_marginLeft="@dimen/inter_space"
             android:layout_weight="1"
             android:text="限时抢"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_main_head"
             android:textSize="16sp"/>
 
         <ImageView

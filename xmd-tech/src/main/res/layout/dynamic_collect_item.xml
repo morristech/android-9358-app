@@ -37,14 +37,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="@dimen/margin_5"
+            android:paddingLeft="@dimen/small_space"
             android:visibility="visible">
 
             <TextView
                 android:id="@+id/dynamic_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorHead"
+                android:textColor="@color/color_main_head"
                 android:textSize="@dimen/fontTitle" />
 
             <TextView
@@ -52,9 +52,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/dynamic_item_name"
-                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_marginLeft="@dimen/small_space"
                 android:layout_toRightOf="@id/dynamic_item_name"
-                android:textColor="@color/colorRemark"
+                android:textColor="@color/color_main_remark"
                 android:textSize="@dimen/fontBiggerThanRemark" />
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dynamic_item_name"
-                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/small_space"
                 android:enabled="true"
                 android:maxLines="2"
                 android:textColor="@color/text_color_can_chat"
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dynamic_item_comment_detail"
-                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/small_space"
                 android:maxLines="2"
                 android:textColor="@color/contact_info_unit"
                 android:textSize="@dimen/fontBiggerThanNormal"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dynamic_item_remark"
                 android:drawableLeft="@drawable/img_start"
-                android:drawablePadding="@dimen/margin_5"
+                android:drawablePadding="@dimen/small_space"
                 android:maxLines="2"
                 android:textColor="@color/text_color_can_chat"
                 android:textSize="@dimen/fontBiggerThanNormal"
@@ -99,7 +99,7 @@
                 android:layout_marginLeft="@dimen/margin_10"
                 android:layout_toRightOf="@id/dynamic_item_comment_starts"
                 android:drawableLeft="@drawable/img_reward"
-                android:drawablePadding="@dimen/margin_5"
+                android:drawablePadding="@dimen/small_space"
                 android:maxLines="2"
                 android:textColor="@color/recent_status_reward"
                 android:textSize="@dimen/fontBiggerThanNormal"
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/colorRemark"
+                android:textColor="@color/color_main_remark"
                 android:textSize="@dimen/fontBiggerThanRemark" />
 
             <TextView

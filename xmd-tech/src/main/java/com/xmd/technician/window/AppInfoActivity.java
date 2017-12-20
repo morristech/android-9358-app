@@ -29,9 +29,7 @@ public class AppInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_info);
-
         ButterKnife.bind(this);
-
         setTitle(R.string.app_info_title);
         setBackVisible(true);
         mAppVersion.setText(getResources().getString(R.string.app_info_name) + AppConfig.getAppVersionNameAndCode());
@@ -43,7 +41,7 @@ public class AppInfoActivity extends BaseActivity {
     }
 
     @OnClick(R.id.icon)
-    public void getAppMessge() {
+    public void getAppMessage() {
         if (i == 0) {
             starTime = System.currentTimeMillis();
         }

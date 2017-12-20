@@ -91,7 +91,7 @@
                     android:id="@+id/tv_poster_minor_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_2"
+                    android:layout_marginTop="@dimen/two_space"
                     android:singleLine="true"
                     android:textColor="@color/color_white"
                     android:textSize="8sp"

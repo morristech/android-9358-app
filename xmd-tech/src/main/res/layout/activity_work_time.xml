@@ -15,13 +15,13 @@
         android:layout_marginLeft="@dimen/search_margin"
         android:layout_marginTop="@dimen/work_time_padding"
         android:text="@string/current_work_time"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontTitle" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <LinearLayout
         android:id="@+id/work_time_layout"
@@ -38,7 +38,7 @@
             android:layout_marginRight="@dimen/personal_margin"
             android:gravity="center"
             android:text="@string/work_time_text"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_main_body"
             android:textSize="@dimen/fontTitle" />
 
         <TextView
@@ -47,14 +47,14 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/none_selected"
-            android:textColor="@color/colorTitle"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontTitle" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <LinearLayout
         android:id="@+id/work_day_layout"
@@ -71,7 +71,7 @@
             android:layout_marginRight="@dimen/personal_margin"
             android:gravity="center"
             android:text="@string/work_day_text"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_main_body"
             android:textSize="@dimen/fontTitle" />
 
         <TextView
@@ -80,14 +80,14 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/none_selected"
-            android:textColor="@color/colorTitle"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontTitle" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -95,6 +95,6 @@
         android:layout_marginLeft="@dimen/personal_margin"
         android:layout_marginTop="@dimen/personal_padding"
         android:text="@string/time_activity_desc"
-        android:textColor="@color/colorRemark"
+        android:textColor="@color/color_main_remark"
         android:textSize="@dimen/fontRemark" />
 </LinearLayout>

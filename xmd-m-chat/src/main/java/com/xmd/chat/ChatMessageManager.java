@@ -104,7 +104,6 @@ public class ChatMessageManager {
                                 continue;
                             }
 
-
                             //对于打赏消息特殊处理，需要插入一条提示消息
                             if (ChatMessage.MSG_TYPE_REWARD.equals(chatMessage.getMsgType())) {
                                 TipChatMessage tipChatMessage = TipChatMessage.create(

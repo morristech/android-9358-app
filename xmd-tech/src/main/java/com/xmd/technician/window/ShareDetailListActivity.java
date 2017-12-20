@@ -28,6 +28,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
     public static final int PAY_FOR_ME = 0x005;//夺宝
     public static final int CLUB_JOURNAL = 0x006;//会所期刊
     public static final int REWARD_ACTIVITY = 0x007;//抽奖活动
+    public static final int INVITATION_REWARD_ACTIVITY = 0x008;//邀请有礼
     //   public static final int OFFLINE_ACTIVITY = 0x008;//线下活动
 
 
@@ -67,24 +68,28 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
                 setFragment(NormalCouponListFragment.getInstance(mTotal));
                 break;
             case ONCE_CARD:
-                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.once_card_list_title) : mCurrentTitle);
+                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.once_card) : mCurrentTitle);
                 setFragment(OnceCardListFragment.getInstance(mTotal));
                 break;
             case LIMIT_GRAB:
-                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.limit_grab_list_title) : mCurrentTitle);
+                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.limit_grab) : mCurrentTitle);
                 setFragment(LimitGrabListFragment.getInstance(mTotal));
                 break;
             case PAY_FOR_ME:
-                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.pay_for_me_list_title) : mCurrentTitle);
+                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.pay_for_me) : mCurrentTitle);
                 setFragment(PayForMeListFragment.getInstance(mTotal));
                 break;
             case CLUB_JOURNAL:
-                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.club_journal_list_title) : mCurrentTitle);
+                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.club_journal) : mCurrentTitle);
                 setFragment(ClubJournalListFragment.getInstance(mTotal));
                 break;
             case REWARD_ACTIVITY:
-                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.reward_list_title) : mCurrentTitle);
+                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.reward_activity) : mCurrentTitle);
                 setFragment(RewardActivityListFragment.getInstance(mTotal));
+                break;
+            case INVITATION_REWARD_ACTIVITY:
+                setTitle(Utils.isEmpty(mCurrentTitle)? ResourceUtils.getString(R.string.invitation_reward_activity):mCurrentTitle);
+                setFragment(InvitationRewardActivityListFragment.getInstance());
                 break;
        /*     case OFFLINE_ACTIVITY:
                 setTitle(Utils.isEmpty(mCurrentTitle)? ResourceUtils.getString(R.string.offline_activity_list_title):mCurrentTitle);

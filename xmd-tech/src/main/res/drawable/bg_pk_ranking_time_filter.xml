@@ -3,7 +3,7 @@
     <item android:state_pressed="true" >
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/small_space"/>
-            <solid android:color="@color/colorBtnChat"/>
+            <solid android:color="@color/color_btn_chat"/>
         </shape>
     </item>
     <item android:state_pressed="false">

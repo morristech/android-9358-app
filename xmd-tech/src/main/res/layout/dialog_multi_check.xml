@@ -13,7 +13,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <CheckBox
         android:id="@+id/check_box_tuesday"
@@ -23,7 +23,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <CheckBox
         android:id="@+id/check_box_wednesday"
@@ -33,7 +33,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <CheckBox
         android:id="@+id/check_box_thursday"
@@ -43,7 +43,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <CheckBox
         android:id="@+id/check_box_friday"
@@ -53,7 +53,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <CheckBox
         android:id="@+id/check_box_saturday"
@@ -63,7 +63,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <CheckBox
         android:id="@+id/check_box_sunday"
@@ -73,7 +73,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/color_line_divide" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
         <View
             android:layout_width="@dimen/line_divide_height"
             android:layout_height="match_parent"
-            android:background="@color/colorLineDivide" />
+            android:background="@color/color_line_divide" />
 
         <Button
             android:id="@+id/input_dialog_button_confirm"

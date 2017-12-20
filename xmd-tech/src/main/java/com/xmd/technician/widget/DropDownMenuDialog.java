@@ -91,7 +91,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
             container.addView(textView);
             if (i != items.length - 1) {
                 View divider = inflater.inflate(R.layout.divider_vertical, container, false);
-                divider.setBackgroundColor(context.getResources().getColor(R.color.title_text));
+                divider.setBackgroundColor(context.getResources().getColor(R.color.color_main_title));
                 container.addView(divider);
             }
         }

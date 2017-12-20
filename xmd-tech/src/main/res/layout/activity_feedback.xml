@@ -16,9 +16,9 @@
         android:gravity="left"
         android:padding="@dimen/search_margin"
         android:layout_margin="@dimen/search_margin"
-        android:textColor="@color/colorTitle"
+        android:textColor="@color/color_main_title"
         android:textSize="@dimen/fontTitle"
-        android:textColorHint="@color/colorRemarkText"
+        android:textColorHint="@color/color_remark_text"
         android:hint="@string/feedback_hint"/>
     
     <Button
@@ -29,7 +29,7 @@
         android:layout_below="@+id/feedback_content"
         android:layout_marginRight="@dimen/search_margin"
         android:background="@drawable/feedback_confirm_bg"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontTitle"
         android:text="@string/confirm"/>
 
@@ -41,7 +41,7 @@
         android:layout_below="@+id/feedback_content"
         android:layout_marginRight="@dimen/search_margin"
         android:background="@drawable/feedback_cancel_bg"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontTitle"
         android:text="@string/cancel"
         android:visibility="gone"/>

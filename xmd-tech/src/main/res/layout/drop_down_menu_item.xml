@@ -7,6 +7,5 @@
     android:gravity="center"
     android:minWidth="120dp"
     android:padding="15dp"
-    android:text="测试"
     android:textColor="@color/white"
     android:textSize="@dimen/fontTitle" />

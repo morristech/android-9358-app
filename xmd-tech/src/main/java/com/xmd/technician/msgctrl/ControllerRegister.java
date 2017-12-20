@@ -98,6 +98,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_ONCE_CARD_LIST_DETAIL,
                 MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL,
                 MsgDef.MSG_DEF_GET_REWARD_ACTIVITY_LIST,
+                MsgDef.MSG_DEF_GET_INVITATION_REWARD_ACTIVITY_LIST,
                 MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST,
                 MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,
                 MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT,

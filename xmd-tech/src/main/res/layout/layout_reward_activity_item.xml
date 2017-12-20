@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_space"
-                    android:textColor="@color/colorTitle"
+                    android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontSize"
                     tools:text="赢取Iphone6s"/>
 

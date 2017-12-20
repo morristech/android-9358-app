@@ -39,13 +39,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:text="@{payNotify.info.userName}"
-                android:textColor="@color/colorHead"
+                android:textColor="@color/color_main_head"
                 android:textSize="@dimen/fontSubheading" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="@color/colorRemark"
+                android:textColor="@color/color_main_remark"
                 android:textSize="@dimen/fontCaption"
                 app:time="@{payNotify.info.payTime}" />
         </LinearLayout>
@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="bottom"
                         android:text="@string/money_rmb"
-                        android:textColor="@color/colorHead"
+                        android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontBody" />
 
                     <TextView
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="bottom"
-                        android:textColor="@color/colorHead"
+                        android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontBody"
                         app:moneyfen="@{payNotify.info.amount}" />
                 </LinearLayout>

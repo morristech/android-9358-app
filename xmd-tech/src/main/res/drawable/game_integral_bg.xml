@@ -10,7 +10,7 @@
     <item android:state_selected="false">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/game_setting_integral_corner"/>
-            <stroke android:color="@color/colorRemark" android:width="0.5dp"></stroke>
+            <stroke android:color="@color/color_main_remark" android:width="0.5dp"></stroke>
         </shape>
     </item>
 

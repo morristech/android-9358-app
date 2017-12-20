@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:background="@color/color_white"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingTop="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="64dp" xmlns:tools="http://schemas.android.com/tools"
+                android:background="@color/color_white"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
 
     <com.xmd.technician.widget.CircleImageView
         android:id="@+id/img_item_avatar"
@@ -24,7 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="已回复"
+        android:text="@string/received"
         android:textColor="@color/text_color_can_chat"
         android:textSize="@dimen/fontBody"
         android:visibility="invisible" />
@@ -37,7 +37,7 @@
         android:layout_toLeftOf="@id/tv_item_status"
         android:layout_toRightOf="@id/img_item_avatar"
         android:singleLine="true"
-        android:text="客户昵称"
+        tools:text="客户昵称"
         android:textColor="@color/black"
         android:textSize="@dimen/fontHead" />
 
@@ -49,8 +49,8 @@
         android:layout_marginBottom="10dp"
         android:layout_toLeftOf="@id/tv_item_status"
         android:layout_toRightOf="@id/img_item_avatar"
-        android:text="招呼时间"
-        android:textColor="@color/colorRemark"
+        tools:text="招呼时间"
+        android:textColor="@color/color_main_remark"
         android:textSize="@dimen/fontBody" />
 
     <View

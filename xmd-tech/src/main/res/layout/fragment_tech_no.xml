@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:onClick="@{()->fragment.dismiss()}"
-                android:text="取消"
+                android:text="@string/cancel"
                 android:textColor="@android:color/holo_blue_light"
                 android:textSize="@dimen/fontHead" />
 
@@ -91,7 +91,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:onClick="@{()->fragment.loadData()}"
-                android:text="刷新"
+                android:text="@string/refresh"
                 android:textColor="@android:color/holo_blue_light"
                 android:textSize="@dimen/fontHead" />
         </LinearLayout>

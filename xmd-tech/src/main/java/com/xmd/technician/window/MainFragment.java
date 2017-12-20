@@ -373,7 +373,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initTitleView(view);
         initMenu();
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMainBtn);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.color_main_btn);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mMainScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -825,7 +825,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mNearbyGoToker.setVisibility(View.VISIBLE);
             } else {
                 String textCount = "附近有" + result.respData + "个客人，打个招呼吧~";
-                mNearbyDesc.setText(Utils.changeColor(textCount, ResourceUtils.getColor(R.color.colorMainBtn), 3, textCount.length() - 10));
+                mNearbyDesc.setText(Utils.changeColor(textCount, ResourceUtils.getColor(R.color.color_main_btn), 3, textCount.length() - 10));
                 mNearbySayHello.setVisibility(View.VISIBLE);
                 mNearbyGoToker.setVisibility(View.GONE);
             }
@@ -1188,7 +1188,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         mMainGetCommentNumber.setText(result.respData.goodCommentCount);
         String textVisit = "今天共有" + result.respData.todayVisitCount + "人看了我～";
-        mMainWhoCareTotal.setText(Utils.changeColor(textVisit, ResourceUtils.getColor(R.color.colorMainBtn), 4, textVisit.length() - 5));
+        mMainWhoCareTotal.setText(Utils.changeColor(textVisit, ResourceUtils.getColor(R.color.color_main_btn), 4, textVisit.length() - 5));
     }
 
     private void initOrderView(OrderListResult orderList) {

@@ -91,7 +91,7 @@
             android:id="@+id/main_total_income_number"
             style="@style/main_info_number_text_style"
             android:text="0"
-            android:textColor="@color/colorBtnChecked" />
+            android:textColor="@color/color_btn_checked" />
     </RelativeLayout>
 
 

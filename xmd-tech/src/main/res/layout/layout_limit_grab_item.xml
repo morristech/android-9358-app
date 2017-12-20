@@ -36,7 +36,7 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="限时抢"
+                android:text="@string/limit_grab"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontRemark"/>
         </FrameLayout>
@@ -57,7 +57,7 @@
                     android:id="@+id/limit_grab_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorHead"
+                    android:textColor="@color/color_main_head"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
 
@@ -73,7 +73,7 @@
                     android:paddingLeft="@dimen/small_space"
                     android:paddingRight="@dimen/small_space"
                     android:paddingTop="1dp"
-                    android:text="限时用"
+                    android:text="@string/limit_time_use"
                     android:textColor="@color/primary_color"
                     android:textSize="@dimen/fontRemark"
                     android:visibility="gone"/>
@@ -89,7 +89,7 @@
                     android:id="@+id/limit_grab_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBtnChecked"
+                    android:textColor="@color/color_btn_checked"
                     android:textSize="@dimen/fontHead"
                     android:textStyle="bold"
                     tools:text="1"/>
@@ -98,8 +98,8 @@
                     android:id="@+id/unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="元"
-                    android:textColor="@color/colorBtnChecked"
+                    android:text="@string/unit_yuan"
+                    android:textColor="@color/color_btn_checked"
                     android:textSize="@dimen/fontNormal"/>
 
                 <TextView

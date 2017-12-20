@@ -56,8 +56,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="80dp"
                     android:layout_marginLeft="8dp"
-                    android:text="工      号："
+                    android:text="@string/invitation_join_club_number"
                     android:textColor="#4d4d4d" />
 
                 <TextView
@@ -77,7 +78,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="邀请职位："
+                    android:minWidth="80dp"
+                    android:text="@string/invitation_position"
                     android:textColor="#4d4d4d" />
 
                 <TextView
@@ -122,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="拒绝"
+                android:text="@string/order_status_operation_reject"
                 android:textColor="#ff8888"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
@@ -136,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="接受"
+                android:text="@string/accept"
                 android:textColor="#ffffff"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
@@ -151,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="@{data.message,default=已拒绝}"
-                android:textColor="#212121" />
+                android:textColor="@color/color_main_title" />
         </LinearLayout>
 
 

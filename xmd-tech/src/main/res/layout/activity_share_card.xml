@@ -79,7 +79,7 @@
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:padding="2dp"
-                                android:textColor="@color/colorHead"
+                                android:textColor="@color/color_main_head"
                                 android:textSize="@dimen/fontTitle"/>
 
                             <LinearLayout
@@ -98,8 +98,8 @@
                                     android:id="@+id/user_card_num"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/margin_2"
-                                    android:layout_marginRight="@dimen/margin_2"
+                                    android:layout_marginLeft="@dimen/two_space"
+                                    android:layout_marginRight="@dimen/two_space"
                                     android:textColor="@color/text_color_yellow"/>
 
                                 <TextView
@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_20"
-                    android:layout_marginTop="@dimen/margin_2"
+                    android:layout_marginTop="@dimen/two_space"
                     android:gravity="center"
                     android:text="@string/user_code_message"
                     android:textColor="@color/alert_text_color"
@@ -170,7 +170,7 @@
                     android:background="@drawable/rect_white_bg"
                     android:gravity="center"
                     android:text="@string/button_save_card"
-                    android:textColor="@color/colorMainBtn"
+                    android:textColor="@color/color_main_btn"
                 />
 
                 <Button

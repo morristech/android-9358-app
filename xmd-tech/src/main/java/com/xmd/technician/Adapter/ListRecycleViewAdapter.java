@@ -60,6 +60,7 @@ import butterknife.ButterKnife;
  */
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
+
     public interface Callback<T> {
 
         void onItemClicked(T bean) throws HyphenateException;
@@ -108,6 +109,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 23;
     private static final int TYPE_TECH_PERSONAL_RANKING = 24;
     private static final int TYPE_TECH_BLACKLIST = 25;
+ //   private static final int TYPE_INVITATION_REWARD_ACTIVITY_ITEM = 26;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -196,7 +198,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PERSONAL_RANKING;
             } else if (mData.get(position) instanceof CustomerInfo) {
                 return TYPE_TECH_BLACKLIST;
-            } else {
+            }
+//            else if (mData.get(position) instanceof InvitationRewardBean) {
+//                return TYPE_INVITATION_REWARD_ACTIVITY_ITEM;
+//            }
+            else {
                 return TYPE_FOOTER;
             }
         }
@@ -263,6 +269,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_TECH_BLACKLIST:
                 View emchatBlasklist = LayoutInflater.from(parent.getContext()).inflate(R.layout.emchat_blacklist_item, parent, false);
                 return new EmchatBlacklistListItemViewHolder(emchatBlasklist);
+//            case TYPE_INVITATION_REWARD_ACTIVITY_ITEM:
+//                View invitationRewardActivity = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_invitation_reward_activity_item, parent, false);
+//                return new InvitationRewardActivityItemViewHolder(invitationRewardActivity);
             default:
                 View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
                 return new ListFooterHolder(viewDefault);
@@ -506,7 +515,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 creditRecordViewHolder.mCreditAmount.setTextColor(ResourceUtils.getColor(R.color.credit_amount_color));
             } else {
                 creditRecordViewHolder.mCreditAmount.setText(String.valueOf(creditDetailBean.amount));
-                creditRecordViewHolder.mCreditAmount.setTextColor(ResourceUtils.getColor(R.color.colorHead));
+                creditRecordViewHolder.mCreditAmount.setTextColor(ResourceUtils.getColor(R.color.color_main_head));
             }
 
             return;
@@ -633,7 +642,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
                 viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
-                viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription, ResourceUtils.getColor(R.color.colorMainBtn)));
+                viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription, ResourceUtils.getColor(R.color.color_main_btn)));
             }
 
 
@@ -710,6 +719,34 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             return;
         }
+
+//        if (holder instanceof InvitationRewardActivityItemViewHolder) {
+//            Object obj = mData.get(position);
+//            if (!(obj instanceof RewardBean)) {
+//                return;
+//            }
+//            final InvitationRewardBean rewardBean = (InvitationRewardBean) obj;
+//            InvitationRewardActivityItemViewHolder rewardHolder = (InvitationRewardActivityItemViewHolder) holder;
+//            if (Utils.isNotEmpty(rewardBean.image)) {
+//                Glide.with(mContext).load(rewardBean.image).into(rewardHolder.mRewardHead);
+//            } else {
+//                Glide.with(mContext).load(ResourceUtils.getDrawable(R.drawable.img_default_reward)).into(rewardHolder.mRewardHead);
+//            }
+//            rewardHolder.mRewardName.setText(String.format("赢取%s", rewardBean.firstPrizeName));
+//            if (Utils.isNotEmpty(rewardBean.startTime) && Utils.isNotEmpty(rewardBean.endTime)) {
+//                rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", rewardBean.startTime, rewardBean.endTime));
+//            }
+//            rewardHolder.mRewardShare.setOnClickListener(v -> mCallback.onShareClicked(rewardBean));
+//            rewardHolder.itemView.setOnClickListener(v -> {
+//                try {
+//                    mCallback.onItemClicked(rewardBean);
+//                } catch (HyphenateException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//
+//            return;
+//        }
         if (holder instanceof ClubJournalItemViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof ClubJournalBean)) {
@@ -783,7 +820,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 rankingViewHolder.pkActiveStatus.setTextColor(ResourceUtils.getColor(R.color.underway_color));
             } else {
                 Glide.with(mContext).load(R.drawable.icon_completed).into(rankingViewHolder.imgPkActiveStatus);
-                rankingViewHolder.pkActiveStatus.setTextColor(ResourceUtils.getColor(R.color.colorRemark));
+                rankingViewHolder.pkActiveStatus.setTextColor(ResourceUtils.getColor(R.color.color_main_remark));
             }
             rankingViewHolder.pkActiveTime.setText(activityBean.startDate + "至" + activityBean.endDate);
             if (activityBean.rankingList != null) {
@@ -1209,6 +1246,24 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         Button mRewardShare;
 
         public RewardActivityItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+
+
+    static class InvitationRewardActivityItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.invitation_reward_head)
+        ImageView invitationRewardHead;
+        @BindView(R.id.invitation_reward_name)
+        TextView invitationRewardName;
+        @BindView(R.id.invitation_reward_time)
+        TextView invitationRewardTime;
+        @BindView(R.id.invitation_reward_share)
+        Button invitationRewardShare;
+
+        public InvitationRewardActivityItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

@@ -59,7 +59,7 @@ public class SideBar extends View {
             paint.setAntiAlias(true);
             paint.setTextSize(Utils.dip2px(mContext, ResourceUtils.getDimenInt(R.dimen.side_bar_text_size)));
             if (i == choose) {
-                paint.setColor(ResourceUtils.getColor(R.color.sideBarcolor));
+                paint.setColor(ResourceUtils.getColor(R.color.side_bar_color));
                 paint.setFakeBoldText(true);
             }
             float xPos = width / 2 - paint.measureText(b[i]) / 2;

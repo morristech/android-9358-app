@@ -23,7 +23,7 @@
             android:layout_height="@dimen/home_button_height"
             android:background="@null"
             android:gravity="center"
-            android:text="登录"
+            android:text="@string/login"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontTitle2" />
     </FrameLayout>
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/personal_padding"
                     android:text="+86"
-                    android:textColor="@color/colorTitle"
+                    android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontBody" />
 
                 <com.xmd.technician.widget.ClearableEditText
@@ -74,8 +74,8 @@
                     android:hint="@string/login_account_hint"
                     android:inputType="phone"
                     android:maxLength="11"
-                    android:textColor="@color/colorBody"
-                    android:textColorHint="@color/colorRemarkText"
+                    android:textColor="@color/color_main_body"
+                    android:textColorHint="@color/color_remark_text"
                     android:textSize="@dimen/fontBody" />
             </LinearLayout>
 
@@ -84,7 +84,7 @@
                 android:layout_height="@dimen/line_divide_height"
                 android:layout_marginLeft="@dimen/personal_padding"
                 android:layout_marginRight="@dimen/personal_padding"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <com.xmd.technician.widget.ClearablePasswordEditText
                 android:id="@+id/password1"
@@ -98,8 +98,8 @@
                 android:hint="@string/login_password_hint"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:textColor="@color/colorBody"
-                android:textColorHint="@color/colorRemarkText"
+                android:textColor="@color/color_main_body"
+                android:textColorHint="@color/color_remark_text"
                 android:textSize="@dimen/fontBody" />
         </LinearLayout>
 
@@ -108,7 +108,7 @@
             android:layout_height="@dimen/line_divide_height"
             android:layout_marginLeft="@dimen/personal_padding"
             android:layout_marginRight="@dimen/personal_padding"
-            android:background="@color/colorLineDivide" />
+            android:background="@color/color_line_divide" />
 
         <Button
             android:id="@+id/login_btn1"
@@ -184,7 +184,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_rect_red"
                 android:gravity="center"
-                android:hint="请输入会所邀请码"
+                android:hint="@string/hint_input_tech_invitation_code"
                 android:inputType="number"
                 android:maxLength="6" />
 
@@ -205,7 +205,7 @@
                 android:height="48dp"
                 android:background="@drawable/shape_rect_red"
                 android:gravity="center"
-                android:hint="请输入技师编号"
+                android:hint="@string/hint_input_tech_no"
                 android:inputType="text"
                 android:maxLength="5" />
         </LinearLayout>
@@ -265,7 +265,6 @@
         android:textSize="@dimen/fontTitle" />
 
     <TextView
-        android:id="@+id/tv_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/small_space"

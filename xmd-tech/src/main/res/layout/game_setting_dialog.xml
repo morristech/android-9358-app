@@ -16,7 +16,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dice_icon_margin_left"
             android:text="@string/game_setting_title"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_main_head"
             android:textSize="@dimen/game_content_padding_top" />
 
         <View
@@ -100,9 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/game_setting_image_bottom"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="@dimen/two_space"
             android:text="@string/game_rule_introduce"
-            android:textColor="@color/colorRemark"
+            android:textColor="@color/color_main_remark"
             android:textSize="@dimen/credit_game_text_size" />
 
         <View style="@style/horizontal_divider_line" />
@@ -127,7 +127,7 @@
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorRemarkText" />
+                android:background="@color/color_remark_text" />
 
             <Button
                 android:id="@+id/dialog_alert_ok_btn"
@@ -136,7 +136,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:text="@string/game_invite"
-                android:textColor="@color/colorBtnChecked"
+                android:textColor="@color/color_btn_checked"
                 android:textSize="@dimen/fontTitle" />
         </LinearLayout>
     </LinearLayout>

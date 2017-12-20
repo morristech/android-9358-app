@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/title_text"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontOrderName"/>
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_marginTop="@dimen/small_space"
             android:layout_toRightOf="@id/order_phone"
             android:paddingLeft="@dimen/small_space"
-            android:textColor="@color/title_text"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontNormal"/>
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/order_phone"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="@dimen/two_space"
             android:text="@string/main_tech_order_time"
             android:textColor="@color/alert_text_color"
             android:textSize="@dimen/fontNormal"/>
@@ -77,10 +77,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/order_phone_detail"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="@dimen/two_space"
             android:layout_toRightOf="@id/order_time"
             android:paddingLeft="@dimen/small_space"
-            android:textColor="@color/title_text"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontNormal"/>
 
         <TextView
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/order_time"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="@dimen/two_space"
             android:paddingLeft="@dimen/fontNormal"
             android:text="@string/main_tech_order_money"
             android:textColor="@color/alert_text_color"
@@ -99,10 +99,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/order_time_detail"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="@dimen/two_space"
             android:layout_toRightOf="@id/order_money"
             android:paddingLeft="@dimen/small_space"
-            android:textColor="@color/title_text"
+            android:textColor="@color/color_main_title"
             android:textSize="@dimen/fontNormal"
             tools:text="1元"/>
 
@@ -112,9 +112,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/order_time"
             android:layout_marginLeft="@dimen/small_space"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="@dimen/two_space"
             android:layout_toRightOf="@id/order_money_detail"
-            android:text="（全额预约）"
+            android:text="@string/full_reservation"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/fontNormal"
             android:visibility="gone"/>
@@ -166,10 +166,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/main_tech_order_surplus_time"
-                android:layout_marginLeft="@dimen/margin_2"
+                android:layout_marginLeft="@dimen/two_space"
                 android:layout_marginTop="@dimen/spinner_item_text_size"
                 android:layout_toRightOf="@id/main_tech_order_surplus_time_detail"
-                android:text="分钟"
+                android:text="@string/order_remain_time_minutes"
                 android:textColor="@color/alert_text_color"
                 android:textSize="@dimen/fontNormal"/>
 

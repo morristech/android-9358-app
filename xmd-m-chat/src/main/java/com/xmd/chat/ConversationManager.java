@@ -167,6 +167,7 @@ public class ConversationManager {
 
     //删除会话
     public void deleteConversation(String chatId) {
+        ConversationManager.getInstance().markAllMessagesRead(chatId);
         int position = getConversationDataPosition(chatId);
         ConversationViewModel data = mConversationList.get(position);
         EventBus.getDefault().post(new EventDeleteConversation(position, data));

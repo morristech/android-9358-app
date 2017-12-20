@@ -70,9 +70,9 @@
                     android:hint="@string/hello_setting_custom_template_hint"
                     android:lineSpacingMultiplier="1.2"
                     android:maxLength="50"
-                    android:padding="@dimen/margin_5"
+                    android:padding="@dimen/small_space"
                     android:textColor="@color/nearby_text_black_light"
-                    android:textColorHint="@color/colorRemark"
+                    android:textColorHint="@color/color_main_remark"
                     android:textSize="@dimen/fontBody"/>
             </RelativeLayout>
 
@@ -132,8 +132,8 @@
                     android:background="@drawable/bg_journal_mark"
                     android:onClick="onAddBtnClick"
                     android:padding="0dp"
-                    android:text="选择图片"
-                    android:textColor="@color/colorMainBtn"
+                    android:text="@string/select_picture"
+                    android:textColor="@color/color_main_btn"
                     android:textSize="@dimen/fontTitle"/>
             </FrameLayout>
 
@@ -147,7 +147,7 @@
                 android:layout_marginTop="@dimen/margin_20"
                 android:background="@drawable/btn_chat_selector"
                 android:onClick="onConfirmBtnClick"
-                android:text="确定"
+                android:text="@string/confirm"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontTitle"/>
         </LinearLayout>

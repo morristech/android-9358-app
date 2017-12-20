@@ -48,7 +48,7 @@
                     android:id="@+id/journal_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTitle"
+                    android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontSize"
                     tools:text="皇朝会所女神榜"/>
 
@@ -64,7 +64,7 @@
                     android:paddingLeft="@dimen/small_space"
                     android:paddingRight="@dimen/small_space"
                     android:paddingTop="1dp"
-                    android:text="最新"
+                    android:text="@string/newest"
                     android:textColor="@color/primary_color"
                     android:textSize="@dimen/fontNormal"
                     android:visibility="gone"/>
@@ -74,7 +74,7 @@
                 android:id="@+id/journal_release_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRemark"
+                android:textColor="@color/color_main_remark"
                 android:textSize="@dimen/fontBody"
                 tools:text="发布时间：2016:02:05"/>
 

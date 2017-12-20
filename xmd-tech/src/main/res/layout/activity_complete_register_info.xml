@@ -76,14 +76,14 @@
                     android:hint="输入昵称"
                     android:inputType="text"
                     android:maxLength="11"
-                    android:textColor="@color/colorBody"
+                    android:textColor="@color/color_main_body"
                     android:textSize="@dimen/fontBody" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide" />
+                android:background="@color/color_line_divide" />
 
 
             <Button

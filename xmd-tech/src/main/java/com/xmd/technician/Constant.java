@@ -61,9 +61,14 @@ public class Constant {
      */
     public static final String DRAW_TYPE = "draw";
     /**
+     * 邀请有礼
+     */
+    public static final String INVITATION_TYPE = "userInvite";
+    /**
      * 期刊
      */
     public static final String JOURNAL_TYPE = "journal";
+
 
 
     /**

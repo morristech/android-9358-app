@@ -12,20 +12,20 @@
         android:drawablePadding="@dimen/personal_margin"
         android:background="@color/colorServiceName"
         android:button="@null"
-        android:textColor="@color/colorTitle"
+        android:textColor="@color/color_main_title"
         android:textSize="@dimen/fontTitle"
         android:text="11"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorServiceDivide" />
+        android:background="@color/color_service_divide" />
 
     <com.xmd.technician.widget.HeightListView
         android:id="@+id/item_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/colorServiceDivide"
+        android:divider="@color/color_service_divide"
         android:dividerHeight="@dimen/line_divide_height"
         android:scrollbars="none"/>
 
@@ -47,5 +47,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorServiceDivide" />
+        android:background="@color/color_service_divide" />
 </LinearLayout>

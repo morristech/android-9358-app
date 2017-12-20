@@ -9,7 +9,7 @@
         android:id="@+id/dialog_alert_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorHead"
+        android:textColor="@color/color_main_head"
         android:textSize="@dimen/fontHead"
         android:gravity="bottom|center_horizontal"
         android:layout_marginTop="@dimen/inter_space"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
         android:layout_marginTop="@dimen/margin_10"
-        android:background="@color/colorRemarkText"/>
+        android:background="@color/color_remark_text"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="@color/colorRemarkText"/>
+            android:background="@color/color_remark_text"/>
         <Button
             android:id="@+id/dialog_alert_ok_btn"
             android:layout_width="0dp"
@@ -62,7 +62,7 @@
             android:layout_weight="1"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:textColor="@color/colorBtnChecked"
+            android:textColor="@color/color_btn_checked"
             android:textSize="@dimen/fontTitle"
             android:background="@null"
             android:text="@string/confirm"/>

@@ -305,7 +305,7 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
 
 
     private void initViewData() {
-        if(mTechInfo == null){
+        if (mTechInfo == null) {
             return;
         }
         if (TextUtils.isEmpty(mTechInfo.avatarUrl)) {
@@ -314,7 +314,7 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
             editTechHeadMask.setBackgroundResource(R.drawable.img_select_head);
         }
         Glide.with(this).load(mTechInfo.avatarUrl).error(R.drawable.img_default_avatar).into(imgTechCenterHead);
-        tvTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName())?"":mTechInfo.getName());
+        tvTechNickName.setText(TextUtils.isEmpty(mTechInfo.getName()) ? "" : mTechInfo.getName());
         tvTechGender.setText(mTechInfo.getGender());
         tvTechOrigin.setText(String.format("%s %s", mTechInfo.getProvince(), mTechInfo.getCity()));
         tvTechAutograph.setText(mTechInfo.getDescription());
@@ -347,7 +347,7 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
 
     @OnClick(R.id.btn_edit_save)
     public void onBtnEditSaveClicked() {
-        mTechInfo.setName(editTechNickName.getText().toString());
+        mTechInfo.setName(editTechNickName.getText().toString() == null ? "" : editTechNickName.getText().toString());
         mTechInfo.setGender(rbTechGenderMan.isChecked() ? "男" : "女");
         if (TextUtils.isEmpty(mTechInfo.getName())) {
             XToast.show("技师昵称不能为空");

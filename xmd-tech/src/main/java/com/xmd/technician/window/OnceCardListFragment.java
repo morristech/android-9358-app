@@ -110,11 +110,11 @@ public class OnceCardListFragment extends BaseFragment {
                 params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_ONCE_CARD);
                 params.put(Constant.PARAM_ACT_ID, bean.id);
                 if (bean.cardType.equals(Constant.ITEM_CARD_TYPE)) {
-                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_timescard_message_type));
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.times_card_message));
                 } else if (bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
-                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_package_message_type));
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.package_message));
                 } else {
-                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_gift_message_type));
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.gift_message));
                 }
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
             }

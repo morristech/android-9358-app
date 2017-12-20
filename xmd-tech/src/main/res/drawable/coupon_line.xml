@@ -3,7 +3,7 @@
     <stroke android:dashGap="3dp"
         android:dashWidth="6dp"
         android:width="0.5dp"
-        android:color="@color/colorLineDivide"/>
+        android:color="@color/color_line_divide"/>
     <size android:height="5dp"/>
 
 

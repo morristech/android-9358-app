@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <string name="app_name">9358服务</string>
     <string name="login_account_hint">输入手机号</string>
     <string name="login">登录</string>
@@ -28,14 +29,10 @@
     <string name="main_conversion">联系人</string>
     <string name="main_market">营销</string>
     <string name="main_page">首页</string>
-
-
     <!-- ChatFragment -->
     <string name="cant_chat_with_yourself">不能和自己聊天</string>
-
     <!-- OrderFragment -->
     <string name="order_fragment_title">我的订单</string>
-
     <!-- PersonalFragment -->
     <string name="personal_fragment_layout_service_items">我的项目</string>
     <string name="personal_fragment_layout_work_time">时间设置</string>
@@ -46,7 +43,6 @@
     <string name="qr_code_remark">点技师，约项目，就上9358</string>
     <string name="qr_code_share">分享名片</string>
     <string name="main_fragment_tech_status_select">状态不可更改</string>
-
     <!-- SettingActivity -->
     <string name="settings_activity_about_us">关于我们</string>
     <string name="settings_activity_modify_password">修改密码</string>
@@ -58,30 +54,14 @@
     <string name="setting_activity_quit_club">退出会所</string>
     <string name="setting_activity_join_club">加入会所</string>
     <string name="logout_tips">退出后无法及时接收到相关消息，是否确认退出？</string>
-
     <string name="feedback_hint">点击输入反馈...</string>
     <string name="feedback_result">已成功提交，感谢您的反馈！</string>
     <string name="feedback_empty_tips">反馈信息不能为空，请输入您的意见！</string>
-
     <!-- TechInfoActivity-->
-    <string name="title_activity_data_edit">资料编辑</string>
-    <string name="edit_activity_text_view_tip">最多可以添加8张图片，单击可以删除图片。</string>
-    <string name="edit_activity_text_view_desc">基本资料</string>
-    <string name="edit_activity_text_view_head">头像</string>
-    <string name="edit_activity_text_view_change_head">更改头像</string>
-    <string name="edit_activity_text_view_name">姓名</string>
-    <string name="edit_activity_text_view_gender">性别</string>
-    <string name="edit_activity_text_view_place">籍贯</string>
-    <string name="edit_activity_text_view_phone">手机</string>
-    <string name="edit_activity_text_view_introduce">介绍</string>
-    <string name="edit_activity_text_view_introduce_desc">请自我介绍(介绍自己来自哪里,介绍自己的姓名,介绍姓名时一定要吸引人,你的姓和名字...)</string>
     <string name="edit_activity_delete_album">您确认要删除这张图片？</string>
-    <string name="edit_activity_select_native_place">请选择</string>
-
     <string name="app_info_title">关于小摩豆</string>
     <string name="check_update">检查更新</string>
     <string name="app_info_name">9358服务版</string>
-
     <string name="current_work_time">上班时间：</string>
     <string name="work_day_text">重复天数</string>
     <string name="work_time_text">时间设置</string>
@@ -90,46 +70,38 @@
     <string name="save">保存</string>
     <string name="none_selected">未选择</string>
     <string name="save_waiting">正在保存，请稍后</string>
-
     <string name="consume">提现</string>
     <string name="customer_reward">用户打赏</string>
-
     <string name="modify_password_old_hint">输入原密码</string>
     <string name="modify_password_new_hint">请输入6-20位新密码，仅限字母和数字</string>
     <string name="modify_password_confirm_hint">重新输入密码</string>
     <string name="modify_password_change_confirm_err">两次输入的新密码不统一</string>
     <string name="modify_password_failed">修改密码失败</string>
-
     <string name="service_item">项目</string>
     <string name="service_price">价格（元）</string>
     <string name="service_time">时间（分钟）</string>
     <string name="confirm_select">确认选择</string>
     <string name="no_service_item">暂无服务项目</string>
-
     <!-- chat -->
     <string name="accept">接受</string>
     <string name="finish">已完成</string>
     <string name="know">已完成</string>
     <string name="no_paid_coupon" tools:ignore="UnusedResources">抱歉！暂无点钟券！</string>
-
     <string name="pending_order">待接受</string>
     <string name="accepted_order">已接受</string>
     <string name="completed_order">已完成</string>
     <string name="order_list_item_loading">点击或者上拉，加载更多数据</string>
     <string name="order_list_item_no_more">----------已经全部加载完毕----------</string>
     <string name="order_list_item_empty">=_=!!, 还没有数据哦</string>
-
     <string name="order_status_operation_accept">接受</string>
     <string name="order_status_operation_reject">拒绝</string>
     <string name="order_status_operation_complete">完成</string>
     <string name="order_status_operation_expire">失效</string>
     <string name="order_status_operation_delete">删除订单</string>
-
     <string name="order_remain_time_label">剩余接单时间：</string>
     <string name="order_item_remain_time_label">剩余接单时间</string>
     <string name="order_remain_time_minutes">分钟</string>
     <string name="amount_unit_format">%1$d元</string>
-
     <string name="order_detail_down_payment">预付款</string>
     <string name="order_detail_order_time">预约时间</string>
     <string name="order_detail_order_service">预约项目</string>
@@ -141,16 +113,13 @@
     <string name="order_detail_delete_order_confirm">确认删除订单</string>
     <string name="order_detail_reject_order_confirm">确认拒绝订单</string>
     <string name="order_detail_failure_order_confirm">确认失效订单</string>
-
     <string name="order_status_description_submit">收到预约</string>
     <string name="order_status_description_accept">接受预约</string>
     <string name="order_status_description_reject">已拒绝</string>
     <string name="order_status_description_complete">已完成</string>
     <string name="order_status_description_failure">已失效</string>
     <string name="order_status_description_overtime">已超时</string>
-
     <string name="make_call">打电话</string>
-
     <!-- Weixin Share -->
     <string name="wx_entry_activity_title">微信分享</string>
     <string name="share_to_friend">发送给朋友</string>
@@ -160,16 +129,13 @@
     <string name="wx_errcode_cancel">分享已取消</string>
     <string name="wx_errcode_deny">分享被拒绝</string>
     <string name="wx_errcode_unknown">分享返回</string>
-
     <string name="coupon_fragment_share">分享</string>
     <string name="coupon_fragment_coupon_reward">提成 %s元</string>
-
     <string name="paid_coupon_detail_activity_title">点钟券详情</string>
     <string name="paid_coupon_detail_coupon_period">有效时间：</string>
     <string name="paid_coupon_detail_act_content">活动说明：</string>
     <string name="paid_coupon_detail_user_detail">购买详情</string>
     <string name="paid_coupon_detail_tips_verified">客户购买点钟券后，您将获得 %1$s 元提成。</string>
-
     <string name="paid_coupon_user_detail_activity_header_user">用户</string>
     <string name="paid_coupon_user_detail_activity_header_status">全部状态</string>
     <string name="paid_coupon_user_detail_activity_header_get_date">购买时间</string>
@@ -177,25 +143,24 @@
     <string name="paid_coupon_user_detail_activity_accept">未使用</string>
     <string name="paid_coupon_user_detail_activity_complete">已使用</string>
     <string name="paid_coupon_user_detail_activity_expire">已过期</string>
-
     <string name="normal_coupon_detail_activity_title">邀请有礼</string>
     <string name="normal_coupon_detail_activity_act_content_desc">使用规则</string>
-    <string name="normal_coupon_detail_activity_share_text">
-        分享后，客户每一次使用您都会获得 %1$d 元。</string>
+    <string name="normal_coupon_detail_activity_share_text">分享后，客户每一次使用您都会获得 %1$d 元。</string>
     <string name="credit_exchange_max">最大兑换金额 %s 元。</string>
     <string name="system_notice_activity_title">系统通知</string>
     <string name="customer_remark_empty">您尚未为此好友添加备注信息...</string>
-
     <string name="user_code_message">扫码关注[9358]公众号\n点技师，约项目，就上9358</string>
     <string name="share_with_red_packet">分享领取红包</string>
     <string name="share_now">立即分享</string>
     <string name="coupon_code">优惠券</string>
+    <string name="club_online_coupon_code">会所在线优惠券：</string>
     <string name="coupon_alert_message">客户扫码即得优惠</string>
     <string name="coupon_alert_message_buy">客户扫码购券</string>
     <string name="coupon_code_item">(优惠券)</string>
     <string name="user_time">使用时间段</string>
     <string name="check_coupon">卡券分享</string>
     <string name="delivery_coupon">点钟券</string>
+    <string name="club_online_delivery_coupon">会所在线点钟券：</string>
     <string name="credit_now">现有积分</string>
     <string name="credit_freeze">冻结积分</string>
     <string name="credit_rule">积分规则</string>
@@ -207,7 +172,6 @@
     <string name="credit_alert">提示：</string>
     <string name="credit_alert_text1">1、确认兑换后，请与会所管理者联系。</string>
     <string name="credit_alert_text2">2、如果管理者未进行确认，7天后默认拒绝，退还积分。</string>
-
     <string name="credit_alert_shortage">您最多可兑换%s元</string>
     <string name="game_rule_introduce">比大小，每局胜方将获得负方所选积分</string>
     <string name="game_invite">邀请</string>
@@ -221,11 +185,9 @@
     <string name="visitor_type">游客</string>
     <string name="exchange_credit_limit">会所限制大于%s积分才能进行兑换"</string>
     <string name="credit_is_shortage">您没有积分了，如何获取积分</string>
-
     <string name="to_say_hi">打招呼</string>
     <string name="remove_from_blacklist" tools:ignore="UnusedResources">移出黑名单</string>
     <string name="visitor_has_no_message">游客无详情信息</string>
-
     <!-- 首页-->
     <string name="layout_technician_ranking_title">排行榜</string>
     <string name="layout_technician_ranking_check_all">全部</string>
@@ -233,7 +195,6 @@
     <string name="layout_technician_star_sales">销售之星</string>
     <string name="layout_technician_star_service">服务之星</string>
     <string name="layout_technician_no_technician">暂无技师</string>
-
     <string name="main_info_item_too_keen">总拓客（人）</string>
     <string name="main_info_item_send_coupon">总发券（张）</string>
     <string name="main_info_item_get_comment">总好评（个）</string>
@@ -261,7 +222,6 @@
     <string name="hello_setting_content">选择打招呼内容</string>
     <string name="hello_setting_image">选择打招呼图片（选填）</string>
     <string name="hello_setting_custom_template_hint">请您输入打招呼内容，字数在50字以内</string>
-
     <string name="all_recent_status_activity">全部动态</string>
     <string name="filtrate_recent_status_all">全部</string>
     <string name="filtrate_recent_status_comment">只看评价</string>
@@ -276,10 +236,7 @@
     <string name="recent_status_type_paid_coupon">购买了我的点钟券</string>
     <string name="recent_status_type_paid">打赏了我</string>
     <string name="recent_status_btn_text">感谢</string>
-    <string name="wait_club_examine">请等待会所审核</string>
     <string name="join_club_before">请先加入会所</string>
-    <string name="club_reject_apply">会所拒绝添加</string>
-
     <!-- 退出会所 -->
     <string name="quit_club_title">退出会所</string>
     <string name="cancel_join_club_title">确认撤销申请</string>
@@ -292,7 +249,6 @@
     <string name="share_coupon">卡券分享</string>
     <string name="popular_activities">热门活动</string>
     <string name="club_publicity">会所宣传</string>
-
     <!-- 买单列表 -->
     <string name="online_pay_notify">买单通知</string>
     <string name="online_pay_notify_title">买单通知明细</string>
@@ -305,14 +261,16 @@
     <!--技师分享改版-->
     <string name="paid_coupon_list_title">点钟券</string>
     <string name="normal_coupon_list_title">优惠券</string>
-    <string name="once_card_list_title">次卡</string>
-    <string name="limit_grab_list_title">限时抢</string>
-    <string name="pay_for_me_list_title">夺宝</string>
-    <string name="club_journal_list_title">会所期刊</string>
-    <string name="reward_list_title">抽奖活动</string>
+    <string name="once_card">次卡</string>
+    <string name="limit_grab">限时抢</string>
+    <string name="pay_for_me">夺宝</string>
+    <string name="club_journal">会所期刊</string>
+    <string name="reward_activity">抽奖活动</string>
+    <string name="invitation_reward_activity">邀请有礼</string>
     <string name="limit_grab_share_description">据说这个项目一般人抢不到，但是我觉得你可以！抢项目，约技师，享人间极乐。</string>
     <string name="pay_for_me_share_description">我和你有次夺宝约定，点我立即参与</string>
     <string name="reward_share_description">那一世转山转水，只为相见，点我立即开始</string>
+    <string name="invitation_reward_share_description">我决定了，明天就去这家</string>
     <string name="my_share_card">微名片</string>
     <string name="my_share_poster">我的海报</string>
     <string name="share_coupon_dialog_title">项目二维码</string>
@@ -333,15 +291,13 @@
     <string name="personal_ranking_toker">拓客之星</string>
     <string name="personal_ranking_sale">销售之星</string>
     <string name="personal_ranking_service">服务之星</string>
-
     <string name="hello_reply_single_tips">回复了您的招呼</string>
     <string name="hello_reply_multi_tips">共%s个客户回复了您的招呼</string>
     <string name="hello_reply_multi_more_tips">等%s个客户回复了您的招呼</string>
     <!--语音聊天-->
-    <string name="chat_timescard_message_type">单项次卡</string>
-    <string name="chat_package_message_type">超值套餐</string>
-    <string name="chat_gift_message_type">积分礼品</string>
-
+    <string name="times_card_message">单项次卡</string>
+    <string name="package_message">超值套餐</string>
+    <string name="gift_message">积分礼品</string>
     <!--联系人改版-->
     <string name="contact_manager">店长</string>
     <string name="contact_mark_tech_add">通讯录</string>
@@ -371,11 +327,6 @@
     <string name="tech_poster_edit_save">保存</string>
     <string name="tech_poster_edit">编辑</string>
     <string name="tech_poster_save_picture">保存图片</string>
-    <string name="personal_fragment_join_club">请先加入会所</string>
-    <string name="personal_fragment_wait_check">请等待会所审核</string>
-    <string name="personal_fragment_status_check">所在会所未开放该功能</string>
-    <string name="main_fragment_tech_status_select_fail">已开启内网功能，不可手动切换状态</string>
-    <string name="main_fragment_tech_status_club">您还尚未成功加入会所</string>
     <string name="tech_poster_alter_message">提示</string>
     <string name="tech_poster_alter_delete_message">删除后将无法恢复，确认删除该技师海报吗？</string>
     <string name="tech_poster_primary_title_default">欢迎您</string>
@@ -388,10 +339,58 @@
     <string name="tech_info_edit_title">资料编辑</string>
     <string name="tech_change_status_alter_message">"修改为“休假”状态后，您将不能被预约。目前您还有 %s 个预约订单待处理，确定切换状态吗?"</string>
     <string name="tech_rest_status_no_work_alter_message">该技师现在正休假中，请预约其他技师</string>
-
     <string name="tech_poster_deleter_success">删除成功</string>
     <string name="tech_poster_deleter_failed">删除失败</string>
     <string name="tech_wait_audit">正在等待管理员审批，请稍候！</string>
     <string name="tech_club_reject">会所管理员拒绝了您的加入申请</string>
     <string name="tech_num_default">管理员指定</string>
+    <string name="hint_input_tech_invitation_code">请输入会所邀请码</string>
+    <string name="hint_input_tech_no">请输入技师编号</string>
+    <string name="exchange_success_wait_club_handle">兑换申请成功，请等待管理者处理</string>
+    <string name="make_sure">确认</string>
+    <string name="full_reservation">（全额预约）</string>
+    <string name="refresh">刷新</string>
+    <string name="club_invitation">会所邀请码：</string>
+    <string name="tech_no">技师编号：</string>
+    <string name="text_invitation">邀请码：</string>
+    <string name="hint_input_invitation">输入邀请码</string>
+    <string name="position">职位：</string>
+    <string name="number">编号：</string>
+    <string name="skip">跳过</string>
+    <string name="apply_for_admission">申请加入</string>
+    <string name="job_number">工号：</string>
+    <string name="invitation_time">邀请时间：</string>
+    <string name="choose_working_time">请选择工作时间</string>
+    <string name="choose_city">请选择省市</string>
+    <string name="test">测试</string>
+    <string name="setting">设 置</string>
+    <string name="quick_reply_setting">快捷回复设置</string>
+    <string name="entry_invitation">入职邀请</string>
+    <string name="credit_introduce_tip_one">1、积分是什么？</string>
+    <string name="credit_introduce_tip_one_content">这里的积分指的是，会所发放的一种虚拟货币。您可以使用会所积分，参与会所的运营活动、互动游戏、或者直接兑换成会所指定的物品。</string>
+    <string name="credit_introduce_tip_two">2、您可以通过以下方法获得积分：</string>
+    <string name="credit_introduce_tip_tow_content">注册并通过管理员审核，成为会所技师；\n跟客户互动游戏赢取积分；\n收到客户的积分打赏；\n会所直接发放积分；</string>
+    <string name="credit_introduce_tip_three">3、积分有什么作用？</string>
+    <string name="credit_introduce_tip_three_content">使用积分可以参与会所指定活动，兑换项目、实物或者现金；\n可以与客户互动小游戏；\n其它符合会所规定的福利；\n更多福利持续开发中……</string>
+    <string name="chat">聊</string>
+    <string name="personal_display">个人展示</string>
+    <string name="online_poster">在线海报：</string>
+    <string name="club_online_activity_number">会所活动数：</string>
+    <string name="offline_activity">线下活动</string>
+    <string name="set_meal">套餐：</string>
+    <string name="invitation_join_club_number">工      号：</string>
+    <string name="invitation_position">邀请职位：</string>
+    <string name="select_picture">选择图片</string>
+    <string name="limit_time_use">限时用</string>
+    <string name="unit_yuan">元</string>
+    <string name="one_yuan_win">一元夺</string>
+    <string name="tech_position">职位</string>
+    <string name="tech_number">工号</string>
+    <string name="revocation_application">撤销申请</string>
+    <string name="amend_the_application">修改申请</string>
+    <string name="application_again">再次申请</string>
+    <string name="received">已回复</string>
+    <string name="newest">最新</string>
+    <string name="essential_information">基本信息</string>
+    <string name="hint_input_nick_name">请输入昵称...</string>
 </resources>
