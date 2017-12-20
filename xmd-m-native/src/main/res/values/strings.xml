@@ -15,4 +15,5 @@
     <string name="service_service_and_goods_item_choice">请选择服务项目或商品</string>
     <string name="tech_number_choice">请选择技师工号</string>
     <string name="handle_success_message">操作成功</string>
+    <string name="has_no_tech">没有可用技师</string>
 </resources>

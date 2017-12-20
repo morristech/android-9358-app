@@ -332,6 +332,9 @@ public class SeatBillDataManager {
         String categoryId = "";
         String itemName = "";
         for (List<NativeServiceItemBean> bean : mServiceItemListList) {
+            if(bean == null){
+                continue;
+            }
             for (NativeServiceItemBean itemBean : bean) {
                 if (itemBean.id.equals(itemId)) {
                     categoryId = itemBean.categoryId;

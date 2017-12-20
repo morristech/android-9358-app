@@ -264,13 +264,13 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
         if( mItemsList.get(parentPosition).getItemType().equals(ConstantResource.BILL_GOODS_TYPE)){
             bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE,ConstantResource.BILL_GOODS_TYPE);
             if(mSeatBillDataManager.getAllTechList().size() == 0){
-                XToast.show("无可用营销人员");
+                XToast.show(ResourceUtils.getString(R.string.has_no_tech));
                 return;
             }
         }else {
             bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE,ConstantResource.BILL_SPA_TYPE);
             if(mSeatBillDataManager.getFreeTechList().size() == 0){
-                XToast.show("无可用营销人员");
+                XToast.show(ResourceUtils.getString(R.string.has_no_tech));
                 return;
             }
         }
@@ -281,6 +281,9 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
 
     @Override
     public void billSellTotal(int parentPosition, int total) {
+        if(parentPosition >= mItemsList.size()){
+            return;
+        }
         NativeItemBean bean = mItemsList.get(parentPosition);
         bean.setItemCount(total);
     }
