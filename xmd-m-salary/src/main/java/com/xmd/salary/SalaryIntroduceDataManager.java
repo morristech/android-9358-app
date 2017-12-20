@@ -9,6 +9,7 @@ import com.xmd.salary.bean.CommodityItemBean;
 import com.xmd.salary.bean.MemberActivityDetailBean;
 import com.xmd.salary.bean.OrderItemBean;
 import com.xmd.salary.bean.OrderParameterBean;
+import com.xmd.salary.bean.PackageItemsBean;
 import com.xmd.salary.bean.PackageListBean;
 import com.xmd.salary.bean.SalesCommissionListBean;
 import com.xmd.salary.bean.ServiceCellBean;
@@ -127,7 +128,33 @@ public class SalaryIntroduceDataManager {
     }
 
     private String getPackageItem(PackageListBean packageBean) {
-        return String.format("现金：%1.2f元", packageBean.packageItems.get(0).oriAmount / 100f);
+        if (packageBean.packageItems.size() == 0) {
+            return "无";
+        }
+        String desMessage = "";
+        for (PackageItemsBean itemBean : packageBean.packageItems) {
+            String des = "";
+            switch (itemBean.type) {
+                case 0:
+                    des = "积分：" + "*" + String.valueOf(itemBean.oriAmount)+"\n";
+                    break;
+                case 1:
+                    des = "礼品：" + itemBean.name + "*" + itemBean.itemCount+"\n";
+                    break;
+                case 2:
+                    des = "优惠券：" + itemBean.name + "*" + itemBean.itemCount+"\n";
+                    break;
+                case 3:
+                    des = "项目：" + itemBean.name + "*" + itemBean.itemCount+"\n";
+                    break;
+                case 4:
+                    des = "现金：" + String.format("%s 元", String.valueOf(itemBean.oriAmount / 100f))+"\n";
+                    break;
+            }
+            desMessage += des;
+        }
+        //0-积分;1-礼品;2-优惠券;3-项目;4-现金
+        return desMessage;
     }
 
     private void CommodityCommissionListDataChanged() {

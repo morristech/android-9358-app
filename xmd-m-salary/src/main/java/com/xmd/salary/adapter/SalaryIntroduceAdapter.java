@@ -72,9 +72,8 @@ public class SalaryIntroduceAdapter<T> extends RecyclerView.Adapter {
         } else if (holder instanceof CardViewHolder) {
             CardItemBean bean = (CardItemBean) mData.get(position);
             CardViewHolder viewHolder = (CardViewHolder) holder;
-            viewHolder.tvCardTypeName.setText(bean.cardName);
+            viewHolder.tvCardTypeName.setText("套餐" + bean.cardName);
             viewHolder.tvCardTypeDetail.setText("充" + bean.cardPay / 100f);
-            //viewHolder.tvCardDetailName.setText(bean.cardName);
             viewHolder.tvCommoditiesCommission.setText(String.valueOf(String.format("%1.2f", bean.techCommission / 100f)));
             viewHolder.tvCardItemDetail.setText(bean.carItem);
             if (position % 2 == 0) {
