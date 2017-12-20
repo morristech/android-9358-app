@@ -8,7 +8,6 @@
 
     <LinearLayout
         android:layout_below="@+id/toolbar"
-        android:id="@+id/ll_lgoin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_activity_username_magin_top"

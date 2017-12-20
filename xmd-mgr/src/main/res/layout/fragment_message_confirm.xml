@@ -221,7 +221,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_above="@id/send_confirm_hint"
-            android:id="@+id/view">
+        >
 
             <LinearLayout
                 android:layout_width="match_parent"

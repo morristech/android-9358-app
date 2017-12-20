@@ -58,6 +58,7 @@ public class ClubListActivity extends BaseListActivity<ClubInfo, ClubListResult>
     }
 
     private void initView() {
+        mALlClubInfo = new ArrayList<>();
         setLeftVisible(getIntent().getBooleanExtra(EXTRA_SHOW_LEFT, false), -1);
         setLeftVisible(false, -1);
         Utils.hideKeyboard(this);
@@ -72,6 +73,7 @@ public class ClubListActivity extends BaseListActivity<ClubInfo, ClubListResult>
                     .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
                     .show();
         });
+
         characterParser = CharacterParserUtil.getInstance();
         mEnterClubViewSubscription = RxBus.getInstance().toObservable(ClubEnterResult.class).subscribe(
                 result -> handleLoginResult(result));
@@ -82,7 +84,7 @@ public class ClubListActivity extends BaseListActivity<ClubInfo, ClubListResult>
 
     private void handleClubList(ClubListResult result) {
         if (result.statusCode == 200) {
-            mALlClubInfo = new ArrayList<>();
+            mALlClubInfo.clear();
             mALlClubInfo.addAll(result.respData);
         }
     }

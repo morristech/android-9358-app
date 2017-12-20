@@ -105,7 +105,6 @@
                         tools:text="2017.01.02 18:22:30"/>
 
                     <TextView
-                        android:id="@+id/shareName"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/useAbleTime"

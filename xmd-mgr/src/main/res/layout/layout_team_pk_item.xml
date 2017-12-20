@@ -21,7 +21,6 @@
             android:text="@string/pk_ranking_head" />
 
         <ImageView
-            android:id="@+id/pk_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

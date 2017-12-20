@@ -8,7 +8,6 @@
     <include layout="@layout/time_select_view" />
 
     <LinearLayout
-        android:id="@+id/ll_income_total_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorLineDivide"

@@ -197,7 +197,7 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_FINANCIAL_REPORT = BASE_URL + "/v2/club/financial/report";
     public static final String URL_CLUB_FINANCIAL_REPORT_CONFIG = BASE_URL + "/v2/club/financial/report/config";
     public static final String URL_GET_CLUB_FINANCIAL_REPORT_NEWS = BASE_URL + "/v2/club/financial/report/news";
-    public static final String URL_GET_CLUB_FINANCIAL_REPORT_BY_ID = BASE_URL + "/v2/club/financial/report/{id}";
+    public static final String URL_GET_CLUB_FINANCIAL_REPORT_BY_ID = BASE_URL + "/v2/club/financial/report/read/{id}";
     /**
      * 优惠券改版
      */

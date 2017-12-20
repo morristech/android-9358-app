@@ -9,6 +9,8 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.R;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
+import com.xmd.manager.msgctrl.MsgDef;
+import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.ReportCreateResult;
@@ -102,23 +104,23 @@ public class NewAddOperateActivity extends BaseActivity {
             XToast.show(ResourceUtils.getString(R.string.operate_name_alter));
             return;
         }
-        if (TextUtils.isEmpty(mOperateStartTime)) {
+        if (TextUtils.isEmpty(mOperateStartTime) || mOperateStartTime.equals(ResourceUtils.getString(R.string.new_add_operate_start_time_hint))) {
             XToast.show(ResourceUtils.getString(R.string.operate_start_time_alter));
             return;
         }
-        if (TextUtils.isEmpty(mOperateEndTime)) {
+        if (TextUtils.isEmpty(mOperateEndTime) || mOperateEndTime.equals(ResourceUtils.getString(R.string.new_add_operate_end_time_hint))) {
             XToast.show(ResourceUtils.getString(R.string.operate_end_time_alter));
             return;
         }
-        if (DateUtil.stringDateToLong(mOperateEndTime) < DateUtil.stringDateToLong(mInitStartTime)) {
+        if (DateUtil.stringDateToLong(mOperateEndTime + ":59") < DateUtil.stringDateToLong(mOperateStartTime + ":00")) {
             XToast.show(ResourceUtils.getString(R.string.operate_time_role_alter));
             return;
         }
         mParams.clear();
         mParams.put(RequestConstant.KEY_REPORT_CUSTOM_START_TIME, mOperateStartTime + ":00");
-        mParams.put(RequestConstant.KEY_REPORT_CUSTOM_NAME, mOperateEndTime + ":59");
+        mParams.put(RequestConstant.KEY_REPORT_CUSTOM_END_TIME, mOperateEndTime + ":59");
         mParams.put(RequestConstant.KEY_REPORT_CUSTOM_NAME, mOperateName);
-        //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM, mParams);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CREATE_REPORT_CUSTOM, mParams);
 
     }
 }

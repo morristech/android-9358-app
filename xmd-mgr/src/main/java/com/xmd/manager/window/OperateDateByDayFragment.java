@@ -34,6 +34,7 @@ public class OperateDateByDayFragment extends BaseFragment {
     RelativeLayout operateTimeAdd;
     @BindView(R.id.operate_time_reduce)
     RelativeLayout operateTimeReduce;
+
     Unbinder unbinder;
 
 
@@ -85,12 +86,12 @@ public class OperateDateByDayFragment extends BaseFragment {
                     mSearchMonth = DateUtil.getFirstDayOfNextMonth(mSearchMonth, "yyyy-MM-dd");
                     tvOperateTime.setText(mSearchMonth.substring(0, 7));
                 }
-                mOperateListFragment.notifyDataChanged(mSearchMonth);
+                mOperateListFragment.notifyDataChanged(tvOperateTime.getText().toString());
                 break;
             case R.id.operate_time_reduce:
                 mSearchMonth = DateUtil.getFirstDayOfLastMonth(mSearchMonth, "yyyy-MM-dd");
                 tvOperateTime.setText(mSearchMonth.substring(0, 7));
-                mOperateListFragment.notifyDataChanged(mSearchMonth);
+                mOperateListFragment.notifyDataChanged(tvOperateTime.getText().toString());
                 break;
 
         }

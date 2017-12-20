@@ -35,7 +35,6 @@
             <LinearLayout style="@style/main_fragment_layout_order_section_style">
 
                 <View
-                    android:id="@+id/v_submit_line"
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -48,7 +47,6 @@
                     android:paddingLeft="@dimen/inter_space">
 
                     <TextView
-                        android:id="@+id/textView3"
                         style="@style/main_fragment_layout_order_label_style"
                         android:layout_alignParentTop="true"
                         android:text="@string/accepted_order" />

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_account"
-    style="@style/main_page_margin_style"
+              style="@style/main_page_margin_style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_round_corner_list_item_clicked"

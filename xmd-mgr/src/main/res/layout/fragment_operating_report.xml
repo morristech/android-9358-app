@@ -25,8 +25,7 @@
                 android:layout_marginRight="@dimen/margin_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:background="@drawable/selector_bg_white"
-                android:padding="@dimen/margin_10"
-                android:visibility="gone">
+                android:padding="@dimen/margin_10">
 
                 <ImageView
                     android:id="@+id/img_operate"
@@ -35,7 +34,6 @@
                     android:src="@drawable/img_operate" />
 
                 <TextView
-                    android:id="@+id/tv_operate_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -81,7 +79,6 @@
                     android:src="@drawable/img_cashier_report" />
 
                 <TextView
-                    android:id="@+id/tv_cashier_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -92,7 +89,6 @@
                     android:textSize="@dimen/fontSubheading" />
 
                 <ImageView
-                    android:id="@+id/img_cashier_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -118,7 +114,6 @@
                     android:src="@drawable/img_salary_report" />
 
                 <TextView
-                    android:id="@+id/tv_salary_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -129,7 +124,6 @@
                     android:textSize="@dimen/fontSubheading" />
 
                 <ImageView
-                    android:id="@+id/img_salary_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -154,7 +148,6 @@
                     android:src="@drawable/img_verification" />
 
                 <TextView
-                    android:id="@+id/tv_verification_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -165,7 +158,6 @@
                     android:textSize="@dimen/fontSubheading" />
 
                 <ImageView
-                    android:id="@+id/img_verification_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -190,7 +182,6 @@
                     android:src="@drawable/img_online_order" />
 
                 <TextView
-                    android:id="@+id/tv_online_order_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -253,7 +244,6 @@
                     android:src="@drawable/arrow_right" />
 
                 <ImageView
-                    android:id="@+id/img_coupon_new"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

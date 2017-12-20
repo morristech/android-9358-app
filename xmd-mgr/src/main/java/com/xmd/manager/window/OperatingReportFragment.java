@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.event.OrderCountUpDate;
+import com.xmd.manager.msgctrl.MsgDef;
+import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.response.ReportNewsResult;
 import com.xmd.permission.CheckBusinessPermission;
@@ -37,7 +39,6 @@ public class OperatingReportFragment extends BaseFragment {
     RelativeLayout mCashierLayout;
     @BindView(R.id.rl_salary)
     RelativeLayout mSalaryLayout;
-
     @BindView(R.id.image_operate_new)
     ImageView imageOperateNew;
     @BindView(R.id.img_order_new)
@@ -59,8 +60,7 @@ public class OperatingReportFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
-
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
     }
 
     @Override
@@ -79,6 +79,12 @@ public class OperatingReportFragment extends BaseFragment {
 
     private void handlerReportNewsResult(ReportNewsResult reportNewsResult) {
         if (reportNewsResult.statusCode == 200) {
+            if (reportNewsResult == null || reportNewsResult.respData == null) {
+                return;
+            }
+            if (imageOperateNew == null) {
+                return;
+            }
             imageOperateNew.setVisibility(reportNewsResult.respData.count > 0 ? View.VISIBLE : View.GONE);
         }
     }

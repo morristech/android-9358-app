@@ -1115,10 +1115,9 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT_NEWS)
     Call<ReportNewsResult> getReportNews(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
-    //获取报表信息
+    //标记为已读
     @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT_BY_ID)
-    Call<ReportReadResult> makeReportRead(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                         @Path(RequestConstant.KEY_ID) String id);
+    Call<ReportReadResult> makeReportRead(@Path(RequestConstant.KEY_ID) String id);
 
     //报表列表
     @GET(RequestConstant.URL_GET_CLUB_FINANCIAL_REPORT)

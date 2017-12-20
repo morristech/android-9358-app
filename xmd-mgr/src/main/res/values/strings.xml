@@ -329,7 +329,6 @@
     <string name="club_time_limit">限时抢</string>
     <string name="club_lucky_wheel">大转盘</string>
     <string name="club_one_yuan">夺宝</string>
-    <string name="club_contain_paid_coupon">(含点钟券)</string>
     <string name="club_reward">抽奖大转盘</string>
     <string name="club_purchase">限时抢购</string>
     <string name="club_deprive">1元夺</string>
@@ -514,6 +513,7 @@
     <string name="operate_start_time_alter">请输入报表开始时间</string>
     <string name="operate_end_time_alter">请输入报表结束时间</string>
     <string name="operate_time_role_alter">结束时间要大于开始时间</string>
+    <string name="operate_delete_alter_message">确定删除该报表？</string>
 
     <string name="cashier_title">买单收银</string>
     <string name="salary_title">技师工资</string>
@@ -552,7 +552,6 @@
     <string name="order_filter_activity_title">订单筛选</string>
     <!--优惠券-->
     <string name="coupon_operate_date_title">优惠券数据</string>
-    <string name="coupon_operate_list_date_title">优惠券</string>
     <string name="coupon_data_all_coupon">全部优惠券</string>
     <string name="coupon_data_receive">领取</string>
     <string name="coupon_data_verification">核销</string>
@@ -565,11 +564,9 @@
     <string name="coupon_operate_unusable">已下线</string>
     <string name="coupon_receive_and_use_info">领取使用详情</string>
     <string name="coupon_record_activity_title">优惠券记录</string>
-    <string name="coupon_record_filter_activity_title">优惠券</string>
     <string name="search_coupon_activity_search_hint">输入客户手机或核销码搜索</string>
     <string name="coupon_data_can_use">领取</string>
     <string name="search_coupon_is_empty">未查到相关数据</string>
-    <string name="delivery_coupon">点钟券</string>
     <string name="user_time">使用时间段</string>
     <string name="normal_coupon_detail_activity_act_content_desc">使用规则</string>
     <string name="paid_coupon_detail_coupon_period">有效时间：</string>

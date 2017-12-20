@@ -41,7 +41,6 @@ public class OperationReportActivity extends BaseActivity {
 
     private void initView() {
         setTitle(ResourceUtils.getString(R.string.operate_title));
-   //     setRightVisible(true, R.drawable.mainpage_imgleft_selected, null);
         tabTexts = new String[]{ResourceUtils.getString(R.string.operate_date_by_day), ResourceUtils.getString(R.string.operate_date_by_month), ResourceUtils.getString(R.string.operate_date_by_user)};
         mPageFragmentPagerAdapter = new PageFragmentPagerAdapter(getSupportFragmentManager(), OperationReportActivity.this);
         mPageFragmentPagerAdapter.addFragment(new OperateDateByDayFragment());
@@ -57,12 +56,4 @@ public class OperationReportActivity extends BaseActivity {
         tabIndicator.setup();
     }
 
-
-//    @OnClick(R.id.toolbar_right_image)
-//    public void onViewClicked() {
-//        Intent intent = new Intent(OperationReportActivity.this, OperateCycleSettingActivity.class);
-//        intent.putExtra(Constant.OPERATE_START_TIME, mOperateStartTime);
-//        intent.putExtra(Constant.OPERATE_END_TIME, mOperateEndTime);
-//        startActivity(intent);
-//    }
 }

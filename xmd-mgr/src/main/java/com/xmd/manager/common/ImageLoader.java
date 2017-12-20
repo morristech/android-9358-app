@@ -30,6 +30,15 @@ public class ImageLoader {
         op.inDither = false;
         op.inScaled = false;
         return BitmapFactory.decodeFile(imagePath, op);
+//        ByteArrayOutputStream output = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+//        int options = 100;
+//        while (output.toByteArray().length > maxkb&& options != 10) {
+//            output.reset(); //清空output
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, options, output);//这里压缩options%，把压缩后的数据存放到output中
+//            options -= 10;
+//        }
+      //  return BitmapFactory.decodeByteArray(bitmap2Bytes(BitmapFactory.decodeFile(imagePath, op),32),0,0);
     }
 
 
@@ -89,13 +98,24 @@ public class ImageLoader {
         }
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-        Logger.i(">>>", "image size:" + bitmap.getWidth() + "x" + bitmap.getHeight());
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         bitmap.recycle();
         String imgFile = "data:image/jpg;base64," + Base64.encodeToString(bos.toByteArray(), Base64.DEFAULT);
         Runtime.getRuntime().gc(); //强制释放内存
         return imgFile;
+    }
+
+    public static byte[] bitmap2Bytes(Bitmap bitmap, int maxkb) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+        int options = 100;
+        while (output.toByteArray().length > maxkb&& options != 10) {
+            output.reset(); //清空output
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, output);//这里压缩options%，把压缩后的数据存放到output中
+            options -= 10;
+        }
+        return output.toByteArray();
     }
 
 }

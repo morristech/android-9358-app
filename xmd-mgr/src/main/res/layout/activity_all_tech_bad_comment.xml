@@ -41,7 +41,7 @@
                     android:text="@string/bad_comment_tech"
                     android:textColor="@color/colorBody"
                     android:textSize="@dimen/fontBody"
-                    android:id="@+id/textView2" />
+                />
 
                 <View style="@style/vertical_line" />
 

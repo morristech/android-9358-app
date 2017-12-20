@@ -2689,7 +2689,7 @@ public class RequestController extends AbstractController {
 
     //报表标记为已读
     private void makeReportRead(String reportId) {
-        Call<ReportReadResult> call = getSpaService().makeReportRead(SharedPreferenceHelper.getUserToken(), reportId);
+        Call<ReportReadResult> call = getSpaService().makeReportRead(reportId);
         call.enqueue(new TokenCheckedCallback<ReportReadResult>() {
             @Override
             protected void postResult(ReportReadResult result) {

@@ -20,7 +20,6 @@
         android:paddingBottom="@dimen/large_space">
 
         <LinearLayout
-            android:id="@+id/ll_group_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/inter_space"
@@ -30,7 +29,6 @@
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/group_coupon_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorClubItemTitle"

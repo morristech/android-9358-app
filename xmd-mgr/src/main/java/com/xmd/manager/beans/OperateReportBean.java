@@ -6,39 +6,25 @@ package com.xmd.manager.beans;
 
 public class OperateReportBean {
 
+
     /**
-     * endTime : 2017-10-02 00:00:00
-     * id : 10
-     * name : 周年庆
+     * id : 3
+     * startTime : 1506787200000
+     * shareId : 12345678901234567890123456789012345678901234567
+     * separateTime :
+     * name : 自定义
+     * shareUrl : http://sdcm103:9880/spa-manager/reportForms/#/report?id=12345678901234567890123456789012345678901234567
      * read : 0
-     * separateTime : 02:00:00
-     * shareId : ab56c678c4b4c7e67828756347382572
-     * startTime : 2017-10-01 12:00:00
+     * endTime : 1509811200000
      */
 
-    public String endTime;
-    public String id;
-    public String name;
-    public int read;
-    public String separateTime;
+    public int id;
+    public long startTime;
     public String shareId;
-    public String startTime;
-
-    public OperateReportBean(String id, String name, String date) {
-        this.id = id;
-        this.name = name;
-        this.startTime = date;
-    }
-
-    public OperateReportBean(String endTime, String id, String name, int read, String separateTime, String shareId, String startTime) {
-        this.endTime = endTime;
-        this.id = id;
-        this.name = name;
-        this.read = read;
-        this.separateTime = separateTime;
-        this.shareId = shareId;
-        this.startTime = startTime;
-    }
-
-
+    public String separateTime;
+    public String name;
+    public String shareUrl;
+    public int read; //0：未读 1:已读
+    public long endTime;
+    public String type;
 }

@@ -3,6 +3,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+
 
     <com.xmd.manager.widget.SmoothProgressBar
         android:id="@+id/download_progressbar"
@@ -11,7 +13,6 @@
         android:layout_height="@dimen/browser_progress_bar_height"
         android:max="1000"
         android:progressDrawable="@drawable/progress_down_local" />
-
     <WebView
         android:id="@+id/mainwebView"
         android:layout_width="match_parent"
@@ -20,7 +21,6 @@
         android:layout_marginTop="@dimen/browser_progress_bar_height" />
 
     <TextView
-        android:id="@+id/line_cut"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/title_line" />
