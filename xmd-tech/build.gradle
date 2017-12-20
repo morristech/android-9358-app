@@ -39,8 +39,8 @@ android {
         //1.9.2 app埋点，个人中心优化
         //1.9.4 发送邀请有礼，新增技师海报，添加修改状态 63工资
         //1.9.6 修复bug
-        versionCode 64
-        versionName "1.9.6"
+        versionCode 65
+        versionName "1.9.7"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
