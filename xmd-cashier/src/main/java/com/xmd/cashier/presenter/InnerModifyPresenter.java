@@ -323,7 +323,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                         null,
                         mTradeManager.getCurrentTrade().currentCashierType,
                         mTradeManager.getCurrentTrade().payOrderId,
-                        mTradeManager.getCurrentTrade().subPayOrderId,
+                        mTradeManager.getCurrentTrade().tradeNo,
                         CashierManager.getInstance().getTradeNo(mTradeManager.getCurrentTrade().posPayReturn),
                         String.valueOf(mTradeManager.getCurrentTrade().getRealPayMoney()));
         XmdNetwork.getInstance().requestSync(callbackBatchCall, new NetworkSubscriber<BaseBean>() {
