@@ -83,7 +83,6 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
                     // 尚未支付
                     resultPaymentInfo = false;
                 }
-                resultPaymentInfo = true;
             }
 
             @Override

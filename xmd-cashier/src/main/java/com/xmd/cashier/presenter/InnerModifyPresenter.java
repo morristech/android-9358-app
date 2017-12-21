@@ -87,7 +87,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     @Override
     public void onRealPayChange() {
         mTradeManager.getCurrentTrade().setRealPayMoney(mView.getRealPayMoney());
-        mView.setDesc(mTradeManager.getCurrentTrade().getRealPayMoney(), mTradeManager.getCurrentTrade().getWillPayMoney() - mTradeManager.getCurrentTrade().getRealPayMoney());
+        mView.setDesc(mTradeManager.getCurrentTrade().getRealPayMoney(), mTradeManager.getCurrentTrade().getWillPayMoney() - mTradeManager.getCurrentTrade().getAlreadyPayMoney() - mTradeManager.getCurrentTrade().getRealPayMoney());
     }
 
     @Override
