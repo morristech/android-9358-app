@@ -770,7 +770,8 @@ public interface SpaService {
                                                          @Field(RequestConstant.KEY_ORDER_IDS) String orderIds,
                                                          @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
                                                          @Field(RequestConstant.KEY_VERIFY_CODES) String verifyCodes,
-                                                         @Field(RequestConstant.KEY_REDUCTION_AMOUNT) String reductionAmount);
+                                                         @Field(RequestConstant.KEY_REDUCTION_AMOUNT) String reductionAmount,
+                                                         @Field(RequestConstant.KEY_AMOUNT) String amount);
 
     //买单回调
     @FormUrlEncoded
@@ -779,7 +780,9 @@ public interface SpaService {
                                                  @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                                  @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
                                                  @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                                 @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
+                                                 @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                                 @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                                 @Field(RequestConstant.KEY_AMOUNT) String amount);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER)
@@ -787,12 +790,9 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                                @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
                                                @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                               @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
-
-    //内网支付单详情
-    @GET(RequestConstant.URL_GET_THIRD_PAY_STATUS)
-    Call<OnlinePayDetailResult> getThirdPayStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                  @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+                                               @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                               @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                               @Field(RequestConstant.KEY_AMOUNT) String amount);
 
     @GET(RequestConstant.URL_GET_INNER_BATCH_HOLE)
     Observable<InnerBatchHoleResult> getInnerHoleBatch(@Query(RequestConstant.KEY_TOKEN) String userToken,
@@ -800,5 +800,10 @@ public interface SpaService {
 
     @GET(RequestConstant.URL_GET_INNER_UNPAID_COUNT)
     Observable<InnerUnpaidResult> getInnerUnpaid(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_CHECK_INNER_SUB_PAY_STATUS)
+    Call<StringResult> checkInnerSubPayStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Query(RequestConstant.KEY_ORDER_ID) String orderId,
+                                              @Query(RequestConstant.KEY_PAY_NO) String payNo);
 }
 

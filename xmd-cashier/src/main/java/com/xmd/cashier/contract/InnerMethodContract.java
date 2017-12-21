@@ -50,5 +50,7 @@ public interface InnerMethodContract {
         void updateItem(int position);
 
         void updateAll();
+
+        void showDiscountEnter(boolean tag);
     }
 }

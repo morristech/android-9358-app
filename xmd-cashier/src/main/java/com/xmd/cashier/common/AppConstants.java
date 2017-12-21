@@ -318,6 +318,11 @@ public class AppConstants {
     public static final String INNER_METHOD_SOURCE_NORMAL = "normal";
     public static final String INNER_METHOD_SOURCE_RECORD = "record";
     public static final String INNER_METHOD_SOURCE_PUSH = "push";
+    public static final String INNER_METHOD_SOURCE_CONTINUE = "continue";
+
+    public static final String EXTRA_INNER_DETAIL_SOURCE = "detail_source";
+    public static final String INNER_DETAIL_SOURCE_OTHER = "other";
+    public static final String INNER_DETAIL_SOURCE_RECORD = "record";
 
     public static final List<String> INNER_PAY_STEPS = Arrays.asList(new String[]{"结账方式", "支付方式", "支付结果"});
 

@@ -71,7 +71,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_paid_order"
+            android:id="@+id/layout_discount_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_little_margin"
@@ -82,12 +82,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="right"
-                android:text="预约抵扣："
+                android:text="优惠减免："
                 android:textColor="@color/colorText2"
                 android:textSize="@dimen/font_size_16" />
 
             <TextView
-                android:id="@+id/tv_paid_order_amount"
+                android:id="@+id/tv_discount_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -98,7 +98,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_paid_coupon"
+            android:id="@+id/layout_paid_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_little_margin"
@@ -109,66 +109,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="right"
-                android:text="用券抵扣："
+                android:text="已付金额："
                 android:textColor="@color/colorText2"
                 android:textSize="@dimen/font_size_16" />
 
             <TextView
-                android:id="@+id/tv_coupon_amount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="right"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:textColor="@color/colorText2"
-                android:textSize="@dimen/font_size_16" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_paid_member"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_little_margin"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="right"
-                android:text="会员抵扣："
-                android:textColor="@color/colorText2"
-                android:textSize="@dimen/font_size_16" />
-
-            <TextView
-                android:id="@+id/tv_member_amount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="right"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:textColor="@color/colorText2"
-                android:textSize="@dimen/font_size_16" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_paid_reduction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_little_margin"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="right"
-                android:text="直接减免："
-                android:textColor="@color/colorText2"
-                android:textSize="@dimen/font_size_16" />
-
-            <TextView
-                android:id="@+id/tv_reduction_amount"
+                android:id="@+id/tv_paid_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -185,14 +131,14 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_need_desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="right"
-                android:text="实收金额："
+                android:text="待付金额："
                 android:textColor="@color/colorText2"
-                android:textSize="@dimen/font_size_16"
-                android:textStyle="bold" />
+                android:textSize="@dimen/font_size_16" />
 
             <TextView
                 android:id="@+id/tv_need_amount"
@@ -201,7 +147,7 @@
                 android:layout_weight="2"
                 android:gravity="right"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:textColor="@color/colorText2"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/font_size_16"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -212,6 +158,7 @@
             android:background="@color/colorAccent" />
 
         <LinearLayout
+            android:id="@+id/layout_order_operate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -226,9 +173,10 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/activity_normal_margin"
                 android:paddingTop="@dimen/activity_normal_margin"
-                android:text="取消"
+                android:text="返回"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/small_font_size" />
+                android:textSize="@dimen/small_font_size"
+                android:visibility="visible" />
 
             <View
                 android:layout_width="1px"
@@ -236,7 +184,7 @@
                 android:background="@color/colorAccent" />
 
             <TextView
-                android:id="@+id/tv_order_positive"
+                android:id="@+id/tv_order_print"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -245,9 +193,39 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/activity_normal_margin"
                 android:paddingTop="@dimen/activity_normal_margin"
-                android:text="确认"
+                android:text="打印小票"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/small_font_size" />
+                android:textSize="@dimen/small_font_size"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_order_to_pay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="@dimen/activity_normal_margin"
+                android:paddingTop="@dimen/activity_normal_margin"
+                android:text="收款"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/small_font_size"
+                android:visibility="gone" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_order_positive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingBottom="@dimen/activity_normal_margin"
+            android:paddingTop="@dimen/activity_normal_margin"
+            android:text="确认"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/small_font_size"
+            android:visibility="gone" />
     </LinearLayout>
 </android.support.percent.PercentRelativeLayout>

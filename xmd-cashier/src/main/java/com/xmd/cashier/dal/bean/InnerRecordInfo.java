@@ -16,6 +16,7 @@ public class InnerRecordInfo implements Serializable {
     public String description;    //买单描述    string
     public int originalAmount;    //买单原价    number
     public int payAmount;    //实付金额 number
+    public int paidAmount;  //已付金额
     public String payChannel;    //支付方式 string
     public String payChannelName;
     public String payId;    //支付流水号 string
@@ -29,4 +30,6 @@ public class InnerRecordInfo implements Serializable {
     public List<InnerOrderInfo> details;
 
     public List<OrderDiscountInfo> orderDiscountList;
+
+    public List<PayRecordInfo> payRecordList;
 }

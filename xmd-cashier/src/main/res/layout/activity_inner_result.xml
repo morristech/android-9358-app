@@ -21,7 +21,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -31,7 +32,6 @@
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/activity_horizontal_margin"
-
             android:gravity="center"
             android:orientation="vertical">
 
@@ -53,37 +53,59 @@
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_order_status_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/font_size_16" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_normal_margin">
+
+        <Button
+            android:id="@+id/btn_view_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="@drawable/state_btn_negative"
+            android:text="查看订单"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/font_size_16"
+            android:visibility="gone"/>
 
-            <Button
-                android:id="@+id/btn_view_order"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_weight="1"
-                android:background="@drawable/state_btn_gray"
-                android:text="查看订单"
-                android:textColor="@color/colorText2"
-                android:textSize="@dimen/font_size_16" />
+        <Button
+            android:id="@+id/btn_view_other"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/state_btn_normal"
+            android:text="完成"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16"
+            android:visibility="gone"/>
 
-            <Button
-                android:id="@+id/btn_view_other"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_weight="1"
-                android:background="@drawable/state_btn_negative"
-                android:text="关闭|打印小票"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/font_size_16" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_view_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/state_btn_normal"
+            android:text="继续收款"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16"
+            android:visibility="gone"/>
     </LinearLayout>
 </LinearLayout>

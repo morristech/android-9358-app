@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
@@ -65,11 +66,19 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             @Override
             public void onSuccess(InnerRecordInfo o) {
                 mRecordInfo = o;
+                int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
+                if (leftAmount <= 0) {
+                    printNormal();
+                    mView.showDone("全部应付金额已支付成功");
+                } else {
+                    mView.showContinue("剩余待支付金额￥" + Utils.moneyToStringEx(leftAmount));
+                }
             }
 
             @Override
             public void onError(String error) {
                 mRecordInfo = null;
+                mView.showToast(error);
             }
         });
     }
@@ -98,7 +107,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
                 public void onSuccess(InnerRecordInfo o) {
                     mView.hideLoading();
                     mRecordInfo = o;
-                    UiNavigation.gotoInnerDetailActivity(mContext, mRecordInfo);
+                    UiNavigation.gotoInnerDetailActivity(mContext, AppConstants.INNER_DETAIL_SOURCE_OTHER, mRecordInfo);
                 }
 
                 @Override
@@ -109,7 +118,25 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
                 }
             });
         } else {
-            UiNavigation.gotoInnerDetailActivity(mContext, mRecordInfo);
+            UiNavigation.gotoInnerDetailActivity(mContext, AppConstants.INNER_DETAIL_SOURCE_OTHER, mRecordInfo);
+        }
+    }
+
+    @Override
+    public void onDone() {
+        newInnerTrade();
+    }
+
+    @Override
+    public void onContinue() {
+        InnerManager.getInstance().clearInnerOrderInfos();
+        InnerManager.getInstance().initTradeByRecord(mRecordInfo);
+        mView.finishSelf();
+        EventBus.getDefault().post(new InnerFinishEvent());
+        if (mRecordInfo.paidAmount > 0) {
+            UiNavigation.gotoInnerModifyActivity(mContext);
+        } else {
+            UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_CONTINUE, mRecordInfo);
         }
     }
 

@@ -130,6 +130,7 @@ public class RequestConstant {
     public static final String URL_GET_THIRD_PAY_STATUS = URL_GET_XMD_ONLINE_ORDER_DETAIL;      //微信支付宝 查询支付详情
     public static final String URL_GET_INNER_BATCH_HOLE = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/detail";  //根据订单PayOrderId查询详情
     public static final String URL_GET_INNER_UNPAID_COUNT = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/unpaid/count";      //查询当前内网订单未支付的数量
+    public static final String URL_CHECK_INNER_SUB_PAY_STATUS = SPA_SERVICE_BASE + "/v2/manager/native/order/pay_record/status/get";
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -244,6 +245,7 @@ public class RequestConstant {
     public static final String KEY_PAY_ORDER_ID = "payOrderId";
     public static final String KEY_PUSH_DATA = "data";
     public static final String KEY_REDUCTION_AMOUNT = "reductionAmount";
+    public static final String KEY_PAY_NO = "payNo";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

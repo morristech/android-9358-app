@@ -15,7 +15,6 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerDetailContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
-import com.xmd.cashier.dal.bean.OrderDiscountInfo;
 import com.xmd.cashier.presenter.InnerDetailPresenter;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
 
@@ -27,30 +26,32 @@ import java.util.List;
 
 public class InnerDetailActivity extends BaseActivity implements InnerDetailContract.View {
     private RecyclerView mOrderDetailList;
+    private LinearLayout mOrderOperateLayout;
     private TextView mOrderDetailNegative;
     private TextView mOrderDetailPositive;
+    private TextView mOrderDetailPrint;
+    private TextView mOrderDetailPay;
 
     private InnerOrderAdapter mOrderAdapter;
 
     private InnerDetailContract.Presenter mPresenter;
 
     private InnerRecordInfo mRecordInfo;
+    private String mSource;
 
     private TextView mOriginAmount;
-    private LinearLayout mPaidOrderLayout;
-    private TextView mPaidOrderAmount;
-    private LinearLayout mPaidCouponLayout;
-    private TextView mCouponAmount;
-    private LinearLayout mPaidMemberLayout;
-    private TextView mMemberAmount;
-    private LinearLayout mPaidReductionLayout;
-    private TextView mReductionAmount;
+    private LinearLayout mDiscountAmountLayout;
+    private TextView mDiscountAmount;
+    private LinearLayout mPaidAmountLayout;
+    private TextView mPaidAmount;
     private TextView mNeedAmount;
+    private TextView mNeedDesc;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inner_detail);
+        mSource = getIntent().getStringExtra(AppConstants.EXTRA_INNER_DETAIL_SOURCE);
         mRecordInfo = (InnerRecordInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL);
         mPresenter = new InnerDetailPresenter(this, this);
         initView();
@@ -59,19 +60,19 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
 
     private void initView() {
         mOrderDetailList = (RecyclerView) findViewById(R.id.rv_order_detail);
+        mOrderOperateLayout = (LinearLayout) findViewById(R.id.layout_order_operate);
         mOrderDetailNegative = (TextView) findViewById(R.id.tv_order_negative);
         mOrderDetailPositive = (TextView) findViewById(R.id.tv_order_positive);
+        mOrderDetailPrint = (TextView) findViewById(R.id.tv_order_print);
+        mOrderDetailPay = (TextView) findViewById(R.id.tv_order_to_pay);
 
         mOriginAmount = (TextView) findViewById(R.id.tv_origin_amount);
-        mPaidOrderLayout = (LinearLayout) findViewById(R.id.layout_paid_order);
-        mPaidOrderAmount = (TextView) findViewById(R.id.tv_paid_order_amount);
-        mPaidCouponLayout = (LinearLayout) findViewById(R.id.layout_paid_coupon);
-        mCouponAmount = (TextView) findViewById(R.id.tv_coupon_amount);
-        mPaidMemberLayout = (LinearLayout) findViewById(R.id.layout_paid_member);
-        mMemberAmount = (TextView) findViewById(R.id.tv_member_amount);
-        mPaidReductionLayout = (LinearLayout) findViewById(R.id.layout_paid_reduction);
-        mReductionAmount = (TextView) findViewById(R.id.tv_reduction_amount);
+        mDiscountAmountLayout = (LinearLayout) findViewById(R.id.layout_discount_amount);
+        mDiscountAmount = (TextView) findViewById(R.id.tv_discount_amount);
+        mPaidAmountLayout = (LinearLayout) findViewById(R.id.layout_paid_amount);
+        mPaidAmount = (TextView) findViewById(R.id.tv_paid_amount);
         mNeedAmount = (TextView) findViewById(R.id.tv_need_amount);
+        mNeedDesc = (TextView) findViewById(R.id.tv_need_desc);
 
         mOrderDetailNegative.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +85,20 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
             @Override
             public void onClick(View v) {
                 mPresenter.onDetailPositive();
+            }
+        });
+
+        mOrderDetailPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onDetailPay();
+            }
+        });
+
+        mOrderDetailPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onDetailPrint();
             }
         });
 
@@ -114,60 +129,70 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
     }
 
     @Override
+    public String returnSource() {
+        return mSource;
+    }
+
+    @Override
     public void showRecordDetail(List<InnerOrderInfo> list) {
         mOrderAdapter.setData(list);
     }
 
     @Override
     public void showAmount(InnerRecordInfo recordInfo) {
-        int paidOrderAmount = 0;
-        int paidCouponAmount = 0;
-        int paidMemberAmount = 0;
-        int paidReductionAmount = 0;
-        for (OrderDiscountInfo discountInfo : recordInfo.orderDiscountList) {
-            switch (discountInfo.type) {
-                case AppConstants.PAY_DISCOUNT_COUPON:
-                    paidCouponAmount += discountInfo.amount;
-                    break;
-                case AppConstants.PAY_DISCOUNT_MEMBER:
-                    paidMemberAmount += discountInfo.amount;
-                    break;
-                case AppConstants.PAY_DISCOUNT_ORDER:
-                    paidOrderAmount += discountInfo.amount;
-                    break;
-                case AppConstants.PAY_DISCOUNT_REDUCTION:
-                    paidReductionAmount += discountInfo.amount;
-                    break;
-                default:
-                    break;
-            }
+        // 订单金额
+        mOriginAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.originalAmount));
+        // 优惠金额
+        int discountAmount = recordInfo.originalAmount - recordInfo.payAmount;
+        if (discountAmount > 0) {
+            mDiscountAmountLayout.setVisibility(View.VISIBLE);
+            mDiscountAmount.setText("￥" + Utils.moneyToStringEx(discountAmount));
+        } else {
+            mDiscountAmountLayout.setVisibility(View.GONE);
         }
 
-        mOriginAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.originalAmount));
-        if (paidOrderAmount > 0) {
-            mPaidOrderLayout.setVisibility(View.VISIBLE);
-            mPaidOrderAmount.setText("￥" + Utils.moneyToStringEx(paidOrderAmount));
-        } else {
-            mPaidOrderLayout.setVisibility(View.GONE);
+        if (AppConstants.INNER_BATCH_STATUS_UNPAID.equals(recordInfo.status)) { // 未支付
+            // 已付金额
+            if (recordInfo.paidAmount > 0) {
+                mPaidAmountLayout.setVisibility(View.VISIBLE);
+                mPaidAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.paidAmount));
+            } else {
+                mPaidAmountLayout.setVisibility(View.GONE);
+            }
+            // 待付金额
+            mNeedDesc.setText("待付金额：");
+            mNeedAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.payAmount - recordInfo.paidAmount));
+        } else {    //已支付
+            mPaidAmountLayout.setVisibility(View.GONE);
+            mNeedDesc.setText("实收金额：");
+            mNeedAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.payAmount));
         }
-        if (paidCouponAmount > 0) {
-            mPaidCouponLayout.setVisibility(View.VISIBLE);
-            mCouponAmount.setText("￥" + Utils.moneyToStringEx(paidCouponAmount));
-        } else {
-            mPaidCouponLayout.setVisibility(View.GONE);
-        }
-        if (paidMemberAmount > 0) {
-            mPaidMemberLayout.setVisibility(View.VISIBLE);
-            mMemberAmount.setText("￥" + Utils.moneyToStringEx(paidMemberAmount));
-        } else {
-            mPaidMemberLayout.setVisibility(View.GONE);
-        }
-        if (paidReductionAmount > 0) {
-            mPaidReductionLayout.setVisibility(View.VISIBLE);
-            mReductionAmount.setText("￥" + Utils.moneyToStringEx(paidReductionAmount));
-        } else {
-            mPaidReductionLayout.setVisibility(View.GONE);
-        }
-        mNeedAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.payAmount));
+    }
+
+    @Override
+    public void showAmount(int amount) {
+        mDiscountAmountLayout.setVisibility(View.GONE);
+        mPaidAmountLayout.setVisibility(View.GONE);
+        mOriginAmount.setText("￥" + Utils.moneyToStringEx(amount));
+        mNeedDesc.setText("待付金额：");
+        mNeedAmount.setText("￥" + Utils.moneyToStringEx(amount));
+    }
+
+    @Override
+    public void showOperate() {
+        mOrderDetailPositive.setVisibility(View.GONE);
+        mOrderOperateLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showPositive() {
+        mOrderDetailPositive.setVisibility(View.VISIBLE);
+        mOrderOperateLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setOperate(boolean pay) {
+        mOrderDetailPay.setVisibility(pay ? View.VISIBLE : View.GONE);
+        mOrderDetailPrint.setVisibility(pay ? View.GONE : View.VISIBLE);
     }
 }

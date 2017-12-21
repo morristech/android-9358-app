@@ -18,12 +18,15 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerMethodContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.event.InnerGenerateOrderEvent;
 import com.xmd.cashier.dal.event.InnerUpdateOrderEvent;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.presenter.InnerMethodPresenter;
 import com.xmd.cashier.widget.StepView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -223,5 +226,15 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     @Override
     public void updateAll() {
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showDiscountEnter(boolean tag) {
+        mVerifySelectLayout.setVisibility(tag ? View.VISIBLE : View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InnerGenerateOrderEvent event) {
+        finishSelf();
     }
 }

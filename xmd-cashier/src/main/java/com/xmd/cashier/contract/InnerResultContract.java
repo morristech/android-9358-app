@@ -11,6 +11,10 @@ public interface InnerResultContract {
     interface Presenter extends BasePresenter {
         void onDetail();
 
+        void onDone();
+
+        void onContinue();
+
         void onPrint();
 
         void onClose();
@@ -22,6 +26,10 @@ public interface InnerResultContract {
         void showSuccess();
 
         void showCancel();
+
+        void showDone(String desc);
+
+        void showContinue(String desc);
 
         void showEnterAnim();
 

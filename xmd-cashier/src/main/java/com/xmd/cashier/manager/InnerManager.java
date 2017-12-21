@@ -19,7 +19,9 @@ import com.xmd.cashier.dal.bean.InnerOrderItemInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.OrderDiscountCheckInfo;
 import com.xmd.cashier.dal.bean.OrderDiscountInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.bean.SwitchInfo;
+import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerBatchHoleResult;
@@ -63,10 +65,81 @@ public class InnerManager {
         return mInstance;
     }
 
+    public void initTradeByRecord(InnerRecordInfo recordInfo) {
+        TradeManager.getInstance().newTrade();
+        Trade trade = TradeManager.getInstance().getCurrentTrade();
+        trade.innerRecordInfo = recordInfo;
+        trade.batchNo = recordInfo.batchNo;
+        trade.payOrderId = recordInfo.payId;
+        trade.setAlreadyDiscountMoney(getVerifiedAmount(recordInfo));   // 已核销
+        trade.setAlreadyCutMoney(recordInfo.originalAmount - recordInfo.payAmount); // 所有已减免
+        trade.setAlreadyPayMoney(recordInfo.paidAmount);    // 已付
+        trade.setWillReductionMoney(getReductionAmount(recordInfo));    // 直接减免
+        formatVerifiedList(recordInfo.orderDiscountList);
+        trade.setVerifiedList(recordInfo.orderDiscountList);
+        trade.setOriginMoney(recordInfo.originalAmount);    // 订单金额
+        trade.setWillPayMoney(recordInfo.payAmount);        // 实付金额
+    }
+
+    public void initTradeBySelect() {
+        TradeManager.getInstance().newTrade();
+        Trade trade = TradeManager.getInstance().getCurrentTrade();
+        trade.setOriginMoney(getOrderAmount());
+    }
+
+    private void formatVerifiedList(List<OrderDiscountInfo> list) {
+        Iterator<OrderDiscountInfo> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            OrderDiscountInfo orderDiscountInfo = iterator.next();
+            if (AppConstants.PAY_DISCOUNT_MEMBER.equals(orderDiscountInfo.type) || AppConstants.PAY_DISCOUNT_REDUCTION.equals(orderDiscountInfo.type)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private int getVerifiedAmount(InnerRecordInfo innerRecordInfo) {
+        int amount = 0;
+        if (innerRecordInfo.orderDiscountList != null && !innerRecordInfo.orderDiscountList.isEmpty()) {
+            for (OrderDiscountInfo orderDiscountInfo : innerRecordInfo.orderDiscountList) {
+                switch (orderDiscountInfo.type) {
+                    case AppConstants.PAY_DISCOUNT_COUPON:
+                    case AppConstants.PAY_DISCOUNT_ORDER:
+                        amount += orderDiscountInfo.amount;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return amount;
+    }
+
+    private int getReductionAmount(InnerRecordInfo innerRecordInfo) {
+        int amount = 0;
+        if (innerRecordInfo.orderDiscountList != null && !innerRecordInfo.orderDiscountList.isEmpty()) {
+            for (OrderDiscountInfo orderDiscountInfo : innerRecordInfo.orderDiscountList) {
+                if (AppConstants.PAY_DISCOUNT_REDUCTION.equals(orderDiscountInfo.type)) {
+                    amount += orderDiscountInfo.amount;
+                }
+            }
+        }
+        return amount;
+    }
+
     private List<InnerOrderInfo> innerOrderInfos = new ArrayList<>();
 
     public List<InnerOrderInfo> getInnerOrderInfos() {
         return innerOrderInfos;
+    }
+
+    public List<InnerOrderInfo> getSelectedInnerOrderInfos() {
+        List<InnerOrderInfo> selected = new ArrayList<>();
+        for (InnerOrderInfo innerOrderInfo : innerOrderInfos) {
+            if (innerOrderInfo.selected) {
+                selected.add(innerOrderInfo);
+            }
+        }
+        return selected;
     }
 
     public void clearInnerOrderInfos() {
@@ -247,7 +320,6 @@ public class InnerManager {
         return resultInnerSwitch;
     }
 
-
     //获取会所支付方式
     private List<InnerChannelInfo> mChannels = new ArrayList<>();
     private Call<InnerChannelListResult> callInnerChannel;
@@ -322,7 +394,6 @@ public class InnerManager {
         });
         return resultInnerChannel;
     }
-
 
     // 获取详情
     public Subscription getInnerHoleBatchSubscription(String payOrderId, final Callback<InnerRecordInfo> callBack) {
@@ -399,6 +470,9 @@ public class InnerManager {
         mPos.printText("|--直接减免：", "-￥" + Utils.moneyToStringEx(paidReductionAmount));
         mPos.printDivide();
         mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.payAmount) + "元", true);
+        for (PayRecordInfo payRecordInfo : info.payRecordList) {
+            mPos.printText("        |--" + payRecordInfo.payChannelName + "：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+        }
         mPos.printDivide();
 
         if (keep) {
@@ -443,13 +517,18 @@ public class InnerManager {
         }
 
         mPos.printText("交易号：", info.payId);
-        if (!TextUtils.isEmpty(info.transactionId)) {
-            mPos.printText("流水号：", info.transactionId);
-        }
-        mPos.printText("交易时间：", info.createTime);
-        mPos.printText("支付方式：", info.payChannelName);
-        mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")" : info.operatorName));
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
+
+        for (PayRecordInfo payRecordInfo : info.payRecordList) {
+            mPos.printDivide();
+            if (!TextUtils.isEmpty(payRecordInfo.tradeNo)) {
+                mPos.printText("流水号：", payRecordInfo.tradeNo);
+            }
+            mPos.printText("支付方式：", payRecordInfo.payChannelName);
+            mPos.printText("支付金额：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+            mPos.printText("支付时间：", payRecordInfo.payTime);
+            mPos.printText("收款人员：", payRecordInfo.operatorName);
+        }
 
         if (!keep) {
             byte[] qrCodeBytes = getInnerCodeBytes(info);
@@ -503,7 +582,6 @@ public class InnerManager {
         if (innnerQrcodeBytes == null) {
             innnerQrcodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         }
-
         return innnerQrcodeBytes;
     }
 }

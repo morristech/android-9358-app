@@ -16,13 +16,27 @@ public interface InnerDetailContract {
         void onDetailNegative();
 
         void onDetailPositive();
+
+        void onDetailPrint();
+
+        void onDetailPay();
     }
 
     interface View extends BaseView<Presenter> {
         InnerRecordInfo returnRecordInfo();
 
+        String returnSource();
+
         void showRecordDetail(List<InnerOrderInfo> list);
 
         void showAmount(InnerRecordInfo recordInfo);
+
+        void showAmount(int amount);
+
+        void showOperate();
+
+        void showPositive();
+
+        void setOperate(boolean flag);
     }
 }

@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
 import com.xmd.cashier.presenter.InnerResultPresenter;
 import com.xmd.cashier.widget.StepView;
@@ -26,6 +28,8 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     private TextView mStatusText;
     private Button mDetailBtn;
     private Button mOtherBtn;
+    private Button mContinueBtn;
+    private TextView mStatusDesc;
 
     private StepView mStepView;
 
@@ -46,10 +50,26 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mStatusText = (TextView) findViewById(R.id.tv_order_status);
         mDetailBtn = (Button) findViewById(R.id.btn_view_order);
         mOtherBtn = (Button) findViewById(R.id.btn_view_other);
+        mContinueBtn = (Button) findViewById(R.id.btn_view_continue);
+        mStatusDesc = (TextView) findViewById(R.id.tv_order_status_desc);
         mDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.onDetail();
+            }
+        });
+
+        mOtherBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onDone();
+            }
+        });
+
+        mContinueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onContinue();
             }
         });
     }
@@ -77,13 +97,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_green);
         mStatusImg.setVisibility(View.VISIBLE);
         mStatusText.setText("支付成功");
-        mOtherBtn.setText("打印小票");
-        mOtherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onPrint();
-            }
-        });
+        mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorWhite));
     }
 
     @Override
@@ -91,13 +105,23 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_gray);
         mStatusImg.setVisibility(View.GONE);
         mStatusText.setText("支付失败");
-        mOtherBtn.setText("关闭");
-        mOtherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onClose();
-            }
-        });
+        mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
+    }
+
+    @Override
+    public void showDone(String desc) {
+        mStatusDesc.setText(desc);
+        mContinueBtn.setVisibility(View.GONE);
+        mDetailBtn.setVisibility(View.VISIBLE);
+        mOtherBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showContinue(String desc) {
+        mStatusDesc.setText(Utils.changeColor(desc, ResourceUtils.getColor(R.color.colorAccent), 7, desc.length()));
+        mContinueBtn.setVisibility(View.VISIBLE);
+        mDetailBtn.setVisibility(View.GONE);
+        mOtherBtn.setVisibility(View.GONE);
     }
 
     @Override

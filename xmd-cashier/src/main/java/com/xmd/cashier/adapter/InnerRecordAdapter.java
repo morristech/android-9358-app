@@ -134,35 +134,42 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     itemViewHolder.mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorText2));
                     itemViewHolder.mPayBtn.setVisibility(View.GONE);
                     itemViewHolder.mPrintLayout.setVisibility(View.VISIBLE);
+                    itemViewHolder.mPaidAmountText.setVisibility(View.GONE);
                     break;
                 case AppConstants.INNER_BATCH_STATUS_PASS:
                     itemViewHolder.mStatusText.setText("已确认");
                     itemViewHolder.mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorText2));
                     itemViewHolder.mPayBtn.setVisibility(View.GONE);
                     itemViewHolder.mPrintLayout.setVisibility(View.VISIBLE);
+                    itemViewHolder.mPaidAmountText.setVisibility(View.GONE);
                     break;
                 case AppConstants.INNER_BATCH_STATUS_UNPASS:
                     itemViewHolder.mStatusText.setText("已支付未确认");
                     itemViewHolder.mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorText2));
                     itemViewHolder.mPayBtn.setVisibility(View.GONE);
                     itemViewHolder.mPrintLayout.setVisibility(View.GONE);
+                    itemViewHolder.mPaidAmountText.setVisibility(View.GONE);
                     break;
                 case AppConstants.INNER_BATCH_STATUS_UNPAID:
                     itemViewHolder.mStatusText.setText("待付款");
                     itemViewHolder.mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorBlueDark));
                     itemViewHolder.mPayBtn.setVisibility(View.VISIBLE);
                     itemViewHolder.mPrintLayout.setVisibility(View.GONE);
+                    itemViewHolder.mPaidAmountText.setVisibility(View.VISIBLE);
+                    String temp = "(已付￥" + Utils.moneyToStringEx(info.paidAmount) + ")";
+                    itemViewHolder.mPaidAmountText.setText(Utils.changeColor(temp, ResourceUtils.getColor(R.color.colorAccent), 3, temp.length() - 1));
                     break;
                 default:
                     itemViewHolder.mStatusText.setText("状态未知");
                     itemViewHolder.mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorText2));
                     itemViewHolder.mPayBtn.setVisibility(View.GONE);
                     itemViewHolder.mPrintLayout.setVisibility(View.GONE);
+                    itemViewHolder.mPaidAmountText.setVisibility(View.GONE);
                     break;
             }
 
             if (info.details != null && !info.details.isEmpty()) {
-                InnerRecordDetailAdapter detailAdapter = new InnerRecordDetailAdapter(mContext,false);
+                InnerRecordDetailAdapter detailAdapter = new InnerRecordDetailAdapter(mContext, false);
                 detailAdapter.setData(info.details);
                 itemViewHolder.mOrderList.setLayoutManager(new LinearLayoutManager(mContext));
                 itemViewHolder.mOrderList.setAdapter(detailAdapter);
@@ -230,6 +237,7 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public TextView mStatusText;
         public RecyclerView mOrderList;
         public TextView mAmountText;
+        public TextView mPaidAmountText;
         public Button mDetailBtn;
         public LinearLayout mPrintLayout;
         public Button mPrintClientBtn;
@@ -242,6 +250,7 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mStatusText = (TextView) itemView.findViewById(R.id.tv_status);
             mOrderList = (RecyclerView) itemView.findViewById(R.id.rv_inner_record_list);
             mAmountText = (TextView) itemView.findViewById(R.id.tv_amount);
+            mPaidAmountText = (TextView) itemView.findViewById(R.id.tv_paid_amount);
             mDetailBtn = (Button) itemView.findViewById(R.id.btn_detail);
             mPrintLayout = (LinearLayout) itemView.findViewById(R.id.layout_print);
             mPrintClientBtn = (Button) itemView.findViewById(R.id.btn_print_client);

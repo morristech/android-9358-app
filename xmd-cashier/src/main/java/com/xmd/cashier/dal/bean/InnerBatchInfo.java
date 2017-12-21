@@ -7,6 +7,7 @@ package com.xmd.cashier.dal.bean;
 public class InnerBatchInfo {
     public String batchNo;    //批量结账单号
     public int discountAmount;    //本次新增的优惠抵扣	单位为分
+    public String payNo;             //部分支付订单No
     public int oriAmount;    //订单原价	单位为分
     public int payAmount;    //实际应付价	单位为分
     public String payOrderId;    //支付订单ID	买单ID

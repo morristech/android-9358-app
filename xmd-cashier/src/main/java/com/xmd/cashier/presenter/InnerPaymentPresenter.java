@@ -16,7 +16,7 @@ import com.xmd.cashier.dal.bean.GiftActivityInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
-import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
+import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.TradeManager;
@@ -43,7 +43,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
 
     private Subscription mDoPayCallBackSubscription;
 
-    private Call<OnlinePayDetailResult> getPaymentInfoCall;
+    private Call<StringResult> getPaymentStatus;
     private RetryPool.RetryRunnable mRetryPaymentInfo;
     private boolean resultPaymentInfo = false;
 
@@ -51,15 +51,15 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
         mRetryPaymentInfo = new RetryPool.RetryRunnable(5000, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
-                return getPaymentInfo();
+                return checkPaymentStatus();
             }
         });
         RetryPool.getInstance().postWork(mRetryPaymentInfo);
     }
 
     public void stopGetPaymentInfo() {
-        if (getPaymentInfoCall != null && !getPaymentInfoCall.isCanceled()) {
-            getPaymentInfoCall.cancel();
+        if (getPaymentStatus != null && !getPaymentStatus.isCanceled()) {
+            getPaymentStatus.cancel();
         }
         if (mRetryPaymentInfo != null) {
             RetryPool.getInstance().removeWork(mRetryPaymentInfo);
@@ -67,13 +67,13 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
         }
     }
 
-    private boolean getPaymentInfo() {
-        getPaymentInfoCall = XmdNetwork.getInstance().getService(SpaService.class)
-                .getThirdPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId);
-        XmdNetwork.getInstance().requestSync(getPaymentInfoCall, new NetworkSubscriber<OnlinePayDetailResult>() {
+    private boolean checkPaymentStatus() {
+        getPaymentStatus = XmdNetwork.getInstance().getService(SpaService.class)
+                .checkInnerSubPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId, mTradeManager.getCurrentTrade().subPayOrderId);
+        XmdNetwork.getInstance().requestSync(getPaymentStatus, new NetworkSubscriber<StringResult>() {
             @Override
-            public void onCallbackSuccess(OnlinePayDetailResult result) {
-                if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
+            public void onCallbackSuccess(StringResult result) {
+                if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
                     // 支付成功
                     resultPaymentInfo = true;
                     mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
@@ -83,6 +83,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
                     // 尚未支付
                     resultPaymentInfo = false;
                 }
+                resultPaymentInfo = true;
             }
 
             @Override
@@ -94,7 +95,6 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
         return resultPaymentInfo;
     }
 
-
     public InnerPaymentPresenter(Context context, InnerPaymentContract.View view) {
         mTradeManager = TradeManager.getInstance();
         mContext = context;
@@ -105,14 +105,14 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     @Override
     public void onCreate() {
         mTradeManager = TradeManager.getInstance();
-        mView.setOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney()));
-        mView.setDiscount(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()
-                + mTradeManager.getCurrentTrade().getAlreadyDiscountMoney()
-                + mTradeManager.getCurrentTrade().getWillReductionMoney()));
+//        mView.setOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney()));
+//        mView.setDiscount(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()
+//                + mTradeManager.getCurrentTrade().getAlreadyDiscountMoney()
+//                + mTradeManager.getCurrentTrade().getWillReductionMoney()));
         switch (mTradeManager.getCurrentTrade().currentCashier) {
             case AppConstants.CASHIER_TYPE_QRCODE:
                 mView.initScanStub();
-                mView.setScanPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
+                mView.setScanPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
                 if (TextUtils.isEmpty(mTradeManager.getCurrentTrade().payUrl)) {
                     mView.showToast("获取二维码失败");
                 } else {
@@ -135,16 +135,16 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
             case AppConstants.CASHIER_TYPE_CASH:
             case AppConstants.CASHIER_TYPE_MARK:
                 mView.initMarkStub();
-                mView.setMarkPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
+                mView.setMarkPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
                 mView.setMarkName(mTradeManager.getCurrentTrade().currentCashierName);
                 mView.setMarkDesc(mTradeManager.getCurrentTrade().currentCashierMark);
                 break;
             case AppConstants.CASHIER_TYPE_MEMBER:
                 mView.initMemberStub();
                 mView.setMemberInfo(mTradeManager.getCurrentTrade().memberInfo);
-                mView.setMemberOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
-                int payMoney = (int) (mTradeManager.getCurrentTrade().getWillPayMoney() * (mTradeManager.getCurrentTrade().memberInfo.discount / 1000.0f)); //计算折扣
-                int discountMoney = (int) (mTradeManager.getCurrentTrade().getWillPayMoney() * (1000 - mTradeManager.getCurrentTrade().memberInfo.discount) / 1000.0f);
+                mView.setMemberOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
+                int payMoney = (int) (mTradeManager.getCurrentTrade().getRealPayMoney() * (mTradeManager.getCurrentTrade().memberInfo.discount / 1000.0f)); //计算折扣
+                int discountMoney = (int) (mTradeManager.getCurrentTrade().getRealPayMoney() * (1000 - mTradeManager.getCurrentTrade().memberInfo.discount) / 1000.0f);
                 mView.setMemberDiscount("-" + Utils.moneyToStringEx(discountMoney));
                 mView.setMemberPaid(Utils.moneyToStringEx(payMoney));
                 mView.setConfirmEnable(mTradeManager.getCurrentTrade().memberInfo.amount >= payMoney);
@@ -237,7 +237,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
             mDoPayCallBackSubscription.unsubscribe();
         }
         Trade trade = mTradeManager.getCurrentTrade();
-        mDoPayCallBackSubscription = mTradeManager.callbackInnerBatch(trade.payOrderId, trade.currentCashierType, trade.memberId, null, new Callback<BaseBean>() {
+        mDoPayCallBackSubscription = mTradeManager.callbackInnerBatch(trade.payOrderId, trade.subPayOrderId, String.valueOf(trade.getRealPayMoney()), trade.currentCashierType, trade.memberId, null, new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
                 mView.hideLoading();

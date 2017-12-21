@@ -21,6 +21,7 @@ import com.xmd.cashier.activity.GiftActActivity;
 import com.xmd.cashier.activity.InnerDetailActivity;
 import com.xmd.cashier.activity.InnerDiscountActivity;
 import com.xmd.cashier.activity.InnerMethodActivity;
+import com.xmd.cashier.activity.InnerModifyActivity;
 import com.xmd.cashier.activity.InnerPaymentActivity;
 import com.xmd.cashier.activity.InnerRecordActivity;
 import com.xmd.cashier.activity.InnerResultActivity;
@@ -365,8 +366,9 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoInnerDetailActivity(Context context, InnerRecordInfo record) {
+    public static void gotoInnerDetailActivity(Context context, String source, InnerRecordInfo record) {
         Intent intent = new Intent(context, InnerDetailActivity.class);
+        intent.putExtra(AppConstants.EXTRA_INNER_DETAIL_SOURCE, source);
         intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, record);
         context.startActivity(intent);
     }
@@ -378,6 +380,11 @@ public class UiNavigation {
 
     public static void gotoInnerDiscountActivity(Context context) {
         Intent intent = new Intent(context, InnerDiscountActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerModifyActivity(Context context) {
+        Intent intent = new Intent(context, InnerModifyActivity.class);
         context.startActivity(intent);
     }
 }

@@ -27,12 +27,13 @@ public class Trade {
     public int tradeStatus; //订单状态
     public String tradeTime;    //交易时间
 
-    private int originMoney;    //原始消费金额  |内网
     private int discountType;   //0:无; 1:用户手动输入; 2:核销;
     private int userDiscountMoney;  //用户手动输入的抵扣金额
     private int couponDiscountMoney;    //核销抵扣金额=各种券+预付费订单+朋友请客
-    private int willDiscountMoney;  //预计优惠金额    |内网
-    private int willPayMoney;   //应该支付的金额
+
+    private int originMoney;    //原始消费金额        |内网
+    private int willDiscountMoney;  //本次预计优惠金额    |内网
+    private int willPayMoney;   //当前应该支付的金额      |内网
 
     /**
      * 体验券|点钟券|折扣券|现金券|付费预约|请客
@@ -46,7 +47,8 @@ public class Trade {
     /**
      * 会员支付
      **/
-    public String memberId;
+    public String memberId; //会员ID      |内网
+
     public String memberPayMethod;  // 支付方式：接口 或者 二维码memberToken
     public MemberInfo memberInfo;   // 会员支付时的会员信息
     public String memberToken;  //会员二维码token
@@ -72,12 +74,41 @@ public class Trade {
     /**
      * 内网
      */
+    public InnerRecordInfo innerRecordInfo;
     public String batchNo;      //批次号
     public String payOrderId;   //订单编号
+    public String subPayOrderId;    //订单部分支付ID
     public String payUrl;
     private List<OrderDiscountInfo> verifiedList;
-    private int willReductionMoney;
-    private int alreadyDiscountMoney;
+    private int willReductionMoney;     // 直接减免的金额
+    private int alreadyDiscountMoney;   // 已经核销的金额
+    private int alreadyCutMoney;        // 已经优惠减免的金额
+    private int alreadyPayMoney;        // 已经支付的金额
+    private int realPayMoney;           // 部分支付的金额
+
+    public int getAlreadyCutMoney() {
+        return alreadyCutMoney;
+    }
+
+    public void setAlreadyCutMoney(int money) {
+        alreadyCutMoney = money;
+    }
+
+    public int getRealPayMoney() {
+        return realPayMoney;
+    }
+
+    public void setRealPayMoney(int money) {
+        realPayMoney = money;
+    }
+
+    public void setAlreadyPayMoney(int money) {
+        alreadyPayMoney = money;
+    }
+
+    public int getAlreadyPayMoney() {
+        return alreadyPayMoney;
+    }
 
     public void setAlreadyDiscountMoney(int money) {
         alreadyDiscountMoney = money;

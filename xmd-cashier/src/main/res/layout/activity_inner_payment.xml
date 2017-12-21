@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -84,7 +85,8 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@drawable/bg_line_dot"
-        android:layerType="software" />
+        android:layerType="software"
+        android:visibility="gone" />
 
     <ViewStub
         android:id="@+id/stub_member_layout"

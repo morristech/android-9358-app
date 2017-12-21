@@ -131,7 +131,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_small_margin"
             android:background="@drawable/state_btn_normal"
-            android:text="去收银"
+            android:text="去收款"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/small_font_size" />
     </LinearLayout>

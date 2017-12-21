@@ -305,6 +305,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
             mView.showToast("请选择结账订单...");
             return;
         }
+        InnerManager.getInstance().initTradeBySelect();
         UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_NORMAL, null);
         mView.showEnterAnim();
     }

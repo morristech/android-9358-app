@@ -171,7 +171,7 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
             @Override
             public void onSuccess(InnerRecordInfo o) {
                 mView.hideLoading();
-                UiNavigation.gotoInnerDetailActivity(mContext, o);
+                UiNavigation.gotoInnerDetailActivity(mContext, AppConstants.INNER_DETAIL_SOURCE_RECORD, o);
             }
 
             @Override
@@ -192,7 +192,12 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
             @Override
             public void onSuccess(InnerRecordInfo o) {
                 mView.hideLoading();
-                UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_RECORD, o);
+                InnerManager.getInstance().initTradeByRecord(o);
+                if (o.paidAmount > 0) {
+                    UiNavigation.gotoInnerModifyActivity(mContext);
+                } else {
+                    UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_RECORD, o);
+                }
             }
 
             @Override
@@ -257,7 +262,6 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe();
-
             }
 
             @Override

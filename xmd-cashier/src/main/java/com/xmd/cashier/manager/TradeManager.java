@@ -1376,10 +1376,10 @@ public class TradeManager {
     }
 
     //*********************************************内网***********************************************
-    public Subscription generateInnerBatch(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, String reductionAmount, final Callback<InnerBatchResult> callback) {
+    public Subscription generateInnerBatch(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, String reductionAmount, String realAmount, final Callback<InnerBatchResult> callback) {
         Observable<InnerBatchResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .generateInnerBatchOrder(AccountManager.getInstance().getToken(),
-                        batchNo, memberId, orderIds, payChannel, verifyCodes, reductionAmount);
+                        batchNo, memberId, orderIds, payChannel, verifyCodes, reductionAmount, realAmount);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerBatchResult>() {
             @Override
             public void onCallbackSuccess(InnerBatchResult result) {
@@ -1393,10 +1393,10 @@ public class TradeManager {
         });
     }
 
-    public Subscription callbackInnerBatch(String payOrderId, String payChannel, String memberId, String tradeNo, final Callback<BaseBean> callback) {
+    public Subscription callbackInnerBatch(String payOrderId, String subPayOrderId, String amount, String payChannel, String memberId, String tradeNo, final Callback<BaseBean> callback) {
         Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .callbackInnerBatchOrder(AccountManager.getInstance().getToken(),
-                        memberId, payChannel, payOrderId, tradeNo);
+                        memberId, payChannel, payOrderId, subPayOrderId, tradeNo, amount);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {

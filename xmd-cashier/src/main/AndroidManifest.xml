@@ -225,6 +225,10 @@
             android:name=".activity.InnerDiscountActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.InnerModifyActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

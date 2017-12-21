@@ -72,6 +72,13 @@ public class InnerDiscountActivity extends BaseActivity implements InnerDiscount
         mPresenter.onCreate();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mReductionText.moveCursorToEnd();
+        mVerifyText.moveCursorToEnd();
+    }
+
     private void initView() {
         showToolbar(R.id.toolbar, "添加优惠");
 

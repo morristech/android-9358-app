@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.activity.InnerMethodActivity;
+import com.xmd.cashier.activity.InnerModifyActivity;
 import com.xmd.cashier.adapter.InnerRecordDetailAdapter;
 import com.xmd.cashier.adapter.OnlinePayNotifyAdapter;
 import com.xmd.cashier.adapter.OrderRecordNotifyAdapter;
@@ -44,6 +45,7 @@ import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayCouponResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
+import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.widget.CustomNotifyLayoutManager;
 import com.xmd.m.network.BaseBean;
@@ -649,11 +651,17 @@ public class CustomService extends Service {
             @Override
             public void onClick(View v) {
                 hide();
-                Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerMethodActivity.class);
-                intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, AppConstants.INNER_METHOD_SOURCE_PUSH);
-                intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, recordInfo);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                MainApplication.getInstance().getApplicationContext().startActivity(intent);
+                if (recordInfo.paidAmount > 0) {
+                    Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerModifyActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    MainApplication.getInstance().getApplicationContext().startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerMethodActivity.class);
+                    intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, AppConstants.INNER_METHOD_SOURCE_PUSH);
+                    intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, recordInfo);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    MainApplication.getInstance().getApplicationContext().startActivity(intent);
+                }
             }
         });
     }
