@@ -167,7 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/state_btn_normal"
-            android:text="支付"
+            android:text="下一步"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/font_size_16" />
     </RelativeLayout>

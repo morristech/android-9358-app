@@ -86,7 +86,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
                             dialog.dismiss();
                         }
                     });
-                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.setCanceledOnTouchOutside(true);
                     dialog.show();
                 }
                 return true;

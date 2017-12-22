@@ -420,21 +420,23 @@ public class InnerManager {
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
         mPos.printText("消费详情", Utils.moneyToStringEx(info.originalAmount), true);
-        for (InnerOrderInfo orderInfo : info.details) {
-            mPos.printText("[" + orderInfo.roomName + " " + orderInfo.roomTypeName + "]" + orderInfo.userIdentify + "手牌", Utils.moneyToStringEx(orderInfo.amount));
-            for (InnerOrderItemInfo orderItemInfo : orderInfo.itemList) {
-                mPos.printText("  " + orderItemInfo.itemName + " * " + orderItemInfo.itemCount, Utils.moneyToString(orderItemInfo.itemAmount) + "元" + "/" + orderItemInfo.itemUnit);
-                switch (orderItemInfo.itemType) {
-                    case AppConstants.INNER_ORDER_ITEM_TYPE_SPA:
-                        if (orderItemInfo.employeeList != null && !orderItemInfo.employeeList.isEmpty()) {
-                            for (InnerEmployeeInfo employeeInfo : orderItemInfo.employeeList) {
-                                mPos.printText("  |--[" + employeeInfo.employeeNo + "]   " + employeeInfo.bellName);
+        if (info.details != null && !info.details.isEmpty()) {
+            for (InnerOrderInfo orderInfo : info.details) {
+                mPos.printText("[" + orderInfo.roomName + " " + orderInfo.roomTypeName + "]" + orderInfo.userIdentify + "手牌", Utils.moneyToStringEx(orderInfo.amount));
+                for (InnerOrderItemInfo orderItemInfo : orderInfo.itemList) {
+                    mPos.printText("  " + orderItemInfo.itemName + " * " + orderItemInfo.itemCount, Utils.moneyToString(orderItemInfo.itemAmount) + "元" + "/" + orderItemInfo.itemUnit);
+                    switch (orderItemInfo.itemType) {
+                        case AppConstants.INNER_ORDER_ITEM_TYPE_SPA:
+                            if (orderItemInfo.employeeList != null && !orderItemInfo.employeeList.isEmpty()) {
+                                for (InnerEmployeeInfo employeeInfo : orderItemInfo.employeeList) {
+                                    mPos.printText("  |--[" + employeeInfo.employeeNo + "]   " + employeeInfo.bellName);
+                                }
                             }
-                        }
-                        break;
-                    case AppConstants.INNER_ORDER_ITEM_TYPE_GOODS:
-                    default:
-                        break;
+                            break;
+                        case AppConstants.INNER_ORDER_ITEM_TYPE_GOODS:
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -443,22 +445,24 @@ public class InnerManager {
         int paidCouponAmount = 0;
         int paidMemberAmount = 0;
         int paidReductionAmount = 0;
-        for (OrderDiscountInfo discountInfo : info.orderDiscountList) {
-            switch (discountInfo.type) {
-                case AppConstants.PAY_DISCOUNT_COUPON:
-                    paidCouponAmount += discountInfo.amount;
-                    break;
-                case AppConstants.PAY_DISCOUNT_MEMBER:
-                    paidMemberAmount += discountInfo.amount;
-                    break;
-                case AppConstants.PAY_DISCOUNT_ORDER:
-                    paidOrderAmount += discountInfo.amount;
-                    break;
-                case AppConstants.PAY_DISCOUNT_REDUCTION:
-                    paidReductionAmount += discountInfo.amount;
-                    break;
-                default:
-                    break;
+        if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
+            for (OrderDiscountInfo discountInfo : info.orderDiscountList) {
+                switch (discountInfo.type) {
+                    case AppConstants.PAY_DISCOUNT_COUPON:
+                        paidCouponAmount += discountInfo.amount;
+                        break;
+                    case AppConstants.PAY_DISCOUNT_MEMBER:
+                        paidMemberAmount += discountInfo.amount;
+                        break;
+                    case AppConstants.PAY_DISCOUNT_ORDER:
+                        paidOrderAmount += discountInfo.amount;
+                        break;
+                    case AppConstants.PAY_DISCOUNT_REDUCTION:
+                        paidReductionAmount += discountInfo.amount;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         mPos.printDivide();
@@ -470,43 +474,47 @@ public class InnerManager {
         mPos.printText("|--直接减免：", "-￥" + Utils.moneyToStringEx(paidReductionAmount));
         mPos.printDivide();
         mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.payAmount) + "元", true);
-        for (PayRecordInfo payRecordInfo : info.payRecordList) {
-            mPos.printText("        |--" + payRecordInfo.payChannelName + "：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+        if (info.payRecordList != null && !info.payRecordList.isEmpty()) {
+            for (PayRecordInfo payRecordInfo : info.payRecordList) {
+                mPos.printText("        |--" + payRecordInfo.payChannelName + "：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+            }
         }
         mPos.printDivide();
 
         if (keep) {
             mPos.printText("优惠详情", "-" + Utils.moneyToStringEx(paidOrderAmount + paidMemberAmount + paidCouponAmount + paidReductionAmount), true);
-            for (OrderDiscountInfo discountInfo : info.orderDiscountList) {
-                switch (discountInfo.type) {
-                    case AppConstants.PAY_DISCOUNT_COUPON:
-                    case AppConstants.PAY_DISCOUNT_MEMBER:
-                    case AppConstants.PAY_DISCOUNT_ORDER:
-                        OrderDiscountCheckInfo discountCheckInfo = discountInfo.checkInfo;
-                        mPos.printText("[" + discountCheckInfo.typeName + "]" + discountCheckInfo.title, "(-" + Utils.moneyToStringEx(discountCheckInfo.amount) + ")");
-                        switch (discountCheckInfo.type) {
-                            case AppConstants.INNER_DISCOUNT_CHECK_CASH_COUPON:
-                            case AppConstants.INNER_DISCOUNT_CHECK_DISCOUNT_COUPON:
-                            case AppConstants.INNER_DISCOUNT_CHECK_COUPON:
-                            case AppConstants.INNER_DISCOUNT_GIFT_COUPON:
-                                mPos.printText(discountCheckInfo.consumeDescription + "/" + discountCheckInfo.verifyCode + "/" + discountCheckInfo.telephone);
-                                break;
-                            case AppConstants.INNER_DISCOUNT_SERVICE_ITEM_COUPON:
-                                mPos.printText(discountCheckInfo.sourceName + "/" + discountCheckInfo.verifyCode + "/" + discountCheckInfo.telephone);
-                                break;
-                            case AppConstants.INNER_DISCOUNT_CONSUME:
-                                mPos.printText(discountCheckInfo.consumeDescription + "/" + discountCheckInfo.userName + "/" + discountCheckInfo.cardNo);
-                                break;
-                            case AppConstants.INNER_DISCOUNT_PAID_ORDER:
-                                mPos.printText(discountCheckInfo.verifyCode + "/" + discountCheckInfo.telephone);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case AppConstants.PAY_DISCOUNT_REDUCTION:
-                        mPos.printText("[直接减免]", "(-" + Utils.moneyToStringEx(discountInfo.amount) + ")");
-                        break;
+            if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
+                for (OrderDiscountInfo discountInfo : info.orderDiscountList) {
+                    switch (discountInfo.type) {
+                        case AppConstants.PAY_DISCOUNT_COUPON:
+                        case AppConstants.PAY_DISCOUNT_MEMBER:
+                        case AppConstants.PAY_DISCOUNT_ORDER:
+                            OrderDiscountCheckInfo discountCheckInfo = discountInfo.checkInfo;
+                            mPos.printText("[" + discountCheckInfo.typeName + "]" + discountCheckInfo.title, "(-" + Utils.moneyToStringEx(discountCheckInfo.amount) + ")");
+                            switch (discountCheckInfo.type) {
+                                case AppConstants.INNER_DISCOUNT_CHECK_CASH_COUPON:
+                                case AppConstants.INNER_DISCOUNT_CHECK_DISCOUNT_COUPON:
+                                case AppConstants.INNER_DISCOUNT_CHECK_COUPON:
+                                case AppConstants.INNER_DISCOUNT_GIFT_COUPON:
+                                    mPos.printText(discountCheckInfo.consumeDescription + "/" + discountCheckInfo.verifyCode + "/" + discountCheckInfo.telephone);
+                                    break;
+                                case AppConstants.INNER_DISCOUNT_SERVICE_ITEM_COUPON:
+                                    mPos.printText(discountCheckInfo.sourceName + "/" + discountCheckInfo.verifyCode + "/" + discountCheckInfo.telephone);
+                                    break;
+                                case AppConstants.INNER_DISCOUNT_CONSUME:
+                                    mPos.printText(discountCheckInfo.consumeDescription + "/" + discountCheckInfo.userName + "/" + discountCheckInfo.cardNo);
+                                    break;
+                                case AppConstants.INNER_DISCOUNT_PAID_ORDER:
+                                    mPos.printText(discountCheckInfo.verifyCode + "/" + discountCheckInfo.telephone);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case AppConstants.PAY_DISCOUNT_REDUCTION:
+                            mPos.printText("[直接减免]", "(-" + Utils.moneyToStringEx(discountInfo.amount) + ")");
+                            break;
+                    }
                 }
             }
             mPos.printDivide();
@@ -519,15 +527,17 @@ public class InnerManager {
         mPos.printText("交易号：", info.payId);
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
 
-        for (PayRecordInfo payRecordInfo : info.payRecordList) {
-            mPos.printDivide();
-            if (!TextUtils.isEmpty(payRecordInfo.tradeNo)) {
-                mPos.printText("流水号：", payRecordInfo.tradeNo);
+        if (info.payRecordList != null && !info.payRecordList.isEmpty()) {
+            for (PayRecordInfo payRecordInfo : info.payRecordList) {
+                mPos.printDivide();
+                if (!TextUtils.isEmpty(payRecordInfo.tradeNo)) {
+                    mPos.printText("流水号：", payRecordInfo.tradeNo);
+                }
+                mPos.printText("支付方式：", payRecordInfo.payChannelName);
+                mPos.printText("支付金额：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+                mPos.printText("支付时间：", payRecordInfo.payTime);
+                mPos.printText("收款人员：", payRecordInfo.operatorName);
             }
-            mPos.printText("支付方式：", payRecordInfo.payChannelName);
-            mPos.printText("支付金额：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
-            mPos.printText("支付时间：", payRecordInfo.payTime);
-            mPos.printText("收款人员：", payRecordInfo.operatorName);
         }
 
         if (!keep) {

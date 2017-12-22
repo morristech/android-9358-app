@@ -153,7 +153,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                 dialog.dismiss();
             }
         });
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
 

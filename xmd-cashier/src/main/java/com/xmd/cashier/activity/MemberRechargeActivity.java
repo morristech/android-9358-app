@@ -333,7 +333,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
                 dialog.dismiss();
             }
         });
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
 
