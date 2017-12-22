@@ -92,6 +92,10 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
     @Override
     public void onCashier() {
+        if (mTradeManager.getCurrentTrade().getRealPayMoney() <= 0) {
+            mView.showError("请输入支付金额");
+            return;
+        }
         showMethod();
     }
 
