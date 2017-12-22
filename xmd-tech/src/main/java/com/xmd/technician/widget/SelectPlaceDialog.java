@@ -31,28 +31,23 @@ import javax.xml.parsers.SAXParserFactory;
 public abstract class SelectPlaceDialog extends Dialog implements OnWheelChangedListener {
     // 保存省市信息的文件名：assets
     public static final String PROVINCE_CITY_XML_FILE = "province_data.xml";
-    private Context context;
-
     private static final int VISIBLE_ITEM_COUNT = 7;
-
+    // 当前省名
+    public String mCurrentProvinceName;
+    public String mCurrentProvinceCode;
+    // 当前市名
+    public String mCurrentCityName;
+    public String mCurrentCityCode;
+    private Context context;
     // 省名
     private String[] mProvinceDatas;
     // 省和省code的对应关系
     private Map<String, String> mProvinceCodesMap = new HashMap<String, String>();
-
     // 省名 对应 市名的数组
     private Map<String, String[]> mCityDatasMap = new HashMap<String, String[]>();
     // 市和市code的对应关系
     private Map<String, String> mCityCodesMap = new HashMap<String, String>();
-
-    // 当前省名
-    public String mCurrentProvinceName;
-    public String mCurrentProvinceCode;
     private String initProvince;
-
-    // 当前市名
-    public String mCurrentCityName;
-    public String mCurrentCityCode;
     private String initCity;
 
     private WheelView mProvinceWheel;

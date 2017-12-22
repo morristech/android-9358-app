@@ -19,19 +19,14 @@ import com.xmd.technician.common.Utils;
  * Created by Administrator on 2016/7/4.
  */
 public class SideBar extends View {
-    private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
-
     public static String[] b = {
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"
     };
+    private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
     private int choose = -1;
     private Paint paint = new Paint();
     private TextView mTextDialog;
     private Context mContext;
-
-    public interface OnTouchingLetterChangedListener {
-        public void onTouchingLetterChanged(String s);
-    }
 
     public SideBar(Context context) {
         this(context, null);
@@ -112,6 +107,10 @@ public class SideBar extends View {
 
     public void setTextView(TextView mTextDialog) {
         this.mTextDialog = mTextDialog;
+    }
+
+    public interface OnTouchingLetterChangedListener {
+        public void onTouchingLetterChanged(String s);
     }
 
 

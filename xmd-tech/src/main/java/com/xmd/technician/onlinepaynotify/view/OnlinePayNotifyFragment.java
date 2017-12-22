@@ -43,17 +43,14 @@ public class OnlinePayNotifyFragment extends BaseFragment {
     private static final String ARG_STATUS = "mStatus";
     private static final String ARG_ONLY_NOT_ARCHIVED = "archived";
     private static final String ARG_LIMIT_COUNT = "limitCount";
-
+    public ObservableBoolean showLoading = new ObservableBoolean();
+    public ObservableField<String> errorString = new ObservableField<>();
     private long mStartTime;
     private long mEndTime;
     private int mStatus;
     private boolean mOnlyNotArchived;
     private int mLimitCount;
     private boolean mSetFooter;
-
-    public ObservableBoolean showLoading = new ObservableBoolean();
-    public ObservableField<String> errorString = new ObservableField<>();
-
     private FragmentOnlinePayNotifyBinding mBinding;
     private CommonRecyclerViewAdapter<PayNotifyInfo> mAdapter;
 
@@ -61,6 +58,13 @@ public class OnlinePayNotifyFragment extends BaseFragment {
     private Subscription mPayNotifyNewDataEventSubscription;
 
     private boolean mIsFirstArchived = false;
+    //数据转换器
+    private CommonRecyclerViewAdapter.DataTranslator mDataTranslator = new CommonRecyclerViewAdapter.DataTranslator() {
+        @Override
+        public Object translate(Object originData) {
+            return new PayNotifyInfoViewModel((PayNotifyInfo) originData);
+        }
+    };
 
     public OnlinePayNotifyFragment() {
         // Required empty public constructor
@@ -178,7 +182,6 @@ public class OnlinePayNotifyFragment extends BaseFragment {
         }
     }
 
-
     private void loadData(boolean forceNetwork, long startTime, long endTime, int status, boolean onlyNotArchived) {
         //加载数据
         showLoading.set(true);
@@ -208,14 +211,6 @@ public class OnlinePayNotifyFragment extends BaseFragment {
         mAdapter.setFooter(0, -1, null);
         mSetFooter = false;
     }
-
-    //数据转换器
-    private CommonRecyclerViewAdapter.DataTranslator mDataTranslator = new CommonRecyclerViewAdapter.DataTranslator() {
-        @Override
-        public Object translate(Object originData) {
-            return new PayNotifyInfoViewModel((PayNotifyInfo) originData);
-        }
-    };
 
     //接收买单通知被归档的事件
     public void handlePayNotifyArchiveEvent(PayNotifyArchiveEvent event) {

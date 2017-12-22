@@ -72,9 +72,9 @@ public class ClubInviteActivity extends BaseActivity {
             @Override
             public void onCallbackSuccess(BaseBean<List<ClubInvite>> result) {
                 hideLoading();
-                if(result.getRespData().size() == 0){
-                    mEmptyView.setEmptyViewWithDescription(R.drawable.empty,"");
-                }else{
+                if (result.getRespData().size() == 0) {
+                    mEmptyView.setEmptyViewWithDescription(R.drawable.empty, "");
+                } else {
                     mEmptyView.setStatus(EmptyView.Status.Gone);
                 }
                 if (page == 1) {

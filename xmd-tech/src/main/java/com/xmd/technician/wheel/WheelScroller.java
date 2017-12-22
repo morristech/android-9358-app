@@ -14,54 +14,69 @@ import android.widget.Scroller;
  */
 public class WheelScroller {
     /**
-     * Scrolling listener interface
+     * Minimum delta for scrolling
      */
-    public interface ScrollingListener {
-        /**
-         * Scrolling callback called when scrolling is performed.
-         *
-         * @param distance the distance to scroll
-         */
-        void onScroll(int distance);
-
-        /**
-         * Starting callback called when scrolling is started
-         */
-        void onStarted();
-
-        /**
-         * Finishing callback called after justifying
-         */
-        void onFinished();
-
-        /**
-         * Justifying callback called to justify a view when scrolling is ended
-         */
-        void onJustify();
-    }
-
+    public static final int MIN_DELTA_FOR_SCROLLING = 1;
     /**
      * Scrolling duration
      */
     private static final int SCROLLING_DURATION = 400;
-
-    /**
-     * Minimum delta for scrolling
-     */
-    public static final int MIN_DELTA_FOR_SCROLLING = 1;
-
+    // Messages
+    private final int MESSAGE_SCROLL = 0;
+    private final int MESSAGE_JUSTIFY = 1;
     // Listener
     private ScrollingListener listener;
-
     // Context
     private Context context;
-
     // Scrolling
     private GestureDetector gestureDetector;
     private Scroller scroller;
     private int lastScrollY;
     private float lastTouchedY;
     private boolean isScrollingPerformed;
+    // animation handler
+    private Handler animationHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            scroller.computeScrollOffset();
+            int currY = scroller.getCurrY();
+            int delta = lastScrollY - currY;
+            lastScrollY = currY;
+            if (delta != 0) {
+                listener.onScroll(delta);
+            }
+
+            // scrolling is not finished when it comes to final Y
+            // so, finish it manually
+            if (Math.abs(currY - scroller.getFinalY()) < MIN_DELTA_FOR_SCROLLING) {
+                currY = scroller.getFinalY();
+                scroller.forceFinished(true);
+            }
+            if (!scroller.isFinished()) {
+                animationHandler.sendEmptyMessage(msg.what);
+            } else if (msg.what == MESSAGE_SCROLL) {
+                justify();
+            } else {
+                finishScrolling();
+            }
+        }
+    };
+    // gesture listener
+    private SimpleOnGestureListener gestureListener = new SimpleOnGestureListener() {
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            // Do scrolling in onTouchEvent() since onScroll() are not call immediately
+            //  when user touch and move the wheel
+            return true;
+        }
+
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            lastScrollY = 0;
+            final int maxY = 0x7FFFFFFF;
+            final int minY = -maxY;
+            scroller.fling(0, lastScrollY, 0, (int) -velocityY, 0, 0, minY, maxY);
+            setNextMessage(MESSAGE_SCROLL);
+            return true;
+        }
+    };
 
     /**
      * Constructor
@@ -145,28 +160,6 @@ public class WheelScroller {
         return true;
     }
 
-    // gesture listener
-    private SimpleOnGestureListener gestureListener = new SimpleOnGestureListener() {
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            // Do scrolling in onTouchEvent() since onScroll() are not call immediately
-            //  when user touch and move the wheel
-            return true;
-        }
-
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            lastScrollY = 0;
-            final int maxY = 0x7FFFFFFF;
-            final int minY = -maxY;
-            scroller.fling(0, lastScrollY, 0, (int) -velocityY, 0, 0, minY, maxY);
-            setNextMessage(MESSAGE_SCROLL);
-            return true;
-        }
-    };
-
-    // Messages
-    private final int MESSAGE_SCROLL = 0;
-    private final int MESSAGE_JUSTIFY = 1;
-
     /**
      * Set next message to queue. Clears queue before.
      *
@@ -184,33 +177,6 @@ public class WheelScroller {
         animationHandler.removeMessages(MESSAGE_SCROLL);
         animationHandler.removeMessages(MESSAGE_JUSTIFY);
     }
-
-    // animation handler
-    private Handler animationHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            scroller.computeScrollOffset();
-            int currY = scroller.getCurrY();
-            int delta = lastScrollY - currY;
-            lastScrollY = currY;
-            if (delta != 0) {
-                listener.onScroll(delta);
-            }
-
-            // scrolling is not finished when it comes to final Y
-            // so, finish it manually 
-            if (Math.abs(currY - scroller.getFinalY()) < MIN_DELTA_FOR_SCROLLING) {
-                currY = scroller.getFinalY();
-                scroller.forceFinished(true);
-            }
-            if (!scroller.isFinished()) {
-                animationHandler.sendEmptyMessage(msg.what);
-            } else if (msg.what == MESSAGE_SCROLL) {
-                justify();
-            } else {
-                finishScrolling();
-            }
-        }
-    };
 
     /**
      * Justifies wheel
@@ -238,5 +204,32 @@ public class WheelScroller {
             listener.onFinished();
             isScrollingPerformed = false;
         }
+    }
+
+    /**
+     * Scrolling listener interface
+     */
+    public interface ScrollingListener {
+        /**
+         * Scrolling callback called when scrolling is performed.
+         *
+         * @param distance the distance to scroll
+         */
+        void onScroll(int distance);
+
+        /**
+         * Starting callback called when scrolling is started
+         */
+        void onStarted();
+
+        /**
+         * Finishing callback called after justifying
+         */
+        void onFinished();
+
+        /**
+         * Justifying callback called to justify a view when scrolling is ended
+         */
+        void onJustify();
     }
 }

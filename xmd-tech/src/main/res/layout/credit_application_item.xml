@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_main_head"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
 
         <com.xmd.technician.widget.CircleImageView
             android:id="@+id/avatar"
@@ -25,7 +25,7 @@
             android:layout_marginTop="@dimen/tab_indicator_text_padding"
             android:background="@drawable/icon22"
             android:visibility="invisible"
-            />
+        />
 
         <TextView
             android:id="@+id/avatar_name"
@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/tab_indicator_text_padding"
             android:layout_toRightOf="@id/avatar"
             android:textColor="@color/indicator_selected_color"
-            android:textSize="@dimen/fontNormal" />
+            android:textSize="@dimen/fontNormal"/>
 
         <TextView
             android:id="@+id/credit_time"
@@ -46,7 +46,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/small_space"
             android:textColor="@color/indicator_selected_color"
-            android:textSize="@dimen/fontNormal" />
+            android:textSize="@dimen/fontNormal"/>
 
         <TextView
             android:id="@+id/credit_amount"
@@ -55,9 +55,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/two_space"
             android:textColor="@color/color_main_head"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"/>
     </RelativeLayout>
 
-    <View style="@style/horizontal_divider_line" />
+    <View style="@style/horizontal_divider_line"/>
 
 </LinearLayout>

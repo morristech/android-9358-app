@@ -177,7 +177,7 @@ public class Utils {
         return getScreenWidthHeight(null)[0];
     }
 
-    public static int getScreenHeight(){
+    public static int getScreenHeight() {
         return getScreenWidthHeight(null)[1];
     }
 

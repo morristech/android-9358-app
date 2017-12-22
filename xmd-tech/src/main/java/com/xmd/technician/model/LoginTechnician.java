@@ -39,17 +39,12 @@ import java.util.Map;
  * Created by heyangya on 16-12-20.
  */
 public class LoginTechnician {
-    private static LoginTechnician ourInstance = new LoginTechnician();
-
-    public static LoginTechnician getInstance() {
-        return ourInstance;
-    }
-
     public static final int LOGIN_TYPE_PHONE = 1;
     public static final int LOGIN_TYPE_TECH_NO = 2;
     public static final String GENDER_FEMALE = "female";
     public static final String GENDER_MALE = "male";
-
+    private static LoginTechnician ourInstance = new LoginTechnician();
+    public String innerProvider;
     private int loginType;
     private String token;
 
@@ -76,18 +71,14 @@ public class LoginTechnician {
     private String clubName;
     private String clubPosition;    //会所所在位置 add ZR
     private int credit; //积分信息
-    public String innerProvider;
     private String shareUrl;
-
     private float amount; //以元为单位
     private int commentCount;
     private int unreadCommentCount;
     private int orderCount;
-
     private String roles;
     private String customerService;//rest,working
     private String clubImageUrl;
-
     private LoginTechnician() {
 
         loginType = SharedPreferenceHelper.getLoginType();
@@ -121,6 +112,10 @@ public class LoginTechnician {
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
 
         EventBusSafeRegister.register(this);
+    }
+
+    public static LoginTechnician getInstance() {
+        return ourInstance;
     }
 
     //切换账号时，清除所有数据
@@ -484,6 +479,11 @@ public class LoginTechnician {
         return token;
     }
 
+    public void setToken(String token) {
+        this.token = token;
+        SharedPreferenceHelper.setUserToken(token);
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -502,17 +502,6 @@ public class LoginTechnician {
         SharedPreferenceHelper.setTechGender(gender);
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-        SharedPreferenceHelper.setUserName(nickName);
-        //XMDEmChatManager.getInstance().updateNickName(nickName);
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-        SharedPreferenceHelper.setUserAvatar(avatarUrl);
-    }
-
     public String getAvatarId() {
         return avatarId;
     }
@@ -520,11 +509,6 @@ public class LoginTechnician {
     public void setAvatarId(String avatarId) {
         this.avatarId = avatarId;
         SharedPreferenceHelper.setAvatarId(avatarId);
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-        SharedPreferenceHelper.setUserToken(token);
     }
 
     public int getLoginType() {
@@ -540,8 +524,19 @@ public class LoginTechnician {
         return nickName;
     }
 
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+        SharedPreferenceHelper.setUserName(nickName);
+        //XMDEmChatManager.getInstance().updateNickName(nickName);
+    }
+
     public String getAvatarUrl() {
         return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+        SharedPreferenceHelper.setUserAvatar(avatarUrl);
     }
 
     public String getQrCodeUrl() {
@@ -724,11 +719,11 @@ public class LoginTechnician {
         SharedPreferenceHelper.setCustomerService(customerService);
     }
 
-    public void setClubImageUrl(String clubUrl) {
-        this.clubImageUrl = clubUrl;
-    }
-
     public String getClubImageUrl() {
         return clubImageUrl;
+    }
+
+    public void setClubImageUrl(String clubUrl) {
+        this.clubImageUrl = clubUrl;
     }
 }

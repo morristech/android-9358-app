@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
               android:background="@color/color_white"
               android:orientation="vertical"
-    >
+>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                 android:id="@+id/reward_share"
                 style="@style/share_btn_style"
                 android:layout_gravity="right|bottom"
-                />
+            />
         </LinearLayout>
     </LinearLayout>
 

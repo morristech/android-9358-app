@@ -14,15 +14,13 @@ import com.xmd.technician.msgctrl.RxBus;
 import rx.Subscription;
 
 public class DataRefreshService extends Service {
-    private Thread workThread;
-    private boolean mRun;
     private final static String EXTRA_CMD = "cmd";
     private final static String EXTRA_CMD_DATA = "cmd_data";
-
     private final static int CMD_REFRESH_PERSONAL_DATA = 1;
     private final static int CMD_CHECK_PAY_NOTIFY = 2;
     private final static int CMD_CHECK_HELLO_REPLY = 3;
-
+    private Thread workThread;
+    private boolean mRun;
     private boolean mRefreshPersonalData;
     private boolean mRefreshHelloReply;
 
@@ -32,12 +30,37 @@ public class DataRefreshService extends Service {
 
     }
 
+    public static void start() {
+        Context context = TechApplication.getAppContext();
+        context.startService(new Intent(context, DataRefreshService.class));
+    }
+
+    public static void stop() {
+        Context context = TechApplication.getAppContext();
+        context.stopService(new Intent(context, DataRefreshService.class));
+    }
+
+    public static void refreshPersonalData(boolean on) {
+        Context context = TechApplication.getAppContext();
+        Intent intent = new Intent(context, DataRefreshService.class);
+        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_REFRESH_PERSONAL_DATA);
+        intent.putExtra(EXTRA_CMD_DATA, on);
+        context.startService(intent);
+    }
+
+    public static void refreshHelloReply(boolean on) {
+        Context context = TechApplication.getAppContext();
+        Intent intent = new Intent(context, DataRefreshService.class);
+        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_CHECK_HELLO_REPLY);
+        intent.putExtra(EXTRA_CMD_DATA, on);
+        context.startService(intent);
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
 
     @Override
     public void onCreate() {
@@ -82,6 +105,10 @@ public class DataRefreshService extends Service {
         mTokenExpiredSubscription.unsubscribe();
     }
 
+    public void handleLogoutEvent(EventLogout event) {
+        mRefreshPersonalData = false;
+        mRefreshHelloReply = false;
+    }
 
     private class WorkThread extends Thread {
         @Override
@@ -106,36 +133,5 @@ public class DataRefreshService extends Service {
             }
             Logger.i("-------------work thread stopped-----------");
         }
-    }
-
-    public static void start() {
-        Context context = TechApplication.getAppContext();
-        context.startService(new Intent(context, DataRefreshService.class));
-    }
-
-    public static void stop() {
-        Context context = TechApplication.getAppContext();
-        context.stopService(new Intent(context, DataRefreshService.class));
-    }
-
-    public void handleLogoutEvent(EventLogout event) {
-        mRefreshPersonalData = false;
-        mRefreshHelloReply = false;
-    }
-
-    public static void refreshPersonalData(boolean on) {
-        Context context = TechApplication.getAppContext();
-        Intent intent = new Intent(context, DataRefreshService.class);
-        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_REFRESH_PERSONAL_DATA);
-        intent.putExtra(EXTRA_CMD_DATA, on);
-        context.startService(intent);
-    }
-
-    public static void refreshHelloReply(boolean on) {
-        Context context = TechApplication.getAppContext();
-        Intent intent = new Intent(context, DataRefreshService.class);
-        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_CHECK_HELLO_REPLY);
-        intent.putExtra(EXTRA_CMD_DATA, on);
-        context.startService(intent);
     }
 }

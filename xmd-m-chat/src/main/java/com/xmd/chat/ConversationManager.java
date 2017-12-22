@@ -169,6 +169,9 @@ public class ConversationManager {
     public void deleteConversation(String chatId) {
         ConversationManager.getInstance().markAllMessagesRead(chatId);
         int position = getConversationDataPosition(chatId);
+        if (position == -1) {
+            return;
+        }
         ConversationViewModel data = mConversationList.get(position);
         EventBus.getDefault().post(new EventDeleteConversation(position, data));
         deleteConversationInner(chatId);
@@ -264,7 +267,6 @@ public class ConversationManager {
         removeConversationData(chatId);
         EMClient.getInstance().chatManager().getAllConversations().remove(chatId);
         EMClient.getInstance().chatManager().deleteConversation(chatId, true);
-        XLogger.i(XmdChat.TAG, "delete conversation:" + chatId);
     }
 
 

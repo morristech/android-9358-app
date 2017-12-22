@@ -22,55 +22,42 @@ import java.util.List;
 
 public class WheelView extends View {
 
-    private int[] SHADOWS_COLORS = new int[]{0xefE9E9E9,
-            0xcfE9E9E9, 0x3fE9E9E9};
-
     /**
      * Top and bottom items offset (to hide that)
      */
     private static final int ITEM_OFFSET_PERCENT = 0;
-
     /**
      * Left and right padding value
      */
     private static final int PADDING = 10;
-
     /**
      * Default count of visible items
      */
     private static final int DEF_VISIBLE_ITEMS = 5;
-
+    // Cyclic
+    boolean isCyclic = false;
+    private int[] SHADOWS_COLORS = new int[]{0xefE9E9E9,
+            0xcfE9E9E9, 0x3fE9E9E9};
     // Wheel Values
     private int currentItem = 0;
-
     // Count of visible items
     private int visibleItems = DEF_VISIBLE_ITEMS;
-
     // Item height
     private int itemHeight = 0;
-
     // Center Line
     private Drawable centerDrawable;
-
     // Wheel drawables
     private int wheelBackground = R.drawable.select_place_wheel_background;
     private int wheelForeground = R.drawable.select_place_wheel_val;
-
     // Shadows drawables
     private GradientDrawable topShadow;
     private GradientDrawable bottomShadow;
-
     // Draw Shadows
     private boolean drawShadows = true;
-
     // Scrolling
     private WheelScroller scroller;
     private boolean isScrollingPerformed;
     private int scrollingOffset;
-
-    // Cyclic
-    boolean isCyclic = false;
-
     // Items layout
     private LinearLayout itemsLayout;
 
@@ -86,41 +73,6 @@ public class WheelView extends View {
     // Listeners
     private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
     private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
-    private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
-
-    /**
-     * Constructor
-     */
-    public WheelView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        initData(context);
-    }
-
-    /**
-     * Constructor
-     */
-    public WheelView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initData(context);
-    }
-
-    /**
-     * Constructor
-     */
-    public WheelView(Context context) {
-        super(context);
-        initData(context);
-    }
-
-    /**
-     * Initializes class data
-     *
-     * @param context the context
-     */
-    private void initData(Context context) {
-        scroller = new WheelScroller(getContext(), scrollingListener);
-    }
-
     // Scrolling listener
     WheelScroller.ScrollingListener scrollingListener = new WheelScroller.ScrollingListener() {
         @Override
@@ -161,6 +113,52 @@ public class WheelView extends View {
             }
         }
     };
+    private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
+    // Adapter listener
+    private DataSetObserver dataObserver = new DataSetObserver() {
+        @Override
+        public void onChanged() {
+            invalidateWheel(false);
+        }
+
+        @Override
+        public void onInvalidated() {
+            invalidateWheel(true);
+        }
+    };
+
+    /**
+     * Constructor
+     */
+    public WheelView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        initData(context);
+    }
+
+    /**
+     * Constructor
+     */
+    public WheelView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initData(context);
+    }
+
+    /**
+     * Constructor
+     */
+    public WheelView(Context context) {
+        super(context);
+        initData(context);
+    }
+
+    /**
+     * Initializes class data
+     *
+     * @param context the context
+     */
+    private void initData(Context context) {
+        scroller = new WheelScroller(getContext(), scrollingListener);
+    }
 
     /**
      * Set the the specified scrolling interpolator
@@ -199,19 +197,6 @@ public class WheelView extends View {
     public WheelViewAdapter getViewAdapter() {
         return viewAdapter;
     }
-
-    // Adapter listener
-    private DataSetObserver dataObserver = new DataSetObserver() {
-        @Override
-        public void onChanged() {
-            invalidateWheel(false);
-        }
-
-        @Override
-        public void onInvalidated() {
-            invalidateWheel(true);
-        }
-    };
 
     /**
      * Sets view adapter. Usually new adapters contain different views, so
@@ -334,6 +319,15 @@ public class WheelView extends View {
     }
 
     /**
+     * Sets the current item w/o animation. Does nothing when index is wrong.
+     *
+     * @param index the item index
+     */
+    public void setCurrentItem(int index) {
+        setCurrentItem(index, false);
+    }
+
+    /**
      * Sets the current item. Does nothing when index is wrong.
      *
      * @param index    the item index
@@ -376,15 +370,6 @@ public class WheelView extends View {
                 invalidate();
             }
         }
-    }
-
-    /**
-     * Sets the current item w/o animation. Does nothing when index is wrong.
-     *
-     * @param index the item index
-     */
-    public void setCurrentItem(int index) {
-        setCurrentItem(index, false);
     }
 
     /**

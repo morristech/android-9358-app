@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/nearby_bg_gray_light"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/nearby_bg_gray_light"
+              android:orientation="horizontal">
 
     <View
         android:layout_width="8dp"
         android:layout_height="match_parent"
-        android:background="@color/link_button" />
+        android:background="@color/link_button"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -24,7 +24,7 @@
             android:drawablePadding="@dimen/small_space"
             android:text="可打招呼"
             android:textColor="@color/nearby_text_gray_light"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -39,14 +39,14 @@
                 android:text="0"
                 android:textColor="@color/nearby_text_gray_dark"
                 android:textSize="@dimen/fontHeadline"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="次"
                 android:textColor="@color/nearby_text_gray_dark"
-                android:textSize="@dimen/fontBiggerThanNormal" />
+                android:textSize="@dimen/fontBiggerThanNormal"/>
 
         </LinearLayout>
 
@@ -66,7 +66,7 @@
             android:drawablePadding="@dimen/small_space"
             android:text="预约"
             android:textColor="@color/nearby_text_gray_light"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -81,14 +81,14 @@
                 android:text="0"
                 android:textColor="@color/nearby_text_gray_dark"
                 android:textSize="@dimen/fontHeadline"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="次"
                 android:textColor="@color/nearby_text_gray_dark"
-                android:textSize="@dimen/fontBiggerThanNormal" />
+                android:textSize="@dimen/fontBiggerThanNormal"/>
 
         </LinearLayout>
 
@@ -108,7 +108,7 @@
             android:drawablePadding="@dimen/small_space"
             android:text="打赏"
             android:textColor="@color/nearby_text_gray_light"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -123,14 +123,14 @@
                 android:text="0"
                 android:textColor="@color/nearby_text_gray_dark"
                 android:textSize="@dimen/fontHeadline"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="元"
                 android:textColor="@color/nearby_text_gray_dark"
-                android:textSize="@dimen/fontBiggerThanNormal" />
+                android:textSize="@dimen/fontBiggerThanNormal"/>
 
         </LinearLayout>
 

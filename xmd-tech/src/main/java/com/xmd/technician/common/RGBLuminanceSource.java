@@ -63,6 +63,14 @@ public final class RGBLuminanceSource extends LuminanceSource {
         }
     }
 
+    private static Bitmap loadBitmap(String path) {
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        if (bitmap != null) {
+            return bitmap;
+        }
+        return null;
+    }
+
     @Override
     public byte[] getRow(int y, byte[] row) {
         if (y < 0 || y >= getHeight()) {
@@ -83,14 +91,6 @@ public final class RGBLuminanceSource extends LuminanceSource {
     @Override
     public byte[] getMatrix() {
         return luminances;
-    }
-
-    private static Bitmap loadBitmap(String path) {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        if (bitmap != null) {
-            return bitmap;
-        }
-        return null;
     }
 }
 

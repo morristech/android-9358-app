@@ -18,7 +18,6 @@ import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 
@@ -164,6 +163,12 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         return mList.size();
     }
 
+    public interface OnItemCallBack {
+        void onBtnClick(NearbyCusInfo info, int position);
+
+        void onItemClick(NearbyCusInfo info);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.cus_item_position)
         TextView mPosition;
@@ -198,12 +203,6 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
             ButterKnife.bind(this, itemView);
         }
     }
-
-    public interface OnItemCallBack {
-        void onBtnClick(NearbyCusInfo info, int position);
-        void onItemClick(NearbyCusInfo info);
-    }
-
 
     // 控制Item的大小
     public class AdapterHelper {

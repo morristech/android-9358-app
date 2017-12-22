@@ -32,14 +32,13 @@ import rx.Subscription;
 
 public class TechPKActiveActivity extends BaseListActivity<ActivityRankingBean> {
 
-    @BindView(R.id.btn_pk_ranking_detail)
-    Button btnPkRankingDetail;
-
     public static final String PK_ITEM_ID = "pkActivityId"; //活动Id
     public static final String PK_ITEM_STATUS = "activityStatus";//活动状态
     public static final String PK_ITEM_START_DATE = "activityStartDate";//活动开始日期
     public static final String PK_ITEM_END_DATE = "activityEndDate";//活动结束日期
     public static final String PK_ACTIVITY_ITEM = "pk_item";//pk项目
+    @BindView(R.id.btn_pk_ranking_detail)
+    Button btnPkRankingDetail;
     private EmptyView mEmptyView;
     private Subscription mPKActivityListSubscription;
 

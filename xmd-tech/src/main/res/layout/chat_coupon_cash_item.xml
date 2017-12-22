@@ -3,23 +3,23 @@
               android:id="@+id/ll_view"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="horizontal"
               android:layout_marginLeft="@dimen/inter_space"
-    >
+              android:orientation="horizontal"
+>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        >
+    >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/inter_space"
             android:orientation="horizontal"
-            >
+        >
 
         </LinearLayout>
 
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.2"
-                >
+            >
 
                 <TextView
                     android:id="@+id/tv_coupon_title"
@@ -55,7 +55,7 @@
                     android:textSize="@dimen/fontNormal"
                     android:visibility="gone"
 
-                    />
+                />
 
                 <TextView
                     android:id="@+id/tv_coupon_reward"
@@ -68,7 +68,7 @@
                     android:paddingRight="@dimen/padding_5"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/fontBody"
-                    />
+                />
 
             </RelativeLayout>
 
@@ -90,7 +90,7 @@
                     android:layout_marginTop="@dimen/icon_money_margin"
                     android:paddingLeft="@dimen/coupon_margin_17"
                     android:src="@drawable/icon_delivery"
-                    />
+                />
 
                 <TextView
                     android:id="@+id/coupon_amount"
@@ -141,7 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/coupon_item_bottom_corner_bg"
             android:background="@drawable/coupon_bottom_bg"
-            >
+        >
 
             <View
                 android:layout_width="match_parent"
@@ -160,6 +160,6 @@
         android:layout_marginLeft="@dimen/inter_space"
         android:layout_marginRight="@dimen/inter_space"
         android:background="@drawable/chat_coupon_bg"
-        />
+    />
 
 </LinearLayout>

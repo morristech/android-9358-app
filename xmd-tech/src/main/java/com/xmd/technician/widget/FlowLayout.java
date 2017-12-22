@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlowLayout extends ViewGroup {
+    private List<List<View>> mAllViews = new ArrayList<List<View>>();
+    private List<Integer> mLineHeight = new ArrayList<Integer>();
+
     public FlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -86,11 +89,6 @@ public class FlowLayout extends ViewGroup {
                 : height);
 
     }
-
-
-    private List<List<View>> mAllViews = new ArrayList<List<View>>();
-
-    private List<Integer> mLineHeight = new ArrayList<Integer>();
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {

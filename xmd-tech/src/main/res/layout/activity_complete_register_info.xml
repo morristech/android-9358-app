@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="presenter"
-            type="com.xmd.technician.presenter.CompleteRegisterInfoPresenter" />
+            type="com.xmd.technician.presenter.CompleteRegisterInfoPresenter"/>
     </data>
 
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/bg_register2" />
+            android:src="@drawable/bg_register2"/>
 
         <TextView
             android:id="@+id/title"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:text="完善信息"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
 
         <com.xmd.technician.widget.RoundImageView
             android:id="@+id/avatar"
@@ -41,7 +41,7 @@
             android:background="@drawable/img_default_update_head"
             android:onClick="@{()->presenter.onClickAvatar()}"
             app:borderRadius="@dimen/search_margin"
-            app:type="round" />
+            app:type="round"/>
 
 
         <LinearLayout
@@ -63,7 +63,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_nickname" />
+                    android:src="@drawable/icon_nickname"/>
 
 
                 <com.xmd.technician.widget.ClearableEditText
@@ -77,13 +77,13 @@
                     android:inputType="text"
                     android:maxLength="11"
                     android:textColor="@color/color_main_body"
-                    android:textSize="@dimen/fontBody" />
+                    android:textSize="@dimen/fontBody"/>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/color_line_divide" />
+                android:background="@color/color_line_divide"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,13 +93,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_gender" />
+                    android:src="@drawable/icon_gender"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:text="选择性别" />
+                    android:text="选择性别"/>
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_vertical_margin"
                         android:onCheckedChanged="@{(v,c)->presenter.setGender(!c)}"
-                        android:text="先生" />
+                        android:text="先生"/>
 
                     <RadioButton
                         android:id="@+id/r2"
@@ -120,14 +120,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_vertical_margin"
                         android:checked="true"
-                        android:text="女士" />
+                        android:text="女士"/>
                 </RadioGroup>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/color_line_divide" />
+                android:background="@color/color_line_divide"/>
 
 
             <Button
@@ -140,7 +140,7 @@
                 android:onClick="@{()->presenter.onClickFinish()}"
                 android:text="下一步"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontHead" />
+                android:textSize="@dimen/fontHead"/>
         </LinearLayout>
     </RelativeLayout>
 </layout>

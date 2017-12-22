@@ -21,21 +21,37 @@ import java.util.Map;
  */
 
 public class ImageUploader {
+    public static final int TYPE_AVATAR = 1;
+    public static final int TYPE_ALBUM = 2;
+    public static final int TYPE_HELLO = 3;
+    public static final int TYPE_TECH_POSTER = 4;
     private static final int MAX_IMAGE_WIDTH = 1120;
     private static final int MAX_IMAGE_HEIGHT = 1448;
     private static final ImageUploader ourInstance = new ImageUploader();
+    private ImageUploader() {
+    }
 
     public static ImageUploader getInstance() {
         return ourInstance;
     }
 
-    private ImageUploader() {
+    public static String encodeFileToBase64(String path) throws IOException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        options.inSampleSize = 1;
+        while (options.outWidth / options.inSampleSize > MAX_IMAGE_WIDTH || options.outHeight / options.inSampleSize > MAX_IMAGE_HEIGHT) {
+            options.inSampleSize <<= 1;
+        }
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        bitmap.recycle();
+        String imgFile = "data:image/jpg;base64," + Base64.encodeToString(bos.toByteArray(), Base64.DEFAULT);
+        Runtime.getRuntime().gc(); //强制释放内存
+        return imgFile;
     }
-
-    public static final int TYPE_AVATAR = 1;
-    public static final int TYPE_ALBUM = 2;
-    public static final int TYPE_HELLO = 3;
-    public static final int TYPE_TECH_POSTER = 4;
 
     public void upload(int type, Bitmap bitmap) {
         ThreadPoolManager.run(new Runnable() {
@@ -110,23 +126,5 @@ public class ImageUploader {
                 }
             }
         });
-    }
-
-    public static String encodeFileToBase64(String path) throws IOException {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        options.inSampleSize = 1;
-        while (options.outWidth / options.inSampleSize > MAX_IMAGE_WIDTH || options.outHeight / options.inSampleSize > MAX_IMAGE_HEIGHT) {
-            options.inSampleSize <<= 1;
-        }
-        options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-        bitmap.recycle();
-        String imgFile = "data:image/jpg;base64," + Base64.encodeToString(bos.toByteArray(), Base64.DEFAULT);
-        Runtime.getRuntime().gc(); //强制释放内存
-        return imgFile;
     }
 }

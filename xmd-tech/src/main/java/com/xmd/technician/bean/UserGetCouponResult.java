@@ -16,17 +16,17 @@ public class UserGetCouponResult extends BaseResult {
     public String actId;
     public String techCode;
 
+    public UserGetCouponResult(String content, String actId, String techCode) {
+        this.content = content;
+        this.actId = actId;
+        this.techCode = techCode;
+    }
+
     public static class RespDataBean {
         /**
          * userActId : 818657996652421120
          */
 
         public String userActId;
-    }
-
-    public UserGetCouponResult(String content, String actId, String techCode) {
-        this.content = content;
-        this.actId = actId;
-        this.techCode = techCode;
     }
 }

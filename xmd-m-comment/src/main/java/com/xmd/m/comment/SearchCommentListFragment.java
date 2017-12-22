@@ -3,7 +3,6 @@ package com.xmd.m.comment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.icu.util.TimeZone;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.crazyman.library.PermissionTool;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
@@ -46,7 +44,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.internal.operators.OnSubscribeFromIterable;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -178,7 +175,6 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
         DataManager.getInstance().loadCommentList(mParams, new NetworkSubscriber<CommentListResult>() {
                     @Override
                     public void onCallbackSuccess(CommentListResult result) {
-
                         onGetListSucceeded(result.getPageCount(), result.getRespData());
                     }
 
@@ -206,7 +202,10 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
     }
 
     private void onGetListFailed(String errorMsg) {
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mSwipeRefreshLayout != null){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+
         if (XmdApp.getInstance().getContext() != null) {
             XToast.show(errorMsg);
         }

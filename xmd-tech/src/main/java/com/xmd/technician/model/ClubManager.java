@@ -14,13 +14,12 @@ import java.util.Map;
 public class ClubManager {
     private static ClubManager ourInstance = new ClubManager();
 
-    public static ClubManager getInstance() {
-        return ourInstance;
-    }
-
     private ClubManager() {
     }
 
+    public static ClubManager getInstance() {
+        return ourInstance;
+    }
 
     //获取未使用的技师编号,返回UnusedTechNoListResult
     public void getUnusedTechNos(String inviteCode) {

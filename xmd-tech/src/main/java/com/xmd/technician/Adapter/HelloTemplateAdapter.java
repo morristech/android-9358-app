@@ -30,13 +30,13 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Integer mCheckId;
 
-    public Integer getCheckId() {
-        return mCheckId;
-    }
-
     public HelloTemplateAdapter(Context context) {
         mContext = context;
         mHelloSettingManager = HelloSettingManager.getInstance();
+    }
+
+    public Integer getCheckId() {
+        return mCheckId;
     }
 
     public void setOnTemplateItemClickListener(OnTemplateItemClickListener listener) {
@@ -61,7 +61,7 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     // 未选择系统模版
     public void unCheckedData() {
-        if(mCheckPos != -1){
+        if (mCheckPos != -1) {
             mData.get(mCheckPos).setSelected(false);
             notifyItemChanged(mCheckPos);
             mCheckPos = -1;
@@ -104,6 +104,10 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
         return mData.size();
     }
 
+    public interface OnTemplateItemClickListener {
+        void onTemplateItemClick(HelloTemplateInfo info);
+    }
+
     public class SystemViewHolder extends RecyclerView.ViewHolder {
         public ImageView mSystemCheck;
         public TextView mSystemContent;
@@ -115,9 +119,5 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
             mSystemContent = (TextView) itemView.findViewById(R.id.tv_system_content);
             rlView = (RelativeLayout) itemView.findViewById(R.id.rl_view);
         }
-    }
-
-    public interface OnTemplateItemClickListener {
-        void onTemplateItemClick(HelloTemplateInfo info);
     }
 }

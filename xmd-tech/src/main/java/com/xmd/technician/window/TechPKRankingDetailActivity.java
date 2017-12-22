@@ -35,6 +35,7 @@ import butterknife.OnClick;
 
 public class TechPKRankingDetailActivity extends BaseActivity implements BaseFragment.IFragmentCallback {
 
+    private final long DAY_MILLISECOND = 24 * 3600 * 1000;//24小时毫秒值
     @BindView(R.id.toolbar_back)
     ImageView toolbarBack;
     @BindView(R.id.toolbar_title)
@@ -65,8 +66,6 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
     TextView timeToday;
     @BindView(R.id.empty_view_widget)
     EmptyView emptyView;
-
-    private final long DAY_MILLISECOND = 24 * 3600 * 1000;//24小时毫秒值
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private ArrayBottomPopupWindow<String> mTimeFilterPopupWindow;
     private long mCurrentMillisecond;  //当前显示日期毫秒日

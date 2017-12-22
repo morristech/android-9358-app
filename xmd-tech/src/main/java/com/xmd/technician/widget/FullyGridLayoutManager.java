@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 public class FullyGridLayoutManager extends GridLayoutManager {
 
+    private int[] mMeasuredDimension = new int[2];
+
     public FullyGridLayoutManager(Context context, int spanCount) {
         super(context, spanCount);
     }
@@ -19,8 +21,6 @@ public class FullyGridLayoutManager extends GridLayoutManager {
     public FullyGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
         super(context, spanCount, orientation, reverseLayout);
     }
-
-    private int[] mMeasuredDimension = new int[2];
 
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {

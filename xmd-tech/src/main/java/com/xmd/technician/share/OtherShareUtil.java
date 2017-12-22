@@ -11,10 +11,6 @@ import java.util.Map;
  */
 public class OtherShareUtil extends BaseShareUtil {
 
-    private static class InstanceHolder {
-        private static OtherShareUtil sInstance = new OtherShareUtil();
-    }
-
     private OtherShareUtil() {
     }
 
@@ -33,5 +29,9 @@ public class OtherShareUtil extends BaseShareUtil {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         XmdActivityManager.getInstance().getCurrentActivity().startActivity(Intent.createChooser(intent, "请选择"));
+    }
+
+    private static class InstanceHolder {
+        private static OtherShareUtil sInstance = new OtherShareUtil();
     }
 }

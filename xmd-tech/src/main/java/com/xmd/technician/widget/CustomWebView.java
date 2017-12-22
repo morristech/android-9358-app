@@ -52,6 +52,18 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
         return false;
     }
 
+    /**
+     * 长按事件回调接口，传递图片地址
+     *
+     * @author LinZhang
+     */
+    public interface LongClickCallBack {
+        /**
+         * 用于传递图片地址
+         */
+        void onLongClickCallBack(String imgUrl);
+    }
+
     private class MyWebViewClient extends WebViewClient {
         /**
          * 加载过程中 拦截加载的地址url
@@ -115,18 +127,6 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
             CustomWebView.this.requestFocusFromTouch();
         }
 
-    }
-
-    /**
-     * 长按事件回调接口，传递图片地址
-     *
-     * @author LinZhang
-     */
-    public interface LongClickCallBack {
-        /**
-         * 用于传递图片地址
-         */
-        void onLongClickCallBack(String imgUrl);
     }
 
 }

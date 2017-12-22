@@ -33,12 +33,12 @@ public class SmoothProgressBar extends ProgressBar {
         super.setProgress(progress);
     }
 
-    public void setInnerProgress(int progress) {
-        super.setProgress(progress);
-    }
-
     public int getInnerProgress() {
         return super.getProgress();
+    }
+
+    public void setInnerProgress(int progress) {
+        super.setProgress(progress);
     }
 
     public void setTargetProgress(int progress) {

@@ -7,5 +7,5 @@ import com.xmd.technician.bean.InvitationRewardBean;
  */
 
 public class InvitationRewardResult extends BaseResult {
-        public InvitationRewardBean respData;
+    public InvitationRewardBean respData;
 }

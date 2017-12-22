@@ -35,20 +35,16 @@ public class MainPageTechOrderListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ItemClickedInterface mInterface;
 
-    public interface ItemClickedInterface{
-        void itemClicked(Order bean);
-    }
-
     public MainPageTechOrderListAdapter(Context context, List<Order> data) {
         this.mContext = context;
         this.mData = data;
     }
 
-    public void setOnItemClickedListener(ItemClickedInterface itemClickedInterface){
+    public void setOnItemClickedListener(ItemClickedInterface itemClickedInterface) {
         this.mInterface = itemClickedInterface;
     }
 
-    public void setData(List<Order> orders){
+    public void setData(List<Order> orders) {
         this.mData = orders;
         notifyDataSetChanged();
     }
@@ -112,8 +108,8 @@ public class MainPageTechOrderListAdapter extends RecyclerView.Adapter {
             });
         }
         viewHolder.mainOrderAvatar.setUserInfo(order.userId, order.headImgUrl, false);
-        viewHolder.itemView.setOnClickListener(v1-> {
-            if (mInterface != null){
+        viewHolder.itemView.setOnClickListener(v1 -> {
+            if (mInterface != null) {
                 mInterface.itemClicked(order);
             }
         });
@@ -133,6 +129,9 @@ public class MainPageTechOrderListAdapter extends RecyclerView.Adapter {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MANAGE_ORDER, params);
     }
 
+    public interface ItemClickedInterface {
+        void itemClicked(Order bean);
+    }
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.main_order_avatar)

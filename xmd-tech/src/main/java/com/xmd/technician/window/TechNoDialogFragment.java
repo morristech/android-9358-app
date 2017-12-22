@@ -34,15 +34,15 @@ import rx.Subscription;
  */
 
 public class TechNoDialogFragment extends DialogFragment {
-    private JoinClubContract.Presenter mPresenter;
-    private FragmentTechNoBinding mBinding;
-    private TechNoRecyclerViewAdapter mAdapter;
-    private Subscription mSubscription;
     public ObservableField<String> mClubName = new ObservableField<>();
     public ObservableBoolean mShowProgressView = new ObservableBoolean();
     public ObservableField<String> mErrorString = new ObservableField<>();
     public ObservableBoolean mDataLoadError = new ObservableBoolean();
     public String mSelectedTechNo;
+    private JoinClubContract.Presenter mPresenter;
+    private FragmentTechNoBinding mBinding;
+    private TechNoRecyclerViewAdapter mAdapter;
+    private Subscription mSubscription;
     private String mInviteCode;
 
     public static TechNoDialogFragment newInstance() {
@@ -115,10 +115,10 @@ public class TechNoDialogFragment extends DialogFragment {
                 }
             }
         }
-        Collections.sort(data,new Comparator<TechNo>() {
+        Collections.sort(data, new Comparator<TechNo>() {
             @Override
             public int compare(TechNo o1, TechNo o2) {
-              return o1.name.compareTo(o2.name);
+                return o1.name.compareTo(o2.name);
             }
         });
         data.add(TechNo.DEFAULT_TECH_NO);

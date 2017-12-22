@@ -108,8 +108,13 @@ import rx.Subscription;
  * Created by Lhj on 2016/10/19.
  */
 public class MainFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-
-
+    private final static int REQUEST_CODE_CLUB_POSITION_INVITE = 100;
+    public Runnable mTask = new Runnable() {
+        @Override
+        public void run() {
+            loadOrderListData();
+        }
+    };
     @BindView(R.id.rl_toolbar)
     RelativeLayout mRlToolBar;
     @BindView(R.id.app_version)
@@ -212,7 +217,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     RecyclerView mTeamList;
     @BindView(R.id.ranking_more)
     TextView mRankingMore;
-
     // 附近的人
     @BindView(R.id.nearby_layout)
     RelativeLayout mNearbyLayout;
@@ -224,7 +228,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     Button mNearbySayHello;
     @BindView(R.id.main_nearby_go_toker)
     Button mNearbyGoToker;
-
     //支付通知
     @BindView(R.id.online_pay_notify_layout)
     View mPayNotifyLayout;
@@ -271,13 +274,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     LinearLayout llAuditSure;
     @BindView(R.id.menu_work_project)
     RelativeLayout menuWorkProject;
-
-
     private OnlinePayNotifyFragment mPayNotifyFragment;
-
-    private final static int REQUEST_CODE_CLUB_POSITION_INVITE = 100;
-
-
     private ImageView imageLeft, imageRight;
     private Context mContext;
     private List<Order> mAllTechOrderList = new ArrayList<>();
@@ -287,8 +284,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private MainPageTechOrderListAdapter orderListAdapter;
     private boolean hasDynamic;
     private LinearLayout mContactMore;
-
-
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription mGetTechOrderListSubscription;
     private Subscription mGetTechStatisticsDataSubscription;
@@ -304,10 +299,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mUpdateWorkStatusSubscription;
     private Subscription mTechOrderCountSubscription;
     private Subscription mTechAuditConfirmSubscription; // 申请被拒，确认
-
     private LoginTechnician mTech = LoginTechnician.getInstance();
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
-
     private View mRootView;
     private boolean isHasPk;
     private boolean isInitNormalRanking;
@@ -335,7 +328,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         return mRootView;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -346,7 +338,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         super.onResume();
         EventBus.getDefault().post(new MainPageStatistics(Constants.UMENG_STATISTICS_HOME_BROWSE));
     }
-
 
     @Override
     public void onDestroy() {
@@ -410,7 +401,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         getClubInviteCount();
     }
 
-
     private void initTitleView(View view) {
         view.findViewById(R.id.toolbar).setBackgroundColor(Color.parseColor("#FF826c"));
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
@@ -457,7 +447,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-
     @CheckBusinessPermission((PermissionConstants.QR_CODE))
     public void initQRCode() {
         imageRight.setVisibility(View.VISIBLE);
@@ -483,7 +472,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void loadStatisticData() {
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
     }
-
 
     @CheckBusinessPermission(PermissionConstants.STATISTIC_INVITE_CUSTOMER)
     public void initStatisticInviteCustomer() {
@@ -588,7 +576,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST, param);
     }
 
-
     /**************************
      * 排行榜无PK
      ***************************/
@@ -606,7 +593,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         );
         isInitNormalRanking = false;
     }
-
 
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void loadRankingData() {
@@ -630,7 +616,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
         mRootView.findViewById(R.id.menu_work_project).setVisibility(View.VISIBLE);
     }
-
 
     /**************************
      * 附近的人
@@ -678,7 +663,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
         });
     }
-
 
     private void handleTechCurrentResult(TechInfoResult result) {
         mSwipeRefreshLayout.setRefreshing(false);
@@ -943,7 +927,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void initMenuItem(int resourceId) {
         mRootView.findViewById(resourceId).setVisibility(View.VISIBLE);
     }
-
 
     @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_hello_setting, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
             R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent, R.id.menu_fast_reply, R.id.menu_club_invite})
@@ -1411,15 +1394,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     }
-
-
-    public Runnable mTask = new Runnable() {
-        @Override
-        public void run() {
-            loadOrderListData();
-        }
-    };
-
 
     @Override
     public void onDestroyView() {

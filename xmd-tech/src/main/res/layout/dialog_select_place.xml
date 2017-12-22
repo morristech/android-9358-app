@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -12,12 +12,12 @@
         android:paddingLeft="@dimen/app_default_padding"
         android:text="@string/choose_city"
         android:textColor="@color/color_main_remark"
-        android:textSize="@dimen/fontHead" />
+        android:textSize="@dimen/fontHead"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,19 +27,19 @@
             android:id="@+id/select_province"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <com.xmd.technician.wheel.WheelView
             android:id="@+id/select_city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,12 +54,12 @@
             android:background="@drawable/default_button_background_selector"
             android:text="@string/cancel"
             android:textColor="@color/work_status_selector_bg"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
 
         <View
             android:layout_width="@dimen/line_divide_height"
             android:layout_height="match_parent"
-            android:background="@color/color_line_divide" />
+            android:background="@color/color_line_divide"/>
 
         <Button
             android:id="@+id/select_confirm_button"
@@ -69,7 +69,7 @@
             android:background="@drawable/default_button_background_selector"
             android:text="@string/confirm"
             android:textColor="@color/work_status_selector_bg"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
 
     </LinearLayout>
 </LinearLayout>

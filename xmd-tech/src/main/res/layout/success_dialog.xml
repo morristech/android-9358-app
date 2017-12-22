@@ -1,47 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
     <RelativeLayout
         android:layout_width="@dimen/game_setting_height"
         android:layout_height="wrap_content"
         android:background="@drawable/round_rect_white_lucency_bg"
         android:orientation="vertical"
-        android:paddingTop="@dimen/margin_25"
         android:paddingBottom="@dimen/margin_25"
-        >
-       <ImageView
-           android:id="@+id/icon_success"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:src="@drawable/icon_result_ok"
-           android:layout_centerHorizontal="true"
-           />
+        android:paddingTop="@dimen/margin_25">
+        <ImageView
+            android:id="@+id/icon_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_result_ok"/>
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/fontSize"
-            android:textColor="@color/color_main_title"
-            android:text="@string/exchange_success_wait_club_handle"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/icon_success"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_25"
             android:paddingBottom="@dimen/margin_10"
-            />
+            android:text="@string/exchange_success_wait_club_handle"
+            android:textColor="@color/color_main_title"
+            android:textSize="@dimen/fontSize"
+        />
         <Button
             android:id="@+id/btn_sure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text"
             android:layout_marginTop="@dimen/margin_25"
-
+            android:background="@drawable/bg"
             android:text="@string/make_sure"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontHead"
-            android:background="@drawable/bg"
             android:visibility="gone"
-            />
+        />
 
     </RelativeLayout>
 

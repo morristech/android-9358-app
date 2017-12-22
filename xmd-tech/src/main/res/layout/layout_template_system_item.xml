@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/rl_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/img_system_check"
@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:paddingBottom="@dimen/margin_20"
         android:paddingLeft="@dimen/padding_15"
         android:paddingRight="@dimen/padding_15"
         android:paddingTop="@dimen/margin_20"
-        android:paddingBottom="@dimen/margin_20"
-        android:src="@drawable/radio" />
+        android:src="@drawable/radio"/>
 
     <TextView
         android:id="@+id/tv_system_content"
@@ -28,13 +28,13 @@
         android:layout_toRightOf="@id/img_system_check"
         android:lineSpacingMultiplier="1.2"
         android:textColor="@color/nearby_text_black_light"
-        android:textSize="@dimen/fontBody" />
+        android:textSize="@dimen/fontBody"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/img_system_check"
-        android:background="@color/indicator_normal_color" />
+        android:background="@color/indicator_normal_color"/>
 
 </RelativeLayout>

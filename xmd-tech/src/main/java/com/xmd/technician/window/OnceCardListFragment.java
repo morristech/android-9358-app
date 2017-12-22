@@ -51,15 +51,13 @@ public class OnceCardListFragment extends BaseFragment {
     TextView tvCreditGiftTable;
     @BindView(R.id.list)
     RecyclerView recyclerView;
-
+    Map<String, Object> params = new HashMap<>();
     private Subscription mOnceCardListSubscription;
     private OnceCardHelper mOnceCardHelper;
     private int mTotalAmount;
     private List<View> tableViews;
     private List<OnceCardItemBean> onCardList;
     private MallPackageListAdapter adapter;
-    Map<String, Object> params = new HashMap<>();
-
 
     public static OnceCardListFragment getInstance(int totalAmount) {
         OnceCardListFragment of = new OnceCardListFragment();

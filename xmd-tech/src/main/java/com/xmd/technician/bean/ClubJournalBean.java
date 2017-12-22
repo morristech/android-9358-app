@@ -11,6 +11,17 @@ import android.os.Parcelable;
 public class ClubJournalBean implements Parcelable {
 
 
+    public static final Creator<ClubJournalBean> CREATOR = new Creator<ClubJournalBean>() {
+        @Override
+        public ClubJournalBean createFromParcel(Parcel source) {
+            return new ClubJournalBean(source);
+        }
+
+        @Override
+        public ClubJournalBean[] newArray(int size) {
+            return new ClubJournalBean[size];
+        }
+    };
     /**
      * journalId : 99
      * sequenceNo : 2
@@ -32,6 +43,21 @@ public class ClubJournalBean implements Parcelable {
     public String shareUrl;
     public int selectedStatus; //1可被选中且未被选中，2，可被选中且已被选中
 
+    public ClubJournalBean() {
+    }
+
+    protected ClubJournalBean(Parcel in) {
+        this.journalId = in.readString();
+        this.sequenceNo = in.readInt();
+        this.title = in.readString();
+        this.subTitle = in.readString();
+        this.modifyDate = in.readString();
+        this.templateId = in.readInt();
+        this.image = in.readString();
+        this.shareUrl = in.readString();
+        this.selectedStatus = in.readInt();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -49,31 +75,4 @@ public class ClubJournalBean implements Parcelable {
         dest.writeString(this.shareUrl);
         dest.writeInt(this.selectedStatus);
     }
-
-    public ClubJournalBean() {
-    }
-
-    protected ClubJournalBean(Parcel in) {
-        this.journalId = in.readString();
-        this.sequenceNo = in.readInt();
-        this.title = in.readString();
-        this.subTitle = in.readString();
-        this.modifyDate = in.readString();
-        this.templateId = in.readInt();
-        this.image = in.readString();
-        this.shareUrl = in.readString();
-        this.selectedStatus = in.readInt();
-    }
-
-    public static final Creator<ClubJournalBean> CREATOR = new Creator<ClubJournalBean>() {
-        @Override
-        public ClubJournalBean createFromParcel(Parcel source) {
-            return new ClubJournalBean(source);
-        }
-
-        @Override
-        public ClubJournalBean[] newArray(int size) {
-            return new ClubJournalBean[size];
-        }
-    };
 }

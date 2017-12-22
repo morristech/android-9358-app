@@ -94,7 +94,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
         }
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constant.KEY_CURRENT_POSTER, (Parcelable) mPosterBean);
-        bundle.putString(Constant.KEY_QR_CODE_URL,mQrCodeUrl);
+        bundle.putString(Constant.KEY_QR_CODE_URL, mQrCodeUrl);
         mFragments.get(1).setArguments(bundle);
 
         if (null != mPosterBean && mPosterBean.id > 0) {
@@ -141,7 +141,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
                 }
                 if (getImageBitmap() != null) {
                     showLoading("正在上传照片...");
-                    ImageUploader.getInstance().uploadBitmap(ImageUploader.TYPE_TECH_POSTER,getImageBitmap());
+                    ImageUploader.getInstance().uploadBitmap(ImageUploader.TYPE_TECH_POSTER, getImageBitmap());
                 } else if (Utils.isNotEmpty(selectedImageId)) {
                     creditSave();
                 } else {

@@ -195,7 +195,6 @@ public class SelectCouponFragment extends BaseFragment {
             if (bean.isSelected == Constant.COUPON_IS_SELECTED_TRUE) {
                 setAllCouponSelected();
             } else {
-                XLogger.i(">>>","mSe>"+mSelectedPosition);
                 tvAllCoupon.setSelected(false);
                 if (mSelectedPosition == -1 || mSelectedCoupon == null) { //之前选中的全部
                     bean.isSelected = Constant.COUPON_IS_SELECTED_TRUE;

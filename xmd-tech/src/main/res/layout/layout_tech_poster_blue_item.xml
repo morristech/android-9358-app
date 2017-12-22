@@ -111,10 +111,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_poster_tech_name"
                     android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/img_poster_qr_code"
                     android:textColor="#779ce0"
                     android:textSize="8sp"
-                    android:layout_marginTop="5dp"
                     tools:text="关注9358快来预约我吧"/>
             </RelativeLayout>
 
@@ -127,7 +127,7 @@
                 android:src="@drawable/icon_poster_delete"/>
         </RelativeLayout>
 
-        <include layout="@layout/layout_poster_bottom_btn" />
+        <include layout="@layout/layout_poster_bottom_btn"/>
     </LinearLayout>
 
 

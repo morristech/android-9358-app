@@ -35,6 +35,11 @@ import butterknife.OnClick;
 
 public class TechPersonalRankingDetailActivity extends BaseActivity implements BaseFragment.IFragmentCallback {
 
+    public static final String FORMAT_YEAR = "yyyy-MM-dd";
+    public static final String FORMAT_MONTH = "MM月dd日";
+    private final long DAY_MILLISECOND = 24 * 3600 * 1000l;//24小时毫秒值
+    private final long WEEK_MILLISECOND = 7 * 24 * 3600 * 1000l;//7*24小时
+    public int mTimeFilterType = 1;
     @BindView(R.id.toolbar_back)
     ImageView toolbarBack;
     @BindView(R.id.toolbar_title)
@@ -65,14 +70,6 @@ public class TechPersonalRankingDetailActivity extends BaseActivity implements B
     TextView timeToday;
     @BindView(R.id.empty_view_widget)
     EmptyView emptyView;
-
-
-    public static final String FORMAT_YEAR = "yyyy-MM-dd";
-    public static final String FORMAT_MONTH = "MM月dd日";
-
-    public int mTimeFilterType = 1;
-    private final long DAY_MILLISECOND = 24 * 3600 * 1000l;//24小时毫秒值
-    private final long WEEK_MILLISECOND = 7 * 24 * 3600 * 1000l;//7*24小时
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private ArrayBottomPopupWindow<String> mTimeFilterPopupWindow;
     private long mCurrentMillisecond = 0;  //当前显示日期毫秒日
@@ -94,6 +91,7 @@ public class TechPersonalRankingDetailActivity extends BaseActivity implements B
         initTimeFilterPopupWindowView();
         setStatusBarColor();
     }
+
     private void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.parseColor("#F36B5A"));

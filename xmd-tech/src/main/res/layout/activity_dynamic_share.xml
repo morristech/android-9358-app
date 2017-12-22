@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10"
         android:scaleType="center"
-        android:src="@drawable/img_dynamic_empty" />
+        android:src="@drawable/img_dynamic_empty"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_marginTop="@dimen/margin_15"
                 android:background="@drawable/icon22"
                 app:borderRadius="@dimen/search_margin"
-                app:type="round" />
+                app:type="round"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                         android:maxEms="4"
                         android:singleLine="true"
                         android:textColor="@color/color_main_head"
-                        android:textSize="@dimen/fontHead" />
+                        android:textSize="@dimen/fontHead"/>
 
                     <LinearLayout
                         android:id="@+id/ll_tech_code"
@@ -74,7 +74,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="[" />
+                            android:text="["/>
 
                         <TextView
                             android:id="@+id/user_card_num"
@@ -82,12 +82,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/two_space"
                             android:layout_marginRight="@dimen/two_space"
-                            android:textColor="@color/text_color_yellow" />
+                            android:textColor="@color/text_color_yellow"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="]" />
+                            android:text="]"/>
 
                     </LinearLayout>
 
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_space"
                     android:textColor="@color/phone_number_text_color"
-                    android:textSize="@dimen/fontBody" />
+                    android:textSize="@dimen/fontBody"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -110,7 +110,7 @@
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_10"
             android:layout_weight="1"
-            android:src="@drawable/icon23" />
+            android:src="@drawable/icon23"/>
 
 
     </LinearLayout>
@@ -125,6 +125,6 @@
         android:background="@drawable/rect_bg"
         android:gravity="center"
         android:text="@string/coupon_fragment_share"
-        android:textColor="@color/color_white" />
+        android:textColor="@color/color_white"/>
 
 </LinearLayout>

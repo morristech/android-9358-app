@@ -70,8 +70,6 @@ public class ApplicationRecordFragment extends BaseListFragment<ApplicationBean>
     }
 
 
-
-
     @Override
     public void onSayHiButtonClicked(ApplicationBean bean) {
 

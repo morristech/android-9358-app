@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.event.EventClickTechAvatar;
 import com.xmd.app.event.UserInfoChangedEvent;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -54,9 +55,6 @@ public class TechSalaryFragment extends BaseFragment {
     TextView tvTableCustomer;
     @BindView(R2.id.table_customer_line)
     View tableCustomerLine;
-//    @BindView(R2.id.stationary_scroll_view)
-//    StationaryScrollView stationaryScrollView;
-
 
     public static final int TIME_FILTER_TYPE_DAY = 0; //天
     public static final int TIME_FILTER_TYPE_MONTH = 1; //月
@@ -90,6 +88,12 @@ public class TechSalaryFragment extends BaseFragment {
         if (user != null) {
             Glide.with(getActivity()).load(user.getAvatar()).error(R.drawable.img_default_avatar).into(imgToolbarLeft);
         }
+        imgToolbarLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new EventClickTechAvatar());
+            }
+        });
         initTableView();
         initializationTime();
         initTimeFilterFragment();

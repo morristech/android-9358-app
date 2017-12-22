@@ -16,6 +16,8 @@ import java.util.List;
 
 public class OnceCardHelper {
 
+    public static OnceCardHelper mOnceCardHelper = new OnceCardHelper();
+    public int itemCardSize, packageSize, creditSize;
     private List<OnceCardItemBean> mCardItemBeanList;
     private List<OnceCardBean> mItemCardBeanList; //次卡
     private List<OnceCardBean> mItemPackageBeanList;
@@ -24,9 +26,6 @@ public class OnceCardHelper {
     private List<OnceCardItemBean> mOnceCardList;
     private List<OnceCardItemBean> mPackageList;
     private List<OnceCardItemBean> mCreditGiftList;
-
-    public int itemCardSize, packageSize, creditSize;
-    public static OnceCardHelper mOnceCardHelper = new OnceCardHelper();
 
     public static OnceCardHelper getInstance() {
         return mOnceCardHelper;

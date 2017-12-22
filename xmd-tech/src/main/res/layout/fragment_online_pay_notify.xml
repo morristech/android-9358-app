@@ -2,31 +2,31 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="fragment"
-            type="com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment" />
+            type="com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment"/>
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context="com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment"
-        android:background="@color/color_white">
+                 xmlns:tools="http://schemas.android.com/tools"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="@color/color_white"
+                 tools:context="com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{fragment.errorString==null?View.VISIBLE:View.GONE}" />
+            android:visibility="@{fragment.errorString==null?View.VISIBLE:View.GONE}"/>
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{fragment.showLoading?View.VISIBLE:View.GONE}" />
+            android:visibility="@{fragment.showLoading?View.VISIBLE:View.GONE}"/>
 
 
         <TextView
@@ -38,6 +38,6 @@
             android:text="@{fragment.errorString}"
             android:textColor="@color/list_item_label_color"
             android:textSize="@dimen/fontBody"
-            android:visibility="@{fragment.errorString==null?View.GONE:View.VISIBLE}" />
+            android:visibility="@{fragment.errorString==null?View.GONE:View.VISIBLE}"/>
     </FrameLayout>
 </layout>

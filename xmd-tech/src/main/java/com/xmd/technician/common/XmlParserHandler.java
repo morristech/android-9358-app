@@ -14,6 +14,8 @@ import java.util.List;
  * 对XML文件进行解析
  */
 public class XmlParserHandler extends DefaultHandler {
+    ProvinceInfo provinceInfo = new ProvinceInfo();
+    CityInfo cityInfo = new CityInfo();
     private List<ProvinceInfo> provinceList = new ArrayList<ProvinceInfo>();
 
     public XmlParserHandler() {
@@ -26,9 +28,6 @@ public class XmlParserHandler extends DefaultHandler {
     @Override
     public void startDocument() throws SAXException {
     }
-
-    ProvinceInfo provinceInfo = new ProvinceInfo();
-    CityInfo cityInfo = new CityInfo();
 
     @Override
     public void startElement(String uri, String localName, String qName,

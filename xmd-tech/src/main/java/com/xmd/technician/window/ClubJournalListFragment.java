@@ -107,7 +107,6 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
         super.onItemClicked(bean);
         if (Utils.isNotEmpty(bean.shareUrl)) {
             ShareDetailActivity.startShareDetailActivity(getActivity(), bean.shareUrl, ResourceUtils.getString(R.string.club_journal), false);
-
         } else {
             return;
         }

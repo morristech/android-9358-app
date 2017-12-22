@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+              android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <CheckBox
         android:id="@+id/service_name"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_view_height"
-        android:paddingLeft="@dimen/personal_info_margin_top"
-        android:drawableLeft="@drawable/check_box_style_selector"
-        android:drawablePadding="@dimen/personal_margin"
         android:background="@color/colorServiceName"
         android:button="@null"
+        android:drawableLeft="@drawable/check_box_style_selector"
+        android:drawablePadding="@dimen/personal_margin"
+        android:paddingLeft="@dimen/personal_info_margin_top"
+        android:text="11"
         android:textColor="@color/color_main_title"
-        android:textSize="@dimen/fontTitle"
-        android:text="11"/>
+        android:textSize="@dimen/fontTitle"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_service_divide" />
+        android:background="@color/color_service_divide"/>
 
     <com.xmd.technician.widget.HeightListView
         android:id="@+id/item_list"
@@ -29,23 +29,23 @@
         android:dividerHeight="@dimen/line_divide_height"
         android:scrollbars="none"/>
 
-   <!-- <com.xmd.technician.widget.PhotoGridView
-        android:id="@+id/item_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnWidth="@dimen/coupon_item_height"
-        android:background="@android:color/white"
-        android:listSelector="@android:color/transparent"
-        android:gravity="center"
-        android:horizontalSpacing="@dimen/app_default_padding"
-        android:numColumns="1"
-        android:padding="@dimen/app_default_padding"
-        android:scrollbars="none"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="@dimen/app_default_padding" />-->
+    <!-- <com.xmd.technician.widget.PhotoGridView
+         android:id="@+id/item_list"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:columnWidth="@dimen/coupon_item_height"
+         android:background="@android:color/white"
+         android:listSelector="@android:color/transparent"
+         android:gravity="center"
+         android:horizontalSpacing="@dimen/app_default_padding"
+         android:numColumns="1"
+         android:padding="@dimen/app_default_padding"
+         android:scrollbars="none"
+         android:stretchMode="columnWidth"
+         android:verticalSpacing="@dimen/app_default_padding" />-->
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_service_divide" />
+        android:background="@color/color_service_divide"/>
 </LinearLayout>

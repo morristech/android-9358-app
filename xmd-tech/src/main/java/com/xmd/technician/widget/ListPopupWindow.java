@@ -21,10 +21,6 @@ import butterknife.BindView;
  */
 public class ListPopupWindow<T> extends BasePopupWindow {
 
-    public interface Callback<T> {
-        void onPopupWindowItemClicked(T bean);
-    }
-
     @BindView(R.id.ll_popup_window)
     LinearLayout mContainer;
 
@@ -69,5 +65,9 @@ public class ListPopupWindow<T> extends BasePopupWindow {
             }
         }
 
+    }
+
+    public interface Callback<T> {
+        void onPopupWindowItemClicked(T bean);
     }
 }

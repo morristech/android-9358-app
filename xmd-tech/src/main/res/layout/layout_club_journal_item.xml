@@ -25,9 +25,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                tools:text="sss"
-                android:textSize="12sp"
                 android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="sss"
             />
         </FrameLayout>
 

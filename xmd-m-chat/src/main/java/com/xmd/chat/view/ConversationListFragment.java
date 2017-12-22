@@ -123,7 +123,6 @@ public class ConversationListFragment extends BaseFragment {
 
         loadData(null);
         EventBusSafeRegister.register(this);
-
         mBinding.setData(this);
     }
 

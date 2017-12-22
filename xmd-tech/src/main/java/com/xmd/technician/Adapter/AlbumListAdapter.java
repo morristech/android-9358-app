@@ -26,22 +26,14 @@ import butterknife.ButterKnife;
 
 public class AlbumListAdapter extends RecyclerView.Adapter {
 
-    public interface OnItemManagerClickListener {
-        void onAddAlbum();
-
-        void onDeleteAlbum(int position);
-    }
-
-    private static final int TYPE_PHOTO = 0;
-    private static final int TYPE_ADD = 1;
     public static final int ALBUM_STATUS_NORMAL = 0; //正常状态
     public static final int ALBUM_STATUS_EDIT = 1; //编辑状态
-
+    private static final int TYPE_PHOTO = 0;
+    private static final int TYPE_ADD = 1;
     private List<AlbumInfo> mAlbums;
     private Context mContext;
     private OnItemManagerClickListener mOnItemClickListener;
     private int mAlbumStatus; //
-
     public AlbumListAdapter(Context context, OnItemManagerClickListener itemClickListener) {
         mContext = context;
         mAlbums = new ArrayList<>();
@@ -139,6 +131,12 @@ public class AlbumListAdapter extends RecyclerView.Adapter {
             }
         }
         return ids;
+    }
+
+    public interface OnItemManagerClickListener {
+        void onAddAlbum();
+
+        void onDeleteAlbum(int position);
     }
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder {

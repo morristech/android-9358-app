@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.Constants;
+import com.xmd.app.event.EventClickTechAvatar;
 import com.xmd.app.event.UserInfoChangedEvent;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.DropDownMenuDialog;
@@ -59,6 +59,12 @@ public class ContactFragment extends BaseFragment {
         isFromManager = getArguments().getString(ConstantResources.INTENT_APP_TYPE).equals(ConstantResources.APP_TYPE_MANAGER) ? true : false;
         rlRightMore = (RelativeLayout) view.findViewById(R.id.rl_toolbar_right);
         mRoundImageHead = (RoundImageView) view.findViewById(R.id.img_toolbar_right_back);
+        mRoundImageHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new EventClickTechAvatar());
+            }
+        });
         return view;
     }
 

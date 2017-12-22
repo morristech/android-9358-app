@@ -27,22 +27,24 @@ import com.xmd.technician.R;
  * @author zhy
  */
 public class RoundImageView extends ImageView {
+    public static final int TYPE_CIRCLE = 0;
+    public static final int TYPE_ROUND = 1;
     /**
      * 图片的类型，圆形or圆角
      */
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
-    private int type;
-    public static final int TYPE_CIRCLE = 0;
-    public static final int TYPE_ROUND = 1;
     /**
      * 圆角大小的默认值
      */
     private static final int BODER_RADIUS_DEFAULT = 10;
+    private static final String STATE_INSTANCE = "state_instance";
+    private static final String STATE_TYPE = "state_type";
+    private static final String STATE_BORDER_RADIUS = "state_border_radius";
+    private int type;
     /**
      * 圆角的大小
      */
     private int mBorderRadius;
-
     /**
      * 绘图的Paint
      */
@@ -64,6 +66,13 @@ public class RoundImageView extends ImageView {
      */
     private int mWidth;
     private RectF mRoundRect;
+
+//    @Override
+//    public void setScaleType(ScaleType scaleType) {
+//        if (scaleType != SCALE_TYPE) {
+//            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
+//        }
+//    }
 
     public RoundImageView(Context context, AttributeSet attrs) {
 
@@ -104,13 +113,6 @@ public class RoundImageView extends ImageView {
         }
 
     }
-
-//    @Override
-//    public void setScaleType(ScaleType scaleType) {
-//        if (scaleType != SCALE_TYPE) {
-//            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
-//        }
-//    }
 
     /**
      * 初始化BitmapShader
@@ -192,10 +194,6 @@ public class RoundImageView extends ImageView {
         drawable.draw(canvas);
         return bitmap;
     }
-
-    private static final String STATE_INSTANCE = "state_instance";
-    private static final String STATE_TYPE = "state_type";
-    private static final String STATE_BORDER_RADIUS = "state_border_radius";
 
     @Override
     protected Parcelable onSaveInstanceState() {

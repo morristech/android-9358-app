@@ -17,6 +17,7 @@ import com.xmd.technician.common.Utils;
  * Created by Administrator on 2016/11/29.
  */
 public class SlidingMenu extends HorizontalScrollView {
+    public boolean isOpen;
     /**
      * 屏幕宽度
      */
@@ -30,21 +31,11 @@ public class SlidingMenu extends HorizontalScrollView {
      */
     private int mMenuWidth;
     private int mHalfMenuWidth;
-
-    public boolean isOpen;
     private boolean once;
 
     private ViewGroup mMenu;
     private ViewGroup mContent;
     private CloseOrOpenListener mCloseOrOpenListener;
-
-    public interface CloseOrOpenListener {
-        void isOpen(boolean isOpen);
-    }
-
-    public void setOnCloseOrOpenListener(CloseOrOpenListener statusChangedListener) {
-        this.mCloseOrOpenListener = statusChangedListener;
-    }
 
     public SlidingMenu(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -78,6 +69,10 @@ public class SlidingMenu extends HorizontalScrollView {
         this(context, null, 0);
     }
 
+    public void setOnCloseOrOpenListener(CloseOrOpenListener statusChangedListener) {
+        this.mCloseOrOpenListener = statusChangedListener;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         /**
@@ -107,7 +102,6 @@ public class SlidingMenu extends HorizontalScrollView {
         }
     }
 
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
 //        int action = ev.getAction();
@@ -132,7 +126,6 @@ public class SlidingMenu extends HorizontalScrollView {
         return true;
     }
 
-
     /**
      * 打开菜单
      */
@@ -145,7 +138,6 @@ public class SlidingMenu extends HorizontalScrollView {
         isOpen = true;
         mCloseOrOpenListener.isOpen(true);
     }
-
 
     /**
      * 关闭菜单
@@ -189,6 +181,10 @@ public class SlidingMenu extends HorizontalScrollView {
 //		ViewHelper.setScaleX(mContent, rightScale);
 //		ViewHelper.setScaleY(mContent, rightScale);
 
+    }
+
+    public interface CloseOrOpenListener {
+        void isOpen(boolean isOpen);
     }
 
 

@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/default_dialog_width"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+              android:layout_width="@dimen/default_dialog_width"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:orientation="vertical">
 
     <CheckBox
         android:id="@+id/check_box_monday"
         style="@style/dialog_check_box_style"
-        android:text="星期一" />
+        android:text="星期一"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <CheckBox
         android:id="@+id/check_box_tuesday"
         style="@style/dialog_check_box_style"
-        android:text="星期二" />
+        android:text="星期二"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <CheckBox
         android:id="@+id/check_box_wednesday"
         style="@style/dialog_check_box_style"
-        android:text="星期三" />
+        android:text="星期三"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <CheckBox
         android:id="@+id/check_box_thursday"
         style="@style/dialog_check_box_style"
-        android:text="星期四" />
+        android:text="星期四"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <CheckBox
         android:id="@+id/check_box_friday"
         style="@style/dialog_check_box_style"
-        android:text="星期五" />
+        android:text="星期五"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <CheckBox
         android:id="@+id/check_box_saturday"
         style="@style/dialog_check_box_style"
-        android:text="星期六" />
+        android:text="星期六"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <CheckBox
         android:id="@+id/check_box_sunday"
         style="@style/dialog_check_box_style"
-        android:text="星期日" />
+        android:text="星期日"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,12 +88,12 @@
             android:background="@drawable/default_button_background_selector"
             android:text="@string/cancel"
             android:textColor="@color/work_status_selector_bg"
-            android:textSize="@dimen/fontHead" />
+            android:textSize="@dimen/fontHead"/>
 
         <View
             android:layout_width="@dimen/line_divide_height"
             android:layout_height="match_parent"
-            android:background="@color/color_line_divide" />
+            android:background="@color/color_line_divide"/>
 
         <Button
             android:id="@+id/input_dialog_button_confirm"
@@ -103,7 +103,7 @@
             android:background="@drawable/default_button_background_selector"
             android:text="@string/confirm"
             android:textColor="@color/work_status_selector_bg"
-            android:textSize="@dimen/fontHead" />
+            android:textSize="@dimen/fontHead"/>
 
     </LinearLayout>
 </LinearLayout>

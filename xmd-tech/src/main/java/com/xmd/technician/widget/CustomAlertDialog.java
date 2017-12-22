@@ -26,7 +26,6 @@ public class CustomAlertDialog extends Dialog {
 
     public static class Builder {
 
-        private Context mContext;
         @BindView(R.id.dialog_title)
         TextView mTvTitle;
         @BindView(R.id.flContentContainer)
@@ -37,7 +36,7 @@ public class CustomAlertDialog extends Dialog {
         Button mBtnNegative;
         @BindView(R.id.dialog_positive)
         Button mBtnPositive;
-
+        private Context mContext;
         private String mTitle;
         private String mMessage;
         private String mNegativeText;

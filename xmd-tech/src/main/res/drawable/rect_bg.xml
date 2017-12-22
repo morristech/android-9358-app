@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
+    <item>
         <shape android:shape="rectangle">
-            <stroke android:color="@color/stroke_color" android:width="0.5dp"/>
+            <stroke android:width="0.5dp" android:color="@color/stroke_color"/>
             <corners android:radius="5dp"/>
             <solid android:color="@color/color_main_btn"></solid>
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <stroke android:color="@color/stroke_color" android:width="0.5dp"/>
+            <stroke android:width="0.5dp" android:color="@color/stroke_color"/>
             <corners android:radius="5dp"/>
             <solid android:color="@color/color_btn_chat"></solid>
         </shape>

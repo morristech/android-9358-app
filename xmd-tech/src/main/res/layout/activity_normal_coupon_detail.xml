@@ -12,20 +12,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_space"
         android:scrollbars="none"
-        >
+    >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+        >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
                 android:orientation="vertical"
-                >
+            >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                     android:paddingLeft="@dimen/fontTitle"
                     android:paddingRight="20dp"
                     android:paddingTop="17dp"
-                    >
+                >
 
                     <View
                         android:layout_width="0dp"
@@ -44,7 +44,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/color_remark_text"
-                        />
+                    />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
                         android:text="@string/share_with_red_packet"
                         android:textColor="@color/color_main_btn"
                         android:textSize="@dimen/fontSize"
-                        />
+                    />
 
                     <View
                         android:layout_width="0dp"
@@ -64,7 +64,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/color_remark_text"
-                        />
+                    />
 
                 </LinearLayout>
 
@@ -78,7 +78,7 @@
                     android:paddingRight="@dimen/margin_20"
                     android:textColor="@color/alert_text_color"
                     android:textSize="@dimen/fontTitle_small"
-                    />
+                />
 
                 <Button
                     android:id="@+id/btn_share"
@@ -89,11 +89,11 @@
                     android:layout_marginRight="@dimen/coupon_margin_20"
                     android:layout_marginTop="19dp"
                     android:background="@drawable/share_button_selector_bg"
+                    android:gravity="center"
                     android:text="@string/share_now"
                     android:textColor="@color/color_white"
-                    android:gravity="center"
                     android:textSize="@dimen/fontHead"
-                    />
+                />
             </LinearLayout>
 
             <LinearLayout
@@ -104,14 +104,14 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/coupon_margin_20"
                 android:paddingRight="@dimen/coupon_margin_20"
-                >
+            >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="@dimen/coupon_margin_17"
-                    >
+                >
 
                     <View
                         android:layout_width="0dp"
@@ -119,7 +119,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/color_remark_text"
-                        />
+                    />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
                         android:textColor="@color/color_main_btn"
                         android:textSize="@dimen/fontSize"
 
-                        />
+                    />
 
                     <View
                         android:layout_width="0dp"
@@ -140,7 +140,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/color_remark_text"
-                        />
+                    />
                 </LinearLayout>
 
                 <LinearLayout
@@ -150,7 +150,7 @@
                     android:layout_marginTop="@dimen/margin_15"
                     android:background="@drawable/qr_code_bg"
                     android:orientation="horizontal"
-                    >
+                >
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -158,7 +158,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        >
+                    >
 
                         <ImageView
                             android:id="@+id/money_sign"
@@ -168,17 +168,17 @@
                             android:layout_marginTop="@dimen/margin_10"
                             android:paddingLeft="@dimen/coupon_margin_17"
                             android:src="@drawable/black_money"
-                            />
+                        />
 
                         <TextView
                             android:id="@+id/tv_commission"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:layout_toRightOf="@+id/money_sign"
                             android:textColor="@color/color_main_head"
-                            android:layout_centerHorizontal="true"
                             android:textSize="18sp"
-                            />
+                        />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
                             android:text="@string/coupon_alert_message"
                             android:textColor="@color/coupon_code_text_color"
                             android:textSize="@dimen/fontTitle"
-                            />
+                        />
                     </RelativeLayout>
 
                     <ImageView
@@ -198,7 +198,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/margin_10"
                         android:src="@drawable/icon23"
-                        />
+                    />
                 </LinearLayout>
             </LinearLayout>
 
@@ -210,13 +210,13 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/coupon_margin_20"
 
-                >
+            >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/coupon_margin_17"
-                    >
+                >
 
                     <TextView
                         android:id="@+id/limit_project"
@@ -227,7 +227,7 @@
                         android:text="限定项目"
                         android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontTitle"
-                        />
+                    />
 
                     <com.xmd.technician.widget.FlowLayout
                         android:id="@+id/limit_project_list"
@@ -236,7 +236,7 @@
                         android:layout_below="@id/limit_project"
                         android:layout_marginLeft="@dimen/margin_25"
                         android:layout_marginRight="@dimen/coupon_margin_20"
-                        />
+                    />
                 </RelativeLayout>
 
                 <View
@@ -250,7 +250,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/coupon_margin_17"
-                    >
+                >
 
                     <TextView
                         android:id="@+id/limit_time"
@@ -262,7 +262,7 @@
                         android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontTitle"
 
-                        />
+                    />
 
                     <TextView
                         android:id="@+id/tv_coupon_duration"
@@ -273,7 +273,7 @@
                         android:paddingBottom="@dimen/coupon_margin_17"
                         android:paddingRight="@dimen/coupon_margin_20"
                         android:paddingTop="10dp"
-                        />
+                    />
                 </RelativeLayout>
 
                 <View
@@ -286,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/coupon_margin_17"
-                    >
+                >
 
                     <TextView
                         android:id="@+id/limit_rule"
@@ -297,19 +297,19 @@
                         android:text="@string/normal_coupon_detail_activity_act_content_desc"
                         android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontTitle"
-                        />
+                    />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/limit_rule"
-                        >
+                    >
 
                         <WebView
                             android:id="@+id/wv_act_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            />
+                        />
                     </LinearLayout>
 
                 </RelativeLayout>

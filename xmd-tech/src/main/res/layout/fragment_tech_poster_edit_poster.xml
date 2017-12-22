@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,9 +22,9 @@
                 android:drawablePadding="@dimen/margin_10"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/margin_10"
-                android:text="@string/tech_poster_edit_step_two" />
+                android:text="@string/tech_poster_edit_step_two"/>
 
-            <View style="@style/horizontal_divider_line" />
+            <View style="@style/horizontal_divider_line"/>
 
             <ImageView
                 android:id="@+id/img_poster_select_img"
@@ -34,7 +34,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="@dimen/margin_10"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_group_add_img" />
+                android:src="@drawable/img_group_add_img"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -52,7 +52,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_poster_flower_small" />
+                android:src="@drawable/img_poster_flower_small"/>
         </RelativeLayout>
 
         <ImageView
@@ -61,7 +61,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="13dp"
             android:layout_marginTop="25dp"
-            android:src="@drawable/icon_poster_preview" />
+            android:src="@drawable/icon_poster_preview"/>
     </RelativeLayout>
 
 
@@ -79,9 +79,9 @@
             android:drawablePadding="@dimen/margin_10"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/margin_10"
-            android:text="@string/tech_poster_edit_step_three" />
+            android:text="@string/tech_poster_edit_step_three"/>
 
-        <View style="@style/horizontal_divider_line" />
+        <View style="@style/horizontal_divider_line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                 android:id="@+id/iv_poster_primary_title"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/poster_content_select_bg" />
+                android:background="@drawable/poster_content_select_bg"/>
 
             <TextView
                 android:layout_width="@dimen/poster_title_wight"
@@ -104,7 +104,7 @@
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_primary_title"
                 android:textColor="@color/color_main_title"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <com.xmd.technician.widget.ClearableEditText
                 android:id="@+id/edit_poster_primary_title"
@@ -119,7 +119,7 @@
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
                 android:textColorHint="@color/color_main_hint"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -136,7 +136,7 @@
                 android:id="@+id/iv_poster_minor_title"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/poster_content_select_bg" />
+                android:background="@drawable/poster_content_select_bg"/>
 
             <TextView
                 android:layout_width="@dimen/poster_title_wight"
@@ -144,7 +144,7 @@
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_minor_title"
                 android:textColor="@color/color_main_title"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <com.xmd.technician.widget.ClearableEditText
                 android:id="@+id/edit_poster_minor_title"
@@ -159,7 +159,7 @@
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
                 android:textColorHint="@color/color_main_hint"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -176,7 +176,7 @@
                 android:id="@+id/iv_poster_tech_name"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/poster_content_select_bg" />
+                android:background="@drawable/poster_content_select_bg"/>
 
             <TextView
                 android:layout_width="@dimen/poster_title_wight"
@@ -184,7 +184,7 @@
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_nick_name"
                 android:textColor="@color/color_main_title"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <com.xmd.technician.widget.ClearableEditText
                 android:id="@+id/edit_poster_tech_name"
@@ -199,7 +199,7 @@
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
                 android:textColorHint="@color/color_main_hint"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -216,7 +216,7 @@
                 android:id="@+id/iv_poster_tech_number"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/poster_content_select_bg" />
+                android:background="@drawable/poster_content_select_bg"/>
 
             <TextView
                 android:layout_width="@dimen/poster_title_wight"
@@ -224,7 +224,7 @@
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_tech_number"
                 android:textColor="@color/color_main_title"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/edit_poster_tech_number"
@@ -238,7 +238,7 @@
                 android:paddingRight="@dimen/inter_space"
                 android:textColor="@color/color_main_hint"
                 android:textSize="14sp"
-                tools:text="A1008" />
+                tools:text="A1008"/>
 
         </LinearLayout>
 
@@ -257,7 +257,7 @@
                 android:id="@+id/iv_poster_club_name"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/poster_content_select_bg" />
+                android:background="@drawable/poster_content_select_bg"/>
 
             <TextView
                 android:layout_width="@dimen/poster_title_wight"
@@ -265,7 +265,7 @@
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/tech_poster_edit_club_name"
                 android:textColor="@color/color_main_title"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/edit_poster_club_name"
@@ -280,7 +280,7 @@
                 android:textColor="@color/color_main_hint"
                 android:textColorHint="@color/color_main_hint"
                 android:textSize="14sp"
-                tools:text="会所名称" />
+                tools:text="会所名称"/>
 
         </LinearLayout>
 

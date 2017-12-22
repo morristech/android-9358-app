@@ -39,12 +39,6 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
         this.mCardList = beanList;
     }
 
-    public interface ItemClickedInterface {
-        void onShareClicked(OnceCardItemBean bean);
-
-        void onPositiveButtonClicked(OnceCardItemBean bean);
-    }
-
     public void setItemClickedInterface(ItemClickedInterface interfaceClick) {
         this.mCallback = interfaceClick;
     }
@@ -52,7 +46,6 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
     public void setData(List<OnceCardItemBean> beanList) {
         this.mCardList = beanList;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -112,6 +105,12 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mCardList.size();
+    }
+
+    public interface ItemClickedInterface {
+        void onShareClicked(OnceCardItemBean bean);
+
+        void onPositiveButtonClicked(OnceCardItemBean bean);
     }
 
     static class MallPackageViewHolder extends RecyclerView.ViewHolder {

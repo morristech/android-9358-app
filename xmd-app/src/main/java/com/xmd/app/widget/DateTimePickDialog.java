@@ -61,14 +61,6 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener {
                 .setView(dateTimeLayout)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-//                        int today = DateUtils.dateToInt(DateUtils.getCurrentDate());
-//                        int current = DateUtils.dateToInt(dateTime);
-//                        XLogger.i(">>>","today>"+today+"<current>"+current);
-//                        if (current >= today) {
-//                            inputDate.setText(dateTime);
-//                        } else {
-//                            inputDate.setText(DateUtils.getCurrentDate());
-//                        }
                         inputDate.setText(dateTime);
                     }
                 })

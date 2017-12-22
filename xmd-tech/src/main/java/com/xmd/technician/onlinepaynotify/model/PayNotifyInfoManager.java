@@ -39,13 +39,14 @@ import retrofit2.Response;
  */
 public class PayNotifyInfoManager extends Observable {
     private static PayNotifyInfoManager ourInstance = new PayNotifyInfoManager();
-
-    public static PayNotifyInfoManager getInstance() {
-        return ourInstance;
-    }
-
+    private final Object mDataLocker = new Object();
     private boolean mNeedLoadArchivedIds;
-
+    private List<PayNotifyInfo> mData;
+    private long mCurrentStartTime = -1;
+    private long mCurrentEndTime = -1;
+    private Map<String, ArchiveData> mRecentArchivedMaps;
+    private Call<GetPayNotifyListResult> mDataGetCall;
+    private Call<CheckPayNotifyResult> mDataCheckCall;
     private PayNotifyInfoManager() {
         mData = new ArrayList<>();
         mRecentArchivedMaps = new HashMap<>();
@@ -54,24 +55,8 @@ public class PayNotifyInfoManager extends Observable {
         RxBus.getInstance().toObservable(EventLogout.class).subscribe(this::handleLogoutEvent);
     }
 
-    private List<PayNotifyInfo> mData;
-    private long mCurrentStartTime = -1;
-    private long mCurrentEndTime = -1;
-    private Map<String, ArchiveData> mRecentArchivedMaps;
-    private Call<GetPayNotifyListResult> mDataGetCall;
-    private Call<CheckPayNotifyResult> mDataCheckCall;
-    private final Object mDataLocker = new Object();
-
-    private static class ArchiveData {
-        public String id;
-        public long payTime;
-        public int status;
-
-        public ArchiveData(String id, long payTime, int status) {
-            this.id = id;
-            this.payTime = payTime;
-            this.status = status;
-        }
+    public static PayNotifyInfoManager getInstance() {
+        return ourInstance;
     }
 
     /**
@@ -145,7 +130,6 @@ public class PayNotifyInfoManager extends Observable {
         }
         return result;
     }
-
 
     //从网络加载数据
     public void loadDataFromNetwork(long startTime, long endTime, Callback<List<PayNotifyInfo>> callback) {
@@ -275,7 +259,6 @@ public class PayNotifyInfoManager extends Observable {
         }
     }
 
-
     public void setPayNotifyInfoArchived(PayNotifyInfo info) {
         for (PayNotifyInfo notifyInfo : mData) {
             if (notifyInfo.id.equals(info.id)) {
@@ -346,7 +329,6 @@ public class PayNotifyInfoManager extends Observable {
         mNeedLoadArchivedIds = true;
     }
 
-
     private void saveArchivedIds() {
         Iterator<String> iterator = mRecentArchivedMaps.keySet().iterator();
         StringBuilder save = new StringBuilder();
@@ -381,5 +363,17 @@ public class PayNotifyInfoManager extends Observable {
 
     private void handleLogoutEvent(EventLogout event) {
         clearData();
+    }
+
+    private static class ArchiveData {
+        public String id;
+        public long payTime;
+        public int status;
+
+        public ArchiveData(String id, long payTime, int status) {
+            this.id = id;
+            this.payTime = payTime;
+            this.status = status;
+        }
     }
 }

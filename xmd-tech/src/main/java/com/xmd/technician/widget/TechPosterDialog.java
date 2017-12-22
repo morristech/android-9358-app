@@ -68,31 +68,22 @@ public class TechPosterDialog extends Dialog {
         this.isShare = isShare;
     }
 
-    public interface PosterShareOrSaveListener {
-        void posterSave(View view, View dismiss);
-
-        void posterEdit();
-
-        void posterShare(View view, View dismiss);
-
-    }
-
     public TechPosterDialog(Context context) {
         this(context, -1);
 
-    }
-
-
-    public void setPosterListener(PosterShareOrSaveListener posterListener) {
-        this.posterListener = posterListener;
     }
 
     public TechPosterDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
 
+
     protected TechPosterDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+    }
+
+    public void setPosterListener(PosterShareOrSaveListener posterListener) {
+        this.posterListener = posterListener;
     }
 
     public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, Bitmap image, String imageUrl, String shareUrl) {
@@ -207,7 +198,6 @@ public class TechPosterDialog extends Dialog {
 
     }
 
-
     @OnClick({R.id.img_poster_dismiss, R.id.tv_save_poster, R.id.tv_edit_poster, R.id.ll_poster_edit, R.id.ll_poster_share, R.id.tv_poster_save, R.id.tv_share_poster})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -255,6 +245,16 @@ public class TechPosterDialog extends Dialog {
                 break;
 
         }
+    }
+
+
+    public interface PosterShareOrSaveListener {
+        void posterSave(View view, View dismiss);
+
+        void posterEdit();
+
+        void posterShare(View view, View dismiss);
+
     }
 
 }

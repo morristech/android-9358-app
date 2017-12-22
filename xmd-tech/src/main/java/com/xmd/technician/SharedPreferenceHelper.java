@@ -15,10 +15,7 @@ import java.util.Set;
 public class SharedPreferenceHelper {
 
     private static final String SETTING_PREFERENCE = "00DF60D934C0D482F0C950B6D3605F50"; //setting_preference
-    private static SharedPreferences mSettingPreference;
-
     private static final String KEY_DEV_MODE = "e9fbb7c44116f423bbf68ce03f8d1096"; //开发者模式(开发+测试）
-
     private static final String KEY_USER_ACCOUNT = "4E6EF539AAF119D82AC4C2BC84FBA21F";//userAccount
     private static final String KEY_USER_TOKEN = "CE4A0B029C785BFAA2B398C06E1D94C0"; //userToken
     private static final String KEY_USER_NAME = "435E0648D634175C46BD40AC366545A8";//userName
@@ -53,23 +50,19 @@ public class SharedPreferenceHelper {
      */
     private static final String KEY_LAST_AUTO_CHECK_UPGRADE = "85A570AE7CC0F2E82A156E9C61C9E493";//lastAutoCheckUpgrade
     private static final String KEY_LAST_UPLOAD_STAT = "07208C27204A99B2112E6868030C55DC";//lastUploadStat
-
     private static final String KEY_CLIENT_ID = "F3FFE8E1F804F2074AA5CC55233673B8";//clientId
+    private static SharedPreferences mSettingPreference;
 
     public static void initialize() {
         mSettingPreference = TechApplication.getAppContext().getSharedPreferences(SETTING_PREFERENCE, Activity.MODE_PRIVATE);
-    }
-
-    public static void setDevelopMode(boolean debugMode) {
-        mSettingPreference.edit().putBoolean(KEY_DEV_MODE, debugMode).apply();
     }
 
     public static boolean isDevelopMode() {
         return mSettingPreference.getBoolean(KEY_DEV_MODE, false);
     }
 
-    public static void setUserAccount(String userAccount) {
-        mSettingPreference.edit().putString(KEY_USER_ACCOUNT, userAccount).apply();
+    public static void setDevelopMode(boolean debugMode) {
+        mSettingPreference.edit().putBoolean(KEY_DEV_MODE, debugMode).apply();
     }
 
     /**
@@ -81,8 +74,8 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_USER_ACCOUNT, "");
     }
 
-    public static void setUserToken(String userToken) {
-        mSettingPreference.edit().putString(KEY_USER_TOKEN, userToken).apply();
+    public static void setUserAccount(String userAccount) {
+        mSettingPreference.edit().putString(KEY_USER_ACCOUNT, userAccount).apply();
     }
 
     public static void clearUserInfo() {
@@ -104,60 +97,64 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_USER_TOKEN, "");
     }
 
-    public static void setUserName(String username) {
-        mSettingPreference.edit().putString(KEY_USER_NAME, username).apply();
+    public static void setUserToken(String userToken) {
+        mSettingPreference.edit().putString(KEY_USER_TOKEN, userToken).apply();
     }
 
     public static String getUserName() {
         return mSettingPreference.getString(KEY_USER_NAME, "");
     }
 
-    public static void setUserClubId(String clubId) {
-        mSettingPreference.edit().putString(KEY_USER_CLUB_ID, clubId).apply();
+    public static void setUserName(String username) {
+        mSettingPreference.edit().putString(KEY_USER_NAME, username).apply();
     }
 
     public static String getUserClubId() {
         return mSettingPreference.getString(KEY_USER_CLUB_ID, "");
     }
 
-    public static void setUserClubName(String clubName) {
-        mSettingPreference.edit().putString(KEY_USER_CLUB_NAME, clubName).apply();
+    public static void setUserClubId(String clubId) {
+        mSettingPreference.edit().putString(KEY_USER_CLUB_ID, clubId).apply();
     }
 
     public static String getUserClubName() {
         return mSettingPreference.getString(KEY_USER_CLUB_NAME, "");
     }
 
-    public static void setUserClubPosition(String clubPosition) {
-        mSettingPreference.edit().putString(KEY_USER_CLUB_POSITION, clubPosition).apply();
+    public static void setUserClubName(String clubName) {
+        mSettingPreference.edit().putString(KEY_USER_CLUB_NAME, clubName).apply();
     }
 
     public static String getUserClubPosition() {
         return mSettingPreference.getString(KEY_USER_CLUB_POSITION, "");
     }
 
-    public static void setEmchatId(String emchatId) {
-        mSettingPreference.edit().putString(KEY_EMCHAT_ID, emchatId).apply();
+    public static void setUserClubPosition(String clubPosition) {
+        mSettingPreference.edit().putString(KEY_USER_CLUB_POSITION, clubPosition).apply();
     }
 
     public static String getEmchatId() {
         return mSettingPreference.getString(KEY_EMCHAT_ID, "");
     }
 
-    public static void setEMchatPassword(String emchatPassword) {
-        mSettingPreference.edit().putString(KEY_EMCHAT_PASSWORD, emchatPassword).apply();
+    public static void setEmchatId(String emchatId) {
+        mSettingPreference.edit().putString(KEY_EMCHAT_ID, emchatId).apply();
     }
 
     public static String getEMchatPassword() {
         return mSettingPreference.getString(KEY_EMCHAT_PASSWORD, "");
     }
 
-    public static void setUserAvatar(String avatar) {
-        mSettingPreference.edit().putString(KEY_USER_AVATAR, avatar).apply();
+    public static void setEMchatPassword(String emchatPassword) {
+        mSettingPreference.edit().putString(KEY_EMCHAT_PASSWORD, emchatPassword).apply();
     }
 
     public static String getUserAvatar() {
         return mSettingPreference.getString(KEY_USER_AVATAR, "");
+    }
+
+    public static void setUserAvatar(String avatar) {
+        mSettingPreference.edit().putString(KEY_USER_AVATAR, avatar).apply();
     }
 
     public static String getAvatarId() {
@@ -168,25 +165,20 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putString(KEY_AVATAR_ID, avatarId).apply();
     }
 
-    public static void setUserId(String userId) {
-        mSettingPreference.edit().putString(KEY_USER_ID, userId).apply();
-    }
-
     public static String getUserId() {
         return mSettingPreference.getString(KEY_USER_ID, "");
     }
 
-    public static void setSerialNo(String serialNo) {
-        mSettingPreference.edit().putString(KEY_SERIAL_NO, serialNo).apply();
+    public static void setUserId(String userId) {
+        mSettingPreference.edit().putString(KEY_USER_ID, userId).apply();
     }
 
     public static String getSerialNo() {
         return mSettingPreference.getString(KEY_SERIAL_NO, "");
     }
 
-    public static void setServerHost(String serverHost) {
-        XmdNetwork.getInstance().changeServer(serverHost);
-        mSettingPreference.edit().putString(KEY_SERVER_HOST, serverHost).apply();
+    public static void setSerialNo(String serialNo) {
+        mSettingPreference.edit().putString(KEY_SERIAL_NO, serialNo).apply();
     }
 
     /**
@@ -197,6 +189,11 @@ public class SharedPreferenceHelper {
     public static String getServerHost() {
         // return "http://192.168.1.100:8080";
         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
+    }
+
+    public static void setServerHost(String serverHost) {
+        XmdNetwork.getInstance().changeServer(serverHost);
+        mSettingPreference.edit().putString(KEY_SERVER_HOST, serverHost).apply();
     }
 
     public static void setLastAutoCheckUpgrade(long mill) {
@@ -212,28 +209,28 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getLong(KEY_LAST_AUTO_CHECK_UPGRADE, 0);
     }
 
-    public static void setLastUploadStatDate(long lastDate) {
-        mSettingPreference.edit().putLong(KEY_LAST_UPLOAD_STAT, lastDate).apply();
-    }
-
     public static long getLastUploadStatDate() {
         return mSettingPreference.getLong(KEY_LAST_UPLOAD_STAT, 0);
     }
 
-    public static void setClientId(String clientId) {
-        mSettingPreference.edit().putString(KEY_CLIENT_ID, clientId).apply();
+    public static void setLastUploadStatDate(long lastDate) {
+        mSettingPreference.edit().putLong(KEY_LAST_UPLOAD_STAT, lastDate).apply();
     }
 
     public static String getClientId() {
         return mSettingPreference.getString(KEY_CLIENT_ID, AppConfig.sClientId);
     }
 
-    public static void setUserWXUnionid(String unionId) {
-        mSettingPreference.edit().putString(RequestConstant.KEY_USER_WX_UNION_ID, unionId).apply();
+    public static void setClientId(String clientId) {
+        mSettingPreference.edit().putString(KEY_CLIENT_ID, clientId).apply();
     }
 
     public static String getUserWXUnionid() {
         return mSettingPreference.getString(RequestConstant.KEY_USER_WX_UNION_ID, "");
+    }
+
+    public static void setUserWXUnionid(String unionId) {
+        mSettingPreference.edit().putString(RequestConstant.KEY_USER_WX_UNION_ID, unionId).apply();
     }
 
     public static void setUserWXOpenId(String openId) {
@@ -244,12 +241,12 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(RequestConstant.KEY_USER_WX_OPEN_ID, "");
     }
 
-    public static void setBindSuccess(Boolean successed) {
-        mSettingPreference.edit().putBoolean(RequestConstant.KEY_BIND_WX_SUCCESS, successed).apply();
-    }
-
     public static boolean getBindSuccess() {
         return mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS, false);
+    }
+
+    public static void setBindSuccess(Boolean successed) {
+        mSettingPreference.edit().putBoolean(RequestConstant.KEY_BIND_WX_SUCCESS, successed).apply();
     }
 
 //    public static void setUserIsTech(String userChatId, String isTech) {
@@ -277,10 +274,6 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(gameId, "");
     }
 
-    public static void setGameTimeout(int timeoutSecond) {
-        mSettingPreference.edit().putInt(KEY_CLUB_GAME_TIMEOUT, timeoutSecond * 1000).apply();
-    }
-
     public static void setGameMessageId(String gameId, String messageId) {
         mSettingPreference.edit().putString(gameId + "dice", messageId).apply();
     }
@@ -289,9 +282,12 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(gameId + "dice", "");
     }
 
-
     public static Integer getGameTimeout() {
         return mSettingPreference.getInt(KEY_CLUB_GAME_TIMEOUT, 86400 * 1000);
+    }
+
+    public static void setGameTimeout(int timeoutSecond) {
+        mSettingPreference.edit().putInt(KEY_CLUB_GAME_TIMEOUT, timeoutSecond * 1000).apply();
     }
 
     public static void setTechNoOld(String techId, String techNo) {
@@ -306,14 +302,13 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(id, "");
     }
 
-    public static void setVerificationCodeTime(long time) {
-        mSettingPreference.edit().putLong(KEY_VERIFICATION_CODE_TIME, time).apply();
-    }
-
     public static long getVerificationCodeTime() {
         return mSettingPreference.getLong(KEY_VERIFICATION_CODE_TIME, 0);
     }
 
+    public static void setVerificationCodeTime(long time) {
+        mSettingPreference.edit().putLong(KEY_VERIFICATION_CODE_TIME, time).apply();
+    }
 
     public static String getTechNo() {
         return mSettingPreference.getString(KEY_TECH_NO, "");
@@ -331,12 +326,12 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putString(KEY_INVITE_CODE, value).apply();
     }
 
-    public static void setLoginType(int loginType) {
-        mSettingPreference.edit().putInt(KEY_LOGIN_TYPE, loginType).apply();
-    }
-
     public static int getLoginType() {
         return mSettingPreference.getInt(KEY_LOGIN_TYPE, LoginTechnician.LOGIN_TYPE_PHONE);
+    }
+
+    public static void setLoginType(int loginType) {
+        mSettingPreference.edit().putInt(KEY_LOGIN_TYPE, loginType).apply();
     }
 
     public static String getClubInviteCode() {
@@ -379,12 +374,12 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID + "-" + getUserId(), "");
     }
 
-    public static void setTechStatus(String status) {
-        mSettingPreference.edit().putString(KEY_TECH_STATUS + "_" + getUserId(), status).apply();
-    }
-
     public static String getTechStatus() {
         return mSettingPreference.getString(KEY_TECH_STATUS + "_" + getUserId(), "");
+    }
+
+    public static void setTechStatus(String status) {
+        mSettingPreference.edit().putString(KEY_TECH_STATUS + "_" + getUserId(), status).apply();
     }
 
     public static boolean getPayNotifyIsFirstHide() {
@@ -395,14 +390,13 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putBoolean(KEY_PAY_NOTIFY_IS_FIRST_HIDE, first).apply();
     }
 
-    public static void setRoles(String roles) {
-        mSettingPreference.edit().putString(KEY_ROLES, roles).apply();
-    }
-
     public static String getRoles() {
         return mSettingPreference.getString(KEY_ROLES, "");
     }
 
+    public static void setRoles(String roles) {
+        mSettingPreference.edit().putString(KEY_ROLES, roles).apply();
+    }
 
     /******************************
      * 权限
@@ -415,12 +409,16 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putStringSet(KEY_PERMISSION, permissionList).apply();
     }
 
+    public static long getPermissionSyncDate() {
+        return mSettingPreference.getLong(KEY_PERMISSION_SYNC_DATE, 0);
+    }
+
     public static void setPermissionSyncDate(Long utcTime) {
         mSettingPreference.edit().putLong(KEY_PERMISSION_SYNC_DATE, utcTime).apply();
     }
 
-    public static long getPermissionSyncDate() {
-        return mSettingPreference.getLong(KEY_PERMISSION_SYNC_DATE, 0);
+    public static String getCustomerService() {
+        return mSettingPreference.getString(KEY_CUSTOMER_SERVICE, "");
     }
 
     /************************
@@ -428,9 +426,5 @@ public class SharedPreferenceHelper {
      *****************************************/
     public static void setCustomerService(String roles) {
         mSettingPreference.edit().putString(KEY_CUSTOMER_SERVICE, roles).apply();
-    }
-
-    public static String getCustomerService() {
-        return mSettingPreference.getString(KEY_CUSTOMER_SERVICE, "");
     }
 }

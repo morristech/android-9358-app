@@ -26,19 +26,11 @@ import butterknife.ButterKnife;
 
 public class AlbumAdapter extends RecyclerView.Adapter {
 
-    public interface OnItemClickListener {
-        void onAddAlbum();
-
-        void onDeleteAlbum(int position);
-    }
-
     private static final int TYPE_PHOTO = 0;
     private static final int TYPE_ADD = 1;
-
     private List<AlbumInfo> mAlbums;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
-
     public AlbumAdapter(Context context, OnItemClickListener itemClickListener) {
         mContext = context;
         mAlbums = new ArrayList<>();
@@ -126,6 +118,12 @@ public class AlbumAdapter extends RecyclerView.Adapter {
             }
         }
         return ids;
+    }
+
+    public interface OnItemClickListener {
+        void onAddAlbum();
+
+        void onDeleteAlbum(int position);
     }
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder {

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="false"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="4dp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="4dp">
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="false"
+                                    android:foreground="?android:attr/selectableItemBackground"
+                                    app:cardCornerRadius="4dp"
+                                    app:cardUseCompatPadding="true"
+                                    app:contentPadding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                     android:scaleType="center"
                     android:src="@drawable/img_default_square"
                     app:borderRadius="2dp"
-                    app:type="round" />
+                    app:type="round"/>
 
 
                 <TextView
@@ -51,7 +51,7 @@
                     android:paddingTop="3dp"
                     android:textColor="#dfc092"
                     android:textSize="8sp"
-                    tools:text="张乔乔/A005" />
+                    tools:text="张乔乔/A005"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -66,28 +66,28 @@
                     android:id="@+id/tv_poster_primary_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="客/观/捧/捧/场"
                     android:singleLine="true"
+                    android:text="客/观/捧/捧/场"
                     android:textColor="#dfc092"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_poster_minor_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:textColor="#dfc092"
                     android:textSize="8sp"
-                    android:singleLine="true"
-                    tools:text="关注9358快来预约我吧" />
+                    tools:text="关注9358快来预约我吧"/>
 
                 <TextView
                     android:id="@+id/tv_poster_club_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:textColor="#dfc092"
                     android:textSize="8sp"
-                    android:singleLine="true"
-                    tools:text="小摩豆休闲养生会所" />
+                    tools:text="小摩豆休闲养生会所"/>
 
             </LinearLayout>
 
@@ -99,7 +99,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="2dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/icon23" />
+                android:src="@drawable/icon23"/>
 
             <ImageView
                 android:id="@+id/img_poster_delete"
@@ -108,7 +108,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_poster_delete" />
+                android:src="@drawable/icon_poster_delete"/>
             <TextView
                 android:id="@+id/tv_poster_tech_no"
                 android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                 android:visibility="gone"/>
         </RelativeLayout>
 
-        <include layout="@layout/layout_poster_bottom_btn" />
+        <include layout="@layout/layout_poster_bottom_btn"/>
     </LinearLayout>
 
 

@@ -14,21 +14,16 @@ import java.util.Map;
  */
 public class DateUtil {
 
-    private static final String FORMAT = "yyyy-MM-dd";
-
-    private static final String FORMAT2 = "yyyyMMdd";
-
-    private static final String FORMAT3 = "yyyy-MM-dd HH:mm:ss";
-
     public static final Long MONTH = 29 * 24 * 60 * 60 * 1000l;
-
     public static final long DAY_MILLIS_SECOND = 24 * 3600 * 1000;
-
+    private static final String FORMAT = "yyyy-MM-dd";
+    private static final String FORMAT2 = "yyyyMMdd";
+    private static final String FORMAT3 = "yyyy-MM-dd HH:mm:ss";
+    private static final Object lockObj = new Object();
     /**
      * 存放不同的日期模板格式的sdf的Map
      */
     private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<>();
-    private static final Object lockObj = new Object();
 
     public static SimpleDateFormat getSdf(final String pattern) {
         ThreadLocal<SimpleDateFormat> tl = sdfMap.get(pattern);
@@ -340,28 +335,6 @@ public class DateUtil {
             e.printStackTrace();
         }
         return new Date();
-    }
-
-    //java中怎样计算两个时间如：“21:57”和“08:20”相差的分钟数、小时数 java计算两个时间差小时 分钟 秒 .
-    public void timeSubtract() {
-        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date begin = null;
-        Date end = null;
-        try {
-            begin = dfs.parse("2004-01-02 11:30:24");
-            end = dfs.parse("2004-03-26 13:31:40");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        long between = (end.getTime() - begin.getTime()) / 1000;// 除以1000是为了转换成秒
-
-        long day1 = between / (24 * 3600);
-        long hour1 = between % (24 * 3600) / 3600;
-        long minute1 = between % 3600 / 60;
-        long second1 = between % 60;
-        System.out.println("" + day1 + "天" + hour1 + "小时" + minute1 + "分"
-                + second1 + "秒");
     }
 
     /**
@@ -709,6 +682,28 @@ public class DateUtil {
         long time = System.currentTimeMillis();
 
         return longToDate(time - 24 * 60 * 60 * 1000);
+    }
+
+    //java中怎样计算两个时间如：“21:57”和“08:20”相差的分钟数、小时数 java计算两个时间差小时 分钟 秒 .
+    public void timeSubtract() {
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date begin = null;
+        Date end = null;
+        try {
+            begin = dfs.parse("2004-01-02 11:30:24");
+            end = dfs.parse("2004-03-26 13:31:40");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long between = (end.getTime() - begin.getTime()) / 1000;// 除以1000是为了转换成秒
+
+        long day1 = between / (24 * 3600);
+        long hour1 = between % (24 * 3600) / 3600;
+        long minute1 = between % 3600 / 60;
+        long second1 = between % 60;
+        System.out.println("" + day1 + "天" + hour1 + "小时" + minute1 + "分"
+                + second1 + "秒");
     }
 
 }

@@ -42,7 +42,7 @@ public class TechInfo {
     public String innerProvider;
     public String shareUrl;
     public String clubImageUrl; //会所头像
-    public String  clubInviteCode; //会所邀请码
+    public String clubInviteCode; //会所邀请码
 
     public String clubPosition;     // add ZR
     public String customerService; //null - 非客服， rest-休息，working 工作

@@ -5,10 +5,10 @@ package com.xmd.technician.bean;
  */
 public class CouponStatusFilter {
 
+    public String couponStatus;
+
     public CouponStatusFilter(String couponStatus) {
         this.couponStatus = couponStatus;
     }
-
-    public String couponStatus;
 
 }

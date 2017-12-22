@@ -94,19 +94,6 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         return isQR;
     }
 
-    public class MyAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            decodeImage(params[0]);
-            return null;
-        }
-    }
-
     /**
      * 根据地址获取网络图片
      *
@@ -161,16 +148,11 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
 
     @Override
     protected void onDestroy() {
+        if (mCustomWebView != null) {
+            mCustomWebView.setVisibility(View.GONE);
+            mCustomWebView.destroy();
+        }
         super.onDestroy();
-        mCustomWebView.getSettings().setBuiltInZoomControls(true);
-        mCustomWebView.setVisibility(View.GONE);
-//        long timeout = ViewConfiguration.getZoomControlsTimeout();
-//        new Timer().schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                mCustomWebView.destroy();
-//            }
-//        }, timeout);
     }
 
     /**
@@ -229,6 +211,19 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
             e.printStackTrace();
         }
 
+    }
+
+    public class MyAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            decodeImage(params[0]);
+            return null;
+        }
     }
 
 }

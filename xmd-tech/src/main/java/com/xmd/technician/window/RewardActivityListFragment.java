@@ -84,6 +84,7 @@ public class RewardActivityListFragment extends BaseListFragment<RewardBean> {
     @Override
     public void onShareClicked(RewardBean bean) {
         super.onShareClicked(bean);
+
         ShareController.doShare(bean.image, bean.shareUrl, bean.actName,
                 ResourceUtils.getString(R.string.reward_share_description), Constant.SHARE_TYPE_REWARD_ACTIVITY, "");
     }

@@ -3,6 +3,7 @@ package com.xmd.technician.window;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.event.EventClickTechAvatar;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -66,18 +68,13 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     public static final int REQUEST_CODE_JOIN_CLUB = 1;
     public static final int REQUEST_CODE_EDIT_TECH_INFO = 2;
-
-
+    @BindView(R.id.main_unread_message)
+    TextView mUnreadMsgLabel;
     private List<Fragment> mFragmentList = new LinkedList<>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
     private MainFragment mHomeFragment;
     private int mCurrentTabIndex = -1;
     private Subscription mGetUserIsBindWXSubscription;
-
-
-    @BindView(R.id.main_unread_message)
-    TextView mUnreadMsgLabel;
-
     private IBusinessPermissionManager permissionManager = BusinessPermissionManager.getInstance();
 
     @Override
@@ -120,6 +117,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         EventBusSafeRegister.register(this);
 
         XmdChat.getInstance().loadConversation();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        // super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -344,6 +346,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Subscribe
     public void contactToChatThanks(ThanksToChatEvent event) {
         EventBus.getDefault().post(new EventStartChatActivity(event.emChatId));
+    }
+
+    @Subscribe
+    public void techAvatarClickEvent(EventClickTechAvatar event) {
+        Intent intent = new Intent(this, TechUserCenterActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_EDIT_TECH_INFO);
     }
 
     // 打招呼

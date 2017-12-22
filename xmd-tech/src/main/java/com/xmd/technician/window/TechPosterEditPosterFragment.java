@@ -45,6 +45,7 @@ import butterknife.OnClick;
 
 public class TechPosterEditPosterFragment extends BaseFragment implements TechPosterDialog.PosterShareOrSaveListener {
 
+    private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
     @BindView(R.id.img_poster_select_img)
     ImageView imgPosterSelectImg;
     @BindView(R.id.img_poster_preview)
@@ -71,8 +72,6 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     View ivPosterClubName;
     @BindView(R.id.edit_poster_club_name)
     TextView editPosterClubName;
-
-    private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
     private boolean primaryTitleIsSelected, minorTitleIsSelected, nickNameIsSelected, techNumberIsSelected, clubNameIsSelect;
     private String mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mPosterImageUrl;
     private ImageTool mImageTool = new ImageTool();

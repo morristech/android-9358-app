@@ -146,6 +146,38 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
     private AlbumListAdapter mAdapter;
     private SelectPlaceDialog mSelectPlaceDialog;
     private ImageTool mImageTool = new ImageTool();
+    private AlbumListAdapter.OnItemManagerClickListener mAlbumManagerListener = new AlbumListAdapter.OnItemManagerClickListener() {
+        @Override
+        public void onAddAlbum() {
+            mImageTool.reset().maxSize(Constant.ALBUM_MAX_SIZE).setAspectX_Y(5, 7).start(TechUserCenterActivity.this, new ImageTool.ResultListener() {
+                @Override
+                public void onResult(String s, Uri uri, Bitmap bitmap) {
+                    if (s != null) {
+                        XToast.show(s);
+                    } else if (bitmap != null) {
+                        showLoading("正在上传照片...", false);
+                        ImageUploader.getInstance().upload(ImageUploader.TYPE_ALBUM, bitmap);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onDeleteAlbum(int position) {
+            new RewardConfirmDialog(TechUserCenterActivity.this, "", getString(R.string.edit_activity_delete_album), "") {
+                @Override
+                public void onConfirmClick() {
+                    AlbumInfo albumInfo = mAdapter.getItem(position);
+                    if (albumInfo != null) {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put(RequestConstant.KEY_ID, albumInfo.id);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_ALBUM, params);
+                    }
+                    dismiss();
+                }
+            }.show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,7 +273,6 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
         helper.attachToRecyclerView(recyclerViewAlarm);
     }
 
-
     private void handleAvatarResult(AvatarResult result) {
         hideLoading();
         if (result.statusCode >= 200 && result.statusCode <= 299) {
@@ -302,7 +333,6 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
 
         }
     }
-
 
     private void initViewData() {
         if (mTechInfo == null) {
@@ -421,39 +451,6 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
         }
 
     }
-
-    private AlbumListAdapter.OnItemManagerClickListener mAlbumManagerListener = new AlbumListAdapter.OnItemManagerClickListener() {
-        @Override
-        public void onAddAlbum() {
-            mImageTool.reset().maxSize(Constant.ALBUM_MAX_SIZE).setAspectX_Y(5, 7).start(TechUserCenterActivity.this, new ImageTool.ResultListener() {
-                @Override
-                public void onResult(String s, Uri uri, Bitmap bitmap) {
-                    if (s != null) {
-                        XToast.show(s);
-                    } else if (bitmap != null) {
-                        showLoading("正在上传照片...", false);
-                        ImageUploader.getInstance().upload(ImageUploader.TYPE_ALBUM, bitmap);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onDeleteAlbum(int position) {
-            new RewardConfirmDialog(TechUserCenterActivity.this, "", getString(R.string.edit_activity_delete_album), "") {
-                @Override
-                public void onConfirmClick() {
-                    AlbumInfo albumInfo = mAdapter.getItem(position);
-                    if (albumInfo != null) {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put(RequestConstant.KEY_ID, albumInfo.id);
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_ALBUM, params);
-                    }
-                    dismiss();
-                }
-            }.show();
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

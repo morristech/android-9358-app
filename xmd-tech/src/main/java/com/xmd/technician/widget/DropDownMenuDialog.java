@@ -27,20 +27,6 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
     private ViewGroup contentView;
     private OnItemClickListener mOnItemClickListener;
 
-    public static DropDownMenuDialog getDropDownMenuDialog(Context context, String[] items, OnItemClickListener onItemClickListener) {
-        return getDropDownMenuDialog(context, items, onItemClickListener, TYPE_DOWN);
-    }
-
-    public static DropDownMenuDialog getDropDownMenuDialog2(Context context, String[] items, OnItemClickListener onItemClickListener) {
-        return getDropDownMenuDialog(context, items, onItemClickListener, TYPE_UP);
-    }
-
-    private static DropDownMenuDialog getDropDownMenuDialog(Context context, String[] items, OnItemClickListener onItemClickListener, int type) {
-        LinearLayout contentView = new LinearLayout(context);
-        contentView.setOrientation(LinearLayout.VERTICAL);
-        return new DropDownMenuDialog(contentView, items, onItemClickListener, type);
-    }
-
     private DropDownMenuDialog(ViewGroup contentView, String[] items, OnItemClickListener onItemClickListener, int type) {
         super(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         this.context = contentView.getContext();
@@ -60,6 +46,20 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
                 initViews2();
                 break;
         }
+    }
+
+    public static DropDownMenuDialog getDropDownMenuDialog(Context context, String[] items, OnItemClickListener onItemClickListener) {
+        return getDropDownMenuDialog(context, items, onItemClickListener, TYPE_DOWN);
+    }
+
+    public static DropDownMenuDialog getDropDownMenuDialog2(Context context, String[] items, OnItemClickListener onItemClickListener) {
+        return getDropDownMenuDialog(context, items, onItemClickListener, TYPE_UP);
+    }
+
+    private static DropDownMenuDialog getDropDownMenuDialog(Context context, String[] items, OnItemClickListener onItemClickListener, int type) {
+        LinearLayout contentView = new LinearLayout(context);
+        contentView.setOrientation(LinearLayout.VERTICAL);
+        return new DropDownMenuDialog(contentView, items, onItemClickListener, type);
     }
 
     private void initViews() {
@@ -108,16 +108,16 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         showAtLocation(v, Gravity.CENTER_HORIZONTAL | Gravity.TOP, location[0], location[1] - contentView.getMeasuredHeight());
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int index);
-    }
-
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
             mOnItemClickListener.onItemClick((Integer) v.getTag());
         }
         dismiss();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int index);
     }
 
 

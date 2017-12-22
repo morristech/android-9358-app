@@ -129,8 +129,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     TextView mInvitationRewardTotal;
     @BindView(R.id.rl_invitation_reward)
     RelativeLayout rlInvitationReward;
-//    @BindView(R.id.btn_share_user_card)
-//    Button mBtnShareUserCard;
 
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
@@ -157,7 +155,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initView();
     }
 

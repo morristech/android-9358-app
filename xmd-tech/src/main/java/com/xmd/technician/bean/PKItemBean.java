@@ -8,12 +8,31 @@ import android.os.Parcelable;
  */
 
 public class PKItemBean implements Parcelable {
+    public static final Creator<PKItemBean> CREATOR = new Creator<PKItemBean>() {
+        @Override
+        public PKItemBean createFromParcel(Parcel source) {
+            return new PKItemBean(source);
+        }
+
+        @Override
+        public PKItemBean[] newArray(int size) {
+            return new PKItemBean[size];
+        }
+    };
     public String key;
     public String value;
 
     public PKItemBean(String key, String value) {
         this.key = key;
         this.value = value;
+    }
+
+    public PKItemBean() {
+    }
+
+    protected PKItemBean(Parcel in) {
+        this.key = in.readString();
+        this.value = in.readString();
     }
 
     @Override
@@ -26,24 +45,4 @@ public class PKItemBean implements Parcelable {
         dest.writeString(this.key);
         dest.writeString(this.value);
     }
-
-    public PKItemBean() {
-    }
-
-    protected PKItemBean(Parcel in) {
-        this.key = in.readString();
-        this.value = in.readString();
-    }
-
-    public static final Creator<PKItemBean> CREATOR = new Creator<PKItemBean>() {
-        @Override
-        public PKItemBean createFromParcel(Parcel source) {
-            return new PKItemBean(source);
-        }
-
-        @Override
-        public PKItemBean[] newArray(int size) {
-            return new PKItemBean[size];
-        }
-    };
 }

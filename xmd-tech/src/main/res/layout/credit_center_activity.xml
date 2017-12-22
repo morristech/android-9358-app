@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_main"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_main"
+              android:orientation="vertical">
 
     <include layout="@layout/toolbar"></include>
 
@@ -30,7 +30,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/credit_now"
                 android:textColor="@color/alert_text_color"
-                android:textSize="@dimen/fontBody" />
+                android:textSize="@dimen/fontBody"/>
 
             <TextView
                 android:id="@+id/credit_total"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/inter_space"
                 android:textColor="@color/color_main_head"
-                android:textSize="@dimen/fontHead" />
+                android:textSize="@dimen/fontHead"/>
 
         </LinearLayout>
 
@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:text="@string/credit_freeze"
                 android:textColor="@color/alert_text_color"
-                android:textSize="@dimen/fontBody" />
+                android:textSize="@dimen/fontBody"/>
 
             <TextView
                 android:id="@+id/freeze_total"
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/inter_space"
                 android:textColor="@color/color_main_head"
-                android:textSize="@dimen/fontHead" />
+                android:textSize="@dimen/fontHead"/>
         </LinearLayout>
 
         <TextView
@@ -82,7 +82,7 @@
             android:textColor="@color/indicator_selected_color"
             android:textSize="@dimen/fontBody"
 
-            />
+        />
 
         <Button
             android:id="@+id/credit_exchange"
@@ -95,10 +95,10 @@
             android:background="@drawable/rect_bg"
             android:text="@string/credit_exchange"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
     </RelativeLayout>
 
-    <View style="@style/horizontal_divider_line" />
+    <View style="@style/horizontal_divider_line"/>
 
     <RelativeLayout
         android:id="@+id/get_credit_way"
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/alert_text_color"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -150,17 +150,17 @@
                         android:drawablePadding="@dimen/margin_10"
                         android:gravity="center"
                         android:text="@string/credit_record"
-                        android:textColor="@color/color_main_head" />
+                        android:textColor="@color/color_main_head"/>
                 </RelativeLayout>
             </RelativeLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_main"
-                android:layout_marginTop="@dimen/small_space"
                 android:layout_marginBottom="@dimen/small_space"
-               ></View>
+                android:layout_marginTop="@dimen/small_space"
+                android:background="@color/color_main"
+            ></View>
 
             <RelativeLayout
                 android:id="@+id/credit_apply"
@@ -174,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/credit_exchange_record"
-                    android:textColor="@color/color_main_head" />
+                    android:textColor="@color/color_main_head"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -184,13 +184,13 @@
             android:layout_height="2dp"
             android:background="@drawable/table_select_line"
             android:contentDescription="tab"
-            android:scaleType="matrix" />
+            android:scaleType="matrix"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_contact"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </LinearLayout>

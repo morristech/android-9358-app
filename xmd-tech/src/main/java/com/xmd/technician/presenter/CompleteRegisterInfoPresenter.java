@@ -31,9 +31,9 @@ import rx.Subscription;
  */
 
 public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegisterInfoContract.View> implements CompleteRegisterInfoContract.Presenter {
+    public ObservableBoolean mCanUpdate = new ObservableBoolean();
     private ActivityCompleteRegisterInfoBinding mBinding;
     private LoginTechnician mTech = LoginTechnician.getInstance();
-    public ObservableBoolean mCanUpdate = new ObservableBoolean();
     private String mNickName;
     private boolean mFemale;
     private Subscription mSubscription;
@@ -85,7 +85,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
 
     @Override
     public void onClickAvatar() {
-        mImageTool.maxSize(Constant.AVATAR_MAX_SIZE).setAspectX_Y(1,1).start((Activity) mContext, new ImageTool.ResultListener() {
+        mImageTool.maxSize(Constant.AVATAR_MAX_SIZE).setAspectX_Y(1, 1).start((Activity) mContext, new ImageTool.ResultListener() {
             @Override
             public void onResult(String s, Uri uri, Bitmap bitmap) {
                 if (s != null) {

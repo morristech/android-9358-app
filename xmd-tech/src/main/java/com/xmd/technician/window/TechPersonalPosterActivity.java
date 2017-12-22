@@ -47,13 +47,13 @@ import rx.Subscription;
 
 public class TechPersonalPosterActivity extends BaseActivity implements TechPosterListAdapter.PosterCallBack, TechPosterDialog.PosterShareOrSaveListener {
 
+    private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
     @BindView(R.id.ll_tech_poster_empty_view)
     LinearLayout llTechPosterEmptyView;
     @BindView(R.id.tech_poster_recycler_view)
     RecyclerView techPosterRecyclerView;
     @BindView(R.id.toolbar_right)
     TextView toolbarRight;
-
     private List<PosterBean> mPosterBeanList;
     private TechPosterListAdapter mPosterListAdapter;
     private Subscription mPosterListSubscription;
@@ -61,7 +61,6 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     private PosterBean mPosterBean;
     private TechPosterDialog mDialog;
     private String mQrCodeUrl;
-    private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

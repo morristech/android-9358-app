@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_main"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_main"
+              android:orientation="vertical">
 
     <include layout="@layout/toolbar"></include>
 
@@ -12,7 +12,7 @@
         android:layout_height="@dimen/exchange_height"
         android:gravity="center"
         android:orientation="horizontal"
-        >
+    >
 
         <TextView
             android:id="@+id/credit_total"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:textColor="@color/color_main_head"
-            android:textSize="@dimen/fontBig" />
+            android:textSize="@dimen/fontBig"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:includeFontPadding="false"
             android:text="@string/exchange_credit_text"
             android:textColor="@color/color_main_head"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
             android:layout_marginLeft="@dimen/tab_indicator_text_padding"
             android:text="="
             android:textColor="@color/indicator_selected_color"
-            android:textSize="@dimen/fontCouponTitle" />
+            android:textSize="@dimen/fontCouponTitle"/>
 
         <TextView
             android:id="@+id/exchange_convert"
@@ -46,7 +46,7 @@
             android:layout_marginLeft="@dimen/tab_indicator_text_padding"
             android:includeFontPadding="false"
             android:textColor="@color/color_main_btn"
-            android:textSize="@dimen/fontBig" />
+            android:textSize="@dimen/fontBig"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
             android:includeFontPadding="false"
             android:text="@string/unit_yuan"
             android:textColor="@color/color_main_btn"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontTitle"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="@dimen/search_pic_height" />
+            android:paddingTop="@dimen/search_pic_height"/>
 
         <ImageView
             android:id="@+id/sign"
@@ -77,7 +77,7 @@
             android:layout_height="@dimen/margin_25"
             android:layout_below="@id/max_exchange"
             android:layout_marginTop="@dimen/contact_list_item_height"
-            android:src="@drawable/black_money" />
+            android:src="@drawable/black_money"/>
 
         <EditText
             android:id="@+id/money_exchange"
@@ -94,7 +94,7 @@
             android:maxLength="9"
             android:textColor="@color/black"
             android:textColorHint="@color/color_main"
-            android:textSize="@dimen/fontBig" />
+            android:textSize="@dimen/fontBig"/>
 
         <ImageButton
             android:id="@+id/img_close"
@@ -105,7 +105,7 @@
             android:layout_marginBottom="@dimen/inter_space"
             android:layout_marginRight="@dimen/inter_space"
             android:background="@drawable/icon_close"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/view_div"
@@ -115,7 +115,7 @@
             android:layout_marginBottom="@dimen/large_space"
             android:layout_marginRight="@dimen/inter_space"
             android:layout_toRightOf="@+id/sign"
-            android:background="@color/divider_thin_color" />
+            android:background="@color/divider_thin_color"/>
     </RelativeLayout>
 
     <Button
@@ -129,7 +129,7 @@
         android:enabled="false"
         android:text="@string/exchange_credit"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/fontTitle" />
+        android:textSize="@dimen/fontTitle"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -138,7 +138,7 @@
         android:paddingLeft="@dimen/inter_space"
         android:text="@string/credit_alert"
         android:textColor="@color/alert_text_color"
-        android:textSize="@dimen/fontNormal" />
+        android:textSize="@dimen/fontNormal"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
         android:paddingTop="@dimen/small_space"
         android:text="@string/credit_alert_text1"
         android:textColor="@color/alert_text_color"
-        android:textSize="@dimen/fontNormal" />
+        android:textSize="@dimen/fontNormal"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
         android:paddingTop="@dimen/small_space"
         android:text="@string/credit_alert_text2"
         android:textColor="@color/alert_text_color"
-        android:textSize="@dimen/fontNormal" />
+        android:textSize="@dimen/fontNormal"/>
     <TextView
         android:id="@+id/credit_exchange_ratio"
         android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
         android:paddingLeft="@dimen/inter_space"
         android:paddingTop="@dimen/small_space"
         android:textColor="@color/alert_text_color"
-        android:textSize="@dimen/fontNormal" />
+        android:textSize="@dimen/fontNormal"/>
     <TextView
         android:id="@+id/credit_exchange_limit"
         android:layout_width="wrap_content"
@@ -172,8 +172,7 @@
         android:paddingLeft="@dimen/inter_space"
         android:paddingTop="@dimen/small_space"
         android:textColor="@color/alert_text_color"
-        android:textSize="@dimen/fontNormal" />
-
+        android:textSize="@dimen/fontNormal"/>
 
 
 </LinearLayout>

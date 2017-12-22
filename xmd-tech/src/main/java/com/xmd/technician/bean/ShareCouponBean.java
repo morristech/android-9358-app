@@ -10,14 +10,14 @@ public class ShareCouponBean {
      * clubId : 601679316694081536
      * clubName : null
      * actTitle : 新增折扣券
-     * actSubTitle : 
-     * actDescription : 
+     * actSubTitle :
+     * actDescription :
      * actContent : <ul><li>使用时，请出示手机号码或者优惠码。</li><li>每张券仅限一人使用，仅能使用一张。</li><li>使用此券，不可享受本店其他优惠。</li><li>提供免费WiFi。</li><li>提供免费停车位。</li><li>欢迎提前预约。</li></ul>
      * actValue : 800
-     * actLogo : 
-     * backgroupImage : 
+     * actLogo :
+     * backgroupImage :
      * actLogoCompress : null
-     * actLogoUrl : 
+     * actLogoUrl :
      * actTotal : 2000
      * userGetCount : 5
      * actType : coupon
@@ -37,7 +37,7 @@ public class ShareCouponBean {
      * itemId : 628122082500157440
      * serverItem : null
      * time : null
-     * useDateNote : 
+     * useDateNote :
      * baseCommission : 0
      * commission : 0
      * qrCode : null
@@ -54,7 +54,7 @@ public class ShareCouponBean {
      * isIndex : N
      * periodType : fixed_time
      * longAfterReceive : 0
-     * periodDay : 
+     * periodDay :
      * couponTypeName : 折扣券
      * useDay : 1,2,3,4,5,6,0
      * platformFee : null

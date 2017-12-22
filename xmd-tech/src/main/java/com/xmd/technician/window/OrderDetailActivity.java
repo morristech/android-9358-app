@@ -273,11 +273,11 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                if(TextUtils.isEmpty(mOrder.emchatId)){
+                if (TextUtils.isEmpty(mOrder.emchatId)) {
                     XToast.show("缺少用户聊天信息，无法聊天");
-                }else{
-                EventBus.getDefault().post(new EventStartChatActivity(mOrder.emchatId));
-            }
+                } else {
+                    EventBus.getDefault().post(new EventStartChatActivity(mOrder.emchatId));
+                }
                 break;
         }
     }

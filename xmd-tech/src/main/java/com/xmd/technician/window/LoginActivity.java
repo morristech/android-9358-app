@@ -61,11 +61,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     TextView mTvVersion;
     @BindView(R.id.server_host)
     Spinner mSpServerHost;
-    private String mSelectedServerHost;
-
-    private boolean mNeedRestartApp;
-
     LoginContract.Presenter mPresenter;
+    private String mSelectedServerHost;
+    private boolean mNeedRestartApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +249,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         finish();
     }
 
+    @Override
+    public void onTokenExpired(EventTokenExpired event) {
+        //do nothing
+    }
+
+    @Subscribe
+    public void onLogoutEvent(EventLogout logout) {
+        //do nothing
+    }
+
     private class BaseTextWatcher implements TextWatcher {
 
         @Override
@@ -267,15 +275,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         public void afterTextChanged(Editable s) {
 
         }
-    }
-
-    @Override
-    public void onTokenExpired(EventTokenExpired event) {
-        //do nothing
-    }
-
-    @Subscribe
-    public void onLogoutEvent(EventLogout logout) {
-        //do nothing
     }
 }

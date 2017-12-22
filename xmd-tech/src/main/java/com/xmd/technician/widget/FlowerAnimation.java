@@ -29,6 +29,20 @@ import java.util.Random;
 public class FlowerAnimation extends View implements AnimatorUpdateListener {
 
     /**
+     * 动画播放的时间
+     */
+    private final int time = 1500;
+    /**
+     * 动画间隔
+     */
+    private final int delay = 200;
+    int[] ylocations = {-100, -50, -25, 0};
+    ObjectAnimator mAnimator1;
+    ObjectAnimator mAnimator2;
+    ObjectAnimator mAnimator3;
+    ObjectAnimator mAnimator4;
+    ObjectAnimator mAnimator5;
+    /**
      * 动画改变的属性值
      */
     private float phase1 = 0f;
@@ -36,7 +50,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     private float phase3 = 0f;
     private float phase4 = 0f;
     private float phase5 = 0f;
-
     /**
      * 小球集合
      */
@@ -45,17 +58,47 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     private List<Flower> flowers3 = new ArrayList<Flower>();
     private List<Flower> flowers4 = new ArrayList<Flower>();
     private List<Flower> flowers5 = new ArrayList<Flower>();
+    /**
+     * 宽度
+     */
+    private int width = 0;
+    /**
+     * 高度
+     */
+    private int height = 0;
+    /**
+     * 曲线高度个数分割
+     */
+    private int quadCount = 5;
+    /**
+     * 曲度
+     */
+    private float intensity = 0.2f;
+    /**
+     * 第一批个数
+     */
+    private int fllowerCount = 6;
+    /**
+     * 曲线摇摆的幅度
+     */
+    private int range = (int) TypedValue
+            .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources()
+                    .getDisplayMetrics());
+    /**
+     * 画笔
+     */
+    private Paint mPaint;
 
     /**
-     * 动画播放的时间
+     * 测量路径的坐标位置
      */
-    private final int time = 1500;
+    private PathMeasure pathMeasure = null;
     /**
-     * 动画间隔
+     * 高度往上偏移量,把开始点移出屏幕顶部
      */
-    private final int delay = 200;
-
-    int[] ylocations = {-100, -50, -25, 0};
+    private float dy = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            40, getResources().getDisplayMetrics());
+    private String tag = this.getClass().getSimpleName();
 
     /**
      * 资源ID
@@ -89,29 +132,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
 
 
     }
-
-    /**
-     * 宽度
-     */
-    private int width = 0;
-    /**
-     * 高度
-     */
-    private int height = 0;
-
-    /**
-     * 曲线高度个数分割
-     */
-    private int quadCount = 5;
-    /**
-     * 曲度
-     */
-    private float intensity = 0.2f;
-
-    /**
-     * 第一批个数
-     */
-    private int fllowerCount = 6;
 
     /**
      * 创建花
@@ -184,13 +204,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * 曲线摇摆的幅度
-     */
-    private int range = (int) TypedValue
-            .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources()
-                    .getDisplayMetrics());
-
-    /**
      * 画路径
      *
      * @param point
@@ -218,16 +231,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         return points;
     }
 
-    /**
-     * 画笔
-     */
-    private Paint mPaint;
-
-    /**
-     * 测量路径的坐标位置
-     */
-    private PathMeasure pathMeasure = null;
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -240,12 +243,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
 
 
     }
-
-    /**
-     * 高度往上偏移量,把开始点移出屏幕顶部
-     */
-    private float dy = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            40, getResources().getDisplayMetrics());
 
     /**
      * @param canvas
@@ -261,12 +258,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             canvas.drawBitmap(flower.getResId(), pos[0], pos[1] - dy, null);
         }
     }
-
-    ObjectAnimator mAnimator1;
-    ObjectAnimator mAnimator2;
-    ObjectAnimator mAnimator3;
-    ObjectAnimator mAnimator4;
-    ObjectAnimator mAnimator5;
 
     public void startAnimation() {
         if (mAnimator1 != null && mAnimator1.isRunning()) {
@@ -386,8 +377,6 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     public void setPhase5(float phase5) {
         this.phase5 = phase5;
     }
-
-    private String tag = this.getClass().getSimpleName();
 
     private class CPoint {
 

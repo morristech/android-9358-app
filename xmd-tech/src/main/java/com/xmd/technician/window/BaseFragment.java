@@ -11,21 +11,24 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.event.EventClickTechAvatar;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.technician.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by sdcm on 16-3-23.
  */
 public class BaseFragment extends Fragment {
 
-    private TextView mTitleView;
+    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
     protected CircleAvatarView avatarView;
 
     protected IFragmentCallback mIFragmentCallback;
-    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
+    private TextView mTitleView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,8 +97,19 @@ public class BaseFragment extends Fragment {
                 avatarView.setUserInfo(UserInfoServiceImpl.getInstance().getCurrentUser());
             }
         }
+        avatarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new EventClickTechAvatar());
+            }
+        });
 
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
     }
 
     /**
@@ -103,11 +117,5 @@ public class BaseFragment extends Fragment {
      **/
     public interface IFragmentCallback {
         //void handleBackPressed();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
     }
 }

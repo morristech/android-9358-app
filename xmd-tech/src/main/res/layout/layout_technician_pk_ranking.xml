@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.xmd.technician.widget.BlockChildLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/layout_technician_ranking"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginBottom="@dimen/margin_10"
-              android:background="@drawable/white_background_selector"
-              android:orientation="vertical">
+                                                  xmlns:tools="http://schemas.android.com/tools"
+                                                  android:id="@+id/layout_technician_ranking"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_marginBottom="@dimen/margin_10"
+                                                  android:background="@drawable/white_background_selector"
+                                                  android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal"
         android:padding="@dimen/inter_space"
-        android:descendantFocusability="blocksDescendants"
-       >
+    >
 
         <View
             android:layout_width="@dimen/two_space"
@@ -26,9 +26,9 @@
             android:id="@+id/pk_active_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/inter_space"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical"
             android:textColor="@color/coupon_code_text_color"
             android:textSize="@dimen/fontTitle"
             tools:text="金秋技师PK"/>
@@ -44,8 +44,8 @@
             android:id="@+id/pk_active_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_10"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_10"
             android:text="@string/pk_ranking_on_line"
             android:textColor="@color/cardview_dark_background"
             android:textSize="@dimen/fontBiggerThanNormal"/>
@@ -58,19 +58,19 @@
         android:id="@+id/ll_tech_ranking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="@dimen/inter_space"
-        android:paddingRight="@dimen/inter_space"
         android:descendantFocusability="blocksDescendants"
-        >
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/inter_space"
+    >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/team_list"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:clickable="false"
-            />
+        />
 
         <ImageView
             android:layout_width="wrap_content"

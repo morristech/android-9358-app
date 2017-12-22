@@ -4,9 +4,9 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/inter_space"
               android:background="@color/color_white"
-              android:orientation="vertical"
-              android:layout_marginTop="@dimen/inter_space">
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -122,7 +122,7 @@
         <Button
             android:id="@+id/limit_grab_share"
             style="@style/share_btn_style"
-            />
+        />
     </LinearLayout>
 
     <View

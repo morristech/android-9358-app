@@ -36,6 +36,11 @@ public class ClubInvite extends BaseViewModel implements Serializable {
     private String operator;
     private String customerService;
 
+    @BindingAdapter("time")
+    public static void bindTime(TextView view, Long time) {
+        view.setText(DateUtils.getSdf("yyyy.MM.dd HH:mm:ss").format(new Date(time)));
+    }
+
     public Long getId() {
         return id;
     }
@@ -166,12 +171,6 @@ public class ClubInvite extends BaseViewModel implements Serializable {
 
     public boolean getShowOperateButton() {
         return STATUS_INVITING.equals(getStatus());
-    }
-
-
-    @BindingAdapter("time")
-    public static void bindTime(TextView view, Long time) {
-        view.setText(DateUtils.getSdf("yyyy.MM.dd HH:mm:ss").format(new Date(time)));
     }
 
     @Override

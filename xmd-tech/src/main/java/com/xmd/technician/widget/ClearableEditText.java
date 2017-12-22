@@ -33,15 +33,6 @@ public class ClearableEditText extends EditText {
 
     private CleanTextListener cleanText;
 
-    public interface CleanTextListener {
-        void cleanText();
-    }
-
-    public void setCleanTextListener(CleanTextListener cleanListener) {
-        this.cleanText = cleanListener;
-    }
-
-
     public ClearableEditText(Context context) {
         super(context);
         init();
@@ -52,12 +43,17 @@ public class ClearableEditText extends EditText {
         init();
     }
 
+
     public ClearableEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ClearableEditText);
         mBgColorFilter = typedArray.getColor(R.styleable.ClearableEditText_bg_color_filter, -1);
         typedArray.recycle();
         init();
+    }
+
+    public void setCleanTextListener(CleanTextListener cleanListener) {
+        this.cleanText = cleanListener;
     }
 
     private void init() {
@@ -101,7 +97,6 @@ public class ClearableEditText extends EditText {
         return super.onTouchEvent(event);
     }
 
-
     /**
      * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
      *
@@ -133,6 +128,10 @@ public class ClearableEditText extends EditText {
         if (hasFoucs) {
             setClearIconVisible(s.length() > 0);
         }
+    }
+
+    public interface CleanTextListener {
+        void cleanText();
     }
 
 }

@@ -83,6 +83,14 @@ public class ServiceAdapter extends RecyclerView.Adapter {
         return mServiceInfoList.size();
     }
 
+    protected interface LinkedSelectedInterface {
+        void onSelectedAll();
+
+        void onUnSelectedAll();
+
+        void onSelectedNone();
+    }
+
     public class ServiceItemViewHolder extends RecyclerView.ViewHolder implements LinkedSelectedInterface {
 
         @BindView(R.id.service_name)
@@ -198,6 +206,25 @@ public class ServiceAdapter extends RecyclerView.Adapter {
             notifyDataSetChanged();
         }
 
+        private void onSelectedChange(int increment) {
+            mSelectedCount += increment;
+            if (mSelectedCount == mmData.size()) {
+                mServiceNameSelectedInterface.onSelectedAll();
+            } else {
+                mServiceNameSelectedInterface.onUnSelectedAll();
+            }
+        }
+
+        private void initSelectedCount() {
+            mSelectedCount = 0;
+            for (ServiceItemInfo.ItemInfo itemInfo : mmData) {
+                mSelectedCount += itemInfo.isSelected;
+            }
+            if (mSelectedCount == mmData.size()) {
+                mServiceNameSelectedInterface.onSelectedAll();
+            }
+        }
+
         public class Holder {
             @BindView(R.id.name)
             CheckBox mName;
@@ -217,32 +244,5 @@ public class ServiceAdapter extends RecyclerView.Adapter {
                 mItemInfo = itemInfo;
             }
         }
-
-        private void onSelectedChange(int increment) {
-            mSelectedCount += increment;
-            if (mSelectedCount == mmData.size()) {
-                mServiceNameSelectedInterface.onSelectedAll();
-            } else {
-                mServiceNameSelectedInterface.onUnSelectedAll();
-            }
-        }
-
-        private void initSelectedCount() {
-            mSelectedCount = 0;
-            for (ServiceItemInfo.ItemInfo itemInfo : mmData) {
-                mSelectedCount += itemInfo.isSelected;
-            }
-            if (mSelectedCount == mmData.size()) {
-                mServiceNameSelectedInterface.onSelectedAll();
-            }
-        }
-    }
-
-    protected interface LinkedSelectedInterface {
-        void onSelectedAll();
-
-        void onUnSelectedAll();
-
-        void onSelectedNone();
     }
 }

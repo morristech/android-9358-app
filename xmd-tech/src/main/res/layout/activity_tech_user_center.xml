@@ -80,7 +80,7 @@
                         <TextView
                             style="@style/tech_center_category_style"
                             android:layout_gravity="top"
-                            android:text="昵称"/>
+                            android:text="@string/tech_poster_edit_nick_name"/>
                         <TextView
                             android:id="@+id/tv_tech_nick_name"
                             style="@style/tech_center_category_detail_style"
@@ -100,6 +100,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:background="@null"
                                 android:hint="@string/hint_input_nick_name"
                                 android:maxLength="10"
                                 android:paddingBottom="@dimen/small_space"
@@ -108,7 +109,6 @@
                                 android:paddingTop="@dimen/small_space"
                                 android:textColor="@color/color_main_title"
                                 android:textColorHint="#616161"
-                                android:background="@null"
                                 android:textSize="16sp"/>
                             <TextView
                                 android:id="@+id/tv_tech_nick_name_length"
@@ -135,7 +135,7 @@
                             android:src="@drawable/icon_tech_gender"/>
                         <TextView
                             style="@style/tech_center_category_style"
-                            android:text="性别"/>
+                            android:text="@string/gender"/>
                         <TextView
                             android:id="@+id/tv_tech_gender"
                             style="@style/tech_center_category_detail_style"
@@ -156,7 +156,7 @@
                                 android:background="@drawable/selector_tech_gender"
                                 android:button="@null"
                                 android:gravity="center"
-                                android:text="男"
+                                android:text="@string/male"
                                 android:textColor="@color/selector_radio_text_style"
                             />
                             <RadioButton
@@ -169,7 +169,7 @@
                                 android:button="@null"
                                 android:checked="true"
                                 android:gravity="center"
-                                android:text="女"
+                                android:text="@string/female"
                                 android:textColor="@color/selector_radio_text_style"
                             />
                         </RadioGroup>
@@ -185,7 +185,7 @@
                             android:src="@drawable/icon_tech_origin"/>
                         <TextView
                             style="@style/tech_center_category_style"
-                            android:text="籍贯"/>
+                            android:text="@string/native_place"/>
                         <TextView
                             android:id="@+id/tv_tech_origin"
                             style="@style/tech_center_category_detail_style"
@@ -240,7 +240,7 @@
                         android:orientation="horizontal"
                         android:paddingLeft="24dp"
                         android:paddingRight="16dp"
-                   >
+                    >
                         <ImageView
                             android:id="@+id/img_tech_autograph"
                             android:layout_width="20dp"
@@ -259,10 +259,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
-                            android:gravity="right"
                             android:layout_marginBottom="20dp"
-                            android:textSize="16sp"
+                            android:gravity="right"
                             android:textColor="#616161"
+                            android:textSize="16sp"
                             tools:text="云胡不喜云胡不喜云胡不喜sdfasdfasdfasdfasdfasdfasdf云asdfasdf胡不喜云胡不喜云胡不喜云胡不喜云胡不喜云胡不喜云胡不喜云胡不喜云胡不喜云胡不喜"
                         />
                         <LinearLayout

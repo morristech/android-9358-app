@@ -28,12 +28,6 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     private CallBack mCallBack;
     private String mWithdrawal = "";
 
-    public interface CallBack {
-        void onWithDrawClicked(TechAccountBean bean);
-
-        void onItemClicked(TechAccountBean bean);
-    }
-
     public TechAccountListAdapter(Context context, List<TechAccountBean> data) {
         this.mContext = context;
         this.mData = data;
@@ -77,6 +71,12 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public interface CallBack {
+        void onWithDrawClicked(TechAccountBean bean);
+
+        void onItemClicked(TechAccountBean bean);
     }
 
     static class TechAccountViewHolder extends RecyclerView.ViewHolder {

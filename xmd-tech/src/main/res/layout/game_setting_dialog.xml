@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="@dimen/game_setting_height"
@@ -17,11 +17,11 @@
             android:layout_marginTop="@dimen/dice_icon_margin_left"
             android:text="@string/game_setting_title"
             android:textColor="@color/color_main_head"
-            android:textSize="@dimen/game_content_padding_top" />
+            android:textSize="@dimen/game_content_padding_top"/>
 
         <View
             style="@style/horizontal_divider_line"
-            android:layout_marginTop="@dimen/dice_icon_margin_left" />
+            android:layout_marginTop="@dimen/dice_icon_margin_left"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,19 +39,19 @@
                 <TextView
                     android:id="@+id/comment_game_one"
                     style="@style/comment_game_integral_text_style"
-                    android:text="1" />
+                    android:text="1"/>
 
                 <TextView
                     android:id="@+id/comment_game_ten"
                     style="@style/comment_game_integral_text_style"
                     android:layout_marginLeft="@dimen/game_setting_margin"
                     android:layout_marginRight="@dimen/game_setting_margin"
-                    android:text="10" />
+                    android:text="10"/>
 
                 <TextView
                     android:id="@+id/comment_game_fifty"
                     style="@style/comment_game_integral_text_style"
-                    android:text="50" />
+                    android:text="50"/>
 
             </LinearLayout>
 
@@ -66,19 +66,19 @@
                 <TextView
                     android:id="@+id/comment_game_one_hundred"
                     style="@style/comment_game_integral_text_style"
-                    android:text="100" />
+                    android:text="100"/>
 
                 <TextView
                     android:id="@+id/comment_game_five_hundred"
                     style="@style/comment_game_integral_text_style"
                     android:layout_marginLeft="@dimen/game_setting_margin"
                     android:layout_marginRight="@dimen/game_setting_margin"
-                    android:text="500" />
+                    android:text="500"/>
 
                 <TextView
                     android:id="@+id/comment_game_ten_hundred"
                     style="@style/comment_game_integral_text_style"
-                    android:text="1000" />
+                    android:text="1000"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -88,12 +88,12 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/game_setting_image_margin"
             android:layout_marginTop="@dimen/game_setting_image_margin"
-            android:src="@drawable/icon_dice_big" />
+            android:src="@drawable/icon_dice_big"/>
 
         <View
             style="@style/horizontal_divider_line"
             android:layout_marginLeft="@dimen/margin_25"
-            android:layout_marginRight="@dimen/margin_25" />
+            android:layout_marginRight="@dimen/margin_25"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,9 +103,9 @@
             android:layout_marginTop="@dimen/two_space"
             android:text="@string/game_rule_introduce"
             android:textColor="@color/color_main_remark"
-            android:textSize="@dimen/credit_game_text_size" />
+            android:textSize="@dimen/credit_game_text_size"/>
 
-        <View style="@style/horizontal_divider_line" />
+        <View style="@style/horizontal_divider_line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,12 +122,12 @@
                 android:minWidth="0dp"
                 android:text="@string/cancel"
                 android:textColor="@color/coupon_detail_text_color"
-                android:textSize="@dimen/fontTitle" />
+                android:textSize="@dimen/fontTitle"/>
 
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_remark_text" />
+                android:background="@color/color_remark_text"/>
 
             <Button
                 android:id="@+id/dialog_alert_ok_btn"
@@ -137,7 +137,7 @@
                 android:background="@null"
                 android:text="@string/game_invite"
                 android:textColor="@color/color_btn_checked"
-                android:textSize="@dimen/fontTitle" />
+                android:textSize="@dimen/fontTitle"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

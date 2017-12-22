@@ -23,20 +23,17 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
 
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
-
-    @BindView(R.id.swipe_refresh_widget)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.list)
-    RecyclerView mListView;
-
     protected LinearLayoutManager mLayoutManager;
     protected ListRecycleViewAdapter mOrderListAdapter;
-
     protected int mPages = PAGE_START;
     protected boolean mIsLoadingMore = false;
     protected int mLastVisibleItem;
     protected int mPageCount = -1;
     protected List<T> mData = new ArrayList<>();
+    @BindView(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.list)
+    RecyclerView mListView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

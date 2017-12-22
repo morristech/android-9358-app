@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.xmd.technician.window.FeedbackActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.xmd.technician.window.FeedbackActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <EditText
         android:id="@+id/feedback_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/feedback_edit_text_height"
         android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/search_margin"
         android:background="@drawable/edittext_stroke"
         android:gravity="left"
+        android:hint="@string/feedback_hint"
         android:padding="@dimen/search_margin"
-        android:layout_margin="@dimen/search_margin"
         android:textColor="@color/color_main_title"
-        android:textSize="@dimen/fontTitle"
         android:textColorHint="@color/color_remark_text"
-        android:hint="@string/feedback_hint"/>
-    
+        android:textSize="@dimen/fontTitle"/>
+
     <Button
         android:id="@+id/confirm"
         android:layout_width="@dimen/feedback_btn_width"
@@ -29,20 +29,20 @@
         android:layout_below="@+id/feedback_content"
         android:layout_marginRight="@dimen/search_margin"
         android:background="@drawable/feedback_confirm_bg"
+        android:text="@string/confirm"
         android:textColor="@color/color_main_body"
-        android:textSize="@dimen/fontTitle"
-        android:text="@string/confirm"/>
+        android:textSize="@dimen/fontTitle"/>
 
     <Button
         android:id="@+id/cancel"
         android:layout_width="@dimen/feedback_btn_width"
         android:layout_height="@dimen/feedback_btn_height"
-        android:layout_toLeftOf="@+id/confirm"
         android:layout_below="@+id/feedback_content"
         android:layout_marginRight="@dimen/search_margin"
+        android:layout_toLeftOf="@+id/confirm"
         android:background="@drawable/feedback_cancel_bg"
+        android:text="@string/cancel"
         android:textColor="@color/color_main_body"
         android:textSize="@dimen/fontTitle"
-        android:text="@string/cancel"
         android:visibility="gone"/>
 </RelativeLayout>

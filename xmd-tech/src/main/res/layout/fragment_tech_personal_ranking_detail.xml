@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:background="@color/color_main"
               android:orientation="vertical"
-    >
+>
 
 
     <FrameLayout
@@ -18,7 +18,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <com.xmd.technician.widget.EmptyView
@@ -27,7 +27,6 @@
             android:layout_height="match_parent"
             android:visibility="gone"/>
     </FrameLayout>
-
 
 
 </LinearLayout>

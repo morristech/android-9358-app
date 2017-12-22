@@ -361,7 +361,7 @@
                         <RelativeLayout
                             android:id="@+id/rl_limit_grab"
                             style="@style/layout_share_coupon_style"
-                        android:visibility="visible">
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/img_limit_grab"

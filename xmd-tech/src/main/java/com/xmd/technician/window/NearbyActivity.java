@@ -53,12 +53,11 @@ import rx.Subscription;
  */
 
 public class NearbyActivity extends BaseActivity {
+    private static final int DEFAULT_CUS_PAGE_SIZE = 10;
     @BindView(R.id.tv_nearby_desc)
     TextView mDescText;
     @BindView(R.id.list_nearby_customer)
     RecyclerView mCusRecyclerView;
-
-    private static final int DEFAULT_CUS_PAGE_SIZE = 10;
     private SimpleDateFormat formatter;
 
     private NearbyCusAdapter mCusAdapter;

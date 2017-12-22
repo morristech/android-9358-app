@@ -15,28 +15,27 @@ import java.util.List;
 
 public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRecyclerViewAdapter.ViewHolder> {
 
-    private int mHeaderLayout;
-    private int mHeaderBR;
-    private Object mHeaderData;
-
-    private int mFooterLayout;
-    private int mFooterBR;
-    private Object mFooterData;
-
-    private int mDataBR;
-    private int mDataLayout;
-    private List<T> mData;
-
-    private int mHandlerBR;
-    private Object mHandler;
-
     public static final int VIEW_TYPE_HEADER = 1;
     public static final int VIEW_TYPE_DATA = 2;
     public static final int VIEW_TYPE_FOOTER = 3;
-
+    private int mHeaderLayout;
+    private int mHeaderBR;
+    private Object mHeaderData;
+    private int mFooterLayout;
+    private int mFooterBR;
+    private Object mFooterData;
+    private int mDataBR;
+    private int mDataLayout;
+    private List<T> mData;
+    private int mHandlerBR;
+    private Object mHandler;
     private int mShowDataCountLimit = Integer.MAX_VALUE;
 
     private boolean mInvert;
+    //item view 处理接口
+    private ViewInflatedListener mViewInflatedListener;
+    //item 数据 处理接口
+    private DataTranslator mDataTranslator;
 
     public CommonRecyclerViewAdapter setHeader(int layoutId, int br, Object data) {
         mHeaderLayout = layoutId;
@@ -156,6 +155,22 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         mShowDataCountLimit = count;
     }
 
+    public void setViewInflatedListener(ViewInflatedListener listener) {
+        mViewInflatedListener = listener;
+    }
+
+    public void setDataTranslator(DataTranslator translator) {
+        mDataTranslator = translator;
+    }
+
+    public interface ViewInflatedListener {
+        void onViewInflated(int viewType, View view);
+    }
+
+    public interface DataTranslator {
+        Object translate(Object originData);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding binding;
 
@@ -170,27 +185,5 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         public void setBinding(ViewDataBinding binding) {
             this.binding = binding;
         }
-    }
-
-    //item view 处理接口
-    private ViewInflatedListener mViewInflatedListener;
-
-    public interface ViewInflatedListener {
-        void onViewInflated(int viewType, View view);
-    }
-
-    public void setViewInflatedListener(ViewInflatedListener listener) {
-        mViewInflatedListener = listener;
-    }
-
-    //item 数据 处理接口
-    private DataTranslator mDataTranslator;
-
-    public interface DataTranslator {
-        Object translate(Object originData);
-    }
-
-    public void setDataTranslator(DataTranslator translator) {
-        mDataTranslator = translator;
     }
 }

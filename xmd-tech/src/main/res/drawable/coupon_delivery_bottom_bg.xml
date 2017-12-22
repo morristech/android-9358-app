@@ -1,4 +1,3 @@
-
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:bottomLeftRadius="@dimen/coupon_item_bottom_corner" android:bottomRightRadius="@dimen/coupon_item_bottom_corner"/>
     <solid android:color="@color/coupon_delivery_bottom_color"></solid>

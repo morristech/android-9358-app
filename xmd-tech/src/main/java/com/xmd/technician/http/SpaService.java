@@ -847,6 +847,7 @@ public interface SpaService {
     @GET(RequestConstant.URL_TECH_POSTER_DETAIL)
     Call<TechPosterDetailResult> techPosterDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Query(RequestConstant.KEY_POSTER_ID) String id);
+
     //修改申请信息
     @FormUrlEncoded
     @POST(RequestConstant.URL_TECH_AUDIT_MODIFY)
@@ -858,6 +859,7 @@ public interface SpaService {
     @GET(RequestConstant.URL_TECH_AUDIT_CANCEL)
     Call<AuditCancelResult> techAuditCancel(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                             @Query(RequestConstant.KEY_PASSWORD) String password);
+
     //被会所拒绝后确认
     @FormUrlEncoded
     @POST(RequestConstant.URL_TECH_AUDIT_CONFIRM)

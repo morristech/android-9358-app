@@ -17,10 +17,7 @@ import com.xmd.technician.common.Utils;
 
 public class ShareDetailListActivity extends BaseActivity implements BaseFragment.IFragmentCallback {
 
-    private static final String SHARE_TYPE = "share_type";
-    private static final String SHARE_TITLE = "share_title";
     public static final String SHARE_TOTAL_AMOUNT = "share_total_amount";
-
     public static final int PAID_COUPON = 0x001;//点钟券
     public static final int NORMAL_COUPON = 0x002;//普通券
     public static final int ONCE_CARD = 0x003;//次卡
@@ -29,11 +26,11 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
     public static final int CLUB_JOURNAL = 0x006;//会所期刊
     public static final int REWARD_ACTIVITY = 0x007;//抽奖活动
     public static final int INVITATION_REWARD_ACTIVITY = 0x008;//邀请有礼
+    private static final String SHARE_TYPE = "share_type";
+    private static final String SHARE_TITLE = "share_title";
     //   public static final int OFFLINE_ACTIVITY = 0x008;//线下活动
-
-
-    private int mCurrentShareList;
     public String mCurrentTitle;
+    private int mCurrentShareList;
     private int mTotal;
 
     public static void startShareDetailListActivity(Activity activity, int shareType, String title, int totalAmount) {
@@ -88,7 +85,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
                 setFragment(RewardActivityListFragment.getInstance(mTotal));
                 break;
             case INVITATION_REWARD_ACTIVITY:
-                setTitle(Utils.isEmpty(mCurrentTitle)? ResourceUtils.getString(R.string.invitation_reward_activity):mCurrentTitle);
+                setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.invitation_reward_activity) : mCurrentTitle);
                 setFragment(InvitationRewardActivityListFragment.getInstance());
                 break;
        /*     case OFFLINE_ACTIVITY:

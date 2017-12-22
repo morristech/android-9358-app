@@ -59,9 +59,9 @@ public class TechAccountActivity extends BaseActivity {
         mTechAccountListAdapter.setOnWithDrawClickedListener(new TechAccountListAdapter.CallBack() {
             @Override
             public void onWithDrawClicked(TechAccountBean bean) {
-                if(mWithdrawal.equals("Y") && bean.status.equals("normal")){
+                if (mWithdrawal.equals("Y") && bean.status.equals("normal")) {
                     showDrawMoneyView();
-                }else{
+                } else {
                     makeShortToast("不可提现");
                 }
 

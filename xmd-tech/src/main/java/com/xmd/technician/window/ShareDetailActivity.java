@@ -33,6 +33,10 @@ import butterknife.ButterKnife;
 public class ShareDetailActivity extends BaseActivity implements View.OnClickListener {
 
 
+    public static final String SHARE_URL = "share_url";
+    public static final String SHARE_TITLE = "share_title";
+    public static final String EXTRA_SHOW_MENU = "show_menu";
+    public static final String EXTRA_FULLSCREEN = "fullScreen";
     @BindView(R.id.share_web_view)
     WebView shareWebView;
     @BindView(R.id.back_ImageView)
@@ -47,12 +51,6 @@ public class ShareDetailActivity extends BaseActivity implements View.OnClickLis
     SmoothProgressBar downloadProgressbar;
     @BindView(R.id.menu_LinearLayout)
     LinearLayout mMenuBar;
-
-    public static final String SHARE_URL = "share_url";
-    public static final String SHARE_TITLE = "share_title";
-    public static final String EXTRA_SHOW_MENU = "show_menu";
-    public static final String EXTRA_FULLSCREEN = "fullScreen";
-
     private String mShareUrl;
     private String mTitle;
     private WebSettings ws;
@@ -227,18 +225,6 @@ public class ShareDetailActivity extends BaseActivity implements View.OnClickLis
         }
         super.onDestroy();
     }
-
-/*    public void share(String url) {
-        Uri uri = Uri.parse(url);
-        String title = uri.getQueryParameter("title");
-        String text = uri.getQueryParameter("message");
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        intent.putExtra(Intent.EXTRA_TITLE, title);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(Intent.createChooser(intent, title));
-    }*/
 
     private class JsOperator {
         private Context mmContext;

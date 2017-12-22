@@ -28,10 +28,8 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
     protected ImageView mBack;
     protected TextView mToolbarRight;
     protected Toolbar mToolbar;
-    private ProgressDialog mProgressDialog;
-
     protected CircleAvatarView avatarView;
-
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if(mProgressDialog != null){
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
         super.onDestroy();

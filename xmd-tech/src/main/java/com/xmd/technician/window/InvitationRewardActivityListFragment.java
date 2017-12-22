@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
+import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.InvitationRewardBean;
@@ -19,6 +21,8 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,7 +70,7 @@ public class InvitationRewardActivityListFragment extends BaseFragment {
                 rewardBean = result.respData;
                 invitationRewardName.setText(rewardBean.activityName);
                 if (rewardBean.startTime > 0 && rewardBean.endTime > 0) {
-                    invitationRewardTime.setText(String.format("活动时间：%s-%s", DateUtil.long2Date(rewardBean.startTime,"yyyy.MM.dd"), DateUtil.long2Date(rewardBean.endTime,"yyyy.MM.dd")));
+                    invitationRewardTime.setText(String.format("活动时间：%s-%s", DateUtil.long2Date(rewardBean.startTime, "yyyy.MM.dd"), DateUtil.long2Date(rewardBean.endTime, "yyyy.MM.dd")));
                 } else {
                     invitationRewardTime.setText("活动时间：不限");
                 }
@@ -84,9 +88,10 @@ public class InvitationRewardActivityListFragment extends BaseFragment {
 
     @OnClick(R.id.invitation_reward_share)
     public void onViewClicked() {
+        EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_INVITATION));
         if (rewardBean != null) {
             ShareController.doShare(rewardBean.registerPrize.imageUrl, rewardBean.activityLink, rewardBean.activityName,
-                    ResourceUtils.getString(R.string.invitation_reward_share_description), Constant.SHARE_TYPE_REWARD_ACTIVITY, rewardBean.activityId);
+                    ResourceUtils.getString(R.string.invitation_reward_share_description), Constant.SHARE_TYPE_INVITATION_REWARD_ACTIVITY, rewardBean.activityId);
         }
 
     }

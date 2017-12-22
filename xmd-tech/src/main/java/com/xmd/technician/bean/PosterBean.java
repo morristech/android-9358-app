@@ -8,6 +8,17 @@ import android.os.Parcelable;
  */
 
 public class PosterBean implements Parcelable {
+    public static final Creator<PosterBean> CREATOR = new Creator<PosterBean>() {
+        @Override
+        public PosterBean createFromParcel(Parcel source) {
+            return new PosterBean(source);
+        }
+
+        @Override
+        public PosterBean[] newArray(int size) {
+            return new PosterBean[size];
+        }
+    };
     /**
      * id : 14
      * techId : 748081899301244928
@@ -43,9 +54,27 @@ public class PosterBean implements Parcelable {
     public String validDate;
     public String shareUrl;
 
-
     public PosterBean() {
 
+    }
+
+    protected PosterBean(Parcel in) {
+        this.id = in.readInt();
+        this.techId = in.readString();
+        this.clubId = in.readString();
+        this.title = in.readString();
+        this.subTitle = in.readString();
+        this.imageId = in.readString();
+        this.name = in.readString();
+        this.techNo = in.readString();
+        this.clubName = in.readString();
+        this.style = in.readString();
+        this.status = in.readInt();
+        this.createTime = in.readLong();
+        this.modifyTime = in.readLong();
+        this.imageUrl = in.readString();
+        this.qrCodeUrl = in.readString();
+        this.validDate = in.readString();
     }
 
     @Override
@@ -72,35 +101,4 @@ public class PosterBean implements Parcelable {
         dest.writeString(this.qrCodeUrl);
         dest.writeString(this.validDate);
     }
-
-    protected PosterBean(Parcel in) {
-        this.id = in.readInt();
-        this.techId = in.readString();
-        this.clubId = in.readString();
-        this.title = in.readString();
-        this.subTitle = in.readString();
-        this.imageId = in.readString();
-        this.name = in.readString();
-        this.techNo = in.readString();
-        this.clubName = in.readString();
-        this.style = in.readString();
-        this.status = in.readInt();
-        this.createTime = in.readLong();
-        this.modifyTime = in.readLong();
-        this.imageUrl = in.readString();
-        this.qrCodeUrl = in.readString();
-        this.validDate = in.readString();
-    }
-
-    public static final Creator<PosterBean> CREATOR = new Creator<PosterBean>() {
-        @Override
-        public PosterBean createFromParcel(Parcel source) {
-            return new PosterBean(source);
-        }
-
-        @Override
-        public PosterBean[] newArray(int size) {
-            return new PosterBean[size];
-        }
-    };
 }

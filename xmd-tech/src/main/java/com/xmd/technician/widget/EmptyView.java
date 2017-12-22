@@ -27,10 +27,6 @@ public class EmptyView extends RelativeLayout {
     private OnRefreshListener mRefreshListener;
     private Status mCurrentStatus;
 
-    public interface OnRefreshListener {
-        void onRefresh();
-    }
-
     public EmptyView(Context context) {
         super(context);
         init(context);
@@ -114,7 +110,6 @@ public class EmptyView extends RelativeLayout {
         return this;
     }
 
-
     public EmptyView setLoadingTip(int resId) {
         tvLoadingTip.setText(resId);
         return this;
@@ -146,5 +141,9 @@ public class EmptyView extends RelativeLayout {
         Empty,
         Gone,
         Failed
+    }
+
+    public interface OnRefreshListener {
+        void onRefresh();
     }
 }

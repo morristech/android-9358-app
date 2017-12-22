@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/status_all"
-        android:title="@string/online_pay_notify_status_all" />
+        android:title="@string/online_pay_notify_status_all"/>
     <item
         android:id="@+id/status_unverified"
-        android:title="@string/online_pay_notify_status_unverified" />
+        android:title="@string/online_pay_notify_status_unverified"/>
     <item
         android:id="@+id/status_accept"
-        android:title="@string/online_pay_notify_status_accept" />
+        android:title="@string/online_pay_notify_status_accept"/>
     <item
         android:id="@+id/status_reject"
-        android:title="@string/online_pay_notify_status_reject" />
+        android:title="@string/online_pay_notify_status_reject"/>
 </menu>

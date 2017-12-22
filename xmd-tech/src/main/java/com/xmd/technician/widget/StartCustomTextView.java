@@ -22,20 +22,26 @@ import java.util.HashMap;
  */
 
 public class StartCustomTextView extends TextView {
+    /**
+     * 缓存测量过的数据
+     */
+    private static HashMap<String, SoftReference<MeasuredData>> measuredData = new HashMap<String, SoftReference<MeasuredData>>();
+    private static int hashIndex = 0;
+    /**
+     * 存储当前文本内容，每个item为一行
+     */
+    ArrayList<LINE> contentList = new ArrayList<LINE>();
     private Context context;
     /**
      * 用于测量字符宽度
      */
     private Paint paint = new Paint();
 
+//  private float lineSpacingMult = 0.5f;
     private int textColor = Color.BLACK;
-
     //行距
     private float lineSpacing;
     private int lineSpacingDP = 0;
-
-//  private float lineSpacingMult = 0.5f;
-
     /**
      * 最大宽度
      */
@@ -56,17 +62,6 @@ public class StartCustomTextView extends TextView {
      * 是否使用默认{@link TextView#onMeasure(int, int)}和{@link TextView#onDraw(Canvas)}
      */
     private boolean useDefault = false;
-    /**
-     * 存储当前文本内容，每个item为一行
-     */
-    ArrayList<LINE> contentList = new ArrayList<LINE>();
-    /**
-     * 缓存测量过的数据
-     */
-    private static HashMap<String, SoftReference<MeasuredData>> measuredData = new HashMap<String, SoftReference<MeasuredData>>();
-
-    private static int hashIndex = 0;
-
     private CharSequence text = "";
     /**
      * 最小高度
@@ -94,6 +89,19 @@ public class StartCustomTextView extends TextView {
         lineSpacing = dip2px(context, lineSpacingDP);
         minHeight = dip2px(context, 20);
         displayMetrics = new DisplayMetrics();
+    }
+
+    public static int px2sp(Context context, float pxValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     @Override
@@ -457,19 +465,6 @@ public class StartCustomTextView extends TextView {
         }
     }
 
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
-    }
-
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
     /**
      * @author huangwei
      * @功能: 存储ImageSpan及其开始结束位置
@@ -516,9 +511,9 @@ public class StartCustomTextView extends TextView {
         public float textSize;
         public int width;
         public float lineWidthMax;
-        ArrayList<LINE> contentList;
         public int oneLineWidth;
         public int hashIndex;
+        ArrayList<LINE> contentList;
 
     }
 }

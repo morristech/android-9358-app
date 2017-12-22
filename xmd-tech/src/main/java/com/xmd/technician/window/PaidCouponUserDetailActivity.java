@@ -27,17 +27,16 @@ import rx.Subscription;
  */
 public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUserDetail> implements ListPopupWindow.Callback<Entry> {
 
-    private String mActId;
-    private Map<String, String> mParams = new HashMap<>();
     @BindView(R.id.tv_filter_status)
     TextView mTvFilterStatus;
+    private String mActId;
+    private Map<String, String> mParams = new HashMap<>();
+    private Subscription mGetPaidCouponUserDetailSubscription;
 
     @Override
     protected void setContentViewLayout() {
         setContentView(R.layout.activity_paid_coupon_user_detail);
     }
-
-    private Subscription mGetPaidCouponUserDetailSubscription;
 
     @Override
     protected void initView() {

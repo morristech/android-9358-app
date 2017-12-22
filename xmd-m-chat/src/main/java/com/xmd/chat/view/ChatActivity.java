@@ -424,7 +424,6 @@ public class ChatActivity extends BaseActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    XLogger.i(">>>","此处有点击时间");
                     showSubMenuFastReply.set(false);
                     if (voiceInputMode.get()) {
                         voiceInputMode.set(false);

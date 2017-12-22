@@ -35,10 +35,6 @@ public class ExpandableMarketListViewAdapter extends BaseExpandableListAdapter {
     private List<List<OnceCardItemBean>> mChildArray;
     private OnChildrenItemClickedInterface mInterface;
 
-    public interface OnChildrenItemClickedInterface {
-        void onChildrenClickedListener(OnceCardItemBean bean, int groupPosition, int childPosition, boolean isSelected);
-    }
-
     public ExpandableMarketListViewAdapter(Context context) {
         this.mContext = context;
         mGroupArray = new ArrayList<>();
@@ -94,7 +90,6 @@ public class ExpandableMarketListViewAdapter extends BaseExpandableListAdapter {
     public boolean hasStableIds() {
         return false;
     }
-
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -152,6 +147,10 @@ public class ExpandableMarketListViewAdapter extends BaseExpandableListAdapter {
 
         return convertView;
 
+    }
+
+    public interface OnChildrenItemClickedInterface {
+        void onChildrenClickedListener(OnceCardItemBean bean, int groupPosition, int childPosition, boolean isSelected);
     }
 
     static class ViewParentViewHolder {

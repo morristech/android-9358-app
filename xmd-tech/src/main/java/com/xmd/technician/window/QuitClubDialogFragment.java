@@ -34,12 +34,11 @@ import rx.Subscription;
  */
 
 public class QuitClubDialogFragment extends DialogFragment {
-    private String mPassword;
-    private QuitClubListener mListener;
     public ObservableField<String> errorString = new ObservableField<>();
     public ObservableBoolean okButtonEnable = new ObservableBoolean();
     public ObservableBoolean cancelButtonEnable = new ObservableBoolean(true);
-
+    private String mPassword;
+    private QuitClubListener mListener;
     private Subscription mQuitClubSubscription;
     private Subscription mAuditCancelSubscription;
 
@@ -52,10 +51,10 @@ public class QuitClubDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = FragmentQuitClubBinding.inflate(inflater, container, false);
         mBinding.setFragment(this);
-        if(technician.getStatus().equals(Constant.TECH_STATUS_UNCERT)){
+        if (technician.getStatus().equals(Constant.TECH_STATUS_UNCERT)) {
             mBinding.dialogTitle.setText(ResourceUtils.getString(R.string.cancel_join_club_title));
             mBinding.tvDialogDes.setText(ResourceUtils.getString(R.string.cancel_join_club_tip));
-        }else {
+        } else {
             mBinding.dialogTitle.setText(ResourceUtils.getString(R.string.quit_club_title));
             mBinding.tvDialogDes.setText(ResourceUtils.getString(R.string.quit_club_tip));
         }
@@ -101,7 +100,6 @@ public class QuitClubDialogFragment extends DialogFragment {
         cancelButtonEnable.set(false);
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mBinding.editPassword.getWindowToken(), 0);
-        XLogger.i(">>>","mPassword"+mPassword);
         technician.exitClub(mPassword);
     }
 
@@ -157,12 +155,11 @@ public class QuitClubDialogFragment extends DialogFragment {
         }
     }
 
+    public void setListener(QuitClubListener listener) {
+        this.mListener = listener;
+    }
 
     public interface QuitClubListener {
         void onQuitClubSuccess();
-    }
-
-    public void setListener(QuitClubListener listener) {
-        this.mListener = listener;
     }
 }

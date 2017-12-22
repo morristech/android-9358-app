@@ -8,19 +8,30 @@ import android.os.Parcelable;
  */
 public class CouponInfo implements Parcelable {
 
+    public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
+        @Override
+        public CouponInfo createFromParcel(Parcel source) {
+            return new CouponInfo(source);
+        }
+
+        @Override
+        public CouponInfo[] newArray(int size) {
+            return new CouponInfo[size];
+        }
+    };
     /**
      * actId : 887162723530448896
      * clubId : 601679316694081536
      * clubName : null
      * actTitle : 二娃热
-     * actSubTitle : 
-     * actDescription : 
+     * actSubTitle :
+     * actDescription :
      * actContent : <ul><li>使用时，请出示手机号码或者优惠码。</li><li>每张券仅限一人使用，仅能使用一张。</li><li>使用此券，不可享受本店其他优惠。</li><li>提供免费WiFi。</li><li>提供免费停车位。</li><li>欢迎提前预约。</li></ul>
      * actValue : 550
-     * actLogo : 
-     * backgroupImage : 
+     * actLogo :
+     * backgroupImage :
      * actLogoCompress : null
-     * actLogoUrl : 
+     * actLogoUrl :
      * actTotal : 2000
      * userGetCount : 5
      * actType : coupon
@@ -37,10 +48,10 @@ public class CouponInfo implements Parcelable {
      * createDate : 2017-07-18 12:10:50
      * orderNo : 0
      * getFlag : null
-     * itemId : 
+     * itemId :
      * serverItem : null
      * time : null
-     * useDateNote : 
+     * useDateNote :
      * baseCommission : 0
      * commission : 0
      * qrCode : null
@@ -57,9 +68,9 @@ public class CouponInfo implements Parcelable {
      * isIndex : N
      * periodType : fixed_time
      * longAfterReceive : 0
-     * periodDay : 
+     * periodDay :
      * couponTypeName : 折扣券
-     * useDay : 
+     * useDay :
      * platformFee : null
      * incomeType : club
      * operatorId : 601634063966539776
@@ -139,6 +150,76 @@ public class CouponInfo implements Parcelable {
     public int techBaseCommission;
     public int selectedStatus; //1可被选中且未被选中，2，可被选中且已被选中
 
+    public CouponInfo() {
+    }
+
+    protected CouponInfo(Parcel in) {
+        this.actId = in.readString();
+        this.clubId = in.readString();
+        this.clubName = in.readString();
+        this.actTitle = in.readString();
+        this.actSubTitle = in.readString();
+        this.actDescription = in.readString();
+        this.actContent = in.readString();
+        this.actValue = in.readInt();
+        this.actLogo = in.readString();
+        this.backgroupImage = in.readString();
+        this.actLogoCompress = in.readString();
+        this.actLogoUrl = in.readString();
+        this.actTotal = in.readInt();
+        this.userGetCount = in.readInt();
+        this.actType = in.readString();
+        this.actTypeName = in.readString();
+        this.startDate = in.readString();
+        this.endDate = in.readString();
+        this.actStatus = in.readString();
+        this.actStatusName = in.readString();
+        this.couponSellTotal = in.readInt();
+        this.couponUseTotal = in.readInt();
+        this.couponType = in.readString();
+        this.consumeMoney = in.readString();
+        this.modifyDate = in.readString();
+        this.createDate = in.readString();
+        this.orderNo = in.readInt();
+        this.getFlag = in.readString();
+        this.itemId = in.readString();
+        this.serverItem = in.readString();
+        this.time = in.readString();
+        this.useDateNote = in.readString();
+        this.baseCommission = in.readInt();
+        this.commission = in.readInt();
+        this.qrCode = in.readString();
+        this.qrCodeUrl = in.readString();
+        this.redpackUseDetailUrl = in.readString();
+        this.clubLogoUrl = in.readString();
+        this.useStartDate = in.readString();
+        this.useEndDate = in.readString();
+        this.startTime = in.readString();
+        this.endTime = in.readString();
+        this.shareUrl = in.readString();
+        this.userGetCounts = in.readString();
+        this.useType = in.readString();
+        this.isIndex = in.readString();
+        this.periodType = in.readString();
+        this.longAfterReceive = in.readString();
+        this.periodDay = in.readString();
+        this.couponTypeName = in.readString();
+        this.useDay = in.readString();
+        this.platformFee = in.readString();
+        this.incomeType = in.readString();
+        this.operatorId = in.readString();
+        this.operatorName = in.readString();
+        this.consumeMoneyDescription = in.readString();
+        this.techCommission = in.readInt();
+        this.actPeriod = in.readString();
+        this.couponPeriod = in.readString();
+        this.useTimePeriod = in.readString();
+        this.useTypeName = in.readString();
+        this.backgroupImageUrl = in.readString();
+        this.techBaseCommission = in.readInt();
+        this.selectedStatus = in.readInt();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -211,86 +292,4 @@ public class CouponInfo implements Parcelable {
         dest.writeInt(this.techBaseCommission);
         dest.writeInt(this.selectedStatus);
     }
-
-    public CouponInfo() {
-    }
-
-    protected CouponInfo(Parcel in) {
-        this.actId = in.readString();
-        this.clubId = in.readString();
-        this.clubName = in.readString();
-        this.actTitle = in.readString();
-        this.actSubTitle = in.readString();
-        this.actDescription = in.readString();
-        this.actContent = in.readString();
-        this.actValue = in.readInt();
-        this.actLogo = in.readString();
-        this.backgroupImage = in.readString();
-        this.actLogoCompress = in.readString();
-        this.actLogoUrl = in.readString();
-        this.actTotal = in.readInt();
-        this.userGetCount = in.readInt();
-        this.actType = in.readString();
-        this.actTypeName = in.readString();
-        this.startDate = in.readString();
-        this.endDate = in.readString();
-        this.actStatus = in.readString();
-        this.actStatusName = in.readString();
-        this.couponSellTotal = in.readInt();
-        this.couponUseTotal = in.readInt();
-        this.couponType = in.readString();
-        this.consumeMoney = in.readString();
-        this.modifyDate = in.readString();
-        this.createDate = in.readString();
-        this.orderNo = in.readInt();
-        this.getFlag = in.readString();
-        this.itemId = in.readString();
-        this.serverItem = in.readString();
-        this.time = in.readString();
-        this.useDateNote = in.readString();
-        this.baseCommission = in.readInt();
-        this.commission = in.readInt();
-        this.qrCode = in.readString();
-        this.qrCodeUrl = in.readString();
-        this.redpackUseDetailUrl = in.readString();
-        this.clubLogoUrl = in.readString();
-        this.useStartDate = in.readString();
-        this.useEndDate = in.readString();
-        this.startTime = in.readString();
-        this.endTime = in.readString();
-        this.shareUrl = in.readString();
-        this.userGetCounts = in.readString();
-        this.useType = in.readString();
-        this.isIndex = in.readString();
-        this.periodType = in.readString();
-        this.longAfterReceive = in.readString();
-        this.periodDay = in.readString();
-        this.couponTypeName = in.readString();
-        this.useDay = in.readString();
-        this.platformFee = in.readString();
-        this.incomeType = in.readString();
-        this.operatorId = in.readString();
-        this.operatorName = in.readString();
-        this.consumeMoneyDescription = in.readString();
-        this.techCommission = in.readInt();
-        this.actPeriod = in.readString();
-        this.couponPeriod = in.readString();
-        this.useTimePeriod = in.readString();
-        this.useTypeName = in.readString();
-        this.backgroupImageUrl = in.readString();
-        this.techBaseCommission = in.readInt();
-        this.selectedStatus = in.readInt();
-    }
-
-    public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
-        @Override
-        public CouponInfo createFromParcel(Parcel source) {
-            return new CouponInfo(source);
-        }
-
-        @Override
-        public CouponInfo[] newArray(int size) {
-            return new CouponInfo[size];
-        }
-    };
 }

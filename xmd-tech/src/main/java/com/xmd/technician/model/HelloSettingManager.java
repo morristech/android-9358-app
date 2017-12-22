@@ -39,24 +39,21 @@ import rx.Subscription;
  */
 
 public class HelloSettingManager {
+    private static HelloSettingManager ourInstance = new HelloSettingManager();
     private Call<HelloReplyResult> mHelloReplyCheck;
-
     private Integer templateId;
     private Integer templateParentId;   //为null:代表自定义模版
     private String templateContentText;
     private String templateImageId;
     private String templateImageUrl;
     private String templateImageLink;
-
     private String templateImageCachePath;
 
-    private static HelloSettingManager ourInstance = new HelloSettingManager();
+    private HelloSettingManager() {
+    }
 
     public static HelloSettingManager getInstance() {
         return ourInstance;
-    }
-
-    private HelloSettingManager() {
     }
 
     public void resetTemplate() {

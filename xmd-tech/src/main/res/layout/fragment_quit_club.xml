@@ -3,17 +3,17 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="fragment"
-            type="com.xmd.technician.window.QuitClubDialogFragment" />
+            type="com.xmd.technician.window.QuitClubDialogFragment"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
 
         <TextView
             android:id="@+id/dialog_title"
@@ -23,7 +23,7 @@
             android:gravity="center"
             android:text="@string/quit_club_title"
             android:textColor="@color/color_main_title"
-            android:textSize="@dimen/fontSubheading" />
+            android:textSize="@dimen/fontSubheading"/>
 
         <TextView
             android:id="@+id/tv_dialog_des"
@@ -33,7 +33,7 @@
             android:layout_marginRight="@dimen/common_v_margin"
             android:layout_marginTop="@dimen/common_v_margin"
             android:text="@string/quit_club_tip"
-            android:textColor="@color/color_main_body" />
+            android:textColor="@color/color_main_body"/>
 
         <EditText
             android:id="@+id/edit_password"
@@ -51,7 +51,7 @@
             android:maxLength="20"
             android:minHeight="32dp"
             android:padding="4dp"
-            android:textSize="@dimen/fontBody2" />
+            android:textSize="@dimen/fontBody2"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -62,13 +62,13 @@
             android:text="@{fragment.errorString}"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="@dimen/fontCaption"
-            android:visibility="@{fragment.errorString!=null?View.VISIBLE:View.GONE}" />
+            android:visibility="@{fragment.errorString!=null?View.VISIBLE:View.GONE}"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/divider_color" />
+            android:background="@color/divider_color"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,12 +84,12 @@
                 android:onClick="@{()->fragment.onClickOk()}"
                 android:padding="8dp"
                 android:text="@string/confirm"
-                android:textColor="@drawable/selector_link_button" />
+                android:textColor="@drawable/selector_link_button"/>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/divider_color" />
+                android:background="@color/divider_color"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -101,7 +101,7 @@
                 android:onClick="@{()->fragment.onClickCancel()}"
                 android:padding="8dp"
                 android:text="@string/cancel"
-                android:textColor="@drawable/selector_link_button" />
+                android:textColor="@drawable/selector_link_button"/>
         </LinearLayout>
     </LinearLayout>
 </layout>

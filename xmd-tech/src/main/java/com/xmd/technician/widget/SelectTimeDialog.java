@@ -21,16 +21,18 @@ import java.util.List;
 public abstract class SelectTimeDialog extends Dialog {
 
     private static final int WHEEL_VISIBLE_COUNT = 7;
-
+    public String[] arr_day = {"当日", "次日"};
+    // 当前显示的内容
+    public String mCurrentBegin;
+    public String mCurrentDay;
+    public String mCurrentEnd;
     private Context context;
     private TimeInfo mTimeInfo;
-
     // begin从Json解析的集合
     private List<String> mBeginTimeRange;
     // 对应的数组
     private String[] mBeginTimeArray;
     private String initBeginTime;
-
     // end从Json解析的集合
     private List<String> mEndTimeRange;
     // 对应的数组
@@ -38,19 +40,10 @@ public abstract class SelectTimeDialog extends Dialog {
     // 变化量缓存
     private String[] mCacheEndTimeArray;
     private String initEndTime;
-
-    public String[] arr_day = {"当日", "次日"};
     private String initDay;
-
     private WheelView mSelectBegin;
     private WheelView mSelectEnd;
     private WheelView mSelectDay;
-
-    // 当前显示的内容
-    public String mCurrentBegin;
-    public String mCurrentDay;
-    public String mCurrentEnd;
-
     private Button mSelectCancel;
     private Button mSelectConfirm;
 

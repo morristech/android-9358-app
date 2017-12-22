@@ -25,21 +25,19 @@ import rx.Subscription;
  */
 
 public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements RegisterContract.Presenter {
-    private ActivityRegisterBinding mBinding;
-    private LoginTechnician mTech = LoginTechnician.getInstance();
+    private static final int VERIFICATION_INTERVAL = 60000;//验证码间隔60秒
     public ObservableBoolean mCanGetVerificationCode = new ObservableBoolean();//是否能获取验证码
     public ObservableBoolean mCanGotoSetInfoView = new ObservableBoolean(); //是否能跳转到设置资料页面
     public ObservableField<String> mSendVerificationText = new ObservableField<>();
     public String mTitle;
     public boolean mShowTechNoAndClubInviteCode;
+    private ActivityRegisterBinding mBinding;
+    private LoginTechnician mTech = LoginTechnician.getInstance();
     private String mPhoneNumber;
     private long mSendVerificationTime;
     private String mVerificationCode;
     private String mPassword;
     private Future mSendVerificationFuture;
-    private static final int VERIFICATION_INTERVAL = 60000;//验证码间隔60秒
-
-
     private Subscription mRegisterSubscription;
 
     public RegisterPresenter(Context context, RegisterContract.View view, ActivityRegisterBinding binding) {

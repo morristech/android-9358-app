@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/small_space"
-                android:src="@drawable/ic_nearby_template_set" />
+                android:src="@drawable/ic_nearby_template_set"/>
 
             <TextView
                 android:id="@+id/tv_nearby_desc"
@@ -41,7 +41,7 @@
                 android:paddingTop="@dimen/common_v_margin"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontBody"
-                android:visibility="visible" />
+                android:visibility="visible"/>
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingBottom="@dimen/common_v_margin" />
+            android:paddingBottom="@dimen/common_v_margin"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -39,10 +39,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         mChildArray = new ArrayList<>();
     }
 
-    public interface OnChildrenClicked {
-        void onChildrenClickedListener(MarketingChatShareBean bean, int groupPosition, int childPosition, boolean isSelected);
-    }
-
     public void setChildrenClickedInterface(OnChildrenClicked clickedInterface) {
         this.mInterface = clickedInterface;
     }
@@ -57,7 +53,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         this.mChildArray = childArray;
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getGroupCount() {
@@ -203,6 +198,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public interface OnChildrenClicked {
+        void onChildrenClickedListener(MarketingChatShareBean bean, int groupPosition, int childPosition, boolean isSelected);
     }
 
     static class ViewParentViewHolder {

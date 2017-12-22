@@ -15,7 +15,7 @@
             android:id="@+id/rl_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_button_height"
-            >
+        >
 
             <ImageView
                 android:id="@+id/toolbar_back"
@@ -28,7 +28,7 @@
                 android:paddingRight="@dimen/personal_padding"
                 android:scaleType="center"
                 android:src="@drawable/icon_back_white"
-                />
+            />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -121,7 +121,7 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/personal_margin"
         android:paddingRight="@dimen/personal_padding"
-        >
+    >
 
         <TextView
 
@@ -185,7 +185,7 @@
         android:id="@+id/tabIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+    >
 
     </com.xmd.technician.widget.ViewPagerTabIndicator>
 
@@ -193,7 +193,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+    />
 
 
 </LinearLayout>

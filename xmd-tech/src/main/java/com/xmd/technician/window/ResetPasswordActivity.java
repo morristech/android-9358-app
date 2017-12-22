@@ -44,9 +44,6 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     private Handler mHandler = new Handler();
     private boolean mPhoneNumReady = false;
     private long mCurrentTimeMillis = 0;
-
-    private Subscription mResetPasswordSubscription;
-
     //定时刷新验证码剩余时间
     private final Runnable mRefreshICodeTask = new Runnable() {
         @Override
@@ -58,6 +55,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
             }
         }
     };
+    private Subscription mResetPasswordSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

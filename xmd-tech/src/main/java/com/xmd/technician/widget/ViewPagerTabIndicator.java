@@ -28,77 +28,40 @@ import java.util.List;
  * Created by Administrator on 2016/8/15.
  */
 public class ViewPagerTabIndicator extends FrameLayout {
-    public interface IOnPageChangeListener {
-        void onPageSelected(int position);
-    }
-
-    /**
-     * Called by the outside
-     */
-    public interface IOnTabClickListener {
-        void onTabClick(int position);
-    }
-
-    /**
-     * @hide
-     */
-    @IntDef({INDICATOR_TOP, INDICATOR_BOTTOM})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface IndicatorGravityMode {
-    }
-
-    @IntDef({DRAWABLE_LEFT, DRAWABLE_TOP, DRAWABLE_RIGHT, DRAWABLE_BOTTOM})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface DrawableDirectionMode {
-    }
-
-    private IOnTabClickListener mOnTabclickListener;
-    private IOnPageChangeListener mOnPageChangeListener;
-
     public static final int INDICATOR_TOP = 0;
     public static final int INDICATOR_BOTTOM = 1;
-
     public static final int DRAWABLE_LEFT = 0;
     public static final int DRAWABLE_TOP = 1;
     public static final int DRAWABLE_RIGHT = 2;
     public static final int DRAWABLE_BOTTOM = 3;
-
+    private IOnTabClickListener mOnTabclickListener;
+    private IOnPageChangeListener mOnPageChangeListener;
     private List<TextView> mTextViewList = new ArrayList<>();
-
     private ViewPager mViewPager;
-
     private float mTranslationX;
     private Paint mPaint;
-
     private int mTabCount;
-
     private int mIndicatorGravity;
     private int mDrawableDirection;
-
     private String[] mTabTexts;
     private Drawable[] mTabIcons;
-
     private int mTabHeight;
     private int mTabTextBg;
     private int mTextPadding;
     private int mTextPaddingBottom;
     private float mTextSize;
     private ColorStateList mTextColor;
-
     private int mLineWidth;
     private int mLineMarginTopBottom;
     private int mLineMarginBottom;
     private int mLineColor;
-
     private int mNoticeSize;
     private int mNoticeTextSize;
     private int mNoticeTextColor;
     private Drawable mNoticeBg;
     private int mNoticeMarginTop;
     private int mNoticeMarginRight;
-
     private int mIndicatorHeight;
-
     private boolean mWithDivider = true;
     private boolean mWithIndicator = false;
     private Context mContext;
@@ -112,7 +75,6 @@ public class ViewPagerTabIndicator extends FrameLayout {
         this(context, attrs, -1);
         this.mContext = context;
     }
-
     public ViewPagerTabIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
@@ -195,14 +157,6 @@ public class ViewPagerTabIndicator extends FrameLayout {
         this.mOnTabclickListener = onTabclickLitener;
     }
 
-    public void setIndicatorGravity(@IndicatorGravityMode int indicatorGravity) {
-        mWithIndicator = true;
-        if (mIndicatorGravity != indicatorGravity) {
-            mIndicatorGravity = indicatorGravity;
-            requestLayout();
-        }
-    }
-
     public void setDrawbleDirection(@DrawableDirectionMode int drawbleDirection) {
         if (mDrawableDirection != drawbleDirection) {
             mDrawableDirection = drawbleDirection;
@@ -218,6 +172,14 @@ public class ViewPagerTabIndicator extends FrameLayout {
     @IndicatorGravityMode
     public int getIndicatorGravity() {
         return mIndicatorGravity;
+    }
+
+    public void setIndicatorGravity(@IndicatorGravityMode int indicatorGravity) {
+        mWithIndicator = true;
+        if (mIndicatorGravity != indicatorGravity) {
+            mIndicatorGravity = indicatorGravity;
+            requestLayout();
+        }
     }
 
     public int getTabCount() {
@@ -411,6 +373,30 @@ public class ViewPagerTabIndicator extends FrameLayout {
             }
         }
         return null;
+    }
+
+    public interface IOnPageChangeListener {
+        void onPageSelected(int position);
+    }
+
+    /**
+     * Called by the outside
+     */
+    public interface IOnTabClickListener {
+        void onTabClick(int position);
+    }
+
+    /**
+     * @hide
+     */
+    @IntDef({INDICATOR_TOP, INDICATOR_BOTTOM})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface IndicatorGravityMode {
+    }
+
+    @IntDef({DRAWABLE_LEFT, DRAWABLE_TOP, DRAWABLE_RIGHT, DRAWABLE_BOTTOM})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface DrawableDirectionMode {
     }
 }
 

@@ -21,11 +21,9 @@ public class SuccessDialog extends Dialog {
 
     @BindView(R.id.icon_success)
     ImageView iconSuccess;
-
-    private TextView text;
-
-    private Button btnSure;
     boolean showBtn;
+    private TextView text;
+    private Button btnSure;
     private String mTipInfo;
 
     public SuccessDialog(Context context) {

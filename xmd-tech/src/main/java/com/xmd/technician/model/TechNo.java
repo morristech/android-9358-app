@@ -9,6 +9,7 @@ import com.xmd.technician.common.ResourceUtils;
  */
 
 public class TechNo {
+    public static TechNo DEFAULT_TECH_NO = new TechNo(ResourceUtils.getString(R.string.tech_num_default), null);
     public String name;
     public String id;
 
@@ -16,6 +17,4 @@ public class TechNo {
         this.name = name;
         this.id = id;
     }
-
-    public static TechNo DEFAULT_TECH_NO = new TechNo(ResourceUtils.getString(R.string.tech_num_default), null);
 }

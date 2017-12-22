@@ -23,12 +23,11 @@ import butterknife.BindView;
  */
 public class ArrayBottomPopupWindow<T> extends BasePopupWindow {
 
+    public String selectedItem;
     @BindView(R.id.popup_window_list)
     ListView mView;
-
     private FiltrateAdapter mFiltrateAdapter;
     private List<String> mListDate;
-    public String selectedItem;
     private AdapterView.OnItemClickListener mItemClickListener;
 
     public ArrayBottomPopupWindow(View parentView, Map<String, String> params, int windowWidth) {

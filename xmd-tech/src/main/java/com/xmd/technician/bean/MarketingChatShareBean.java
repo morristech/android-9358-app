@@ -34,6 +34,17 @@ public class MarketingChatShareBean implements Parcelable {
      * credits : 0
      * limitedUse : false
      */
+    public static final Creator<MarketingChatShareBean> CREATOR = new Creator<MarketingChatShareBean>() {
+        @Override
+        public MarketingChatShareBean createFromParcel(Parcel source) {
+            return new MarketingChatShareBean(source);
+        }
+
+        @Override
+        public MarketingChatShareBean[] newArray(int size) {
+            return new MarketingChatShareBean[size];
+        }
+    };
     /**
      * actId : 63
      * actName : 测试在线转盘
@@ -68,6 +79,35 @@ public class MarketingChatShareBean implements Parcelable {
     public int paidCount; //购买次数
     public int selectedStatus; //1可被选中且未被选中，2，可被选中且已被选中
 
+    public MarketingChatShareBean() {
+    }
+
+    protected MarketingChatShareBean(Parcel in) {
+        this.actPrice = in.readInt();
+        this.unitPrice = in.readInt();
+        this.amount = in.readInt();
+        this.id = in.readString();
+        this.itemId = in.readString();
+        this.price = in.readString();
+        this.usePeriod = in.readString();
+        this.itemName = in.readString();
+        this.credits = in.readInt();
+        this.limitedUse = in.readByte() != 0;
+        this.actId = in.readString();
+        this.actName = in.readString();
+        this.endTime = in.readString();
+        this.startTime = in.readString();
+        this.firstPrizeName = in.readString();
+        this.image = in.readString();
+        this.shareUrl = in.readString();
+        this.maxPeriod = in.readInt();
+        this.currentPeriod = in.readInt();
+        this.totalPaidCount = in.readInt();
+        this.canPaidCount = in.readInt();
+        this.paidCount = in.readInt();
+        this.selectedStatus = in.readInt();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -99,45 +139,4 @@ public class MarketingChatShareBean implements Parcelable {
         dest.writeInt(this.paidCount);
         dest.writeInt(this.selectedStatus);
     }
-
-    public MarketingChatShareBean() {
-    }
-
-    protected MarketingChatShareBean(Parcel in) {
-        this.actPrice = in.readInt();
-        this.unitPrice = in.readInt();
-        this.amount = in.readInt();
-        this.id = in.readString();
-        this.itemId = in.readString();
-        this.price = in.readString();
-        this.usePeriod = in.readString();
-        this.itemName = in.readString();
-        this.credits = in.readInt();
-        this.limitedUse = in.readByte() != 0;
-        this.actId = in.readString();
-        this.actName = in.readString();
-        this.endTime = in.readString();
-        this.startTime = in.readString();
-        this.firstPrizeName = in.readString();
-        this.image = in.readString();
-        this.shareUrl = in.readString();
-        this.maxPeriod = in.readInt();
-        this.currentPeriod = in.readInt();
-        this.totalPaidCount = in.readInt();
-        this.canPaidCount = in.readInt();
-        this.paidCount = in.readInt();
-        this.selectedStatus = in.readInt();
-    }
-
-    public static final Creator<MarketingChatShareBean> CREATOR = new Creator<MarketingChatShareBean>() {
-        @Override
-        public MarketingChatShareBean createFromParcel(Parcel source) {
-            return new MarketingChatShareBean(source);
-        }
-
-        @Override
-        public MarketingChatShareBean[] newArray(int size) {
-            return new MarketingChatShareBean[size];
-        }
-    };
 }

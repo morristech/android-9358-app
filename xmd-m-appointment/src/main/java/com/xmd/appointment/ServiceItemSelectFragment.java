@@ -77,7 +77,6 @@ public class ServiceItemSelectFragment extends BaseDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_service_item_select, container, false);
-
         mCategoryAdapter = new CommonRecyclerViewAdapter<>();
         initRecyclerView(mBinding.categoryRecyclerView, mCategoryAdapter);
         mItemAdapter = new CommonRecyclerViewAdapter<>();

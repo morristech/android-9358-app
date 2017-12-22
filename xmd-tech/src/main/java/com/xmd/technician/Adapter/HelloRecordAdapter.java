@@ -29,17 +29,11 @@ import butterknife.ButterKnife;
 public class HelloRecordAdapter extends RecyclerView.Adapter {
     private static final int TYPE_HELLO_ITEM = 0;
     private static final int TYPE_FOOTER = 99;
-
+    List<HelloRecordInfo> mHelloList = new ArrayList<>();
     private Context mContext;
     private boolean mIsNoMore = false;
     private View.OnClickListener mFooterClickListener;
     private OnItemClickCallback mItemClickCallback;
-
-    public interface OnItemClickCallback {
-        void onItemClick(HelloRecordInfo info);
-    }
-
-    List<HelloRecordInfo> mHelloList = new ArrayList<>();
 
     public HelloRecordAdapter(Context context) {
         this.mContext = context;
@@ -130,6 +124,10 @@ public class HelloRecordAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mHelloList.size() + 1;
+    }
+
+    public interface OnItemClickCallback {
+        void onItemClick(HelloRecordInfo info);
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {

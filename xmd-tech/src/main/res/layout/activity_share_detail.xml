@@ -11,19 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
         android:max="1000"
-        android:progressDrawable="@drawable/icon11" />
+        android:progressDrawable="@drawable/icon11"/>
 
     <WebView
         android:id="@+id/share_web_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/line_divide_height" />
+        android:layout_marginTop="@dimen/line_divide_height"
+        android:layout_weight="1"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/color_line_divide" />
+        android:background="@color/color_line_divide"/>
 
     <LinearLayout
         android:id="@+id/menu_LinearLayout"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_back_selector" />
+            android:src="@drawable/ic_back_selector"/>
 
         <ImageView
             android:id="@+id/refresh_ImageView"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_refresh_selector" />
+            android:src="@drawable/ic_refresh_selector"/>
 
         <ImageView
             android:id="@+id/go_next_ImageView"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_go_selector" />
+            android:src="@drawable/ic_go_selector"/>
 
         <ImageView
             android:id="@+id/home_ImageView"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_home_selector" />
+            android:src="@drawable/ic_home_selector"/>
     </LinearLayout>
 
 </LinearLayout>

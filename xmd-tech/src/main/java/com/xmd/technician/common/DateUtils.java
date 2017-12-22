@@ -15,10 +15,13 @@ import java.util.Map;
  * Created by Administrator on 2016/11/1.
  */
 public class DateUtils extends com.hyphenate.util.DateUtils {
-    private static final long INTERVAL_IN_MILLISECONDS = 30000L;
-
     public static final long DAY_MILLIS_SECOND = 24 * 3600 * 1000;
-
+    private static final long INTERVAL_IN_MILLISECONDS = 30000L;
+    private static final Object lockObj = new Object();
+    /**
+     * 存放不同的日期模板格式的sdf的Map
+     */
+    private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<>();
 
     public DateUtils() {
 
@@ -218,14 +221,6 @@ public class DateUtils extends com.hyphenate.util.DateUtils {
     public static String getTimestampStr() {
         return Long.toString(System.currentTimeMillis());
     }
-
-
-    private static final Object lockObj = new Object();
-
-    /**
-     * 存放不同的日期模板格式的sdf的Map
-     */
-    private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<>();
 
     public static SimpleDateFormat getSdf(final String pattern) {
         ThreadLocal<SimpleDateFormat> tl = sdfMap.get(pattern);

@@ -4,24 +4,24 @@
               android:layout_height="match_parent"
               android:background="@color/color_main"
               android:orientation="vertical"
-    >
+>
 
     <com.xmd.technician.widget.EmptyView
         android:id="@+id/empty_view_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_widget"
+        android:id="@+id/swipe_refresh_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_container">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ranking_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/header_container">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/ranking_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="wrap_content"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>

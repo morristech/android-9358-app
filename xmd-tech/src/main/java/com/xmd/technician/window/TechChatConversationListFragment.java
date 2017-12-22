@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.network.BaseBean;
@@ -46,7 +45,9 @@ public class TechChatConversationListFragment extends ConversationListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initToolBarCustomerService();
+
     }
+
 
     @Override
     public boolean getShowSelfAvatar() {

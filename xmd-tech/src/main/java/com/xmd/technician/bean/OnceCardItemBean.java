@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class OnceCardItemBean implements Parcelable {
 
+    public static final Creator<OnceCardItemBean> CREATOR = new Creator<OnceCardItemBean>() {
+        @Override
+        public OnceCardItemBean createFromParcel(Parcel source) {
+            return new OnceCardItemBean(source);
+        }
+
+        @Override
+        public OnceCardItemBean[] newArray(int size) {
+            return new OnceCardItemBean[size];
+        }
+    };
     public String id;
     public String cardType;  //类型 tem_card-单项次卡;item_package-混合套餐；credit_gift-积分礼品
     public String name;     //名称
@@ -29,6 +40,7 @@ public class OnceCardItemBean implements Parcelable {
 
     }
 
+
     public OnceCardItemBean(String id, String cardType, int type, int position, String name, String imageUrl, String comboDescription, String shareDescription, String techRoyalty, String shareUrl, String sellingPrice, String discountPrice, String depositRate, int selectedStatus) {
         this.id = id;
         this.cardType = cardType;
@@ -46,6 +58,22 @@ public class OnceCardItemBean implements Parcelable {
         this.selectedStatus = selectedStatus;
     }
 
+    protected OnceCardItemBean(Parcel in) {
+        this.id = in.readString();
+        this.cardType = in.readString();
+        this.name = in.readString();
+        this.imageUrl = in.readString();
+        this.comboDescription = in.readString();
+        this.techRoyalty = in.readString();
+        this.shareUrl = in.readString();
+        this.shareDescription = in.readString();
+        this.sellingPrice = in.readString();
+        this.depositRate = in.readString();
+        this.discountPrice = in.readString();
+        this.type = in.readInt();
+        this.position = in.readInt();
+        this.selectedStatus = in.readInt();
+    }
 
     @Override
     public int describeContents() {
@@ -69,33 +97,4 @@ public class OnceCardItemBean implements Parcelable {
         dest.writeInt(this.position);
         dest.writeInt(this.selectedStatus);
     }
-
-    protected OnceCardItemBean(Parcel in) {
-        this.id = in.readString();
-        this.cardType = in.readString();
-        this.name = in.readString();
-        this.imageUrl = in.readString();
-        this.comboDescription = in.readString();
-        this.techRoyalty = in.readString();
-        this.shareUrl = in.readString();
-        this.shareDescription = in.readString();
-        this.sellingPrice = in.readString();
-        this.depositRate = in.readString();
-        this.discountPrice = in.readString();
-        this.type = in.readInt();
-        this.position = in.readInt();
-        this.selectedStatus = in.readInt();
-    }
-
-    public static final Creator<OnceCardItemBean> CREATOR = new Creator<OnceCardItemBean>() {
-        @Override
-        public OnceCardItemBean createFromParcel(Parcel source) {
-            return new OnceCardItemBean(source);
-        }
-
-        @Override
-        public OnceCardItemBean[] newArray(int size) {
-            return new OnceCardItemBean[size];
-        }
-    };
 }

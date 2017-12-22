@@ -4,7 +4,6 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMConversation;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -1642,7 +1641,6 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<InvitationRewardResult>() {
             @Override
             protected void postResult(InvitationRewardResult result) {
-                XLogger.i(">>>","此处有邀请有礼数据");
                 RxBus.getInstance().post(result);
             }
         });
@@ -2175,7 +2173,7 @@ public class RequestController extends AbstractController {
 
             @Override
             protected void postError(String errorMsg) {
-                AuditConfirmResult result = new AuditConfirmResult();
+                AuditModifyResult  result = new AuditModifyResult ();
                 result.msg = errorMsg;
                 result.statusCode = 400;
                 RxBus.getInstance().post(result);

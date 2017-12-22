@@ -141,9 +141,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     private void handleLoginResult(LoginResult result) {
         if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
             mView.hideLoading();
-            if(TextUtils.isEmpty(result.msg) && TextUtils.isEmpty(result.message)){
+            if (TextUtils.isEmpty(result.msg) && TextUtils.isEmpty(result.message)) {
                 mView.showAlertDialog("请检查网络链接，重新登录");
-            }else{
+            } else {
                 mView.showAlertDialog(result.msg == null ? result.message : result.msg);
             }
 

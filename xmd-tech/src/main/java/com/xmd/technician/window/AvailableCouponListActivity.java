@@ -203,7 +203,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             remainSendCount = mSelectedCouponInfo.size();
             for (CouponInfo couponInfo : mSelectedCouponInfo) {
                 if (!("paid").equals(couponInfo.couponType)) {
-                userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId);
+                    userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId);
                 } else {
                     successCount++;
                     remainSendCount--;

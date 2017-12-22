@@ -90,7 +90,7 @@ public class FileUtils {
 
     }
 
-    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle){
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
         int i;
         int j;
         if (bmp.getHeight() > bmp.getWidth()) {
@@ -105,7 +105,7 @@ public class FileUtils {
         Canvas localCanvas = new Canvas(localBitmap);
 
         while (true) {
-            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0,i, j), null);
+            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0, i, j), null);
             if (needRecycle)
                 bmp.recycle();
             ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();

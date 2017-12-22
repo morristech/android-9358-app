@@ -159,44 +159,6 @@ public class ImageLoader {
         return new CircleBitmapTransformation(context);
     }
 
-    private static class CircleBitmapTransformation extends BitmapTransformation {
-        public CircleBitmapTransformation(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
-
-            Bitmap bitmap = pool.get(size, size, Bitmap.Config.ARGB_8888);
-            if (bitmap == null) {
-                bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-            }
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            BitmapShader shader = new BitmapShader(toTransform,
-                    BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-            int w = (toTransform.getWidth() - size) / 2;
-            int h = (toTransform.getHeight() - size) / 2;
-            if (w != 0 || h != 0) {
-                Matrix matrix = new Matrix();
-                matrix.setTranslate(-w, -h);
-                shader.setLocalMatrix(matrix);
-            }
-            paint.setShader(shader);
-            paint.setAntiAlias(true);
-
-            float r = size / 2f;
-            canvas.drawCircle(r, r, r, paint);
-            return bitmap;
-        }
-
-        @Override
-        public String getId() {
-            return getClass().getName();
-        }
-    }
-
     public static void saveBitmapToLocal(Context context, Bitmap mBitmap, String bitmapName) {
         File file;
         file = new File(Environment.getExternalStorageDirectory() + "/" + bitmapName + ".jpg");
@@ -239,6 +201,44 @@ public class ImageLoader {
                 }
             });
             e.printStackTrace();
+        }
+    }
+
+    private static class CircleBitmapTransformation extends BitmapTransformation {
+        public CircleBitmapTransformation(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
+
+            Bitmap bitmap = pool.get(size, size, Bitmap.Config.ARGB_8888);
+            if (bitmap == null) {
+                bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+            }
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(toTransform,
+                    BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+            int w = (toTransform.getWidth() - size) / 2;
+            int h = (toTransform.getHeight() - size) / 2;
+            if (w != 0 || h != 0) {
+                Matrix matrix = new Matrix();
+                matrix.setTranslate(-w, -h);
+                shader.setLocalMatrix(matrix);
+            }
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+            return bitmap;
+        }
+
+        @Override
+        public String getId() {
+            return getClass().getName();
         }
     }
 

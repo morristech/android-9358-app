@@ -36,12 +36,12 @@ import rx.Subscription;
  */
 
 public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> implements JoinClubContract.Presenter {
-    private ActivityJoinClubBinding mBinding;
-    private LoginTechnician mTech = LoginTechnician.getInstance();
     public ObservableBoolean mCanJoin = new ObservableBoolean();
     public ObservableField<String> mTechNo = new ObservableField<>();
     public boolean mShowSkip;
     public boolean mShowBack;
+    private ActivityJoinClubBinding mBinding;
+    private LoginTechnician mTech = LoginTechnician.getInstance();
     private String mInviteCode;
     private String mSelectedTechNo;
     private String mSelectedTechId;
@@ -124,10 +124,10 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             mView.showToast("角色加载失败，无法加入会所！");
             return;
         }
-     //   mView.showLoading("正在提交申请...");
-        if(TextUtils.isEmpty(mTech.getClubInviteCode())){
+        //   mView.showLoading("正在提交申请...");
+        if (TextUtils.isEmpty(mTech.getClubInviteCode())) {
             mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId, mSelectRole.code);
-        }else {
+        } else {
             mTech.sendJoinClubAuditModify(mSelectedTechId, mSelectRole.code);
         }
 
@@ -170,7 +170,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         } else {
             //申请加入成功，跳转到完善资料页面
             mView.showToast("申请成功，等待管理员审核");
-            mTech.onModifyRequest(mSelectedTechNo,result.role);
+            mTech.onModifyRequest(mSelectedTechNo, result.role);
             mView.setResult(Activity.RESULT_OK, null);
             mView.finishSelf();
             RxBus.getInstance().post(new EventRequestJoinClub());

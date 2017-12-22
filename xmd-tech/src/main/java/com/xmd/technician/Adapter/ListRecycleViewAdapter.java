@@ -61,35 +61,6 @@ import butterknife.ButterKnife;
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
 
-    public interface Callback<T> {
-
-        void onItemClicked(T bean) throws HyphenateException;
-
-        void onNegativeButtonClicked(T bean);
-
-        void onPositiveButtonClicked(T bean);
-
-        void onLoadMoreButtonClicked();
-
-        void onSayHiButtonClicked(T bean);
-
-        void onShareClicked(T bean);
-
-        void onLongClicked(T bean);
-
-        /**
-         * @return whether the item is slideable
-         */
-        boolean isHorizontalSliding();
-
-        /**
-         * whether is paged
-         *
-         * @return
-         */
-        boolean isPaged();
-    }
-
     private static final int TYPE_ORDER_ITEM = 0;
     private static final int TYPE_PAID_COUPON_USER_DETAIL = 2;
     private static final int TYPE_CONVERSATION = 3;
@@ -109,19 +80,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 23;
     private static final int TYPE_TECH_PERSONAL_RANKING = 24;
     private static final int TYPE_TECH_BLACKLIST = 25;
- //   private static final int TYPE_INVITATION_REWARD_ACTIVITY_ITEM = 26;
+    //   private static final int TYPE_INVITATION_REWARD_ACTIVITY_ITEM = 26;
     private static final int TYPE_FOOTER = 99;
-
     private boolean mIsNoMore = false;
     private boolean mIsEmpty = false;
-
     private List<T> mData;
     private Callback mCallback;
     private Context mContext;
     private RecyclerView mRecyclerView;
     private ItemSlideHelper mHelper;
     private String mDataLoadCompleteDes;
-
     public ListRecycleViewAdapter(Context context, List<T> data, Callback callback) {
         mContext = context;
         mData = data;
@@ -1005,6 +973,35 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+    public interface Callback<T> {
+
+        void onItemClicked(T bean) throws HyphenateException;
+
+        void onNegativeButtonClicked(T bean);
+
+        void onPositiveButtonClicked(T bean);
+
+        void onLoadMoreButtonClicked();
+
+        void onSayHiButtonClicked(T bean);
+
+        void onShareClicked(T bean);
+
+        void onLongClicked(T bean);
+
+        /**
+         * @return whether the item is slideable
+         */
+        boolean isHorizontalSliding();
+
+        /**
+         * whether is paged
+         *
+         * @return
+         */
+        boolean isPaged();
+    }
+
     static class ListFooterHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_footer)
@@ -1018,6 +1015,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class OrderListItemViewHolder extends RecyclerView.ViewHolder {
 
+        public boolean isOperationVisible;
         @BindView(R.id.user_head_url)
         CircleImageView mUserHeadUrl;
         @BindView(R.id.username)
@@ -1042,8 +1040,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         Button mPositive;
         @BindView(R.id.paid_order_container)
         View mPaidOrderAmountContainer;
-
-        public boolean isOperationVisible;
 
         public OrderListItemViewHolder(View itemView) {
             super(itemView);
@@ -1250,7 +1246,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             ButterKnife.bind(this, view);
         }
     }
-
 
 
     static class InvitationRewardActivityItemViewHolder extends RecyclerView.ViewHolder {

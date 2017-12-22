@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/color_white"
-    >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/color_white"
+              android:orientation="vertical"
+>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
+    >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -22,7 +22,7 @@
                 <com.xmd.app.widget.CircleAvatarView
                     android:id="@+id/avatar"
                     android:layout_width="@dimen/avatar_head"
-                    android:layout_height="@dimen/avatar_head" />
+                    android:layout_height="@dimen/avatar_head"/>
 
                 <TextView
                     android:id="@+id/unread"
@@ -31,86 +31,85 @@
                     android:layout_gravity="right|top"
                     android:background="@drawable/unread_count_bg"
                     android:gravity="center"
-                    android:textSize="@dimen/fontRemark"
                     android:text="11"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/fontRemark"/>
 
             </FrameLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="@dimen/small_space"
-                >
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
-                 <TextView
-                     android:id="@+id/name"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:gravity="center_vertical"
-                     android:textColor="@color/color_main_title"
-                     />
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_toRightOf="@id/name"
-                     android:layout_marginLeft="@dimen/small_space"
-                     android:text="@string/contact_manager"
-                     android:textColor="@color/color_white"
-                     android:background="@drawable/chat_manager_type_bg"
-                     android:textSize="@dimen/fontRemark"
-                     android:paddingBottom="@dimen/two_space"
-                     android:paddingTop="@dimen/two_space"
-                     android:paddingLeft="@dimen/small_space"
-                     android:paddingRight="@dimen/small_space"
-                     android:visibility="gone"
-                     />
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_toRightOf="@id/name"
-                     android:layout_marginLeft="@dimen/small_space"
-                     android:textColor="@color/color_main_title"
-                     android:textSize="@dimen/fontRemark"
-                     android:paddingBottom="@dimen/two_space"
-                     android:paddingTop="@dimen/two_space"
-                     android:paddingLeft="@dimen/small_space"
-                     android:paddingRight="@dimen/small_space"
-                     android:visibility="gone"
-                     />
-                 <TextView
-                     android:id="@+id/time"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:paddingRight="@dimen/inter_space"
-                     android:textColor="@color/color_main_remark"
-                     android:layout_alignParentRight="true"
-                     />
-             </RelativeLayout>
-
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+            >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_main_title"
+                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/small_space"
+                        android:layout_toRightOf="@id/name"
+                        android:background="@drawable/chat_manager_type_bg"
+                        android:paddingBottom="@dimen/two_space"
+                        android:paddingLeft="@dimen/small_space"
+                        android:paddingRight="@dimen/small_space"
+                        android:paddingTop="@dimen/two_space"
+                        android:text="@string/contact_manager"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/fontRemark"
+                        android:visibility="gone"
+                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/small_space"
+                        android:layout_toRightOf="@id/name"
+                        android:paddingBottom="@dimen/two_space"
+                        android:paddingLeft="@dimen/small_space"
+                        android:paddingRight="@dimen/small_space"
+                        android:paddingTop="@dimen/two_space"
+                        android:textColor="@color/color_main_title"
+                        android:textSize="@dimen/fontRemark"
+                        android:visibility="gone"
+                    />
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="@dimen/inter_space"
+                        android:textColor="@color/color_main_remark"
+                    />
+                </RelativeLayout>
 
 
                 <TextView
                     android:id="@+id/content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
                     android:ellipsize="end"
                     android:maxLength="36"
+                    android:singleLine="true"
                     android:textColor="@color/color_main_remark"
-                    />
+                />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <View
-    android:layout_width="match_parent"
-    android:layout_height="0.5dp"
-    android:layout_marginTop="@dimen/two_space"
-    android:background="@color/divider_thin_color"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/two_space"
+        android:background="@color/divider_thin_color"
     />
 
 </LinearLayout>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true">
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:clickable="true">
 
     <RelativeLayout
         android:id="@+id/layout_empty_in"
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_failed" />
+            android:src="@drawable/ic_failed"/>
 
         <TextView
             android:id="@+id/tv_empty_tip"
@@ -26,15 +26,15 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:paddingTop="8dp"
-            android:text="@string/empty_view_empty" />
+            android:text="@string/empty_view_empty"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_loading_in"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:background="#00FFFFFF"
+        android:gravity="center"
         android:visibility="gone">
 
         <ProgressBar
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tv_loadingtip"
             android:layout_centerHorizontal="true"
-            android:max="10000" />
+            android:max="10000"/>
 
         <TextView
             android:id="@+id/tv_loadingtip"
@@ -51,7 +51,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="5dp"
-            android:text="@string/empty_view_loading" />
+            android:text="@string/empty_view_loading"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -65,8 +65,8 @@
             android:id="@+id/iv_failed_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_centerInParent="true"
-            android:src="@drawable/ic_failed" />
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_failed"/>
 
         <TextView
             android:id="@+id/tv_failed_tip"
@@ -74,10 +74,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_failed_tip"
             android:layout_centerHorizontal="true"
+            android:clickable="true"
             android:gravity="center_horizontal"
             android:paddingTop="8dp"
-            android:text="@string/empty_view_failed"
-            android:clickable="true"/>
+            android:text="@string/empty_view_failed"/>
     </RelativeLayout>
 
 </FrameLayout>

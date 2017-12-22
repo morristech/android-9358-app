@@ -28,19 +28,16 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
 
     public static final String EXTRA_CONSUME_TYPE = "consumeType";
     public static final String EXTRA_CONSUME_NAME = "consumeName";
-
+    private static final int PAGE_SIZE = 20;
     @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.list_view)
     RecyclerView mListView;
-
     private ConsumeDetailAdapter mAdapter;
     private Subscription mDetailSubscription;
     private String mConsumeType;
     private int mCurrentPage = 0;
     private int mPageCount = -1;
-    private static final int PAGE_SIZE = 20;
-
     private List<ConsumeInfo> mConsumeList = new ArrayList<>();
     private boolean mIsLoadingMore = false;
     private int mLastVisibleItem;

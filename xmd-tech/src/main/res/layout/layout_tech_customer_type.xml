@@ -16,7 +16,7 @@
         android:textColor="#4d98df"
         android:textSize="@dimen/fontNormal"
         android:visibility="gone"
-        />
+    />
 
     <TextView
         android:id="@+id/tv_customer_tech_new_add"
@@ -30,7 +30,7 @@
         android:textColor="#ff8909"
         android:textSize="@dimen/fontNormal"
         android:visibility="gone"
-        />
+    />
 
     <TextView
         android:id="@+id/tv_customer_tech_activation"
@@ -44,7 +44,7 @@
         android:textColor="#ff8909"
         android:textSize="@dimen/fontNormal"
         android:visibility="gone"
-        />
+    />
 
     <TextView
         android:id="@+id/tv_customer_tech_big"
@@ -58,7 +58,7 @@
         android:textColor="#ff8909"
         android:textSize="@dimen/fontNormal"
         android:visibility="gone"
-        />
+    />
 
     <TextView
         android:id="@+id/tv_customer_tech_normal"
@@ -72,7 +72,7 @@
         android:textColor="#ff8909"
         android:textSize="@dimen/fontNormal"
         android:visibility="gone"
-        />
+    />
 
 
 </LinearLayout>

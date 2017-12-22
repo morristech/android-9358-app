@@ -26,11 +26,8 @@ import java.util.Map;
  */
 public class WXShareUtil extends BaseShareUtil {
 
-    private IWXAPI mWxApi;
     private static final int THUMB_SIZE = 150;
-    private static class InstanceHolder {
-        private static WXShareUtil sInstance = new WXShareUtil();
-    }
+    private IWXAPI mWxApi;
 
     private WXShareUtil() {
         mWxApi = WXAPIFactory.createWXAPI(TechApplication.getAppContext(), ShareConstant.WX_APP_ID);
@@ -49,12 +46,12 @@ public class WXShareUtil extends BaseShareUtil {
         shareToWeiXin(params, ShareConstant.SHARE_TO_FRIEND);
     }
 
-    public void shareImageToTimeLine(String localImageUrl){
-        shareToWeiXinImage(localImageUrl,ShareConstant.SHARE_TO_TIMELINE);
+    public void shareImageToTimeLine(String localImageUrl) {
+        shareToWeiXinImage(localImageUrl, ShareConstant.SHARE_TO_TIMELINE);
     }
 
-    public void shareImageToFriends(String localImageUrl){
-        shareToWeiXinImage(localImageUrl,ShareConstant.SHARE_TO_FRIEND);
+    public void shareImageToFriends(String localImageUrl) {
+        shareToWeiXinImage(localImageUrl, ShareConstant.SHARE_TO_FRIEND);
     }
 
     private void shareToWeiXin(Map<String, Object> params, int flag) {
@@ -83,11 +80,11 @@ public class WXShareUtil extends BaseShareUtil {
 
     }
 
-    private void shareToWeiXinImage(String imagePath,int flag){
+    private void shareToWeiXinImage(String imagePath, int flag) {
         File file = new File(imagePath);
-        if(!file.exists()){
+        if (!file.exists()) {
             String tip = "文件不存在";
-            XToast.show(tip+"path= "+ imagePath);
+            XToast.show(tip + "path= " + imagePath);
             return;
         }
         WXImageObject imgObj = new WXImageObject();
@@ -96,9 +93,9 @@ public class WXShareUtil extends BaseShareUtil {
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = imgObj;
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-        Bitmap thumBmp = Bitmap.createScaledBitmap(bitmap,THUMB_SIZE,THUMB_SIZE,true);
+        Bitmap thumBmp = Bitmap.createScaledBitmap(bitmap, THUMB_SIZE, THUMB_SIZE, true);
         bitmap.recycle();
-        msg.thumbData = FileUtils.bmpToByteArray(thumBmp,true);
+        msg.thumbData = FileUtils.bmpToByteArray(thumBmp, true);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = String.valueOf(System.currentTimeMillis());
@@ -112,6 +109,10 @@ public class WXShareUtil extends BaseShareUtil {
         req.scope = "snsapi_userinfo";
         req.state = "wechat_sdk_demo_test";
         mWxApi.sendReq(req);
+    }
+
+    private static class InstanceHolder {
+        private static WXShareUtil sInstance = new WXShareUtil();
     }
 
 

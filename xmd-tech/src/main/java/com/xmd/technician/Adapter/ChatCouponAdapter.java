@@ -42,10 +42,6 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
         mChildArray = new ArrayList<>();
     }
 
-    public interface OnChildrenClicked {
-        void onChildrenClickedListener(CouponInfo bean, int groupPosition, int childPosition, boolean isSelected);
-    }
-
     public void setChildrenClickedInterface(OnChildrenClicked clickedInterface) {
         this.mInterface = clickedInterface;
     }
@@ -178,10 +174,14 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+
+    public interface OnChildrenClicked {
+        void onChildrenClickedListener(CouponInfo bean, int groupPosition, int childPosition, boolean isSelected);
     }
 
     static class ViewParentViewHolder {

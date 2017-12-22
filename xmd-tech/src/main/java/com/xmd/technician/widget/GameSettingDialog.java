@@ -20,6 +20,8 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/8/22.
  */
 public class GameSettingDialog extends Dialog {
+    private static List<View> mText = new ArrayList<>();
+    public int integralNum = 1;
     @BindView(R.id.comment_game_one)
     TextView mCommentGameOne;
     @BindView(R.id.comment_game_ten)
@@ -36,33 +38,29 @@ public class GameSettingDialog extends Dialog {
     Button mCommentGaemCancelBtn;
     @BindView(R.id.dialog_alert_ok_btn)
     Button mCommentOkBtn;
-
-    public int integralNum = 1;
-
-
-    public interface ConfirmClickInterface {
-        void ConfirmClicked(int num);
-    }
-
-    private static List<View> mText = new ArrayList<>();
-
     private ConfirmClickInterface mConfirmClickInterface;
 
     public GameSettingDialog(Context context) {
         this(context, R.style.default_dialog_style);
     }
 
-
-    public void setConfirmClickInterface(ConfirmClickInterface confirmClickInterface) {
-        this.mConfirmClickInterface = confirmClickInterface;
-    }
-
     public GameSettingDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
 
+
     protected GameSettingDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+    }
+
+    private static void selectText() {
+        for (int i = 0; i < mText.size(); i++) {
+            mText.get(i).setSelected(false);
+        }
+    }
+
+    public void setConfirmClickInterface(ConfirmClickInterface confirmClickInterface) {
+        this.mConfirmClickInterface = confirmClickInterface;
     }
 
     @Override
@@ -129,9 +127,7 @@ public class GameSettingDialog extends Dialog {
         }
     }
 
-    private static void selectText() {
-        for (int i = 0; i < mText.size(); i++) {
-            mText.get(i).setSelected(false);
-        }
+    public interface ConfirmClickInterface {
+        void ConfirmClicked(int num);
     }
 }

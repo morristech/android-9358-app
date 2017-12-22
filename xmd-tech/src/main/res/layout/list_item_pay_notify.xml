@@ -3,21 +3,21 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
-        <import type="com.xmd.technician.onlinepaynotify.model.PayNotifyInfo" />
+        <import type="com.xmd.technician.onlinepaynotify.model.PayNotifyInfo"/>
 
         <variable
             name="payNotify"
-            type="com.xmd.technician.onlinepaynotify.viewmodel.PayNotifyInfoViewModel" />
+            type="com.xmd.technician.onlinepaynotify.viewmodel.PayNotifyInfoViewModel"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/common_h_margin">
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/color_white"
+                  android:orientation="vertical"
+                  android:paddingTop="@dimen/common_h_margin">
 
 
         <LinearLayout
@@ -31,7 +31,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:src="@drawable/temporary_user"
-                app:avatar="@{payNotify.info}" />
+                app:avatar="@{payNotify.info}"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -40,14 +40,14 @@
                 android:layout_weight="1"
                 android:text="@{payNotify.info.userName}"
                 android:textColor="@color/color_main_head"
-                android:textSize="@dimen/fontSubheading" />
+                android:textSize="@dimen/fontSubheading"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="@color/color_main_remark"
                 android:textSize="@dimen/fontCaption"
-                app:time="@{payNotify.info.payTime}" />
+                app:time="@{payNotify.info.payTime}"/>
         </LinearLayout>
 
         <LinearLayout
@@ -75,14 +75,14 @@
                         android:gravity="bottom"
                         android:text="@string/money_rmb"
                         android:textColor="@color/color_main_head"
-                        android:textSize="@dimen/fontBody" />
+                        android:textSize="@dimen/fontBody"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#ff000028"
                         android:textSize="@dimen/fontTitle2"
-                        app:moneyyuan="@{payNotify.info.amount}" />
+                        app:moneyyuan="@{payNotify.info.amount}"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -90,14 +90,14 @@
                         android:gravity="bottom"
                         android:textColor="@color/color_main_head"
                         android:textSize="@dimen/fontBody"
-                        app:moneyfen="@{payNotify.info.amount}" />
+                        app:moneyfen="@{payNotify.info.amount}"/>
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:othertech="@{payNotify.info}" />
+                    app:othertech="@{payNotify.info}"/>
             </LinearLayout>
 
             <LinearLayout
@@ -111,7 +111,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center|bottom"
-                    app:status="@{payNotify.info.status}" />
+                    app:status="@{payNotify.info.status}"/>
 
                 <TextView
                     android:layout_width="55dp"
@@ -124,10 +124,10 @@
                     android:text="@string/online_pay_notify_archive_button"
                     android:textColor="@color/color_white"
                     android:textSize="12sp"
-                    android:visibility="@{payNotify.isArchived?View.INVISIBLE:View.VISIBLE}" />
+                    android:visibility="@{payNotify.isArchived?View.INVISIBLE:View.VISIBLE}"/>
             </LinearLayout>
         </LinearLayout>
 
-        <View style="@style/horizontal_divider_line" />
+        <View style="@style/horizontal_divider_line"/>
     </LinearLayout>
 </layout>

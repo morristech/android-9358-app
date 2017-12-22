@@ -55,10 +55,6 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         this.mFilterListener = listener;
     }
 
-    public interface TeamFilterListener {
-        void filterTeam(View view);
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -182,6 +178,10 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         } else {
             return PERSONAL_TYPE;
         }
+    }
+
+    public interface TeamFilterListener {
+        void filterTeam(View view);
     }
 
     static class PkRankingDetailViewHolder extends RecyclerView.ViewHolder {

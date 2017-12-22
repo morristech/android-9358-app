@@ -61,6 +61,20 @@ public class TechApplication extends MultiDexApplication {
     private int mAppVersionCode;
     private String mUserAgent;
     private boolean debug;
+    //聊天菜单
+    private MenuFactory menuFactory = new MenuFactory() {
+
+        @Override
+        public void onShowDeliverCouponView(Activity activity, User remoteUser) {
+            Intent intent = new Intent(activity, AvailableCouponListActivity.class);
+            intent.putExtra(AvailableCouponListActivity.EXTRA_CHAT_ID, remoteUser.getChatId());
+            activity.startActivity(intent);
+        }
+    };
+
+    public static Context getAppContext() {
+        return appContext;
+    }
 
     @Override
     public void onCreate() {
@@ -170,10 +184,6 @@ public class TechApplication extends MultiDexApplication {
         }
     }
 
-    public static Context getAppContext() {
-        return appContext;
-    }
-
     private String getProcessName(Context cxt, int pid) {
         ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
@@ -237,16 +247,4 @@ public class TechApplication extends MultiDexApplication {
         XLogger.i(TAG, "APP VERSION NAME:" + mAppVersionName);
         XLogger.i(TAG, "=========================================");
     }
-
-
-    //聊天菜单
-    private MenuFactory menuFactory = new MenuFactory() {
-
-        @Override
-        public void onShowDeliverCouponView(Activity activity, User remoteUser) {
-            Intent intent = new Intent(activity, AvailableCouponListActivity.class);
-            intent.putExtra(AvailableCouponListActivity.EXTRA_CHAT_ID, remoteUser.getChatId());
-            activity.startActivity(intent);
-        }
-    };
 }

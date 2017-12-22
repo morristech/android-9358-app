@@ -28,15 +28,14 @@ import butterknife.ButterKnife;
 
 public class TechPosterListAdapter extends RecyclerView.Adapter {
 
-    private List<PosterBean> mPosters;
-    private Context mContext;
-    private PosterCallBack mCallBack;
-
     private final int POSTER_TYPE_FLOWER = 1; //花型海报
     private final int POSTER_TYPE_CIRCULAR = 2;//圆型海报
     private final int POSTER_TYPE_SQUARE = 3;//方型海报
     private final int POSTER_TYPE_BLUE = 4; // 蓝色
     private final int POSTER_TYPE_EARNEST = 5; //真认真
+    private List<PosterBean> mPosters;
+    private Context mContext;
+    private PosterCallBack mCallBack;
 
     public TechPosterListAdapter(Context context, List<PosterBean> posters) {
         this.mContext = context;
@@ -48,20 +47,9 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public interface PosterCallBack {
-        void itemClicked(PosterBean bean);
-
-        void deleteClicked(PosterBean bean);
-
-        void editClicked(PosterBean bean);
-
-        void shareClicked(PosterBean bean);
-    }
-
     public void setPosterCallBackListener(PosterCallBack callBack) {
         this.mCallBack = callBack;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -176,6 +164,16 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
             default:
                 return POSTER_TYPE_FLOWER;
         }
+    }
+
+    public interface PosterCallBack {
+        void itemClicked(PosterBean bean);
+
+        void deleteClicked(PosterBean bean);
+
+        void editClicked(PosterBean bean);
+
+        void shareClicked(PosterBean bean);
     }
 
     static class PoserViewHolder extends RecyclerView.ViewHolder {

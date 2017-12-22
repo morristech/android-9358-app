@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context="com.xmd.technician.window.AppInfoActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              tools:context="com.xmd.technician.window.AppInfoActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <ImageView
         android:id="@+id/icon"
@@ -23,19 +23,19 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/personal_info_margin_top"
+        android:text="@string/app_name"
         android:textColor="@color/color_main_body"
-        android:textSize="@dimen/fontBody"
-        android:text="@string/app_name"/>
+        android:textSize="@dimen/fontBody"/>
 
     <Button
         android:id="@+id/check_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/personal_margin"
         android:layout_marginLeft="@dimen/personal_margin"
         android:layout_marginRight="@dimen/personal_margin"
+        android:layout_marginTop="@dimen/personal_margin"
         android:background="@drawable/login_button_main_selector"
+        android:text="@string/check_update"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/fontTitle"
-        android:text="@string/check_update"/>
+        android:textSize="@dimen/fontTitle"/>
 </LinearLayout>

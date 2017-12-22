@@ -103,7 +103,7 @@ public class HelloRecordActivity extends BaseActivity {
 
     private void handleItemClick(HelloRecordInfo info) {
         // 聊天
-       // MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(info.receiverEmChatId, info.receiverName, info.receiverAvatar, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+        // MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(info.receiverEmChatId, info.receiverName, info.receiverAvatar, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
         UINavigation.gotoChatActivity(this, info.receiverEmChatId);
     }
 

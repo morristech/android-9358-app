@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:minWidth="240dp"
         android:orientation="vertical"
-        >
+    >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,15 +24,15 @@
                 android:gravity="center"
                 android:text="@string/share_coupon_dialog_title"
                 android:textColor="@color/color_main_title"
-                />
+            />
 
             <ImageView
                 android:id="@+id/btn_dismiss"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/small_space"
                 android:layout_marginLeft="-40dp"
+                android:layout_marginRight="@dimen/small_space"
                 android:background="@drawable/dismiss_dialog_selected"/>
         </LinearLayout>
 
@@ -66,7 +66,7 @@
                 android:background="@drawable/rect_bg"
                 android:text="@string/coupon_fragment_share"
                 android:textColor="@color/color_white"
-                />
+            />
 
         </LinearLayout>
     </LinearLayout>
