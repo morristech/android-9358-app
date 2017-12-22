@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.utils.RelativeDateFormatUtils;
 import com.xmd.app.utils.ResourceUtils;

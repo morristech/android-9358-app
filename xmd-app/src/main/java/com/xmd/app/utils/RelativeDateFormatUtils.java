@@ -25,7 +25,7 @@ public class RelativeDateFormatUtils {
         long var4 = var0.getTime();
         if (isSameDay(var4)) {
             if (var3) {
-                var1 = "HH:MM";
+                var1 = "HH:mm";
             } else {
                 var1 = "HH:MM";
             }
@@ -33,7 +33,6 @@ public class RelativeDateFormatUtils {
             if (!var3) {
                 return "Yesterday " + (new SimpleDateFormat("HH:mm ", Locale.ENGLISH)).format(var0);
             }
-
             var1 = "昨天 HH:mm";
         } else if (var3) {
             var1 = "M月d日 HH:mm";

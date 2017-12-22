@@ -80,8 +80,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     private int mCurrentModel;
     private TechPosterDialog mDialog;
     private Bitmap mSelectBitmap;
-    private int mAspect_X = 1;
-    private int mAspect_Y = 1;
+    private int mAspect_X = 5;
+    private int mAspect_Y = 7;
     private String mQrUrl;
 
     @Nullable
@@ -208,6 +208,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                     break;
                 default:
                     posterStyle = Constant.TECH_POSTER_TYPE_FLOWER;
+                    mAspect_Y = 7;
+                    mAspect_X = 5;
                     Glide.with(getActivity()).load(R.drawable.img_poster_flower_small).into(imgPosterPreview);
                     break;
             }
