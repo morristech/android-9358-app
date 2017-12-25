@@ -98,7 +98,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
     }
 
     public void show(View view) {
-        showAsDropDown(view, 0, 10);
+        showAsDropDown(view, 0, 0);
     }
 
     public void showPopUp(View v) {

@@ -377,7 +377,10 @@ public class TechUserCenterActivity extends BaseActivity implements View.OnClick
 
     @OnClick(R.id.btn_edit_save)
     public void onBtnEditSaveClicked() {
-        mTechInfo.setName(editTechNickName.getText().toString() == null ? "" : editTechNickName.getText().toString());
+        if(mTechInfo == null){
+            return;
+        }
+        mTechInfo.setName(TextUtils.isEmpty(editTechNickName.getText().toString())? "" : editTechNickName.getText().toString());
         mTechInfo.setGender(rbTechGenderMan.isChecked() ? "男" : "女");
         if (TextUtils.isEmpty(mTechInfo.getName())) {
             XToast.show("技师昵称不能为空");
