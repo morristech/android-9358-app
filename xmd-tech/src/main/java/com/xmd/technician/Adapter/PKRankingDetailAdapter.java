@@ -81,13 +81,12 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         if (holder instanceof PkRankingDetailViewHolder) {
             PkRankingDetailViewHolder detailViewHolder = (PkRankingDetailViewHolder) holder;
             PKDetailListBean bean = mData.get(position);
-
             if (position == 0 || position == mTeamNumber) {
                 detailViewHolder.teamRankingTitle.setVisibility(View.VISIBLE);
-
             } else {
                 detailViewHolder.teamRankingTitle.setVisibility(View.GONE);
             }
+            detailViewHolder.tvRankingMoney.setVisibility(View.GONE);
             if (bean.isTeam) {
                 detailViewHolder.textRankingNumber.setText(String.valueOf(position + 1));
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s人", bean.memberCount));
@@ -147,6 +146,10 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%1.2f元", bean.saleStat / 100f));
             } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_COUPON)) {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.couponStat));
+            } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_PANIC)) {
+                detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.paidServiceItemStat));
+                detailViewHolder.tvRankingMoney.setVisibility(View.VISIBLE);
+                detailViewHolder.tvRankingMoney.setText(String.format("%1.2f元", bean.paidServiceItemCount / 100f));
             } else {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.commentStat));
             }
@@ -157,8 +160,6 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
                 detailViewHolder.llTeamFilter.setOnClickListener(v -> mFilterListener.filterTeam(detailViewHolder.llTeamFilter));
             }
             Glide.with(mContext).load(bean.avatarUrl).into(detailViewHolder.imgRankingHead);
-        } else if (holder instanceof BottomViewHolder) {
-
         }
 
 
@@ -207,6 +208,8 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         LinearLayout llTeamFilter;
         @BindView(R.id.tv_selected_team)
         TextView tvSelectedTeam;
+        @BindView(R.id.tv_ranking_money)
+        TextView tvRankingMoney;
 
         PkRankingDetailViewHolder(View view) {
             super(view);
