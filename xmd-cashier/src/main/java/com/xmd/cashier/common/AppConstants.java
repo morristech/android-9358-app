@@ -337,4 +337,6 @@ public class AppConstants {
     public static final String TECH_STATUS_FREE = "free";
     public static final String TECH_STATUS_BUSY = "busy";
     public static final String TECH_STATUS_REST = "rest";
+
+    public static final String EXTRA_INNER_PAY_RECORD = "pay_record";
 }

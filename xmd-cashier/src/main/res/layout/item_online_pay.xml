@@ -73,8 +73,47 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:shrinkColumns="1">
 
+        <TableRow android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易号"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/item_trade_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易时间"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/item_cashier_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
         <TableRow
             android:id="@+id/tr_tech_info"
+            android:layout_marginTop="@dimen/activity_small_margin"
             android:gravity="center_vertical">
 
             <TextView
@@ -134,7 +173,8 @@
         <TableRow
             android:id="@+id/tr_cashier_name"
             android:layout_marginTop="@dimen/activity_small_margin"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -172,26 +212,7 @@
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="@dimen/activity_small_margin"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="交易号"
-                android:textColor="@color/colorText3"
-                android:textSize="@dimen/font_size_16" />
-
-            <TextView
-                android:id="@+id/item_trade_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_small_margin"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/font_size_16" />
-        </TableRow>
-
-        <TableRow
+            android:id="@+id/tr_channel_layout"
             android:layout_marginTop="@dimen/activity_small_margin"
             android:gravity="center_vertical">
 
@@ -212,26 +233,6 @@
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="@dimen/activity_small_margin"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="交易时间"
-                android:textColor="@color/colorText3"
-                android:textSize="@dimen/font_size_16" />
-
-            <TextView
-                android:id="@+id/item_cashier_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_small_margin"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/font_size_16" />
-        </TableRow>
-
-        <TableRow
             android:id="@+id/tr_cashier_layout"
             android:layout_marginTop="@dimen/activity_small_margin"
             android:gravity="center_vertical">
@@ -239,7 +240,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="实付"
+                android:text="实收"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/font_size_16" />
 
@@ -253,12 +254,25 @@
                 android:textSize="@dimen/font_size_16"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/item_tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/activity_little_margin"
+                android:drawableRight="@drawable/icon_down"
+                android:paddingLeft="@dimen/activity_small_margin"
+                android:paddingRight="@dimen/activity_small_margin"
+                android:text="查看详细"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/font_size_16" />
+
             <ImageView
                 android:id="@+id/item_img_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:src="@drawable/icon_down" />
+                android:src="@drawable/icon_up"
+                android:visibility="gone" />
         </TableRow>
     </TableLayout>
 
@@ -316,7 +330,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_little_margin">
+            android:layout_marginTop="@dimen/activity_little_margin"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"

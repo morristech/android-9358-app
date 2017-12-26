@@ -41,6 +41,7 @@ public class OnlinePayInfo implements Serializable {
     public int tempNo;   //用来标识是此次列表中的第几个元素
     public String tempErrMsg;
     public List<OnlinePayDiscountInfo> orderDiscountList;
+    public List<PayRecordInfo> payRecordList;
 
     public class OnlinePayDiscountInfo implements Serializable {
         public int amount;//	抵扣金额		单位分

@@ -22,6 +22,7 @@ import com.xmd.cashier.adapter.OnlinePayAdapter;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.OnlinePayContract;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.presenter.OnlinePayPresenter;
 import com.xmd.cashier.widget.ArrayPopupWindow;
 import com.xmd.cashier.widget.CustomLoadingLayout;
@@ -141,6 +142,11 @@ public class OnlinePayActivity extends BaseActivity implements OnlinePayContract
             @Override
             public void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info) {
                 mPresenter.detail(info.verifyCode);
+            }
+
+            @Override
+            public void onPayDetail(List<PayRecordInfo> payRecordInfos) {
+                mPresenter.onPayDetail(payRecordInfos);
             }
         });
         mRecyclerList.setAdapter(mAdapter);

@@ -3,6 +3,7 @@ package com.xmd.cashier.contract;
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public interface OnlinePayContract {
         void setSearch(String search);
 
         void detail(String code);
+
+        void onPayDetail(List<PayRecordInfo> payRecordInfos);
     }
 
     interface View extends BaseView<Presenter> {

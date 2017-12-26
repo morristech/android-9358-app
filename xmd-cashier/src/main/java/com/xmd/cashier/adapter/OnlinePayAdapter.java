@@ -1,6 +1,7 @@
 package com.xmd.cashier.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.annotation.IntDef;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +17,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.widget.CircleImageView;
 
@@ -54,6 +57,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         // 查看券详情
         void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info);
+
+        // 查看拆分支付详情
+        void onPayDetail(List<PayRecordInfo> payRecordInfos);
     }
 
     @IntDef({AppConstants.FOOTER_STATUS_SUCCESS, AppConstants.FOOTER_STATUS_ERROR, AppConstants.FOOTER_STATUS_NO_NETWORK, AppConstants.FOOTER_STATUS_NONE, AppConstants.FOOTER_STATUS_LOADING})
@@ -174,7 +180,29 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemViewHolder.mAddTechName.setText(info.otherTechNames);
             }
 
-            itemViewHolder.mPayChannel.setText(info.payChannelName);
+            if (info.payRecordList != null && !info.payRecordList.isEmpty()) {
+                itemViewHolder.mPayChannelRow.setVisibility(View.VISIBLE);
+                if (info.payRecordList.size() > 1) {
+                    itemViewHolder.mPayChannel.setText("拆分支付");
+                    itemViewHolder.mPayChannel.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                    itemViewHolder.mPayChannel.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
+                    itemViewHolder.mPayChannel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mCallBack.onPayDetail(info.payRecordList);
+                        }
+                    });
+                } else {
+                    PayRecordInfo payRecordInfo = info.payRecordList.get(0);
+                    itemViewHolder.mPayChannel.setText(payRecordInfo.payChannelName);
+                    itemViewHolder.mPayChannel.getPaint().setFlags(0);
+                    itemViewHolder.mPayChannel.setTextColor(ResourceUtils.getColor(R.color.colorText));
+                    itemViewHolder.mPayChannel.setOnClickListener(null);
+                }
+                itemViewHolder.mPayChannel.getPaint().setAntiAlias(true);
+            } else {
+                itemViewHolder.mPayChannelRow.setVisibility(View.GONE);
+            }
 
             if (TextUtils.isEmpty(info.techName)) {
                 itemViewHolder.mTechInfoRow.setVisibility(View.GONE);
@@ -190,12 +218,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             itemViewHolder.mCashierTime.setText(info.createTime);
-            if (TextUtils.isEmpty(info.operatorName)) {
-                itemViewHolder.mCashierNameRow.setVisibility(View.GONE);
-            } else {
-                itemViewHolder.mCashierNameRow.setVisibility(View.VISIBLE);
-                itemViewHolder.mCashierName.setText(info.operatorName);
-            }
+            itemViewHolder.mCashierNameRow.setVisibility(View.GONE);
             itemViewHolder.mCashierMoney.setText(Utils.moneyToStringEx(info.payAmount) + "元");
             itemViewHolder.mTradeNo.setText(info.payId);
 
@@ -243,11 +266,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     int visible = itemViewHolder.mDiscountLayout.getVisibility();
                     if (visible == View.GONE) {
                         itemViewHolder.mDiscountLayout.setVisibility(View.VISIBLE);
-                        itemViewHolder.mCashierMoneyLayout.setVisibility(View.GONE);
                         info.isDetail = true;
                     } else {
                         itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
-                        itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
                         info.isDetail = false;
                     }
                 }
@@ -322,6 +343,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TextView mCashierMoney;
         public TextView mTradeNo;
         public TextView mCashierTime;
+        public TableRow mPayChannelRow;
         public TextView mPayChannel;
         public TableRow mCashierMoneyLayout;
 
@@ -336,6 +358,8 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TextView mOriginMoney;
         public RecyclerView mDiscountItemList;
         public TextView mCashierMoneySub;
+
+        public TextView mDetailTextDesc;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -362,6 +386,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mConfirmBtn = (Button) itemView.findViewById(R.id.item_btn_confirm);
             mExceptionBtn = (Button) itemView.findViewById(R.id.item_btn_exception);
             mPayChannel = (TextView) itemView.findViewById(R.id.item_pay_channel);
+            mPayChannelRow = (TableRow) itemView.findViewById(R.id.tr_channel_layout);
 
             mDiscountLayout = (LinearLayout) itemView.findViewById(R.id.item_discount_layout);
             mOriginMoney = (TextView) itemView.findViewById(R.id.item_origin_money);
@@ -369,6 +394,8 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             mCashierMoneyLayout = (TableRow) itemView.findViewById(R.id.tr_cashier_layout);
             mCashierMoneySub = (TextView) itemView.findViewById(R.id.item_cashier_money_sub);
+
+            mDetailTextDesc = (TextView) itemView.findViewById(R.id.item_detail_text);
         }
     }
 

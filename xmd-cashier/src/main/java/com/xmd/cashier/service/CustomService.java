@@ -651,6 +651,7 @@ public class CustomService extends Service {
             @Override
             public void onClick(View v) {
                 hide();
+                InnerManager.getInstance().initTradeByRecord(recordInfo);
                 if (recordInfo.paidAmount > 0) {
                     Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerModifyActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);

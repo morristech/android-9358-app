@@ -13,6 +13,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
@@ -292,6 +293,9 @@ public class NotifyManager {
                         case AppConstants.PAY_DISCOUNT_MEMBER:
                             mPos.printText("会员优惠：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                             break;
+                        case AppConstants.PAY_DISCOUNT_REDUCTION:
+                            mPos.printText("直接减免：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
+                            break;
                         default:
                             mPos.printText("其他抵扣：", "-￥ " + Utils.moneyToStringEx(discountInfo.amount));
                             break;
@@ -324,17 +328,32 @@ public class NotifyManager {
         if (!TextUtils.isEmpty(status)) {
             mPos.printText("交易状态：", status);
         }
-        if (AppConstants.PAY_CHANNEL_ACCOUNT.equals(info.payChannel)) {
-            //会员
-            mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.platform) ? "" : "(" + Utils.getPlatform(info.platform) + ")"));
+
+        if (info.payRecordList != null && !info.payRecordList.isEmpty() && info.payRecordList.size() > 1) {
+            for (PayRecordInfo payRecordInfo : info.payRecordList) {
+                mPos.printDivide();
+                if (!TextUtils.isEmpty(payRecordInfo.tradeNo)) {
+                    mPos.printText("流水号：", payRecordInfo.tradeNo);
+                }
+                mPos.printText("支付方式：", payRecordInfo.payChannelName);
+                mPos.printText("支付金额：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+                mPos.printText("支付时间：", payRecordInfo.payTime);
+                mPos.printText("收款人员：", payRecordInfo.operatorName);
+            }
         } else {
-            mPos.printText("支付方式：", (TextUtils.isEmpty(info.payChannelName) ? Utils.getPayChannel(info.payChannel) : info.payChannelName) + (TextUtils.isEmpty(info.qrType) ? "" : "(" + Utils.getQRPlatform(info.qrType) + ")"));
+            if (AppConstants.PAY_CHANNEL_ACCOUNT.equals(info.payChannel)) {
+                //会员
+                mPos.printText("支付方式：", Utils.getPayChannel(info.payChannel) + (TextUtils.isEmpty(info.platform) ? "" : "(" + Utils.getPlatform(info.platform) + ")"));
+            } else {
+                mPos.printText("支付方式：", (TextUtils.isEmpty(info.payChannelName) ? Utils.getPayChannel(info.payChannel) : info.payChannelName) + (TextUtils.isEmpty(info.qrType) ? "" : "(" + Utils.getQRPlatform(info.qrType) + ")"));
+            }
+
+            if (!TextUtils.isEmpty(info.techName)) {
+                mPos.printText("服务技师：", (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
+            }
+            mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
         }
 
-        if (!TextUtils.isEmpty(info.techName)) {
-            mPos.printText("服务技师：", (TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo)) + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
-        }
-        mPos.printText("收款人员：", (TextUtils.isEmpty(info.operatorName) ? (AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")") : info.operatorName));
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
             byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();

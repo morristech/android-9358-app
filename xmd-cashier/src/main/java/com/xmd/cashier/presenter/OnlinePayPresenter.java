@@ -8,12 +8,15 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OnlinePayContract;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.m.network.BaseBean;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -314,5 +317,10 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     @Override
     public void detail(String code) {
         UiNavigation.gotoDiscountCouponActivity(mContext, code);
+    }
+
+    @Override
+    public void onPayDetail(List<PayRecordInfo> payRecordInfos) {
+        UiNavigation.gotoInnerPayRecordActivity(mContext,payRecordInfos);
     }
 }

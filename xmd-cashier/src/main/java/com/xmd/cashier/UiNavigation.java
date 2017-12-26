@@ -43,6 +43,7 @@ import com.xmd.cashier.activity.MemberRecordActivity;
 import com.xmd.cashier.activity.MemberScanActivity;
 import com.xmd.cashier.activity.OnlinePayActivity;
 import com.xmd.cashier.activity.OrderRecordActivity;
+import com.xmd.cashier.activity.PayRecordActivity;
 import com.xmd.cashier.activity.PayTypeChoiceActivity;
 import com.xmd.cashier.activity.RecordNavigationActivity;
 import com.xmd.cashier.activity.ScanPayActivity;
@@ -68,7 +69,11 @@ import com.xmd.cashier.dal.bean.GiftActivityInfo;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
+import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class UiNavigation {
     public static final int REQUEST_CODE_MEMBER_SCAN = 1;
@@ -385,6 +390,12 @@ public class UiNavigation {
 
     public static void gotoInnerModifyActivity(Context context) {
         Intent intent = new Intent(context, InnerModifyActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoInnerPayRecordActivity(Context context, List<PayRecordInfo> list) {
+        Intent intent = new Intent(context, PayRecordActivity.class);
+        intent.putExtra(AppConstants.EXTRA_INNER_PAY_RECORD, (Serializable) list);
         context.startActivity(intent);
     }
 }

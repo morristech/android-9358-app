@@ -228,7 +228,11 @@
         <activity
             android:name=".activity.InnerModifyActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.PayRecordActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogActivity" />
     </application>
 
 </manifest>
