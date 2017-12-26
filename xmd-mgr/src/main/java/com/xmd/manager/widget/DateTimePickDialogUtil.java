@@ -1,17 +1,14 @@
 package com.xmd.manager.widget;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 
 import com.xmd.manager.R;
 import com.xmd.manager.common.Utils;
@@ -55,14 +52,13 @@ public class DateTimePickDialogUtil implements DatePicker.OnDateChangedListener,
         timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(mDatePicker.getYear(), mDatePicker.getMonth(),
-                mDatePicker.getDayOfMonth(), mTimePicker.getHour(),
-                mTimePicker.getMinute());
+                mDatePicker.getDayOfMonth(), mTimePicker.getCurrentHour(),
+                mTimePicker.getCurrentMinute());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         mDateTime = sdf.format(calendar.getTime());
@@ -92,7 +88,7 @@ public class DateTimePickDialogUtil implements DatePicker.OnDateChangedListener,
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                    //    inputDate.setText("");
+
                     }
                 }).show();
         Button buttonPositive = mAlertDialog.getButton(DialogInterface.BUTTON1);

@@ -22,10 +22,6 @@ public class BlockChildLinearLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-//    public BlockChildLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//    }
-
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return true;
     }

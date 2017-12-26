@@ -248,8 +248,6 @@ public class SeatBillDataManager {
                             return false;
                         }
                     }
-
-
                 }
             }
         }
@@ -262,7 +260,8 @@ public class SeatBillDataManager {
         int i = 0;
         for (NativeItemBean itemBean : bill.getItemList()) {
             i++;
-            if (itemBean == null) {
+            if (itemBean == null || TextUtils.isEmpty(itemBean.getItemType())) {
+                XToast.show("订单信息异常，请重新操作");
                 return false;
             }
             if (itemBean.getItemType().equals(ConstantResource.BILL_GOODS_TYPE)) {
@@ -332,7 +331,7 @@ public class SeatBillDataManager {
         String categoryId = "";
         String itemName = "";
         for (List<NativeServiceItemBean> bean : mServiceItemListList) {
-            if(bean == null){
+            if (bean == null) {
                 continue;
             }
             for (NativeServiceItemBean itemBean : bean) {

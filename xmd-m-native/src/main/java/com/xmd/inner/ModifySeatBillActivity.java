@@ -240,6 +240,9 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
     private void removeEmployee(int parentPosition, int position) {
         NativeItemBean bean = mItemsList.get(parentPosition);
         List<NativeEmployeeBean> employeeList = bean.getEmployeeList();
+        if(position >= employeeList.size()){
+            return;
+        }
         employeeList.remove(position);
         bean.setEmployeeList(employeeList);
         mSeatBillListAdapter.notifyItemChanged(parentPosition);
