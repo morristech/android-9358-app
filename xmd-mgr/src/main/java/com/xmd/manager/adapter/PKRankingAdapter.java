@@ -30,6 +30,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
     private static final byte SALE_TYPE = 2;
     private static final byte SERVICE_TYPE = 3;
     private static final byte PAID_TYPE = 4;
+    private static final byte PANIC_TYPE = 5; //限时抢
 
 
     private Context mContext;
@@ -55,6 +56,8 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                     return SALE_TYPE;
                 } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                     return PAID_TYPE;
+                }else if (mCategoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
+                    return PANIC_TYPE;
                 } else {
                     return SERVICE_TYPE;
                 }
@@ -68,6 +71,8 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
             return SALE_TYPE;
         } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
             return PAID_TYPE;
+        } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
+            return PANIC_TYPE;
         } else {
             return SERVICE_TYPE;
         }
@@ -89,6 +94,9 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
             case PAID_TYPE:
                 view = LayoutInflater.from(mContext).inflate(R.layout.layout_pk_ranking_paid_item, parent, false);
                 break;
+            case PANIC_TYPE:
+                view = LayoutInflater.from(mContext).inflate(R.layout.layout_pk_ranking_panic_item, parent, false);
+                break;
             default:
                 view = LayoutInflater.from(mContext).inflate(R.layout.layout_pk_ranking_register_item, parent, false);
                 break;
@@ -109,6 +117,8 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
             } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s张", bean.statValue));
+            } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.paidServiceItemStat / 100f));
             } else {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
             }
@@ -119,7 +129,9 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
             } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s张", bean.statValue));
-            } else {
+            }  else if (mCategoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.paidServiceItemStat / 100f));
+            }else {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
             }
         }

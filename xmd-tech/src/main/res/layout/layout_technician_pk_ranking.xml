@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal"
-        android:padding="@dimen/inter_space"
-    >
+        android:padding="@dimen/inter_space">
 
         <View
             android:layout_width="@dimen/two_space"
@@ -47,7 +46,6 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_10"
             android:text="@string/pk_ranking_on_line"
-            android:textColor="@color/cardview_dark_background"
             android:textSize="@dimen/fontBiggerThanNormal"/>
     </LinearLayout>
 
@@ -61,16 +59,14 @@
         android:layout_marginLeft="@dimen/inter_space"
         android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal"
-        android:paddingRight="@dimen/inter_space"
-    >
+        android:paddingRight="@dimen/inter_space">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/team_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="false"
-        />
+            android:clickable="false"/>
 
         <ImageView
             android:layout_width="wrap_content"

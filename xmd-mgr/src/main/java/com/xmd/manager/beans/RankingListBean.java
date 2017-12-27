@@ -34,4 +34,6 @@ public class RankingListBean {
     public String endDate;
     public String avatarUrl;
     public String statusName;
+    public int paidServiceItemStat;
+    public int paidServiceItemCount;
 }

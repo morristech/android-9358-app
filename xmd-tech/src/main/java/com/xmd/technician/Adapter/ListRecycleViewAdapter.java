@@ -166,11 +166,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PERSONAL_RANKING;
             } else if (mData.get(position) instanceof CustomerInfo) {
                 return TYPE_TECH_BLACKLIST;
-            }
-//            else if (mData.get(position) instanceof InvitationRewardBean) {
-//                return TYPE_INVITATION_REWARD_ACTIVITY_ITEM;
-//            }
-            else {
+            }else {
                 return TYPE_FOOTER;
             }
         }

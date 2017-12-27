@@ -37,4 +37,6 @@ public class PKDetailListBean {
     public String serialNo;
     public String avatarUrl;
     public boolean isTeam;
+    public int paidServiceItemStat;
+    public int paidServiceItemCount;
 }

@@ -46,7 +46,6 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_gravity="center_vertical"
             android:text="@string/pk_ranking_on_line"
-            android:textColor="@color/cardview_dark_background"
             android:textSize="13sp" />
     </LinearLayout>
 

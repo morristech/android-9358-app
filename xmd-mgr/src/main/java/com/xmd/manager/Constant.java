@@ -322,6 +322,7 @@ public class Constant {
     public static final String KEY_CATEGORY_SAIL_TYPE = "02";
     public static final String KEY_CATEGORY_COMMENT_TYPE = "03";
     public static final String KEY_CATEGORY_PAID_TYPE = "04";
+    public static final String KEY_CATEGORY_PANIC_BUY_TYPE = "05";
 
 
     /**

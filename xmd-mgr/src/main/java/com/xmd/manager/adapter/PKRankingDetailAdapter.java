@@ -91,6 +91,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
             } else {
                 detailViewHolder.teamRankingTitle.setVisibility(View.GONE);
             }
+            detailViewHolder.tvRankingMoney.setVisibility(View.GONE);
             if (bean.isTeam) {
                 detailViewHolder.textRankingNumber.setText(String.valueOf(position + 1));
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s人", bean.memberCount));
@@ -150,7 +151,11 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%1.2f元", bean.saleStat / 100f));
             } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_COUPON)) {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s张", bean.couponStat));
-            } else {
+            }else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_PANIC)) {
+                detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.paidServiceItemStat));
+                detailViewHolder.tvRankingMoney.setVisibility(View.VISIBLE);
+                detailViewHolder.tvRankingMoney.setText(String.format("%1.2f元", bean.paidServiceItemCount / 100f));
+            }  else {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.commentStat));
             }
             if (null != mFilterListener) {
@@ -200,6 +205,8 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         TextView tvRankingMember;
         @BindView(R.id.tv_ranking_member_number)
         TextView tvRankingMemberNumber;
+        @BindView(R.id.tv_ranking_money)
+        TextView tvRankingMoney;
         @BindView(R.id.tv_ranking_serialNo)
         TextView tvRankingSerial;
         @BindView(R.id.ll_team_filter)

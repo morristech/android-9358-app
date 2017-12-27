@@ -93,6 +93,8 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
             mSortKey = RequestConstant.KEY_SORT_BY_SALE;
         } else if (mRange.equals(Constant.KEY_CATEGORY_COMMENT_TYPE)) {
             mSortKey = RequestConstant.KEY_SORT_BY_COMMENT;
+        }else if(mRange.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)){
+            mSortKey =  RequestConstant.KEY_SORT_BY_PANIC;
         } else {
             mSortKey = RequestConstant.KEY_SORT_BY_COUPON;
         }

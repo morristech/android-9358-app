@@ -458,6 +458,7 @@ public class RequestConstant {
     public static final String KEY_SORT_BY_CUSTOMER = "customerStat";
     public static final String KEY_SORT_BY_SALE = "saleStat";
     public static final String KEY_SORT_BY_COUPON = "couponStat";
+    public static final String KEY_SORT_BY_PANIC = "paidServiceItemStat";
     public static final String KEY_PK_ACTIVITY_ID = "pkActivityId";
     public static final String KEY_SORT_KEY = "sortKey";
     public static final String KEY_TECH_SORT_BY_USER = "userList";
