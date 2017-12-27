@@ -109,12 +109,7 @@ import rx.Subscription;
  */
 public class MainFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private final static int REQUEST_CODE_CLUB_POSITION_INVITE = 100;
-    public Runnable mTask = new Runnable() {
-        @Override
-        public void run() {
-            loadOrderListData();
-        }
-    };
+
     @BindView(R.id.rl_toolbar)
     RelativeLayout mRlToolBar;
     @BindView(R.id.app_version)
@@ -529,6 +524,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mGetTechOrderListSubscription = RxBus.getInstance().toObservable(OrderListResult.class).subscribe(
                 this::initOrderView);
     }
+
+    //新订单采取推送方式，不再定时器刷新
+    public Runnable mTask = new Runnable() {
+         @Override
+         public void run() {
+             loadOrderListData();
+         }
+     };
 
     @CheckBusinessPermission(PermissionConstants.ORDER)
     public void loadOrderListData() {

@@ -204,8 +204,12 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void posterSave(View view, View dismiss) {
+        if ((mPosterBean.createTime + ONE_MONTH_DAY_MILLISECOND) < System.currentTimeMillis()) {
+            XToast.show(ResourceUtils.getString(R.string.qr_code_invalid_alter_message));
+            return;
+        }
         new RewardConfirmDialog(this, ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
-                DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
+                DateUtil.getCurrentDate(mPosterBean.createTime + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
             @Override
             public void onConfirmClick() {
@@ -227,14 +231,26 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void posterShare(View view, View dismiss) {
-
-        if (mDialog != null) {
-            mDialog.dismiss();
-            dismiss.setVisibility(View.GONE);
-            String localFile = saveImage(view, false);
-            ShareController.doShareImage(localFile);
+        if ((mPosterBean.createTime + ONE_MONTH_DAY_MILLISECOND) < System.currentTimeMillis()) {
+            XToast.show(ResourceUtils.getString(R.string.qr_code_invalid_alter_message));
+            return;
         }
+        new RewardConfirmDialog(this, ResourceUtils.getString(R.string.tech_poster_alter_message),
+                String.format(ResourceUtils.getString(R.string.tech_poster_share_alter_message),
+                        DateUtil.getCurrentDate(mPosterBean.createTime + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
+            @Override
+            public void onConfirmClick() {
+                super.onConfirmClick();
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                    dismiss.setVisibility(View.GONE);
+                    String localFile = saveImage(view, false);
+                    ShareController.doShareImage(localFile);
+                }
+
+            }
+        }.show();
     }
 
     private String saveImage(View v, boolean saveToGallery) {

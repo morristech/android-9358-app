@@ -174,8 +174,8 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
         tabIndicator.setViewPager(viewPager);
         tabIndicator.setWithDivider(false);
         tabIndicator.setup();
-        tabIndicator.setOnPageChangeListener(position -> refreshView(position));
-        tabIndicator.setOnTabclickListener(position -> refreshView(position));
+      //  tabIndicator.setOnPageChangeListener(position -> refreshView(position));
+      //  tabIndicator.setOnTabclickListener(position -> refreshView(position));
     }
 
     private void initTimeFilterPopupWindowView() {
