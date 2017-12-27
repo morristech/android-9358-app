@@ -40,8 +40,8 @@ android {
         //1.9.4 发送邀请有礼，新增技师海报，添加修改状态 63工资
         //1.9.6 修复bug
         //1.9.6 新增分享邀请有礼
-        versionCode 66
-        versionName "1.9.8"
+        versionCode 67
+        versionName "1.9.9"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",

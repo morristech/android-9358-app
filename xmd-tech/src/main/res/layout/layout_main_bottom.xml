@@ -5,8 +5,7 @@
               android:background="@color/app_bg"
               android:orientation="vertical"
               android:paddingBottom="@dimen/margin_15"
-              android:paddingTop="@dimen/margin_15"
->
+              android:paddingTop="@dimen/margin_15">
     <TextView
         android:id="@+id/tv_bottom_text"
         android:layout_width="wrap_content"
@@ -14,7 +13,6 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/main_bottom_text"
         android:textColor="@color/list_item_label_color"
-        android:textSize="@dimen/fontBody"
-    />
+        android:textSize="@dimen/fontBody"/>
 
 </LinearLayout>
