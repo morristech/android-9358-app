@@ -56,7 +56,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                     return SALE_TYPE;
                 } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                     return PAID_TYPE;
-                }else if (mCategoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
+                } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
                     return PANIC_TYPE;
                 } else {
                     return SERVICE_TYPE;
@@ -118,7 +118,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
             } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s张", bean.statValue));
             } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
-                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.paidServiceItemStat / 100f));
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
             } else {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
             }
@@ -129,9 +129,9 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
             } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s张", bean.statValue));
-            }  else if (mCategoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
-                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.paidServiceItemStat / 100f));
-            }else {
+            } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PANIC_BUY_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
+            } else {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
             }
         }
