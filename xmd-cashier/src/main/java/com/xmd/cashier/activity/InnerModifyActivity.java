@@ -67,6 +67,12 @@ public class InnerModifyActivity extends BaseActivity implements InnerModifyCont
         mPresenter.processData();
     }
 
+    @Override
+    public boolean onKeyEventBack() {
+        mPresenter.onEventBack();
+        return true;
+    }
+
     public void onClickInnerDetail(View view) {
         InnerRecordInfo info = TradeManager.getInstance().getCurrentTrade().innerRecordInfo;
         UiNavigation.gotoInnerDetailActivity(this, AppConstants.INNER_DETAIL_SOURCE_OTHER, info);

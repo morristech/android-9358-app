@@ -111,6 +111,27 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         mView.setDesc(trade.getRealPayMoney(), trade.getWillPayMoney() - trade.getAlreadyPayMoney() - trade.getRealPayMoney());
     }
 
+    @Override
+    public void onEventBack() {
+        new CustomAlertDialogBuilder(mContext)
+                .setMessage("订单金额未付清，确认要退出支付?")
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        mView.finishSelf();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
     private void showMethod() {
         ActionSheetDialog dialog = new ActionSheetDialog(mContext);
         dialog.setContents(new ArrayList<>(InnerManager.getInstance().getChannels().keySet()));

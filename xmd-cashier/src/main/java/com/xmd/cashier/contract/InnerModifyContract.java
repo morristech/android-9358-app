@@ -14,6 +14,8 @@ public interface InnerModifyContract {
         void onCashier();
 
         void processData();
+
+        void onEventBack();
     }
 
     interface View extends BaseView<Presenter> {
