@@ -145,7 +145,7 @@ public class MenuFactory {
     }
 
     public List<Fragment> createFastReplySubMenu(String remoteChatId) {
-        FastReplySetting setting = ChatSettingManager.getInstance().getFastReplySetting();
+         FastReplySetting setting = ChatSettingManager.getInstance().getFastReplySetting();
         if (setting == null) {
             ChatSettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
                 @Override

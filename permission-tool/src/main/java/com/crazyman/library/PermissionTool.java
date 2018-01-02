@@ -190,6 +190,14 @@ public class PermissionTool extends AppCompatActivity {
         return true;
     }
 
+    //检查Vivo Oppo 手机权限,无法判定
+    public static boolean hasRecordPermission(Context context){
+        PackageManager  pm = context.getPackageManager();
+        boolean permission = PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.RECORD_AUDIO","com.xmd.technician");
+        return permission;
+    }
+
+
     /**
      * 申请权限
      *

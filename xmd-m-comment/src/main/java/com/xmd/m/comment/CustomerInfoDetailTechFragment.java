@@ -125,6 +125,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_customer_info_detail_tech, container, false);
         userId = getArguments().getString(CustomerInfoDetailActivity.CURRENT_USER_ID);
         unbinder = ButterKnife.bind(this, view);
+        showLoading(getActivity());
         EventBusSafeRegister.register(this);
         initConsumeView();
         getUserInfo();
@@ -163,11 +164,12 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
                 }
                 initTypeLabelView(result.getRespData().userTagList);
                 initUserModelView(result.getRespData().userDetailModel);
-
+                hideLoading();
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                hideLoading();
                 XToast.show(e.getLocalizedMessage());
             }
         });

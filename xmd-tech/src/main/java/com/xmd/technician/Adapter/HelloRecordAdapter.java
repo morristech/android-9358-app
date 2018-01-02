@@ -87,13 +87,13 @@ public class HelloRecordAdapter extends RecyclerView.Adapter {
             itemHolder.mHelloDate.setText(itemInfo.sendTime);
             if (TextUtils.isEmpty(itemInfo.replyTime)) {
                 itemHolder.mReplyStatus.setVisibility(View.INVISIBLE);
-                itemHolder.itemView.setOnClickListener(null);
             } else {
                 itemHolder.mReplyStatus.setVisibility(View.VISIBLE);
-                if (mItemClickCallback != null) {
-                    itemHolder.itemView.setOnClickListener(v -> mItemClickCallback.onItemClick(itemInfo));
-                }
             }
+            if (mItemClickCallback != null) {
+                itemHolder.itemView.setOnClickListener(v -> mItemClickCallback.onItemClick(itemInfo));
+            }
+            //itemInfo.replyTime
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);

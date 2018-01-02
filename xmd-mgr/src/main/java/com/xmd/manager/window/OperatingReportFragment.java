@@ -97,7 +97,9 @@ public class OperatingReportFragment extends BaseFragment {
 
     @Subscribe
     public void newOrderSubscribe(OrderCountUpDate orderCount) {
-
+        if (imgOrderNew == null) {
+            return;
+        }
         if (orderCount.newOrder > 0) {
             imgOrderNew.setVisibility(View.VISIBLE);
         } else {

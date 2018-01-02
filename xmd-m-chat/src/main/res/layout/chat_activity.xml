@@ -105,7 +105,7 @@
                 android:enabled='@{!TextUtils.isEmpty(data.textMessageContent.get())}'
                 android:minHeight="32dp"
                 android:minWidth="65dp"
-                android:onClick="@{()->data.sendTextMessage()}"
+                android:onClick="@{()->data.sendChatTextMessage()}"
                 android:text="发送"
                 android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
         </LinearLayout>

@@ -312,7 +312,7 @@ public class NativeSeatActivity extends BaseActivity {
     @OnClick(R2.id.tv_consume_modify)
     public void onConsumeModify() {
         // TODO 跳转 修改
-        ModifySeatBillActivity.startModifySeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mSelectedOrderInfo);
+        ModifySeatBillActivity.startModifySeatBillActivity(this, mSelectedSeatInfo.name, mSelectedOrderInfo);
     }
 
     @OnClick(R2.id.btn_seat_left)

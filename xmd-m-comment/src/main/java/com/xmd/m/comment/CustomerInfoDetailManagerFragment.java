@@ -202,6 +202,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_customer_info_detail_manager, container, false);
         unbinder = ButterKnife.bind(this, view);
         userId = getArguments().getString(CustomerInfoDetailActivity.CURRENT_USER_ID);
+        showLoading(getActivity());
         initGroupData();
         initConsumeView();
         getUserInfo();
@@ -293,10 +294,12 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
                 initTypeLabelView(result.getRespData().userTagList);
                 initMemberShipView(result.getRespData().memberInfo, result.getRespData().memberSwitchOn);
                 initCreditView(result.getRespData().creditStatInfo, result.getRespData().creditSwitchOn);
+                hideLoading();
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                hideLoading();
                 XToast.show(e.getLocalizedMessage());
             }
         });
@@ -348,7 +351,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         //消费金额
         tvCustomerConsumeMoney.setText(String.format("%1.2f 元", userDetailModel.consumeAmount / 100f));
         //消费次数
-        if (TextUtils.isEmpty(userDetailModel.consumeDate)) {
+        if (TextUtils.isEmpty(userDetailModel.consumeDate) || userDetailModel.consumeAmount == 0) {
             tvCustomerConsumeTimes.setText(String.format("%s次", userDetailModel.consumeAmount));
         } else {
             tvCustomerConsumeTimes.setText(String.format("%s次（最近消费%s)", userDetailModel.consumeCount, userDetailModel.consumeDate));

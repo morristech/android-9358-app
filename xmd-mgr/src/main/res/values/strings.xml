@@ -596,4 +596,5 @@
     <string name="report_cashier_sum_title">买单合计(元)</string>
     <string name="report_spa_title">足浴按摩</string>
     <string name="report_goods_title">实物商品</string>
+    <string name="group_message_recommended_classification">推荐分类</string>
 </resources>

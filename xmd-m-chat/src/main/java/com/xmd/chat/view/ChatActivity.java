@@ -376,6 +376,12 @@ public class ChatActivity extends BaseActivity {
         textMessageContent.set(s.toString());
     }
 
+    //通过输入框发送消息
+    public void sendChatTextMessage() {
+        EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_INVITATION));
+        sendTextMessage();
+    }
+
     //发送消息
     public void sendTextMessage() {
         ChatMessage chatMessage = ChatMessageManager.getInstance().sendTextMessage(mRemoteUser.getChatId(), textMessageContent.get());

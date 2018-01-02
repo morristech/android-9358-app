@@ -403,5 +403,6 @@
     <string name="female">女</string>
     <string name="gender">性别</string>
     <string name="native_place">籍贯</string>
+    <string name="nearby_replay_alter">用户尚未回复您的打招呼，暂不能聊天</string>
     
 </resources>

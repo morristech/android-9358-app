@@ -16,7 +16,7 @@
         android:layout_marginRight="@dimen/inter_space"
         android:textColor="@color/colorFont2"
         android:textSize="@dimen/small_text_size"
-        android:hint="推荐分类"
+        android:hint="@string/group_message_recommended_classification"
         android:textColorHint="@color/colorFont2"
         android:visibility="gone" />
 

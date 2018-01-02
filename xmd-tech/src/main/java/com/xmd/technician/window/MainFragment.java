@@ -555,7 +555,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    @CheckBusinessPermission(PermissionConstants.VISITOR)
+    @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
     public void loadVisitor() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
     }

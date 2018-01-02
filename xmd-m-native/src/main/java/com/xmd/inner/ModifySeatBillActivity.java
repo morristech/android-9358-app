@@ -79,7 +79,7 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
 
 
     public static void startModifySeatBillActivity(Activity activity, String roomName, OrderInfo order) {
-        if(order == null){
+        if (order == null) {
             XToast.show("所选座位数据异常");
             return;
         }
@@ -101,9 +101,9 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
         showLoading("正在加载...");
         roomTitle = getIntent().getStringExtra(INTENT_KEY_ROOM_NAME);
         mOrderInfo = getIntent().getParcelableExtra(INTENT_KEY_ORDER_INFO);
-        tvSeatNum.setText(mOrderInfo.roomName);
+        tvSeatNum.setText(roomTitle);
         etTechHand.setText(mOrderInfo.userIdentify);
-        setTitle(roomTitle);
+        setTitle(mOrderInfo.roomName);
         setBackVisible(true);
         mSeatBillDataManager = SeatBillDataManager.getManagerInstance();
         addBill = new NativeUpdateBill();
@@ -137,15 +137,25 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
             bean.setServiceName(info.itemName);
             bean.setConsumeName(mSeatBillDataManager.getConsumeName(info.itemId));
             List<NativeEmployeeBean> employeeList = new ArrayList<>();
-
-            for (EmployeeInfo employeeInfo : info.employeeList) {
+            if (info.employeeList.size() > 0) {
+                for (EmployeeInfo employeeInfo : info.employeeList) {
+                    NativeEmployeeBean employee = new NativeEmployeeBean();
+                    employee.setBellId(employeeInfo.bellId);
+                    employee.setEmployeeId(employeeInfo.employeeId);
+                    employee.setServiceType(info.itemType);
+                    employee.setEmployeeName(String.format("[%s]", employeeInfo.employeeNo));
+                    employeeList.add(employee);
+                }
+            } else {
                 NativeEmployeeBean employee = new NativeEmployeeBean();
-                employee.setBellId(employeeInfo.bellId);
-                employee.setEmployeeId(employeeInfo.employeeId);
                 employee.setServiceType(info.itemType);
-                employee.setEmployeeName(String.format("[%s]", employeeInfo.employeeNo));
+                employee.setBellId(0);
+                employee.setEmployeeId("");
+                employee.setEmployeeName("");
                 employeeList.add(employee);
+                bean.setEmployeeList(employeeList);
             }
+
             bean.setEmployeeList(employeeList);
             mItemsList.add(bean);
         }
@@ -240,7 +250,7 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
     private void removeEmployee(int parentPosition, int position) {
         NativeItemBean bean = mItemsList.get(parentPosition);
         List<NativeEmployeeBean> employeeList = bean.getEmployeeList();
-        if(position >= employeeList.size()){
+        if (position >= employeeList.size()) {
             return;
         }
         employeeList.remove(position);
@@ -264,15 +274,15 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
         techFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_Dialog_Alert);
         Bundle bundle = new Bundle();
         bundle.putString(SeatBillTechSelectFragment.KEY_CURRENT_SEAT_STATUS, ConstantResource.HANDLE_SEAT_STATUS_EDIT);
-        if( mItemsList.get(parentPosition).getItemType().equals(ConstantResource.BILL_GOODS_TYPE)){
-            bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE,ConstantResource.BILL_GOODS_TYPE);
-            if(mSeatBillDataManager.getAllTechList().size() == 0){
+        if (mItemsList.get(parentPosition).getItemType().equals(ConstantResource.BILL_GOODS_TYPE)) {
+            bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE, ConstantResource.BILL_GOODS_TYPE);
+            if (mSeatBillDataManager.getAllTechList().size() == 0) {
                 XToast.show(ResourceUtils.getString(R.string.has_no_tech));
                 return;
             }
-        }else {
-            bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE,ConstantResource.BILL_SPA_TYPE);
-            if(mSeatBillDataManager.getFreeTechList().size() == 0){
+        } else {
+            bundle.putString(SeatBillTechSelectFragment.KEY_SERVICE_ITEM_TYPE, ConstantResource.BILL_SPA_TYPE);
+            if (mSeatBillDataManager.getFreeTechList().size() == 0) {
                 XToast.show(ResourceUtils.getString(R.string.has_no_tech));
                 return;
             }
@@ -284,7 +294,7 @@ public class ModifySeatBillActivity extends BaseActivity implements SeatBillList
 
     @Override
     public void billSellTotal(int parentPosition, int total) {
-        if(parentPosition >= mItemsList.size()){
+        if (parentPosition >= mItemsList.size()) {
             return;
         }
         NativeItemBean bean = mItemsList.get(parentPosition);

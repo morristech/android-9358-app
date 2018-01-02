@@ -179,6 +179,9 @@ public class UmengStatisticsManager {
             case Constants.UMENG_STATISTICS_INVITATION:
                 MobclickAgent.onEvent(mContext, Constants.KEY_INVITATION_CLICK);
                 break;
+            case Constants.UMENG_STATISTICS_CHAT_MESSAGE:
+                MobclickAgent.onEvent(mContext, Constants.KEY_SEND_CHAT_MESSAGE);
+                break;
 
         }
     }

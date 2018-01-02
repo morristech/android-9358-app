@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
-import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.Constants;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -90,8 +89,7 @@ public class NearbyActivity extends BaseActivity {
         mGetNearbyCusListSubscription = RxBus.getInstance().toObservable(NearbyCusListResult.class).subscribe(result -> {
             handleNearbyCusListResult(result);
         });
-
-
+        showLoading("正在加载");
         getHelloLeftCount();
         getNearbyCusList();
     }
@@ -228,6 +226,7 @@ public class NearbyActivity extends BaseActivity {
     // 处理附近客户列表
     private void handleNearbyCusListResult(NearbyCusListResult result) {
         isLoading = false;
+        hideLoading();
         // 如果获取成功才更新界面数据
         if (result != null && result.statusCode == 200 && result.respData != null) {
             if (mPageIndex < result.pageCount) {

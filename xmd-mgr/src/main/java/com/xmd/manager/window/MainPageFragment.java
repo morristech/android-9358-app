@@ -896,7 +896,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
 
     private void initTechRankingView() {
-
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_RANK_DATA);
     }
 

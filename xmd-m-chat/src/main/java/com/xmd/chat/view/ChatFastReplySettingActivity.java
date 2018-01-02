@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
@@ -217,5 +218,18 @@ public class ChatFastReplySettingActivity extends BaseActivity {
             itemTouchHelper.startDrag(viewHolder);
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        showLoading("正在保存设置");
+        ChatSettingManager.getInstance().loadFastReply(null);
+        ThreadPoolManager.postToUIDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideLoading();
+                ChatFastReplySettingActivity.this.finish();
+            }
+        },1000);
     }
 }

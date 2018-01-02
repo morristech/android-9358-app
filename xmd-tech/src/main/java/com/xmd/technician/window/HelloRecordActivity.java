@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Adapter.HelloRecordAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.HelloRecordInfo;
@@ -104,7 +106,12 @@ public class HelloRecordActivity extends BaseActivity {
     private void handleItemClick(HelloRecordInfo info) {
         // 聊天
         // MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(info.receiverEmChatId, info.receiverName, info.receiverAvatar, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
-        UINavigation.gotoChatActivity(this, info.receiverEmChatId);
+        if(TextUtils.isEmpty(info.replyTime)){
+            XToast.show(ResourceUtils.getString(R.string.nearby_replay_alter));
+        }else {
+            UINavigation.gotoChatActivity(this, info.receiverEmChatId);
+        }
+
     }
 
     private void handleHelloRecordResult(HelloRecordListResult result) {
