@@ -338,7 +338,9 @@ public class NotifyManager {
                 mPos.printText("支付方式：", payRecordInfo.payChannelName);
                 mPos.printText("支付金额：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
                 mPos.printText("支付时间：", payRecordInfo.payTime);
-                mPos.printText("收款人员：", payRecordInfo.operatorName);
+                if (!TextUtils.isEmpty(payRecordInfo.operatorName)) {
+                    mPos.printText("收款人员：", payRecordInfo.operatorName);
+                }
             }
         } else {
             if (AppConstants.PAY_CHANNEL_ACCOUNT.equals(info.payChannel)) {
