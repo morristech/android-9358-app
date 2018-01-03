@@ -120,8 +120,7 @@
         android:background="@color/primary_color"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/personal_margin"
-        android:paddingRight="@dimen/personal_padding"
-    >
+        android:paddingRight="@dimen/personal_padding">
 
         <TextView
 

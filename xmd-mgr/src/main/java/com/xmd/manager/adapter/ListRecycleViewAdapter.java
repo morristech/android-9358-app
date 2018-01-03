@@ -52,7 +52,6 @@ import com.xmd.manager.beans.StaffDataBean;
 import com.xmd.manager.beans.TechBadComment;
 import com.xmd.manager.beans.TechRankingBean;
 import com.xmd.manager.beans.VisitInfo;
-import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.DescribeMesaageUtil;
 import com.xmd.manager.common.ItemSlideHelper;
 import com.xmd.manager.common.ResourceUtils;
@@ -1226,12 +1225,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         final OperateReportBean operateBean = (OperateReportBean) obj;
         OperateReportListItemViewHolder viewHolder = (OperateReportListItemViewHolder) holder;
         viewHolder.imgOperateNewRemark.setVisibility(operateBean.read == 0 ? View.VISIBLE : View.GONE);
+        viewHolder.tvReportName.setText(operateBean.name);
+        viewHolder.tvReportDelete.setVisibility(View.GONE);
         if (operateBean.type.equals("custom")) {
-            viewHolder.tvReportName.setText(operateBean.name);
-        } else if(operateBean.type.equals("month")){
-            viewHolder.tvReportName.setText(String.format("%s运营报表",DateUtil.getFromatDate(operateBean.startTime,"yyyy-MM")));
-        }else {
-            viewHolder.tvReportName.setText(String.format("%s运营报表", DateUtil.getFromatDate(operateBean.startTime,"yyyy-MM-dd")));
+            viewHolder.tvReportDelete.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.tvReportDelete.setVisibility(View.GONE);
         }
         viewHolder.tvReportShare.setOnClickListener(v -> mCallback.onPositiveButtonClicked(operateBean));
         viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(operateBean));

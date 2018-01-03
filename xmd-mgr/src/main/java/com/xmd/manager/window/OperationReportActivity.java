@@ -28,8 +28,7 @@ public class OperationReportActivity extends BaseActivity {
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private String[] tabTexts;
-    private String mOperateStartTime;
-    private String mOperateEndTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

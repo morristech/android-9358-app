@@ -61,9 +61,10 @@
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:paddingRight="20dp"
-                    android:text="分享"
+                    android:text="删除"
                     android:textColor="#666666"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>

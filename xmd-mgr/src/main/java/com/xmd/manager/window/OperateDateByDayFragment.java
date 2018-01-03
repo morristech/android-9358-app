@@ -62,7 +62,7 @@ public class OperateDateByDayFragment extends BaseFragment {
         mOperateListFragment = new OperateListFragment();
         Bundle bundle = new Bundle();
         bundle.putString(OperateListFragment.OPERATE_LIST_TYPE, OperateListFragment.OPERATE_LIST_BY_DAY_TYPE);
-        bundle.putString(OperateListFragment.OPERATE_LIST_DATE, mSearchMonth);
+        bundle.putString(OperateListFragment.OPERATE_LIST_DATE, mSearchMonth.substring(0, 7));
         mOperateListFragment.setArguments(bundle);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
