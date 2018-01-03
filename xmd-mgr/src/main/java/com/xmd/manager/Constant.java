@@ -164,6 +164,11 @@ public class Constant {
     public static final String MULTI_CLUB_ROLE = "view_clubs";
 
     /**
+     * 连锁店
+     */
+    public static final String CHAIN_MANAGER_ROLE = "chain_manager";
+
+    /**
      * 全部用户
      */
     public static final String CUSTOMER_TYPE_ALL = "";

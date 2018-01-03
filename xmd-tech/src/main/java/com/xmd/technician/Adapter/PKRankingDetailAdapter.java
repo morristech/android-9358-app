@@ -147,9 +147,9 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
             } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_COUPON)) {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.couponStat));
             } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_PANIC)) {
-                detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.paidServiceItemStat));
+                detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.paidServiceItemCount));
                 detailViewHolder.tvRankingMoney.setVisibility(View.VISIBLE);
-                detailViewHolder.tvRankingMoney.setText(String.format("%1.2f元", bean.paidServiceItemCount / 100f));
+                detailViewHolder.tvRankingMoney.setText(String.format("%1.2f元", bean.paidServiceItemStat / 100f));
             } else {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.commentStat));
             }

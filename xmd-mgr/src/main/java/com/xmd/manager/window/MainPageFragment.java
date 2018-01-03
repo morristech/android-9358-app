@@ -422,7 +422,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView() {
-        if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
+        if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole()) || Constant.CHAIN_MANAGER_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
             mMenuChoiceClub.setVisibility(View.VISIBLE);
             mMenuClubName.setText(Utils.StrSubstring(8, SharedPreferenceHelper.getCurrentClubName(), true));
         }
@@ -519,7 +519,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 rankingDataResult -> handlerRankingResult(rankingDataResult));
         mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
                 clubResult -> {
-                    if(clubResult == null || clubResult.respData == null){
+                    if (clubResult == null || clubResult.respData == null) {
                         return;
                     }
                     clubInvitation.setText(TextUtils.isEmpty(clubResult.respData.inviteCode) ? "" : clubResult.respData.inviteCode);

@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.xmd.app.utils.PermissionUtils;
+import com.xmd.app.utils.ResourceUtils;
+import com.xmd.technician.R;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
@@ -12,6 +15,7 @@ import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.window.ResetPasswordActivity;
 
 import rx.Subscription;
@@ -78,17 +82,30 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         }
     }
 
-
+    /**
+     * 登录前检查是否开启通知栏，如果没有开启跳转开启,已开启的跳转登录
+     */
     @Override
     public void onClickLogin() {
-        mView.showLoading("正在登录...");
-        if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_PHONE) {
-            //使用手机号码登录
-            LoginTechnician.getInstance().loginByPhoneNumber(mPhoneNumber, mPassword);
+        if (PermissionUtils.isNotificationEnabled(mContext)) {
+            mView.showLoading("正在登录...");
+            if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_PHONE) {
+                //使用手机号码登录
+                LoginTechnician.getInstance().loginByPhoneNumber(mPhoneNumber, mPassword);
+            } else {
+                //使用技师编号登录
+                LoginTechnician.getInstance().loginByTechNo(mInviteCode, mTechNo, mPassword);
+            }
         } else {
-            //使用技师编号登录
-            LoginTechnician.getInstance().loginByTechNo(mInviteCode, mTechNo, mPassword);
+            new RewardConfirmDialog(mContext, "提示", ResourceUtils.getString(R.string.notification_manager_apply), "") {
+                @Override
+                public void onConfirmClick() {
+                    PermissionUtils.toSetting(mContext);
+                    super.onConfirmClick();
+                }
+            }.show();
         }
+
     }
 
     @Override

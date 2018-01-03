@@ -21,6 +21,7 @@ import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.widget.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -268,8 +269,9 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
             ButterKnife.bind(this, view);
             this.context = context;
         }
-
+        public List<GroupTagBean> mGroupTagBeanList = new ArrayList<>();
         private void initALlGroupView(List<T> allGroups, int groupPosition) {
+
             customerTypeChildListView.removeAllViews();
             ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.leftMargin = Utils.dip2px(context, 12);
@@ -301,6 +303,19 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                     if (bean instanceof GroupTagBean) {
                         groupTagDetail.setText(((GroupTagBean) bean).description);
                     }
+//                    if (bean instanceof GroupTagBean) {
+//                        if(textView.isSelected() ){
+//                            mGroupTagBeanList.add((GroupTagBean) bean);
+//                        }else{
+//                            mGroupTagBeanList.remove(bean);
+//                        }
+//                        if(mGroupTagBeanList.size() > 0){
+//                            groupTagDetail.setText(mGroupTagBeanList.get(mGroupTagBeanList.size()-1).description);
+//                        }else{
+//                            groupTagDetail.setText(ResourceUtils.getString(R.string.group_message_recommended_classification));
+//                        }
+//
+//                    }
                 });
                 customerTypeChildListView.addView(v, lp);
             }

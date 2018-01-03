@@ -298,7 +298,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
     private View mRootView;
     private boolean isHasPk;
-    private boolean isInitNormalRanking;
 
     @Nullable
     @Override
@@ -317,7 +316,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initNearbyUser();
         showHeadView();
         //   HeartBeatTimer.getInstance().start(60, mTask);
-        initPkRanking();
         initClubInvite();
         sendDataRequest();
         return mRootView;
@@ -392,9 +390,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         loadVisitor();
         loadMomentData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);// 技师登录进入首页后,获取打招呼内容
-        loadRankingData();
+        loadPkRankingData();
+        if (!(BusinessPermissionManager.getInstance().containPermission(PermissionConstants.PK_RANKING))) {
+            loadRankingData();
+        }
         getClubInviteCount();
     }
+
 
     private void initTitleView(View view) {
         view.findViewById(R.id.toolbar).setBackgroundColor(Color.parseColor("#FF826c"));
@@ -527,11 +529,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     //新订单采取推送方式，不再定时器刷新
     public Runnable mTask = new Runnable() {
-         @Override
-         public void run() {
-             loadOrderListData();
-         }
-     };
+        @Override
+        public void run() {
+            loadOrderListData();
+        }
+    };
 
     @CheckBusinessPermission(PermissionConstants.ORDER)
     public void loadOrderListData() {
@@ -582,25 +584,20 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     /**************************
      * 排行榜无PK
      ***************************/
-    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
-    public void initRanking() {
-        mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
-        mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
-                this::initTechRankingView);
-    }
-
-    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
-    public void initPkRanking() {
-        mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
-                techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
-        );
-        isInitNormalRanking = false;
-    }
 
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void loadRankingData() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
+        mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
+                this::initTechRankingView);
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+    }
 
+    @CheckBusinessPermission(PermissionConstants.PK_RANKING)
+    public void loadPkRankingData() {
+        mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
+                techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
+        );
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
     }
 
     /**************************
@@ -1356,6 +1353,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (result.respData == null) {
             return;
         }
+        mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
         if (null != result.respData.userRanking) {
             Glide.with(mContext).load(result.respData.userRanking.avatarUrl).into(mCvStarRegister);
             mTvStarRegisterUser.setText(result.respData.userRanking.name);
@@ -1424,7 +1422,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (techPKRankingResult.statusCode == 200) {
             if (techPKRankingResult.respData.count == Constant.HAS_RUNNING_PK_GROUP) {
                 mRootView.findViewById(R.id.layout_technician_pk_ranking).setVisibility(View.VISIBLE);
-                mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.GONE);
                 PKRankingAdapter adapter;
                 if (Utils.isNotEmpty(techPKRankingResult.respData.categoryId)) {
                     adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, techPKRankingResult.respData.categoryId);
@@ -1441,8 +1438,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 isHasPk = true;
                 return;
             }
-            mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
-            mRootView.findViewById(R.id.layout_technician_pk_ranking).setVisibility(View.GONE);
+
             if (techPKRankingResult.respData.count == Constant.HAS_NONE_RUNNING_PK_GROUP) {
                 mRankingMore.setText(ResourceUtils.getString(R.string.layout_technician_ranking_check_all));
                 isHasPk = true;
@@ -1450,11 +1446,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 isHasPk = false;
                 mRankingMore.setText("");
             }
-            if (!isInitNormalRanking) {
-                isInitNormalRanking = true;
-                initRanking();
-            }
-            MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+            loadPkRankingData();
         }
 
 

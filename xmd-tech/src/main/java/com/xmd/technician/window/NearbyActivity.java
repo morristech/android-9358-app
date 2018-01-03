@@ -110,7 +110,6 @@ public class NearbyActivity extends BaseActivity {
         mCusAdapter.setCallback(new NearbyCusAdapter.OnItemCallBack() {
             @Override
             public void onBtnClick(NearbyCusInfo info, int position) {
-
                 if (HelloSettingManager.getInstance().getTemplateId() <= 3) {
                     Intent intent = new Intent(NearbyActivity.this, HelloSettingActivity.class);
                     startActivity(intent);

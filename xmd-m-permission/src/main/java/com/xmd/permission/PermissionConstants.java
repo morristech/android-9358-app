@@ -28,6 +28,7 @@ public class PermissionConstants {
     public final static String MOMENT = "moment";//动态
     public final static String NEARBY_USER = "nearby_user";//附近的人
     public final static String RANKING_TECHNICIAN = "ranking_technician";//技师排行榜
+    public final static String PK_RANKING = "pk_ranking"; //pk排行榜
 
     public final static String MESSAGE_SEND_PICTURE = "message_send_picture";//发送图片
     public final static String MESSAGE_SEND_EMOJI = "message_send_emoji";//发送表情
@@ -51,7 +52,9 @@ public class PermissionConstants {
     public final static String CONTACTS_MY_CUSTOMER = "contacts_my_customer";//拓客
 
 
-    /************管理者*********/
+    /************
+     * 管理者
+     *********/
     public final static String MG_TAB_INDEX = "index";//首页
     public final static String MG_TAB_CHAT = "chat";//消息
     public final static String MG_TAB_CUSTOMER = "custMgr";//客户

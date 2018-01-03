@@ -1227,7 +1227,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         OperateReportListItemViewHolder viewHolder = (OperateReportListItemViewHolder) holder;
         viewHolder.imgOperateNewRemark.setVisibility(operateBean.read == 0 ? View.VISIBLE : View.GONE);
         if (operateBean.type.equals("custom")) {
-            viewHolder.tvReportName.setText(String.format("%s运营报表",operateBean.name));
+            viewHolder.tvReportName.setText(operateBean.name);
         } else if(operateBean.type.equals("month")){
             viewHolder.tvReportName.setText(String.format("%s运营报表",DateUtil.getFromatDate(operateBean.startTime,"yyyy-MM")));
         }else {
@@ -1235,13 +1235,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
         viewHolder.tvReportShare.setOnClickListener(v -> mCallback.onPositiveButtonClicked(operateBean));
         viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(operateBean));
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mCallback.onLongClicked(operateBean);
-                return false;
-            }
-        });
+        viewHolder.tvReportDelete.setOnClickListener(v -> mCallback.onNegativeButtonClicked(operateBean));
     }
 
     private void bindCouponRecordListViewHolder(RecyclerView.ViewHolder holder, Object obj) {
@@ -1838,6 +1832,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView tvReportName;
         @BindView(R.id.tv_report_share)
         TextView tvReportShare;
+        @BindView(R.id.tv_report_delete)
+        TextView tvReportDelete;
         @BindView(R.id.img_operate_new_remark)
         ImageView imgOperateNewRemark;
 

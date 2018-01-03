@@ -42,15 +42,28 @@
                     android:id="@+id/tv_report_share"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="@drawable/white_background_selector"
                     android:drawableLeft="@drawable/ic_report_share"
                     android:drawablePadding="@dimen/margin_10"
                     android:gravity="center"
                     android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:text="分享"
+                    android:textColor="#666666"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/tv_report_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/white_background_selector"
+                    android:drawableLeft="@drawable/icon_bill_delete"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
                     android:paddingRight="20dp"
                     android:text="分享"
                     android:textColor="#666666"
-                    android:textSize="13sp"
-                android:background="@drawable/white_background_selector"/>
+                    android:textSize="13sp"/>
             </LinearLayout>
 
         </LinearLayout>

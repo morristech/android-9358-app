@@ -404,5 +404,6 @@
     <string name="gender">性别</string>
     <string name="native_place">籍贯</string>
     <string name="nearby_replay_alter">用户尚未回复您的打招呼，暂不能聊天</string>
+    <string name="notification_manager_apply">为保障能及时收到消息，请开启通知栏权限</string>
     
 </resources>

@@ -195,7 +195,7 @@ public class LoginActivity extends BaseActivity {
 
             ManagerAccountManager.getInstance().onLogin();
 
-            if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {
+            if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles) ||Constant.CHAIN_MANAGER_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));
                 finish();
             } else {

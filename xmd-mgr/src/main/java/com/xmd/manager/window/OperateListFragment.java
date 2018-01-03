@@ -3,9 +3,6 @@ package com.xmd.manager.window;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -122,7 +119,7 @@ public class OperateListFragment extends BaseListFragment<OperateReportBean> {
 
     @Override
     public void onDestroy() {
-        RxBus.getInstance().unsubscribe(mOperateReportListSubscription, mOperateReadResultSubscription,mOperateDeleteResultSubscription);
+        RxBus.getInstance().unsubscribe(mOperateReportListSubscription, mOperateReadResultSubscription, mOperateDeleteResultSubscription);
         super.onDestroy();
     }
 
@@ -142,15 +139,15 @@ public class OperateListFragment extends BaseListFragment<OperateReportBean> {
         intent.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
         intent.putExtra(BrowserActivity.EXTRA_URL, bean.shareUrl);
         startActivity(intent);
-        if(bean.read == 0){
+        if (bean.read == 0) {
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_REPORT_READ, String.valueOf(bean.id));
         }
 
     }
 
     @Override
-    public void onLongClicked(OperateReportBean bean) {
-        super.onLongClicked(bean);
+    public void onNegativeButtonClicked(OperateReportBean bean) {
+        super.onNegativeButtonClicked(bean);
         if (bean.type.equals(OPERATE_LIST_BY_CUSTOM_TYPE)) {
             new AlertDialogBuilder(getActivity())
                     .setTitle(ResourceUtils.getString(R.string.alert_tips_title))
@@ -159,7 +156,6 @@ public class OperateListFragment extends BaseListFragment<OperateReportBean> {
                     .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
                     .show();
         }
-
     }
 
     public void notifyDataChanged(String data) {
