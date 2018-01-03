@@ -100,6 +100,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         XmdPushManager.getInstance().init(this, "pos", CustomPushMessageListener.getInstance());
 
         if (AccountManager.getInstance().isLogin()) {
+            XmdNetwork.getInstance().setHeader("Club-Id", AccountManager.getInstance().getClubId());
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));

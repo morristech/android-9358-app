@@ -150,6 +150,7 @@ public class AccountManager {
                             setClubInfo(o);
                             callback.onSuccess(loginResult);
 
+                            XmdNetwork.getInstance().setHeader("Club-Id", getClubId());
                             // 绑定推送
                             XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);

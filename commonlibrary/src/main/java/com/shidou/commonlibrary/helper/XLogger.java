@@ -269,7 +269,7 @@ public class XLogger {
 
     private static void writeToFile(int level, String tag, String msg, Throwable tr) {
         if (mFileWriter != null) {
-            msg = DateUtils.doLong2String(System.currentTimeMillis()) + "[" + tag + "]:" + msg;
+            msg = DateUtils.doLong2String(System.currentTimeMillis(), DateUtils.DF_DEFAULT_MILLI_SECOND) + "[" + tag + "]:" + msg;
             if (tr != null) {
                 msg += '\n' + Log.getStackTraceString(tr);
             }

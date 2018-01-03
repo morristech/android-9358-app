@@ -23,6 +23,7 @@ public class DateUtils {
     private static final String WEEK_ZH = "日一二三四五六";
 
     public static final String DF_DEFAULT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DF_DEFAULT_MILLI_SECOND = "yyyy-MM-dd HH:mm:ss:SSS";
     public static final String DF_YEAR_MONTH_DAY = "yyyy-MM-dd";
     public static final String DF_DEFAULT_ZH = "yyyy年MM月dd日 HH:mm:ss";
     public static final String DF_HOUR_MIN_SEC = "HH:mm:ss";
