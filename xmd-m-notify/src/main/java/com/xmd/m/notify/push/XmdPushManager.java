@@ -190,12 +190,12 @@ public class XmdPushManager {
             @Override
             public void onCallbackSuccess(BaseBean result) {
                 bound = true;
-                XLogger.i(TAG, "bind success --- userId:" + userId + " & clientId:" + clientId);
+                XLogger.i(TAG, "bind getui success --- userId:" + userId + " & clientId:" + clientId);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "bind failed --- " + e.getLocalizedMessage());
+                XLogger.e(TAG, "bind getui failed --- " + e.getLocalizedMessage());
             }
         });
 
@@ -203,7 +203,7 @@ public class XmdPushManager {
     }
 
     private void unbind() {
-        XLogger.i(TAG, "unbind ");
+        XLogger.i(TAG, "unbind getui");
         binding = false;
         RetryPool.getInstance().removeWork(retryRunnable);
         //取消绑定操作
@@ -226,12 +226,14 @@ public class XmdPushManager {
     private List<XmdPushMessageListener> listenerList = new ArrayList<>();
 
     public void addListener(XmdPushMessageListener listener) {
+        XLogger.i(TAG, "add push listener");
         if (listener != null && !listenerList.contains(listener)) {
             listenerList.add(listener);
         }
     }
 
     public void removeListener(XmdPushMessageListener listener) {
+        XLogger.i(TAG, "remove push listener");
         listenerList.remove(listener);
     }
 

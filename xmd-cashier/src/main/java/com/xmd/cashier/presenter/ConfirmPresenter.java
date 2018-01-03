@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class ConfirmPresenter implements ConfirmContract.Presenter {
+    private static final String TAG = "ConfirmPresenter";
     private Context mContext;
     private ConfirmContract.View mView;
     private CashierManager mCashierManager = CashierManager.getInstance();
@@ -68,6 +69,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
 
     @Override
     public void onClickCancel() {
+        XLogger.i(TAG, "补收款是否取消交易？");
         mView.hideKeyboard();
         String message;
         Trade trade = mTradeManager.getCurrentTrade();
@@ -86,6 +88,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
                         mTradeManager.finishPay(mContext, new Callback0<Void>() {
                             @Override
                             public void onFinished(Void result) {
+                                XLogger.i(TAG, "补收款退出交易");
                                 dialog.dismiss();
                                 mView.finishSelf();
                             }
@@ -95,6 +98,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
                 .setPositiveButton("继续交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, "补收款继续交易");
                         dialog.dismiss();
                     }
                 })
@@ -118,6 +122,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
             });
             return;
         }
+        XLogger.i(TAG, "补收款继续支付：" + trade.currentCashier);
         switch (trade.currentCashier) {
             case AppConstants.CASHIER_TYPE_MEMBER:
                 UiNavigation.gotoMemberCashierActivity(mContext);
@@ -143,9 +148,11 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         if (!mProcessLocker.compareAndSet(false, true)) {
             return;
         }
+        XLogger.i(TAG, "补收款继续支付旺POS渠道");
         mTradeManager.posPay(mContext, money, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
+                XLogger.i(TAG, "补收款继续支付旺POS渠道支付---成功");
                 mTradeManager.finishPay(mContext, new Callback0<Void>() {
                     @Override
                     public void onFinished(Void result) {
@@ -156,7 +163,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.i("pos pay failed:" + error);
+                XLogger.e(TAG, "补收款继续支付旺POS渠道支付---失败：" + error);
                 if (!mCashierManager.isUserCancel(mTradeManager.getCurrentTrade().posPayReturn)) {
                     mView.showError("支付失败：" + error);
                 }

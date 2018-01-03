@@ -35,6 +35,7 @@ import rx.Subscription;
  */
 
 public class AccountManager {
+    private static final String TAG = "AccountManager";
     private static AccountManager mInstance = new AccountManager();
     private User mUser;
 
@@ -60,7 +61,7 @@ public class AccountManager {
         mUser.clubIconUrl = loginResult.avatarUrl;
         mUser.userId = loginResult.userId;
         LocalPersistenceManager.writeUser(mUser);
-        XLogger.i("login ok: " + mUser.toString());
+        XLogger.i(TAG, "login ok: " + mUser.toString());
     }
 
     private void setClubInfo(ClubResult clubResult) {
@@ -70,6 +71,7 @@ public class AccountManager {
             mUser.clubId = clubResult.getRespData().clubId;
             mUser.clubCreateTime = clubResult.getRespData().createTime;
             LocalPersistenceManager.writeUser(mUser);
+            XLogger.i(TAG, "set club ok: " + mUser.toString());
         }
     }
 
@@ -218,6 +220,7 @@ public class AccountManager {
 
         LocalPersistenceManager.clearClubQrcodeBytes(getClubId()); //清除二维码
         cleanUserInfo(); //清除用户信息
+        XLogger.i(TAG, "Already Logout ~~ ");
         return subscription;
     }
 }

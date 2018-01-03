@@ -20,6 +20,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "userId=" + userId + ",token=" + token + ",loginName=" + loginName + ",userName=" + userName + ",clubIconUrl:" + clubIconUrl;
+        return "userId=" + userId + ",token=" + token + ",loginName=" + loginName + ",userName=" + userName + ",clubName=" + clubName + ",clubId=" + clubId + ",clubIconUrl=" + clubIconUrl;
     }
 }

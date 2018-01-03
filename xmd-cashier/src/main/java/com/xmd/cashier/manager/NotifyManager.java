@@ -37,6 +37,7 @@ import rx.Subscription;
  */
 
 public class NotifyManager {
+    private static final String TAG = "NotifyManager";
     private IPos mPos;
 
     private NotifyManager() {
@@ -153,6 +154,7 @@ public class NotifyManager {
     }
 
     public void refreshOrderRecordNotify() {
+        XLogger.i(TAG, "获取未处理预约订单");
         Observable<OrderRecordListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderRecordListResult>() {
@@ -160,6 +162,7 @@ public class NotifyManager {
             public void onCallbackSuccess(OrderRecordListResult result) {
                 // 成功:判断列表,显示通知
                 if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
+                    XLogger.i(TAG, "获取未处理预约订单---成功:" + result.getRespData().size());
                     SPManager.getInstance().setOrderPushTag(result.getRespData().size());
                     for (OrderRecordInfo info : result.getRespData()) {
                         info.tempNo = result.getRespData().indexOf(info) + 1;
@@ -177,12 +180,13 @@ public class NotifyManager {
             @Override
             public void onCallbackError(Throwable e) {
                 e.printStackTrace();
-                XLogger.i(e.getLocalizedMessage());
+                XLogger.e(TAG, "获取未处理预约订单---失败:" + e.getLocalizedMessage());
             }
         });
     }
 
     public void refreshOnlinePayNotify() {
+        XLogger.i(TAG, "获取未处理在线买单");
         Observable<OnlinePayListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayListResult>() {
@@ -190,6 +194,7 @@ public class NotifyManager {
             public void onCallbackSuccess(OnlinePayListResult result) {
                 //成功:判断列表,显示通知
                 if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
+                    XLogger.i(TAG, "获取未处理在线买单---成功:" + result.getRespData().size());
                     SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
                     for (OnlinePayInfo info : result.getRespData()) {
                         info.tempNo = result.getRespData().indexOf(info) + 1;
@@ -207,13 +212,14 @@ public class NotifyManager {
             @Override
             public void onCallbackError(Throwable e) {
                 e.printStackTrace();
-                XLogger.i(e.getLocalizedMessage());
+                XLogger.e(TAG, "获取未处理在线买单---失败:" + e.getLocalizedMessage());
             }
         });
     }
 
     // 打印预约订单小票
     public void printOrderRecord(OrderRecordInfo info, boolean retry) {
+        XLogger.i(TAG, "printOrderRecord");
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(预约订单)");
         if (retry) {
@@ -272,6 +278,7 @@ public class NotifyManager {
 
     // 打印在线买单记录
     public void printOnlinePayRecord(OnlinePayInfo info, boolean retry, boolean keep) {
+        XLogger.i(TAG, "printOnlinePayRecord");
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
@@ -393,13 +400,12 @@ public class NotifyManager {
     }
 
     private boolean getFastPayCount() {
-        XLogger.i("getFastPayCount request");
+        XLogger.i(TAG, "获取在线买单提醒数量");
         callOnlinePay = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOnlinePayCount(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
         XmdNetwork.getInstance().requestSync(callOnlinePay, new NetworkSubscriber<OnlinePayListResult>() {
             @Override
             public void onCallbackSuccess(OnlinePayListResult result) {
-                XLogger.i("getFastPayCount success");
                 //成功:判断列表,显示通知
                 if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
                     SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
@@ -411,7 +417,6 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i("getFastPayCount error");
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultFastPay = true;
@@ -449,13 +454,12 @@ public class NotifyManager {
     }
 
     private boolean getOrderCount() {
-        XLogger.i("getOrderCount request");
+        XLogger.i(TAG, "获取预约订单提醒数量");
         callOrderRecord = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOrderRecordCount(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
         XmdNetwork.getInstance().requestSync(callOrderRecord, new NetworkSubscriber<OrderRecordListResult>() {
             @Override
             public void onCallbackSuccess(OrderRecordListResult result) {
-                XLogger.i("getOrderCount success");
                 // 成功:判断列表,显示通知
                 if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
                     SPManager.getInstance().setOrderPushTag(result.getRespData().size());
@@ -467,7 +471,6 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i("getOrderCount error");
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultOrder = true;

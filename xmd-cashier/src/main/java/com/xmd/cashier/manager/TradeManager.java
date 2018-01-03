@@ -66,6 +66,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class TradeManager {
+    private static final String TAG = "TradeManager";
     private Trade mTrade;
     private IPos mPos;
     public AtomicBoolean mInPosPay = new AtomicBoolean(false);
@@ -236,7 +237,7 @@ public class TradeManager {
     // 收银台支付
     public void posPay(Context context, final int money, final Callback<Void> callback) {
         if (!mInPosPay.compareAndSet(false, true)) {
-            callback.onError("错误，已经进入了支付界面，请重启POS！");
+            callback.onError("错误，已经进入了支付界面，但未完成支付，请重启POS！");
             return;
         }
         mTrade.newCashierTradeNo();
@@ -259,6 +260,7 @@ public class TradeManager {
                     } else {
                         mTrade.posPayResult = AppConstants.PAY_RESULT_ERROR;
                     }
+                    XLogger.e(TAG, error);
                     callback.onError(error);
                 }
             }
@@ -370,7 +372,7 @@ public class TradeManager {
             public void onCallbackSuccess(StringResult result) {
                 String content = result.getRespData();
                 if (!TextUtils.isEmpty(content)) {
-                    XLogger.d("getClubQRCodeSync content:" + content);
+                    XLogger.i(TAG, "getClubQRCodeSync content:" + content);
                 }
                 Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(content);
                 XmdNetwork.getInstance().requestSync(callGetBytes, new Subscriber<ResponseBody>() {
@@ -381,7 +383,7 @@ public class TradeManager {
 
                     @Override
                     public void onError(Throwable e) {
-                        XLogger.d("getClubQRCodeBytes error:" + e.getLocalizedMessage());
+                        XLogger.i(TAG, "getClubQRCodeBytes error:" + e.getLocalizedMessage());
                     }
 
                     @Override
@@ -400,14 +402,14 @@ public class TradeManager {
                                     cc.data = clubQrcodeBytes;
                                     LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
                                 } else {
-                                    XLogger.e("getClubQRCodeBytes : bitmap.compress failed!");
+                                    XLogger.i(TAG, "getClubQRCodeBytes : bitmap.compress failed!");
                                 }
                                 bitmap.recycle();
                             } else {
-                                XLogger.d("getClubQRCodeBytes : can not get qrcode !");
+                                XLogger.i(TAG, "getClubQRCodeBytes : can not get qrcode !");
                             }
                         } catch (IOException e) {
-                            XLogger.d("getClubQRCodeBytes exception:" + e.getLocalizedMessage());
+                            XLogger.i(TAG, "getClubQRCodeBytes exception:" + e.getLocalizedMessage());
                         }
                     }
                 });
@@ -415,7 +417,7 @@ public class TradeManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d("getClubQRCodeURL error:" + e.getLocalizedMessage());
+                XLogger.i("getClubQRCodeURL error:" + e.getLocalizedMessage());
             }
         });
         return clubQrcodeBytes;
@@ -432,7 +434,7 @@ public class TradeManager {
             public void onCallbackSuccess(StringResult result) {
                 String content = result.getRespData();
                 if (!TextUtils.isEmpty(content)) {
-                    XLogger.d("getTradeQRCodeSync content:" + content);
+                    XLogger.i(TAG, "getTradeQRCodeSync content:" + content);
                     try {
                         Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
                         if (bitmap != null) {
@@ -440,23 +442,23 @@ public class TradeManager {
                             if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
                                 tradeQrcodeBytes = bos.toByteArray();
                             } else {
-                                XLogger.d("getTradeQrcode--bitmap compress failed");
+                                XLogger.i(TAG, "getTradeQrcode--bitmap compress failed");
                             }
                             bitmap.recycle();
                         } else {
-                            XLogger.d("getTradeQrcode--Qrcode encode failed");
+                            XLogger.i(TAG, "getTradeQrcode--Qrcode encode failed");
                         }
                     } catch (WriterException e) {
-                        XLogger.d("getTradeQrcode--Qrcode encode exception:" + e.getLocalizedMessage());
+                        XLogger.i(TAG, "getTradeQrcode--Qrcode encode exception:" + e.getLocalizedMessage());
                     }
                 } else {
-                    XLogger.d("getTradeQrcode--request success && isEmpty");
+                    XLogger.i(TAG, "getTradeQrcode--request success && isEmpty");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d("getTradeQrcode--request error:" + e.getLocalizedMessage());
+                XLogger.i(TAG, "getTradeQrcode--request error:" + e.getLocalizedMessage());
             }
         });
         return tradeQrcodeBytes;
@@ -860,11 +862,11 @@ public class TradeManager {
             }
             mTrade.setVerificationMoney(total);
             mTrade.setVerificationCount(selectCount);
-            XLogger.i("calculateVerificationValue:" + total);
+            XLogger.d("calculateVerificationValue:" + total);
         } else {
             mTrade.setVerificationSuccessfulMoney(total);
             mTrade.setVerificationNoUseTreatMoney(noUseTreatMoney);
-            XLogger.i("calculateVerificationSuccessValue:" + total);
+            XLogger.d("calculateVerificationSuccessValue:" + total);
         }
     }
 
@@ -957,6 +959,7 @@ public class TradeManager {
     /*********************************************打印相关******************************************/
     // 会员消费
     public void printMemberPay(boolean keep, Callback<?> callback) {
+        XLogger.i(TAG, "printMemberPay");
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
@@ -1069,6 +1072,7 @@ public class TradeManager {
 
     // 小摩豆买单
     public void printOnlinePay(boolean keep, Callback<?> callback) {
+        XLogger.i(TAG, "printOnlinePay");
         List<TempUser> contacts = getTempContacts();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
@@ -1177,6 +1181,7 @@ public class TradeManager {
 
     // Pos支付
     public void printPosPay(boolean keep, Callback<?> callback) {
+        XLogger.i(TAG, "printPosPay");
         List<TempUser> contacts = getTempContacts();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");

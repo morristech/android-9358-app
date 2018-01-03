@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
@@ -20,6 +21,7 @@ import com.xmd.cashier.widget.CustomAlertDialogBuilder;
  */
 
 public class ScanPayResultActivity extends BaseActivity implements ScanPayResultContract.View {
+    private static final String TAG = "ScanPayResultPresenter";
     private ScanPayResultContract.Presenter mPresenter;
     private TextView mPayAmount;
     private TextView mPayUserName;
@@ -34,6 +36,7 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
         mPresenter = new ScanPayResultPresenter(this, this);
         mInfo = (OnlinePayInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_ONLINE_PAY_INFO);
         if (mInfo == null) {
+            XLogger.e(TAG, " exit : 支付中出现异常，请在买单列表中确认支付状态");
             showError("支付中出现异常，请在买单列表中确认支付状态");
             return;
         }
@@ -52,6 +55,7 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
         mPayConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                XLogger.i(TAG, "补收款微信支付宝支付成功确认(打印小票)");
                 mPresenter.onConfirm();
             }
         });
@@ -63,6 +67,12 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
         if (mPresenter != null) {
             mPresenter.onDestroy();
         }
+    }
+
+    @Override
+    public boolean onKeyEventBack() {
+        XLogger.i(TAG, "补收款微信支付宝支付成功回退(无小票)");
+        return super.onKeyEventBack();
     }
 
     @Override

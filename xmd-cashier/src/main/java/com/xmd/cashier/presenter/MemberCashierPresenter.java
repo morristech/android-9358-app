@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
@@ -25,6 +26,7 @@ import rx.Subscription;
  */
 
 public class MemberCashierPresenter implements MemberCashierContract.Presenter {
+    private static final String TAG = "MemberCashierPresenter";
     private Context mContext;
     private MemberCashierContract.View mView;
 
@@ -162,9 +164,11 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             mMemberPaySubscription.unsubscribe();
         }
         mView.showLoading();
+        XLogger.i(TAG, "补收款发起会员支付");
         mMemberPaySubscription = TradeManager.getInstance().memberPay(memberPayMethod, password, new Callback<MemberRecordResult>() {
             @Override
             public void onSuccess(MemberRecordResult o) {
+                XLogger.i(TAG, "补收款发起会员支付---成功");
                 mView.hideLoading();
                 mView.showToast("会员支付成功，正在出票...");
                 TradeManager.getInstance().getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
@@ -174,6 +178,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, "补收款发起会员支付---失败:" + error);
                 mView.hideLoading();
                 mView.showError("会员支付失败:" + error);
             }

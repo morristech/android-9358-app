@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerMethodContract;
@@ -18,6 +19,8 @@ import com.xmd.cashier.widget.CustomAlertDialogBuilder;
  */
 
 public class InnerMethodPresenter implements InnerMethodContract.Presenter {
+    private static final String TAG = "InnerMethodPresenter";
+
     private TradeManager mTradeManager;
     private Context mContext;
     private InnerMethodContract.View mView;
@@ -166,6 +169,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
     @Override
     public void processData() {
         mView.showStepView();       //显示StepView
+        XLogger.i(TAG, "内网订单数据源:" + mView.returnSource());
         switch (mView.returnSource()) {
             case AppConstants.INNER_METHOD_SOURCE_NORMAL:   //如果是正常查找
                 mView.showOrderList(InnerManager.getInstance().getInnerOrderInfos());   //显示列表

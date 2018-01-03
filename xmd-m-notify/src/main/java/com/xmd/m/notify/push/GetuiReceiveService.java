@@ -35,7 +35,7 @@ public class GetuiReceiveService extends GTIntentService {
         byte[] payload = gtTransmitMessage.getPayload();
         if (payload != null) {
             final String data = new String(payload);
-            XLogger.d(XmdPushModule.TAG, "onReceiveMessageData:" + data);
+            XLogger.i(XmdPushModule.TAG, "onReceiveMessageData:" + data);
             if (TextUtils.isEmpty(data)) {
                 return;
             }

@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.activity.InnerMethodActivity;
@@ -65,6 +66,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class CustomService extends Service {
+    private static final String TAG = "CustomService";
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mWakeLock;
 
@@ -74,6 +76,7 @@ public class CustomService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             String type = intent.getStringExtra(AppConstants.EXTRA_NOTIFY_TYPE);
+            XLogger.i(TAG, "Service onReceive Type:" + type);
             switch (type) {
                 case AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD:
                     showOrderRecordNotify((List<OrderRecordInfo>) intent.getSerializableExtra(AppConstants.EXTRA_NOTIFY_DATA));
@@ -346,12 +349,14 @@ public class CustomService extends Service {
     // 语音播放
     private void textToSound(String text) {
         if (!TextUtils.isEmpty(text)) {
+            XLogger.i(TAG, "textToSound");
             PosFactory.getCurrentCashier().textToSound(text);
         }
     }
 
     // 点亮屏幕
     private void wakeupScreen() {
+        XLogger.i(TAG, "wakeupScreen");
         PowerManager.WakeLock wakeLock;
         PowerManager pm = (PowerManager) MainApplication.getInstance().getApplicationContext().getSystemService(POWER_SERVICE);
         if (!pm.isScreenOn()) {
@@ -364,12 +369,15 @@ public class CustomService extends Service {
     // 显示预约订单弹框
     public void showOrderRecordNotify(List<OrderRecordInfo> list) {
         if (isShow) {
+            XLogger.i(TAG, "showOrderRecordNotify already show");
             return;
         }
         refreshOrderRecordNotify(false);
         mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_custom_notify, null);
         mWindowManager.addView(mLayout, mLayoutParams);
         isShow = true;
+        XLogger.i(TAG, "showOrderRecordNotify is show");
+
         mOrderRecordHandler.post(notifyOrderRecord);
         RecyclerView rv = (RecyclerView) mLayout.findViewById(R.id.rv_custom_notify);
         final OrderRecordNotifyAdapter adapter = new OrderRecordNotifyAdapter();
@@ -479,12 +487,14 @@ public class CustomService extends Service {
     // 显示在线买单弹框
     public void showOnlinePayNotify(List<OnlinePayInfo> list) {
         if (isShow) {
+            XLogger.i(TAG, "showOnlinePayNotify already show");
             return;
         }
         refreshOnlinePayNotify(false);
         mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_custom_notify, null);
         mWindowManager.addView(mLayout, mLayoutParams);
         isShow = true;
+        XLogger.i(TAG, "showOnlinePayNotify is show");
         mOnlinePayHandler.post(notifyOnlinePay);
         RecyclerView rv = (RecyclerView) mLayout.findViewById(R.id.rv_custom_notify);
         final OnlinePayNotifyAdapter adapter = new OnlinePayNotifyAdapter();
@@ -618,15 +628,18 @@ public class CustomService extends Service {
         rv.setAdapter(adapter);
     }
 
+    // 显示内网订单弹框
     public void showInnerOrderNotify(final InnerRecordInfo recordInfo) {
         textToSound("您有一笔新结账订单待处理");
         wakeupScreen();
         if (isShow) {
+            XLogger.i(TAG, "showInnerOrderNotify already show");
             return;
         }
         mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_inner_notify, null);
         mWindowManager.addView(mLayout, mLayoutParams);
         isShow = true;
+        XLogger.i(TAG, "showInnerOrderNotify is show");
 
         ImageView mCloseImg = (ImageView) mLayout.findViewById(R.id.notify_inner_off);
         RecyclerView mInnerList = (RecyclerView) mLayout.findViewById(R.id.item_inner_list);
@@ -642,6 +655,7 @@ public class CustomService extends Service {
         mCloseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                XLogger.i(TAG, "showInnerOrderNotify closed");
                 hide();
             }
         });
@@ -650,6 +664,7 @@ public class CustomService extends Service {
         mPayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                XLogger.i(TAG, "showInnerOrderNotify go to pay");
                 hide();
                 InnerManager.getInstance().initTradeByRecord(recordInfo);
                 if (recordInfo.paidAmount > 0) {

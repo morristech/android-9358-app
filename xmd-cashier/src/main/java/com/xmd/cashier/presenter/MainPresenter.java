@@ -49,6 +49,8 @@ import rx.Subscription;
  */
 
 public class MainPresenter implements MainContract.Presenter {
+    private static final String TAG = "MainPresenter";
+
     private final static int REQUEST_CODE_SCAN = 1;
 
     private Context mContext;
@@ -94,6 +96,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onClickLogout() {
         // 退出登录
+        XLogger.i(TAG, "收银员登出操作");
         CustomService.refreshOnlinePayNotify(false);
         CustomService.refreshOrderRecordNotify(false);
         VerifyManager.getInstance().clearVerifyList();
@@ -119,11 +122,13 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onClickSetting() {
+        XLogger.i(TAG, "访问收银台系统设置");
         UiNavigation.gotoSettingActivity(mContext);
     }
 
     @Override
     public void onClickVersion() {
+        XLogger.i(TAG, "访问收银台配置信息");
         UiNavigation.gotoConfigurationActivity(mContext);
     }
 
@@ -174,7 +179,7 @@ public class MainPresenter implements MainContract.Presenter {
                 // 二维码扫描
                 if (data != null && data.getAction().equals(Intents.Scan.ACTION)) {
                     String result = data.getStringExtra(Intents.Scan.RESULT);
-                    XLogger.e(result);
+                    XLogger.i(TAG, "首页核销二维码数据：" + result);
                     if (TextUtils.isEmpty(result)) {
                         mView.showToast("二维码扫描失败");
                     }
@@ -218,6 +223,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 获取核销类型
     private void getVerifyType(final String code) {
+        XLogger.i(TAG, "首页查询核销类型：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -230,6 +236,7 @@ public class MainPresenter implements MainContract.Presenter {
         mGetVerifyTypeSubscription = VerifyManager.getInstance().getVerifyType(code, new Callback<StringResult>() {
             @Override
             public void onSuccess(StringResult o) {
+                XLogger.i(TAG, "首页查询核销类型---成功：" + o.getRespData());
                 switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:   //手机号
                         mView.hideLoading();
@@ -260,6 +267,7 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, "首页查询核销类型---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -268,6 +276,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询优惠券
     private void getNormalCouponInfo(String code) {
+        XLogger.i(TAG, "首页查询优惠券：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -296,6 +305,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询预约订单
     private void getOrderInfo(String code) {
+        XLogger.i(TAG, "首页查询付费预约：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -325,6 +335,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询项目券
     private void getServiceCouponInfo(String code) {
+        XLogger.i(TAG, "首页查询项目券：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -354,6 +365,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询奖品
     private void getPrizeInfo(String code) {
+        XLogger.i(TAG, "首页查询奖品：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -381,6 +393,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询通用核销和请客
     private void getCommonVerifyInfo(String code) {
+        XLogger.i(TAG, "首页查询通用核销和请客：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -467,6 +480,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onError(String error) {
                 mView.hideLoading();
+                XLogger.e(TAG, "初始化支付环境失败: " + error);
                 new CustomAlertDialogBuilder(mContext)
                         .setMessage("初始化支付环境错误：" + error + "\n请联系开发人员或者重新打开应用！")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {

@@ -53,6 +53,7 @@ import rx.Subscription;
  */
 
 public class InnerManager {
+    private static final String TAG = "InnerManager";
     private IPos mPos;
 
     private InnerManager() {
@@ -66,6 +67,7 @@ public class InnerManager {
     }
 
     public void initTradeByRecord(InnerRecordInfo recordInfo) {
+        XLogger.i(TAG, "===== initTradeByRecord =====");
         TradeManager.getInstance().newTrade();
         Trade trade = TradeManager.getInstance().getCurrentTrade();
         trade.innerRecordInfo = recordInfo;
@@ -82,6 +84,7 @@ public class InnerManager {
     }
 
     public void initTradeBySelect() {
+        XLogger.i(TAG, "===== initTradeBySelect =====");
         TradeManager.getInstance().newTrade();
         Trade trade = TradeManager.getInstance().getCurrentTrade();
         trade.setOriginMoney(getOrderAmount());
@@ -241,15 +244,18 @@ public class InnerManager {
     }
 
     public void getClubWorkTime() {
+        XLogger.i(TAG, "获取会所内网营业时间");
         Observable<WorkTimeResult> observable = XmdNetwork.getInstance().getService(SpaService.class).getWorkTime(AccountManager.getInstance().getToken());
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<WorkTimeResult>() {
             @Override
             public void onCallbackSuccess(WorkTimeResult result) {
+                XLogger.i(TAG, "获取会所内网营业时间---成功：" + result.getRespData().startTimeStr);
                 startTime = result.getRespData().startTimeStr;
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, "获取会所内网营业时间---失败：" + e.getLocalizedMessage());
                 startTime = AppConstants.STATISTICS_DEFAULT_TIME;
             }
         });
@@ -292,12 +298,14 @@ public class InnerManager {
     }
 
     public boolean getInnerSwitchConfig() {
+        XLogger.i(TAG, "获取会所内网开关配置信息");
         mCallInnerSwitch = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerSwitch(AccountManager.getInstance().getToken(), AppConstants.INNER_SWITCH_CODE);
         XmdNetwork.getInstance().requestSync(mCallInnerSwitch, new NetworkSubscriber<InnerSwitchResult>() {
             @Override
             public void onCallbackSuccess(InnerSwitchResult result) {
                 SwitchInfo switchInfo = result.getRespData();
+                XLogger.i(TAG, "获取会所内网开关配置---成功：" + switchInfo.status);
                 if (AppConstants.APP_REQUEST_YES.equals(switchInfo.status)) {
                     mInnerSwitch = true;
                 } else {
@@ -309,7 +317,7 @@ public class InnerManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i("getInnerSwitchConfig error :" + e.getLocalizedMessage());
+                XLogger.e(TAG, "获取会所内网开关配置---失败：" + e.getLocalizedMessage());
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     resultInnerSwitch = true;
                 } else {
@@ -372,6 +380,7 @@ public class InnerManager {
     }
 
     public boolean getInnerChannelList() {
+        XLogger.i(TAG, "获取会所内网自定义支付方式");
         callInnerChannel = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerChannelList(AccountManager.getInstance().getToken());
         XmdNetwork.getInstance().requestSync(callInnerChannel, new NetworkSubscriber<InnerChannelListResult>() {
@@ -383,7 +392,7 @@ public class InnerManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i("getInnerChannelList error :" + e.getLocalizedMessage());
+                XLogger.e(TAG, "获取会所内网自定义支付方式---失败 :" + e.getLocalizedMessage());
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultInnerChannel = true;
@@ -413,6 +422,7 @@ public class InnerManager {
     }
 
     public void printInnerRecordInfo(InnerRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
+        XLogger.i(TAG, "printInnerRecordInfo");
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
@@ -563,7 +573,7 @@ public class InnerManager {
             public void onCallbackSuccess(StringResult result) {
                 String content = result.getRespData();
                 if (!TextUtils.isEmpty(content)) {
-                    XLogger.d("getInnerCodeBytes content:" + content);
+                    XLogger.i(TAG, "getInnerCodeBytes content:" + content);
                     try {
                         Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
                         if (bitmap != null) {
@@ -571,23 +581,23 @@ public class InnerManager {
                             if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
                                 innnerQrcodeBytes = bos.toByteArray();
                             } else {
-                                XLogger.d("getInnerCodeBytes--bitmap compress failed");
+                                XLogger.i(TAG, "getInnerCodeBytes--bitmap compress failed");
                             }
                             bitmap.recycle();
                         } else {
-                            XLogger.d("getInnerCodeBytes--Qrcode encode failed");
+                            XLogger.i(TAG, "getInnerCodeBytes--Qrcode encode failed");
                         }
                     } catch (WriterException e) {
-                        XLogger.d("getInnerCodeBytes--Qrcode encode exception:" + e.getLocalizedMessage());
+                        XLogger.i(TAG, "getInnerCodeBytes--Qrcode encode exception:" + e.getLocalizedMessage());
                     }
                 } else {
-                    XLogger.d("getInnerCodeBytes--request success && isEmpty");
+                    XLogger.i(TAG, "getInnerCodeBytes--request success && isEmpty");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d("getInnerCodeBytes--request error:" + e.getLocalizedMessage());
+                XLogger.i(TAG, "getInnerCodeBytes--request error:" + e.getLocalizedMessage());
             }
         });
 

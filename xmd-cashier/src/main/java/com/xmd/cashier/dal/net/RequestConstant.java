@@ -32,6 +32,9 @@ public class RequestConstant {
 
     // 升级
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";
+    // 上传日志
+    public static final String URL_APP_UPLOAD_LOG = "/file-upload";
+
     // 交易流水
     public static final String URL_GET_BILL_LIST = SPA_SERVICE_BASE + "/v2/manager/pos/deals";
 

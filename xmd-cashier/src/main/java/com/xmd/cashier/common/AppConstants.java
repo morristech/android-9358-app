@@ -216,6 +216,7 @@ public class AppConstants {
     public static final String PUSH_TAG_FASTPAY_PRINT = "fast_pay_print";   //买单记录打印
     public static final String PUSH_TAG_CLUB_ORDER_TO_PAY = "club_order_to_pay";
     public static final String PUSH_TAG_FAST_PAY_SUCCESS = "fast_pay_success";
+    public static final String PUSH_TAG_UPLOAD_LOG = "upload_log";  //上传日志
 
     public static final String PAY_CHANNEL_WX = "wx";
     public static final String PAY_CHANNEL_ALI = "ali";

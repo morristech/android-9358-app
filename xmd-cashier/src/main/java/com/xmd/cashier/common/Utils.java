@@ -181,6 +181,14 @@ public class Utils {
         return false;
     }
 
+    public static boolean isWifiNetwork(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo != null && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
+    }
 
     public static String generateTradeNumber() {
         return DeviceInfoUtils.getDeviceSN() + System.currentTimeMillis() / 1000;

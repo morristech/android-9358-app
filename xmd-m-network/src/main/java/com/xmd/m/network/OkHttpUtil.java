@@ -6,6 +6,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +19,14 @@ import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSource;
 
 /**
  * Created by heyangya on 16-3-7.
@@ -105,14 +110,19 @@ public class OkHttpUtil {
                 }
 
                 if (mLog) {
-                    XLogger.i(TAG, requestToString(request));
+                    XLogger.i(TAG, "---> " + requestToString(request));
                 }
 
+                long startNs = System.nanoTime();
                 Response response = chain.proceed(request);
+                long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 
                 if (mLog) {
-                    XLogger.d(TAG, "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
+                    XLogger.i(TAG, "<---"
+                            + " (" + tookMs + "ms) " +
+                            "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
                             + response.request().method() + "-RESPONSE:" + response.toString());
+//                            + "\n" + responseToString(response));
                 }
 
                 return response;
@@ -157,12 +167,35 @@ public class OkHttpUtil {
                     result += body.name(i) + "=" + body.value(i) + "&";
                 }
                 //    result = result.substring(0, result.length() - 1) + "'";
-                result = result.substring(0, result.length() - 1) ;
+                result = result.substring(0, result.length() - 1);
             } else {
                 result += "----un form data!";
             }
         }
         return result;
+    }
+
+    private String responseToString(Response response) {
+        try {
+            ResponseBody responseBody = response.body();
+            long contentLength = responseBody.contentLength();
+            BufferedSource source = responseBody.source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            Buffer buffer = source.buffer();
+            Charset charset = Charset.forName("UTF-8");
+            MediaType contentType = responseBody.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(Charset.forName("UTF-8"));
+            }
+
+            if (contentLength != 0) {
+                return buffer.clone().readString(charset);
+            } else {
+                return "response Empty";
+            }
+        } catch (Exception e) {
+            return "response IOException";
+        }
     }
 
     public void setRequestPreprocess(RequestPreprocess requestPreprocess) {

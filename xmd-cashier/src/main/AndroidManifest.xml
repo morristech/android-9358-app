@@ -28,6 +28,12 @@
             android:name="UMENG_CHANNEL"
             android:value="${umengChannelName}" />
 
+        <receiver android:name=".manager.CustomBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask"

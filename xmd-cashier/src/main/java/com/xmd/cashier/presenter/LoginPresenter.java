@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.BuildConfig;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.Utils;
@@ -21,6 +22,7 @@ import rx.Subscription;
  */
 
 public class LoginPresenter implements LoginContract.Presenter {
+    private final static String TAG = "LoginPresenter";
     private Context mContext;
     private LoginContract.View mView;
     private Subscription mLoginSubscription;
@@ -48,9 +50,11 @@ public class LoginPresenter implements LoginContract.Presenter {
         if (mLoginSubscription != null) {
             mLoginSubscription.unsubscribe();
         }
+        XLogger.i(TAG, "收银员登录操作");
         mLoginSubscription = AccountManager.getInstance().login(username, password, new Callback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult o) {
+                XLogger.i(TAG, "登录成功");
                 mView.cleanPassword();
                 mView.onLoginEnd(null);
                 UiNavigation.gotoMainActivity(mContext);
@@ -59,6 +63,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, "登录失败：" + error);
                 mView.onLoginEnd(error);
             }
         });

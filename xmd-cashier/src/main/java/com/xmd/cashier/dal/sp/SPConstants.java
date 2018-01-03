@@ -21,4 +21,6 @@ public class SPConstants {
     public static String STATISTICS_START_TIME = "66d381965d0c2f37a070cef5f8657ee2";    //统计开始时间
     public static String STATISTICS_END_TIME = "cb8157df0c78fd7a0c31575d83b008e1";      //统计截止时间
     public static String STATISTICS_FIRST_SETTING = "074f1a261d36515cd2117f812ed2852a"; //是否设置过时间
+
+    public static String LAST_UPLOAD_TIME = "81b4446f2465af17a01c611e8b636622";     //最近一次上传日志的时间
 }

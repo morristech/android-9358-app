@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.CashierContract;
@@ -27,6 +28,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 
 public class CashierActivity extends BaseActivity implements CashierContract.View {
+    private static final String TAG = "CashierPresenter";
     private CashierContract.Presenter mPresenter;
     private CustomMoneyEditText mOriginCustomMoneyEditText;
     private CustomMoneyEditText mCouponCustomMoneyEditText;
@@ -62,6 +64,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
                     dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
                         @Override
                         public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
+                            XLogger.i(TAG, "补收银支付方式：" + item);
                             switch (item) {
                                 case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
                                     mPresenter.onClickXMDOnlinePay();

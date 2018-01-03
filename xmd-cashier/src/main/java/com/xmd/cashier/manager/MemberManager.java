@@ -45,6 +45,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class MemberManager {
+    private static final String TAG = "MemberManager";
     private IPos mPos;
     private MemberCardProcess mCardProcess;
     private MemberRechargeProcess mRechargeProcess;
@@ -107,7 +108,7 @@ public class MemberManager {
         mRetryGetMemberSetting = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
-                return getFastPayCount();
+                return getSetting();
             }
         });
         RetryPool.getInstance().postWork(mRetryGetMemberSetting);
@@ -123,7 +124,8 @@ public class MemberManager {
         }
     }
 
-    private boolean getFastPayCount() {
+    private boolean getSetting() {
+        XLogger.i(TAG, "获取会所会员配置信息");
         callMemberSetting = XmdNetwork.getInstance().getService(SpaService.class)
                 .getMemberSettingConfig(AccountManager.getInstance().getToken());
         XmdNetwork.getInstance().requestSync(callMemberSetting, new NetworkSubscriber<MemberSettingResult>() {
@@ -140,7 +142,7 @@ public class MemberManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i("getMemberSetting error :" + e.getLocalizedMessage());
+                XLogger.e("获取会所会员配置信息---失败 :" + e.getLocalizedMessage());
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultMemberSetting = true;
@@ -477,6 +479,7 @@ public class MemberManager {
     }
 
     public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
+        XLogger.i(TAG, "printMemberRecordInfo");
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));

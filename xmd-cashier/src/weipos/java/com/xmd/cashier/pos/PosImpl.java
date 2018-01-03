@@ -356,7 +356,7 @@ public class PosImpl implements IPos {
     @Override
     public String getPosIdentifierNo() {
         String deviceInfo = WeiposImpl.as().getDeviceInfo();
-        XLogger.d("PosIdentifierNo:" + deviceInfo);
+        XLogger.i("POS DEVICE INFO: " + deviceInfo);
         try {
             JSONObject object = new JSONObject(deviceInfo);
             return object.getString("en").replace(" ", "");

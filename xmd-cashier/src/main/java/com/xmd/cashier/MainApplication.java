@@ -1,8 +1,11 @@
 package com.xmd.cashier;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Process;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
@@ -24,6 +27,7 @@ import com.xmd.cashier.manager.CustomPushMessageListener;
 import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
+import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
@@ -32,6 +36,7 @@ import com.xmd.m.notify.push.XmdPushManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +44,7 @@ import java.util.Set;
 import okhttp3.Request;
 
 public class MainApplication extends Application implements CrashHandler.Callback {
+    private static final String TAG = "MainApplication";
     private final Object mActivityListObject = new Object();
     private ArrayList<BaseActivity> mActivityList = new ArrayList<>();
     private static MainApplication instance;
@@ -59,8 +65,12 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             e.printStackTrace();
         }
 
-        XLogger.init(0, null);
+        XLogger.init(5, getFilesDir().getPath() + File.separator + "logs"); // /data/data/com.xmd.cashier/files
+//        XLogger.init(0, null);
+        XLogger.setWriteFileLevel(XLogger.LEVEL_INFO);
         XLogger.setGloableTag("9358");
+        printBaseInfo();
+
         LocalPersistenceManager.init(this);
         DBManager.init(this);
         SPManager.getInstance().init(getSharedPreferences("9358", MODE_PRIVATE));
@@ -101,8 +111,17 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             InnerManager.getInstance().getClubWorkTime();
         }
 
+        MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+
         // 开启服务
         CustomService.start();
+    }
+
+    private void printBaseInfo() {
+        XLogger.i(TAG, "==============Cashier Log================");
+        XLogger.i(TAG, "APP VERSION CODE: " + Utils.getAppVersionCode());
+        XLogger.i(TAG, "APP VERSION NAME: " + Utils.getAppVersionName());
+        XLogger.i(TAG, "=========================================");
     }
 
 

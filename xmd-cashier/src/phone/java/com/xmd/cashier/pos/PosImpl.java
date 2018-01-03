@@ -2,6 +2,7 @@ package com.xmd.cashier.pos;
 
 import android.content.Context;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.cashier.IPos;
@@ -153,6 +154,7 @@ public class PosImpl implements IPos {
 
     @Override
     public String getPosIdentifierNo() {
+        XLogger.i("设备信息(DeviceId):" + DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext()));
         return DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext());
     }
 

@@ -9,7 +9,18 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_config"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingLeft="@dimen/activity_little_margin"
         android:paddingRight="@dimen/activity_little_margin" />
+
+    <Button
+        android:id="@+id/btn_upload"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/activity_small_margin"
+        android:background="@drawable/state_btn_normal"
+        android:text="上传日志"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/font_size_16" />
 </LinearLayout>

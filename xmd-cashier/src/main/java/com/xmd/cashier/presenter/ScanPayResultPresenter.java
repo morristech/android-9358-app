@@ -3,7 +3,6 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.ScanPayResultContract;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;

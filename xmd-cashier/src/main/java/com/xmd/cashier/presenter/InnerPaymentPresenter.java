@@ -34,6 +34,7 @@ import rx.Subscription;
  */
 
 public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
+    private static final String TAG = "InnerPaymentPresenter";
     private Context mContext;
     private InnerPaymentContract.View mView;
     private TradeManager mTradeManager;
@@ -68,11 +69,13 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     }
 
     private boolean checkPaymentStatus() {
+        XLogger.i(TAG, "内网订单微信支付宝支付查询订单状态");
         getPaymentStatus = XmdNetwork.getInstance().getService(SpaService.class)
                 .checkInnerSubPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId, mTradeManager.getCurrentTrade().subPayOrderId);
         XmdNetwork.getInstance().requestSync(getPaymentStatus, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
+                XLogger.i(TAG, "内网订单微信支付宝支付查询订单状态---成功:" + result.getRespData());
                 if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
                     // 支付成功
                     resultPaymentInfo = true;
@@ -87,7 +90,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e("getInnerPaymentInfo" + e.getLocalizedMessage());
+                XLogger.e(TAG, "内网订单微信支付宝支付查询订单状态---失败:" + e.getLocalizedMessage());
                 resultPaymentInfo = false;
             }
         });
@@ -104,6 +107,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     @Override
     public void onCreate() {
         mTradeManager = TradeManager.getInstance();
+        XLogger.i(TAG, "内网订单支付方式:" + mTradeManager.getCurrentTrade().currentCashier);
 //        mView.setOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney()));
 //        mView.setDiscount(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()
 //                + mTradeManager.getCurrentTrade().getAlreadyDiscountMoney()
@@ -113,6 +117,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
                 mView.initScanStub();
                 mView.setScanPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
                 if (TextUtils.isEmpty(mTradeManager.getCurrentTrade().payUrl)) {
+                    XLogger.i(TAG, "内网订单微信支付宝支付获取二维码失败");
                     mView.showToast("获取二维码失败");
                 } else {
                     Bitmap bitmap;
@@ -123,8 +128,10 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
                     }
                     if (bitmap == null) {
                         // 解析失败
+                        XLogger.i(TAG, "内网订单微信支付宝支付二维码解析失败");
                         mView.showToast("二维码解析失败");
                     } else {
+                        XLogger.i(TAG, "内网订单微信支付宝支付展示二维码");
                         mView.setQrcode(bitmap);
                         startGetPaymentInfo();
                     }
@@ -208,18 +215,21 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
 
     @Override
     public void onEventBack() {
+        XLogger.i(TAG, "内网订单中途取消交易?");
         final Trade trade = mTradeManager.getCurrentTrade();
         new CustomAlertDialogBuilder(mContext)
                 .setMessage("确认退出此次交易?")
                 .setPositiveButton("继续交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, "内网订单选择继续交易");
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("退出交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, "内网订单选择退出交易");
                         dialog.dismiss();
                         trade.tradeStatus = AppConstants.TRADE_STATUS_CANCEL;
                         UiNavigation.gotoInnerResultActivity(mContext);
@@ -231,6 +241,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     }
 
     private void doCallBack() {
+        XLogger.i(TAG, "内网订单支付标记支付结果");
         mView.showLoading();
         if (mDoPayCallBackSubscription != null) {
             mDoPayCallBackSubscription.unsubscribe();
@@ -239,6 +250,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
         mDoPayCallBackSubscription = mTradeManager.callbackInnerBatch(trade.payOrderId, trade.subPayOrderId, String.valueOf(trade.getRealPayMoney()), trade.currentCashierType, trade.memberId, null, new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
+                XLogger.i(TAG, "内网订单支付标记支付结果---成功");
                 mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                 UiNavigation.gotoInnerResultActivity(mContext);
@@ -247,6 +259,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, "内网订单支付标记支付结果---失败:" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }

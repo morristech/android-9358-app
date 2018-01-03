@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.Utils;
@@ -19,6 +20,7 @@ import rx.Subscription;
  */
 
 public class CashPayPresenter implements CashPayContract.Presenter {
+    private static final String TAG = "CashPayPresenter";
     private Context mContext;
     private CashPayContract.View mView;
     private Subscription mCashPaySubscription;
@@ -58,9 +60,11 @@ public class CashPayPresenter implements CashPayContract.Presenter {
         }
         mView.disableCashBtn();
         mView.showLoading();
+        XLogger.i(TAG, "补收款发起现金支付");
         mCashPaySubscription = TradeManager.getInstance().cashPay(mView.getAmount(), new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
+                XLogger.i(TAG, "补收款发起现金支付---成功");
                 mView.hideLoading();
                 mView.showCashSuccess();
                 finishCashPay();
@@ -68,6 +72,7 @@ public class CashPayPresenter implements CashPayContract.Presenter {
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, "补收款发起现金支付---失败:" + error);
                 mView.showToast(error);
                 mView.hideLoading();
                 mView.enableCashBtn();
