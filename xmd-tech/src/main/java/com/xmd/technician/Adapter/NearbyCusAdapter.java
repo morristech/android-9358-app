@@ -118,8 +118,8 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
 
         //打赏金额
         float reward = info.rewardAmount / 100f;
-        if (info.rewardAmount > 10000) {
-            float payMoney = info.rewardAmount / 10000f;
+        if (info.rewardAmount > 1000000) {
+            float payMoney = info.rewardAmount / 1000000f;
             holder.mRewardCount.setText(String.format("%1.2f", payMoney) + "万");
         } else {
             holder.mRewardCount.setText(String.format("%1.2f", reward));

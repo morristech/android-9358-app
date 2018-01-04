@@ -1446,7 +1446,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 isHasPk = false;
                 mRankingMore.setText("");
             }
-            loadPkRankingData();
+            loadRankingData();
         }
 
 

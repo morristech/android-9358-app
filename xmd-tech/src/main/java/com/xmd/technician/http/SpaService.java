@@ -752,8 +752,8 @@ public interface SpaService {
     // 查询角色列表
     @GET(RequestConstant.URL_ROLE_LIST)
     Call<RoleListResult> getRoleList(@Query(RequestConstant.KEY_TOKEN) String userToken);
-    //首页pK
 
+    //首页pK
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_PK_ACTIVITY_RANKING)
     Call<TechPKRankingResult> techPKRanking(@Field(RequestConstant.KEY_TOKEN) String userToken);
@@ -790,8 +790,6 @@ public interface SpaService {
 
 
     //技师排行榜
-    //URL_GET_PERSONAL_RANKING_LIST
-
     @GET(RequestConstant.URL_GET_PERSONAL_RANKING_LIST)
     Call<TechRankingListResult> techPersonalRankingList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                         @Query(RequestConstant.KEY_USER_TYPE) String userType,
