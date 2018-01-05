@@ -166,7 +166,7 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.2'
     compile project(':xmd-file-provider')
     compile project(':xmd-m-salary')
- //   compile project(':xmd-m-pk')
+//   compile project(':xmd-m-pk')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:cardview-v7:${rootProject.ext.supportLibraryVersion}"

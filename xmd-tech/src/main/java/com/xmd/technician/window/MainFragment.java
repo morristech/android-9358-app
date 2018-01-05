@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
@@ -317,7 +318,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         showHeadView();
         //   HeartBeatTimer.getInstance().start(60, mTask);
         initClubInvite();
-        sendDataRequest();
+        onRefresh();
         return mRootView;
     }
 
@@ -356,10 +357,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void initView(View view) {
         initTitleView(view);
         initMenu();
-
         mSwipeRefreshLayout.setColorSchemeResources(R.color.color_main_btn);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
         mMainScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -1030,14 +1029,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
-                    startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                  //  startActivity(new Intent(getActivity(), TechPKActiveListActivity.class));
+                  startActivity(new Intent(getActivity(),TechPKActiveActivity.class));
                 } else {
                     Intent personalRanking = new Intent(getActivity(), TechPersonalRankingDetailActivity.class);
                     startActivity(personalRanking);
                 }
                 break;
             case R.id.layout_technician_pk_ranking:
-                startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+               // startActivity(new Intent(getActivity(), TechPKActiveListActivity.class));
+              startActivity(new Intent(getActivity(),TechPKActiveActivity.class));
                 break;
 
         }
@@ -1408,8 +1409,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onRefresh() {
         mTech.loadTechInfo();
-        sendDataRequest();
-        BusinessPermissionManager.getInstance().syncPermissionsImmediately(null);//刷新权限
+        BusinessPermissionManager.getInstance().syncPermissionsImmediately(new Callback<Void>() {
+            @Override
+            public void onResponse(Void result, Throwable error) {
+                if (error == null) {
+                    sendDataRequest();
+                } else {
+                    XToast.show(error.getLocalizedMessage());
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });//刷新权限
+
     }
 
     //申请加入会所事件

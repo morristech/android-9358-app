@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.common.CustomDatePicker;
