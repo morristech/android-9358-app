@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,13 +25,14 @@
                 android:layout_marginRight="@dimen/margin_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:background="@drawable/selector_bg_white"
-                android:padding="@dimen/margin_10">
+                android:padding="@dimen/margin_10"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/img_operate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_operate" />
+                    android:src="@drawable/img_operate"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
                     android:padding="@dimen/margin_10"
                     android:text="@string/operate_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontSubheading" />
+                    android:textSize="@dimen/fontSubheading"/>
 
                 <ImageView
                     android:id="@+id/img_operate_right"
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/arrow_right"/>
 
                 <ImageView
                     android:id="@+id/image_operate_new"
@@ -58,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="3dp"
                     android:layout_toLeftOf="@id/img_operate_right"
-                    android:src="@drawable/icon_date_new" />
+                    android:src="@drawable/icon_date_new"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -76,7 +77,7 @@
                     android:id="@+id/img_cashier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_cashier_report" />
+                    android:src="@drawable/img_cashier_report"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -86,14 +87,14 @@
                     android:padding="@dimen/margin_10"
                     android:text="@string/cashier_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontSubheading" />
+                    android:textSize="@dimen/fontSubheading"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/arrow_right"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -111,7 +112,7 @@
                     android:id="@+id/img_salary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_salary_report" />
+                    android:src="@drawable/img_salary_report"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -121,14 +122,14 @@
                     android:padding="@dimen/margin_10"
                     android:text="@string/salary_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontSubheading" />
+                    android:textSize="@dimen/fontSubheading"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/arrow_right"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -145,7 +146,7 @@
                     android:id="@+id/img_verification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_verification" />
+                    android:src="@drawable/img_verification"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -155,14 +156,14 @@
                     android:padding="@dimen/margin_10"
                     android:text="@string/verification_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontSubheading" />
+                    android:textSize="@dimen/fontSubheading"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/arrow_right"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -179,7 +180,7 @@
                     android:id="@+id/img_online_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_online_order" />
+                    android:src="@drawable/img_online_order"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -189,7 +190,7 @@
                     android:padding="@dimen/margin_10"
                     android:text="@string/online_order_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontSubheading" />
+                    android:textSize="@dimen/fontSubheading"/>
 
                 <ImageView
                     android:id="@+id/img_all_right"
@@ -197,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/arrow_right"/>
 
                 <ImageView
                     android:id="@+id/img_order_new"
@@ -207,7 +208,7 @@
                     android:layout_marginRight="3dp"
                     android:layout_toLeftOf="@id/img_all_right"
                     android:src="@drawable/icon_date_new"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -222,7 +223,7 @@
                     android:id="@+id/img_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_coupon_data" />
+                    android:src="@drawable/img_coupon_data"/>
 
                 <TextView
                     android:id="@+id/tv_coupon_title"
@@ -233,7 +234,7 @@
                     android:padding="@dimen/margin_10"
                     android:text="@string/operate_coupon_data"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontSubheading" />
+                    android:textSize="@dimen/fontSubheading"/>
 
                 <ImageView
                     android:id="@+id/img_coupon_right"
@@ -241,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/arrow_right"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -250,7 +251,7 @@
                     android:layout_marginRight="3dp"
                     android:layout_toLeftOf="@id/img_coupon_right"
                     android:src="@drawable/icon_date_new"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
