@@ -62,7 +62,7 @@ android {
 
             buildConfigField "String", "SERVER_HOST", SERVER_PUBLIC
             buildConfigField "String", "UPDATE_SERVER_HOST", "\"service.xiaomodo.com\""
-            buildConfigField "String", "UPLOAD_SERVER_HOST", "\"spa.93wifi.com\""
+            buildConfigField "String", "UPLOAD_SERVER_HOST", "\"spa.93wifi.com:8089\""
 
             manifestPlaceholders = [
                     GETUI_APP_ID       : "RLrQetj8Aa6HitucKiOVy5",
