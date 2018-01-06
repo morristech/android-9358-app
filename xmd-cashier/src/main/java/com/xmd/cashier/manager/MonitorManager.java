@@ -1,5 +1,9 @@
 package com.xmd.cashier.manager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -8,8 +12,12 @@ import android.os.Environment;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.utils.DateUtil;
+import com.xmd.cashier.MainApplication;
+import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.net.UploadRetrofit;
 import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 
@@ -48,18 +56,57 @@ public class MonitorManager {
         monitorNetwork();
     }
 
+    public String getWifiStatus() {
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        if (wifiInfo.getBSSID() != null) {
+            String ssid = wifiInfo.getSSID();
+            int speed = wifiInfo.getLinkSpeed();
+            int rssi = wifiInfo.getRssi();
+            return "=== [" + ssid + "]" +
+                    " [信号强度:" + rssi + "]" +
+                    " [" + speed + WifiInfo.LINK_SPEED_UNITS + "] ===";
+        } else {
+            return "=== Not WiFi  or WiFi is not available ===";
+        }
+    }
+
     public void monitorNetwork() {
-        XLogger.i(TAG, "===== POS网络状态监控 =====");
+        XLogger.i(TAG, "=== POS网络状态变更 ===");
         NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
         if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
-            XLogger.i(TAG, "=== Network: [" + mNetworkInfo.getTypeName() + "] [" + mNetworkInfo.getType() + "]");
+            XLogger.i(TAG, "=== Network: [" + mNetworkInfo.getTypeName() + "] ===");
             if (mNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                 WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-                XLogger.i(TAG, "=== Wifi: [SSID:" + wifiInfo.getSSID() + "]" + "[BSSID:" + wifiInfo.getBSSID() + "]");
+                XLogger.i(TAG, "=== [SSID:" + wifiInfo.getSSID() + "]" + "[BSSID:" + wifiInfo.getBSSID() + "] ===");
             }
         } else {
-            XLogger.i(TAG, "=== Network not available");
+            XLogger.i(TAG, "=== Network is not available ===");
         }
+    }
+
+    public void startPollingWifiStatus(long triggerTime) {
+        Context context = MainApplication.getInstance().getApplicationContext();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, CustomService.class);
+        intent.setAction(CustomService.ACTION);
+        intent.putExtra(AppConstants.EXTRA_CMD, CustomService.CMD_POLLING_WIFI_STATUS);
+        PendingIntent pi = PendingIntent.getService(context, CustomService.CMD_POLLING_WIFI_STATUS, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (Utils.isAboveKitkat()) {
+            manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pi);
+        } else {
+            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pi);
+        }
+    }
+
+    public void stopPollingWifiStatus() {
+        XLogger.i(TAG, "结束WiFi状态轮询");
+        Context context = MainApplication.getInstance().getApplicationContext();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, CustomService.class);
+        intent.setAction(CustomService.ACTION);
+        intent.putExtra(AppConstants.EXTRA_CMD, CustomService.CMD_POLLING_WIFI_STATUS);
+        PendingIntent pi = PendingIntent.getService(context, CustomService.CMD_POLLING_WIFI_STATUS, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.cancel(pi);
     }
 
     private MultipartBody.Part prepareFilePart(String partName) {

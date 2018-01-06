@@ -99,7 +99,11 @@
         <service
             android:name=".service.CustomService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xmd.cashier.CustomService" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".activity.SettleCurrentActivity"

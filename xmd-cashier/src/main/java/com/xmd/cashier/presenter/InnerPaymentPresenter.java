@@ -49,7 +49,7 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     private boolean resultPaymentInfo = false;
 
     public void startGetPaymentInfo() {
-        mRetryPaymentInfo = new RetryPool.RetryRunnable(5000, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryPaymentInfo = new RetryPool.RetryRunnable(AppConstants.DEFAULT_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return checkPaymentStatus();

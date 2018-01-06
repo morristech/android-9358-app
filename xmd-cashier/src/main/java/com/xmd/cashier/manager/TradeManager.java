@@ -237,7 +237,7 @@ public class TradeManager {
     // 收银台支付
     public void posPay(Context context, final int money, final Callback<Void> callback) {
         if (!mInPosPay.compareAndSet(false, true)) {
-            callback.onError("错误，已经进入了支付界面，但未完成支付，请重启POS！");
+            callback.onError("支付冲突，当前有未完成的支付，请重启POS！");
             return;
         }
         mTrade.newCashierTradeNo();

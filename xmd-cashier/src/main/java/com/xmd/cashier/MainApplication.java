@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Process;
+import android.os.SystemClock;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
@@ -17,6 +18,7 @@ import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.activity.BaseActivity;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.db.DBManager;
@@ -65,8 +67,8 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             e.printStackTrace();
         }
 
+        // XLogger.init(0, null);
         XLogger.init(5, getFilesDir().getPath() + File.separator + "logs"); // /data/data/com.xmd.cashier/files
-//        XLogger.init(0, null);
         XLogger.setWriteFileLevel(XLogger.LEVEL_INFO);
         XLogger.setGloableTag("9358");
         printBaseInfo();
@@ -99,20 +101,23 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         // 初始化推送
         XmdPushManager.getInstance().init(this, "pos", CustomPushMessageListener.getInstance());
 
+        SPManager.getInstance().initPushTagCount();
+
+        MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+        MonitorManager.getInstance().startPollingWifiStatus(SystemClock.elapsedRealtime());
+
         if (AccountManager.getInstance().isLogin()) {
             XmdNetwork.getInstance().setHeader("Club-Id", AccountManager.getInstance().getClubId());
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
-            NotifyManager.getInstance().startGetFastPayCountAsync();
-            NotifyManager.getInstance().startGetOrderCountAsync();
             MemberManager.getInstance().startGetMemberSetting();
             InnerManager.getInstance().startGetInnerSwitch();
             InnerManager.getInstance().startGetInnerChannel();
             InnerManager.getInstance().getClubWorkTime();
+            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
+            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
         }
-
-        MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE));
 
         // 开启服务
         CustomService.start();

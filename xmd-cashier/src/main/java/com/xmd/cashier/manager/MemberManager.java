@@ -25,6 +25,7 @@ import com.xmd.cashier.dal.net.response.MemberListResult;
 import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.ServerException;
@@ -105,7 +106,7 @@ public class MemberManager {
     private boolean resultMemberSetting;
 
     public void startGetMemberSetting() {
-        mRetryGetMemberSetting = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryGetMemberSetting = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return getSetting();
@@ -395,7 +396,7 @@ public class MemberManager {
     // 收银台支付
     public void posRecharge(Context context, final int money, final Callback<Void> callback) {
         if (!mInPosPay.compareAndSet(false, true)) {
-            callback.onError("错误，已经进入了支付界面，请重启POS！");
+            callback.onError("支付冲突，当前有未完成的支付，请重启POS！");
             return;
         }
         mTrade.newCashierTradeNo();
@@ -476,6 +477,39 @@ public class MemberManager {
                 callBack.onError(e.getLocalizedMessage());
             }
         });
+    }
+
+    public void printMemberRecordInfoAsync(final MemberRecordInfo memberRecordInfo, final boolean retry) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printMemberRecordInfo(memberRecordInfo, retry, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            printMemberRecordInfo(memberRecordInfo, retry, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void printMemberRecordInfoAsync(final MemberRecordInfo memberRecordInfo, final boolean retry, final boolean keep) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printMemberRecordInfo(memberRecordInfo, retry, keep, null);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {

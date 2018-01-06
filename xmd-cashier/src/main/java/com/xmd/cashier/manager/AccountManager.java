@@ -1,5 +1,6 @@
 package com.xmd.cashier.manager;
 
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
@@ -151,17 +152,16 @@ public class AccountManager {
                             callback.onSuccess(loginResult);
 
                             XmdNetwork.getInstance().setHeader("Club-Id", getClubId());
-                            // 绑定推送
                             XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);
                             com.xmd.app.user.User user = new com.xmd.app.user.User(getUserId());
                             EventBus.getDefault().postSticky(new EventLogin(getToken(), user));
-                            NotifyManager.getInstance().startGetFastPayCountAsync();
-                            NotifyManager.getInstance().startGetOrderCountAsync();
                             MemberManager.getInstance().startGetMemberSetting();
                             InnerManager.getInstance().startGetInnerSwitch();
                             InnerManager.getInstance().startGetInnerChannel();
                             InnerManager.getInstance().getClubWorkTime();
+                            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
+                            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
                         }
 
                         @Override
@@ -194,12 +194,11 @@ public class AccountManager {
     }
 
     public Subscription logout(final Callback<LogoutResult> callback) {
-        // 解绑推送
+        NotifyManager.getInstance().stopRepeatOnlinePay();
+        NotifyManager.getInstance().stopRepeatOrderRecord();
         XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
         EventBus.getDefault().removeStickyEvent(EventLogin.class);
         EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
-        NotifyManager.getInstance().stopGetFastPayCountAsync();
-        NotifyManager.getInstance().stopGetOrderCountAsync();
         MemberManager.getInstance().stopGetMemberSetting();
         InnerManager.getInstance().stopGetInnerSwitch();
         InnerManager.getInstance().stopGetInnerChannel();

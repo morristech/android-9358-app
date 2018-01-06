@@ -165,7 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/activity_normal_margin"
-                        android:src="@drawable/ic_load_nonetwork" />
+                        android:src="@drawable/ic_load_empty" />
 
                     <TextView
                         android:id="@+id/tv_plan_error"

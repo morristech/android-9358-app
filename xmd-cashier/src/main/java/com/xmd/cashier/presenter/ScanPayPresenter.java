@@ -3,9 +3,9 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.os.Handler;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.R;
@@ -18,6 +18,7 @@ import com.xmd.cashier.contract.ScanPayContract.Presenter;
 import com.xmd.cashier.dal.bean.GiftActivityInfo;
 import com.xmd.cashier.dal.bean.OnlinePayUrlInfo;
 import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.event.QRScanStatusEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
@@ -33,8 +34,11 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.Subscription;
 
@@ -44,7 +48,6 @@ import rx.Subscription;
 
 public class ScanPayPresenter implements Presenter {
     private static final String TAG = "ScanPayPresenter";
-    private static final int INTERVAL = 5 * 1000;
     private static final int EXPIRE_INTERVAL = 60 * 60 * 1000; //前端二维码过期时间:1小时
 
     private GiftActivityInfo mGiftActivityInfo;
@@ -56,79 +59,95 @@ public class ScanPayPresenter implements Presenter {
     private Bitmap mQRBitmap;
     private TradeManager mTradeManager;
 
-    private boolean isScan = false;
-    private Subscription mGetXMDScanStatusSubscription;
-    private Subscription mGetXMDOnlinePayDetailSubscription;
     private Subscription mGetXMDOnlineQrcodeUrlSubscription;
     private Subscription mDeleteXMDOnlineOrderIdSubscription;
-    private Handler mHandler;
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (isScan) {
-                // 已经扫码:查询买单详情
-                handleDetail();
-            } else {
-                // 尚未扫码
-                if (mGetXMDScanStatusSubscription != null) {
-                    mGetXMDScanStatusSubscription.unsubscribe();
-                }
-                XLogger.i(TAG, "补收款微信支付宝查询二维码扫码状态");
-                Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                        .getXMDOnlineScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
-                mGetXMDScanStatusSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StringResult>() {
-                    @Override
-                    public void onCallbackSuccess(StringResult result) {
-                        if (isCodeExpire()) {
-                            XLogger.e(TAG, "补收款微信支付宝查询二维码扫码状态:手动计算二维码过期");
-                            doError("二维码已过期，请重新支付");
-                            return;
-                        }
-                        XLogger.i(TAG, "补收款微信支付宝查询二维码扫码状态---成功:" + result.getRespData());
-                        if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
-                            // 已经扫码:获取买单详情
-                            isScan = true;
-                            mView.updateScanStatus();
-                        }
-                        handleDetail();
-                    }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        if (e instanceof ServerException) {
-                            if (((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                // 400:二维码过期或者其他异常情况
-                                XLogger.e(TAG, "补收款微信支付宝查询二维码扫码状态---失败:" + e.getMessage());
-                                doError(e.getMessage());
-                            } else if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                                // 会话过期
-                                XLogger.e(TAG, "补收款微信支付宝查询二维码扫码状态---失败:会话过期");
-                                doFinish();
-                            } else {
-                                XLogger.e(TAG, "补收款微信支付宝查询二维码扫码状态:postDelayed---" + e.getLocalizedMessage());
-                                mHandler.postDelayed(mRunnable, INTERVAL);
-                            }
-                        }
-                    }
-                });
+    // ****************************************轮询扫码状态******************************************
+    private Call<StringResult> getScanStatusCall;
+    private RetryPool.RetryRunnable mRetryScanStatus;
+    private boolean resultScanStatus = false;
+
+    private void startGetScanStatus() {
+        mRetryScanStatus = new RetryPool.RetryRunnable(AppConstants.DEFAULT_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+            @Override
+            public boolean run() {
+                return getScanStatus();
             }
-        }
-    };
+        });
+        RetryPool.getInstance().postWork(mRetryScanStatus);
+    }
 
-    // 处理详情信息
-    private void handleDetail() {
-        if (mGetXMDOnlinePayDetailSubscription != null) {
-            mGetXMDOnlinePayDetailSubscription.unsubscribe();
+    private void stopGetScanStatus() {
+        if (getScanStatusCall != null && !getScanStatusCall.isCanceled()) {
+            getScanStatusCall.cancel();
         }
+        if (mRetryScanStatus != null) {
+            RetryPool.getInstance().removeWork(mRetryScanStatus);
+            mRetryScanStatus = null;
+        }
+    }
+
+    private boolean getScanStatus() {
+        XLogger.i(TAG, "补收款微信支付宝查询二维码扫码状态");
+        getScanStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
+                .getXMDOnlineScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
+        XmdNetwork.getInstance().requestSync(getScanStatusCall, new NetworkSubscriber<StringResult>() {
+            @Override
+            public void onCallbackSuccess(StringResult result) {
+                XLogger.i(TAG, "补收款微信支付宝查询二维码扫码状态---成功:" + result.getRespData());
+                if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
+                    resultScanStatus = true;
+                    EventBus.getDefault().post(new QRScanStatusEvent());
+                } else {
+                    resultScanStatus = false;
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, "补收款微信支付宝查询二维码扫码状态---失败:" + e.getLocalizedMessage());
+                resultScanStatus = false;
+            }
+        });
+        return resultScanStatus;
+    }
+
+    // ****************************************轮询买单详情******************************************
+    private Call<OnlinePayDetailResult> getOnlinePayDetailCall;
+    private RetryPool.RetryRunnable mRetryGetOnlinePayDetail;
+    private boolean resultGetOnlinePayDetail = false;
+
+    private void startGetOnlinePayDetail() {
+        mRetryGetOnlinePayDetail = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+            @Override
+            public boolean run() {
+                return getOnlinePayDetail();
+            }
+        });
+        RetryPool.getInstance().postWork(mRetryGetOnlinePayDetail);
+    }
+
+    private void stopGetOnlinePayDetail() {
+        if (getOnlinePayDetailCall != null && !getOnlinePayDetailCall.isCanceled()) {
+            getOnlinePayDetailCall.cancel();
+        }
+        if (mRetryGetOnlinePayDetail != null) {
+            RetryPool.getInstance().removeWork(mRetryGetOnlinePayDetail);
+            mRetryGetOnlinePayDetail = null;
+        }
+    }
+
+    private boolean getOnlinePayDetail() {
         XLogger.i(TAG, "补收款微信支付宝查询订单详情");
-        Observable<OnlinePayDetailResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+        getOnlinePayDetailCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .getXMDOnlinePayDetail(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
-        mGetXMDOnlinePayDetailSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayDetailResult>() {
+        XmdNetwork.getInstance().requestSync(getOnlinePayDetailCall, new NetworkSubscriber<OnlinePayDetailResult>() {
             @Override
             public void onCallbackSuccess(OnlinePayDetailResult result) {
                 XLogger.i(TAG, "补收款微信支付宝查询订单详情---成功:" + result.getRespData().status);
                 if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
                     // 支付成功
+                    resultGetOnlinePayDetail = true;
                     PosFactory.getCurrentCashier().textToSound("买单成功");
                     mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                     mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
@@ -138,29 +157,34 @@ public class ScanPayPresenter implements Presenter {
                 } else {
                     if (isCodeExpire()) {
                         // 二维码过期
+                        resultGetOnlinePayDetail = true;
                         XLogger.e(TAG, "补收款微信支付宝查询订单详情:手动计算二维码过期");
                         doError("二维码已过期，请重新支付");
                     } else {
                         // 尚未支付成功:重试
-                        mHandler.postDelayed(mRunnable, INTERVAL);
+                        resultGetOnlinePayDetail = false;
                     }
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, "补收款微信支付宝查询订单详情---失败:" + e.getLocalizedMessage());
                 if (e instanceof ServerException) {
                     if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                         // 会话过期
+                        resultGetOnlinePayDetail = true;
                         XLogger.e(TAG, "补收款微信支付宝查询订单详情---失败:会话过期");
-                        doFinish();
+                        doError("会话过期，请重新支付");
                     } else {
-                        XLogger.e(TAG, "补收款微信支付宝查询订单详情:postDelayed---" + e.getLocalizedMessage());
-                        mHandler.postDelayed(mRunnable, INTERVAL);
+                        resultGetOnlinePayDetail = false;
                     }
+                } else {
+                    resultGetOnlinePayDetail = false;
                 }
             }
         });
+        return resultGetOnlinePayDetail;
     }
 
     public ScanPayPresenter(Context context, ScanPayContract.View view) {
@@ -168,7 +192,6 @@ public class ScanPayPresenter implements Presenter {
         mView = view;
         mView.setPresenter(this);
         mTradeManager = TradeManager.getInstance();
-        mHandler = new Handler();
     }
 
     @Override
@@ -179,7 +202,6 @@ public class ScanPayPresenter implements Presenter {
                 Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney() - mTradeManager.getCurrentTrade().getWillDiscountMoney())));
 
         getQrcode();
-
         getGiftActivity();
     }
 
@@ -189,13 +211,9 @@ public class ScanPayPresenter implements Presenter {
 
     @Override
     public void onDestroy() {
-        mHandler.removeCallbacks(mRunnable);
-        if (mGetXMDOnlinePayDetailSubscription != null) {
-            mGetXMDOnlinePayDetailSubscription.unsubscribe();
-        }
-        if (mGetXMDScanStatusSubscription != null) {
-            mGetXMDScanStatusSubscription.unsubscribe();
-        }
+        stopGetScanStatus();
+        stopGetOnlinePayDetail();
+
         if (mGetXMDOnlineQrcodeUrlSubscription != null) {
             mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
         }
@@ -324,7 +342,8 @@ public class ScanPayPresenter implements Presenter {
                     XLogger.i(TAG, "补收款获取微信支付宝二维码:展示");
                     mView.showQrSuccess();
                     mView.setQRCode(mQRBitmap);
-                    mHandler.postDelayed(mRunnable, INTERVAL);
+                    startGetScanStatus();
+                    startGetOnlinePayDetail();
                 }
             }
 

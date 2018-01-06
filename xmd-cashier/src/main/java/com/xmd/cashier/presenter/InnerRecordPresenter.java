@@ -21,10 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-11-1.
@@ -216,20 +213,9 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
         }
         mGetInnerHoleBatchSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(info.id, new Callback<InnerRecordInfo>() {
             @Override
-            public void onSuccess(final InnerRecordInfo o) {
+            public void onSuccess(InnerRecordInfo o) {
                 mView.hideLoading();
-                Observable
-                        .create(new Observable.OnSubscribe<Void>() {
-                            @Override
-                            public void call(Subscriber<? super Void> subscriber) {
-                                InnerManager.getInstance().printInnerRecordInfo(o, true, false, null);
-                                subscriber.onNext(null);
-                                subscriber.onCompleted();
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                InnerManager.getInstance().printInnerRecordInfoAsync(o, true, false);
             }
 
             @Override
@@ -248,20 +234,9 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
         }
         mGetInnerHoleBatchSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(info.id, new Callback<InnerRecordInfo>() {
             @Override
-            public void onSuccess(final InnerRecordInfo o) {
+            public void onSuccess(InnerRecordInfo o) {
                 mView.hideLoading();
-                Observable
-                        .create(new Observable.OnSubscribe<Void>() {
-                            @Override
-                            public void call(Subscriber<? super Void> subscriber) {
-                                InnerManager.getInstance().printInnerRecordInfo(o, true, true, null);
-                                subscriber.onNext(null);
-                                subscriber.onCompleted();
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                InnerManager.getInstance().printInnerRecordInfoAsync(o, true, true);
             }
 
             @Override

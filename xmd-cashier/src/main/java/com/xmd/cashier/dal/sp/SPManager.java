@@ -120,6 +120,18 @@ public class SPManager {
         }
     }
 
+    public void initPushTagCount() {
+        int countOnlinePay = getFastPayPushTag();
+        if (countOnlinePay <= 0) {
+            setFastPayPushTag(Integer.MAX_VALUE);
+        }
+
+        int countOrderRecord = getOrderPushTag();
+        if (countOrderRecord <= 0) {
+            setOrderPushTag(Integer.MAX_VALUE);
+        }
+    }
+
     public String getStatisticsStart() {
         return mSharedPreferences.getString(SPConstants.STATISTICS_START_TIME, AppConstants.STATISTICS_DEFAULT_TIME);
     }

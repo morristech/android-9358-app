@@ -18,11 +18,7 @@ import com.xmd.m.network.BaseBean;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-4-11.
@@ -167,70 +163,8 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     }
 
     @Override
-    public void print(final OnlinePayInfo info, final boolean retry, final boolean keep) {
-        // 打印
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().printOnlinePayRecord(info, retry, keep);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        mView.showToast("打印成功");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mView.showToast("打印失败");
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
-    }
-
-    public void printTwice(final OnlinePayInfo info) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().printOnlinePayRecord(info, false, true);
-                        if (SPManager.getInstance().getPrintClientSwitch()) {
-                            NotifyManager.getInstance().printOnlinePayRecord(info, false, false);
-                        }
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        mView.showToast("打印成功");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mView.showToast("打印失败");
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
+    public void print(OnlinePayInfo info, boolean retry, boolean keep) {
+        NotifyManager.getInstance().printOnlinePayRecordAsync(info, retry, keep);
     }
 
     @Override
@@ -256,7 +190,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlinePassSwitch()) {
-                    printTwice(info);
+                    NotifyManager.getInstance().printOnlinePayRecordAsync(info, false);
                 }
             }
 
@@ -290,7 +224,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 info.operatorName = AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")";
 
                 if (SPManager.getInstance().getOnlineUnpassSwitch()) {
-                    printTwice(info);
+                    NotifyManager.getInstance().printOnlinePayRecordAsync(info, false);
                 }
             }
 
@@ -321,6 +255,6 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
 
     @Override
     public void onPayDetail(List<PayRecordInfo> payRecordInfos) {
-        UiNavigation.gotoInnerPayRecordActivity(mContext,payRecordInfos);
+        UiNavigation.gotoInnerPayRecordActivity(mContext, payRecordInfos);
     }
 }

@@ -13,8 +13,6 @@ public interface MemberScanContract {
     interface Presenter extends BasePresenter {
         void rechargeByCash();
 
-        void printStep();
-
         void printNormal();
 
         void onKeyEventBack();

@@ -14,11 +14,7 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.m.network.BaseBean;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-4-11.
@@ -156,36 +152,8 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
     }
 
     @Override
-    public void print(final OrderRecordInfo info, final boolean retry) {
-        // 打印
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        NotifyManager.getInstance().printOrderRecord(info, retry);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        mView.showToast("打印成功");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mView.showToast("打印失败");
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
+    public void print(OrderRecordInfo info, boolean retry) {
+        NotifyManager.getInstance().printOrderRecordAsync(info, retry);
     }
 
     @Override

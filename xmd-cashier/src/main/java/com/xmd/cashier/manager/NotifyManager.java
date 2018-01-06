@@ -1,9 +1,11 @@
 package com.xmd.cashier.manager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.MainApplication;
@@ -14,22 +16,24 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
-import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
-import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
-import java.io.Serializable;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 
-import retrofit2.Call;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-4-11.
@@ -153,59 +157,28 @@ public class NotifyManager {
         });
     }
 
-    public void refreshOrderRecordNotify() {
-        XLogger.i(TAG, "获取未处理预约订单");
-        Observable<OrderRecordListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
-        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderRecordListResult>() {
-            @Override
-            public void onCallbackSuccess(OrderRecordListResult result) {
-                // 成功:判断列表,显示通知
-                if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
-                    XLogger.i(TAG, "获取未处理预约订单---成功:" + result.getRespData().size());
-                    SPManager.getInstance().setOrderPushTag(result.getRespData().size());
-                    for (OrderRecordInfo info : result.getRespData()) {
-                        info.tempNo = result.getRespData().indexOf(info) + 1;
-                    }
-                    Intent intent = new Intent();
-                    intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
-                    intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD);
-                    intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.getRespData());
-                    MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
-                } else {
-                    SPManager.getInstance().setOrderPushTag(0);
-                }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                e.printStackTrace();
-                XLogger.e(TAG, "获取未处理预约订单---失败:" + e.getLocalizedMessage());
-            }
-        });
-    }
-
-    public void refreshOnlinePayNotify() {
+    // *****************************************未处理买单*****************************************
+    public void notifyOnlinePayList() {
         XLogger.i(TAG, "获取未处理在线买单");
         Observable<OnlinePayListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayListResult>() {
             @Override
             public void onCallbackSuccess(OnlinePayListResult result) {
-                //成功:判断列表,显示通知
-                if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
-                    XLogger.i(TAG, "获取未处理在线买单---成功:" + result.getRespData().size());
-                    SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
-                    for (OnlinePayInfo info : result.getRespData()) {
-                        info.tempNo = result.getRespData().indexOf(info) + 1;
+                if (result != null && result.getRespData() != null) {
+                    if (result.getRespData().size() > 0) {
+                        int size = result.getRespData().size();
+                        XLogger.i(TAG, "获取未处理在线买单---成功:" + size);
+                        SPManager.getInstance().setFastPayPushTag(size);
+                        for (OnlinePayInfo info : result.getRespData()) {
+                            info.tempNo = result.getRespData().indexOf(info) + 1;
+                        }
+                        EventBus.getDefault().post(result);
+                    } else {
+                        SPManager.getInstance().setFastPayPushTag(0);
                     }
-                    Intent intent = new Intent();
-                    intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
-                    intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY);
-                    intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.getRespData());
-                    MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
                 } else {
-                    SPManager.getInstance().setFastPayPushTag(0);
+                    XLogger.i(TAG, "获取未处理在线买单---成功: 数据null");
                 }
             }
 
@@ -217,7 +190,55 @@ public class NotifyManager {
         });
     }
 
-    // 打印预约订单小票
+    // *****************************************未处理预约*****************************************
+    public void notifyOrderRecordList() {
+        XLogger.i(TAG, "获取未处理预约订单");
+        Observable<OrderRecordListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderRecordListResult>() {
+            @Override
+            public void onCallbackSuccess(OrderRecordListResult result) {
+                if (result != null && result.getRespData() != null) {
+                    if (result.getRespData().size() > 0) {
+                        int size = result.getRespData().size();
+                        XLogger.i(TAG, "获取未处理预约订单---成功:" + size);
+                        SPManager.getInstance().setOrderPushTag(size);
+                        for (OrderRecordInfo info : result.getRespData()) {
+                            info.tempNo = result.getRespData().indexOf(info) + 1;
+                        }
+                        EventBus.getDefault().post(result);
+                    } else {
+                        SPManager.getInstance().setOrderPushTag(0);
+                    }
+                } else {
+                    XLogger.i(TAG, "获取未处理预约订单---成功: 数据null");
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                e.printStackTrace();
+                XLogger.e(TAG, "获取未处理预约订单---失败:" + e.getLocalizedMessage());
+            }
+        });
+    }
+
+    // ********************************** 打印预约订单小票 ***********************************
+    public void printOrderRecordAsync(final OrderRecordInfo orderRecordInfo, final boolean retry) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printOrderRecord(orderRecordInfo, retry);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
     public void printOrderRecord(OrderRecordInfo info, boolean retry) {
         XLogger.i(TAG, "printOrderRecord");
         mPos.printCenter(AccountManager.getInstance().getClubName());
@@ -276,7 +297,40 @@ public class NotifyManager {
         mPos.printEnd();
     }
 
-    // 打印在线买单记录
+    // ******************************  打印在线买单记录  ********************************
+    public void printOnlinePayRecordAsync(final OnlinePayInfo onlinePayInfo, final boolean retry) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printOnlinePayRecord(onlinePayInfo, retry, true);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            printOnlinePayRecord(onlinePayInfo, retry, false);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void printOnlinePayRecordAsync(final OnlinePayInfo onlinePayInfo, final boolean retry, final boolean keep) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printOnlinePayRecord(onlinePayInfo, retry, keep);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
     public void printOnlinePayRecord(OnlinePayInfo info, boolean retry, boolean keep) {
         XLogger.i(TAG, "printOnlinePayRecord");
         mPos.printCenter("小摩豆结账单");
@@ -374,111 +428,53 @@ public class NotifyManager {
         mPos.printEnd();
     }
 
-    /***************************买单****************************/
-    private Call<OnlinePayListResult> callOnlinePay;
-    private RetryPool.RetryRunnable mRetryGetFastPayCount;
-    private boolean resultFastPay;
-
-    public void startGetFastPayCountAsync() {
-        mRetryGetFastPayCount = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
-            @Override
-            public boolean run() {
-                return getFastPayCount();
-            }
-        });
-        RetryPool.getInstance().postWork(mRetryGetFastPayCount);
-    }
-
-    public void stopGetFastPayCountAsync() {
-        if (callOnlinePay != null && !callOnlinePay.isCanceled()) {
-            callOnlinePay.cancel();
-        }
-        if (mRetryGetFastPayCount != null) {
-            RetryPool.getInstance().removeWork(mRetryGetFastPayCount);
-            mRetryGetFastPayCount = null;
+    public void startRepeatOnlinePay(long triggerTime) {
+        Context context = MainApplication.getInstance().getApplicationContext();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, CustomService.class);
+        intent.setAction(CustomService.ACTION);
+        intent.putExtra(AppConstants.EXTRA_CMD, CustomService.CMD_REFRESH_ONLINE_PAY_NOTIFY);
+        PendingIntent pi = PendingIntent.getService(context, CustomService.CMD_REFRESH_ONLINE_PAY_NOTIFY, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (Utils.isAboveKitkat()) {
+            manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pi);
+        } else {
+            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pi);
         }
     }
 
-    private boolean getFastPayCount() {
-        XLogger.i(TAG, "获取在线买单提醒数量");
-        callOnlinePay = XmdNetwork.getInstance().getService(SpaService.class)
-                .getOnlinePayCount(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
-        XmdNetwork.getInstance().requestSync(callOnlinePay, new NetworkSubscriber<OnlinePayListResult>() {
-            @Override
-            public void onCallbackSuccess(OnlinePayListResult result) {
-                //成功:判断列表,显示通知
-                if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
-                    SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
-                } else {
-                    SPManager.getInstance().setFastPayPushTag(0);
-                }
-                resultFastPay = true;
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                    // token过期
-                    resultFastPay = true;
-                } else {
-                    resultFastPay = false;
-                }
-            }
-        });
-        return resultFastPay;
+    public void stopRepeatOnlinePay() {
+        XLogger.i(TAG, "结束在线买单轮询");
+        Context context = MainApplication.getInstance().getApplicationContext();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, CustomService.class);
+        intent.setAction(CustomService.ACTION);
+        intent.putExtra(AppConstants.EXTRA_CMD, CustomService.CMD_REFRESH_ONLINE_PAY_NOTIFY);
+        PendingIntent pi = PendingIntent.getService(context, CustomService.CMD_REFRESH_ONLINE_PAY_NOTIFY, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.cancel(pi);
     }
 
-    /***************************订单****************************/
-    private boolean resultOrder;
-    private RetryPool.RetryRunnable mRetryGetOrderCount;
-    private Call<OrderRecordListResult> callOrderRecord;
-
-    public void startGetOrderCountAsync() {
-        mRetryGetOrderCount = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
-            @Override
-            public boolean run() {
-                return getOrderCount();
-            }
-        });
-        RetryPool.getInstance().postWork(mRetryGetOrderCount);
-    }
-
-    public void stopGetOrderCountAsync() {
-        if (callOrderRecord != null && !callOrderRecord.isCanceled()) {
-            callOrderRecord.cancel();
-        }
-        if (mRetryGetOrderCount != null) {
-            RetryPool.getInstance().removeWork(mRetryGetOrderCount);
-            mRetryGetOrderCount = null;
+    public void startRepeatOrderRecord(long triggerTime) {
+        Context context = MainApplication.getInstance().getApplicationContext();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, CustomService.class);
+        intent.setAction(CustomService.ACTION);
+        intent.putExtra(AppConstants.EXTRA_CMD, CustomService.CMD_REFRESH_ORDER_RECORD_NOTIFY);
+        PendingIntent pi = PendingIntent.getService(context, CustomService.CMD_REFRESH_ORDER_RECORD_NOTIFY, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (Utils.isAboveKitkat()) {
+            manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pi);
+        } else {
+            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pi);
         }
     }
 
-    private boolean getOrderCount() {
-        XLogger.i(TAG, "获取预约订单提醒数量");
-        callOrderRecord = XmdNetwork.getInstance().getService(SpaService.class)
-                .getOrderRecordCount(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
-        XmdNetwork.getInstance().requestSync(callOrderRecord, new NetworkSubscriber<OrderRecordListResult>() {
-            @Override
-            public void onCallbackSuccess(OrderRecordListResult result) {
-                // 成功:判断列表,显示通知
-                if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
-                    SPManager.getInstance().setOrderPushTag(result.getRespData().size());
-                } else {
-                    SPManager.getInstance().setOrderPushTag(0);
-                }
-                resultOrder = true;
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                    // token过期
-                    resultOrder = true;
-                } else {
-                    resultOrder = false;
-                }
-            }
-        });
-        return resultOrder;
+    public void stopRepeatOrderRecord() {
+        XLogger.i(TAG, "结束预约订单轮询");
+        Context context = MainApplication.getInstance().getApplicationContext();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, CustomService.class);
+        intent.setAction(CustomService.ACTION);
+        intent.putExtra(AppConstants.EXTRA_CMD, CustomService.CMD_REFRESH_ORDER_RECORD_NOTIFY);
+        PendingIntent pi = PendingIntent.getService(context, CustomService.CMD_REFRESH_ORDER_RECORD_NOTIFY, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.cancel(pi);
     }
 }

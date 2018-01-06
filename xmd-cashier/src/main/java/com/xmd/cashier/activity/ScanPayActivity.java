@@ -13,8 +13,12 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.contract.ScanPayContract;
+import com.xmd.cashier.dal.event.QRScanStatusEvent;
 import com.xmd.cashier.presenter.ScanPayPresenter;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by zr on 17-5-12.
@@ -183,5 +187,10 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
                 })
                 .create()
                 .show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QRScanStatusEvent qrScanStatusEvent) {
+        updateScanStatus();
     }
 }

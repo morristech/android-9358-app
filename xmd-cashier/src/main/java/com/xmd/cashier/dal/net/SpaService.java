@@ -375,15 +375,6 @@ public interface SpaService {
                                                      @Field(RequestConstant.KEY_TECH_NAME) String techName, // 搜索条件:技师名称或者编号
                                                      @Field(RequestConstant.KEY_STATUS) String status);     // 筛选条件:在线买单状态
 
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ONLINE_PAY_LIST)
-    Call<OnlinePayListResult> getOnlinePayCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                @Field(RequestConstant.KEY_PAGE_START) String page,
-                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                                @Field(RequestConstant.KEY_IS_POS) String isPos,
-                                                @Field(RequestConstant.KEY_TECH_NAME) String techName, // 搜索条件:技师名称或者编号
-                                                @Field(RequestConstant.KEY_STATUS) String status);     // 筛选条件:在线买单状态
-
     @GET(RequestConstant.URL_GET_DISCOUNT_COUPON_DETAIL)
     Observable<OnlinePayCouponResult> getDiscountCoupon(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                         @Query(RequestConstant.KEY_CODE) String code);
@@ -418,13 +409,6 @@ public interface SpaService {
                                                          @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                                          @Query(RequestConstant.KEY_TELEPHONE) String telephone,    // 搜索条件:客户手机号或者技师编号
                                                          @Query(RequestConstant.KEY_STATUS) String status);     // 筛选条件:订单状态
-
-    @GET(RequestConstant.URL_GET_ORDER_RECORD_LIST)
-    Call<OrderRecordListResult> getOrderRecordCount(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                    @Query(RequestConstant.KEY_PAGE_START) String page,
-                                                    @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                                    @Query(RequestConstant.KEY_TELEPHONE) String telephone,    // 搜索条件:客户手机号或者技师编号
-                                                    @Query(RequestConstant.KEY_STATUS) String status);     // 筛选条件:订单状态
 
     /**
      * 修改付费预约状态
@@ -543,13 +527,13 @@ public interface SpaService {
     /******************************************** Pos在线买单 **************************************/
     //查询买单扫码状态
     @GET(RequestConstant.URL_GET_XMD_ONLINE_SCAN_STATUS)
-    Observable<StringResult> getXMDOnlineScanStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                    @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+    Call<StringResult> getXMDOnlineScanStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Query(RequestConstant.KEY_ORDER_ID) String orderId);
 
     //获取Pos在线买单详情
     @GET(RequestConstant.URL_GET_XMD_ONLINE_ORDER_DETAIL)
-    Observable<OnlinePayDetailResult> getXMDOnlinePayDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                            @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+    Call<OnlinePayDetailResult> getXMDOnlinePayDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                      @Query(RequestConstant.KEY_ORDER_ID) String orderId);
 
     //扫码买单二维码URL
     @GET(RequestConstant.URL_GET_XMD_ONLINE_QRCODE_URL)

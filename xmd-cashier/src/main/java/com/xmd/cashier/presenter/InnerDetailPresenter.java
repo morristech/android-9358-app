@@ -6,13 +6,7 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerDetailContract;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
-import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.InnerManager;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-11-7.
@@ -78,22 +72,8 @@ public class InnerDetailPresenter implements InnerDetailContract.Presenter {
 
     @Override
     public void onDetailPrint() {
-        final InnerRecordInfo recordInfo = mView.returnRecordInfo();
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        InnerManager.getInstance().printInnerRecordInfo(recordInfo, true, true, null);
-                        if (SPManager.getInstance().getPrintClientSwitch()) {
-                            InnerManager.getInstance().printInnerRecordInfo(recordInfo, true, false, null);
-                        }
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+        InnerRecordInfo recordInfo = mView.returnRecordInfo();
+        InnerManager.getInstance().printInnerRecordInfoAsync(recordInfo, true);
     }
 
     @Override

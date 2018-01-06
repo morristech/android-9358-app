@@ -55,7 +55,6 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
         mPayConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XLogger.i(TAG, "补收款微信支付宝支付成功确认(打印小票)");
                 mPresenter.onConfirm();
             }
         });
@@ -71,7 +70,7 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
 
     @Override
     public boolean onKeyEventBack() {
-        XLogger.i(TAG, "补收款微信支付宝支付成功回退(无小票)");
+        XLogger.i(TAG, "补收款微信支付宝支付成功回退(onKeyEventBack)");
         return super.onKeyEventBack();
     }
 

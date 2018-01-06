@@ -11,9 +11,10 @@ import java.util.Map;
 
 public class AppConstants {
     public static String SESSION_TYPE = "app";
-    public static final String ACTION_CUSTOM_NOTIFY_RECEIVER = "com.xmd.cashier.CUSTOM_NOTIFY";
 
     public static final String TIME_XMD_REGISTER = "2014-07-23 00:00:00";
+    public static final long DEFAULT_INTERVAL = 5 * 1000;
+    public static final long TINNY_INTERVAL = 3 * 1000;
 
     // 核销类型
     public static final String TYPE_COUPON = "coupon";      // 优惠券-->体验券
@@ -183,11 +184,6 @@ public class AppConstants {
     public static final String EXTRA_PRIZE_VERIFY_INFO = "extra_prize_verify_info";
     public static final String EXTRA_COMMON_VERIFY_INFO = "extra_common_verify_info";
     public static final String EXTRA_ONLINE_PAY_INFO = "extra_online_pay_info";
-    public static final String EXTRA_NOTIFY_TYPE = "notify_type";
-    public static final String EXTRA_NOTIFY_DATA = "notify_data";
-    public static final String EXTRA_NOTIFY_TYPE_ORDER_RECORD = "order_record";
-    public static final String EXTRA_NOTIFY_TYPE_ONLINE_PAY = "online_pay";
-    public static final String EXTRA_NOTIFY_TYPE_INNER_PAY = "inner_pay";
     public static final String EXTRA_RECORD_ID = "record_id";
     public static final String EXTRA_IS_SHOW = "is_show";
     public static final String EXTRA_COUPON_CODE = "coupon_code";
@@ -340,4 +336,6 @@ public class AppConstants {
     public static final String TECH_STATUS_REST = "rest";
 
     public static final String EXTRA_INNER_PAY_RECORD = "pay_record";
+
+    public final static String EXTRA_CMD = "cmd";
 }

@@ -1,7 +1,6 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
@@ -18,11 +17,8 @@ import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
-import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
-import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
-import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -30,10 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-7-11.
@@ -52,7 +45,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     private boolean resultDetailRecharge = false;
 
     public void startDetailRecharge() {
-        mRetryDetailRecharge = new RetryPool.RetryRunnable(5000, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryDetailRecharge = new RetryPool.RetryRunnable(AppConstants.DEFAULT_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return detailRechargeTrade();
@@ -212,78 +205,8 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     }
 
     @Override
-    public void printStep() {
-        mView.showLoading();
-        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, new Callback() {
-            @Override
-            public void onSuccess(Object o) {
-                mView.hideLoading();
-                new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否需要打印客户联小票?")
-                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                Observable
-                                        .create(new Observable.OnSubscribe<Void>() {
-                                            @Override
-                                            public void call(Subscriber<? super Void> subscriber) {
-                                                // 扫码充值
-                                                MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, false, null);
-                                                subscriber.onNext(null);
-                                                subscriber.onCompleted();
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe();
-                                MemberManager.getInstance().newTrade();
-                                MemberManager.getInstance().newRechargeProcess();
-                                mView.finishSelf();
-                            }
-                        })
-                        .setNegativeButton("完成交易", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                MemberManager.getInstance().newTrade();
-                                MemberManager.getInstance().newRechargeProcess();
-                                mView.finishSelf();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showToast("打印异常:" + error);
-                MemberManager.getInstance().newTrade();
-                MemberManager.getInstance().newRechargeProcess();
-                mView.finishSelf();
-            }
-        });
-    }
-
-    @Override
     public void printNormal() {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        // 扫码充值
-                        MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, null);
-                        if (SPManager.getInstance().getPrintClientSwitch()) {
-                            MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, false, null);
-                        }
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+        MemberManager.getInstance().printMemberRecordInfoAsync(memberRecordInfo, false);
         MemberManager.getInstance().newTrade();
         MemberManager.getInstance().newRechargeProcess();
         mView.finishSelf();

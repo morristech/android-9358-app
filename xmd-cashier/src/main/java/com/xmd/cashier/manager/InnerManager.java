@@ -29,6 +29,7 @@ import com.xmd.cashier.dal.net.response.InnerChannelListResult;
 import com.xmd.cashier.dal.net.response.InnerSwitchResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.WorkTimeResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
@@ -45,7 +46,10 @@ import java.util.Map;
 
 import retrofit2.Call;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-11-1.
@@ -277,7 +281,7 @@ public class InnerManager {
     }
 
     public void startGetInnerSwitch() {
-        mRetryGetInnerSwitch = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryGetInnerSwitch = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return getInnerSwitchConfig();
@@ -360,7 +364,7 @@ public class InnerManager {
     }
 
     public void startGetInnerChannel() {
-        mRetryGetInnerChannel = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryGetInnerChannel = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return getInnerChannelList();
@@ -419,6 +423,39 @@ public class InnerManager {
                 callBack.onError(e.getLocalizedMessage());
             }
         });
+    }
+
+    public void printInnerRecordInfoAsync(final InnerRecordInfo innerRecordInfo, final boolean retry) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printInnerRecordInfo(innerRecordInfo, retry, true, null);
+                        if (SPManager.getInstance().getPrintClientSwitch()) {
+                            printInnerRecordInfo(innerRecordInfo, retry, false, null);
+                        }
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void printInnerRecordInfoAsync(final InnerRecordInfo innerRecordInfo, final boolean retry, final boolean keep) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printInnerRecordInfo(innerRecordInfo, retry, keep, null);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     public void printInnerRecordInfo(InnerRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {

@@ -80,6 +80,9 @@ public class CashierManager {
         //防止重入
         if (!mCanCallPay.compareAndSet(true, false)) {
             XLogger.i("pos pay not finished, can not enter!");
+            mPayInfo.clear();
+            mPayInfo.callback = callback;
+            mPayInfo.callback.onResult("支付冲突，当前有未完成支付，请重启POS！", mPayInfo);
             return;
         }
         mPayInfo.clear();

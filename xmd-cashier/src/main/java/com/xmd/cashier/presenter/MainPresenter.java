@@ -34,7 +34,6 @@ import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.UpdateManager;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.pos.PosImpl;
-import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.XmdNetwork;
 
@@ -97,8 +96,6 @@ public class MainPresenter implements MainContract.Presenter {
     public void onClickLogout() {
         // 退出登录
         XLogger.i(TAG, "收银员登出操作");
-        CustomService.refreshOnlinePayNotify(false);
-        CustomService.refreshOrderRecordNotify(false);
         VerifyManager.getInstance().clearVerifyList();
         if (mLogoutSubscription != null) {
             mLogoutSubscription.unsubscribe();
@@ -473,8 +470,6 @@ public class MainPresenter implements MainContract.Presenter {
                 mView.showToast("初始化支付环境成功！");
                 // POS初始化成功之后添加请求头:设备信息
                 XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
-                CustomService.refreshOnlinePayNotify(true);
-                CustomService.refreshOrderRecordNotify(true);
             }
 
             @Override

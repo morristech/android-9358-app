@@ -247,7 +247,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     public void errorPlanData(String error) {
         mPlanLoadingLayout.setVisibility(View.GONE);
         mPlanLoadErrorLayout.setVisibility(View.VISIBLE);
-        mPlanErrorMsg.setText("加载失败:" + error);
+        mPlanErrorMsg.setText(error);
     }
 
     @Override

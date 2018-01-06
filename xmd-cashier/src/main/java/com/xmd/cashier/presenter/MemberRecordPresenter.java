@@ -14,10 +14,7 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-7-11.
@@ -162,18 +159,7 @@ public class MemberRecordPresenter implements MemberRecordContract.Presenter {
     }
 
     @Override
-    public void print(final MemberRecordInfo info, final boolean retry, final boolean keep) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        MemberManager.getInstance().printMemberRecordInfo(info, retry, keep, null);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+    public void print(MemberRecordInfo info, boolean retry, boolean keep) {
+        MemberManager.getInstance().printMemberRecordInfoAsync(info, retry, keep);
     }
 }

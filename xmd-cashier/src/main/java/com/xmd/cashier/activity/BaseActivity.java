@@ -17,8 +17,8 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.manager.AccountManager;
+import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.manager.VerifyManager;
-import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomToolbar;
 import com.xmd.m.network.EventTokenExpired;
 
@@ -45,8 +45,8 @@ public class BaseActivity extends AppCompatActivity {
     public void onEvent(EventTokenExpired event) {
         if (!(this instanceof LoginActivity)) {
             // 关闭轮询
-            CustomService.refreshOrderRecordNotify(false);
-            CustomService.refreshOnlinePayNotify(false);
+            NotifyManager.getInstance().stopRepeatOrderRecord();
+            NotifyManager.getInstance().stopRepeatOnlinePay();
             AccountManager.getInstance().cleanUserInfo();
             VerifyManager.getInstance().clearVerifyList();
             showToast(getString(R.string.token_expired));

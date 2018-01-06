@@ -1,7 +1,6 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
@@ -16,7 +15,6 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
-import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.cashier.widget.InputPasswordDialog;
 
 import rx.Subscription;
@@ -105,43 +103,6 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
                 dialog.dismiss();
                 // 调用会员支付
                 doMemberPay(method, password);
-            }
-        });
-    }
-
-    private void printStep() {
-        mView.showLoading();
-        TradeManager.getInstance().printMemberPay(true, new Callback() {
-            @Override
-            public void onSuccess(Object o) {
-                mView.hideLoading();
-                new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否需要打印客户联小票?")
-                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                TradeManager.getInstance().getCurrentTrade().isClient = true;
-                                finishMemberPay();
-                            }
-                        })
-                        .setNegativeButton("完成交易", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                TradeManager.getInstance().getCurrentTrade().isClient = false;
-                                finishMemberPay();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showToast("打印异常:" + error);
-                finishMemberPay();
             }
         });
     }

@@ -337,7 +337,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     private boolean resultCallBackBatch = false;
 
     public void startCallBackBatch() {
-        mRetryCallBackBatch = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryCallBackBatch = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return callbackBatch();

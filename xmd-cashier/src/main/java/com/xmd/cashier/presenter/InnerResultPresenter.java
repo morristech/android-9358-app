@@ -1,7 +1,6 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.UiNavigation;
@@ -11,19 +10,13 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
-import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.TradeManager;
-import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-11-4.
@@ -176,69 +169,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
     private void printNormal() {
         XLogger.i(TAG, "内网订单支付结果自动打印小票");
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        InnerManager.getInstance().printInnerRecordInfo(mRecordInfo, false, true, null);
-                        if (SPManager.getInstance().getPrintClientSwitch()) {
-                            InnerManager.getInstance().printInnerRecordInfo(mRecordInfo, false, false, null);
-                        }
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-
-    }
-
-    private void printStep() {
-        mView.showLoading();
-        InnerManager.getInstance().printInnerRecordInfo(mRecordInfo, false, true, new Callback() {
-            @Override
-            public void onSuccess(Object o) {
-                mView.hideLoading();
-                new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否需要打印客户联小票?")
-                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                Observable
-                                        .create(new Observable.OnSubscribe<Void>() {
-                                            @Override
-                                            public void call(Subscriber<? super Void> subscriber) {
-                                                InnerManager.getInstance().printInnerRecordInfo(mRecordInfo, false, false, null);
-                                                subscriber.onNext(null);
-                                                subscriber.onCompleted();
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe();
-                                newInnerTrade();
-                            }
-                        })
-                        .setNegativeButton("完成交易", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                newInnerTrade();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showToast("打印出现异常:" + error);
-                newInnerTrade();
-            }
-        });
+        InnerManager.getInstance().printInnerRecordInfoAsync(mRecordInfo, false);
     }
 
     @Override

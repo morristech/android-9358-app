@@ -1,6 +1,6 @@
 package com.xmd.cashier.manager;
 
-import android.content.Intent;
+import android.os.SystemClock;
 
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
@@ -23,11 +23,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 /**
  * Created by zr on 17-11-10.
  */
@@ -49,56 +44,20 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
             case AppConstants.PUSH_TAG_MEMBER_PRINT:
                 // 会员账户记录
                 XLogger.i(TAG, "On XmdPushMessage :" + AppConstants.PUSH_TAG_MEMBER_PRINT);
-                final MemberRecordInfo memberRecordInfo = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
-                Observable
-                        .create(new Observable.OnSubscribe<Void>() {
-                            @Override
-                            public void call(Subscriber<? super Void> subscriber) {
-                                MemberManager.getInstance().printMemberRecordInfo(memberRecordInfo, false, true, null);
-                                subscriber.onNext(null);
-                                subscriber.onCompleted();
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                MemberRecordInfo memberRecordInfo = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
+                MemberManager.getInstance().printMemberRecordInfoAsync(memberRecordInfo, false);
                 break;
             case AppConstants.PUSH_TAG_ORDER_PRINT:
                 // 预约订单
                 XLogger.i(TAG, "On XmdPushMessage :" + AppConstants.PUSH_TAG_ORDER_PRINT);
-                final OrderRecordInfo orderRecordInfo = new Gson().fromJson(message.getData(), OrderRecordInfo.class);
-                Observable
-                        .create(new Observable.OnSubscribe<Void>() {
-                            @Override
-                            public void call(Subscriber<? super Void> subscriber) {
-                                NotifyManager.getInstance().printOrderRecord(orderRecordInfo, false);
-                                subscriber.onNext(null);
-                                subscriber.onCompleted();
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                OrderRecordInfo orderRecordInfo = new Gson().fromJson(message.getData(), OrderRecordInfo.class);
+                NotifyManager.getInstance().printOrderRecordAsync(orderRecordInfo, false);
                 break;
             case AppConstants.PUSH_TAG_FASTPAY_PRINT:
                 // 在线买单
                 XLogger.i(TAG, "On XmdPushMessage :" + AppConstants.PUSH_TAG_FASTPAY_PRINT);
-                final OnlinePayInfo onlinePayInfo = new Gson().fromJson(message.getData(), OnlinePayInfo.class);
-                Observable
-                        .create(new Observable.OnSubscribe<Void>() {
-                            @Override
-                            public void call(Subscriber<? super Void> subscriber) {
-                                NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, true);
-                                if (SPManager.getInstance().getPrintClientSwitch()) {
-                                    NotifyManager.getInstance().printOnlinePayRecord(onlinePayInfo, false, false);
-                                }
-                                subscriber.onNext(null);
-                                subscriber.onCompleted();
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                OnlinePayInfo onlinePayInfo = new Gson().fromJson(message.getData(), OnlinePayInfo.class);
+                NotifyManager.getInstance().printOnlinePayRecordAsync(onlinePayInfo, false);
                 break;
             default:
                 break;
@@ -113,24 +72,21 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                 case AppConstants.PUSH_TAG_FASTPAY:
                     XLogger.i(TAG, "On RawMessage :" + AppConstants.PUSH_TAG_FASTPAY);
                     SPManager.getInstance().setFastPayPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
+                    NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
                     break;
                 case AppConstants.PUSH_TAG_ORDER:
                     XLogger.i(TAG, "On RawMessage :" + AppConstants.PUSH_TAG_ORDER);
                     SPManager.getInstance().setOrderPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
+                    NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
                     break;
-                case AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY:
+                case AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY:   //内网订单支付
                     XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());
                     InnerManager.getInstance().getInnerHoleBatchSubscription(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<InnerRecordInfo>() {
                         @Override
                         public void onSuccess(InnerRecordInfo o) {
                             XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---成功");
-
-                            Intent intent = new Intent();
-                            intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
-                            intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_INNER_PAY);
-                            intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, o);
-                            MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
+                            EventBus.getDefault().post(o);
                         }
 
                         @Override
@@ -139,28 +95,14 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                         }
                     });
                     break;
-                case AppConstants.PUSH_TAG_FAST_PAY_SUCCESS:
+                case AppConstants.PUSH_TAG_FAST_PAY_SUCCESS:    // 内网订单打印
                     XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());
                     InnerManager.getInstance().getInnerHoleBatchSubscription(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<InnerRecordInfo>() {
                         @Override
-                        public void onSuccess(final InnerRecordInfo o) {
+                        public void onSuccess(InnerRecordInfo o) {
                             XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---成功");
-                            Observable
-                                    .create(new Observable.OnSubscribe<Void>() {
-                                        @Override
-                                        public void call(Subscriber<? super Void> subscriber) {
-                                            InnerManager.getInstance().printInnerRecordInfo(o, false, true, null);
-                                            if (SPManager.getInstance().getPrintClientSwitch()) {
-                                                InnerManager.getInstance().printInnerRecordInfo(o, false, false, null);
-                                            }
-                                            subscriber.onNext(null);
-                                            subscriber.onCompleted();
-                                        }
-                                    })
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe();
+                            InnerManager.getInstance().printInnerRecordInfoAsync(o, false);
                         }
 
                         @Override
@@ -169,7 +111,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                         }
                     });
                     break;
-                case AppConstants.PUSH_TAG_UPLOAD_LOG:
+                case AppConstants.PUSH_TAG_UPLOAD_LOG:  //上传日志
                     XLogger.i(TAG, "On RawMessage :" + AppConstants.PUSH_TAG_UPLOAD_LOG);
                     if (PosImpl.getInstance().getPosIdentifierNo().equals(jsonObject.getString(RequestConstant.KEY_PUSH_DATA))) {
                         if (!Utils.isWifiNetwork(MainApplication.getInstance().getApplicationContext())) {
