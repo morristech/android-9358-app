@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.event.OrderCountUpDate;
+import com.xmd.manager.msgctrl.MsgDef;
+import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.response.ReportNewsResult;
 import com.xmd.permission.CheckBusinessPermission;
@@ -58,7 +60,7 @@ public class OperatingReportFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-      //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REPORT_NEWS);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class AccountDataResult extends BaseResult {
 
             public String accountType;
             public String categoryType;
-            public int totalAmount;
+            public long totalAmount;
             public int amount;
             public Object dealDate;
             public String accountTypeName;

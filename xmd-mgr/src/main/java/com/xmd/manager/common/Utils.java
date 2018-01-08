@@ -623,9 +623,9 @@ public class Utils {
         return true;
     }
 
-    public static String getNumToString(int num, boolean isElement) {
+    public static String getNumToString(long num, boolean isElement) {
         float moneyFloat = 0.00f;
-        int moneyInt = 0;
+        long moneyInt = 0;
         if (isElement) {
             moneyInt = num;
         } else {

@@ -382,7 +382,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
     private int customerCount;
-    private int fastPayAmount;
+    private long fastPayAmount;
     private boolean showFastPay;
 
     @Nullable
@@ -550,7 +550,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 if (result.respData.amountList.get(0).accountType.equals("fast_pay")) {
                     //在线买单
                     showFastPay = true;
-                    int lastViewFastPayValue = SharedPreferenceHelper.getListViewFastPayValue();
+                    long lastViewFastPayValue = SharedPreferenceHelper.getListViewFastPayValue();
                     if (lastViewFastPayValue < 0) {
                         SharedPreferenceHelper.setLastViewFastPayValue(fastPayAmount);
                     } else if (fastPayAmount > lastViewFastPayValue) {

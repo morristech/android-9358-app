@@ -52,6 +52,7 @@ import com.xmd.manager.beans.StaffDataBean;
 import com.xmd.manager.beans.TechBadComment;
 import com.xmd.manager.beans.TechRankingBean;
 import com.xmd.manager.beans.VisitInfo;
+import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.DescribeMesaageUtil;
 import com.xmd.manager.common.ItemSlideHelper;
 import com.xmd.manager.common.ResourceUtils;
@@ -1225,12 +1226,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         final OperateReportBean operateBean = (OperateReportBean) obj;
         OperateReportListItemViewHolder viewHolder = (OperateReportListItemViewHolder) holder;
         viewHolder.imgOperateNewRemark.setVisibility(operateBean.read == 0 ? View.VISIBLE : View.GONE);
-        viewHolder.tvReportName.setText(operateBean.name);
+        viewHolder.tvReportName.setText(Utils.StrSubstring(15,operateBean.name,true));
         viewHolder.tvReportDelete.setVisibility(View.GONE);
         if (operateBean.type.equals("custom")) {
             viewHolder.tvReportDelete.setVisibility(View.VISIBLE);
+            viewHolder.tvReportCreateTime.setVisibility(View.VISIBLE);
+            viewHolder.tvReportCreateTime.setText(String.format("%s ~ %s", DateUtil.getFromatDate(operateBean.startTime,"yyyy.MM.dd HH:mm"),
+                    DateUtil.getFromatDate(operateBean.endTime,"yyyy.MM.dd HH:mm")));
         } else {
             viewHolder.tvReportDelete.setVisibility(View.GONE);
+            viewHolder.tvReportCreateTime.setVisibility(View.INVISIBLE);
         }
         viewHolder.tvReportShare.setOnClickListener(v -> mCallback.onPositiveButtonClicked(operateBean));
         viewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(operateBean));
@@ -1835,6 +1840,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView tvReportDelete;
         @BindView(R.id.img_operate_new_remark)
         ImageView imgOperateNewRemark;
+        @BindView(R.id.tv_report_create_time)
+        TextView tvReportCreateTime;
 
         OperateReportListItemViewHolder(View view) {
             super(view);

@@ -95,7 +95,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         //加载权限菜单
         BusinessPermissionManager.getInstance().loadPermissions(new Callback<Void>() {
             @Override

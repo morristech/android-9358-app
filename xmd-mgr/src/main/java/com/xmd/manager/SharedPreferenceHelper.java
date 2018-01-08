@@ -280,12 +280,12 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putInt(KEY_LAST_VIEW_CUSTOMER_COUNT, count).apply();
     }
 
-    public static int getListViewFastPayValue() {
-        return mSettingPreference.getInt(KEY_LAST_VIEW_FAST_PAY_VALUE, -1);
+    public static long getListViewFastPayValue() {
+        return mSettingPreference.getLong(KEY_LAST_VIEW_FAST_PAY_VALUE, -1);
     }
 
-    public static void setLastViewFastPayValue(int count) {
-        mSettingPreference.edit().putInt(KEY_LAST_VIEW_FAST_PAY_VALUE, count).apply();
+    public static void setLastViewFastPayValue(long count) {
+        mSettingPreference.edit().putLong(KEY_LAST_VIEW_FAST_PAY_VALUE, count).apply();
     }
 
     public static void setClubId(String clubId) {
