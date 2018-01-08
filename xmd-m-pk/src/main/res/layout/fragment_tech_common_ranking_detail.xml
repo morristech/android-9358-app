@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="fragment" type="com.m.pk.TechCommonRankingDetailFragment"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_main"
+        android:orientation="vertical">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeTechRankingList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_container">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerRankingList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+</layout>
+

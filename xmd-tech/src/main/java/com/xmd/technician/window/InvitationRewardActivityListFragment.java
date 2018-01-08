@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
 import com.xmd.chat.event.ChatUmengStatisticsEvent;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.InvitationRewardBean;
 import com.xmd.technician.common.DateUtil;
@@ -91,7 +90,7 @@ public class InvitationRewardActivityListFragment extends BaseFragment {
         EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_INVITATION));
         if (rewardBean != null) {
             ShareController.doShare(rewardBean.registerPrize.imageUrl, rewardBean.activityLink, rewardBean.activityName,
-                    ResourceUtils.getString(R.string.invitation_reward_share_description), Constant.SHARE_TYPE_INVITATION_REWARD_ACTIVITY, rewardBean.activityId);
+                    ResourceUtils.getString(R.string.invitation_reward_share_description), com.xmd.technician.http.RequestConstant.KEY_INVITE_GIFT, rewardBean.activityId);
         }
 
     }

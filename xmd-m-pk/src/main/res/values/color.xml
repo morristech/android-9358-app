@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_main_body">#666666</color>
+    <color name="color_main_btn">#FF6666</color>
+    <color name="color_main_title">#333333</color>
+    <color name="ranking_register">#FFCC36</color>
+    <color name="ranking_server">#EA5191</color>
+    <color name="ranking_sail">#FF7C41</color>
+    <color name="color_main_head">#212121</color>
+    <color name="number_of_groups">#feb705</color>
+    <color name="alert_text_color">#616161</color>
+    <color name="operation_button_negative_bg_normal">#CAC7CB</color>
+    <color name="operation_button_positive_bg_normal">#FF6666</color>
+    <color name="operation_button_bg_pressed">#c9443a</color>
+    <color name="color_btn_chat">#AAff6666</color>
+    <color name="underway_color">#6ed745</color>
+    <color name="color_main_remark">#999999</color>
+    <color name="operation_button_positive_text_pressed">#CAC7CB</color>
+    <color name="operation_button_negative_text_normal">@color/white</color>
+    <color name="operation_button_negative_text_pressed">@color/white</color>
+    <color name="operation_button_positive_text_normal">@color/white</color>
+    <color name="color_main">#f5f5f5</color>
+    <color name="bg_btn_color">#FEFEFE</color>
+    <color name="coupon_code_text_color">#4c4c4c</color>
+</resources>

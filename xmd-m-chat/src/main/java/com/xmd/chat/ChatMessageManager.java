@@ -128,7 +128,7 @@ public class ChatMessageManager {
                             }
 
                             displayNotification(chatMessage);
-                            if(AppUtils.isBackground(XmdApp.getInstance().getContext())){
+                            if (AppUtils.isBackground(XmdApp.getInstance().getContext())) {
                                 vibrateAndPlayTone();
                             }
                         }
@@ -198,8 +198,9 @@ public class ChatMessageManager {
                 remoteUser, location.latitude, location.longitude, location.street, location.staticMapUrl);
         return sendMessage(message);
     }
+
     //发送邀请有礼
-    public ChatMessage sendInviteGiftMessage(String remoteChatId){
+    public ChatMessage sendInviteGiftMessage(String remoteChatId) {
         ShareChatMessage message = ShareChatMessage.createInvitationMessage(remoteChatId);
         return sendMessage(message);
     }
@@ -375,7 +376,7 @@ public class ChatMessageManager {
     }
 
     private void vibrateAndPlayTone() {
-        long[] pattern = new long[] { 0, 180, 80, 120 };
+        long[] pattern = new long[]{0, 180, 80, 120};
         vibrator.vibrate(pattern, -1);
 
         if (ringtone == null) {

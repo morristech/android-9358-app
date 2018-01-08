@@ -98,7 +98,7 @@ public class NormalCouponListFragment extends BaseListFragment<ShareCouponBean> 
     public void onShareClicked(ShareCouponBean bean) {
         super.onShareClicked(bean);
         ShareController.doShare("", bean.shareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.actTitle,
-                bean.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", Constant.SHARE_COUPON, bean.actId);
+                bean.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", RequestConstant.KEY_COUPON_REWARD, bean.actId);
     }
 
     @Override

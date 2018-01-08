@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_time_day"
+          android:title="@string/date_type_day"/>
+    <item android:id="@+id/menu_time_week"
+          android:title="@string/date_type_week"/>
+    <item android:id="@+id/menu_time_month"
+          android:title="@string/date_type_month"/>
+    <item android:id="@+id/menu_time_quarter"
+          android:title="@string/date_type_quarter"/>
+    <item android:id="@+id/menu_time_year"
+          android:title="@string/date_type_year"/>
+    <item android:id="@+id/menu_time_total"
+          android:title="@string/date_type_total"/>
+</menu>

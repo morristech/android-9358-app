@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="item"
+                  type="com.m.pk.bean.ActivityRankingBean"/>
+    </data>
+    <com.xmd.app.widget.BlockChildLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@drawable/selector_bg_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="horizontal"
+            android:padding="@dimen/inter_space">
+
+            <View
+                android:layout_width="@dimen/tiny_padding"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:layout_weight="1"
+                android:text="@{item.activityName}"
+                android:textColor="@color/coupon_code_text_color"
+                android:textSize="@dimen/fontTitle"/>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@{item.status.equals(String.valueOf(4))?@drawable/icon_underway:@drawable/icon_completed}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_normal_margin"
+                android:enabled="@{item.status.equals(String.valueOf(4)) ? true : false}"
+                android:text="@{item.statusName}"
+                android:textColor="@color/selector_pk_active_status"
+                android:textSize="@dimen/fontBiggerThanNormal"/>
+        </LinearLayout>
+
+        <View
+            style="@style/horizontal_divider_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/inter_space">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/teams_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:clickable="false"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/right_arrow"/>
+        </LinearLayout>
+
+        <View
+            style="@style/horizontal_divider_line"
+            android:layout_marginTop="@dimen/small_padding"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/inter_space"
+            android:text='@{String.format("%s至%s",item.startDate,item.endDate)}'
+            android:textSize="@dimen/fontBody"
+            tools:text="2月10日-2月27日"/>
+
+    </com.xmd.app.widget.BlockChildLinearLayout>
+
+</layout>

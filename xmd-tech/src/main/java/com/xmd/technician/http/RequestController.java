@@ -448,6 +448,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM:
                 techAuditConfirm();
                 break;
+            case MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE:
+                techShareCountUpdate((Map<String, String>) msg.obj);
+                break;
         }
 
         return true;
@@ -2210,6 +2213,19 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
+    //统计技师分享次数
+    public void techShareCountUpdate(Map<String, String> params){
+        Call<BaseResult> call = getSpaService().updateTechShareCount(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_ACT_ID),
+                params.get(RequestConstant.KEY_ACT_TYPE));
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+
+            }
+        });
+    }
+
 
 
 }

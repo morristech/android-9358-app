@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.Constants;
 import com.xmd.chat.ChatMessageManager;
@@ -193,6 +192,8 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
 
     @Override
     public void onClick(View v) {
+        Map<String,String> mParams;
+        mParams = new HashMap<>();
         if (v.getId() == R.id.toolbar_right_share) {
             Intent resultIntent = new Intent();
             resultIntent.putParcelableArrayListExtra("coupon", (ArrayList<? extends Parcelable>) mSelectedCouponInfo);
@@ -202,8 +203,12 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             failedCount = 0;
             remainSendCount = mSelectedCouponInfo.size();
             for (CouponInfo couponInfo : mSelectedCouponInfo) {
+                mParams.clear();
                 if (!("paid").equals(couponInfo.couponType)) {
                     userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId);
+                    mParams.put(RequestConstant.KEY_ACT_ID,couponInfo.actId);
+                    mParams.put(RequestConstant.KEY_ACT_TYPE,RequestConstant.KEY_COUPON_REWARD);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE,mParams);
                 } else {
                     successCount++;
                     remainSendCount--;
@@ -212,6 +217,9 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                             true,
                             getShareText(couponInfo),
                             couponInfo.actId, LoginTechnician.getInstance().getInviteCode());
+                    mParams.put(RequestConstant.KEY_ACT_ID,couponInfo.actId);
+                    mParams.put(RequestConstant.KEY_ACT_TYPE,RequestConstant.KEY_PAID_COUPON);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE,mParams);
                 }
             }
             checkDeliverResult();

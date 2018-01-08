@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hyphenate.exceptions.HyphenateException;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -86,7 +86,7 @@ public class RewardActivityListFragment extends BaseListFragment<RewardBean> {
         super.onShareClicked(bean);
 
         ShareController.doShare(bean.image, bean.shareUrl, bean.actName,
-                ResourceUtils.getString(R.string.reward_share_description), Constant.SHARE_TYPE_REWARD_ACTIVITY, "");
+                ResourceUtils.getString(R.string.reward_share_description), RequestConstant.KEY_LUCKY_WHEEL, bean.actId);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.xmd.salary.bean.OrderItemBean;
 import com.xmd.salary.bean.OrderParameterBean;
 import com.xmd.salary.bean.PackageItemsBean;
 import com.xmd.salary.bean.PackageListBean;
+import com.xmd.salary.bean.PaidServiceItemBean;
 import com.xmd.salary.bean.SalesCommissionListBean;
 import com.xmd.salary.bean.ServiceCellBean;
 import com.xmd.salary.bean.ServiceCommissionListBean;
@@ -33,6 +34,7 @@ public class SalaryIntroduceDataManager {
     private List<ServiceItemBean> mServiceItemList; //纵向列表
     private List<List<ServiceCellBean>> mServiceCellList; //
     private List<CommissionListBeanX> mCommissionListBeanX;
+    private List<CommodityItemBean> mPaidServiceList; //限时抢
 
     private CommissionSettingBean mSettingBean;
     private static SalaryIntroduceDataManager mSalaryIntroduceInstance;
@@ -45,6 +47,7 @@ public class SalaryIntroduceDataManager {
         mBellList = new ArrayList<>();
         mServiceCellList = new ArrayList<>();
         mCommissionListBeanX = new ArrayList<>();
+        mPaidServiceList = new ArrayList<>();
     }
 
     public static SalaryIntroduceDataManager getSalaryIntroduceInstance() {
@@ -66,6 +69,7 @@ public class SalaryIntroduceDataManager {
         BellListDataChanged();
         CommissionListBeanXDataChanged();
         ServiceCellListDataChanged();
+        PaidServiceListDataChanged();
     }
 
     private void CommissionListBeanXDataChanged() {
@@ -98,6 +102,29 @@ public class SalaryIntroduceDataManager {
             mServiceCellList.add(cellList);
         }
 
+    }
+    /*
+           mCommodityCommissionList.clear();
+        if (mSettingBean.serviceCommissionList == null) {
+            return;
+        }
+        for (SalesCommissionListBean commission : mSettingBean.salesCommissionList) {
+            for (CommissionListBean bean : commission.commissionList) {
+                CommodityItemBean itemBean = new CommodityItemBean(bean.businessName, bean.commission);
+                mCommodityCommissionList.add(itemBean);
+            }
+        }
+     */
+
+    private void PaidServiceListDataChanged() {
+        mPaidServiceList.clear();
+        if (mSettingBean.paidServiceItemList == null) {
+            return;
+        }
+        for (PaidServiceItemBean serviceBean : mSettingBean.paidServiceItemList) {
+            CommodityItemBean itemBean = new CommodityItemBean(serviceBean.name, serviceBean.commissionAmount);
+            mPaidServiceList.add(itemBean);
+        }
     }
 
     private void BellListDataChanged() {
@@ -136,19 +163,19 @@ public class SalaryIntroduceDataManager {
             String des = "";
             switch (itemBean.type) {
                 case 0:
-                    des = "积分：" + "*" + String.valueOf(itemBean.oriAmount)+"\n";
+                    des = "积分：" + "*" + String.valueOf(itemBean.oriAmount) + "\n";
                     break;
                 case 1:
-                    des = "礼品：" + itemBean.name + "*" + itemBean.itemCount+"\n";
+                    des = "礼品：" + itemBean.name + "*" + itemBean.itemCount + "\n";
                     break;
                 case 2:
-                    des = "优惠券：" + itemBean.name + "*" + itemBean.itemCount+"\n";
+                    des = "优惠券：" + itemBean.name + "*" + itemBean.itemCount + "\n";
                     break;
                 case 3:
-                    des = "项目：" + itemBean.name + "*" + itemBean.itemCount+"\n";
+                    des = "项目：" + itemBean.name + "*" + itemBean.itemCount + "\n";
                     break;
                 case 4:
-                    des = "现金：" + String.format("%s 元", String.valueOf(itemBean.oriAmount / 100f))+"\n";
+                    des = "现金：" + String.format("%s 元", String.valueOf(itemBean.oriAmount / 100f)) + "\n";
                     break;
             }
             desMessage += des;
@@ -207,6 +234,10 @@ public class SalaryIntroduceDataManager {
 
     public List<CommissionListBeanX> getCommissionBeanXList() {
         return mCommissionListBeanX;
+    }
+
+    public List<CommodityItemBean> getPaidServiceList() {
+        return mPaidServiceList;
     }
 
 

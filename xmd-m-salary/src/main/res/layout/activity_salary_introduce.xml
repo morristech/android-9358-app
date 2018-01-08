@@ -62,6 +62,7 @@
                     android:id="@+id/tv_commodities"
                     style="@style/salary_commission_title_style"
                     android:text="@string/activity_commission_message_null"
+                    android:textColor="#C3C3C3"
                     android:visibility="gone"/>
                 <LinearLayout
                     android:id="@+id/ll_commodities_view"
@@ -101,6 +102,7 @@
                     android:id="@+id/tv_card"
                     style="@style/salary_commission_title_style"
                     android:text="@string/activity_commission_message_null"
+                    android:textColor="#C3C3C3"
                     android:visibility="gone"/>
                 <LinearLayout
                     android:id="@+id/ll_card_view"
@@ -155,6 +157,7 @@
                     android:id="@+id/tv_package"
                     style="@style/salary_commission_title_style"
                     android:text="@string/activity_commission_message_null"
+                    android:textColor="#C3C3C3"
                     android:visibility="gone"/>
 
                 <LinearLayout
@@ -195,6 +198,46 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_paid_service"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView style="@style/salary_commission_title_style"
+                          android:text="@string/commission_paid_service_text"/>
+                <TextView
+                    android:id="@+id/tv_paid_service"
+                    style="@style/salary_commission_title_style"
+                    android:text="@string/activity_commission_message_null"
+                    android:textColor="#C3C3C3"
+                    android:visibility="gone"/>
+                <LinearLayout
+                    android:id="@+id/ll_paid_service_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/shape_bg_white_with_stoke"
+                    android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:padding="0.5dp">
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="项目名称"/>
+                        <TextView style="@style/salary_commission_menu_style"
+                                  android:text="提成（元）"/>
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/paid_service_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="0.5dp"
+                        android:paddingLeft="0.5dp"
+                        android:paddingRight="0.5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/ll_order"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -226,6 +269,7 @@
                         android:paddingRight="0.5dp"/>
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

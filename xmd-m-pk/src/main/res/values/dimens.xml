@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="inter_space">12dp</dimen>
+    <dimen name="fontSize">17sp</dimen>
+    <dimen name="fontRemark">10sp</dimen>
+    <dimen name="fontNormal">12sp</dimen>
+    <dimen name="home_button_height">50dp</dimen>
+    <dimen name="personal_margin">16dp</dimen>
+    <dimen name="personal_padding">12dp</dimen>
+    <dimen name="fontTitle_small">15sp</dimen>
+    <dimen name="fontBiggerThanNormal">13sp</dimen>
+    <dimen name="fontHead">18sp</dimen>
+</resources>

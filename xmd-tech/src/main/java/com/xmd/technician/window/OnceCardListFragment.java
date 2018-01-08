@@ -94,7 +94,7 @@ public class OnceCardListFragment extends BaseFragment {
             @Override
             public void onShareClicked(OnceCardItemBean bean) {
                 ShareController.doShare(bean.imageUrl, bean.shareUrl, bean.name,
-                        bean.shareDescription, Constant.SHARE_TYPE_ONCE_CARD, bean.id);
+                        bean.shareDescription, bean.cardType, bean.id);
             }
 
             @Override
@@ -105,14 +105,17 @@ public class OnceCardListFragment extends BaseFragment {
                 params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
                 params.put(Constant.PARAM_SHARE_TITLE, bean.name);
                 params.put(Constant.PARAM_SHARE_DESCRIPTION, bean.shareDescription);
-                params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_ONCE_CARD);
+
                 params.put(Constant.PARAM_ACT_ID, bean.id);
                 if (bean.cardType.equals(Constant.ITEM_CARD_TYPE)) {
                     params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.times_card_message));
+                    params.put(Constant.PARAM_SHARE_TYPE, RequestConstant.KEY_ITEM_CARD);
                 } else if (bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
                     params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.package_message));
+                    params.put(Constant.PARAM_SHARE_TYPE, RequestConstant.KEY_ITEM_PACKAGE);
                 } else {
                     params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.gift_message));
+                    params.put(Constant.PARAM_SHARE_TYPE, RequestConstant.KEY_CREDIT_GIFT);
                 }
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
             }

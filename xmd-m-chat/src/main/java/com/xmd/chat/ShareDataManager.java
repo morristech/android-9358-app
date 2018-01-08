@@ -98,6 +98,18 @@ public class ShareDataManager {
                     String.valueOf(journal.templateId),
                     journal.title);
             ChatMessageManager.getInstance().sendMessage(message);
+            Observable<BaseBean> observable = XmdNetwork.getInstance().getService(NetService.class).updateTechShareCount(journal.journalId, "journal");
+            XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                @Override
+                public void onCallbackSuccess(BaseBean result) {
+
+                }
+
+                @Override
+                public void onCallbackError(Throwable e) {
+
+                }
+            });
         }
     }
 
@@ -106,6 +118,18 @@ public class ShareDataManager {
         for (OnceCard data : shareData) {
             ShareChatMessage message = ShareChatMessage.createOnceCardMessage(chatId, data);
             ChatMessageManager.getInstance().sendMessage(message);
+            Observable<BaseBean> observable = XmdNetwork.getInstance().getService(NetService.class).updateTechShareCount(data.id, data.cardType);
+            XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                @Override
+                public void onCallbackSuccess(BaseBean result) {
+
+                }
+
+                @Override
+                public void onCallbackError(Throwable e) {
+
+                }
+            });
         }
     }
 
@@ -116,12 +140,36 @@ public class ShareDataManager {
             switch (data.getCategory()) {
                 case MarketingCategory.TIME_LIMIT:
                     message = ShareChatMessage.createMarketingTimeLimitMessage(chatId, data);
+                    Observable<BaseBean> observable = XmdNetwork.getInstance().getService(NetService.class).updateTechShareCount(data.id, "paid_service_item");
+                    XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                        @Override
+                        public void onCallbackSuccess(BaseBean result) {
+
+                        }
+
+                        @Override
+                        public void onCallbackError(Throwable e) {
+
+                        }
+                    });
                     break;
                 case MarketingCategory.ONE_YUAN:
                     message = ShareChatMessage.createMarketingOneYuanMessage(chatId, data);
                     break;
                 case MarketingCategory.LUCKY_WHEEL:
                     message = ShareChatMessage.createMarketingLuckWheelMessage(chatId, data);
+                    Observable<BaseBean> observableLuckyWheel = XmdNetwork.getInstance().getService(NetService.class).updateTechShareCount(data.id, "lucky_wheel");
+                    XmdNetwork.getInstance().request(observableLuckyWheel, new NetworkSubscriber<BaseBean>() {
+                        @Override
+                        public void onCallbackSuccess(BaseBean result) {
+
+                        }
+
+                        @Override
+                        public void onCallbackError(Throwable e) {
+
+                        }
+                    });
                     break;
             }
             if (message != null) {

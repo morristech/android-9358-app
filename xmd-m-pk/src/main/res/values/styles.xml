@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="main_fragment_layout_technician_ranking_section_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/small_padding</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="main_fragment_layout_technician_ranking_label_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/fontRemark</item>
+        <item name="android:textColor">@color/color_main_body</item>
+        <item name="android:background">@drawable/bg_main_tech_ranking_serial</item>
+        <item name="android:layout_marginTop">@dimen/tiny_padding</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="main_fragment_layout_technician_pk_ranking_label_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+        <item name="android:textColor">@color/number_of_groups</item>
+        <item name="android:layout_marginTop">@dimen/tiny_padding</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="main_fragment_layout_technician_ranking_value_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/fontTitle</item>
+        <item name="android:textColor">@color/color_main_head</item>
+        <item name="android:layout_marginTop">-20dp</item>
+    </style>
+    <style name="main_fragment_layout_technician_pk_ranking_value_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+        <item name="android:textColor">@color/color_main_body</item>
+        <item name="android:layout_marginTop">-20dp</item>
+    </style>
+
+    <style name="main_fragment_layout_technician_ranking_avatar_style">
+        <item name="android:layout_width">47dp</item>
+        <item name="android:layout_height">47dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">@dimen/activity_normal_margin</item>
+    </style>
+
+</resources>

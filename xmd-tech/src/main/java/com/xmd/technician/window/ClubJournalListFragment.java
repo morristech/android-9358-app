@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hyphenate.exceptions.HyphenateException;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ClubJournalBean;
 import com.xmd.technician.common.ResourceUtils;
@@ -99,7 +98,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     public void onShareClicked(ClubJournalBean bean) {
         super.onShareClicked(bean);
         ShareController.doShare(bean.image, bean.shareUrl, bean.title,
-                bean.subTitle, Constant.SHARE_JOURNAL, bean.journalId);
+                bean.subTitle, RequestConstant.KEY_JOURNAL, bean.journalId);
     }
 
     @Override

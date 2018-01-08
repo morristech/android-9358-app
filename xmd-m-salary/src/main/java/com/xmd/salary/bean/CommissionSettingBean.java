@@ -24,4 +24,5 @@ public class CommissionSettingBean {
     public List<BellListBean> bellList;  //会所上钟类型列表
     public List<ServiceCommissionListBean> serviceCommissionList; //服务提成列表
     public List<DiscountMallSwitchBean> discountMallSwitch; //特惠商城列表
+    public List<PaidServiceItemBean> paidServiceItemList; //限时抢提成列表
 }

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="data"
+                  type="com.m.pk.TechCommonRankingDetailActivity"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_pk_head_bg">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height">
+
+                <ImageView
+                    android:id="@+id/toolbar_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:onClick="finishClicked"
+                    android:paddingLeft="@dimen/personal_margin"
+                    android:paddingRight="@dimen/personal_padding"
+                    android:scaleType="center"
+                    android:src="@drawable/icon_back_white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/pk_ranking_detail_title"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/fontHead"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_pk_detail_time"
+                    android:layout_width="80dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/small_padding"
+                    android:background="@drawable/bg_pk_ranking_time_filter"
+                    android:onClick="onTimeFilterClickedListener">
+
+                    <TextView
+                        android:id="@+id/time_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:drawablePadding="@dimen/small_padding"
+                        android:drawableRight="@drawable/icon_drop_down"
+                        android:text="@{data.dateType}"
+                        android:textColor="@color/colorWhite"
+                        tools:text="今天"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="85dp"
+                android:layout_height="24dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_pk_active_under_way"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/pk_active_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableLeft="@drawable/icon_underway"
+                    android:drawablePadding="@dimen/small_padding"
+                    android:gravity="center"
+                    android:text="进行中"
+                    android:textColor="@color/pk_state_text_color"/>
+            </RelativeLayout>
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_color"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/inter_space"
+            android:paddingLeft="@dimen/personal_margin"
+            android:paddingRight="@dimen/personal_padding"
+            android:paddingTop="@dimen/inter_space"
+            android:visibility="@{data.showTotalView ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="累计"
+                android:textColor="@color/selector_operation_positive_button_text"
+                android:textSize="@dimen/fontTitle_small"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_color"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/personal_margin"
+            android:paddingRight="@dimen/personal_padding"
+            android:visibility="@{data.showTotalView ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/icon_back_white_left"
+                android:drawablePadding="@dimen/small_padding"
+                android:onClick="reduceTimeClicked"
+                android:paddingBottom="@dimen/inter_space"
+                android:paddingTop="@dimen/inter_space"
+                android:text="@{data.timeBefore}"
+                android:textColor="@color/selector_operation_positive_button_text"
+                android:textSize="@dimen/fontTitle_small"
+                android:visibility="@{data.showTimeBefore ? View.VISIBLE : View.INVISIBLE}"
+                tools:text="2月28日"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@{data.timeCurrent}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/fontTitle"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/fontBiggerThanNormal"
+                    android:text="@{data.timeDetail}"
+                    android:visibility="@{data.showTimeToday ? View.VISIBLE : View.GONE}"
+                    tools:text="2月28日"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/small_padding"
+                android:drawableRight="@drawable/icon_back_white_right"
+                android:gravity="right"
+                android:onClick="addTimeClicked"
+                android:paddingBottom="@dimen/inter_space"
+                android:paddingTop="@dimen/inter_space"
+                android:text="@{data.timeNext}"
+                android:textColor="@color/selector_operation_positive_button_text"
+                android:textSize="@dimen/fontTitle_small"
+                android:visibility="@{data.showTimeNext ? View.VISIBLE : View.INVISIBLE}"
+                tools:text="2月28日"/>
+        </LinearLayout>
+
+        <com.xmd.app.widget.ViewPagerTabIndicator
+            android:id="@+id/tabIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.xmd.app.widget.ViewPagerTabIndicator>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </LinearLayout>
+</layout>
+

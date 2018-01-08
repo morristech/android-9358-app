@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">xmd-m-pk</string>
+    <!--排行版-->
+    <string name="pk_ranking_head">排行榜</string>
+    <string name="pk_ranking_on_line">进行中</string>
+    <string name="pk_active_title">谁是王者</string>
+    <string name="btn_pk_ranking_detail">查看个人排行</string>
+    <string name="pk_ranking_detail_title">排行榜</string>
+    <string name="pk_team_ranking_title">队伍排名</string>
+    <string name="pk_personal_ranking_title">个人排名</string>
+    <string name="personal_ranking_toker">拓客之星</string>
+    <string name="personal_ranking_sale">销售之星</string>
+    <string name="personal_ranking_service">服务之星</string>
+    <string name="date_type_day">天</string>
+    <string name="date_type_week">周</string>
+    <string name="date_type_quarter">季</string>
+    <string name="date_type_month">月</string>
+    <string name="date_type_year">年</string>
+    <string name="current_date_type_day">今天</string>
+    <string name="current_date_type_week">本周</string>
+    <string name="current_date_type_before_week">上周</string>
+    <string name="current_date_type_next_week">下周</string>
+    <string name="current_date_type_quarter">本季</string>
+    <string name="current_date_type_before_quarter">上季</string>
+    <string name="current_date_type_next_quarter">下季</string>
+    <string name="current_date_type_month">本月</string>
+    <string name="current_date_type_before_month">上月</string>
+    <string name="current_date_type_next_month">下月</string>
+    <string name="current_date_type_year">今年</string>
+    <string name="date_type_total">累计</string>
+    <string name="loading_hint_message">正在加载...</string>
+</resources>

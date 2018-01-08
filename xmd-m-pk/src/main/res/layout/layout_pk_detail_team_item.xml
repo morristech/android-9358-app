@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/activity_normal_margin"
+              android:layout_marginRight="@dimen/activity_normal_margin"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/team_ranking_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:background="@drawable/bg_team_ranking_title"
+            android:gravity="center"
+            android:padding="@dimen/small_padding"
+            android:text="@string/pk_team_ranking_title"
+            android:textColor="#f98100"
+            android:textSize="@dimen/fontSize"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_normal_margin"
+            android:paddingTop="@dimen/activity_normal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="排名"
+                android:textColor="@color/color_main_body"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="姓名"
+                android:textColor="@color/color_main_body"
+                android:textSize="13sp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_team_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_selected_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/inter_space"
+                    android:text="全部队伍"
+                    android:textColor="@color/color_main_body"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_padding"
+                    android:src="@drawable/icon_ranking_down_filter"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="战绩"
+                android:textColor="@color/color_main_body"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <View style="@style/line"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_normal_margin">
+
+        <ImageView
+            android:id="@+id/img_ranking_number"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_nub_01"/>
+
+        <TextView
+            android:id="@+id/text_ranking_number"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/color_main_title"
+            android:textSize="@dimen/fontSize"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:orientation="vertical">
+
+            <com.xmd.app.widget.RoundImageView
+                android:id="@+id/img_ranking_head"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/icon22"/>
+
+            <TextView
+                android:id="@+id/tv_captain_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-8dp"
+                android:background="@drawable/bg_ranking_captain_mark"
+                android:paddingBottom="2dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:text="队长"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontRemark"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:layout_weight="1.2"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_ranking_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/small_padding"
+                android:textColor="@color/color_main_title"
+                android:textSize="@dimen/fontTitle"
+                tools:text="李佳绩"/>
+            <TextView
+                android:id="@+id/tv_ranking_serialNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="6dp"
+                android:textColor="@color/color_main_title"
+                android:textSize="@dimen/fontNormal"
+                android:visibility="gone"
+                tools:text="[ 0021 ]"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_ranking_member"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="#757575"
+            android:textSize="@dimen/fontBody"
+            tools:text="#8队员"/>
+
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:layout_weight="1"
+                      android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_ranking_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="@dimen/small_padding"
+                android:textColor="@color/color_main_btn"
+                android:textSize="@dimen/fontCaption"
+                android:visibility="gone"
+                tools:text="157个"/>
+
+            <TextView
+                android:id="@+id/tv_ranking_member_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="@dimen/small_padding"
+                android:textColor="@color/color_main_btn"
+                android:textSize="@dimen/fontCaption"
+                tools:text="157个"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

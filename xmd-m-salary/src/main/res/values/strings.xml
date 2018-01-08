@@ -5,6 +5,7 @@
     <string name="table_text_customer">自定义</string>
     <string name="salary_title">工资</string>
     <string name="commission_commodities_text">实物商品</string>
+    <string name="commission_paid_service_text">营销活动：限时抢</string>
     <string name="commission_card_text">会员卡（店内充值优惠）</string>
     <string name="commission_package_text">特惠商城：项目次卡、混合套餐</string>
     <string name="commission_order_text">预约</string>
@@ -15,6 +16,6 @@
     <string name="salary_detail_title">工资明细</string>
     <string name="salary_introduce_title">工资说明</string>
     <string name="card_commission_alter_message">会员充值仅店内充值套餐才可获得提成</string>
-    <string name="activity_commission_message_null">无</string>
+    <string name="activity_commission_message_null">暂无活动</string>
 
 </resources>

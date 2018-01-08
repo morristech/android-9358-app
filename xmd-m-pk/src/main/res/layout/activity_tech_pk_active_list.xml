@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<data>-->
+        <!--<variable name="data"-->
+                  <!--type="com.m.pk.TechPKActiveActivity2"/>-->
+    <!--</data>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_toolbar"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_widget"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_color"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/small_padding">
+
+            <Button
+                android:id="@+id/btn_pk_ranking_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_btn_main"
+                android:text="@string/btn_pk_ranking_detail"
+                android:textColor="@color/colorWhite"
+                android:onClick="onRankingDetailClick"
+                android:textSize="@dimen/fontHead"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

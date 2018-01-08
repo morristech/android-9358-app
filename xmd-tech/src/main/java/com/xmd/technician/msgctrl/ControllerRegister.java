@@ -140,8 +140,9 @@ public class ControllerRegister {
                 //-------------------------------------> 技师入职 <---------------------------------
                 MsgDef.MSG_DEF_TECH_AUDIT_MODIFY,
                 MsgDef.MSG_DEF_TECH_AUDIT_CANCEL,
-                MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM
-
+                MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM,
+                //-------------------------------------> 分享统计 <---------------------------------
+                MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE
 
         };
         MsgDispatcher.register(controllerId, msgIds);

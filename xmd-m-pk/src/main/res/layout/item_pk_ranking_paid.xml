@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="item"
+                  type="com.m.pk.bean.RankingListBean"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/small_padding"
+        android:paddingRight="@dimen/small_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="0dp">
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="90dp"
+                android:layout_gravity="center">
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/activity_normal_margin"
+                    android:background="@drawable/bg_ranking_paid"/>
+
+                <com.xmd.app.widget.RoundImageView
+                    android:id="@+id/pk_active_user_head"
+                    style="@style/main_fragment_layout_technician_ranking_avatar_style"
+                    app:imageUrl="@{item.avatarUrl}"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="@dimen/small_padding"
+                    android:src="@drawable/img_pk_paid"/>
+            </FrameLayout>
+
+            <TextView
+                style="@style/main_fragment_layout_technician_pk_ranking_value_style"
+                android:text="@{item.name}"
+                tools:text="小二黑小队"/>
+
+            <TextView
+                android:id="@+id/tv_pk_active_team_member"
+                style="@style/main_fragment_layout_technician_pk_ranking_label_style"
+                android:text='@{String.format("%s张",String.valueOf(item.statValue))}'
+                tools:text="289人"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</layout>

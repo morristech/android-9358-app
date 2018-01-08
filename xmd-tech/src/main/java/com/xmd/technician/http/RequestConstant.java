@@ -134,7 +134,10 @@ public class RequestConstant {
      */
 
     public static final String URL_GET_TECH_ORDER_COUNT = BASE_URL + "/v2/tech/order/count";
-
+    /**
+     * 分享次数统计
+     */
+    public static final String URL_TECH_SHARE_COUNT_UPDATE = BASE_URL + "/v2/tech/share/count/update";
 
     /**
      * --------------------------------------> 附近的人:url <----------------------------------------
@@ -431,6 +434,17 @@ public class RequestConstant {
     public static final String KEY_POSTER_IMAGE_CATEGORY = "category";
     public static final String KEY_POSTER_IMAGE_IMG_FILE = "imgFile";
 
+    // -----------------------------------------> 分享统计 <-----------------------------------------
+    public static final String KEY_ACT_TYPE = "type";
+    public static final String KEY_PAID_SERVICE_ITEM = "paid_service_item"; //限时抢
+    public static final String KEY_COUPON_REWARD = "coupon_reward"; //优惠券
+    public static final String KEY_PAID_COUPON = "paid_coupon";//点钟券
+    public static final String KEY_ITEM_CARD = "item_card";//次卡
+    public static final String KEY_ITEM_PACKAGE = "item_package";//混合套餐
+    public static final String KEY_CREDIT_GIFT = "credit_gift";//积分礼品
+    public static final String KEY_LUCKY_WHEEL = "lucky_wheel";//大转盘
+    public static final String KEY_INVITE_GIFT = "invite_gift"; //邀请有礼
+    public static final String KEY_JOURNAL = "journal" ;//电子期刊
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/

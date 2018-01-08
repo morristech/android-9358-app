@@ -167,7 +167,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
     public void doShare() {
         String imgUrl = mCouponInfoResult.respData != null ? mCouponInfoResult.respData.imgUrl : "";
         ShareController.doShare(imgUrl, mCouponInfoResult.respData.shareUrl, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle,
-                mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", Constant.SHARE_COUPON, mActId);
+                mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", RequestConstant.KEY_COUPON_REWARD, mActId);
     }
 
     private void initChildViews() {

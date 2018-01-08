@@ -881,4 +881,10 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_TECH_ORDER_COUNT)
     Call<OrderCountResult> getOrderCount(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                          @Query(RequestConstant.KEY_ORDER_STATUS) String orderStatus);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_SHARE_COUNT_UPDATE)
+    Call<BaseResult> updateTechShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_ACT_ID) String actId,
+                                          @Field(RequestConstant.KEY_ACT_TYPE) String type);
 }

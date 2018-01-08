@@ -202,6 +202,8 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_AUDIT_CANCEL = 0x133;
     public static final int MSG_DEF_TECH_AUDIT_CONFIRM = 0x134;
     public static final int MSG_DEF_GET_INVITATION_REWARD_ACTIVITY_LIST = 0x0135;
+    //分享统计
+    public static final int MSG_DEF_TECH_SHARE_COUNT_UPDATE = 0x0136;
 
 
 }

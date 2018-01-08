@@ -58,10 +58,19 @@ public class SalaryIntroduceActivity extends BaseActivity {
     TextView tvPackage;
     @BindView(R2.id.ll_package_view)
     LinearLayout llPackageView;
+    @BindView(R2.id.tv_paid_service)
+    TextView tvPaidService;
+    @BindView(R2.id.paid_service_list)
+    RecyclerView paidServiceList;
+    @BindView(R2.id.ll_paid_service_view)
+    LinearLayout llPaidServiceView;
+    @BindView(R2.id.ll_paid_service)
+    LinearLayout llPaidService;
 
     private SalaryIntroduceAdapter mCommodityAdapter;
     private SalaryIntroduceAdapter mCardAdapter;
     private SalaryIntroduceAdapter mOrderAdapter;
+    private SalaryIntroduceAdapter mPaidServiceAdapter;
     private SalaryIntroduceDataManager mSalaryIntroduceDataManager;
     private ServiceCommissionAdapter mServiceCommissionAdapter;
 
@@ -83,6 +92,7 @@ public class SalaryIntroduceActivity extends BaseActivity {
         mCommodityAdapter = new SalaryIntroduceAdapter(SalaryIntroduceActivity.this);
         mCardAdapter = new SalaryIntroduceAdapter(SalaryIntroduceActivity.this);
         mOrderAdapter = new SalaryIntroduceAdapter(SalaryIntroduceActivity.this);
+        mPaidServiceAdapter = new SalaryIntroduceAdapter(SalaryIntroduceActivity.this);
         commoditiesList.setHasFixedSize(true);
         commoditiesList.setLayoutManager(new LinearLayoutManager(SalaryIntroduceActivity.this));
         commoditiesList.setItemAnimator(new DefaultItemAnimator());
@@ -95,6 +105,10 @@ public class SalaryIntroduceActivity extends BaseActivity {
         commoditiesOrders.setLayoutManager(new LinearLayoutManager(SalaryIntroduceActivity.this));
         commoditiesOrders.setItemAnimator(new DefaultItemAnimator());
         commoditiesOrders.setAdapter(mOrderAdapter);
+        paidServiceList.setHasFixedSize(true);
+        paidServiceList.setLayoutManager(new LinearLayoutManager(SalaryIntroduceActivity.this));
+        paidServiceList.setItemAnimator(new DefaultItemAnimator());
+        paidServiceList.setAdapter(mPaidServiceAdapter);
         mServiceCommissionAdapter = new ServiceCommissionAdapter(this);
         serviceExcel.setAdapter(mServiceCommissionAdapter);
 
@@ -159,6 +173,14 @@ public class SalaryIntroduceActivity extends BaseActivity {
             tvPackage.setVisibility(View.VISIBLE);
         }
 
+        if (mSalaryIntroduceDataManager.getPaidServiceList().size() > 0) {
+            mPaidServiceAdapter.setData(mSalaryIntroduceDataManager.getPaidServiceList());
+            llPaidServiceView.setVisibility(View.VISIBLE);
+            tvPaidService.setVisibility(View.GONE);
+        } else {
+            llPaidServiceView.setVisibility(View.GONE);
+            tvPaidService.setVisibility(View.VISIBLE);
+        }
 
         showServiceExcelView();
     }

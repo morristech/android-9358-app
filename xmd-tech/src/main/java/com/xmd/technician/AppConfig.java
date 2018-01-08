@@ -12,6 +12,7 @@ import com.xmd.technician.bean.Entry;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 
@@ -21,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +52,7 @@ public class AppConfig {
     private static int sAppVersionCode = -1;
     private static String sSDCardPath;
     private static String sShareType;
-    private static String sCouponId;
+    private static String sActId;
 
     public static void initialize() {
         sServerHosts = new ArrayList<>();
@@ -131,29 +133,20 @@ public class AppConfig {
 
     public static void reportShareEvent(Map<String, Object> params) {
         sShareType = (String) params.get(Constant.PARAM_SHARE_TYPE);
-        sCouponId = (String) params.get(Constant.PARAM_ACT_ID);
+        sActId = (String) params.get(Constant.PARAM_ACT_ID);
         MobclickAgent.onEvent(TechApplication.getAppContext(), (String) params.get(Constant.PARAM_SHARE_TYPE));
     }
 
     public static void reportCouponShareEvent() {
-        if (Constant.SHARE_COUPON.equals(sShareType)) {
-            ThreadPoolManager.run(new Runnable() {
-                @Override
-                public void run() {
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT, sCouponId);
-                }
-            });
-            return;
-        }
-        if (Constant.SHARE_JOURNAL.equals(sShareType)) {
-            ThreadPoolManager.run(new Runnable() {
-                @Override
-                public void run() {
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT, sCouponId);
-                }
-            });
-            return;
-        }
+        Map<String, String> mParams = new HashMap<>();
+        mParams.put(RequestConstant.KEY_ACT_TYPE, sShareType);
+        mParams.put(RequestConstant.KEY_ACT_ID, sActId);
+        ThreadPoolManager.run(new Runnable() {
+            @Override
+            public void run() {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE, mParams);
+            }
+        });
     }
 
     public static String getAppVersionNameAndCode() {

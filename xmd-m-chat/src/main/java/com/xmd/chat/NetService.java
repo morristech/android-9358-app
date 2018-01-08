@@ -127,4 +127,12 @@ public interface NetService {
      */
     @GET("/spa-manager/api/v2/club/user/invite/enable")
     Observable<BaseBean> getInviteEnable(@Query("clubId") String clubId);
+
+    /**
+     * 统计技师分享数据
+     */
+    @FormUrlEncoded
+    @POST("/spa-manager/api/v2/tech/share/count/update")
+    Observable<BaseBean> updateTechShareCount(@Field("actId") String actId,
+                                              @Field("type") String type);
 }

@@ -83,12 +83,14 @@ public class BaseActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
             toolbarBack = (RelativeLayout) findViewById(R.id.rl_toolbar_back);
-            toolbarBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+            if(toolbarBack != null){
+                toolbarBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
+            }
 
             toolbarRightImage = (RelativeLayout) findViewById(R.id.rl_toolbar_right);
             rightImage = (ImageView) findViewById(R.id.img_toolbar_right);
