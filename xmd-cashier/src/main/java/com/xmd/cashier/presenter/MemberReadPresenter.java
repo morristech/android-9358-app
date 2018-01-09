@@ -15,6 +15,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberReadContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.event.MagneticReaderEvent;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
@@ -34,6 +35,7 @@ import rx.Subscription;
  */
 
 public class MemberReadPresenter implements MemberReadContract.Presenter {
+    private static final String TAG = "MemberReadPresenter";
     private Context mContext;
     private MemberReadContract.View mView;
 
@@ -104,7 +106,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
         if (requestCode == UiNavigation.REQUEST_CODE_MEMBER_SCAN) {
             if (data != null && data.getAction().equals(Intents.Scan.ACTION)) {
                 String result = data.getStringExtra(Intents.Scan.RESULT);
-                XLogger.i(result);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员扫码结果：" + result);
                 getMemberByScan(result);
             }
         }
@@ -119,15 +121,18 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
             mGetMemberInfoByScanSubscription.unsubscribe();
         }
         mView.showLoading();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据二维码获取会员信息：" + RequestConstant.URL_MEMBER_INFO + " (" + memberToken + ") ");
         mGetMemberInfoByScanSubscription = TradeManager.getInstance().fetchMemberInfo(memberToken, new Callback<MemberInfo>() {
             @Override
             public void onSuccess(MemberInfo o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据二维码获取会员信息---成功");
                 EventBus.getDefault().post(o);
                 mView.finishSelf();
             }
 
             @Override
             public void onError(String error) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据二维码获取会员信息---失败：" + error);
                 mView.hideLoading();
                 mView.showError("无法获取会员信息:" + error);
             }
@@ -140,9 +145,11 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
             mGetMemberInfoByCodeSubscription.unsubscribe();
         }
         mView.showLoading();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据手机号码或会员卡号获取会员信息：" + RequestConstant.URL_GET_MEMBER_INFO);
         mGetMemberInfoByCodeSubscription = MemberManager.getInstance().requestMemberInfo(cardNo, new Callback<MemberInfo>() {
             @Override
             public void onSuccess(MemberInfo o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据手机号码或会员卡号获取会员信息---成功");
                 mView.hideLoading();
                 if (TextUtils.isEmpty(o.userId)) {
                     // 当前会员未绑定手机号
@@ -172,6 +179,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
 
             @Override
             public void onError(String error) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据手机号码或会员卡号获取会员信息---失败：" + error);
                 mView.hideLoading();
                 mView.showToast("获取会员数据失败:" + error);
             }
@@ -261,7 +269,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                     Thread.sleep(500);
                 }
             } catch (Exception e) {
-                XLogger.e(e.getMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员卡读卡异常：" + e.getMessage());
                 isRun = false;
             }
         }

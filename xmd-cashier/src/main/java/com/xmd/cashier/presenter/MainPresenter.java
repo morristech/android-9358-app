@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
@@ -18,6 +19,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MainContract;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.SwitchInfo;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponQRCodeScanResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
@@ -37,7 +39,6 @@ import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.XmdNetwork;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -80,6 +81,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onScanClick() {
         // 扫码核销
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "扫码核销");
         Intent intent = new Intent(mContext, CaptureActivity.class);
         intent.setAction(Intents.Scan.ACTION);
         intent.putExtra(Intents.Scan.WIDTH, 480);
@@ -95,7 +97,6 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onClickLogout() {
         // 退出登录
-        XLogger.i(TAG, "收银员登出操作");
         VerifyManager.getInstance().clearVerifyList();
         if (mLogoutSubscription != null) {
             mLogoutSubscription.unsubscribe();
@@ -119,13 +120,13 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onClickSetting() {
-        XLogger.i(TAG, "访问收银台系统设置");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "访问收银台系统设置");
         UiNavigation.gotoSettingActivity(mContext);
     }
 
     @Override
     public void onClickVersion() {
-        XLogger.i(TAG, "访问收银台配置信息");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "访问收银台配置信息");
         UiNavigation.gotoConfigurationActivity(mContext);
     }
 
@@ -176,7 +177,7 @@ public class MainPresenter implements MainContract.Presenter {
                 // 二维码扫描
                 if (data != null && data.getAction().equals(Intents.Scan.ACTION)) {
                     String result = data.getStringExtra(Intents.Scan.RESULT);
-                    XLogger.i(TAG, "首页核销二维码数据：" + result);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "首页核销扫码结果：" + result);
                     if (TextUtils.isEmpty(result)) {
                         mView.showToast("二维码扫描失败");
                     }
@@ -220,7 +221,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 获取核销类型
     private void getVerifyType(final String code) {
-        XLogger.i(TAG, "首页查询核销类型：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -229,11 +229,11 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetVerifyTypeSubscription != null) {
             mGetVerifyTypeSubscription.unsubscribe();
         }
-
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询核销类型：" + RequestConstant.URL_GET_VERIFY_TYPE + " (" + code + ") ");
         mGetVerifyTypeSubscription = VerifyManager.getInstance().getVerifyType(code, new Callback<StringResult>() {
             @Override
             public void onSuccess(StringResult o) {
-                XLogger.i(TAG, "首页查询核销类型---成功：" + o.getRespData());
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询核销类型---成功：" + o.getRespData());
                 switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:   //手机号
                         mView.hideLoading();
@@ -264,7 +264,7 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, "首页查询核销类型---失败：" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询核销类型---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -273,7 +273,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询优惠券
     private void getNormalCouponInfo(String code) {
-        XLogger.i(TAG, "首页查询优惠券：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -282,9 +281,11 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetNormalCouponInfoSubscription != null) {
             mGetNormalCouponInfoSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询优惠券：" + RequestConstant.URL_INFO_COUPON + " (" + code + ") ");
         mGetNormalCouponInfoSubscription = VerifyManager.getInstance().getCouponInfo(code, new Callback<CouponResult>() {
             @Override
             public void onSuccess(CouponResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询优惠券---成功");
                 mView.hideLoading();
                 CouponInfo couponInfo = o.getRespData();
                 couponInfo.valid = true;
@@ -293,7 +294,7 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.i(error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询优惠券---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -302,7 +303,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询预约订单
     private void getOrderInfo(String code) {
-        XLogger.i(TAG, "首页查询付费预约：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -312,17 +312,18 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetOrderInfoSubscription != null) {
             mGetOrderInfoSubscription.unsubscribe();
         }
-
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询付费预约：" + RequestConstant.URL_INFO_PAID_ORDER + " (" + code + ") ");
         mGetOrderInfoSubscription = VerifyManager.getInstance().getPaidOrderInfo(code, new Callback<OrderResult>() {
             @Override
             public void onSuccess(OrderResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询付费预约---成功");
                 mView.hideLoading();
                 UiNavigation.gotoVerifyOrderActivity(mContext, o.getRespData(), true);
             }
 
             @Override
             public void onError(String error) {
-                XLogger.i(error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询付费预约---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -332,7 +333,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询项目券
     private void getServiceCouponInfo(String code) {
-        XLogger.i(TAG, "首页查询项目券：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -341,10 +341,11 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetServiceCouponInfoSubscription != null) {
             mGetServiceCouponInfoSubscription.unsubscribe();
         }
-
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询项目券：" + RequestConstant.URL_INFO_SERVICE_ITEM + " (" + code + ") ");
         mGetServiceCouponInfoSubscription = VerifyManager.getInstance().getServiceCouponInfo(code, new Callback<CouponResult>() {
             @Override
             public void onSuccess(CouponResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询项目券---成功");
                 mView.hideLoading();
                 CouponInfo couponInfo = o.getRespData();
                 couponInfo.valid = true;
@@ -353,7 +354,7 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.i(error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询项目券---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -362,7 +363,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询奖品
     private void getPrizeInfo(String code) {
-        XLogger.i(TAG, "首页查询奖品：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -371,17 +371,18 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetPrizeInfoSubscription != null) {
             mGetPrizeInfoSubscription.unsubscribe();
         }
-
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询奖品：" + RequestConstant.URL_INFO_LUCKY_WHEEL + " (" + code + ") ");
         mGetPrizeInfoSubscription = VerifyManager.getInstance().getPrizeInfo(code, new Callback<PrizeResult>() {
             @Override
             public void onSuccess(PrizeResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询奖品---成功");
                 mView.hideLoading();
                 UiNavigation.gotoVerifyPrizeActivity(mContext, o.getRespData());
             }
 
             @Override
             public void onError(String error) {
-                XLogger.i(error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询奖品---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -390,7 +391,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     // 查询通用核销和请客
     private void getCommonVerifyInfo(String code) {
-        XLogger.i(TAG, "首页查询通用核销和请客：" + code);
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -399,17 +399,18 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetCommonVerifySubscription != null) {
             mGetCommonVerifySubscription.unsubscribe();
         }
-
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询通用核销和请客：" + RequestConstant.URL_INFO_COMMON + " (" + code + ") ");
         mGetCommonVerifySubscription = VerifyManager.getInstance().getCommonVerifyInfo(code, null, new Callback<CommonVerifyResult>() {
             @Override
             public void onSuccess(CommonVerifyResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询通用核销和请客---成功");
                 mView.hideLoading();
                 UiNavigation.gotoVerifyCommonActivity(mContext, o.getRespData());
             }
 
             @Override
             public void onError(String error) {
-                XLogger.i(error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MAIN_VERIFY + "查询通用核销和请客---失败：" + error);
                 mView.hideLoading();
                 mView.showError(error);
             }
@@ -418,17 +419,20 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public boolean onKeyEventBack() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "是否退出9358收银台程序？");
         new CustomAlertDialogBuilder(mContext)
                 .setMessage(R.string.main_exit_confirm)
                 .setPositiveButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "取消退出，继续使用！");
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "确认退出收银台程序！");
                         dialog.dismiss();
                         mView.finishSelf();
                     }
@@ -440,7 +444,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCreate() {
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
         mView.showLoading();
         if (CashierManager.getInstance().needCheckUpdate()) {
             UpdateManager.getInstance().checkUpdate(mContext, CashierManager.getInstance().getAppCode(), AccountManager.getInstance().getUserId(), new Callback<Void>() {
@@ -451,7 +455,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                 @Override
                 public void onError(String error) {
-                    XLogger.e("update error:" + error);
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Update error:" + error);
                     initPos();
                 }
             });
@@ -468,14 +472,16 @@ public class MainPresenter implements MainContract.Presenter {
             public void onSuccess(Void o) {
                 mView.hideLoading();
                 mView.showToast("初始化支付环境成功！");
-                // POS初始化成功之后添加请求头:设备信息
-                XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+
+                String identifierNo = PosImpl.getInstance().getPosIdentifierNo();
+                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付环境成功：" + identifierNo);
+                XmdNetwork.getInstance().setHeader("Device-Identifier", identifierNo);
             }
 
             @Override
             public void onError(String error) {
                 mView.hideLoading();
-                XLogger.e(TAG, "初始化支付环境失败: " + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付环境失败: " + error);
                 new CustomAlertDialogBuilder(mContext)
                         .setMessage("初始化支付环境错误：" + error + "\n请联系开发人员或者重新打开应用！")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -502,7 +508,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        EventBusSafeRegister.unregister(this);
         mView.hideLoading();
         if (mLogoutSubscription != null) {
             mLogoutSubscription.unsubscribe();

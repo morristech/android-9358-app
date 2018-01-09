@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class CashierManager {
+    private static final String TAG = "CashierManager";
     private static CashierManager mInstance = new CashierManager();
     private IPos mCashier;
     private AtomicBoolean mCanCallPay = new AtomicBoolean(true);
@@ -79,7 +80,7 @@ public class CashierManager {
     public void pay(Context context, final String tradeNo, int money, final PayCallback<Object> callback) {
         //防止重入
         if (!mCanCallPay.compareAndSet(true, false)) {
-            XLogger.i("pos pay not finished, can not enter!");
+            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "pos pay not finished, can not enter!");
             mPayInfo.clear();
             mPayInfo.callback = callback;
             mPayInfo.callback.onResult("支付冲突，当前有未完成支付，请重启POS！", mPayInfo);

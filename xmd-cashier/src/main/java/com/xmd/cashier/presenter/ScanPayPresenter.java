@@ -88,13 +88,13 @@ public class ScanPayPresenter implements Presenter {
     }
 
     private boolean getScanStatus() {
-        XLogger.i(TAG, "补收款微信支付宝查询二维码扫码状态");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询二维码扫码状态：" + RequestConstant.URL_GET_XMD_ONLINE_SCAN_STATUS);
         getScanStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .getXMDOnlineScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
         XmdNetwork.getInstance().requestSync(getScanStatusCall, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
-                XLogger.i(TAG, "补收款微信支付宝查询二维码扫码状态---成功:" + result.getRespData());
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询二维码扫码状态---成功：" + result.getRespData());
                 if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
                     resultScanStatus = true;
                     EventBus.getDefault().post(new QRScanStatusEvent());
@@ -105,7 +105,7 @@ public class ScanPayPresenter implements Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "补收款微信支付宝查询二维码扫码状态---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询二维码扫码状态---失败：" + e.getLocalizedMessage());
                 resultScanStatus = false;
             }
         });
@@ -138,13 +138,13 @@ public class ScanPayPresenter implements Presenter {
     }
 
     private boolean getOnlinePayDetail() {
-        XLogger.i(TAG, "补收款微信支付宝查询订单详情");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询订单详情：" + RequestConstant.URL_GET_XMD_ONLINE_ORDER_DETAIL);
         getOnlinePayDetailCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .getXMDOnlinePayDetail(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
         XmdNetwork.getInstance().requestSync(getOnlinePayDetailCall, new NetworkSubscriber<OnlinePayDetailResult>() {
             @Override
             public void onCallbackSuccess(OnlinePayDetailResult result) {
-                XLogger.i(TAG, "补收款微信支付宝查询订单详情---成功:" + result.getRespData().status);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询订单详情---成功：" + result.getRespData().status);
                 if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
                     // 支付成功
                     resultGetOnlinePayDetail = true;
@@ -158,7 +158,7 @@ public class ScanPayPresenter implements Presenter {
                     if (isCodeExpire()) {
                         // 二维码过期
                         resultGetOnlinePayDetail = true;
-                        XLogger.e(TAG, "补收款微信支付宝查询订单详情:手动计算二维码过期");
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询订单详情：手动计算二维码过期");
                         doError("二维码已过期，请重新支付");
                     } else {
                         // 尚未支付成功:重试
@@ -169,12 +169,12 @@ public class ScanPayPresenter implements Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "补收款微信支付宝查询订单详情---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询订单详情---失败：" + e.getLocalizedMessage());
                 if (e instanceof ServerException) {
                     if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                         // 会话过期
                         resultGetOnlinePayDetail = true;
-                        XLogger.e(TAG, "补收款微信支付宝查询订单详情---失败:会话过期");
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝查询订单详情---失败:会话过期");
                         doError("会话过期，请重新支付");
                     } else {
                         resultGetOnlinePayDetail = false;
@@ -228,7 +228,7 @@ public class ScanPayPresenter implements Presenter {
 
     @Override
     public void onCancel() {
-        XLogger.i(TAG, "补收款微信支付宝取消交易?");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝取消交易?");
         String message;
         final Trade trade = mTradeManager.getCurrentTrade();
         if (trade.getVerificationSuccessfulMoney() > 0) {
@@ -241,14 +241,14 @@ public class ScanPayPresenter implements Presenter {
                 .setPositiveButton("继续交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        XLogger.i(TAG, "补收款微信支付宝选择继续交易");
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝选择继续交易");
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("退出交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        XLogger.i(TAG, "补收款微信支付宝选择退出交易");
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝选择退出交易");
                         dialog.dismiss();
                         deleteOrderId(trade.tradeNo);
                     }
@@ -264,20 +264,20 @@ public class ScanPayPresenter implements Presenter {
             mDeleteXMDOnlineOrderIdSubscription.unsubscribe();
         }
 
-        XLogger.i(TAG, "补收款微信支付宝取消交易");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝取消交易：" + RequestConstant.URL_DELETE_XMD_ONLINE_ORDER_ID);
         Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .deleteXMDOnlineOrderId(AccountManager.getInstance().getToken(), orderId);
         mDeleteXMDOnlineOrderIdSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {
-                XLogger.i(TAG, "补收款微信支付宝取消交易---成功");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝取消交易---成功");
                 mView.hideLoading();
                 doFinish();
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "补收款微信支付宝取消交易---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝取消交易---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showToast("请求失败：" + e.getLocalizedMessage());
             }
@@ -301,7 +301,7 @@ public class ScanPayPresenter implements Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d("获取买单有礼活动失败:" + e.getLocalizedMessage());
+                XLogger.e("获取买单有礼活动失败:" + e.getLocalizedMessage());
             }
         });
     }
@@ -313,7 +313,7 @@ public class ScanPayPresenter implements Presenter {
         if (mGetXMDOnlineQrcodeUrlSubscription != null) {
             mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
         }
-        XLogger.i(TAG, "补收款获取微信支付宝二维码");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取微信支付宝二维码：" + RequestConstant.URL_GET_XMD_ONLINE_QRCODE_URL);
         Observable<OnlinePayUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()));
         mGetXMDOnlineQrcodeUrlSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayUrlResult>() {
@@ -323,11 +323,10 @@ public class ScanPayPresenter implements Presenter {
                 mTradeManager.getCurrentTrade().tradeNo = info.orderId;
                 mTradeManager.getCurrentTrade().tradeTime = DateUtils.doDate2String(new Date());
                 if (info == null || TextUtils.isEmpty(info.url)) {
-                    XLogger.i(TAG, "补收款获取微信支付宝二维码:获取二维码数据异常(null)");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取微信支付宝二维码：获取二维码数据异常(null)");
                     mView.showQrError("获取二维码数据异常");
                     return;
                 }
-                XLogger.d(info.orderId + " --- " + info.url);
                 // 获取二维码成功
                 try {
                     mQRBitmap = Utils.getQRBitmap(info.url);
@@ -336,10 +335,10 @@ public class ScanPayPresenter implements Presenter {
                 }
                 if (mQRBitmap == null) {
                     // 解析失败
-                    XLogger.i(TAG, "补收款获取微信支付宝二维码:解析二维码链接失败(exception)");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取微信支付宝二维码：解析二维码链接失败(exception)");
                     mView.showQrError("解析二维码链接失败");
                 } else {
-                    XLogger.i(TAG, "补收款获取微信支付宝二维码:展示");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取微信支付宝二维码：[" + info.orderId + "]" + info.url);
                     mView.showQrSuccess();
                     mView.setQRCode(mQRBitmap);
                     startGetScanStatus();
@@ -350,7 +349,7 @@ public class ScanPayPresenter implements Presenter {
             @Override
             public void onCallbackError(Throwable e) {
                 // 获取失败
-                XLogger.e(TAG, "补收款获取微信支付宝二维码---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取微信支付宝二维码---失败:" + e.getLocalizedMessage());
                 mView.showQrError(e.getLocalizedMessage());
             }
         });

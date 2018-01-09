@@ -15,6 +15,7 @@ import com.xmd.cashier.dal.bean.InnerBatchInfo;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.event.InnerGenerateOrderEvent;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.InnerBatchResult;
@@ -144,7 +145,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             @Override
             public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
                 String innerType = InnerManager.getInstance().getChannels().get(item);
-                XLogger.i(TAG, "内网订单选择支付方式:" + innerType);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单选择支付方式:" + innerType);
                 mTradeManager.getCurrentTrade().currentCashierName = item;  //支付方式名称
                 mTradeManager.getCurrentTrade().currentCashierType = innerType;
                 switch (innerType) {
@@ -166,7 +167,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                             mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_MEMBER;
                             UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
                         } else {
-                            XLogger.i(TAG, "内网订单会员支付:会所会员功能未开通");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单会员支付：会所会员功能未开通");
                             mView.showError("会所会员功能未开通!");
                         }
                         break;
@@ -193,7 +194,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         if (mGenerateBatchSubscription != null) {
             mGenerateBatchSubscription.unsubscribe();
         }
-        XLogger.i(TAG, "内网订单发起支付请求");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付请求：" + RequestConstant.URL_GENERATE_INNER_BATCH_ORDER);
         final Trade trade = mTradeManager.getCurrentTrade();
         mGenerateBatchSubscription = mTradeManager.generateInnerBatch(
                 trade.batchNo,
@@ -221,7 +222,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
                             if (AppConstants.APP_REQUEST_YES.equals(batchInfo.status)) {
                                 //核销金额已完成抵扣
-                                XLogger.i(TAG, "内网订单无需再支付金额");
+                                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单无需再支付金额");
                                 trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                                 UiNavigation.gotoInnerResultActivity(mContext);
                                 mView.finishSelf();
@@ -249,7 +250,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
                     @Override
                     public void onError(String error) {
-                        XLogger.e(TAG, "内网订单发起支付---失败:" + error);
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付---失败:" + error);
                         mView.hideLoading();
                         // FIXME 如果后台描述修改,需要相应变更
                         if (error.contains("订单已被支付锁定")) {
@@ -287,17 +288,20 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         if (mPosTradeNoSubscription != null) {
             mPosTradeNoSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单生成交易号：" + RequestConstant.URL_GET_TRADE_NO);
         mPosTradeNoSubscription = mTradeManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
             @Override
             public void onSuccess(GetTradeNoResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单生成交易号---成功：" + mTradeManager.getCurrentTrade().tradeNo);
                 mView.hideLoading();
                 doCashier();
             }
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单生成交易号---失败：" + error);
                 mView.hideLoading();
-                mView.showError("获取订单号失败，请重试");
+                mView.showError("获取订单号失败：" + error);
             }
         });
     }
@@ -305,11 +309,11 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
     // 旺POS渠道支付
     private void posCashier(int money) {
-        XLogger.i(TAG, "内网订单旺POS渠道支付");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付");
         mTradeManager.posPay(mContext, money, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
-                XLogger.i(TAG, "内网订单旺POS渠道支付---成功");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付---成功");
                 mView.showToast("支付成功！");
                 reportTrade();
                 startCallBackBatch();
@@ -317,7 +321,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, "内网订单旺POS渠道支付---失败:" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付---失败:" + error);
                 mView.hideLoading();
                 if (CashierManager.getInstance().isUserCancel(mTradeManager.getCurrentTrade().posPayReturn)) {
                     mView.showToast("支付失败：已取消支付");
@@ -357,7 +361,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     }
 
     private boolean callbackBatch() {
-        XLogger.i(TAG, "内网订单旺POS渠道支付标记支付结果");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果：" + RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER);
         callbackBatchCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .callbackInnerBatchOrderSync(AccountManager.getInstance().getToken(),
                         null,
@@ -369,7 +373,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         XmdNetwork.getInstance().requestSync(callbackBatchCall, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {
-                XLogger.i(TAG, "内网订单旺POS渠道支付标记支付结果---成功");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果---成功");
                 resultCallBackBatch = true;
                 mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
@@ -379,7 +383,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "内网订单旺POS渠道支付标记支付结果---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果---失败:" + e.getLocalizedMessage());
                 resultCallBackBatch = false;
             }
         });
@@ -394,7 +398,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
     // POS渠道支付时需要汇报
     private void reportTrade() {
-        XLogger.i(TAG, "内网订单旺POS渠道支付进行汇报PosPayDeal");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付进行汇报PosPayDeal");
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override

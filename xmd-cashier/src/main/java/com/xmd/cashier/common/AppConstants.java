@@ -338,4 +338,11 @@ public class AppConstants {
     public static final String EXTRA_INNER_PAY_RECORD = "pay_record";
 
     public final static String EXTRA_CMD = "cmd";
+
+    public final static String LOG_BIZ_NATIVE_CASHIER = "[内网收银]";
+    public final static String LOG_BIZ_NORMAL_CASHIER = "[补收款收银]";
+    public final static String LOG_BIZ_MEMBER_MANAGER = "[会员管理]";
+    public final static String LOG_BIZ_ACCOUNT_MANAGER = "[账号系统]";
+    public final static String LOG_BIZ_LOCAL_CONFIG = "[本地配置]";
+    public final static String LOG_BIZ_MAIN_VERIFY = "[首页核销]";
 }

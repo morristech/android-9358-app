@@ -13,8 +13,10 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.ConfigurationAdapter;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.ConfigEntry;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MonitorManager;
@@ -94,7 +96,7 @@ public class ConfigurationActivity extends BaseActivity {
     }
 
     private void uploadLog() {
-        XLogger.i(TAG, "上传日志");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志：" + RequestConstant.URL_APP_UPLOAD_LOG);
         showLoading();
         if (mUploadLogSubscription != null) {
             mUploadLogSubscription.unsubscribe();
@@ -102,14 +104,14 @@ public class ConfigurationActivity extends BaseActivity {
         mUploadLogSubscription = MonitorManager.getInstance().uploadLogFile(new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
-                XLogger.i(TAG, "上传日志---成功");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---成功");
                 hideLoading();
                 XToast.show("上传成功");
             }
 
             @Override
             public void onError(String error) {
-                XLogger.i(TAG, "上传日志---失败");
+                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---失败：" + error);
                 hideLoading();
                 XToast.show(error);
             }

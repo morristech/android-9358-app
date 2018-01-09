@@ -124,10 +124,12 @@ public class MainApplication extends Application implements CrashHandler.Callbac
     }
 
     private void printBaseInfo() {
-        XLogger.i(TAG, "==============Cashier Log================");
-        XLogger.i(TAG, "APP VERSION CODE: " + Utils.getAppVersionCode());
-        XLogger.i(TAG, "APP VERSION NAME: " + Utils.getAppVersionName());
-        XLogger.i(TAG, "=========================================");
+        XLogger.i(TAG, "============================================");
+        XLogger.i(TAG, "======            9358收银台           ======");
+        XLogger.i(TAG, "============================================");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "APP VERSION CODE: " + Utils.getAppVersionCode());
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "APP VERSION NAME: " + Utils.getAppVersionName());
+
     }
 
 
@@ -137,7 +139,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
     }
 
     public void exitApplication() {
-        XLogger.i("exit Application!");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "退出9358收银台!");
         synchronized (mActivityListObject) {
             for (int i = 0; i < mActivityList.size(); i++) {
                 BaseActivity activity = mActivityList.remove(i);

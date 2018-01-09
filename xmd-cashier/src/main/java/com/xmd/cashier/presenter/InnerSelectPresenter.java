@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerSelectContract;
@@ -17,6 +18,7 @@ import com.xmd.cashier.dal.bean.InnerTechInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
 import com.xmd.cashier.dal.event.InnerPushEvent;
 import com.xmd.cashier.dal.event.InnerUpdateOrderEvent;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerHandListResult;
 import com.xmd.cashier.dal.net.response.InnerOrderListResult;
@@ -28,7 +30,6 @@ import com.xmd.cashier.manager.InnerManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -48,6 +49,7 @@ import rx.Subscription;
  */
 
 public class InnerSelectPresenter implements InnerSelectContract.Presenter {
+    private static final String TAG = "InnerSelectPresenter";
     private Context mContext;
     private InnerSelectContract.View mView;
 
@@ -68,7 +70,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
     @Override
     public void onCreate() {
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
         mSelectType = AppConstants.INNER_SEARCH_TYPE_ROOM;
         mView.showStepView();
         InnerManager.getInstance().clearInnerOrderInfos();
@@ -102,6 +104,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         if (mGetRoomInfoSubscription != null) {
             mGetRoomInfoSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网买单获取房间列表：" + RequestConstant.URL_GET_ROOM_LIST);
         Observable<InnerRoomListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getRoomList(AccountManager.getInstance().getToken(), roomName);
         mGetRoomInfoSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerRoomListResult>() {
@@ -117,6 +120,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网买单获取房间列表---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showToast(e.getLocalizedMessage());
             }
@@ -154,6 +158,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         if (mGetHandInfoSubscription != null) {
             mGetHandInfoSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网买单获取手牌列表：" + RequestConstant.URL_GET_HAND_LIST);
         Observable<InnerHandListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getHandList(AccountManager.getInstance().getToken(), userIdentify);
         mGetHandInfoSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerHandListResult>() {
@@ -169,6 +174,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网买单获取手牌列表---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showToast(e.getLocalizedMessage());
             }
@@ -180,7 +186,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         if (mGetTechInfoSubscription != null) {
             mGetTechInfoSubscription.unsubscribe();
         }
-
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网买单获取技师列表：" + RequestConstant.URL_GET_TECHNICIAN_LIST);
         Observable<InnerTechListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getTechnicianList(AccountManager.getInstance().getToken(), techNo, AppConstants.INNER_SEARCH_TYPE_TECH);
         mGetTechInfoSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerTechListResult>() {
@@ -192,6 +198,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网买单获取技师列表---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showToast(e.getLocalizedMessage());
             }
@@ -278,7 +285,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
     @Override
     public void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        EventBusSafeRegister.unregister(this);
         if (mGetRoomInfoSubscription != null) {
             mGetRoomInfoSubscription.unsubscribe();
         }
@@ -360,6 +367,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         if (mGetOrderByRoomSubscription != null) {
             mGetOrderByRoomSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "根据房间ID获取订单：" + RequestConstant.URL_GET_INNER_ORDER_LIST + " (" + info.id + ") ");
         Observable<InnerOrderListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerOrderList(AccountManager.getInstance().getToken(), null, null, String.valueOf(info.id));
         mGetOrderByRoomSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerOrderListResult>() {
@@ -377,6 +385,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "根据房间ID获取订单---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showToast(e.getLocalizedMessage());
             }
@@ -408,6 +417,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
         if (mGetOrderByHandSubscription != null) {
             mGetOrderByHandSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "根据手牌ID获取订单：" + RequestConstant.URL_GET_INNER_ORDER_LIST + " (" + info.id + ") ");
         Observable<InnerOrderListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerOrderList(AccountManager.getInstance().getToken(), String.valueOf(info.id), null, null);
         mGetOrderByHandSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerOrderListResult>() {
@@ -425,6 +435,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "根据手牌ID获取订单---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showToast(e.getLocalizedMessage());
             }
@@ -460,6 +471,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
     }
 
     private void getInnerUnpaidCount() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取内网未支付订单数量：" + RequestConstant.URL_GET_INNER_UNPAID_COUNT);
         Observable<InnerUnpaidResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerUnpaid(AccountManager.getInstance().getToken());
         mGetInnerUnpaidSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerUnpaidResult>() {
@@ -475,7 +487,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d(e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取内网未支付订单数量---失败：" + e.getLocalizedMessage());
             }
         });
     }

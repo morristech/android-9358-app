@@ -3,7 +3,6 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyPrizeContract;
@@ -56,7 +55,6 @@ public class VerifyPrizePresenter implements VerifyPrizeContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.i(error);
                 mView.hideLoadingView();
                 mView.showError("操作失败：" + error);
             }

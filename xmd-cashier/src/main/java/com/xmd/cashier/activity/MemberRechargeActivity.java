@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.MemberPlanAdapter;
 import com.xmd.cashier.common.AppConstants;
@@ -42,6 +43,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 
 public class MemberRechargeActivity extends BaseActivity implements MemberRechargeContract.View {
+    private static final String TAG = "MemberRechargePresenter";
     private MemberRechargeContract.Presenter mPresenter;
 
     private TextView mMemberName;
@@ -307,6 +309,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
             @Override
             public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值选择支付方式：" + item);
                 int type = AppConstants.CASHIER_TYPE_ERROR;
                 switch (item) {
                     case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:

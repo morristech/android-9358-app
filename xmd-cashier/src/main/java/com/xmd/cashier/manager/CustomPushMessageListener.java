@@ -43,19 +43,19 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
         switch (message.getBusinessType()) {
             case AppConstants.PUSH_TAG_MEMBER_PRINT:
                 // 会员账户记录
-                XLogger.i(TAG, "On XmdPushMessage :" + AppConstants.PUSH_TAG_MEMBER_PRINT);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "On XmdPushMessage：" + AppConstants.PUSH_TAG_MEMBER_PRINT);
                 MemberRecordInfo memberRecordInfo = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
                 MemberManager.getInstance().printMemberRecordInfoAsync(memberRecordInfo, false);
                 break;
             case AppConstants.PUSH_TAG_ORDER_PRINT:
                 // 预约订单
-                XLogger.i(TAG, "On XmdPushMessage :" + AppConstants.PUSH_TAG_ORDER_PRINT);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On XmdPushMessage：" + AppConstants.PUSH_TAG_ORDER_PRINT);
                 OrderRecordInfo orderRecordInfo = new Gson().fromJson(message.getData(), OrderRecordInfo.class);
                 NotifyManager.getInstance().printOrderRecordAsync(orderRecordInfo, false);
                 break;
             case AppConstants.PUSH_TAG_FASTPAY_PRINT:
                 // 在线买单
-                XLogger.i(TAG, "On XmdPushMessage :" + AppConstants.PUSH_TAG_FASTPAY_PRINT);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On XmdPushMessage：" + AppConstants.PUSH_TAG_FASTPAY_PRINT);
                 OnlinePayInfo onlinePayInfo = new Gson().fromJson(message.getData(), OnlinePayInfo.class);
                 NotifyManager.getInstance().printOnlinePayRecordAsync(onlinePayInfo, false);
                 break;
@@ -70,68 +70,71 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
             JSONObject jsonObject = new JSONObject(message);
             switch (jsonObject.getString(RequestConstant.KEY_BUSINESS_TYPE)) {
                 case AppConstants.PUSH_TAG_FASTPAY:
-                    XLogger.i(TAG, "On RawMessage :" + AppConstants.PUSH_TAG_FASTPAY);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On RawMessage：" + message);
                     SPManager.getInstance().setFastPayPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
                     NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
                     break;
                 case AppConstants.PUSH_TAG_ORDER:
-                    XLogger.i(TAG, "On RawMessage :" + AppConstants.PUSH_TAG_ORDER);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On RawMessage：" + message);
                     SPManager.getInstance().setOrderPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
                     NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
                     break;
                 case AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY:   //内网订单支付
-                    XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());
                     InnerManager.getInstance().getInnerHoleBatchSubscription(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<InnerRecordInfo>() {
                         @Override
                         public void onSuccess(InnerRecordInfo o) {
-                            XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---成功");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---成功");
                             EventBus.getDefault().post(o);
                         }
 
                         @Override
                         public void onError(String error) {
-                            XLogger.e(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---失败:" + error);
+                            XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---失败:" + error);
                         }
                     });
                     break;
                 case AppConstants.PUSH_TAG_FAST_PAY_SUCCESS:    // 内网订单打印
-                    XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());
                     InnerManager.getInstance().getInnerHoleBatchSubscription(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<InnerRecordInfo>() {
                         @Override
                         public void onSuccess(InnerRecordInfo o) {
-                            XLogger.i(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---成功");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---成功");
                             InnerManager.getInstance().printInnerRecordInfoAsync(o, false);
                         }
 
                         @Override
                         public void onError(String error) {
-                            XLogger.e(TAG, "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---失败:" + error);
+                            XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---失败:" + error);
                         }
                     });
                     break;
                 case AppConstants.PUSH_TAG_UPLOAD_LOG:  //上传日志
-                    XLogger.i(TAG, "On RawMessage :" + AppConstants.PUSH_TAG_UPLOAD_LOG);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "On RawMessage：" + message);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "On RawMessage：" + AppConstants.PUSH_TAG_UPLOAD_LOG);
                     if (PosImpl.getInstance().getPosIdentifierNo().equals(jsonObject.getString(RequestConstant.KEY_PUSH_DATA))) {
                         if (!Utils.isWifiNetwork(MainApplication.getInstance().getApplicationContext())) {
-                            XLogger.i(TAG, "当前网络非Wifi网络");
+                            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "当前网络非Wifi网络");
                             return;
                         }
                         // 设备匹配
                         MonitorManager.getInstance().uploadLogFile(new Callback<BaseBean>() {
                             @Override
                             public void onSuccess(BaseBean o) {
-                                XLogger.i(TAG, "推送上传日志---成功");
+                                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "推送上传日志---成功");
                             }
 
                             @Override
                             public void onError(String error) {
-                                XLogger.i(TAG, "推送上传日志---失败:" + error);
+                                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "推送上传日志---失败:" + error);
                             }
                         });
                     } else {
-                        XLogger.i(TAG, "设备信息不匹配");
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设备信息不匹配");
                     }
                     break;
                 default:

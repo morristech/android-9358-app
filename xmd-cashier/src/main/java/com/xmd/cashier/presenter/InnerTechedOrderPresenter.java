@@ -3,8 +3,11 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerTechedOrderContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerOrderListResult;
 import com.xmd.cashier.manager.AccountManager;
@@ -20,6 +23,7 @@ import rx.Subscription;
  */
 
 public class InnerTechedOrderPresenter implements InnerTechedOrderContract.Presenter {
+    private static final String TAG = "InnerTechedOrderPresenter";
     private Subscription mGetTechOrderListSubscription;
 
     private Context mContext;
@@ -46,6 +50,7 @@ public class InnerTechedOrderPresenter implements InnerTechedOrderContract.Prese
         if (mGetTechOrderListSubscription != null) {
             mGetTechOrderListSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "根据技师ID获取订单：" + RequestConstant.URL_GET_INNER_ORDER_LIST + " (" + empId + ") ");
         Observable<InnerOrderListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerOrderList(AccountManager.getInstance().getToken(), null, empId, null);
         mGetTechOrderListSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerOrderListResult>() {
@@ -62,6 +67,7 @@ public class InnerTechedOrderPresenter implements InnerTechedOrderContract.Prese
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "根据技师ID获取订单---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.showDesc(e.getLocalizedMessage());
             }

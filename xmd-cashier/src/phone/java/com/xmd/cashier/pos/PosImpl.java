@@ -154,7 +154,7 @@ public class PosImpl implements IPos {
 
     @Override
     public String getPosIdentifierNo() {
-        XLogger.i("设备信息(DeviceId):" + DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext()));
+        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "DeviceId：" + DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext()));
         return DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext());
     }
 

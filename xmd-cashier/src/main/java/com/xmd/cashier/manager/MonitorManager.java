@@ -71,16 +71,16 @@ public class MonitorManager {
     }
 
     public void monitorNetwork() {
-        XLogger.i(TAG, "=== POS网络状态变更 ===");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "=== POS网络状态变更 ===");
         NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
         if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
-            XLogger.i(TAG, "=== Network: [" + mNetworkInfo.getTypeName() + "] ===");
+            XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "=== Network: [" + mNetworkInfo.getTypeName() + "] ===");
             if (mNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                 WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-                XLogger.i(TAG, "=== [SSID:" + wifiInfo.getSSID() + "]" + "[BSSID:" + wifiInfo.getBSSID() + "] ===");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "=== [SSID:" + wifiInfo.getSSID() + "]" + "[BSSID:" + wifiInfo.getBSSID() + "] ===");
             }
         } else {
-            XLogger.i(TAG, "=== Network is not available ===");
+            XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "=== Network is not available ===");
         }
     }
 
@@ -99,7 +99,7 @@ public class MonitorManager {
     }
 
     public void stopPollingWifiStatus() {
-        XLogger.i(TAG, "结束WiFi状态轮询");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "结束WiFi状态轮询");
         Context context = MainApplication.getInstance().getApplicationContext();
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, CustomService.class);
@@ -119,7 +119,7 @@ public class MonitorManager {
             sendFile.createNewFile();
             XLogger.copyLogsToFile(sendFile);
         } catch (Exception ignore) {
-            XLogger.i(TAG, "copyLogsToFile exception");
+            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "copyLogsToFile exception");
         }
         // 为file建立RequestBody实例
         RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), sendFile);

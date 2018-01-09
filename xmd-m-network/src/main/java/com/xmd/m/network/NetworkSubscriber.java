@@ -26,7 +26,7 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
                 EventBus.getDefault().post(new EventTokenExpired("会话失效，用户可能在其他地方登录"));
             }
         }
-        XLogger.e("", "network error:" + e.getMessage());
+        XLogger.e("Network error:" + e.getMessage());
         onCallbackError(new NetworkException(e.getMessage()));
     }
 

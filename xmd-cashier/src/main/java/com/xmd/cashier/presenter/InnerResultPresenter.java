@@ -54,7 +54,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     }
 
     private void getOrder() {
-        XLogger.i(TAG, "内网订单支付成功获取订单详情");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情");
         if (mGetBatchOrderSubscription != null) {
             mGetBatchOrderSubscription.unsubscribe();
         }
@@ -63,7 +63,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             public void onSuccess(InnerRecordInfo o) {
                 mRecordInfo = o;
                 int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
-                XLogger.i(TAG, "内网订单支付成功获取订单详情---成功:" + leftAmount);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---成功:" + leftAmount);
                 if (leftAmount <= 0) {
                     printNormal();
                     mView.showDone("全部应付金额已支付成功");
@@ -74,7 +74,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, "内网订单支付成功获取订单详情---失败:" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---失败:" + error);
                 mRecordInfo = null;
                 mView.showToast(error);
             }
@@ -127,6 +127,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
     @Override
     public void onContinue() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成后继续收款");
         InnerManager.getInstance().clearInnerOrderInfos();
         InnerManager.getInstance().initTradeByRecord(mRecordInfo);
         mView.finishSelf();
@@ -168,7 +169,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     }
 
     private void printNormal() {
-        XLogger.i(TAG, "内网订单支付结果自动打印小票");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果自动打印小票");
         InnerManager.getInstance().printInnerRecordInfoAsync(mRecordInfo, false);
     }
 
@@ -179,7 +180,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
     @Override
     public void onEventBack() {
-        XLogger.i(TAG, "内网订单支付结果选择回退");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果选择回退");
         newInnerTrade();
     }
 

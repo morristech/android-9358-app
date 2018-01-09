@@ -36,7 +36,7 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
         mPresenter = new ScanPayResultPresenter(this, this);
         mInfo = (OnlinePayInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_ONLINE_PAY_INFO);
         if (mInfo == null) {
-            XLogger.e(TAG, " exit : 支付中出现异常，请在买单列表中确认支付状态");
+            XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "微信支付宝：支付中出现异常，请在买单列表中确认支付状态");
             showError("支付中出现异常，请在买单列表中确认支付状态");
             return;
         }
@@ -70,7 +70,7 @@ public class ScanPayResultActivity extends BaseActivity implements ScanPayResult
 
     @Override
     public boolean onKeyEventBack() {
-        XLogger.i(TAG, "补收款微信支付宝支付成功回退(onKeyEventBack)");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝支付成功回退(onKeyEventBack)");
         return super.onKeyEventBack();
     }
 

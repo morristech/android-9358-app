@@ -82,7 +82,7 @@ public class SpaOkHttp {
         try {
             Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
             String body = response.body().string();
-            XLogger.i("data report resp:" + body);
+            XLogger.i("Data report response：" + body);
             ReportTradeDataResult result = new Gson().fromJson(body, ReportTradeDataResult.class);
             networkCallback.onNext(result);
         } catch (Exception e) {

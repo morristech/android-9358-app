@@ -356,7 +356,7 @@ public class PosImpl implements IPos {
     @Override
     public String getPosIdentifierNo() {
         String deviceInfo = WeiposImpl.as().getDeviceInfo();
-        XLogger.i("POS DEVICE INFO: " + deviceInfo);
+        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "POS DEVICE INFO：" + deviceInfo);
         try {
             JSONObject object = new JSONObject(deviceInfo);
             return object.getString("en").replace(" ", "");
@@ -438,7 +438,7 @@ public class PosImpl implements IPos {
             // 设备可能没有打印机，open会抛异常
             mLatticePrinter = WeiposImpl.as().openLatticePrinter();
         } catch (Exception e2) {
-            XLogger.e("can not init latticePrinter");
+            XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "无法初始化打印机！");
         }
     }
 
@@ -446,7 +446,7 @@ public class PosImpl implements IPos {
         try {
             mMagneticReader = WeiposImpl.as().openMagneticReader();
         } catch (Exception e) {
-            XLogger.e("can not init MagneticReader");
+            XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "无法初始化磁条读卡！");
         }
     }
 

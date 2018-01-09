@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
@@ -16,7 +17,6 @@ import com.xmd.cashier.manager.InnerManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -48,7 +48,7 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
 
     @Override
     public void onCreate() {
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
 
     @Override
     public void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        EventBusSafeRegister.unregister(this);
         if (mGetInnerRecordSubscription != null) {
             mGetInnerRecordSubscription.unsubscribe();
         }

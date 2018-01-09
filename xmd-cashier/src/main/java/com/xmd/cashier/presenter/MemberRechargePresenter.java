@@ -7,6 +7,7 @@ import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
+import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberRechargeContract;
@@ -36,6 +37,7 @@ import rx.Subscription;
  */
 
 public class MemberRechargePresenter implements MemberRechargeContract.Presenter {
+    private static final String TAG = "MemberRechargePresenter";
     private Context mContext;
     private MemberRechargeContract.View mView;
 
@@ -85,16 +87,19 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         if (mGetMemberPlanSubscription != null) {
             mGetMemberPlanSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "获取会员充值套餐：" + RequestConstant.URL_GET_MEMBER_ACT_PLAN);
         Observable<MemberPlanResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getMemberPlanList(AccountManager.getInstance().getToken());
         mGetMemberPlanSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberPlanResult>() {
             @Override
             public void onCallbackSuccess(MemberPlanResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "获取会员充值套餐---成功");
                 mView.showPlanData(result.getRespData().activity);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "获取会员充值套餐---失败：" + e.getLocalizedMessage());
                 mView.errorPlanData(e.getLocalizedMessage());
             }
         });
@@ -135,14 +140,17 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             default:
                 break;
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付");
         MemberManager.getInstance().posRecharge(mContext, amount, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付---成功");
                 doReportRecharge();
             }
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付---失败：" + error);
                 mView.hideLoading();
                 mView.showError("支付失败：" + error);
             }
@@ -183,6 +191,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     private boolean reportRechargeTrade() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果：" + RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE);
         callReportRecharge = XmdNetwork.getInstance().getService(SpaService.class)
                 .reportMemberRecharge(AccountManager.getInstance().getToken(),
                         MemberManager.getInstance().getRechargeOrderId(),
@@ -192,6 +201,8 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         XmdNetwork.getInstance().requestSync(callReportRecharge, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果---成功");
+                PosFactory.getCurrentCashier().textToSound("会员充值成功");
                 resultReportRecharge = true;
                 MemberRecordInfo record = result.getRespData();
                 MemberManager.getInstance().printMemberRecordInfoAsync(record, false);
@@ -202,7 +213,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d("汇报失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果---失败：" + e.getLocalizedMessage());
                 resultReportRecharge = false;
             }
         });

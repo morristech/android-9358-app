@@ -115,7 +115,7 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
         }
         Gson gson = new GsonBuilder().serializeNulls().create();
         String data = gson.toJson(mRespData);
-        XLogger.i("data :" + data);
+        XLogger.d("结算数据:" + data);
         mSettleCurrentSummarySubscription = SettleManager.getInstance().saveSettle(data, new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {

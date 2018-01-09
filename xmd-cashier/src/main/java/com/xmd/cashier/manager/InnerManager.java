@@ -71,7 +71,7 @@ public class InnerManager {
     }
 
     public void initTradeByRecord(InnerRecordInfo recordInfo) {
-        XLogger.i(TAG, "===== initTradeByRecord =====");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "===== initTradeByRecord =====");
         TradeManager.getInstance().newTrade();
         Trade trade = TradeManager.getInstance().getCurrentTrade();
         trade.innerRecordInfo = recordInfo;
@@ -88,7 +88,7 @@ public class InnerManager {
     }
 
     public void initTradeBySelect() {
-        XLogger.i(TAG, "===== initTradeBySelect =====");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "===== initTradeBySelect =====");
         TradeManager.getInstance().newTrade();
         Trade trade = TradeManager.getInstance().getCurrentTrade();
         trade.setOriginMoney(getOrderAmount());
@@ -248,18 +248,18 @@ public class InnerManager {
     }
 
     public void getClubWorkTime() {
-        XLogger.i(TAG, "获取会所内网营业时间");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网营业时间：" + RequestConstant.URL_GET_CLUB_WORK_TIME);
         Observable<WorkTimeResult> observable = XmdNetwork.getInstance().getService(SpaService.class).getWorkTime(AccountManager.getInstance().getToken());
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<WorkTimeResult>() {
             @Override
             public void onCallbackSuccess(WorkTimeResult result) {
-                XLogger.i(TAG, "获取会所内网营业时间---成功：" + result.getRespData().startTimeStr);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网营业时间---成功：" + result.getRespData().startTimeStr);
                 startTime = result.getRespData().startTimeStr;
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "获取会所内网营业时间---失败：" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网营业时间---失败：" + e.getLocalizedMessage());
                 startTime = AppConstants.STATISTICS_DEFAULT_TIME;
             }
         });
@@ -302,14 +302,14 @@ public class InnerManager {
     }
 
     public boolean getInnerSwitchConfig() {
-        XLogger.i(TAG, "获取会所内网开关配置信息");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网开关配置信息：" + RequestConstant.URL_GET_INNER_SWITCH);
         mCallInnerSwitch = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerSwitch(AccountManager.getInstance().getToken(), AppConstants.INNER_SWITCH_CODE);
         XmdNetwork.getInstance().requestSync(mCallInnerSwitch, new NetworkSubscriber<InnerSwitchResult>() {
             @Override
             public void onCallbackSuccess(InnerSwitchResult result) {
                 SwitchInfo switchInfo = result.getRespData();
-                XLogger.i(TAG, "获取会所内网开关配置---成功：" + switchInfo.status);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网开关配置---成功：" + switchInfo.status);
                 if (AppConstants.APP_REQUEST_YES.equals(switchInfo.status)) {
                     mInnerSwitch = true;
                 } else {
@@ -321,7 +321,7 @@ public class InnerManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "获取会所内网开关配置---失败：" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网开关配置---失败：" + e.getLocalizedMessage());
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     resultInnerSwitch = true;
                 } else {
@@ -384,19 +384,20 @@ public class InnerManager {
     }
 
     public boolean getInnerChannelList() {
-        XLogger.i(TAG, "获取会所内网自定义支付方式");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网自定义支付方式：" + RequestConstant.URL_GET_PAY_CHANNEL_LIST);
         callInnerChannel = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerChannelList(AccountManager.getInstance().getToken());
         XmdNetwork.getInstance().requestSync(callInnerChannel, new NetworkSubscriber<InnerChannelListResult>() {
             @Override
             public void onCallbackSuccess(InnerChannelListResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网自定义支付方式---成功");
                 mChannels = result.getRespData();
                 resultInnerChannel = true;
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "获取会所内网自定义支付方式---失败 :" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取会所内网自定义支付方式---失败：" + e.getLocalizedMessage());
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultInnerChannel = true;
@@ -459,7 +460,7 @@ public class InnerManager {
     }
 
     public void printInnerRecordInfo(InnerRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
-        XLogger.i(TAG, "printInnerRecordInfo");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "打印内网订单");
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));

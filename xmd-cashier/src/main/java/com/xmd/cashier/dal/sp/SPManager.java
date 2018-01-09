@@ -34,7 +34,7 @@ public class SPManager {
     }
 
     public void setSpaServerAddress(String address) {
-        XLogger.i(TAG, "set server to " + address);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Set server to " + address);
         XmdNetwork.getInstance().changeServer("http://" + address);
         mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
@@ -44,7 +44,7 @@ public class SPManager {
     }
 
     public void setPrintClientSwitch(boolean status) {
-        XLogger.i(TAG, "设置打印客户联 :" + status);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设置打印客户联 :" + status);
         mSharedPreferences.edit().putBoolean(SPConstants.GLOBAL_PRINT_CLIENT_SWITCH, status).apply();
     }
 
@@ -54,7 +54,7 @@ public class SPManager {
     }
 
     public void setOrderAcceptSwitch(boolean status) {
-        XLogger.i(TAG, "设置订单接受时打印 :" + status);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设置订单接受时打印 :" + status);
         mSharedPreferences.edit().putBoolean(SPConstants.ORDER_ACCEPT_PRINT_SWITCH, status).apply();
     }
 
@@ -64,7 +64,7 @@ public class SPManager {
     }
 
     public void setOrderRejectSwitch(boolean status) {
-        XLogger.i(TAG, "设置订单拒绝时打印 :" + status);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设置订单拒绝时打印 :" + status);
         mSharedPreferences.edit().putBoolean(SPConstants.ORDER_REJECT_PRINT_SWITCH, status).apply();
     }
 
@@ -74,7 +74,7 @@ public class SPManager {
     }
 
     public void setOnlinePassSwitch(boolean status) {
-        XLogger.i(TAG, "设置确认在线买单时打印 :" + status);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设置确认在线买单时打印 :" + status);
         mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_PASS_PRINT_SWITCH, status).apply();
     }
 
@@ -84,7 +84,7 @@ public class SPManager {
     }
 
     public void setOnlineUnpassSwitch(boolean status) {
-        XLogger.i(TAG, "设置异常在线买单时打印 :" + status);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设置异常在线买单时打印 :" + status);
         mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_UNPASS_PRINT_SWITCH, status).apply();
     }
 
@@ -93,7 +93,7 @@ public class SPManager {
     }
 
     public void setFastPayPushTag(int count) {
-        XLogger.i(TAG, "设置在线买单提醒数量 :" + count);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "设置在线买单提醒数量 :" + count);
         mSharedPreferences.edit().putInt(SPConstants.FASTPAY_PUSH_TAG, count).apply();
     }
 
@@ -109,7 +109,7 @@ public class SPManager {
     }
 
     public void setOrderPushTag(int count) {
-        XLogger.i(TAG, "设置预约提醒数量 :" + count);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "设置预约提醒数量 :" + count);
         mSharedPreferences.edit().putInt(SPConstants.ORDER_PUSH_TAG, count).apply();
     }
 

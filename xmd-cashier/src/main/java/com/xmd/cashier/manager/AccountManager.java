@@ -62,7 +62,7 @@ public class AccountManager {
         mUser.clubIconUrl = loginResult.avatarUrl;
         mUser.userId = loginResult.userId;
         LocalPersistenceManager.writeUser(mUser);
-        XLogger.i(TAG, "login ok: " + mUser.toString());
+        XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "Login OK：" + mUser.toString());
     }
 
     private void setClubInfo(ClubResult clubResult) {
@@ -72,7 +72,7 @@ public class AccountManager {
             mUser.clubId = clubResult.getRespData().clubId;
             mUser.clubCreateTime = clubResult.getRespData().createTime;
             LocalPersistenceManager.writeUser(mUser);
-            XLogger.i(TAG, "set club ok: " + mUser.toString());
+            XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "Set Club OK：" + mUser.toString());
         }
     }
 
@@ -178,16 +178,19 @@ public class AccountManager {
 
 
     private Subscription getClubInfo(String token, final Callback<ClubResult> callback) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "获取会所信息：" + RequestConstant.URL_CLUB_INFO);
         Observable<ClubResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getClubInfo(token, AppConstants.SESSION_TYPE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<ClubResult>() {
             @Override
             public void onCallbackSuccess(ClubResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "获取会所信息---成功");
                 callback.onSuccess(result);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "获取会所信息---失败：" + e.getLocalizedMessage());
                 callback.onError(e.getLocalizedMessage());
             }
         });
@@ -204,23 +207,26 @@ public class AccountManager {
         InnerManager.getInstance().stopGetInnerChannel();
         InnerManager.getInstance().resetClubWorkTime();
 
+        XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出操作：" + RequestConstant.URL_LOGOUT);
         Observable<LogoutResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .logout(getToken(), AppConstants.SESSION_TYPE);
         Subscription subscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<LogoutResult>() {
             @Override
             public void onCallbackSuccess(LogoutResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出---成功");
                 callback.onSuccess(result);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出---失败：" + e.getLocalizedMessage());
                 callback.onError(e.getLocalizedMessage());
             }
         });
 
         LocalPersistenceManager.clearClubQrcodeBytes(getClubId()); //清除二维码
         cleanUserInfo(); //清除用户信息
-        XLogger.i(TAG, "Already Logout ~~ ");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "Already Logout ~~ ");
         return subscription;
     }
 }

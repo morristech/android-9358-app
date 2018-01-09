@@ -126,12 +126,13 @@ public class MemberManager {
     }
 
     private boolean getSetting() {
-        XLogger.i(TAG, "获取会所会员配置信息");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "获取会所会员配置信息：" + RequestConstant.URL_GET_MEMBER_SETTING_CONFIG);
         callMemberSetting = XmdNetwork.getInstance().getService(SpaService.class)
                 .getMemberSettingConfig(AccountManager.getInstance().getToken());
         XmdNetwork.getInstance().requestSync(callMemberSetting, new NetworkSubscriber<MemberSettingResult>() {
             @Override
             public void onCallbackSuccess(MemberSettingResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "获取会所会员配置---成功");
                 if (result != null && result.getRespData() != null) {
                     mCardMode = result.getRespData().cardMode;
                     mRechargeMode = result.getRespData().rechargeMode;
@@ -143,7 +144,7 @@ public class MemberManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e("获取会所会员配置信息---失败 :" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "获取会所会员配置信息---失败：" + e.getLocalizedMessage());
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultMemberSetting = true;
@@ -200,6 +201,7 @@ public class MemberManager {
     // 开卡
     public Subscription requestCard(final Callback<MemberCardResult> callback) {
         MemberInfo info = mCardProcess.getMemberInfo();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员开卡发起请求：" + RequestConstant.URL_REQUEST_MEMBER_CARD);
         Observable<MemberCardResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .cardMemberInfo(AccountManager.getInstance().getToken(), info.birth, info.gender, info.cardNo, info.phoneNum, info.name);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberCardResult>() {
@@ -216,6 +218,7 @@ public class MemberManager {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员开卡发起请求---失败：" + e.getLocalizedMessage());
                 callback.onError(e.getLocalizedMessage());
             }
         });
@@ -223,6 +226,7 @@ public class MemberManager {
 
     // 校验用户手机号
     public Subscription checkMemberPhone(final String phone, final Callback callback) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员开卡校验手机号：" + RequestConstant.URL_CHECK_MEMBER_CARD_PHONE + " (" + phone + ") ");
         Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .checkMemberPhone(AccountManager.getInstance().getToken(), phone);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StringResult>() {
@@ -238,6 +242,7 @@ public class MemberManager {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员开卡校验手机号---失败：" + e.getLocalizedMessage());
                 callback.onError(e.getLocalizedMessage());
             }
         });
@@ -332,6 +337,7 @@ public class MemberManager {
             default:
                 break;
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值发起充值请求：" + RequestConstant.URL_REQUEST_MEMBER_RECHARGE);
         Observable<MemberUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .rechargeMemberInfo(AccountManager.getInstance().getToken(),
                         String.valueOf(amount),
@@ -346,16 +352,21 @@ public class MemberManager {
             @Override
             public void onCallbackSuccess(MemberUrlResult result) {
                 if (result != null && result.getRespData() != null) {
-                    mRechargeProcess.setOrderId(result.getRespData().orderId);
-                    mRechargeProcess.setPayUrl(result.getRespData().payUrl);
+                    String orderId = result.getRespData().orderId;
+                    String payUrl = result.getRespData().payUrl;
+                    mRechargeProcess.setOrderId(orderId);
+                    mRechargeProcess.setPayUrl(payUrl);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值发起充值请求---成功：[" + orderId + "]" + payUrl);
                     callback.onSuccess(result);
                 } else {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值发起充值请求---成功：数据解析异常");
                     callback.onError("解析数据异常");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值发起充值请求---失败：" + e.getLocalizedMessage());
                 callback.onError(e.getLocalizedMessage());
             }
         });
@@ -377,6 +388,7 @@ public class MemberManager {
             default:
                 break;
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号：" + RequestConstant.URL_GET_TRADE_NO);
         Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getTradeNo(AccountManager.getInstance().getToken(), amount, null, RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
@@ -384,10 +396,12 @@ public class MemberManager {
             public void onCallbackSuccess(GetTradeNoResult result) {
                 mTrade.tradeNo = result.getRespData();
                 callback.onSuccess(result);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号---成功：" + mTrade.tradeNo);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号---失败：" + e.getLocalizedMessage());
                 callback.onError(e.getLocalizedMessage());
             }
         });
@@ -426,6 +440,7 @@ public class MemberManager {
     }
 
     public void reportTrade() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值订单旺POS渠道支付进行汇报PosPayDeal");
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
@@ -513,7 +528,7 @@ public class MemberManager {
     }
 
     public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
-        XLogger.i(TAG, "printMemberRecordInfo");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "打印会员账户记录");
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));

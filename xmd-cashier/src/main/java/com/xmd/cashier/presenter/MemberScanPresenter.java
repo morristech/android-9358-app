@@ -33,6 +33,7 @@ import rx.Subscription;
  */
 
 public class MemberScanPresenter implements MemberScanContract.Presenter {
+    private static final String TAG = "MemberScanPresenter";
     private Context mContext;
     private MemberScanContract.View mView;
     private MemberRecordInfo memberRecordInfo;
@@ -65,13 +66,15 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     }
 
     private boolean detailRechargeTrade() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情：" + RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL);
         callDetailRecharge = XmdNetwork.getInstance().getService(SpaService.class)
                 .detailMemberRecharge(AccountManager.getInstance().getToken(), MemberManager.getInstance().getRechargeOrderId());
         XmdNetwork.getInstance().requestSync(callDetailRecharge, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---成功：" + MemberManager.getInstance().getRechargeOrderId());
                 success = true;
-                PosFactory.getCurrentCashier().textToSound("充值成功");
+                PosFactory.getCurrentCashier().textToSound("会员充值成功");
                 memberRecordInfo = result.getRespData();
                 resultDetailRecharge = true;
                 EventBus.getDefault().post(new RechargeFinishEvent());
@@ -79,7 +82,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.d("查询失败：" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---失败：" + e.getLocalizedMessage());
                 resultDetailRecharge = false;
             }
         });
@@ -181,22 +184,25 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
         if (mRechargeByCashSubscription != null) {
             mRechargeByCashSubscription.unsubscribe();
         }
+        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值现金支付：" + RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE);
         Observable<MemberRecordResult> reportCash = XmdNetwork.getInstance().getService(SpaService.class)
                 .doMemberRecharge(AccountManager.getInstance().getToken(), MemberManager.getInstance().getRechargeOrderId(), AppConstants.PAY_CHANNEL_CASH, null, RequestConstant.DEFAULT_SIGN_VALUE);
         mRechargeByCashSubscription = XmdNetwork.getInstance().request(reportCash, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值现金支付---成功：" + MemberManager.getInstance().getRechargeOrderId());
                 mView.enableCash();
                 mView.hideLoading();
                 mView.showSuccess();
                 success = true;
-                PosFactory.getCurrentCashier().textToSound("充值成功");
+                PosFactory.getCurrentCashier().textToSound("会员充值成功");
                 memberRecordInfo = result.getRespData();
                 EventBus.getDefault().post(new RechargeFinishEvent());
             }
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值现金支付---失败：" + e.getLocalizedMessage());
                 mView.hideLoading();
                 mView.enableCash();
                 mView.showToast("交易处理失败:" + e.getLocalizedMessage());

@@ -169,8 +169,9 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
     @Override
     public void processData() {
         mView.showStepView();       //显示StepView
-        XLogger.i(TAG, "内网订单数据源:" + mView.returnSource());
-        switch (mView.returnSource()) {
+        String source = mView.returnSource();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单数据源:" + source);
+        switch (source) {
             case AppConstants.INNER_METHOD_SOURCE_NORMAL:   //如果是正常查找
                 mView.showOrderList(InnerManager.getInstance().getInnerOrderInfos());   //显示列表
                 mView.setStatusLayout(true);            //显示其他项

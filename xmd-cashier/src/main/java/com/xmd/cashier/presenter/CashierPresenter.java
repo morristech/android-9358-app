@@ -5,11 +5,13 @@ import android.content.Context;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
+import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashierContract;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
@@ -72,7 +74,7 @@ public class CashierPresenter implements CashierContract.Presenter {
 
     // POS支付:生成交易号汇报
     public void processTradeNo() {
-        XLogger.i(TAG, "生成交易号");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "生成交易号：" + RequestConstant.URL_GET_TRADE_NO);
         mView.showLoading();
         if (mGetTradeNoSubscription != null) {
             mGetTradeNoSubscription.unsubscribe();
@@ -80,14 +82,15 @@ public class CashierPresenter implements CashierContract.Presenter {
         mGetTradeNoSubscription = mTradeManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
             @Override
             public void onSuccess(GetTradeNoResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "生成交易号---成功：" + mTradeManager.getCurrentTrade().tradeNo);
                 doCashier();
             }
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, "生成交易号---失败：" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "生成交易号---失败：" + error);
                 mView.hideLoading();
-                mView.showError("获取订单号失败，请重试");
+                mView.showError("获取订单号失败:" + error);
             }
         });
     }
@@ -131,11 +134,12 @@ public class CashierPresenter implements CashierContract.Presenter {
      * Pos收银台支付
      */
     private void payCashier(int money) {
-        XLogger.i(TAG, "旺POS渠道支付");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "旺POS渠道支付");
         mTradeManager.posPay(mContext, money, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
-                XLogger.i(TAG, "旺POS渠道支付---成功");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "旺POS渠道支付---成功");
+                PosFactory.getCurrentCashier().textToSound("买单成功");
                 mView.hideLoading();
                 mView.showToast("支付成功！");
                 finishPosPay();
@@ -143,7 +147,7 @@ public class CashierPresenter implements CashierContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, "旺POS渠道支付---失败：" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "旺POS渠道支付---失败：" + error);
                 mView.hideLoading();
                 if (mCashierManager.isUserCancel(mTradeManager.getCurrentTrade().posPayReturn)) {
                     UiNavigation.gotoConfirmActivity(mContext);
@@ -206,7 +210,7 @@ public class CashierPresenter implements CashierContract.Presenter {
      * 核销优惠券
      */
     private void processCoupon() {
-        XLogger.i(TAG, "补收银处理核销");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款处理核销");
         if (mVerificationSubscription != null) {
             mVerificationSubscription.unsubscribe();
         }
@@ -220,14 +224,14 @@ public class CashierPresenter implements CashierContract.Presenter {
                         mTradeManager.calculateSuccessVerificationValue();
                         if (mTradeManager.haveFailed()) {
                             //有失败的情况，需要进入错误处理页面
-                            XLogger.i(TAG, "补收银核销---部分失败");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销---部分失败");
                             mView.hideLoading();
                             trade.setWillDiscountMoney(trade.getVerificationSuccessfulMoney());
                             UiNavigation.gotoConfirmActivity(mContext, "部分券核销失败,请确认");
                         } else {
                             // 全部核销成功
                             // 进入支付环节
-                            XLogger.i(TAG, "补收银核销---成功");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销---成功");
                             processPay();
                         }
                     }
@@ -235,7 +239,7 @@ public class CashierPresenter implements CashierContract.Presenter {
                     @Override
                     public void onError(String error) {
                         mView.hideLoading();
-                        XLogger.e(TAG, "补收银核销---失败");
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销---失败");
                         UiNavigation.gotoConfirmActivity(mContext, "优惠券核销错误：" + error);
                     }
                 });
@@ -280,7 +284,6 @@ public class CashierPresenter implements CashierContract.Presenter {
                 payCash(needPayMoney);
                 break;
             default:
-                XLogger.d("unknow cashier type");
                 break;
         }
     }
@@ -319,7 +322,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     }
 
     private void reset() {
-        XLogger.i("===============reset================");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "===============reset================");
         Trade trade = mTradeManager.getCurrentTrade();
         mView.setOriginMoney(trade.getOriginMoney());
         mView.setDiscountMoney(trade.getWillDiscountMoney());

@@ -16,6 +16,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
@@ -159,7 +160,7 @@ public class NotifyManager {
 
     // *****************************************未处理买单*****************************************
     public void notifyOnlinePayList() {
-        XLogger.i(TAG, "获取未处理在线买单");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理在线买单：" + RequestConstant.URL_GET_ONLINE_PAY_LIST);
         Observable<OnlinePayListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayListResult>() {
@@ -168,7 +169,7 @@ public class NotifyManager {
                 if (result != null && result.getRespData() != null) {
                     if (result.getRespData().size() > 0) {
                         int size = result.getRespData().size();
-                        XLogger.i(TAG, "获取未处理在线买单---成功:" + size);
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理在线买单---成功:" + size);
                         SPManager.getInstance().setFastPayPushTag(size);
                         for (OnlinePayInfo info : result.getRespData()) {
                             info.tempNo = result.getRespData().indexOf(info) + 1;
@@ -178,21 +179,21 @@ public class NotifyManager {
                         SPManager.getInstance().setFastPayPushTag(0);
                     }
                 } else {
-                    XLogger.i(TAG, "获取未处理在线买单---成功: 数据null");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理在线买单---成功: 数据null");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
                 e.printStackTrace();
-                XLogger.e(TAG, "获取未处理在线买单---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理在线买单---失败:" + e.getLocalizedMessage());
             }
         });
     }
 
     // *****************************************未处理预约*****************************************
     public void notifyOrderRecordList() {
-        XLogger.i(TAG, "获取未处理预约订单");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理预约订单：" + RequestConstant.URL_GET_ORDER_RECORD_LIST);
         Observable<OrderRecordListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderRecordListResult>() {
@@ -201,7 +202,7 @@ public class NotifyManager {
                 if (result != null && result.getRespData() != null) {
                     if (result.getRespData().size() > 0) {
                         int size = result.getRespData().size();
-                        XLogger.i(TAG, "获取未处理预约订单---成功:" + size);
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理预约订单---成功:" + size);
                         SPManager.getInstance().setOrderPushTag(size);
                         for (OrderRecordInfo info : result.getRespData()) {
                             info.tempNo = result.getRespData().indexOf(info) + 1;
@@ -211,14 +212,14 @@ public class NotifyManager {
                         SPManager.getInstance().setOrderPushTag(0);
                     }
                 } else {
-                    XLogger.i(TAG, "获取未处理预约订单---成功: 数据null");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理预约订单---成功: 数据null");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
                 e.printStackTrace();
-                XLogger.e(TAG, "获取未处理预约订单---失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理预约订单---失败:" + e.getLocalizedMessage());
             }
         });
     }
@@ -240,7 +241,7 @@ public class NotifyManager {
     }
 
     public void printOrderRecord(OrderRecordInfo info, boolean retry) {
-        XLogger.i(TAG, "printOrderRecord");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印预约订单记录");
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(预约订单)");
         if (retry) {
@@ -332,7 +333,7 @@ public class NotifyManager {
     }
 
     public void printOnlinePayRecord(OnlinePayInfo info, boolean retry, boolean keep) {
-        XLogger.i(TAG, "printOnlinePayRecord");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印在线买单记录");
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
@@ -443,7 +444,7 @@ public class NotifyManager {
     }
 
     public void stopRepeatOnlinePay() {
-        XLogger.i(TAG, "结束在线买单轮询");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "结束在线买单轮询");
         Context context = MainApplication.getInstance().getApplicationContext();
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, CustomService.class);
@@ -468,7 +469,7 @@ public class NotifyManager {
     }
 
     public void stopRepeatOrderRecord() {
-        XLogger.i(TAG, "结束预约订单轮询");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "结束预约订单轮询");
         Context context = MainApplication.getInstance().getApplicationContext();
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, CustomService.class);

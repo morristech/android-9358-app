@@ -31,6 +31,7 @@ import okhttp3.FormBody;
  */
 
 public class DataReportManager {
+    private static final String TAG = "DataReportManager";
     private static DataReportManager mInstance = new DataReportManager();
     private AccountManager mAccountManager;
     private CashierManager mCashierManager;
@@ -109,7 +110,7 @@ public class DataReportManager {
 
         @Override
         public void onSuccess(ReportTradeDataResult o) {
-            XLogger.i("trade data report ok!");
+            XLogger.i(TAG, "Trade data report success !");
             if (trade != null) {
                 if (o.getRespData() != null) {
                     trade.posPoints = o.getRespData().cashierPoints;
@@ -121,7 +122,7 @@ public class DataReportManager {
 
         @Override
         public void onError(String error) {
-            XLogger.e("trade data report failed:" + error);
+            XLogger.e(TAG, "Trade data report failed:" + error);
             if (!DataReportTable.isDataExist(tradeNo)) {
                 params.remove(RequestConstant.KEY_TOKEN);
                 params.remove(RequestConstant.KEY_SIGN);
@@ -160,7 +161,7 @@ public class DataReportManager {
     }
 
     private void reportDataFromDB(ReportData data) {
-        XLogger.i("report " + data.tradeNo);
+        XLogger.i(TAG, "Report data：" + data.tradeNo);
         Map<String, String> params = bytesToMap(data.data);
         params.put(RequestConstant.KEY_SIGN, RequestConstant.DEFAULT_SIGN_VALUE);
         params.put(RequestConstant.KEY_TOKEN, AccountManager.getInstance().getToken());
@@ -177,7 +178,7 @@ public class DataReportManager {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                XLogger.i("data reporter scan ......");
+                XLogger.i(TAG, "Scan report data ......");
                 if (AccountManager.getInstance().isLogin()) {
                     List<ReportData> dataList = DataReportTable.query();
                     for (ReportData data : dataList) {

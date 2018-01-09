@@ -5,8 +5,11 @@ import android.content.Context;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
+import com.xmd.cashier.cashier.PosFactory;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashPayContract;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.TradeManager;
@@ -58,11 +61,12 @@ public class CashPayPresenter implements CashPayContract.Presenter {
         }
         mView.disableCashBtn();
         mView.showLoading();
-        XLogger.i(TAG, "补收款发起现金支付");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款发起现金支付：" + RequestConstant.URL_REPORT_TRADE_DATA);
         mCashPaySubscription = TradeManager.getInstance().cashPay(mView.getAmount(), new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
-                XLogger.i(TAG, "补收款发起现金支付---成功");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款发起现金支付---成功");
+                PosFactory.getCurrentCashier().textToSound("买单成功");
                 mView.hideLoading();
                 mView.showCashSuccess();
                 finishCashPay();
@@ -70,7 +74,7 @@ public class CashPayPresenter implements CashPayContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, "补收款发起现金支付---失败:" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款发起现金支付---失败:" + error);
                 mView.showToast(error);
                 mView.hideLoading();
                 mView.enableCashBtn();

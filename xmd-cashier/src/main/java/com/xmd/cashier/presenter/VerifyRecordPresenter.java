@@ -275,7 +275,7 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(error);
+                XLogger.d(error);
             }
         });
     }

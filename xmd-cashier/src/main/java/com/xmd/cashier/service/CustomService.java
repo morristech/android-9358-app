@@ -97,7 +97,7 @@ public class CustomService extends Service {
     private class PollingWifiStatusThread extends Thread {
         @Override
         public void run() {
-            XLogger.i(TAG, MonitorManager.getInstance().getWifiStatus());
+            XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + MonitorManager.getInstance().getWifiStatus());
             MonitorManager.getInstance().startPollingWifiStatus(SystemClock.elapsedRealtime() + POLLING_WIFI_STATUS_INTERVAL);
         }
     }
@@ -241,14 +241,14 @@ public class CustomService extends Service {
     // 语音播放
     private void textToSound(String text) {
         if (!TextUtils.isEmpty(text)) {
-            XLogger.i(TAG, "语音播放:" + text);
+            XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "语音播放:" + text);
             PosFactory.getCurrentCashier().textToSound(text);
         }
     }
 
     // 点亮屏幕
     private void wakeupScreen() {
-        XLogger.i(TAG, "Wake up Screen");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Wake up Screen");
         PowerManager.WakeLock wakeLock;
         PowerManager pm = (PowerManager) MainApplication.getInstance().getApplicationContext().getSystemService(POWER_SERVICE);
         if (!pm.isScreenOn()) {
@@ -261,14 +261,14 @@ public class CustomService extends Service {
     // 显示预约订单弹框
     public void showOrderRecordNotify(List<OrderRecordInfo> list) {
         if (isShow) {
-            XLogger.i(TAG, "预约订单弹框提醒: 当前已有弹框显示");
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单弹框提醒: 当前已有弹框显示");
             return;
         }
         NotifyManager.getInstance().stopRepeatOrderRecord();
         mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_custom_notify, null);
         mWindowManager.addView(mLayout, mLayoutParams);
         isShow = true;
-        XLogger.i(TAG, "预约订单弹框提醒: 显示");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单弹框提醒: 显示");
 
         mOrderRecordHandler.post(notifyOrderRecord);
         RecyclerView rv = (RecyclerView) mLayout.findViewById(R.id.rv_custom_notify);
@@ -278,11 +278,11 @@ public class CustomService extends Service {
             @Override
             public void onAccept(final OrderRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);    // 更新处理时的状态
-                XLogger.i(TAG, "预约订单接单:" + info.id);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单接单:" + info.id);
                 NotifyManager.getInstance().acceptOrder(info.id, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
-                        XLogger.i(TAG, "预约订单接单---成功:" + info.id);
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单接单---成功:" + info.id);
                         XToast.show("接单成功");
                         SPManager.getInstance().updateOrderPushTag();
                         adapter.removeItem(position);
@@ -300,7 +300,7 @@ public class CustomService extends Service {
 
                     @Override
                     public void onError(String error) {
-                        XLogger.i(TAG, "预约订单接单---失败:" + error);
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单接单---失败:" + error);
                         if (error.contains("处理")) {
                             // FIXME 后台描述变更,则相应变更
                             error = "订单已被处理，详情请查看付费预约列表";
@@ -313,11 +313,11 @@ public class CustomService extends Service {
             @Override
             public void onReject(final OrderRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);    // 更新处理时的状态
-                XLogger.i(TAG, "预约订单拒绝:" + info.id);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单拒绝:" + info.id);
                 NotifyManager.getInstance().rejectOrder(info.id, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
-                        XLogger.i(TAG, "预约订单拒绝---成功:" + info.id);
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单拒绝---成功:" + info.id);
                         XToast.show("已拒绝");
                         SPManager.getInstance().updateOrderPushTag();
                         adapter.removeItem(position);
@@ -334,7 +334,7 @@ public class CustomService extends Service {
 
                     @Override
                     public void onError(String error) {
-                        XLogger.i(TAG, "预约订单拒绝---失败:" + error);
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单拒绝---失败:" + error);
                         if (error.contains("处理")) {
                             // FIXME 后台描述变更,则相应变更
                             error = "订单已被处理，详情请查看付费预约列表";
@@ -346,7 +346,7 @@ public class CustomService extends Service {
 
             @Override
             public void onClose(int position) {
-                XLogger.i(TAG, "预约订单 on close");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单 on close");
                 adapter.removeItem(position);
                 if (adapter.getItemCount() == 0) {
                     mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
@@ -368,14 +368,14 @@ public class CustomService extends Service {
     // 显示在线买单弹框
     public void showOnlinePayNotify(List<OnlinePayInfo> list) {
         if (isShow) {
-            XLogger.i(TAG, "在线买单弹框提醒: 当前已有弹框显示");
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单弹框提醒: 当前已有弹框显示");
             return;
         }
         NotifyManager.getInstance().stopRepeatOnlinePay();
         mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_custom_notify, null);
         mWindowManager.addView(mLayout, mLayoutParams);
         isShow = true;
-        XLogger.i(TAG, "在线买单弹框提醒: 显示");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单弹框提醒: 显示");
         mOnlinePayHandler.post(notifyOnlinePay);
         RecyclerView rv = (RecyclerView) mLayout.findViewById(R.id.rv_custom_notify);
         final OnlinePayNotifyAdapter adapter = new OnlinePayNotifyAdapter();
@@ -384,11 +384,11 @@ public class CustomService extends Service {
             @Override
             public void onPass(final OnlinePayInfo info, final int position) {
                 adapter.setLoadingStatus(position);
-                XLogger.i(TAG, "在线买单确认:" + info.id);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单确认:" + info.id);
                 NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
-                        XLogger.i(TAG, "在线买单确认---成功:" + info.id);
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单确认---成功:" + info.id);
                         XToast.show("买单确认成功");
                         adapter.removeItem(position);
                         SPManager.getInstance().updateFastPayPushTag();
@@ -406,7 +406,7 @@ public class CustomService extends Service {
 
                     @Override
                     public void onError(String error) {
-                        XLogger.i(TAG, "在线买单确认---失败:" + error);
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单确认---失败:" + error);
                         if (error.contains("处理")) {
                             // FIXME 后台描述变更,则相应变更
                             error = "买单已被处理，详情请查看在线买单列表";
@@ -419,11 +419,11 @@ public class CustomService extends Service {
             @Override
             public void onUnpass(final OnlinePayInfo info, final int position) {
                 adapter.setLoadingStatus(position);
-                XLogger.i(TAG, "在线买单请到前台:" + info.id);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单请到前台:" + info.id);
                 NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
-                        XLogger.i(TAG, "在线买单请到前台---成功:" + info.id);
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单请到前台---成功:" + info.id);
                         XToast.show("已通知请到前台");
                         SPManager.getInstance().updateFastPayPushTag();
                         adapter.removeItem(position);
@@ -441,7 +441,7 @@ public class CustomService extends Service {
 
                     @Override
                     public void onError(String error) {
-                        XLogger.i(TAG, "在线买单请到前台---失败:" + error);
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单请到前台---失败:" + error);
                         if (error.contains("处理")) {
                             // FIXME 后台描述变更,则相应变更
                             error = "买单已被处理，详情请查看在线买单列表";
@@ -453,7 +453,7 @@ public class CustomService extends Service {
 
             @Override
             public void onClose(int position) {
-                XLogger.i(TAG, "在线买单 on close");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单 on close");
                 adapter.removeItem(position);
                 if (adapter.getItemCount() == 0) {
                     mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
@@ -470,7 +470,7 @@ public class CustomService extends Service {
             @Override
             public void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info, final int position) {
                 adapter.setLoadingStatus(position);
-                XLogger.i(TAG, "在线买单查看优惠详情:" + info.verifyCode);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单查看优惠详情:" + info.verifyCode);
                 Observable<OnlinePayCouponResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                         .getDiscountCoupon(AccountManager.getInstance().getToken(), info.verifyCode);
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayCouponResult>() {
@@ -482,7 +482,7 @@ public class CustomService extends Service {
                     @Override
                     public void onCallbackError(Throwable e) {
                         e.printStackTrace();
-                        XLogger.i(TAG, "在线买单查看优惠详情---失败:" + e.getLocalizedMessage());
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单查看优惠详情---失败:" + e.getLocalizedMessage());
                         XToast.show("查看详情失败:" + e.getLocalizedMessage());
                         adapter.setNormalStatus(position);
                     }
@@ -504,13 +504,13 @@ public class CustomService extends Service {
         wakeupScreen();
         textToSound("您有一笔新结账订单待处理");
         if (isShow) {
-            XLogger.i(TAG, "内网订单弹框提醒: 当前已有弹框显示");
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单弹框提醒：当前已有弹框显示 " + recordInfo.payId);
             return;
         }
         mLayout = (PercentRelativeLayout) LayoutInflater.from(MainApplication.getInstance().getApplicationContext()).inflate(R.layout.layout_inner_notify, null);
         mWindowManager.addView(mLayout, mLayoutParams);
         isShow = true;
-        XLogger.i(TAG, "内网订单弹框提醒: 显示");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单弹框提醒：" + recordInfo.payId);
 
         ImageView mCloseImg = (ImageView) mLayout.findViewById(R.id.notify_inner_off);
         RecyclerView mInnerList = (RecyclerView) mLayout.findViewById(R.id.item_inner_list);
@@ -526,7 +526,7 @@ public class CustomService extends Service {
         mCloseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XLogger.i(TAG, "关闭内网订单弹框");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "关闭内网订单弹框：" + recordInfo.payId);
                 hide();
             }
         });
@@ -535,7 +535,7 @@ public class CustomService extends Service {
         mPayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XLogger.i(TAG, "选择支付内网订单");
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "选择支付内网订单：" + recordInfo.payId);
                 hide();
                 InnerManager.getInstance().initTradeByRecord(recordInfo);
                 if (recordInfo.paidAmount > 0) {

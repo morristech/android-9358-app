@@ -64,7 +64,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
                     dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
                         @Override
                         public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
-                            XLogger.i(TAG, "补收银支付方式：" + item);
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收银支付方式：" + item);
                             switch (item) {
                                 case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
                                     mPresenter.onClickXMDOnlinePay();

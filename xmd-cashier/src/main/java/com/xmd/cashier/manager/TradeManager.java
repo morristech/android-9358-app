@@ -111,6 +111,7 @@ public class TradeManager {
 
     //汇报交易信息
     public void reportTradeDataSync() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款订单旺POS渠道支付进行汇报PosPayDeal");
         DataReportManager.getInstance().reportData(mTrade, AppConstants.REPORT_DATA_BIZ_TRADE);
     }
 
@@ -123,7 +124,6 @@ public class TradeManager {
             @Override
             public void onCallbackSuccess(GetTradeNoResult result) {
                 mTrade.tradeNo = result.getRespData();
-                XLogger.i("PosTradeNo : " + mTrade.tradeNo);
                 callback.onSuccess(result);
             }
 
@@ -959,7 +959,7 @@ public class TradeManager {
     /*********************************************打印相关******************************************/
     // 会员消费
     public void printMemberPay(boolean keep, Callback<?> callback) {
-        XLogger.i(TAG, "printMemberPay");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印会员支付账单");
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
@@ -1072,7 +1072,7 @@ public class TradeManager {
 
     // 小摩豆买单
     public void printOnlinePay(boolean keep, Callback<?> callback) {
-        XLogger.i(TAG, "printOnlinePay");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印在线支付账单");
         List<TempUser> contacts = getTempContacts();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
@@ -1181,7 +1181,7 @@ public class TradeManager {
 
     // Pos支付
     public void printPosPay(boolean keep, Callback<?> callback) {
-        XLogger.i(TAG, "printPosPay");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印旺POS支付或现金支付账单");
         List<TempUser> contacts = getTempContacts();
         mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
