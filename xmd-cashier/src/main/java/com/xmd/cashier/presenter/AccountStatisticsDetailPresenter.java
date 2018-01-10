@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.xmd.cashier.dal.bean.OfflineAccountStatisticInfo;
 import com.xmd.cashier.dal.bean.OnlineAccountStatisticInfo;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.AccountStatisticsResult;
+import com.xmd.cashier.dal.net.response.PosPullResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -39,6 +41,7 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
     private IPos mPos;
 
     private Subscription mGetStatisticsSubscription;
+    private Subscription mPullPosSubscription;
 
     public static final int PAGE_FILTER_DAY = 0;
     public static final int PAGE_FILTER_WEEK = 1;
@@ -63,10 +66,13 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
 
     private int mStyleType = STYLE_SETTLE;
 
+    private Handler mHandler;
+
     public AccountStatisticsDetailPresenter(Context context, AccountStatisticsDetailContract.View view) {
         mContext = context;
         mView = view;
         mPos = PosFactory.getCurrentCashier();
+        mHandler = new Handler();
         mView.setPresenter(this);
     }
 
@@ -148,6 +154,9 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
         if (mGetStatisticsSubscription != null) {
             mGetStatisticsSubscription.unsubscribe();
         }
+        if (mPullPosSubscription != null) {
+            mPullPosSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -196,6 +205,37 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
             default:
                 break;
         }
+    }
+
+    @Override
+    public void pullData() {
+        mView.showLoading();
+        Observable<PosPullResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .posPullResult(AccountManager.getInstance().getToken());
+        mPullPosSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<PosPullResult>() {
+            @Override
+            public void onCallbackSuccess(PosPullResult result) {
+                int count = result.getRespData().count;
+                if (count == 0) {
+                    loadData();
+                } else if (count > 0) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData();
+                        }
+                    }, AppConstants.DEFAULT_INTERVAL);
+                } else { //-1
+                    mView.showToast("如数据异常，请尝试刷新");
+                    loadData();
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                loadData();
+            }
+        });
     }
 
     @Override

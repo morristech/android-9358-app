@@ -87,6 +87,7 @@ public class RequestConstant {
 
     // ****************************************** Pos对账单 **************************************
     public static final String URL_GET_ACCOUNT_STATISTICS = SPA_SERVICE_BASE + "/v2/club/financial/settle/summary";
+    public static final String URL_PULL_WANG_POS = SPA_SERVICE_BASE + "/v2/manager/wangpos/pull";
 
     // ****************************************** 经营项目 **************************************
     public static final String URL_GET_ITEM_STATISTICS = SPA_SERVICE_BASE + "/v2/manager/native/statistic/pos/item/summary";

@@ -35,6 +35,7 @@ import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
+import com.xmd.cashier.dal.net.response.PosPullResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
@@ -694,6 +695,9 @@ public interface SpaService {
                                                              @Query(RequestConstant.KEY_END_DATE) String endDate,
                                                              @Query(RequestConstant.KEY_START_TIME) String startTime,
                                                              @Query(RequestConstant.KEY_END_TIME) String endTime);
+
+    @GET(RequestConstant.URL_PULL_WANG_POS)
+    Observable<PosPullResult> posPullResult(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // ****************************************** 经营项目 **************************************
     @GET(RequestConstant.URL_GET_CLUB_WORK_TIME)

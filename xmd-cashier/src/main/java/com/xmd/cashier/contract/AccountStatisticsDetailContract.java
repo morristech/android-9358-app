@@ -13,6 +13,8 @@ public interface AccountStatisticsDetailContract {
     interface Presenter extends BasePresenter {
         void initDate(int bizType);
 
+        void pullData();
+
         void loadData();
 
         void loadCustomData();

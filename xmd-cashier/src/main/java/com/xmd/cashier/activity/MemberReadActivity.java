@@ -1,16 +1,21 @@
 package com.xmd.cashier.activity;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.DigitsKeyListener;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
@@ -44,6 +49,9 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
     private ImageView imgCard;
     private Animation animCircle;
     private Animation animCard;
+
+    private LinearLayout mRootView;
+    private RelativeLayout mReadBg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +95,8 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
         mReadConfirm = (Button) findViewById(R.id.btn_member_read_confirm);
         mStepView = (StepView) findViewById(R.id.sv_step_read);
         mScanImage = (ImageView) findViewById(R.id.img_scan);
+        mRootView = (LinearLayout) findViewById(R.id.ll_root);
+        mReadBg = (RelativeLayout) findViewById(R.id.rl_read_bg);
         switch (mReadType) {
             case AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT:
                 title = "会员消费";
@@ -128,6 +138,25 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
                 return false;
             }
         });
+
+        //获取屏幕高度
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        final int screenHeight = metrics.heightPixels;
+        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        mRootView.getWindowVisibleDisplayFrame(r);
+                        int deltaHeight = screenHeight - r.bottom;
+                        if (deltaHeight > 150) {
+                            mReadBg.setVisibility(View.GONE);
+                        } else {
+                            mReadBg.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     public void onClickScan(View view) {

@@ -219,7 +219,7 @@ public class AccountStatisticsDetailFragment extends Fragment implements Account
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadData();
+                mPresenter.pullData();
             }
         });
     }

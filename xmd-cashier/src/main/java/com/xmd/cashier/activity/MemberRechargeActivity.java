@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,9 +58,10 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     private TextView mTechName;
     private TextView mTechNo;
     private TextView mTechHint;
-    private TextView mTechDelete;
+    private ImageView mTechArrow;
+    private ImageView mTechDelete;
 
-    private LinearLayout mPlanLoadingLayout;
+    private RelativeLayout mPlanLoadingLayout;
     private LinearLayout mPlanLoadErrorLayout;
     private TextView mPlanErrorMsg;
     private TextView mPlanRefresh;
@@ -93,9 +95,10 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mTechName = (TextView) findViewById(R.id.tv_tech_name);
         mTechNo = (TextView) findViewById(R.id.tv_tech_no);
         mTechHint = (TextView) findViewById(R.id.tv_tech_hint);
-        mTechDelete = (TextView) findViewById(R.id.tv_tech_delete);
+        mTechArrow = (ImageView) findViewById(R.id.img_tech_arrow);
+        mTechDelete = (ImageView) findViewById(R.id.img_tech_delete);
 
-        mPlanLoadingLayout = (LinearLayout) findViewById(R.id.layout_plan_loading);
+        mPlanLoadingLayout = (RelativeLayout) findViewById(R.id.layout_plan_loading);
         mPlanLoadErrorLayout = (LinearLayout) findViewById(R.id.layout_plan_error);
         mPlanErrorMsg = (TextView) findViewById(R.id.tv_plan_error);
         mPlanRefresh = (TextView) findViewById(R.id.tv_plan_refresh);
@@ -261,7 +264,6 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
 
     @Override
     public void showTechInfo(TechInfo info) {
-        mTechDelete.setVisibility(View.VISIBLE);
         mTechHint.setVisibility(View.GONE);
         mTechAvatar.setVisibility(View.VISIBLE);
         mTechName.setVisibility(View.VISIBLE);
@@ -273,15 +275,18 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         }
         mTechName.setText(info.name);
         Glide.with(this).load(info.avatarUrl).dontAnimate().placeholder(R.drawable.ic_avatar).into(mTechAvatar);
+        mTechArrow.setVisibility(View.GONE);
+        mTechDelete.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void deleteTechInfo() {
-        mTechDelete.setVisibility(View.GONE);
         mTechHint.setVisibility(View.VISIBLE);
         mTechAvatar.setVisibility(View.GONE);
         mTechName.setVisibility(View.GONE);
         mTechNo.setVisibility(View.GONE);
+        mTechArrow.setVisibility(View.VISIBLE);
+        mTechDelete.setVisibility(View.GONE);
     }
 
     @Override

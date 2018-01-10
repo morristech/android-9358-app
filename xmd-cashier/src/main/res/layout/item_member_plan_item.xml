@@ -10,9 +10,8 @@
 
     <TextView
         android:id="@+id/tv_sub_item"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:gravity="end"
         android:paddingLeft="@dimen/activity_normal_margin"
         android:singleLine="true"

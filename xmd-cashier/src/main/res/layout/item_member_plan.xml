@@ -76,8 +76,9 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ry_send_list"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/activity_little_margin"
             android:visibility="visible" />
