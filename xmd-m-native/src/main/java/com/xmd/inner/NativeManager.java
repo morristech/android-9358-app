@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,15 @@ public class NativeManager {
         DataManager.getInstance().getRoomStatistics(new NetworkSubscriber<RoomStatisticResult>() {
             @Override
             public void onCallbackSuccess(RoomStatisticResult result) {
+                if (result.getRespData().statusList != null && !result.getRespData().statusList.isEmpty()) {
+                    Iterator<RoomStatisticInfo> it = result.getRespData().statusList.iterator();
+                    while (it.hasNext()) {
+                        RoomStatisticInfo info = it.next();
+                        if (!ConstantResource.RESPONSE_YES.equals(info.status)) {
+                            it.remove();
+                        }
+                    }
+                }
                 roomStatisticInfos = result.getRespData().statusList;
                 usingSeatCount = result.getRespData().usingSeatCount;
                 EventBus.getDefault().post(result);

@@ -123,10 +123,6 @@ public class NativeRoomActivity extends BaseActivity {
             @Override
             public void onCallbackSuccess(RoomStatisticResult result) {
                 // 更新首页房间状态统计
-                NativeManager.getInstance().setRoomStatisticInfos(result.getRespData().statusList);
-                NativeManager.getInstance().setUsingSeatCount(result.getRespData().usingSeatCount);
-                EventBus.getDefault().post(result);
-
                 if (result.getRespData().statusList != null && !result.getRespData().statusList.isEmpty()) {
                     List<RoomStatisticInfo> tempList = result.getRespData().statusList;
                     Iterator<RoomStatisticInfo> it = tempList.iterator();
@@ -140,6 +136,9 @@ public class NativeRoomActivity extends BaseActivity {
                 } else {
                     mStatusLayout.setVisibility(View.GONE);
                 }
+                NativeManager.getInstance().setRoomStatisticInfos(result.getRespData().statusList);
+                NativeManager.getInstance().setUsingSeatCount(result.getRespData().usingSeatCount);
+                EventBus.getDefault().post(result);
             }
 
             @Override
