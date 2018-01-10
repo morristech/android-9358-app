@@ -139,6 +139,7 @@ public class RequestConstant {
      */
     public static final String URL_TECH_SHARE_COUNT_UPDATE = BASE_URL + "/v2/tech/share/count/update";
 
+
     /**
      * --------------------------------------> 附近的人:url <----------------------------------------
      */
@@ -176,6 +177,11 @@ public class RequestConstant {
     public static final String URL_GET_MARK_CHAT_TO_USER = BASE_URL + "/v2/club/location/staticmap";
     public static final String URL_GET_TECH_CHAT_CATEGORY_LIST = BASE_URL + "/v2/tech/chat/category/list";
     public static final String URL_GET_TECH_MARKETING_ITEM_LIST = BASE_URL + "/v2/tech/marketing_item/list";
+
+    /**
+     * 提成说明
+     */
+    public static final String URL_TECH_WITHDRAW_RULE = BASE_URL + "/v1/withdraw/rule";
 
     /**
      * --------------------------------------> 技师海报 <----------------------------------------

@@ -86,6 +86,7 @@ import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UploadTechPosterImageResult;
+import com.xmd.technician.http.gson.WithdrawRuleResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
 import retrofit2.Call;
@@ -887,4 +888,9 @@ public interface SpaService {
     Call<BaseResult> updateTechShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                           @Field(RequestConstant.KEY_ACT_ID) String actId,
                                           @Field(RequestConstant.KEY_ACT_TYPE) String type);
+    //提现说明
+    @GET(RequestConstant.URL_TECH_WITHDRAW_RULE)
+    Call<WithdrawRuleResult> getWithdrawRule(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Query(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
 }

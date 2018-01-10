@@ -101,6 +101,7 @@ import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
 import com.xmd.technician.http.gson.UploadTechPosterImageResult;
+import com.xmd.technician.http.gson.WithdrawRuleResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
@@ -450,6 +451,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE:
                 techShareCountUpdate((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_WITHDRAW_RULE:
+                getWithDrawRule();
                 break;
         }
 
@@ -2222,6 +2226,18 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(BaseResult result) {
 
+            }
+        });
+    }
+
+    //获取提现规则
+
+    public void getWithDrawRule(){
+        Call<WithdrawRuleResult> call = getSpaService().getWithdrawRule(SharedPreferenceHelper.getUserToken(),SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<WithdrawRuleResult>() {
+            @Override
+            protected void postResult(WithdrawRuleResult result) {
+                    RxBus.getInstance().post(result);
             }
         });
     }

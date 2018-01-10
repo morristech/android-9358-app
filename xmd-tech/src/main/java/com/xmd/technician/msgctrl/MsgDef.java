@@ -204,6 +204,9 @@ public class MsgDef {
     public static final int MSG_DEF_GET_INVITATION_REWARD_ACTIVITY_LIST = 0x0135;
     //分享统计
     public static final int MSG_DEF_TECH_SHARE_COUNT_UPDATE = 0x0136;
+    //提成说明
+    public static final int MSG_DEF_TECH_WITHDRAW_RULE = 0x137;
+
 
 
 }

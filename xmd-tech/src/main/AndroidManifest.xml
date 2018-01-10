@@ -225,6 +225,8 @@
                   android:screenOrientation="portrait"/>
         <activity android:name=".window.TechUserCenterActivity"
                   android:screenOrientation="portrait"/>
+        <activity android:name=".window.WithdrawCashActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

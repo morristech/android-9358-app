@@ -5,6 +5,7 @@
     <string name="contact_mark_activation">待激活</string>
     <string name="contact_mark_big">大客</string>
     <string name="contact_mark_normal">普客</string>
+    <string name="all_data_load_more">----------上拉加载更多----------</string>
     <string name="all_data_load_finish">----------已经全部加载完毕----------</string>
     <string name="tech_chat_automatic_reply">很抱歉，该技师目前正在休假中，可能无法及时回复您的消息，有问题可以在线留言，技师看到会第一时间回复您</string>
     <string name="service_exception">网络异常，请稍后重试</string>

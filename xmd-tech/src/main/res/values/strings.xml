@@ -405,5 +405,13 @@
     <string name="native_place">籍贯</string>
     <string name="nearby_replay_alter">用户尚未回复您的打招呼，暂不能聊天</string>
     <string name="notification_manager_apply">为保障能及时收到消息，请开启通知栏权限</string>
+    <string name="withdraw_cash_rule">提现规则</string>
+    <string name="withdraw_cash_rule_01">自9358服务公众号创建以来，一直秉承着用心服务技师的宗旨，小摩豆也一直勉力承担着9358服务提现每笔6‰的手续费。经过这一年与技师朋友们的共同
+    努力，我们欣喜地看到技师队伍的壮大与服务水平的提升，经小摩豆慎重考虑，现决定对提现规则做如下调整：</string>
+    <string name="withdraw_cash_rule_02">从2018年1月10日起，9358服务公众号对提现功能开始收取手续费。</string>
+    <string name="withdraw_cash_rule_03">收费方案： 每月提现超过300元部分才收取手续费，手续费率6‰</string>
+    <string name="withdraw_cash_rule_04">提现收费并非小摩豆追求营收之举，而是用于支付微信收取的手续费，实属无奈。我们也承诺：将继续用我们优良的技术，为广大的技师朋友们提供良好的体验与拓客锁客服务</string>
+    <string name="withdraw_cash_rule_05">小摩豆</string>
+    <string name="withdraw_cash_button_text">我知道了</string>
     
 </resources>

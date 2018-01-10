@@ -1029,7 +1029,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
-                   startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                    startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                    //   TechPKActiveListActivity.startTechPKActiveListActivity(getActivity(), com.m.pk.Constant.APP_TYPE_TECH);
                 } else {
                     Intent personalRanking = new Intent(getActivity(), TechPersonalRankingDetailActivity.class);
                     startActivity(personalRanking);
@@ -1037,6 +1038,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.layout_technician_pk_ranking:
                 startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                // TechPKActiveListActivity.startTechPKActiveListActivity(getActivity(), com.m.pk.Constant.APP_TYPE_TECH);
                 break;
 
         }

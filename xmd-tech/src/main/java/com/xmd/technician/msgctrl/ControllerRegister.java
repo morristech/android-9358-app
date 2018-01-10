@@ -142,7 +142,9 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_AUDIT_CANCEL,
                 MsgDef.MSG_DEF_TECH_AUDIT_CONFIRM,
                 //-------------------------------------> 分享统计 <---------------------------------
-                MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE
+                MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE,
+                //-------------------------------------> 提现规则 <---------------------------------
+                MsgDef.MSG_DEF_TECH_WITHDRAW_RULE
 
         };
         MsgDispatcher.register(controllerId, msgIds);

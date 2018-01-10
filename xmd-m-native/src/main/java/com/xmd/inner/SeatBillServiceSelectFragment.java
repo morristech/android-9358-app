@@ -83,7 +83,7 @@ public class SeatBillServiceSelectFragment extends BaseDialogFragment {
     }
 
     public void setServiceItemData(int position, List<NativeServiceItemBean> serviceItems) {
-        if (mAdapter == null) {
+        if (mAdapter == null || serviceItems == null) {
             return;
         }
         billItemPosition = position;
