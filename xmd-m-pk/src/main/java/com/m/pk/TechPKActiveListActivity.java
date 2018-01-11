@@ -8,18 +8,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.m.pk.adapter.TechPkActivityAdapter;
 import com.m.pk.bean.ActivityRankingBean;
+import com.m.pk.bean.PkItemBean;
 import com.m.pk.databinding.ActivityTechPkActiveListBinding;
 import com.m.pk.httprequest.DataManager;
 import com.m.pk.httprequest.response.PKActivityListResult;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.utils.DateUtil;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.network.NetworkSubscriber;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lhj on 18-1-4.
@@ -35,8 +40,8 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
     private LinearLayoutManager layoutManager;
 
     public static void startTechPKActiveListActivity(Context activity, String appType){
-        Intent intent = new Intent();
-        intent.putExtra(Constant.INTENT_KEY_USER_TYPE,appType);
+        Intent intent = new Intent(activity,TechPKActiveListActivity.class);
+        intent.putExtra(Constant.INTENT_KEY_APP_TYPE,appType);
         activity.startActivity(intent);
     }
 
@@ -109,11 +114,20 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
 
     @Override
     public void onActivityClick(ActivityRankingBean bean) {
-        XLogger.i(">>>", "点击了Bean");
+        List<PkItemBean> pkList = new ArrayList<>();
+        if(TextUtils.isEmpty(bean.getRankingList().get(0).getCategoryId())){
+            pkList.add(new PkItemBean(bean.getCategoryId(), bean.getCategoryName()));
+        }else{
+            for (int i = 0; i < bean.getRankingList().size(); i++) {
+                pkList.add(new PkItemBean(bean.getRankingList().get(i).getCategoryId(), bean.getRankingList().get(i).getCategoryName()));
+            }
+        }
+        TechPkRankingActivity.startTechPkRankingActivity(TechPKActiveListActivity.this,bean.getPkActivityId(),bean.getStatus(),bean.getStartDate(),
+                TextUtils.isEmpty(bean.getEndDate())? DateUtil.getDate(System.currentTimeMillis()):bean.getEndDate(),
+                getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE),pkList);
     }
 
     public void onRankingDetailClick(View view) {
-        TechCommonRankingDetailActivity.startTechCommonRankingDetailActivity(TechPKActiveListActivity.this,getIntent().getStringExtra(Constant.INTENT_KEY_USER_TYPE));
-       // Intent intent = new Intent(TechPKActiveListActivity.this,TechCommonRankingDetailActivity.class);
+        TechCommonRankingDetailActivity.startTechCommonRankingDetailActivity(TechPKActiveListActivity.this,getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE));
     }
 }

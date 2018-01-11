@@ -8,7 +8,7 @@
             android:name=".TechPKActiveListActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".TechPKRankingDetailActivity"
+            android:name=".TechPkRankingActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".TechCommonRankingDetailActivity"

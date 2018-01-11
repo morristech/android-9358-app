@@ -26,14 +26,11 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
     private static final int ITEM_VIEW_TYPE_BOTTOM = 2;
 
     private LayoutInflater mInflater;
-
     private List<ActivityRankingBean> mActivityList;
     private OnItemClickListener mListener;
     private Context mContext;
 
-    public interface OnItemClickListener {
-        void onActivityClick(ActivityRankingBean bean);
-    }
+
 
     public void setListData(List<ActivityRankingBean> data) {
         this.mActivityList = data;
@@ -98,6 +95,9 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
         } else {
             return ITEM_VIEW_TYPE_PK;
         }
+    }
+    public interface OnItemClickListener {
+        void onActivityClick(ActivityRankingBean bean);
     }
 
     public void setOnItemClickedListener(OnItemClickListener listener) {

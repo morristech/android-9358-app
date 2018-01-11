@@ -15,10 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.m.pk.databinding.ActivityTechCommonRankingDetailBinding;
+import com.m.pk.event.DateChangedEvent;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.PageFragmentAdapter;
 import com.xmd.app.utils.DateUtil;
 import com.xmd.app.utils.ResourceUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 
@@ -28,8 +31,8 @@ import java.util.Date;
 
 public class TechCommonRankingDetailActivity extends BaseActivity {
 
-    public static final String FORMAT_YEAR = "yyyy-MM-dd";
-    public static final String FORMAT_MONTH = "MM月dd日";
+    public static final String FORMAT_YEAR = Constant.FORMAT_YEAR;
+    public static final String FORMAT_MONTH = Constant.FORMAT_MONTH;
     private final long DAY_MILLISECOND = 24 * 3600 * 1000l;//24小时毫秒值
     private final long WEEK_MILLISECOND = 7 * 24 * 3600 * 1000l;//7*24小时
     public int mTimeFilterType = 1;
@@ -57,12 +60,12 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
 
     ActivityTechCommonRankingDetailBinding mBinding;
 
-
-    public  static void startTechCommonRankingDetailActivity(Activity activity, String userType){
-        Intent intent = new Intent(activity,TechCommonRankingDetailActivity.class);
-        intent.putExtra(Constant.INTENT_KEY_USER_TYPE,userType);
+    public static void startTechCommonRankingDetailActivity(Activity activity, String userType) {
+        Intent intent = new Intent(activity, TechCommonRankingDetailActivity.class);
+        intent.putExtra(Constant.INTENT_KEY_APP_TYPE, userType);
         activity.startActivity(intent);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +89,7 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
         for (int i = 0; i < tabTexts.length; i++) {
             Bundle args = new Bundle();
             args.putSerializable(TechCommonRankingDetailFragment.BIZ_TYPE, i);
-            args.putString(TechCommonRankingDetailFragment.USER_TYPE,getIntent().getStringExtra(Constant.INTENT_KEY_USER_TYPE));
+            args.putString(TechCommonRankingDetailFragment.USER_TYPE, getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE));
             mPageFragmentAdapter.addFragment(TechCommonRankingDetailFragment.class.getName(), args);
         }
         mBinding.viewPager.setOffscreenPageLimit(3);
@@ -98,6 +101,7 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
         mBinding.tabIndicator.setWithDivider(false);
         mBinding.tabIndicator.setup();
         dateType.set(ResourceUtils.getString(R.string.date_type_week));
+        getTime(Constant.DATE_TYPE_BY_WEEK);
     }
 
     public void onTimeFilterClickedListener(View v) {
@@ -154,10 +158,10 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
                 mEndDate = mStartDate;
                 break;
             case Constant.DATE_TYPE_BY_WEEK:
-                mFirstWeekMillisecond = DateUtil.stringDateToLong(DateUtil.getFirstDayOfWeek(new Date(), "yyyy-MM-dd"));
+                mFirstWeekMillisecond = DateUtil.stringDateToLong(DateUtil.getFirstDayOfWeek(new Date(), Constant.FORMAT_YEAR));
                 timeCurrent.set(ResourceUtils.getString(R.string.current_date_type_week));
                 timeBefore.set(ResourceUtils.getString(R.string.current_date_type_before_week));
-                timeDetail.set(String.format("%s-%s", DateUtil.getFirstDayOfWeek(new Date(), "MM月dd日"), DateUtil.getLastDayOfWeek(new Date(), "MM月dd日")));
+                timeDetail.set(String.format("%s-%s", DateUtil.getFirstDayOfWeek(new Date(), Constant.FORMAT_MONTH), DateUtil.getLastDayOfWeek(new Date(), Constant.FORMAT_MONTH)));
                 mStartDate = DateUtil.getFirstDayOfWeek(new Date(), FORMAT_YEAR);
                 mEndDate = DateUtil.getLastDayOfWeek(new Date(), FORMAT_YEAR);
                 break;
@@ -239,16 +243,16 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
                 timeCurrent.set(ResourceUtils.getString(R.string.current_date_type_week));
                 timeBefore.set(ResourceUtils.getString(R.string.current_date_type_before_week));
                 timeNext.set(ResourceUtils.getString(R.string.current_date_type_next_week));
-                if (mFirstWeekMillisecond == DateUtil.stringDateToLong(DateUtil.getFirstDayOfWeek(new Date(), "yyyy-MM-dd"))) {
-                    timeDetail.set(String.format("%s-%s", DateUtil.getFirstDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), "MM月dd日"),
-                            DateUtil.getLastDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mCurrentMillisecond, "")), "MM月dd日")));
+                if (mFirstWeekMillisecond == DateUtil.stringDateToLong(DateUtil.getFirstDayOfWeek(new Date(), Constant.FORMAT_YEAR))) {
+                    timeDetail.set(String.format("%s-%s", DateUtil.getFirstDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), Constant.FORMAT_MONTH),
+                            DateUtil.getLastDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mCurrentMillisecond, "")), Constant.FORMAT_MONTH)));
                 } else {
-                    timeDetail.set(String.format("%s-%s", DateUtil.getFirstDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), "MM月dd日"),
-                            DateUtil.getLastDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), "MM月dd日")));
+                    timeDetail.set(String.format("%s-%s", DateUtil.getFirstDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), Constant.FORMAT_MONTH),
+                            DateUtil.getLastDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), Constant.FORMAT_MONTH)));
                     showTimeNext.set(true);
                 }
-                mStartDate = DateUtil.getFirstDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), "yyyy-MM-dd");
-                mEndDate = DateUtil.getLastDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), "yyyy-MM-dd");
+                mStartDate = DateUtil.getFirstDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), Constant.FORMAT_YEAR);
+                mEndDate = DateUtil.getLastDayOfWeek(DateUtil.stringToDate(DateUtil.long2Date(mFirstWeekMillisecond, "")), Constant.FORMAT_YEAR);
                 break;
             case Constant.DATE_TYPE_BY_MONTH:
                 if (reduce) {
@@ -354,15 +358,6 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
     }
 
     private void timeChangedPost(String str, String end) {
-
-//        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-//            @Override
-//            public void run() {
-//                emptyView.setStatus(EmptyView.Status.Gone);
-//                RxBus.getInstance().post(new DateChangedResult(str, end));
-//            }
-//        }, 1000);
-
-
+        EventBus.getDefault().post(new DateChangedEvent(str,end));
     }
 }

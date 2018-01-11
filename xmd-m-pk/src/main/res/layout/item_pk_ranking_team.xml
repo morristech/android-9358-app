@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="DetailBean" type="com.m.pk.bean.PKDetailListBean"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_normal_margin"
+        android:layout_marginRight="@dimen/activity_normal_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/team_ranking_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="@{(DetailBean.position == 0 || DetailBean.position == DetailBean.teamSize) ? View.VISIBLE : View.GONE }">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_normal_margin"
+                android:background="@{DetailBean.isTeam ? @drawable/bg_team_ranking_title : @drawable/bg_personal_ranking_title}"
+                android:gravity="center"
+                android:padding="@dimen/small_padding"
+                android:text="@{DetailBean.isTeam ? @string/pk_team_ranking_title : @string/pk_personal_ranking_title}"
+                android:textColor="@{DetailBean.isTeam ? @color/ranking_team : @color/ranking_personal}"
+                android:textSize="@dimen/fontSize"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/activity_normal_margin"
+                android:paddingTop="@dimen/activity_normal_margin"
+                android:visibility="@{(DetailBean.position == DetailBean.teamSize) ? View.VISIBLE : View.GONE }">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="排名"
+                    android:textColor="@color/color_main_body"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="姓名"
+                    android:textColor="@color/color_main_body"
+                    android:textSize="13sp"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_team_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_selected_team"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/inter_space"
+                        android:text="全部队伍"
+                        android:textColor="@color/color_main_body"
+                        android:textSize="13sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/small_padding"
+                        android:src="@drawable/icon_ranking_down_filter"/>
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:text="战绩"
+                    android:textColor="@color/color_main_body"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <View style="@style/line"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_normal_margin">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_nub_01"
+                app:rankingImage="@{DetailBean}"/>
+
+            <TextView
+                android:id="@+id/text_ranking_number"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/color_main_title"
+                android:textSize="@dimen/fontSize"
+                app:rankingNumber="@{DetailBean}"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_normal_margin"
+                android:orientation="vertical">
+
+                <com.xmd.app.widget.RoundImageView
+                    android:id="@+id/img_ranking_head"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:imageUrl="@{DetailBean.avatarUrl}"/>
+
+                <TextView
+                    android:id="@+id/tv_captain_mark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-8dp"
+                    android:background="@drawable/bg_ranking_captain_mark"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="2dp"
+                    android:text="队长"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fontRemark"
+                    android:visibility='@{DetailBean.leader.equals("Y") ? View.VISIBLE : View.GONE}'/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_weight="1.2"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="@dimen/small_padding"
+                    android:textColor="@color/color_main_title"
+                    android:textSize="@dimen/fontTitle"
+                    android:text="@{DetailBean.isTeam ? DetailBean.teamName :DetailBean.teamMember}"
+                    tools:text="李佳绩"/>
+                <TextView
+                    android:id="@+id/tv_ranking_serialNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="6dp"
+                    android:textColor="@color/color_main_title"
+                    android:textSize="@dimen/fontNormal"
+                    android:visibility="@{DetailBean.isTeam ? View.GONE : View.VISIBLE}"
+                    android:text='@{String.format("[%s]",DetailBean.serialNo)}'
+                    tools:text="[ 0021 ]"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_ranking_member"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#757575"
+                android:textSize="@dimen/fontBody"
+                android:text='@{DetailBean.isTeam ? String.format("%s队员",String.valueOf(DetailBean.memberCount)) : DetailBean.teamName}'
+                tools:text="#8队员"/>
+
+            <LinearLayout android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_gravity="center"
+                          android:layout_weight="1"
+                          android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_ranking_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/small_padding"
+                    android:textColor="@color/color_main_btn"
+                    android:textSize="@dimen/fontCaption"
+                    android:visibility='@{DetailBean.sortType.equals("paidServiceItemStat")?View.VISIBLE : View.GONE}'
+                    android:text='@{String.format("%1.2f元", DetailBean.paidServiceItemStat / (float)100.0)}'
+                    tools:text="157个"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/small_padding"
+                    android:textColor="@color/color_main_btn"
+                    android:textSize="@dimen/fontCaption"
+                    tools:text="157个"
+                    app:memberNumber="@{DetailBean}"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>
