@@ -216,9 +216,9 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
             @Override
             public void onCallbackSuccess(PosPullResult result) {
                 int count = result.getRespData().count;
-                if (count == 0) {
+                if (count == 0 || count == 1) {
                     loadData();
-                } else if (count > 0) {
+                } else if (count > 1) {
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

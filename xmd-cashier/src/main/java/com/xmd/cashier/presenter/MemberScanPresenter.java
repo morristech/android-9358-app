@@ -132,6 +132,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
         if (bitmap == null) {
             mView.showToast("二维码解析异常");
         } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值二维码展示");
             mView.showQrcode(bitmap);
             startDetailRecharge();
         }
