@@ -64,6 +64,7 @@ public class PermissionConstants {
     public final static String NATIVE_ROOM_MANAGE = "native_room_manage";
     public final static String NATIVE_TECH_COMMISSION = "tech_commission";
     public final static String NATIVE_FAST_PAY = "native_fast_pay";
+    public final static String MG_FINANCIAL_REPORT = "financial_report";
 
     /**********************         Level 2  start      ******************************/
 

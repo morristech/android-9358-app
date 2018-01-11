@@ -41,14 +41,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     View mLayoutPhoneLogin;
     @BindView(R.id.layout_tech_no_login)
     View mLayoutTechNoLogin;
-
     @BindView(R.id.phone_number)
     ClearableEditText mEtUsername;
     @BindView(R.id.password1)
     ClearableEditText mEtPassword;
     @BindView(R.id.login_btn1)
     Button mBtnLogin1;
-
     @BindView(R.id.invite_code)
     EditText mInviteCodeEditText;
     @BindView(R.id.tech_no)

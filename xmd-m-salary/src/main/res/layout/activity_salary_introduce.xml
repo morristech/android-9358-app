@@ -46,7 +46,14 @@
             <TextView style="@style/salary_introduce_title_style"
                       android:drawableLeft="@drawable/icon_service_salary"
                       android:text="服务提成（元）"/>
-            <include layout="@layout/layout_service_commission"/>
+            <TextView
+                android:id="@+id/tv_service"
+                style="@style/salary_commission_title_style"
+                android:text="@string/activity_commission_message_null"
+                android:textColor="#C3C3C3"
+                android:visibility="gone"/>
+            <include android:id="@+id/service_excel_view"
+                     layout="@layout/layout_service_commission"/>
             <TextView style="@style/salary_introduce_title_style"
                       android:drawableLeft="@drawable/icon_sell_salary"
                       android:text="推销提成（元）"/>

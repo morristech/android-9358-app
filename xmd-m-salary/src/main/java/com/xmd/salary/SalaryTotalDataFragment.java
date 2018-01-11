@@ -118,14 +118,13 @@ public class SalaryTotalDataFragment extends BaseFragment {
     }
 
     public void getSalarySumAmount(String startDate, String endDate) {
-        if (onCreate) {
-            showLoading(getActivity(), "正在加载...", false);
+        try {
+            if (onCreate) {
+                showLoading(getActivity(), "正在加载...", false);
+            }
+        }catch (Exception e){
+            XLogger.d(e.getLocalizedMessage());
         }
-//        timeKey = startDate + endDate;
-//        if (mSalaryDataManager != null && mSalaryDataManager.salaryContainKey(timeKey)) {
-//            setViewData(mSalaryDataManager.getSalaryBean(timeKey));
-//            return;
-//        }
 
         DataManager.getInstance().getTechCommissionSumAmount(startDate, endDate, new NetworkSubscriber<CommissionSumAmountResult>() {
             @Override
@@ -145,7 +144,7 @@ public class SalaryTotalDataFragment extends BaseFragment {
 
     public void setViewData(SalaryBean bean) {
         hideLoading();
-        if (bean == null) {
+        if (bean == null || tvTechCommissionTotal == null) {
             return;
         }
         tvTechCommissionTotal.setText(String.valueOf(String.format("%1.2f", (bean.serviceCommission + bean.salesCommission) / 100f)));

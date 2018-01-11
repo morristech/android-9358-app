@@ -60,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:drawableRight="@drawable/ic_guide_right"
+        android:drawableRight="@drawable/icon_right_allow"
         android:gravity="center"
         android:paddingBottom="@dimen/activity_little_margin"
         android:paddingLeft="@dimen/activity_little_margin"

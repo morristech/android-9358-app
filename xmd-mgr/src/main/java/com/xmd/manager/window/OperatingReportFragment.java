@@ -43,6 +43,8 @@ public class OperatingReportFragment extends BaseFragment {
     ImageView imageOperateNew;
     @BindView(R.id.img_order_new)
     ImageView imgOrderNew;
+    @BindView(R.id.rl_operate)
+    RelativeLayout rlOperate;
 
     Unbinder unbinder;
     View view;
@@ -75,6 +77,7 @@ public class OperatingReportFragment extends BaseFragment {
 
         initNativeCashierReport();
         initNativeSalaryReport();
+        initRlOperateView();
     }
 
     private void handlerReportNewsResult(ReportNewsResult reportNewsResult) {
@@ -127,6 +130,11 @@ public class OperatingReportFragment extends BaseFragment {
     @CheckBusinessPermission(PermissionConstants.NATIVE_TECH_COMMISSION)
     public void initNativeSalaryReport() {
         mSalaryLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_FINANCIAL_REPORT)
+    public void initRlOperateView() {
+        rlOperate.setVisibility(View.VISIBLE);
     }
 
     // 技师工资报表

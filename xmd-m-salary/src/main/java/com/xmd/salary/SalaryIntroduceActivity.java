@@ -66,6 +66,10 @@ public class SalaryIntroduceActivity extends BaseActivity {
     LinearLayout llPaidServiceView;
     @BindView(R2.id.ll_paid_service)
     LinearLayout llPaidService;
+    @BindView(R2.id.tv_service)
+    TextView tvService;
+    @BindView(R2.id.service_excel_view)
+    LinearLayout serviceExcelView;
 
     private SalaryIntroduceAdapter mCommodityAdapter;
     private SalaryIntroduceAdapter mCardAdapter;
@@ -187,6 +191,11 @@ public class SalaryIntroduceActivity extends BaseActivity {
 
     //服务项目Excel
     private void showServiceExcelView() {
+        if(mSalaryIntroduceDataManager.getServiceItemList().size() == 0 || mSalaryIntroduceDataManager.getBellList().size() == 0 ){
+            tvService.setVisibility(View.VISIBLE);
+            serviceExcelView.setVisibility(View.GONE);
+            return;
+        }
         mServiceCommissionAdapter.setAllData(mSalaryIntroduceDataManager.getServiceItemList(), mSalaryIntroduceDataManager.getBellList(), mSalaryIntroduceDataManager.getServiceCellList());
     }
 
