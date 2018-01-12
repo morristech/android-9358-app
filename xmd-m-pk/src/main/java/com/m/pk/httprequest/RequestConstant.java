@@ -23,9 +23,9 @@ public class RequestConstant {
     public static final String KEY_SORT_BY_PANIC = "paidServiceItemStat";
     public static final String KEY_PK_ACTIVITY_ID = "pkActivityId";
     public static final String KEY_SORT_KEY = "sortKey";
-    public static final String KEY_TECH_SORT_BY_USER = "userList";
-    public static final String KEY_TECH_SORT_BY_COMMENT = "commentList";
-    public static final String KEY_TECH_SORT_BY_PAID = "paidList";
+    public static final String KEY_TECH_SORT_BY_USER = "userList"; //拓客之星
+    public static final String KEY_TECH_SORT_BY_COMMENT = "commentList"; //服务之星
+    public static final String KEY_TECH_SORT_BY_PAID = "paidList"; //销售之星
     public static final String KEY_TECH_RANKING_SOR_TYPE = "type";
     public static final String KEY_SELECT = "select";
     public static final String KEY_SELECT_BY_DAY = "day";

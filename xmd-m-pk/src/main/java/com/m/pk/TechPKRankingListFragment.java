@@ -30,6 +30,7 @@ import com.xmd.app.utils.DateUtil;
 import com.xmd.app.utils.Utils;
 import com.xmd.m.network.NetworkSubscriber;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
         initView();
         getRankingData();
         mBinding.setFragment(this);
+        EventBus.getDefault().register(this);
         return mBinding.getRoot().getRootView();
     }
 
@@ -93,7 +95,7 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
         mEndDate = DateUtil.getDate(System.currentTimeMillis());
         mBinding.swipeTechPkRanking.setColorSchemeColors(0xffff0000, 0xff00ff00, 0xff0000ff, 0xffffffff, 0xff000000);
         mBinding.swipeTechPkRanking.setOnRefreshListener(this);
-        mDetailAdapter = new PkRankingListAdapter(getActivity(), mData, mSortKey);
+        mDetailAdapter = new PkRankingListAdapter(getActivity(), mData);
         mBinding.recyclerTechPKRankingList.setItemAnimator(new DefaultItemAnimator());
         mBinding.recyclerTechPKRankingList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerTechPKRankingList.setHasFixedSize(true);
@@ -137,6 +139,7 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
     }
 
     public void getRankingData() {
+        mBinding.swipeTechPkRanking.setRefreshing(true);
         DataManager.getInstance().getPkTeamList(mActivityId, mSortKey, mStartDate, mEndDate, String.valueOf(1), String.valueOf(1000), new NetworkSubscriber<PKTeamListResult>() {
             @Override
             public void onCallbackSuccess(PKTeamListResult result) {
@@ -176,7 +179,7 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
                     result.getRespData().get(i).setSortType(mSortKey);
                 }
                 mData.addAll(result.getRespData());
-                mDetailAdapter.setData(mData, mTeamNumber, mCurrentFilterTeamName);
+                mDetailAdapter.setData(mData, mCurrentFilterTeamName);
             }
 
             @Override
@@ -207,7 +210,6 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_array_popup_window, null);
             TextView textView = (TextView) view.findViewById(R.id.tv_item);
             textView.setText(mPkFilterTeamList.get(position).teamName);
@@ -220,4 +222,9 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 }

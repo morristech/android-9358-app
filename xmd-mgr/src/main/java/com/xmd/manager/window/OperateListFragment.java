@@ -130,7 +130,7 @@ public class OperateListFragment extends BaseListFragment<OperateReportBean> {
 
     @Override
     public void onPositiveButtonClicked(OperateReportBean bean) {
-        doShare(bean.name, bean.shareId);
+        doShare(bean.name, bean.shareUrl);
     }
 
     @Override

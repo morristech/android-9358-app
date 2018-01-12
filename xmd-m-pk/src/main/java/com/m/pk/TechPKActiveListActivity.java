@@ -91,7 +91,7 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
         mBinding.swipeRefreshWidget.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPage = 1;
+                mPage = 0;
                 mActivityList.clear();
                 getPkActiveData();
             }

@@ -31,13 +31,13 @@ public class PkRankingListAdapter extends RecyclerView.Adapter<BindingViewHolder
     private String mCurrentTeamFilter;
     private LayoutInflater mInflater;
 
-    public PkRankingListAdapter(Context context, List<PKDetailListBean> data, String currentType) {
+    public PkRankingListAdapter(Context context, List<PKDetailListBean> data) {
         this.mContext = context;
         this.mData = data;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void setData(List<PKDetailListBean> data, int teamNumber, String teamFilter) {
+    public void setData(List<PKDetailListBean> data, String teamFilter) {
         this.mData = data;
         this.mCurrentTeamFilter = teamFilter;
         notifyDataSetChanged();

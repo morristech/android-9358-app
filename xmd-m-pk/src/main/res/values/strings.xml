@@ -11,6 +11,9 @@
     <string name="personal_ranking_toker">拓客之星</string>
     <string name="personal_ranking_sale">销售之星</string>
     <string name="personal_ranking_service">服务之星</string>
+    <string name="personal_ranking_sort_by_user_list">注册用户</string>
+    <string name="personal_ranking_sort_by_paid_list">点钟券</string>
+    <string name="personal_ranking_sort_by_comment_list">好评数</string>
     <string name="date_type_day">天</string>
     <string name="date_type_week">周</string>
     <string name="date_type_quarter">季</string>

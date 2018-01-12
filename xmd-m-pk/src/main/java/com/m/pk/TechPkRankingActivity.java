@@ -82,6 +82,7 @@ public class TechPkRankingActivity extends BaseActivity {
         getIntentData();
         initViewPagerView();
         initTimeFilterView();
+        sShowTotal.set(true);
     }
 
     public void getIntentData() {
@@ -92,7 +93,6 @@ public class TechPkRankingActivity extends BaseActivity {
         itemList = getIntent().getParcelableArrayListExtra(Constant.PK_ACTIVITY_ITEM);
         mIsOnline.set(mActivityStatus.equals(Constant.PK_RANKING_STATUS_ONLINE) ? true : false);
         mTimeType.set(ResourceUtils.getString(R.string.date_type_total));
-        sShowTotal.set(false);
     }
 
     private void setStatusBarColor() {
@@ -132,12 +132,11 @@ public class TechPkRankingActivity extends BaseActivity {
                 if (item.getItemId() == R.id.menu_time_by_day) {
                     sShowTotal.set(false);
                     mTimeType.set(ResourceUtils.getString(R.string.date_type_day));
+                    postTimeChanged(mStartDate,mEndDate);
                 } else {
                     sShowTotal.set(true);
                     mTimeType.set(ResourceUtils.getString(R.string.date_type_total));
-                    mStartDate = Constant.PK_RANKING_DEFAULT_START_TIME;
-                    mEndDate = DateUtil.getDate(System.currentTimeMillis());
-                    postTimeChanged();
+                    postTimeChanged(Constant.PK_RANKING_DEFAULT_START_TIME,DateUtil.getDate(System.currentTimeMillis()));
                 }
                 return true;
             }
@@ -202,6 +201,7 @@ public class TechPkRankingActivity extends BaseActivity {
                     sShowToday.set(true);
                     sShowYesterday.set(false);
                     sShowTomorrow.set(true);
+                    mTodayDetail.set(DateUtil.getCurrentDate(mCurrentMillisecond));
                 } else {
                     mToday.set(mCurrentTime);
                     sShowToday.set(false);
@@ -212,11 +212,11 @@ public class TechPkRankingActivity extends BaseActivity {
         }
         mStartDate = DateUtil.getDate(mCurrentMillisecond);
         mEndDate = DateUtil.getDate(mCurrentMillisecond);
-        postTimeChanged();
+        postTimeChanged(mStartDate,mEndDate);
     }
 
-    private void postTimeChanged() {
-        EventBus.getDefault().post(new DateChangedEvent(mStartDate, mEndDate));
+    private void postTimeChanged(String startDate,String endDate) {
+        EventBus.getDefault().post(new DateChangedEvent(startDate, endDate));
     }
 
     private void initTimeFilterView() {

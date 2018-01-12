@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View"/>
+        <import type="com.xmd.app.utils.Utils"/>
         <variable name="DetailBean" type="com.m.pk.bean.PKDetailListBean"/>
     </data>
     <LinearLayout
@@ -166,7 +167,8 @@
                     android:paddingLeft="@dimen/small_padding"
                     android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontTitle"
-                    android:text="@{DetailBean.isTeam ? DetailBean.teamName :DetailBean.teamMember}"
+                    android:lines="1"
+                    android:text="@{DetailBean.isTeam ? DetailBean.teamName : Utils.briefString(DetailBean.teamMember,4)}"
                     tools:text="李佳绩"/>
                 <TextView
                     android:id="@+id/tv_ranking_serialNo"

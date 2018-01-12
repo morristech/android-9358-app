@@ -62,11 +62,8 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
         if (position == mActivityList.size()) {
             TextView tvFooter = (TextView) holder.getBinding().getRoot().getRootView().findViewById(R.id.item_footer);
             if(mActivityList.size() == 0){
-                tvFooter.setVisibility(View.GONE);
-            }else{
-                tvFooter.setVisibility(View.VISIBLE);
-            }
-            if(hasMore){
+                tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_ing));
+            }else if(hasMore){
                 tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_more));
             }else{
                 tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_finish));
@@ -75,6 +72,7 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
             final ActivityRankingBean rankingBean = mActivityList.get(position);
             holder.getBinding().setVariable(com.m.pk.BR.item, rankingBean);
             holder.getBinding().executePendingBindings();
+
             if (rankingBean.getRankingList() != null) {
                 PkTeamRankingAdapter adapter = null;
                 if (TextUtils.isEmpty(rankingBean.getCategoryId())) {

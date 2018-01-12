@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.m.pk.R;
 import com.m.pk.bean.TechRankingBean;
+import com.m.pk.httprequest.RequestConstant;
 import com.xmd.app.utils.ResourceUtils;
 
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ import java.util.List;
  */
 
 public class TechCommonRankingDetailAdapter extends RecyclerView.Adapter<BindingViewHolder> {
-
 
     private static final int ITEM_VIEW_TYPE_RANKING = 1;
     private static final int ITEM_VIEW_TYPE_BOTTOM = 2;
@@ -38,7 +39,6 @@ public class TechCommonRankingDetailAdapter extends RecyclerView.Adapter<Binding
     }
 
     public TechCommonRankingDetailAdapter(Context context) {
-        //  mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = new ArrayList<>();
     }
@@ -58,7 +58,9 @@ public class TechCommonRankingDetailAdapter extends RecyclerView.Adapter<Binding
     public void onBindViewHolder(BindingViewHolder holder, int position) {
         if (position == mData.size()) {
             TextView tvFooter = (TextView) holder.getBinding().getRoot().getRootView().findViewById(R.id.item_footer);
-            if(mHasMore){
+            if(position == 0){
+                tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_ing));
+            }else if(mHasMore){
                 tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_more));
             }else{
                 tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_finish));
@@ -69,6 +71,21 @@ public class TechCommonRankingDetailAdapter extends RecyclerView.Adapter<Binding
             holder.getBinding().setVariable(com.m.pk.BR.detailAdapter, this);
             ImageView imgRankingNumber = (ImageView) holder.getBinding().getRoot().getRootView().findViewById(R.id.img_ranking_number);
             TextView textViewNumber = (TextView) holder.getBinding().getRoot().getRootView().findViewById(R.id.text_ranking_number);
+            LinearLayout rankingTitle = (LinearLayout) holder.getBinding().getRoot().findViewById(R.id.ranking_title);
+            TextView sortType = (TextView) holder.getBinding().getRoot().findViewById(R.id.sort_type);
+            if(rankingBean.getType().equals(RequestConstant.KEY_TECH_SORT_BY_USER)){
+                sortType.setText(ResourceUtils.getString(R.string.personal_ranking_sort_by_user_list));
+            }else if(rankingBean.getType().equals(RequestConstant.KEY_TECH_SORT_BY_PAID)){
+                sortType.setText(ResourceUtils.getString(R.string.personal_ranking_sort_by_paid_list));
+            }else {
+                sortType.setText(ResourceUtils.getString(R.string.personal_ranking_sort_by_comment_list));
+            }
+            sortType.setText(rankingBean.getType());
+            if(position == 0){
+                rankingTitle.setVisibility(View.VISIBLE);
+            }else{
+                rankingTitle.setVisibility(View.GONE);
+            }
             if (position == 0) {
                 imgRankingNumber.setVisibility(View.VISIBLE);
                 textViewNumber.setVisibility(View.GONE);
