@@ -200,7 +200,7 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
                 mParams.put(RequestConstant.KEY_TEAM_ID, mCurrentFilterTeamId);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST, mParams);
             }
-        }, 300);
+        }, 600);
     }
 
     @Override
