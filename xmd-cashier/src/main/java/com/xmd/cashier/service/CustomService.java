@@ -294,7 +294,7 @@ public class CustomService extends Service {
                         if (adapter.getItemCount() == 0) {
                             mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
                             hide();
-                            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + ORDER_RECORD_INTERVAL);
+                            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
                         }
                     }
 
@@ -328,7 +328,7 @@ public class CustomService extends Service {
                         if (adapter.getItemCount() == 0) {
                             mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
                             hide();
-                            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + ORDER_RECORD_INTERVAL);
+                            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
                         }
                     }
 
@@ -351,7 +351,7 @@ public class CustomService extends Service {
                 if (adapter.getItemCount() == 0) {
                     mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
                     hide();
-                    NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + ORDER_RECORD_INTERVAL);
+                    NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
                 }
             }
         });
@@ -400,7 +400,7 @@ public class CustomService extends Service {
                         if (adapter.getItemCount() == 0) {
                             mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
                             hide();
-                            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + ONLINE_PAY_INTERVAL);
+                            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
                         }
                     }
 
@@ -435,7 +435,7 @@ public class CustomService extends Service {
                         if (adapter.getItemCount() == 0) {
                             mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
                             hide();
-                            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + ONLINE_PAY_INTERVAL);
+                            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
                         }
                     }
 
@@ -458,7 +458,7 @@ public class CustomService extends Service {
                 if (adapter.getItemCount() == 0) {
                     mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
                     hide();
-                    NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + ONLINE_PAY_INTERVAL);
+                    NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
                 }
             }
 

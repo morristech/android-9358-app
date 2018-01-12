@@ -30,6 +30,7 @@ import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.MonitorManager;
+import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.m.network.XmdNetwork;
@@ -114,6 +115,8 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             InnerManager.getInstance().startGetInnerSwitch();
             InnerManager.getInstance().startGetInnerChannel();
             InnerManager.getInstance().getClubWorkTime();
+            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
+            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
         }
 
         // 开启服务
