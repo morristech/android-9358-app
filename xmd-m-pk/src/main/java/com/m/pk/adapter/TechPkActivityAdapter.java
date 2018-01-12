@@ -9,9 +9,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.m.pk.R;
 import com.m.pk.bean.ActivityRankingBean;
+import com.xmd.app.utils.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +31,12 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
     private List<ActivityRankingBean> mActivityList;
     private OnItemClickListener mListener;
     private Context mContext;
+    private boolean hasMore;
 
 
-
-    public void setListData(List<ActivityRankingBean> data) {
+    public void setListData(List<ActivityRankingBean> data, boolean hasMore) {
         this.mActivityList = data;
+        this.hasMore = hasMore;
         notifyDataSetChanged();
     }
 
@@ -57,7 +60,17 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
         if (position == mActivityList.size()) {
-
+            TextView tvFooter = (TextView) holder.getBinding().getRoot().getRootView().findViewById(R.id.item_footer);
+            if(mActivityList.size() == 0){
+                tvFooter.setVisibility(View.GONE);
+            }else{
+                tvFooter.setVisibility(View.VISIBLE);
+            }
+            if(hasMore){
+                tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_more));
+            }else{
+                tvFooter.setText(ResourceUtils.getString(R.string.all_data_load_finish));
+            }
         } else {
             final ActivityRankingBean rankingBean = mActivityList.get(position);
             holder.getBinding().setVariable(com.m.pk.BR.item, rankingBean);
@@ -96,6 +109,7 @@ public class TechPkActivityAdapter extends RecyclerView.Adapter<BindingViewHolde
             return ITEM_VIEW_TYPE_PK;
         }
     }
+
     public interface OnItemClickListener {
         void onActivityClick(ActivityRankingBean bean);
     }

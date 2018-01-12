@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -76,6 +78,7 @@ public class TechPkRankingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_tech_pk_ranking);
         mBinding.setVariable(com.m.pk.BR.rankingData, this);
+        setStatusBarColor();
         getIntentData();
         initViewPagerView();
         initTimeFilterView();
@@ -90,6 +93,12 @@ public class TechPkRankingActivity extends BaseActivity {
         mIsOnline.set(mActivityStatus.equals(Constant.PK_RANKING_STATUS_ONLINE) ? true : false);
         mTimeType.set(ResourceUtils.getString(R.string.date_type_total));
         sShowTotal.set(false);
+    }
+
+    private void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor("#F98263"));
+        }
     }
 
 

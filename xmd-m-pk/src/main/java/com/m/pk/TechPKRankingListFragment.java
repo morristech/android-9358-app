@@ -9,6 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.m.pk.adapter.PkRankingListAdapter;
 import com.m.pk.bean.PKDetailListBean;
@@ -19,16 +24,16 @@ import com.m.pk.httprequest.DataManager;
 import com.m.pk.httprequest.RequestConstant;
 import com.m.pk.httprequest.response.PKPersonalListResult;
 import com.m.pk.httprequest.response.PKTeamListResult;
-import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.utils.DateUtil;
+import com.xmd.app.utils.Utils;
 import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Lhj on 18-1-9.
@@ -40,21 +45,16 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
     public static final String PK_ACTIVITY_ID = "pkActivityId";
 
     private String mRange;
-
     private PkRankingListAdapter mDetailAdapter;
     private List<PKDetailListBean> mData;
     private int mTeamNumber;
-    private Map<String, String> mParams;
     private String mActivityId;
     private String mSortKey;
     private String mStartDate, mEndDate;
     private String mCurrentFilterTeamId;
     private String mCurrentFilterTeamName;
     private List<PkFilterTeamBean> mPkFilterTeamList;
-    private List<String> mStringList;
-    // private ArrayBottomPopupWindow<String> mArrayBottom;
     FragmentTechPkRankingListBinding mBinding;
-
 
     @Nullable
     @Override
@@ -101,7 +101,23 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
         mDetailAdapter.setTeamFilter(new PkRankingListAdapter.TeamFilterListener() {
             @Override
             public void filterTeam(View view) {
-
+                final PopupWindow popupWindow = new BasePopupWindow(getActivity());
+                popupWindow.setWidth(Utils.dip2px(getActivity(),120));
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_array_list,null);
+                ListView listView = (ListView) popupView.findViewById(R.id.list_team);
+                FiltrateAdapter filtrateAdapter = new FiltrateAdapter();
+                listView.setAdapter(filtrateAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        mCurrentFilterTeamId = mPkFilterTeamList.get(position).teamId;
+                        mCurrentFilterTeamName = mPkFilterTeamList.get(position).teamName;
+                        getRankingData();
+                        popupWindow.dismiss();
+                    }
+                });
+                popupWindow.setContentView(popupView);
+                popupWindow.showAsDropDown(view);
             }
         });
         mCurrentFilterTeamId = "";
@@ -110,10 +126,10 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
 
     @Subscribe
     public void onDateChangedSubScribe(DateChangedEvent event) {
-        XLogger.i(">>>", event.startDate);
-        XLogger.i(">>>", event.endDate);
+        mStartDate = event.startDate;
+        mEndDate = event.endDate;
+        getRankingData();
     }
-
 
     @Override
     public void onRefresh() {
@@ -142,7 +158,8 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
 
             @Override
             public void onCallbackError(Throwable e) {
-
+                mBinding.swipeTechPkRanking.setRefreshing(false);
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -151,6 +168,7 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
         DataManager.getInstance().getPkPersonalList(mActivityId, mSortKey, mCurrentFilterTeamId, mStartDate, mEndDate, String.valueOf(1), String.valueOf(1000), new NetworkSubscriber<PKPersonalListResult>() {
             @Override
             public void onCallbackSuccess(PKPersonalListResult result) {
+                mBinding.swipeTechPkRanking.setRefreshing(false);
                 for (int i = 0; i < result.getRespData().size(); i++) {
                     result.getRespData().get(i).setTeam(false);
                     result.getRespData().get(i).setPosition(mTeamNumber + i);
@@ -163,9 +181,43 @@ public class TechPKRankingListFragment extends BaseFragment implements SwipeRefr
 
             @Override
             public void onCallbackError(Throwable e) {
-
+                XToast.show(e.getLocalizedMessage());
+                mBinding.swipeTechPkRanking.setRefreshing(false);
             }
         });
+    }
+
+    private class FiltrateAdapter extends BaseAdapter {
+
+
+        @Override
+        public int getCount() {
+            return mPkFilterTeamList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mPkFilterTeamList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_array_popup_window, null);
+            TextView textView = (TextView) view.findViewById(R.id.tv_item);
+            textView.setText(mPkFilterTeamList.get(position).teamName);
+            if (mCurrentFilterTeamName.equals(mPkFilterTeamList.get(position))) {
+                textView.setSelected(true);
+            } else {
+                textView.setSelected(false);
+            }
+            return view;
+        }
     }
 
 }

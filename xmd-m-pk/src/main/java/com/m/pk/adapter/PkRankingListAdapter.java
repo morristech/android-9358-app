@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.m.pk.BR;
 import com.m.pk.R;
@@ -25,22 +27,18 @@ public class PkRankingListAdapter extends RecyclerView.Adapter<BindingViewHolder
 
     private Context mContext;
     private List<PKDetailListBean> mData;
-    private int mTeamNumber;
-    private String mCurrentType;
     private TeamFilterListener mFilterListener;
     private String mCurrentTeamFilter;
     private LayoutInflater mInflater;
 
     public PkRankingListAdapter(Context context, List<PKDetailListBean> data, String currentType) {
         this.mContext = context;
-        this.mCurrentType = currentType;
         this.mData = data;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setData(List<PKDetailListBean> data, int teamNumber, String teamFilter) {
         this.mData = data;
-        this.mTeamNumber = teamNumber;
         this.mCurrentTeamFilter = teamFilter;
         notifyDataSetChanged();
     }
@@ -68,13 +66,22 @@ public class PkRankingListAdapter extends RecyclerView.Adapter<BindingViewHolder
 
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
-       if(position == mData.size()){
-
-       }else {
-           final PKDetailListBean rankingBean = mData.get(position);
-           holder.getBinding().setVariable(BR.DetailBean, rankingBean);
-           holder.getBinding().executePendingBindings();
-       }
+        if (position != mData.size()) {
+            final PKDetailListBean rankingBean = mData.get(position);
+            holder.getBinding().setVariable(BR.DetailBean, rankingBean);
+            holder.getBinding().executePendingBindings();
+            TextView tvSort = (TextView) holder.getBinding().getRoot().findViewById(R.id.tv_sort_team_filter);
+            final LinearLayout llTeamSort = (LinearLayout) holder.getBinding().getRoot().findViewById(R.id.ll_team_filter);
+            tvSort.setText(mCurrentTeamFilter);
+            llTeamSort.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mFilterListener != null){
+                        mFilterListener.filterTeam(llTeamSort);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -84,9 +91,9 @@ public class PkRankingListAdapter extends RecyclerView.Adapter<BindingViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        if(position == mData.size()){
+        if (position == mData.size()) {
             return BOTTOM_TYPE;
-        }else {
+        } else {
             return PK_RANKING_TYPE;
         }
     }

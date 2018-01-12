@@ -78,7 +78,7 @@ public class TechCommonRankingDetailActivity extends BaseActivity {
 
     private void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.parseColor("#F36B5A"));
+            getWindow().setStatusBarColor(Color.parseColor("#F98263"));
         }
     }
 

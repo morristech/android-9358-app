@@ -36,12 +36,15 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
 
     private int mPage;
     private int mPageSize;
+    private boolean hasMore;
+    protected int mLastVisibleItem;
     private TechPkActivityAdapter mAdapter;
     private LinearLayoutManager layoutManager;
+    private List<ActivityRankingBean> mActivityList;
 
-    public static void startTechPKActiveListActivity(Context activity, String appType){
-        Intent intent = new Intent(activity,TechPKActiveListActivity.class);
-        intent.putExtra(Constant.INTENT_KEY_APP_TYPE,appType);
+    public static void startTechPKActiveListActivity(Context activity, String appType) {
+        Intent intent = new Intent(activity, TechPKActiveListActivity.class);
+        intent.putExtra(Constant.INTENT_KEY_APP_TYPE, appType);
         activity.startActivity(intent);
     }
 
@@ -55,7 +58,7 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
     private void initView() {
         setTitle(ResourceUtils.getString(R.string.pk_active_title));
         setBackVisible(true);
-        mPage = 1;
+        mPage = 0;
         mPageSize = 10;
         showLoading(ResourceUtils.getString(R.string.loading_hint_message), true);
         initRecyclerView();
@@ -66,21 +69,22 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
         layoutManager = new LinearLayoutManager(this);
         mAdapter = new TechPkActivityAdapter(this);
         mAdapter.setOnItemClickedListener(this);
+        mActivityList = new ArrayList<>();
         mBinding.list.setLayoutManager(layoutManager);
         mBinding.list.setAdapter(mAdapter);
         mBinding.list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int last = layoutManager.findLastVisibleItemPosition();
-                    //in
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && mLastVisibleItem + 1 == mAdapter.getItemCount()) {
+                    loadMore();
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                mLastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
         mBinding.swipeRefreshWidget.setColorSchemeColors(0xffff0000, 0xff00ff00, 0xff0000ff, 0xffffffff, 0xff000000);
@@ -88,19 +92,29 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
             @Override
             public void onRefresh() {
                 mPage = 1;
+                mActivityList.clear();
                 getPkActiveData();
             }
         });
     }
 
+    private void loadMore() {
+        if (hasMore) {
+            mBinding.swipeRefreshWidget.setRefreshing(true);
+            getPkActiveData();
+        }
+    }
 
     private void getPkActiveData() {
+        mPage++;
         DataManager.getInstance().getPkActivityList(String.valueOf(mPage), String.valueOf(mPageSize), new NetworkSubscriber<PKActivityListResult>() {
             @Override
             public void onCallbackSuccess(PKActivityListResult result) {
                 hideLoading();
+                hasMore = (mPage != result.getPageCount());
                 mBinding.swipeRefreshWidget.setRefreshing(false);
-                mAdapter.setListData(result.getRespData());
+                mActivityList.addAll(result.getRespData());
+                mAdapter.setListData(mActivityList, hasMore);
             }
 
             @Override
@@ -115,19 +129,19 @@ public class TechPKActiveListActivity extends BaseActivity implements TechPkActi
     @Override
     public void onActivityClick(ActivityRankingBean bean) {
         List<PkItemBean> pkList = new ArrayList<>();
-        if(TextUtils.isEmpty(bean.getRankingList().get(0).getCategoryId())){
+        if (TextUtils.isEmpty(bean.getRankingList().get(0).getCategoryId())) {
             pkList.add(new PkItemBean(bean.getCategoryId(), bean.getCategoryName()));
-        }else{
+        } else {
             for (int i = 0; i < bean.getRankingList().size(); i++) {
                 pkList.add(new PkItemBean(bean.getRankingList().get(i).getCategoryId(), bean.getRankingList().get(i).getCategoryName()));
             }
         }
-        TechPkRankingActivity.startTechPkRankingActivity(TechPKActiveListActivity.this,bean.getPkActivityId(),bean.getStatus(),bean.getStartDate(),
-                TextUtils.isEmpty(bean.getEndDate())? DateUtil.getDate(System.currentTimeMillis()):bean.getEndDate(),
-                getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE),pkList);
+        TechPkRankingActivity.startTechPkRankingActivity(TechPKActiveListActivity.this, bean.getPkActivityId(), bean.getStatus(), bean.getStartDate(),
+                TextUtils.isEmpty(bean.getEndDate()) ? DateUtil.getDate(System.currentTimeMillis()) : bean.getEndDate(),
+                getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE), pkList);
     }
 
     public void onRankingDetailClick(View view) {
-        TechCommonRankingDetailActivity.startTechCommonRankingDetailActivity(TechPKActiveListActivity.this,getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE));
+        TechCommonRankingDetailActivity.startTechCommonRankingDetailActivity(TechPKActiveListActivity.this, getIntent().getStringExtra(Constant.INTENT_KEY_APP_TYPE));
     }
 }
