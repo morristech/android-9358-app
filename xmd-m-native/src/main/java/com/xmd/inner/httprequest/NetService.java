@@ -10,7 +10,6 @@ import com.xmd.inner.httprequest.response.OrderTimeListResult;
 import com.xmd.inner.httprequest.response.ProjectListAvailableResult;
 import com.xmd.inner.httprequest.response.RoomOrderInfoResult;
 import com.xmd.inner.httprequest.response.RoomSeatListResult;
-import com.xmd.inner.httprequest.response.RoomSettingResult;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.inner.httprequest.response.TechnicianListResult;
 import com.xmd.inner.httprequest.response.UserIdentifyListResult;
@@ -44,7 +43,8 @@ public interface NetService {
      */
     @GET(RequestConstant.TECHNICIAN_LIST)
     Observable<TechnicianListResult> getAllTechnicianList(@Query("role") String role,
-                                                       @Query("status") String status);
+                                                          @Query("status") String status);
+
     /**
      * 获取闲技师列表
      */
@@ -113,9 +113,4 @@ public interface NetService {
     // 获取房间统计信息
     @GET(RequestConstant.GET_ROOM_STATUS_STATISTICS)
     Observable<RoomStatisticResult> getRoomStatistics();
-
-
-    // 获取房间设置信息
-    @GET(RequestConstant.GET_ROOM_STATUS_SETTING)
-    Observable<RoomSettingResult> getRoomSetting();
 }

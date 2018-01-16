@@ -1,7 +1,5 @@
 package com.xmd.cashier.manager;
 
-import android.os.SystemClock;
-
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.MainApplication;
@@ -72,12 +70,12 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                 case AppConstants.PUSH_TAG_FASTPAY:
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On RawMessage：" + message);
                     SPManager.getInstance().setFastPayPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
-                    NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
+                    NotifyManager.getInstance().notifyOnlinePayList();
                     break;
                 case AppConstants.PUSH_TAG_ORDER:
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On RawMessage：" + message);
                     SPManager.getInstance().setOrderPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
-                    NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
+                    NotifyManager.getInstance().notifyOrderRecordList();
                     break;
                 case AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY:   //内网订单支付
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);

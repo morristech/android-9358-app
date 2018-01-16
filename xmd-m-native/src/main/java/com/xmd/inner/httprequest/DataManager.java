@@ -9,7 +9,6 @@ import com.xmd.inner.httprequest.response.OrderTimeListResult;
 import com.xmd.inner.httprequest.response.ProjectListAvailableResult;
 import com.xmd.inner.httprequest.response.RoomOrderInfoResult;
 import com.xmd.inner.httprequest.response.RoomSeatListResult;
-import com.xmd.inner.httprequest.response.RoomSettingResult;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.inner.httprequest.response.TechnicianListResult;
 import com.xmd.inner.httprequest.response.UserIdentifyListResult;
@@ -169,9 +168,5 @@ public class DataManager {
 
     public Subscription getRoomStatistics(NetworkSubscriber<RoomStatisticResult> listener) {
         return XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getRoomStatistics(), listener);
-    }
-
-    public Subscription getRoomSetting(NetworkSubscriber<RoomSettingResult> listener) {
-        return XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getRoomSetting(), listener);
     }
 }

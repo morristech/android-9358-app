@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.bigkoo.pickerview.listener.CustomListener;
+import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.DateUtil;
@@ -62,14 +63,17 @@ public class NativeSeatBookActivity extends BaseActivity {
         initTimePicker();
         mBookSeatText.setText(mSeatInfo.name);
         mBookPhoneEdit.setHint("请输入手机号码");
-        mDate = DateUtil.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss");
-        mBookTimeText.setText(DateUtil.dateToString(new Date(), "MM月dd日 HH:mm:ss"));
+
+        Date mInitDate = new Date(new Date().getTime() + 5 * 60 * 1000); //默认预约当前时间5分钟后
+        mDate = DateUtil.dateToString(mInitDate, "yyyy-MM-dd HH:mm:ss");
+        mBookTimeText.setText(DateUtil.dateToString(mInitDate, "MM月dd日 HH:mm:ss"));
     }
 
     private void initTimePicker() {
-        Calendar currentDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2050, 11, 31);
+        endDate.add(Calendar.MONTH, 1);
+
         mPickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -99,8 +103,7 @@ public class NativeSeatBookActivity extends BaseActivity {
                     }
                 })
                 .setType(new boolean[]{true, true, true, true, true, true})
-                .setRangDate(currentDate, endDate)
-                .setDate(currentDate)
+                .setRangDate(startDate, endDate)
                 .setOutSideCancelable(true)
                 .setContentSize(16)
                 .setCancelColor(ResourceUtils.getColor(R.color.colorText3))
@@ -127,7 +130,9 @@ public class NativeSeatBookActivity extends BaseActivity {
     @OnClick(R2.id.tv_book_time)
     public void onTimeSelect() {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        mPickerView.setDate(Calendar.getInstance());
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.setTime(DateUtils.doString2Date(mBookTimeText.getText().toString(), "MM月dd日 HH:mm:ss"));
+        mPickerView.setDate(tempCalendar);
         mPickerView.show();
     }
 

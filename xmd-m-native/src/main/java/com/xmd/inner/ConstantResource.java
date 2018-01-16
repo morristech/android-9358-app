@@ -3,7 +3,7 @@ package com.xmd.inner;
 
 import com.xmd.app.utils.ResourceUtils;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,12 +21,6 @@ public class ConstantResource {
     public static final String STATUS_CLEAN = "clean";
     public static final String STATUS_DISABLED = "disabled";
 
-    public static final String TEXT_STATUS_FREE = "空闲";
-    public static final String TEXT_STATUS_USING = "使用";
-    public static final String TEXT_STATUS_BOOKED = "预订";
-    public static final String TEXT_STATUS_CLEAN = "清洁";
-    public static final String TEXT_STATUS_DISABLED = "禁用";
-
     public static final int TYPE_COLOR_GREEN = 1;
     public static final int TYPE_COLOR_PINK = 2;
     public static final int TYPE_COLOR_BLUE = 3;
@@ -40,7 +34,7 @@ public class ConstantResource {
 
     public static final String RESPONSE_YES = "Y";
 
-    public static final Map<Integer, Integer> STATUS_TYPE_COLOR = new LinkedHashMap<Integer, Integer>() {
+    public static final Map<Integer, Integer> STATUS_TYPE_COLOR = new HashMap<Integer, Integer>() {
         {
             put(TYPE_COLOR_GREEN, ResourceUtils.getColor(R.color.status_color_green));
             put(TYPE_COLOR_PINK, ResourceUtils.getColor(R.color.status_color_pink));
@@ -51,7 +45,7 @@ public class ConstantResource {
         }
     };
 
-    public static final Map<String, Integer> DEFAULT_STATUS_COLOR_TYPE = new LinkedHashMap<String, Integer>() {
+    public static final Map<String, Integer> DEFAULT_STATUS_COLOR_TYPE = new HashMap<String, Integer>() {
         {
             put(STATUS_FREE, TYPE_COLOR_GREEN);
             put(STATUS_USING, TYPE_COLOR_PINK);

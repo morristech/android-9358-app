@@ -128,6 +128,7 @@ public class NativeRoomActivity extends BaseActivity {
                     Iterator<RoomStatisticInfo> it = tempList.iterator();
                     while (it.hasNext()) {
                         RoomStatisticInfo info = it.next();
+                        NativeManager.getInstance().getStatusTypeMap().put(info.code, info.color);
                         if (!ConstantResource.RESPONSE_YES.equals(info.status)) {
                             it.remove();
                         }

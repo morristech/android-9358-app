@@ -115,8 +115,8 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             InnerManager.getInstance().startGetInnerSwitch();
             InnerManager.getInstance().startGetInnerChannel();
             InnerManager.getInstance().getClubWorkTime();
-            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime());
-            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime());
+            NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
+            NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
         }
 
         // 开启服务
