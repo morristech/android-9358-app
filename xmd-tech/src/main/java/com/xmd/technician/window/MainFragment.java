@@ -434,7 +434,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mTechAuditConfirmSubscription = RxBus.getInstance().toObservable(AuditConfirmResult.class).subscribe(
                 result -> handleAuditConfirmResult(result)
         );
-
+        mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
+                this::initTechRankingView);
+        mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
+                techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
+        );
     }
 
     private void handleAuditConfirmResult(AuditConfirmResult result) {
@@ -586,16 +590,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void loadRankingData() {
-        mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
-                this::initTechRankingView);
+
+
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
     }
 
     @CheckBusinessPermission(PermissionConstants.PK_RANKING)
     public void loadPkRankingData() {
-        mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
-                techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
-        );
+
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
     }
 
@@ -1439,7 +1441,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 } else {
                     adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, "");
                 }
-
                 mTeamList.setItemAnimator(new DefaultItemAnimator());
                 mTeamList.setHasFixedSize(true);
                 mTeamList.setNestedScrollingEnabled(true);
