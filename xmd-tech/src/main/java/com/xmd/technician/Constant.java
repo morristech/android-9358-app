@@ -68,7 +68,10 @@ public class Constant {
      * 期刊
      */
     public static final String JOURNAL_TYPE = "journal";
-
+    /**
+     * 拼团活动
+     */
+    public static final String GROUPS_BUY_TYPE = "groupBuy";
 
     /**
      * 已接受

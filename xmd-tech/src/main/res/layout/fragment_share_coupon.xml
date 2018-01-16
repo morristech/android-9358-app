@@ -74,8 +74,7 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="@dimen/inter_space"
-                        >
+                            android:paddingLeft="@dimen/inter_space">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -535,6 +534,43 @@
                             <TextView
                                 style="@style/coupon_total_num_style"
                                 android:layout_toRightOf="@id/not_online_text"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/right_arrow"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_groups"
+                            style="@style/layout_share_coupon_style">
+
+                            <ImageView
+                                android:id="@+id/img_groups"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_group_buy"/>
+
+                            <TextView
+                                android:id="@+id/groups_name"
+                                style="@style/coupon_type_style"
+                                android:layout_toRightOf="@id/img_groups"
+                                android:text="@string/groups_activity"/>
+
+                            <TextView
+                                android:id="@+id/groups_text"
+                                style="@style/coupon_total_style"
+                                android:layout_below="@id/groups_name"
+                                android:layout_toRightOf="@id/img_groups"
+                                android:text="@string/club_online_activity_number"/>
+
+                            <TextView
+                                android:id="@+id/groups_total"
+                                style="@style/coupon_total_num_style"
+                                android:layout_toRightOf="@id/groups_text"/>
 
                             <ImageView
                                 android:layout_width="wrap_content"

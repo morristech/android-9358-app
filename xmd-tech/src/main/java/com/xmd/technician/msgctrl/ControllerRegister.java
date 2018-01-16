@@ -144,7 +144,9 @@ public class ControllerRegister {
                 //-------------------------------------> 分享统计 <---------------------------------
                 MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE,
                 //-------------------------------------> 提现规则 <---------------------------------
-                MsgDef.MSG_DEF_TECH_WITHDRAW_RULE
+                MsgDef.MSG_DEF_TECH_WITHDRAW_RULE,
+                MsgDef.MSG_DEF_GROUP_BUY_ACTIVITY
+
 
         };
         MsgDispatcher.register(controllerId, msgIds);

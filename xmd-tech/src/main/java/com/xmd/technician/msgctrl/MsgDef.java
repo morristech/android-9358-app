@@ -206,6 +206,8 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_SHARE_COUNT_UPDATE = 0x0136;
     //提成说明
     public static final int MSG_DEF_TECH_WITHDRAW_RULE = 0x137;
+    //拼团活动
+    public static final int MSG_DEF_GROUP_BUY_ACTIVITY = 0x138;
 
 
 

@@ -48,6 +48,7 @@ import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
+import com.xmd.technician.http.gson.GroupBuyListResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -454,6 +455,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_TECH_WITHDRAW_RULE:
                 getWithDrawRule();
+                break;
+            case MsgDef.MSG_DEF_GROUP_BUY_ACTIVITY:
+                getClubGroupBuyList();
                 break;
         }
 
@@ -2180,7 +2184,7 @@ public class RequestController extends AbstractController {
 
             @Override
             protected void postError(String errorMsg) {
-                AuditModifyResult  result = new AuditModifyResult ();
+                AuditModifyResult result = new AuditModifyResult();
                 result.msg = errorMsg;
                 result.statusCode = 400;
                 RxBus.getInstance().post(result);
@@ -2219,8 +2223,8 @@ public class RequestController extends AbstractController {
     }
 
     //统计技师分享次数
-    public void techShareCountUpdate(Map<String, String> params){
-        Call<BaseResult> call = getSpaService().updateTechShareCount(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_ACT_ID),
+    public void techShareCountUpdate(Map<String, String> params) {
+        Call<BaseResult> call = getSpaService().updateTechShareCount(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_ACT_ID),
                 params.get(RequestConstant.KEY_ACT_TYPE));
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -2232,16 +2236,25 @@ public class RequestController extends AbstractController {
 
     //获取提现规则
 
-    public void getWithDrawRule(){
-        Call<WithdrawRuleResult> call = getSpaService().getWithdrawRule(SharedPreferenceHelper.getUserToken(),SharedPreferenceHelper.getUserClubId());
+    public void getWithDrawRule() {
+        Call<WithdrawRuleResult> call = getSpaService().getWithdrawRule(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
         call.enqueue(new TokenCheckedCallback<WithdrawRuleResult>() {
             @Override
             protected void postResult(WithdrawRuleResult result) {
-                    RxBus.getInstance().post(result);
+                RxBus.getInstance().post(result);
             }
         });
     }
 
+    public void getClubGroupBuyList() {
+        Call<GroupBuyListResult> call = getSpaService().getGroupBuyList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<GroupBuyListResult>() {
+            @Override
+            protected void postResult(GroupBuyListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
 
 
 }

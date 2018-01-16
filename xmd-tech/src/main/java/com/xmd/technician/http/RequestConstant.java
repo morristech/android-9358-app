@@ -121,6 +121,7 @@ public class RequestConstant {
     public static final String URL_GET_REWARD_ACTIVITY_LIST = BASE_URL + "/v1/techshare/darwActListDetail";//抽奖活动列表
     public static final String URL_GET_INVITATION_REWARD_ACTIVITY_LIST = BASE_URL + "/v2/club/user/invite/activity/active";//邀请有礼
     public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
+    public static final String URL_GET_GROUP_BUY_ONLINE_LIST = BASE_URL + "/v2/manager/group/buy/online/list";
     /**
      * PK排行榜
      */
@@ -451,6 +452,7 @@ public class RequestConstant {
     public static final String KEY_LUCKY_WHEEL = "lucky_wheel";//大转盘
     public static final String KEY_INVITE_GIFT = "invite_gift"; //邀请有礼
     public static final String KEY_JOURNAL = "journal" ;//电子期刊
+    public static final String KEY_GROUP_BUY = "group_buy";
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/

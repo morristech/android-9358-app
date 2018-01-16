@@ -30,6 +30,7 @@ import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CreditDetailBean;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.DynamicDetail;
+import com.xmd.technician.bean.GroupBuyBean;
 import com.xmd.technician.bean.LimitGrabBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
@@ -80,6 +81,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 23;
     private static final int TYPE_TECH_PERSONAL_RANKING = 24;
     private static final int TYPE_TECH_BLACKLIST = 25;
+    private static final int TYPE_GROUP_BUY_ITEM = 26;
     //   private static final int TYPE_INVITATION_REWARD_ACTIVITY_ITEM = 26;
     private static final int TYPE_FOOTER = 99;
     private boolean mIsNoMore = false;
@@ -90,6 +92,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private RecyclerView mRecyclerView;
     private ItemSlideHelper mHelper;
     private String mDataLoadCompleteDes;
+
     public ListRecycleViewAdapter(Context context, List<T> data, Callback callback) {
         mContext = context;
         mData = data;
@@ -166,7 +169,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PERSONAL_RANKING;
             } else if (mData.get(position) instanceof CustomerInfo) {
                 return TYPE_TECH_BLACKLIST;
-            }else {
+            } else if (mData.get(position) instanceof GroupBuyBean) {
+                return TYPE_GROUP_BUY_ITEM;
+            } else {
                 return TYPE_FOOTER;
             }
         }
@@ -233,6 +238,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_TECH_BLACKLIST:
                 View emchatBlasklist = LayoutInflater.from(parent.getContext()).inflate(R.layout.emchat_blacklist_item, parent, false);
                 return new EmchatBlacklistListItemViewHolder(emchatBlasklist);
+            case TYPE_GROUP_BUY_ITEM:
+                View groupBuy = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_buy, parent, false);
+                return new GroupBuyListViewHolder(groupBuy);
 //            case TYPE_INVITATION_REWARD_ACTIVITY_ITEM:
 //                View invitationRewardActivity = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_invitation_reward_activity_item, parent, false);
 //                return new InvitationRewardActivityItemViewHolder(invitationRewardActivity);
@@ -895,6 +903,24 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             });
         }
 
+        if(holder instanceof GroupBuyListViewHolder){
+            Object obj = mData.get(position);
+            if(!(obj instanceof GroupBuyBean)){
+                return;
+            }
+            final GroupBuyBean groupBuyBean = (GroupBuyBean) obj;
+            GroupBuyListViewHolder viewHolder = (GroupBuyListViewHolder) holder;
+            Glide.with(mContext).load(groupBuyBean.itemImageUrl).into(viewHolder.groupBuyHead);
+            viewHolder.groupBuyBigTitle.setText(groupBuyBean.itemName);
+            viewHolder.groupBuySmallTitle.setText(String.format("（%s人团）",String.valueOf(groupBuyBean.personalCount)));
+            viewHolder.groupBuyMoney.setText(String.format("%1.2f",groupBuyBean.price / 100f));
+            String des = String.format("原价：%1.2f元",  groupBuyBean.itemPrice /100f);
+            viewHolder.groupBuyDetail.setText(Utils.textStrikeThrough(des, 0, des.length()));
+            viewHolder.groupBuyUseTime.setText(groupBuyBean.activityPeriod);
+            viewHolder.groupBuyShare.setOnClickListener(v -> mCallback.onShareClicked(groupBuyBean));
+            viewHolder.llShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(groupBuyBean));
+        }
+
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = "";
@@ -1361,4 +1387,27 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
 
+    static class GroupBuyListViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.group_buy_head)
+        RoundImageView groupBuyHead;
+        @BindView(R.id.group_buy_big_title)
+        TextView groupBuyBigTitle;
+        @BindView(R.id.group_buy_small_title)
+        TextView groupBuySmallTitle;
+        @BindView(R.id.group_buy_money)
+        TextView groupBuyMoney;
+        @BindView(R.id.group_buy_detail)
+        TextView groupBuyDetail;
+        @BindView(R.id.group_buy_use_time)
+        TextView groupBuyUseTime;
+        @BindView(R.id.group_buy_share)
+        Button groupBuyShare;
+        @BindView(R.id.ll_show_code)
+        LinearLayout llShowCode;
+
+        GroupBuyListViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
 }

@@ -35,6 +35,7 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
 
     @BindView(R.id.empty_view_widget)
     EmptyView mEmptyViewWidget;
+
     private Subscription mLimitGrabListSubscription;
     private int mTotalAmount;
     private Map<String, Object> params = new HashMap<>();

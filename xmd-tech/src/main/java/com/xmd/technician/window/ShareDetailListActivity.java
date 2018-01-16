@@ -26,6 +26,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
     public static final int CLUB_JOURNAL = 0x006;//会所期刊
     public static final int REWARD_ACTIVITY = 0x007;//抽奖活动
     public static final int INVITATION_REWARD_ACTIVITY = 0x008;//邀请有礼
+    public static final int GROUPS_ACTIVITY = 0x009;//拼团活动
     private static final String SHARE_TYPE = "share_type";
     private static final String SHARE_TITLE = "share_title";
     //   public static final int OFFLINE_ACTIVITY = 0x008;//线下活动
@@ -88,6 +89,11 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.invitation_reward_activity) : mCurrentTitle);
                 setFragment(InvitationRewardActivityListFragment.getInstance());
                 break;
+            case GROUPS_ACTIVITY:
+                setTitle(Utils.isEmpty(mCurrentTitle)?ResourceUtils.getString(R.string.groups_activity):mCurrentTitle);
+                setFragment(GroupBuyActivityListFragment.getInstance(mTotal));
+                break;
+
        /*     case OFFLINE_ACTIVITY:
                 setTitle(Utils.isEmpty(mCurrentTitle)? ResourceUtils.getString(R.string.offline_activity_list_title):mCurrentTitle);
                 setFragment(OffLineActivityListFragment.getInstance());

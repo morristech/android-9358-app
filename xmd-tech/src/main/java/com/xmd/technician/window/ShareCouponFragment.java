@@ -129,6 +129,14 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     TextView mInvitationRewardTotal;
     @BindView(R.id.rl_invitation_reward)
     RelativeLayout rlInvitationReward;
+    @BindView(R.id.rl_groups)
+    RelativeLayout rlGroups;
+    @BindView(R.id.groups_name)
+    TextView groupsName;
+    @BindView(R.id.groups_text)
+    TextView groupsText;
+    @BindView(R.id.groups_total)
+    TextView groupsTotal;
 
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
@@ -137,7 +145,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private List<String> mCards;
     private List<String> mAction;
-    private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount, mInvitationRewardActivityAmount;
+    private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount, mInvitationRewardActivityAmount, mGroupsActivityAmount;
     private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
     private boolean isFirst;
     private TechInfo mTechInfo;
@@ -288,6 +296,11 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                         } else if (activityListResult.respData.get(i).actType.equals(Constant.INVITATION_TYPE)) {
                             mInvitationRewardName.setText(activityListResult.respData.get(i).actName);
                             mInvitationRewardTotal.setText(activityListResult.respData.get(i).count);
+                            mInvitationRewardActivityAmount = Integer.parseInt(activityListResult.respData.get(i).count);
+                        } else if (activityListResult.respData.get(i).actType.equals(Constant.GROUPS_BUY_TYPE )) {
+                            groupsName.setText(activityListResult.respData.get(i).actName);
+                            groupsTotal.setText(activityListResult.respData.get(i).count);
+                            mGroupsActivityAmount = Integer.parseInt(activityListResult.respData.get(i).count);
                         }
 
                     }
@@ -324,7 +337,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_invitation_reward, R.id.rl_publication, R.id.ll_share_tech_card, R.id.ll_share_tech_poster})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_invitation_reward,
+            R.id.rl_publication, R.id.ll_share_tech_card, R.id.ll_share_tech_poster, R.id.rl_groups})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -351,7 +365,9 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
             case R.id.rl_publication:
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString(), mClubJournalAmount);
                 break;
-
+            case R.id.rl_groups:
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.GROUPS_ACTIVITY, groupsName.getText().toString(), mGroupsActivityAmount);
+                break;
             case R.id.ll_share_tech_card:
                 if (mTechInfo != null) {
                     if (TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
@@ -450,6 +466,12 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         } else {
             rlInvitationReward.setVisibility(View.GONE);
         }
+        if (mAction.contains(Constant.GROUPS_BUY_TYPE )) {
+            rlGroups.setVisibility(View.VISIBLE);
+        } else {
+            rlGroups.setVisibility(View.GONE);
+        }
+
 
     }
 

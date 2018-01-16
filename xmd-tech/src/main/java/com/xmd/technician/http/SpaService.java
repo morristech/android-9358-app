@@ -37,6 +37,7 @@ import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
+import com.xmd.technician.http.gson.GroupBuyListResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -892,5 +893,7 @@ public interface SpaService {
     @GET(RequestConstant.URL_TECH_WITHDRAW_RULE)
     Call<WithdrawRuleResult> getWithdrawRule(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                              @Query(RequestConstant.KEY_USER_CLUB_ID) String clubId);
-
+    //拼团活动列表
+    @GET(RequestConstant.URL_GET_GROUP_BUY_ONLINE_LIST)
+    Call<GroupBuyListResult> getGroupBuyList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }
