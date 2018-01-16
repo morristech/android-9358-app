@@ -126,7 +126,7 @@ public class NativeSeatActivity extends BaseActivity {
         mOrderList.addItemDecoration(new CustomRecycleViewDecoration(2));
         mOrderList.setItemAnimator(new DefaultItemAnimator());
         mOrderList.setAdapter(mOrderAdapter);
-        
+
         mRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorPink));
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -305,19 +305,19 @@ public class NativeSeatActivity extends BaseActivity {
 
     @OnClick(R2.id.tv_consume_add)
     public void onConsumeAdd() {
-        // TODO 跳转 增加消费
+        // 增加消费
         AddSeatBillActivity.startAddSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mSelectedOrderInfo);
     }
 
     @OnClick(R2.id.tv_consume_modify)
     public void onConsumeModify() {
-        // TODO 跳转 修改
+        // 修改
         ModifySeatBillActivity.startModifySeatBillActivity(this, mSelectedSeatInfo.name, mSelectedOrderInfo);
     }
 
     @OnClick(R2.id.btn_seat_left)
     public void onSeatLeftClick() {
-        // TODO 跳转 开单
+        // 开单
         CreateNewSeatBillActivity.startCreateNewSeatBillActivity(this, getIntent().getStringExtra(EXTRA_ROOM_TITLE), mRoomInfo.id, mSelectedSeatInfo.name, mSelectedSeatInfo.id);
     }
 

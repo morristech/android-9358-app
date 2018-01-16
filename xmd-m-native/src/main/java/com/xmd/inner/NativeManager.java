@@ -3,10 +3,8 @@ package com.xmd.inner;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.utils.ResourceUtils;
-import com.xmd.inner.bean.RoomSettingInfo;
 import com.xmd.inner.bean.RoomStatisticInfo;
 import com.xmd.inner.httprequest.DataManager;
-import com.xmd.inner.httprequest.response.RoomSettingResult;
 import com.xmd.inner.httprequest.response.RoomStatisticResult;
 import com.xmd.m.network.NetworkSubscriber;
 
@@ -14,8 +12,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +22,7 @@ import java.util.Map;
  */
 
 public class NativeManager {
-    private Map<String, Integer> mStatusTypeMap = new LinkedHashMap<>();
+    private Map<String, Integer> mStatusTypeMap = new HashMap<>();
     private List<RoomStatisticInfo> roomStatisticInfos = new ArrayList<>();
     private int usingSeatCount = 0;
 
@@ -35,7 +33,7 @@ public class NativeManager {
     }
 
     private NativeManager() {
-
+        mStatusTypeMap = ConstantResource.DEFAULT_STATUS_COLOR_TYPE;
     }
 
     public void init() {
@@ -54,6 +52,10 @@ public class NativeManager {
         return roomStatisticInfos;
     }
 
+    public Map<String, Integer> getStatusTypeMap() {
+        return mStatusTypeMap;
+    }
+
     public void setRoomStatisticInfos(List<RoomStatisticInfo> list) {
         roomStatisticInfos = list;
     }
@@ -68,26 +70,7 @@ public class NativeManager {
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
-        getNativeSetting();
         refreshNativeStatistics();
-    }
-
-    private void getNativeSetting() {
-        DataManager.getInstance().getRoomSetting(new NetworkSubscriber<RoomSettingResult>() {
-            @Override
-            public void onCallbackSuccess(RoomSettingResult result) {
-                Map<String, Integer> tempMap = new LinkedHashMap<>();
-                for (RoomSettingInfo settingInfo : result.getRespData().statusList) {
-                    tempMap.put(settingInfo.code, settingInfo.color);
-                }
-                mStatusTypeMap = tempMap;
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                mStatusTypeMap = ConstantResource.DEFAULT_STATUS_COLOR_TYPE;
-            }
-        });
     }
 
     public void refreshNativeStatistics() {
@@ -98,6 +81,7 @@ public class NativeManager {
                     Iterator<RoomStatisticInfo> it = result.getRespData().statusList.iterator();
                     while (it.hasNext()) {
                         RoomStatisticInfo info = it.next();
+                        mStatusTypeMap.put(info.code, info.color);
                         if (!ConstantResource.RESPONSE_YES.equals(info.status)) {
                             it.remove();
                         }
