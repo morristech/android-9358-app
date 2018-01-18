@@ -155,6 +155,9 @@ public class SalaryTotalDataFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSalaryDataManager.destroyData();
+        if(mSalaryDataManager != null){
+            mSalaryDataManager.destroyData();
+        }
+
     }
 }

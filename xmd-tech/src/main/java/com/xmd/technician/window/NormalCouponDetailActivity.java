@@ -13,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -75,7 +76,10 @@ public class NormalCouponDetailActivity extends BaseActivity {
         }
 
         mActId = intent.getStringExtra(Constant.PARAM_ACT_ID);
-
+        if(mActId == null){
+            XToast.show("该优惠券不可用");
+            this.finish();
+        }
         mGetCouponInfoSubscription = RxBus.getInstance().toObservable(CouponInfoResult.class).subscribe(
                 couponInfoResult -> handleCouponInfoResult(couponInfoResult)
         );

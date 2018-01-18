@@ -29,7 +29,6 @@ public class UmengStatisticsManager {
         if (manager == null) {
             manager = new UmengStatisticsManager();
         }
-
         return manager;
     }
 
