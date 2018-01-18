@@ -37,6 +37,7 @@
                     android:id="@+id/group_buy_big_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:textColor="@color/color_main_head"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
@@ -56,28 +57,38 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/group_buy_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_btn_checked"
-                    android:textSize="@dimen/fontHead"
-                    android:textStyle="bold"
-                    tools:text="1"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/group_buy_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_btn_checked"
+                        android:textSize="@dimen/fontHead"
+                        android:textStyle="bold"
+                        tools:text="1"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/unit_yuan"
-                    android:textColor="@color/color_btn_checked"/>
-                <TextView
-                    android:id="@+id/group_buy_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#757575"
-                    android:textSize="12sp"
-                    tools:text="原价：300元"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unit_yuan"
+                        android:textColor="@color/color_btn_checked"/>
+                    <TextView
+                        android:id="@+id/group_buy_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="#757575"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        tools:text="原价：300元"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/group_buy_share"
+                    style="@style/share_btn_style"/>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
@@ -94,17 +105,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    tools:text="长期有效"
                     android:textColor="#333333"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    tools:text="长期有效"/>
             </LinearLayout>
 
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/group_buy_share"
-            style="@style/share_btn_style"/>
+
     </LinearLayout>
 
     <View

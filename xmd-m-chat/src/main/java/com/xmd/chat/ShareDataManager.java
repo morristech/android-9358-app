@@ -248,8 +248,13 @@ public class ShareDataManager {
             public void onCallbackSuccess(BaseBean<List<MarketingCategory>> result) {
                 marketingDataTypeList.clear();
                 for (MarketingCategory marketing : result.getRespData()) {
-                    marketingDataTypeList.add(marketing.categoryName);
+                    if (marketing.list != null) {
+                        marketingDataTypeList.add(marketing.categoryName);
+                    } else {
+                        continue;
+                    }
                     for (Marketing sub : marketing.list) {
+
                         sub.setCategory(marketing.category);
                     }
                     dataSource.put(marketing.categoryName, marketing.list);

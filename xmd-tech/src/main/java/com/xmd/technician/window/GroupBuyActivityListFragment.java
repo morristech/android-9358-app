@@ -115,7 +115,7 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
         params.put(Constant.PARAM_SHARE_DESCRIPTION, getDescribeMessage(bean));
         params.put(Constant.PARAM_SHARE_TYPE, RequestConstant.KEY_GROUP_BUY);
         params.put(Constant.PARAM_ACT_ID, bean.itemId);
-        params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "拼团");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "拼团活动");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 

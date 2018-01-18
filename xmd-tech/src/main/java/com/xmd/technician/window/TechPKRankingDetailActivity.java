@@ -99,8 +99,7 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
         mActivityStartDate = getIntent().getStringExtra(TechPKActiveActivity.PK_ITEM_START_DATE);
         mActivityEndDate = getIntent().getStringExtra(TechPKActiveActivity.PK_ITEM_END_DATE);
         itemList = getIntent().getParcelableArrayListExtra(TechPKActiveActivity.PK_ACTIVITY_ITEM);
-
-        if (mActivityStatus.equals("4")) {
+        if (mActivityStatus == null || mActivityStatus.equals("4")) {
             pkActiveStatus.setText("进行中");
             pkActiveStatus.setEnabled(true);
             Drawable leftDrawable = getResources().getDrawable(R.drawable.icon_underway);
@@ -174,8 +173,6 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
         tabIndicator.setViewPager(viewPager);
         tabIndicator.setWithDivider(false);
         tabIndicator.setup();
-      //  tabIndicator.setOnPageChangeListener(position -> refreshView(position));
-      //  tabIndicator.setOnTabclickListener(position -> refreshView(position));
     }
 
     private void initTimeFilterPopupWindowView() {

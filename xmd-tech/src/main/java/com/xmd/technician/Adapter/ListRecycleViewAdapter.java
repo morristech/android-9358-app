@@ -911,7 +911,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final GroupBuyBean groupBuyBean = (GroupBuyBean) obj;
             GroupBuyListViewHolder viewHolder = (GroupBuyListViewHolder) holder;
             Glide.with(mContext).load(groupBuyBean.itemImageUrl).into(viewHolder.groupBuyHead);
-            viewHolder.groupBuyBigTitle.setText(groupBuyBean.itemName);
+            viewHolder.groupBuyBigTitle.setText(Utils.StrSubstring(9,groupBuyBean.itemName,true));
             viewHolder.groupBuySmallTitle.setText(String.format("（%s人团）",String.valueOf(groupBuyBean.personalCount)));
             viewHolder.groupBuyMoney.setText(String.format("%1.2f",groupBuyBean.price / 100f));
             String des = String.format("原价：%1.2f元",  groupBuyBean.itemPrice /100f);
