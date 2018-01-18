@@ -550,12 +550,18 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 if (result.respData.amountList.get(0).accountType.equals("fast_pay")) {
                     //在线买单
                     showFastPay = true;
-                    long lastViewFastPayValue = SharedPreferenceHelper.getListViewFastPayValue();
-                    if (lastViewFastPayValue < 0) {
+                    try {
+                        long lastViewFastPayValue = (long) SharedPreferenceHelper.getListViewFastPayValue();
+                        if (lastViewFastPayValue < 0) {
+                            SharedPreferenceHelper.setLastViewFastPayValue(fastPayAmount);
+                        } else if (fastPayAmount > lastViewFastPayValue) {
+                            fastPayMark.setVisibility(View.VISIBLE);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                         SharedPreferenceHelper.setLastViewFastPayValue(fastPayAmount);
-                    } else if (fastPayAmount > lastViewFastPayValue) {
-                        fastPayMark.setVisibility(View.VISIBLE);
                     }
+
                 } else {
                     showFastPay = false;
                 }
