@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.GroupBuyBean;
@@ -126,9 +127,10 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
     }
 
     private String getDescribeMessage(GroupBuyBean bean){
-        String itemName = bean.itemName;
-        String itemPrice = String.format("原价%1.2f元",bean.itemPrice / 100f );
-        String price = String.format("拼团价%1.2f元",bean.price / 100f);
-        return String.format("%s,%s,%s,点击参与优惠",itemName,itemPrice,price);
+//        String itemName = bean.itemName;
+//        String itemPrice = String.format("原价%1.2f元",bean.itemPrice / 100f );
+//        String price = String.format("拼团价%1.2f元",bean.price / 100f);
+//        return String.format("%s,%s,%s,点击参与优惠",itemName,itemPrice,price);
+        return ResourceUtils.getString(R.string.group_buy_share_des);
     }
 }
