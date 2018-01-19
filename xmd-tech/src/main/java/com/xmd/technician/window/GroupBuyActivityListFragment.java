@@ -130,7 +130,7 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
         String itemName = bean.itemName;
         String itemPrice = String.format("原价%1.2f元",bean.itemPrice / 100f );
         String price = String.format("拼团价%1.2f元",bean.price / 100f);
-        return String.format(ResourceUtils.getString(R.string.group_buy_share_des)+"%s,%s,%s,点击参与优惠",itemName,itemPrice,price);
+        return String.format(ResourceUtils.getString(R.string.group_buy_share_des)+"%s,%s,%s,立刻点击参与！",itemName,itemPrice,price);
 
     }
 }
