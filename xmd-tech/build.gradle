@@ -40,8 +40,9 @@ android {
         //1.9.4 发送邀请有礼，新增技师海报，添加修改状态 63工资
         //1.9.6 修复bug
         //1.9.6 新增分享邀请有礼
-        versionCode 69
-        versionName "2.0.1"
+        //1.9.12 增加拼团活动分享
+        versionCode 70
+        versionName "1.9.12"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
@@ -60,7 +61,9 @@ android {
     lintOptions {
         abortOnError false  //lint 时终止错误上报，防止编译的时候莫名失败
     }
-
+//    dexOptions {
+//        javaMaxHeapSize "4096M"
+//    }
     signingConfigs { //签名配置
         release {
             storeFile file("tools/xmd_app_key.keystore") //密钥文件路径

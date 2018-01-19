@@ -128,7 +128,6 @@ public class TechApplication extends MultiDexApplication {
                 XToast.init(this, -1);
                 FloatNotifyManager.getInstance().init(this);
 
-
                 //打开友盟错误统计,可以和全局错误拦截器共存
                 MobclickAgent.setCatchUncaughtExceptions(true);
 
@@ -137,7 +136,6 @@ public class TechApplication extends MultiDexApplication {
                 //定义后台回到前台统计时间间隔
                 MobclickAgent.setSessionContinueMillis(3000);
                 MobclickAgent.setDebugMode(false);
-
 
                 //初始化线程池
                 ThreadPoolManager.init(this);
@@ -177,8 +175,6 @@ public class TechApplication extends MultiDexApplication {
                 EventBusSafeRegister.register(this);
 
                 XmdComment.getInstance().init();
-
-//                LoginTechnician.getInstance().setToken("xxxxx");
                 LoginTechnician.getInstance().checkAndLogin();
             }
         }

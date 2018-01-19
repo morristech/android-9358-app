@@ -98,7 +98,7 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
     @Override
     public void onShareClicked(GroupBuyBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare(bean.itemImageUrl, bean.shareUrl,bean.itemName, getDescribeMessage(bean),
+        ShareController.doShare(bean.itemImageUrl, bean.shareUrl,bean.name, getDescribeMessage(bean),
                  RequestConstant.KEY_GROUP_BUY, bean.itemId);
 
     }
@@ -111,7 +111,7 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
         params.put(Constant.SHARE_CONTEXT, getActivity());
         params.put(Constant.PARAM_SHARE_THUMBNAIL, bean.itemImageUrl);
         params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
-        params.put(Constant.PARAM_SHARE_TITLE, bean.itemName);
+        params.put(Constant.PARAM_SHARE_TITLE, bean.name);
         params.put(Constant.PARAM_SHARE_DESCRIPTION, getDescribeMessage(bean));
         params.put(Constant.PARAM_SHARE_TYPE, RequestConstant.KEY_GROUP_BUY);
         params.put(Constant.PARAM_ACT_ID, bean.itemId);
