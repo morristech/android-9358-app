@@ -78,34 +78,34 @@
         <Button
             android:id="@+id/btn_view_order"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:background="@drawable/state_btn_negative"
             android:text="查看订单"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/font_size_16"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_view_other"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/state_btn_normal"
             android:text="完成"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/font_size_16"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_view_continue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:background="@drawable/state_btn_normal"
             android:text="继续收款"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/font_size_16"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

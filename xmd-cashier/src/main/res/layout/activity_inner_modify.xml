@@ -253,7 +253,7 @@
                 <Button
                     android:id="@+id/btn_cashier"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@drawable/state_btn_normal"
                     android:text="收款"

@@ -524,7 +524,11 @@ public class InnerManager {
         mPos.printRight("实收金额：" + Utils.moneyToStringEx(info.payAmount) + "元", true);
         if (info.payRecordList != null && !info.payRecordList.isEmpty()) {
             for (PayRecordInfo payRecordInfo : info.payRecordList) {
-                mPos.printText("        |--" + payRecordInfo.payChannelName + "：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+                if (AppConstants.PAY_CHANNEL_ACCOUNT.equals(payRecordInfo.payChannel)) {    //会员消费
+                    mPos.printText("  |--" + payRecordInfo.payChannelName + "：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount) + "(会员卡余额：￥" + Utils.moneyToStringEx(payRecordInfo.accountAmount) + ")");
+                } else {
+                    mPos.printText("  |--" + payRecordInfo.payChannelName + "：", "￥" + Utils.moneyToStringEx(payRecordInfo.amount));
+                }
             }
         }
         mPos.printDivide();

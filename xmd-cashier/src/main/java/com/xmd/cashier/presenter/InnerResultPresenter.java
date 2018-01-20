@@ -63,7 +63,8 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             public void onSuccess(InnerRecordInfo o) {
                 mRecordInfo = o;
                 int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
-                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---成功:" + leftAmount);
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
+                        "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
                 if (leftAmount <= 0) {
                     printNormal();
                     mView.showDone("全部应付金额已支付成功");

@@ -53,7 +53,7 @@
             android:id="@+id/img_scan_qrcode"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/ic_load_error"/>
+            android:src="@drawable/ic_load_error" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
