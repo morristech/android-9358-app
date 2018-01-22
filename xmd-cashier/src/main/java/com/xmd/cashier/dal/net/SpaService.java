@@ -427,59 +427,25 @@ public interface SpaService {
                                                  @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
                                                  @Field(RequestConstant.KEY_ID) String id);
 
-    /****************************************
-     * Pos结算 *
-     ****************************************/
+    /************************************************交接班结算*************************************/
+    // 结算
+    @GET(RequestConstant.URL_NEW_SETTLE_SAVE)
+    Observable<StringResult> saveSettle(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                        @Query(RequestConstant.KEY_AMOUNT) String amount,
+                                        @Query(RequestConstant.KEY_START_TIME) String startTime,
+                                        @Query(RequestConstant.KEY_END_TIME) String endTime);
 
-    /**
-     * 保存结算记录
-     *
-     * @param userToken
-     * @param settleRecord Json串
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_SETTLE_SAVE)
-    Observable<BaseBean> saveSettle(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_SETTLE_RECORD) String settleRecord);
-
-    /**
-     * 获取当前未结算的交易汇总
-     *
-     * @param userToken
-     * @return
-     */
-    @GET(RequestConstant.URL_SETTLE_GET_CURRENT_SUMMARY)
-    Observable<SettleSummaryResult> getSettleCurrent(@Query(RequestConstant.KEY_TOKEN) String userToken);
-
-    /**
-     * 根据结算记录ID获取结算详情
-     *
-     * @param userToken
-     * @param recordId
-     * @return
-     */
-    @GET(RequestConstant.URL_SETTLE_GET_RECORD_DETAIL)
+    // 获取结算详情
+    @GET(RequestConstant.URL_NEW_SETTLE_RECORD_DETAIL)
     Observable<SettleSummaryResult> getSettleDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                    @Query(RequestConstant.KEY_RECORD_ID) String recordId);
+                                                    @Query(RequestConstant.KEY_ID) String id,
+                                                    @Query(RequestConstant.KEY_SETTLE_TIME) String settleTime);
 
-    /**
-     * 获取结算记录
-     * 1.分页获取所有
-     * 2.按月获取
-     *
-     * @param userToken
-     * @param page
-     * @param pageSize
-     * @param settleYm
-     * @return
-     */
-    @GET(RequestConstant.URL_SETTLE_GET_RECORD_LIST)
+    // 获取结算记录
+    @GET(RequestConstant.URL_NEW_SETTLE_RECORD_LIST)
     Observable<SettleRecordResult> getSettleRecord(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                    @Query(RequestConstant.KEY_PAGE_START) String page,
-                                                   @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                                   @Query(RequestConstant.KEY_SETTLE_YEAR_MONTH) String settleYm);
-
+                                                   @Query(RequestConstant.KEY_SETTLE_YM) String settleYm);
 
     /********************************************  核销记录 **************************************/
     /**

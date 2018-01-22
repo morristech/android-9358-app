@@ -14,12 +14,10 @@
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
         android:singleLine="true"
-        android:text="4/5"
         android:textColor="@color/colorText"
         android:textSize="@dimen/fontTitle"
         android:textStyle="bold" />
 
-    <!--FIXME -->
     <TextView
         android:id="@+id/tv_room_status"
         android:layout_width="match_parent"
@@ -31,7 +29,6 @@
         android:paddingRight="@dimen/tiny_padding"
         android:paddingTop="@dimen/activity_little_margin"
         android:singleLine="true"
-        android:text="1008"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/fontBody" />
 </LinearLayout>

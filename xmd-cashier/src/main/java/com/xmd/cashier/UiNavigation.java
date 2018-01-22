@@ -71,6 +71,7 @@ import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
+import com.xmd.cashier.dal.bean.SettleRecordInfo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -202,9 +203,9 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoSettleDetailActivity(Context context, String param) {
+    public static void gotoSettleDetailActivity(Context context, SettleRecordInfo info) {
         Intent intent = new Intent(context, SettleDetailActivity.class);
-        intent.putExtra(AppConstants.EXTRA_RECORD_ID, param);
+        intent.putExtra(AppConstants.EXTRA_RECORD_INFO, info);
         context.startActivity(intent);
     }
 

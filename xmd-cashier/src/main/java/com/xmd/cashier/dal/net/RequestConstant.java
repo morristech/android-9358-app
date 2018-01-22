@@ -48,11 +48,10 @@ public class RequestConstant {
     public static final String URL_GET_ORDER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/club/order/list";   // 预约订单列表:全部|状态|搜索
     public static final String URL_ORDER_RECORD_STATUS_UPDATE = SPA_SERVICE_BASE + "/v2/manager/club/order";    // 预约订单列表状态修改:
 
-    // ****************************************** Pos结算 *****************************************
-    public static final String URL_SETTLE_SAVE = SPA_SERVICE_BASE + "/v2/manager/pos/settle/save";      // 保存结算结果
-    public static final String URL_SETTLE_GET_CURRENT_SUMMARY = SPA_SERVICE_BASE + "/v2/manager/pos/settle/current";    //获取当前未结算汇总
-    public static final String URL_SETTLE_GET_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/pos/settle/record/list";    //获取结算记录:全部|按月
-    public static final String URL_SETTLE_GET_RECORD_DETAIL = SPA_SERVICE_BASE + "/v2/manager/pos/settle/record/detail";    //获取结算记录详情
+    // ****************************************** 交接班结算 *****************************************
+    public static final String URL_NEW_SETTLE_SAVE = SPA_SERVICE_BASE + "/v2/manager/pos/settle/new/save";  //保存结算记录
+    public static final String URL_NEW_SETTLE_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/pos/settle/new/record/list";    //查询已结算记录列表
+    public static final String URL_NEW_SETTLE_RECORD_DETAIL = SPA_SERVICE_BASE + "/v2/manager/pos/settle/new/record/detail";    //查询已或者未计算记录详细
 
     // ****************************************** 核销记录 ****************************************
     public static final String URL_GET_VERIFY_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/checkinfo/record/list";   //获取核销记录列表
@@ -186,8 +185,8 @@ public class RequestConstant {
     public static final String KEY_IS_POS = "isPos";
     public static final String KEY_IS_TIME = "isTime";
 
-    public static final String KEY_SETTLE_RECORD = "settleRecord";
-    public static final String KEY_SETTLE_YEAR_MONTH = "settleYm";
+    public static final String KEY_SETTLE_TIME = "settleTime";
+    public static final String KEY_SETTLE_YM = "settleYm";
     public static final String KEY_RECORD_ID = "recordId";
 
     public static final String KEY_TOTAL = "total";

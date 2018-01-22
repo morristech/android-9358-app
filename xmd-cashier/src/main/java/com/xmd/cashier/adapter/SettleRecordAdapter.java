@@ -117,11 +117,10 @@ public class SettleRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             final SettleRecordInfo info = mData.get(position);
-            itemHolder.mCashierName.setText(info.operatorName);
-            itemHolder.mDealCount.setText(String.format(mContext.getResources().getString(R.string.settle_other_total_count), String.valueOf(info.orderCount)));
-            itemHolder.mMoneyTotal.setText(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(info.incomeTotalMoney)));
-            itemHolder.mCreateTime.setText(String.format(mContext.getResources().getString(R.string.settle_other_js_time), info.createTime));
-            itemHolder.mClickLayout.setOnClickListener(new View.OnClickListener() {
+            itemHolder.mSettleOperator.setText(info.operatorName);
+            itemHolder.mSettleTime.setText(info.createTime);
+            itemHolder.mSettleAmount.setText(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(info.amount)));
+            itemHolder.mRecordLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mCallBack.onItemClick(info, position);
@@ -139,19 +138,17 @@ public class SettleRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout mClickLayout;
-        public TextView mCashierName;
-        public TextView mDealCount;
-        public TextView mMoneyTotal;
-        public TextView mCreateTime;
+        public LinearLayout mRecordLayout;
+        public TextView mSettleAmount;
+        public TextView mSettleOperator;
+        public TextView mSettleTime;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            mClickLayout = (LinearLayout) itemView.findViewById(R.id.item_click_layout);
-            mCashierName = (TextView) itemView.findViewById(R.id.item_cashier_name);
-            mDealCount = (TextView) itemView.findViewById(R.id.item_deal_count);
-            mMoneyTotal = (TextView) itemView.findViewById(R.id.item_money_total);
-            mCreateTime = (TextView) itemView.findViewById(R.id.item_create_time);
+            mRecordLayout = (LinearLayout) itemView.findViewById(R.id.ll_record_layout);
+            mSettleAmount = (TextView) itemView.findViewById(R.id.tv_settle_amount);
+            mSettleOperator = (TextView) itemView.findViewById(R.id.tv_settle_operator);
+            mSettleTime = (TextView) itemView.findViewById(R.id.tv_settle_time);
         }
     }
 

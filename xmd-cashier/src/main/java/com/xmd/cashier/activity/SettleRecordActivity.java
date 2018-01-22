@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bigkoo.pickerview.TimePickerView;
-import com.bigkoo.pickerview.listener.CustomListener;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.SettleRecordAdapter;
@@ -24,8 +22,6 @@ import com.xmd.cashier.widget.stickyview.StickyHeaderInterface;
 import com.xmd.cashier.widget.stickyview.StickyRecyclerHeadersDecoration;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,72 +42,19 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
 
     private List<SettleRecordInfo> mDecorateData = new ArrayList<>();
 
-    private TimePickerView mPickerView;
-    private String mPickerMonth;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settle_record);
         mPresenter = new SettleRecordPresenter(this, this);
-
         initView();
-
-        initTimePicker();
-
-        mPresenter.loadInit();
-    }
-
-    private void initTimePicker() {
-        Calendar currentDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.YEAR, 2010);
-        startDate.set(Calendar.MONTH, 0);
-
-        mPickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                mPickerMonth = DateUtils.doDate2String(date, DateUtils.DF_YEAR_MONTH);
-                mPresenter.loadMonth(mPickerMonth);
-                mPickerView.dismiss();
-            }
-        })
-                .setDate(currentDate)
-                .setRangDate(startDate, currentDate)
-                .setLayoutRes(R.layout.layout_picker_view, new CustomListener() {
-                    @Override
-                    public void customLayout(View v) {
-                        TextView tvChoice = (TextView) v.findViewById(R.id.tv_picker_choice);
-                        tvChoice.setText("全部");
-                        TextView tvFinish = (TextView) v.findViewById(R.id.tv_picker_finish);
-                        tvChoice.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mPresenter.loadInit();
-                                mPickerView.dismiss();
-                            }
-                        });
-
-                        tvFinish.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mPickerView.returnData();
-                            }
-                        });
-                    }
-                })
-                .setType(new boolean[]{true, true, false, false, false, false})
-                .isCenterLabel(false)
-                .setTextColorCenter(getResources().getColor(R.color.colorPink))
-                .setDividerColor(getResources().getColor(R.color.colorPink))
-                .build();
+        mPresenter.onCreate();
     }
 
     private void initView() {
         showToolbar(R.id.toolbar, "结算记录");
 
         mLayoutManager = new LinearLayoutManager(this);
-
         lyLoad = (CustomLoadingLayout) findViewById(R.id.layout_load);
         rvSettleRecord = (RecyclerView) findViewById(R.id.rv_record_list);
 
@@ -119,7 +62,7 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
         mAdapter.setCallBack(new SettleRecordAdapter.CallBack() {
             @Override
             public void onItemClick(SettleRecordInfo info, int position) {
-                mPresenter.onRecordClick(String.valueOf(info.settleRecordId));
+                mPresenter.onRecordClick(info);
             }
 
             @Override
@@ -148,7 +91,7 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
             protected void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
                 HeadItemHolder headItemHolder = (HeadItemHolder) holder;
                 headItemHolder.mHeadYearMonth.setText(getHeaderId(position));
-                headItemHolder.mHeadCount.setText("共" + mDecorateData.get(position).monthDataCount + "条记录");
+                headItemHolder.mHeadCount.setText("共" + mDecorateData.get(position).monthCount + "条记录");
             }
 
             @Override
@@ -187,7 +130,7 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
     }
 
     public void onClickFilter(View view) {
-        mPickerView.show();
+        mPresenter.onPickView();
     }
 
     @Override
@@ -255,7 +198,6 @@ public class SettleRecordActivity extends BaseActivity implements SettleRecordCo
     public void clearData() {
         mDecorateData.clear();
         mAdapter.clearData();
-        mAdapter.notifyDataSetChanged();
         rvSettleRecord.removeAllViews();
     }
 

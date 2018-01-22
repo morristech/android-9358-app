@@ -20,6 +20,7 @@
             android:id="@+id/stub_detail_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_little_margin"
             android:layout="@layout/layout_statistics_detail_data" />
 
         <ViewStub

@@ -84,6 +84,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         final String[] serverList = new String[]{
                 BuildConfig.SERVER_PUBLIC,
                 BuildConfig.SERVER_SDCM105,
+                BuildConfig.SERVER_SDCM104,
                 BuildConfig.SERVER_SDCM103,
                 BuildConfig.SERVER_SDCM100
         };

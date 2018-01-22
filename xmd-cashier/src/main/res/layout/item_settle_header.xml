@@ -5,14 +5,17 @@
     android:background="@color/colorWindowBackground"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
     <TextView
         android:id="@+id/item_settle_year_month"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_small_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_little_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:textColor="@color/colorText4"
         android:textSize="@dimen/medium_font_size" />
 
@@ -20,14 +23,14 @@
         android:id="@+id/item_settle_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_small_margin"
+        android:layout_marginTop="@dimen/activity_little_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:textColor="@color/colorText2"
         android:textSize="@dimen/font_size_16" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:background="@color/colorStoke" />
 </LinearLayout>

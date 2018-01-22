@@ -258,9 +258,9 @@
         android:id="@+id/btn_member_pay"
         style="@style/AppTheme.Button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="@dimen/activity_normal_margin"
         android:text="收款"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/medium_font_size" />
+        android:textSize="@dimen/font_size_16" />
 </LinearLayout>

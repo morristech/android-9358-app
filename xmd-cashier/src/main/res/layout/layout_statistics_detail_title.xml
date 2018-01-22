@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     android:paddingBottom="@dimen/activity_little_margin"
     android:paddingTop="@dimen/activity_little_margin">
 
@@ -16,11 +17,11 @@
         <ImageView
             android:id="@+id/tv_day_minus"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_arrow"
+            android:background="@drawable/bg_area_item"
             android:paddingBottom="@dimen/activity_normal_margin"
             android:paddingTop="@dimen/activity_normal_margin"
             android:src="@drawable/ic_left" />
@@ -38,11 +39,11 @@
         <ImageView
             android:id="@+id/tv_day_plus"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_arrow"
+            android:background="@drawable/bg_area_item"
             android:paddingBottom="@dimen/activity_normal_margin"
             android:paddingTop="@dimen/activity_normal_margin"
             android:src="@drawable/ic_right" />
@@ -59,11 +60,11 @@
         <ImageView
             android:id="@+id/tv_week_minus"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_arrow"
+            android:background="@drawable/bg_area_item"
             android:paddingBottom="@dimen/activity_normal_margin"
             android:paddingTop="@dimen/activity_normal_margin"
             android:src="@drawable/ic_left" />
@@ -81,11 +82,11 @@
         <ImageView
             android:id="@+id/tv_week_plus"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_arrow"
+            android:background="@drawable/bg_area_item"
             android:paddingBottom="@dimen/activity_normal_margin"
             android:paddingTop="@dimen/activity_normal_margin"
             android:src="@drawable/ic_right" />
@@ -102,11 +103,11 @@
         <ImageView
             android:id="@+id/tv_month_minus"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_arrow"
+            android:background="@drawable/bg_area_item"
             android:paddingBottom="@dimen/activity_normal_margin"
             android:paddingTop="@dimen/activity_normal_margin"
             android:src="@drawable/ic_left" />
@@ -124,11 +125,11 @@
         <ImageView
             android:id="@+id/tv_month_plus"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:layout_marginRight="@dimen/activity_normal_margin"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_arrow"
+            android:background="@drawable/bg_area_item"
             android:paddingBottom="@dimen/activity_normal_margin"
             android:paddingTop="@dimen/activity_normal_margin"
             android:src="@drawable/ic_right" />

@@ -228,7 +228,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/img_navigation_settle_arrow"
                     android:layout_toRightOf="@id/img_navigation_settle"
-                    android:text="POS结算"
+                    android:text="交接班结算"
                     android:textColor="@color/colorText4"
                     android:textSize="@dimen/medium_font_size" />
             </RelativeLayout>

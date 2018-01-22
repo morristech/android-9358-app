@@ -185,6 +185,7 @@ public class AppConstants {
     public static final String EXTRA_COMMON_VERIFY_INFO = "extra_common_verify_info";
     public static final String EXTRA_ONLINE_PAY_INFO = "extra_online_pay_info";
     public static final String EXTRA_RECORD_ID = "record_id";
+    public static final String EXTRA_RECORD_INFO = "record_info";
     public static final String EXTRA_IS_SHOW = "is_show";
     public static final String EXTRA_COUPON_CODE = "coupon_code";
     public static final String EXTRA_GIFT_ACTIVITY_INFO = "gift_act";
@@ -292,11 +293,9 @@ public class AppConstants {
 
     public static final String STATISTICS_DEFAULT_TIME = "00:00:00";
 
-    public static final String EXTRA_INNER_SEARCH_TYPE = "search_type";
     public static final String INNER_SEARCH_TYPE_ROOM = "room";
     public static final String INNER_SEARCH_TYPE_ORDER = "order";
     public static final String INNER_SEARCH_TYPE_TECH = "tech";
-    public static final String INNER_SEARCH_TYPE_FLOOR_STAFF = "floor_staff";
 
     public static final String INNER_ORDER_ITEM_TYPE_SPA = "spa";
     public static final String INNER_ORDER_ITEM_TYPE_GOODS = "goods";

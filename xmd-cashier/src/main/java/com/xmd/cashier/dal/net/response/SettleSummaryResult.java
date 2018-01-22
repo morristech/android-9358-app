@@ -1,6 +1,6 @@
 package com.xmd.cashier.dal.net.response;
 
-import com.xmd.cashier.dal.bean.SettleSummaryInfo;
+import com.xmd.cashier.dal.bean.SettleContentInfo;
 import com.xmd.m.network.BaseBean;
 
 import java.util.List;
@@ -12,7 +12,11 @@ import java.util.List;
 public class SettleSummaryResult extends BaseBean<SettleSummaryResult.RespData> {
 
     public class RespData {
-        public SettleSummaryInfo obj;
-        public List<SettleSummaryInfo> recordDetailList;
+        public String startTime;
+        public String endTime;
+        public List<SettleContentInfo> settleList;
+
+        public String createTime;
+        public String settleName;
     }
 }

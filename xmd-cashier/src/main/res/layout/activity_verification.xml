@@ -69,24 +69,24 @@
             <Button
                 style="@style/AppTheme.Button.Negative"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginRight="@dimen/activity_small_margin"
                 android:gravity="center"
                 android:onClick="onClickCleanAll"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:text="清除所有"
-                android:textSize="@dimen/medium_font_size" />
+                android:textSize="@dimen/small_font_size" />
 
             <Button
                 style="@style/AppTheme.Button"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginLeft="8dp"
                 android:gravity="center"
                 android:onClick="onClickOk"
                 android:text="@string/verification_button_use"
-                android:textSize="@dimen/medium_font_size" />
+                android:textSize="@dimen/small_font_size" />
         </LinearLayout>
 
         <include

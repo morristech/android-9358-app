@@ -16,9 +16,9 @@ public interface SettleRecordContract {
 
         void loadMore();
 
-        void loadMonth(String month);
+        void onRecordClick(SettleRecordInfo recordInfo);
 
-        void onRecordClick(String recordId);
+        void onPickView();
     }
 
     interface View extends BaseView<Presenter> {

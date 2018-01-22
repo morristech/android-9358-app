@@ -36,21 +36,23 @@
     <Button
         android:id="@+id/btn_verify_continue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="@dimen/activity_normal_margin"
         android:background="@drawable/bg_btn_normal"
         android:onClick="onVerifyContinue"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/font_size_16" />
 
     <Button
         android:id="@+id/btn_verify_cancel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginBottom="@dimen/activity_normal_margin"
         android:layout_marginLeft="@dimen/activity_normal_margin"
         android:layout_marginRight="@dimen/activity_normal_margin"
         android:background="@drawable/state_btn_negative"
         android:onClick="onVerifyCancel"
         android:text="取消"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/font_size_16" />
 </LinearLayout>

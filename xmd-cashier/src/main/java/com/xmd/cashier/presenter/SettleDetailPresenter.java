@@ -1,20 +1,16 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.SettleDetailContract;
+import com.xmd.cashier.dal.bean.SettleRecordInfo;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.SettleManager;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-4-7.
@@ -24,7 +20,10 @@ public class SettleDetailPresenter implements SettleDetailContract.Presenter {
     private Context mContext;
     private SettleDetailContract.View mView;
 
-    private Subscription mGetSummaryByIdSubscription;
+    private Subscription mGetSettleDetailSubscription;
+
+    private SettleRecordInfo mRecord;
+    private SettleSummaryResult.RespData mDetail;
 
     public SettleDetailPresenter(Context context, SettleDetailContract.View view) {
         mContext = context;
@@ -34,7 +33,8 @@ public class SettleDetailPresenter implements SettleDetailContract.Presenter {
 
     @Override
     public void onCreate() {
-
+        mRecord = mView.returnRecordInfo();
+        getSettleDetail();
     }
 
     @Override
@@ -44,67 +44,46 @@ public class SettleDetailPresenter implements SettleDetailContract.Presenter {
 
     @Override
     public void onDestroy() {
-        if (mGetSummaryByIdSubscription != null) {
-            mGetSummaryByIdSubscription.unsubscribe();
+        if (mGetSettleDetailSubscription != null) {
+            mGetSettleDetailSubscription.unsubscribe();
         }
     }
 
     @Override
-    public void getSummaryById(String recordId) {
-        if (TextUtils.isEmpty(recordId)) {
-            mView.showError("结算记录数据异常，请稍后重试");
+    public void getSettleDetail() {
+        mView.initLayout();
+        if (mRecord == null) {
+            mView.onDetailFailed("获取结算数据错误");
             return;
         }
         if (!Utils.isNetworkEnabled(mContext)) {
-            mView.showError(mContext.getString(R.string.network_disabled));
+            mView.onDetailFailed(mContext.getString(R.string.network_disabled));
             return;
         }
         mView.showLoading();
-        if (mGetSummaryByIdSubscription != null) {
-            mGetSummaryByIdSubscription.unsubscribe();
+        if (mGetSettleDetailSubscription != null) {
+            mGetSettleDetailSubscription.unsubscribe();
         }
-        mGetSummaryByIdSubscription = SettleManager.getInstance().getSettleDetail(recordId, new Callback<SettleSummaryResult>() {
+        mGetSettleDetailSubscription = SettleManager.getInstance().getSettleDetail(String.valueOf(mRecord.id), null, new Callback<SettleSummaryResult>() {
             @Override
             public void onSuccess(SettleSummaryResult o) {
-                mView.onDetailSuccess(o.getRespData());
+                mView.hideLoading();
+                mDetail = o.getRespData();
+                mDetail.createTime = mRecord.createTime;
+                mDetail.settleName = mRecord.operatorName;
+                mView.onDetailSuccess(mDetail);
             }
 
             @Override
             public void onError(String error) {
-                mView.onDetailFailed();
-                mView.showError("查看明细失败:" + error);
+                mView.hideLoading();
+                mView.onDetailFailed(error);
             }
         });
     }
 
     @Override
-    public void onPrint(final SettleSummaryResult.RespData respData) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        SettleManager.getInstance().print(respData, true);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        mView.showToast("正在打印小票");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.showToast("打印失败");
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
+    public void onPrint() {
+        SettleManager.getInstance().printAsync(mDetail, true);
     }
 }

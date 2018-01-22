@@ -2,6 +2,7 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
+import com.xmd.cashier.dal.bean.SettleRecordInfo;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 
 /**
@@ -10,14 +11,18 @@ import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 
 public interface SettleDetailContract {
     interface Presenter extends BasePresenter {
-        void getSummaryById(String recordId);
+        void getSettleDetail();
 
-        void onPrint(SettleSummaryResult.RespData respData);
+        void onPrint();
     }
 
     interface View extends BaseView<Presenter> {
+        void initLayout();
+
+        SettleRecordInfo returnRecordInfo();
+
         void onDetailSuccess(SettleSummaryResult.RespData respData);
 
-        void onDetailFailed();
+        void onDetailFailed(String error);
     }
 }

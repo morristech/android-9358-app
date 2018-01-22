@@ -23,63 +23,79 @@
 
         <Button
             android:id="@+id/btn_settle_confirm"
-            style="@style/AppTheme.Button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_normal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/activity_little_margin"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:layout_marginTop="@dimen/activity_little_margin"
+            android:background="@drawable/state_btn_normal"
             android:enabled="false"
             android:text="结算"
-            android:textSize="@dimen/medium_font_size" />
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_result_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:gravity="center"
-        android:text="当前交易已全部结算"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:id="@+id/sv_result_data"
+    <LinearLayout
+        android:id="@+id/ll_result_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/layout_btn"
         android:layout_below="@id/toolbar"
-        android:scrollbars="none"
+        android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <ImageView
+            android:id="@+id/img_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_normal_margin"
             android:layout_marginTop="@dimen/activity_normal_margin"
-            android:background="@color/colorWhite"
-            android:orientation="vertical">
+            android:textColor="@color/colorText3" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center"
-                android:text="当前累计收入"
-                android:textSize="@dimen/head_font_size" />
+        <TextView
+            android:id="@+id/tv_click_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/state_btn_reload"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingBottom="@dimen/activity_small_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_small_margin"
+            android:text="刷新"
+            android:textColor="@color/colorText3" />
+    </LinearLayout>
 
-            <include layout="@layout/layout_settle_summary" />
+    <LinearLayout
+        android:id="@+id/ll_result_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_btn"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-            <include layout="@layout/layout_settle_other" />
+        <TextView
+            android:id="@+id/tv_settle_time_range"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTransGolden"
+            android:padding="@dimen/activity_normal_margin"
+            android:textSize="@dimen/font_size_16" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_sub_summary_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin" />
-        </LinearLayout>
-    </ScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_content_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none" />
+    </LinearLayout>
 </RelativeLayout>
