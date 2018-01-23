@@ -76,7 +76,7 @@ public class ChatAccountManager {
         isRunLogin = false;
     }
 
-    private void loopLogin() {
+    public void loopLogin() {
         if (isRunLogin) {
             return;
         }

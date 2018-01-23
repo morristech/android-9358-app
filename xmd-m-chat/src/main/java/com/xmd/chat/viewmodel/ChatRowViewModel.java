@@ -93,9 +93,9 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                 //当技师被用户拉入黑名单时不进行错误提示
                 switch (i) {
                     case 201:
-                        XToast.show("聊天帐号登录失败，请重新登录");
+                        ChatAccountManager.getInstance().loopLogin();
                         progress.set(false);
-                        error.set(true);
+                        error.set(false);
                         break;
                     case 210:
                         ChatSettingManager.getInstance().judgeInCustomerBlack(chatMessage.getToChatId(), true);
