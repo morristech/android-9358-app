@@ -76,7 +76,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
         }
 
         mActId = intent.getStringExtra(Constant.PARAM_ACT_ID);
-        if(mActId == null){
+        if (mActId == null) {
             XToast.show("该优惠券不可用");
             this.finish();
         }
@@ -169,6 +169,10 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_share)
     public void doShare() {
+        if (mCouponInfoResult == null || mCouponInfoResult.respData == null) {
+            XToast.show("优惠券信息加载失败");
+            return;
+        }
         String imgUrl = mCouponInfoResult.respData != null ? mCouponInfoResult.respData.imgUrl : "";
         ShareController.doShare(imgUrl, mCouponInfoResult.respData.shareUrl, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle,
                 mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", RequestConstant.KEY_COUPON_REWARD, mActId);

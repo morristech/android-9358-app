@@ -172,34 +172,37 @@ public class AppConfig {
      * @return VersionName
      */
     private static String getVersionName() {
-        PackageManager m = TechApplication.getAppContext().getPackageManager();
-        String appVersion = "";
-        try {
-            appVersion = m.getPackageInfo(TechApplication.getAppContext().getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Exception won't be thrown as the current package name is
-            // safe to exist on the system.
-            throw new AssertionError();
+        synchronized (AppConfig.class){
+            PackageManager m = TechApplication.getAppContext().getPackageManager();
+            String appVersion = "";
+            try {
+                appVersion = m.getPackageInfo(TechApplication.getAppContext().getPackageName(), 0).versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                // Exception won't be thrown as the current package name is
+                // safe to exist on the system.
+                throw new AssertionError();
+            }
+            return appVersion;
         }
-
-        return appVersion;
     }
 
     /**
      * @return
      */
     private static int getVersionCode() {
-        PackageManager m = TechApplication.getAppContext().getPackageManager();
-        int versionCode = -1;
-        try {
-            versionCode = m.getPackageInfo(TechApplication.getAppContext().getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Exception won't be thrown as the current package name is
-            // safe to exist on the system.
-            throw new AssertionError();
-        }
+      synchronized (AppConfig.class){
+          PackageManager m = TechApplication.getAppContext().getPackageManager();
+          int versionCode = -1;
+          try {
+              versionCode = m.getPackageInfo(TechApplication.getAppContext().getPackageName(), 0).versionCode;
+          } catch (PackageManager.NameNotFoundException e) {
+              // Exception won't be thrown as the current package name is
+              // safe to exist on the system.
+              throw new AssertionError();
+          }
 
-        return versionCode;
+          return versionCode;
+      }
     }
 
     public static List<Entry> generateEntryList() {

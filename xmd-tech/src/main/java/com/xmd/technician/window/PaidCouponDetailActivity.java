@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -120,9 +121,13 @@ public class PaidCouponDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_share)
     public void doShare() {
+        if(mCouponInfoResult == null || mCouponInfoResult.respData == null){
+            XToast.show("获取券信息失败");
+            return;
+        }
         String imgUrl = mCouponInfoResult.respData != null ? mCouponInfoResult.respData.imgUrl : "";
         ShareController.doShare(imgUrl, mCouponInfoResult.respData.shareUrl, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle,
-                mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", RequestConstant.KEY_PAID_COUPON, mActId);
+                mCouponInfoResult.respData.activities.consumeMoneyDescription + "超值优惠，超值享受。快来约我。", RequestConstant.KEY_PAID_COUPON, mActId);
     }
 
     @OnClick(R.id.btn_user_detail)
