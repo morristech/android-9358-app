@@ -110,7 +110,7 @@ public class ChatMessage {
 
     public static String getMsgType(EMMessage emMessage) {
         String msgType = getSafeStringAttribute(emMessage, ATTRIBUTE_MESSAGE_TYPE);
-        return TextUtils.isEmpty(msgType) ? ChatMessage.MSG_TYPE_ORIGIN_TXT : msgType;
+        return TextUtils.isEmpty(msgType) ? emMessage.getType().name() : msgType;
     }
 
     //设置用户信息，发送时设置

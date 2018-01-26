@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
