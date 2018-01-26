@@ -178,6 +178,41 @@ public class XLogger {
         }
     }
 
+    public static void copyLogsToFile(File toFile, final String date) {
+        File logFileDir = new File(mLogFileDirPath);
+        File[] logFiles = logFileDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(LOG_FILE_ENDFIX) && filename.startsWith(date);
+            }
+        });
+        if (logFiles.length > 0) {
+            List<File> logFileList = Arrays.asList(logFiles);
+            Collections.sort(logFileList, new Comparator<File>() {
+                @Override
+                public int compare(File lhs, File rhs) {
+                    return (int) (lhs.lastModified() - rhs.lastModified());
+                }
+            });
+            try {
+                int readLen;
+                byte[] buffer = new byte[102400];
+                FileOutputStream fileOutputStream = new FileOutputStream(toFile);
+                for (File logFile : logFileList) {
+                    FileInputStream fileInputStreams = new FileInputStream(logFile);
+                    while ((readLen = fileInputStreams.read(buffer)) > 0) {
+                        fileOutputStream.write(buffer, 0, readLen);
+                        fileOutputStream.flush();
+                    }
+                    fileInputStreams.close();
+                }
+                fileOutputStream.close();
+            } catch (Exception ignore) {
+
+            }
+        }
+    }
+
     public static void v(String msg) {
         writeToLogSystem(LEVEL_VERBOSE, "", msg, null);
     }

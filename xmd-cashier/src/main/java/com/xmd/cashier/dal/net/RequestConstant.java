@@ -225,6 +225,9 @@ public class RequestConstant {
     public static final String KEY_REDUCTION_AMOUNT = "reductionAmount";
     public static final String KEY_PAY_NO = "payNo";
 
+    public static final String KEY_EN = "en";
+    public static final String KEY_DATE = "date";
+
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/

@@ -143,6 +143,9 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
     }
 
     @Override

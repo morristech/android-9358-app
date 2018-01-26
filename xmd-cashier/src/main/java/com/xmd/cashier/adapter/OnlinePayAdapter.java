@@ -252,10 +252,8 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             if (info.isDetail) {
                 itemViewHolder.mDiscountLayout.setVisibility(View.VISIBLE);
-                itemViewHolder.mCashierMoneyLayout.setVisibility(View.GONE);
             } else {
                 itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
-                itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
             }
 
             itemViewHolder.mCashierMoneySub.setText("￥" + Utils.moneyToStringEx(info.payAmount));
@@ -395,7 +393,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mCashierMoneyLayout = (TableRow) itemView.findViewById(R.id.tr_cashier_layout);
             mCashierMoneySub = (TextView) itemView.findViewById(R.id.item_cashier_money_sub);
 
-            mDetailTextDesc = (TextView) itemView.findViewById(R.id.item_detail_text);
+            mDetailTextDesc = (TextView) itemView.findViewById(R.id.item_tv_detail);
         }
     }
 

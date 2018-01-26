@@ -114,26 +114,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                 case AppConstants.PUSH_TAG_UPLOAD_LOG:  //上传日志
                     XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "On RawMessage：" + message);
                     XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "On RawMessage：" + AppConstants.PUSH_TAG_UPLOAD_LOG);
-                    if (PosImpl.getInstance().getPosIdentifierNo().equals(jsonObject.getString(RequestConstant.KEY_PUSH_DATA))) {
-                        if (!Utils.isWifiNetwork(MainApplication.getInstance().getApplicationContext())) {
-                            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "当前网络非Wifi网络");
-                            return;
-                        }
-                        // 设备匹配
-                        MonitorManager.getInstance().uploadLogFile(new Callback<BaseBean>() {
-                            @Override
-                            public void onSuccess(BaseBean o) {
-                                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "推送上传日志---成功");
-                            }
-
-                            @Override
-                            public void onError(String error) {
-                                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "推送上传日志---失败:" + error);
-                            }
-                        });
-                    } else {
-                        XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "设备信息不匹配");
-                    }
+                    MonitorManager.getInstance().pullLogFile(jsonObject.getString(RequestConstant.KEY_EN), jsonObject.getString(RequestConstant.KEY_DATE));
                     break;
                 default:
                     break;

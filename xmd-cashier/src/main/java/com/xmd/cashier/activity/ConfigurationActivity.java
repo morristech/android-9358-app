@@ -101,17 +101,15 @@ public class ConfigurationActivity extends BaseActivity {
         if (mUploadLogSubscription != null) {
             mUploadLogSubscription.unsubscribe();
         }
-        mUploadLogSubscription = MonitorManager.getInstance().uploadLogFile(new Callback<BaseBean>() {
+        mUploadLogSubscription = MonitorManager.getInstance().uploadLogFile(null, new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---成功");
                 hideLoading();
                 XToast.show("上传成功");
             }
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---失败：" + error);
                 hideLoading();
                 XToast.show(error);
             }

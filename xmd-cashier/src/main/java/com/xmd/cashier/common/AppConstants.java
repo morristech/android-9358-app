@@ -337,6 +337,7 @@ public class AppConstants {
     public static final String EXTRA_INNER_PAY_RECORD = "pay_record";
 
     public final static String EXTRA_CMD = "cmd";
+    public final static String EXTRA_ALL = "all";
 
     public final static String LOG_BIZ_NATIVE_CASHIER = "[内网收银]";
     public final static String LOG_BIZ_NORMAL_CASHIER = "[补收款收银]";
