@@ -136,7 +136,8 @@ public class CouponInfo implements Parcelable {
                 return actAmount;
             case AppConstants.COUPON_TYPE_DISCOUNT:
                 // 折扣券 actAmount为折扣比例
-                return (int) ((long) originAmount * (100000 - actAmount) / 100000);
+                double consume = ((double) originAmount) / 100000 * (100000 - actAmount);
+                return (int) Math.round(consume);
         }
         return 0;
     }
