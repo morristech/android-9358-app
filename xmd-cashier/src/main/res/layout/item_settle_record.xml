@@ -19,12 +19,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="营业金额："
+            android:text="实收金额："
             android:textColor="@color/colorText2"
             android:textSize="@dimen/font_size_16" />
 
         <TextView
-            android:id="@+id/tv_settle_amount"
+            android:id="@+id/tv_income_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/font_size_16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/tiny_padding"
+        android:layout_marginLeft="@dimen/activity_normal_margin"
+        android:layout_marginTop="@dimen/tiny_padding"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="核销抵扣："
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/font_size_16" />
+
+        <TextView
+            android:id="@+id/tv_verify_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

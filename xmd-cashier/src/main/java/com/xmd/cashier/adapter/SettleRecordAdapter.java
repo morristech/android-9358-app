@@ -119,7 +119,8 @@ public class SettleRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final SettleRecordInfo info = mData.get(position);
             itemHolder.mSettleOperator.setText(info.operatorName);
             itemHolder.mSettleTime.setText(info.createTime);
-            itemHolder.mSettleAmount.setText(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(info.amount)));
+            itemHolder.mIncomeAmount.setText(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(info.fastPay + info.recharge)));
+            itemHolder.mVerifyAmount.setText(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(info.discount)));
             itemHolder.mRecordLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -139,16 +140,18 @@ public class SettleRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mRecordLayout;
-        public TextView mSettleAmount;
+        public TextView mIncomeAmount;
+        public TextView mVerifyAmount;
         public TextView mSettleOperator;
         public TextView mSettleTime;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             mRecordLayout = (LinearLayout) itemView.findViewById(R.id.ll_record_layout);
-            mSettleAmount = (TextView) itemView.findViewById(R.id.tv_settle_amount);
             mSettleOperator = (TextView) itemView.findViewById(R.id.tv_settle_operator);
             mSettleTime = (TextView) itemView.findViewById(R.id.tv_settle_time);
+            mIncomeAmount = (TextView) itemView.findViewById(R.id.tv_income_amount);
+            mVerifyAmount = (TextView) itemView.findViewById(R.id.tv_verify_amount);
         }
     }
 

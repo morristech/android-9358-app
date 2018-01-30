@@ -228,6 +228,9 @@ public class RequestConstant {
     public static final String KEY_EN = "en";
     public static final String KEY_DATE = "date";
 
+    public static final String KEY_RECHARGE = "recharge";
+    public static final String KEY_FASTPAY = "fastPay";
+
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/

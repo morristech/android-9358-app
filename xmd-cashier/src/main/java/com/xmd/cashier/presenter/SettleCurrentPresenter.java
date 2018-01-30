@@ -8,6 +8,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.SettleCurrentContract;
 import com.xmd.cashier.dal.bean.SettleBusinessInfo;
 import com.xmd.cashier.dal.bean.SettleContentInfo;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.AccountManager;
@@ -33,6 +34,10 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
 
     private String mStartTime;
     private String mEndTime;
+
+    private long mFastPay;
+    private long mRecharge;
+    private long mDiscount;
 
     public SettleCurrentPresenter(Context context, SettleCurrentContract.View view) {
         mContext = context;
@@ -61,16 +66,6 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
         }
     }
 
-    private long getAmount() {
-        long totalAmount = 0;
-        for (SettleContentInfo contentInfo : mDetail.settleList) {
-            for (SettleBusinessInfo businessInfo : contentInfo.businessList) {
-                totalAmount += businessInfo.amount;
-            }
-        }
-        return totalAmount;
-    }
-
     @Override
     public void onSettle() {
         if (!Utils.isNetworkEnabled(mContext)) {
@@ -81,27 +76,32 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
         if (mSaveSettleSubscription != null) {
             mSaveSettleSubscription.unsubscribe();
         }
-        mSaveSettleSubscription = SettleManager.getInstance().saveSettle(String.valueOf(getAmount()), mStartTime, mEndTime, new Callback<StringResult>() {
-            @Override
-            public void onSuccess(StringResult o) {
-                mView.hideLoading();
-                mDetail.createTime = o.getRespData();
-                mDetail.settleName = AccountManager.getInstance().getUser().loginName;
-                SettleManager.getInstance().printAsync(mDetail, false);
-                mView.showToast("交接班结算成功");
-                mView.finishSelf();
-            }
+        mSaveSettleSubscription = SettleManager.getInstance().saveSettle(String.valueOf(mFastPay + mRecharge + mDiscount),
+                String.valueOf(mFastPay), String.valueOf(mRecharge), String.valueOf(mDiscount),
+                mStartTime, mEndTime, new Callback<StringResult>() {
+                    @Override
+                    public void onSuccess(StringResult o) {
+                        mView.hideLoading();
+                        mDetail.createTime = o.getRespData();
+                        mDetail.settleName = AccountManager.getInstance().getUser().loginName;
+                        SettleManager.getInstance().printAsync(mDetail, false);
+                        mView.showToast("交接班结算成功");
+                        mView.finishSelf();
+                    }
 
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showToast("交接班结算失败:" + error);
-            }
-        });
+                    @Override
+                    public void onError(String error) {
+                        mView.hideLoading();
+                        mView.showToast("交接班结算失败:" + error);
+                    }
+                });
     }
 
     @Override
     public void getSettle() {
+        mFastPay = 0;
+        mRecharge = 0;
+        mDiscount = 0;
         mView.initLayout();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.onCurrentFailed(mContext.getString(R.string.network_disabled));
@@ -117,6 +117,23 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
                 mView.hideLoading();
                 if (o.getRespData() != null && o.getRespData().settleList != null && !o.getRespData().settleList.isEmpty()) {
                     mDetail = o.getRespData();
+                    for (SettleContentInfo contentInfo : mDetail.settleList) {
+                        for (SettleBusinessInfo businessInfo : contentInfo.businessList) {
+                            switch (businessInfo.businessType) {
+                                case RequestConstant.KEY_FASTPAY:
+                                    mFastPay += businessInfo.amount;
+                                    break;
+                                case RequestConstant.KEY_RECHARGE:
+                                    mRecharge += businessInfo.amount;
+                                    break;
+                                case RequestConstant.KEY_DISCOUNT:
+                                    mDiscount += businessInfo.amount;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                     mStartTime = mDetail.startTime;
                     mEndTime = mDetail.endTime;
                     mView.onCurrentSuccess(mDetail);

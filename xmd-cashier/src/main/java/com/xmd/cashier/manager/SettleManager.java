@@ -41,9 +41,9 @@ public class SettleManager {
     }
 
     // 确认结算
-    public Subscription saveSettle(String amount, String startTime, String endTime, final Callback<StringResult> callback) {
+    public Subscription saveSettle(String amount, String fastPay, String recharge, String discount, String startTime, String endTime, final Callback<StringResult> callback) {
         Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .saveSettle(AccountManager.getInstance().getToken(), amount, startTime, endTime);
+                .saveSettle(AccountManager.getInstance().getToken(), amount, fastPay, recharge, discount, startTime, endTime);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {

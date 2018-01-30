@@ -11,6 +11,9 @@ public class SettleRecordInfo implements Serializable{
     public String operatorId;
     public String createTime;   //创建时间
     public long amount;
+    public long fastPay;
+    public long discount;
+    public long recharge;
     public long id;
     public int monthCount;
 }

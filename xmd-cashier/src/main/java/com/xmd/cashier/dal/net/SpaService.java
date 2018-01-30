@@ -432,6 +432,9 @@ public interface SpaService {
     @GET(RequestConstant.URL_NEW_SETTLE_SAVE)
     Observable<StringResult> saveSettle(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                         @Query(RequestConstant.KEY_AMOUNT) String amount,
+                                        @Query(RequestConstant.KEY_FASTPAY) String fastPay,
+                                        @Query(RequestConstant.KEY_RECHARGE) String recharge,
+                                        @Query(RequestConstant.KEY_DISCOUNT) String discount,
                                         @Query(RequestConstant.KEY_START_TIME) String startTime,
                                         @Query(RequestConstant.KEY_END_TIME) String endTime);
 
