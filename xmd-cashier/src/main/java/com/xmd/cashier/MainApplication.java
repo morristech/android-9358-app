@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
 
@@ -25,12 +26,15 @@ import com.xmd.cashier.dal.db.DBManager;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
+import com.xmd.cashier.manager.Callback;
+import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.CustomPushMessageListener;
 import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.manager.NotifyManager;
+import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.m.network.XmdNetwork;
@@ -73,6 +77,19 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         XLogger.setGloableTag("9358");
         printBaseInfo();
 
+        // 初始化旺POS服务
+        CashierManager.getInstance().init(getApplicationContext(), new Callback<Void>() {
+            @Override
+            public void onSuccess(Void o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS服务初始化成功");
+            }
+
+            @Override
+            public void onError(String error) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS服务初始化失败：" + error);
+            }
+        });
+
         LocalPersistenceManager.init(this);
         DBManager.init(this);
         SPManager.getInstance().init(getSharedPreferences("9358", MODE_PRIVATE));
@@ -91,6 +108,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         // 初始化网络模块
         XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, SPManager.getInstance().getSpaServerAddress());
         XmdNetwork.getInstance().setDebug(true);
+        XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
         XmdNetwork.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
             @Override
             public Request preProcess(Request request) {
@@ -103,7 +121,9 @@ public class MainApplication extends Application implements CrashHandler.Callbac
 
         SPManager.getInstance().initPushTagCount();
 
-        MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+        MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE),
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE),
+                (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE));
         MonitorManager.getInstance().startPollingWifiStatus(SystemClock.elapsedRealtime());
 
         if (AccountManager.getInstance().isLogin()) {
@@ -129,7 +149,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         XLogger.i(TAG, "============================================");
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "APP VERSION CODE: " + Utils.getAppVersionCode());
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "APP VERSION NAME: " + Utils.getAppVersionName());
-
     }
 
 

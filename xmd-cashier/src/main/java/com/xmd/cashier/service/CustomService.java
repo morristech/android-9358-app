@@ -125,7 +125,7 @@ public class CustomService extends Service {
     private Runnable notifyOnlinePay = new Runnable() {
         @Override
         public void run() {
-            wakeupScreen();
+            MonitorManager.getInstance().wakeupScreen();
             textToSound("客户已买单,请尽快处理");
             mOnlinePayHandler.postDelayed(this, ONLINE_PAY_INTERVAL);
         }
@@ -133,7 +133,7 @@ public class CustomService extends Service {
     private Runnable notifyOrderRecord = new Runnable() {
         @Override
         public void run() {
-            wakeupScreen();
+            MonitorManager.getInstance().wakeupScreen();
             textToSound("您有新的小摩豆预约订单");
             mOrderRecordHandler.postDelayed(this, ORDER_RECORD_INTERVAL);
         }
@@ -501,8 +501,6 @@ public class CustomService extends Service {
 
     // 显示内网订单弹框
     public void showInnerOrderNotify(final InnerRecordInfo recordInfo) {
-        wakeupScreen();
-        textToSound("您有一笔新结账订单待处理");
         if (isShow) {
             XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单弹框提醒：当前已有弹框显示 " + recordInfo.payId);
             return;

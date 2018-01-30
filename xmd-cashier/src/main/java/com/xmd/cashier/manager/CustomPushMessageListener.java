@@ -2,9 +2,8 @@ package com.xmd.cashier.manager;
 
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.xmd.cashier.MainApplication;
+import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
@@ -12,8 +11,6 @@ import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.event.InnerPushEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.pos.PosImpl;
-import com.xmd.m.network.BaseBean;
 import com.xmd.m.notify.push.XmdPushMessage;
 import com.xmd.m.notify.push.XmdPushMessageListener;
 
@@ -38,6 +35,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
 
     @Override
     public void onMessage(XmdPushMessage message) {
+        MonitorManager.getInstance().wakeupScreen();
         switch (message.getBusinessType()) {
             case AppConstants.PUSH_TAG_MEMBER_PRINT:
                 // 会员账户记录
@@ -64,6 +62,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
 
     @Override
     public void onRawMessage(String message) {
+        MonitorManager.getInstance().wakeupScreen();
         try {
             JSONObject jsonObject = new JSONObject(message);
             switch (jsonObject.getString(RequestConstant.KEY_BUSINESS_TYPE)) {
@@ -78,6 +77,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     NotifyManager.getInstance().notifyOrderRecordList();
                     break;
                 case AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY:   //内网订单支付
+                    PosFactory.getCurrentCashier().textToSound("您有一笔新结账订单待处理");
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());

@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
@@ -42,6 +43,7 @@ public class MonitorManager {
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private WifiManager mWifiManager;
     private ConnectivityManager mConnectivityManager;
+    private PowerManager mPowerManager;
 
     private MonitorManager() {
     }
@@ -52,10 +54,21 @@ public class MonitorManager {
         return mInstance;
     }
 
-    public void setManager(WifiManager wifiManager, ConnectivityManager connectivityManager) {
+    public void setManager(WifiManager wifiManager, ConnectivityManager connectivityManager, PowerManager powerManager) {
         mWifiManager = wifiManager;
         mConnectivityManager = connectivityManager;
+        mPowerManager = powerManager;
         monitorNetwork();
+    }
+
+    public void wakeupScreen() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Wake up Screen");
+        PowerManager.WakeLock wakeLock;
+        if (!mPowerManager.isScreenOn()) {
+            wakeLock = mPowerManager.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, "NOTIFY");
+            wakeLock.acquire();
+            wakeLock.release();
+        }
     }
 
     public String getWifiStatus() {

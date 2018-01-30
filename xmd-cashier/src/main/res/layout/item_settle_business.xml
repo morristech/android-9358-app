@@ -88,6 +88,7 @@
             android:id="@+id/rv_remark_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:scrollbars="none" />
     </LinearLayout>
 </LinearLayout>
