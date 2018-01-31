@@ -15,6 +15,7 @@ import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.ClubResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -151,6 +152,7 @@ public class AccountManager {
                             setClubInfo(o);
                             callback.onSuccess(loginResult);
 
+                            SPManager.getInstance().initPushTagCount();
                             XmdNetwork.getInstance().setHeader("Club-Id", getClubId());
                             XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);

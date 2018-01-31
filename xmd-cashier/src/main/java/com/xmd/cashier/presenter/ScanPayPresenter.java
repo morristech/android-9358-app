@@ -272,6 +272,8 @@ public class ScanPayPresenter implements Presenter {
             public void onCallbackSuccess(BaseBean result) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款微信支付宝取消交易---成功");
                 mView.hideLoading();
+                stopGetOnlinePayDetail();
+                stopGetScanStatus();
                 doFinish();
             }
 

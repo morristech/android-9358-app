@@ -119,14 +119,13 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         // 初始化推送
         XmdPushManager.getInstance().init(this, "pos", CustomPushMessageListener.getInstance());
 
-        SPManager.getInstance().initPushTagCount();
-
         MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE),
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE),
                 (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE));
         MonitorManager.getInstance().startPollingWifiStatus(SystemClock.elapsedRealtime());
 
         if (AccountManager.getInstance().isLogin()) {
+            SPManager.getInstance().initPushTagCount();
             XmdNetwork.getInstance().setHeader("Club-Id", AccountManager.getInstance().getClubId());
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
