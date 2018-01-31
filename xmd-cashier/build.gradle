@@ -21,8 +21,8 @@ android {
         applicationId "com.xmd.cashier"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 31
-        versionName "1.4.10"
+        versionCode 32
+        versionName "1.4.11"
 
         buildConfigField "String", "SERVER_SDCM100", SERVER_SDCM100
         buildConfigField "String", "SERVER_SDCM103", SERVER_SDCM103
