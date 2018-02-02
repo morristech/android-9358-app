@@ -35,7 +35,9 @@ import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.UpdateManager;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -470,7 +472,10 @@ public class MainPresenter implements MainContract.Presenter {
             public void onSuccess(Void o) {
                 mView.hideLoading();
                 mView.showToast("初始化支付环境成功！");
-                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付环境成功");
+
+                String identifierNo = PosImpl.getInstance().getPosIdentifierNo();
+                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付环境成功：" + identifierNo);
+                XmdNetwork.getInstance().setHeader("Device-Identifier", identifierNo);
             }
 
             @Override

@@ -78,7 +78,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         printBaseInfo();
 
         // 初始化旺POS服务
-        CashierManager.getInstance().init(getApplicationContext(), new Callback<Void>() {
+        /*CashierManager.getInstance().init(getApplicationContext(), new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS服务初始化成功");
@@ -88,7 +88,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             public void onError(String error) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS服务初始化失败：" + error);
             }
-        });
+        });*/
 
         LocalPersistenceManager.init(this);
         DBManager.init(this);
@@ -108,7 +108,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         // 初始化网络模块
         XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, SPManager.getInstance().getSpaServerAddress());
         XmdNetwork.getInstance().setDebug(true);
-        XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+//        XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
         XmdNetwork.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
             @Override
             public Request preProcess(Request request) {
