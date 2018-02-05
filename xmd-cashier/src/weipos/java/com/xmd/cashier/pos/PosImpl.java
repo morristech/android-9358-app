@@ -436,7 +436,7 @@ public class PosImpl implements IPos {
     private void initPrinter() {
         try {
             // 设备可能没有打印机，open会抛异常
-            mLatticePrinter = WeiposImpl.as().openLatticePrinter();
+            mLatticePrinter = WeiposImpl.as().getService(LatticePrinter.class);
         } catch (Exception e2) {
             XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "无法初始化打印机！");
         }
@@ -444,7 +444,7 @@ public class PosImpl implements IPos {
 
     private void initMagneticReader() {
         try {
-            mMagneticReader = WeiposImpl.as().openMagneticReader();
+            mMagneticReader = WeiposImpl.as().getService(MagneticReader.class);
         } catch (Exception e) {
             XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "无法初始化磁条读卡！");
         }

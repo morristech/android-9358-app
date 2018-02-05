@@ -1,5 +1,6 @@
 package com.xmd.cashier.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -39,6 +40,12 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         setContentView(R.layout.activity_inner_result);
         mPresenter = new InnerResultPresenter(this, this);
         initView();
+        mPresenter.onCreate();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         mPresenter.onCreate();
     }
 
