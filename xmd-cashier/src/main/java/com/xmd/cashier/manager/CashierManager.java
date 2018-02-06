@@ -7,13 +7,10 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -24,7 +21,6 @@ public class CashierManager {
     private static final String TAG = "CashierManager";
     private static CashierManager mInstance = new CashierManager();
     private IPos mCashier;
-    private AtomicBoolean mCanCallPay = new AtomicBoolean(true);
     private Handler mCashierManagerHandler;
     private PayInfo mPayInfo;
 
@@ -53,7 +49,6 @@ public class CashierManager {
         public Context context;
         public PayCallback<Object> callback;
         public IPos cashier;
-        public AtomicBoolean canCallPay;
         public boolean isUserCanceled;
 
         public void clear() {
@@ -78,21 +73,12 @@ public class CashierManager {
 
 
     public void pay(Context context, final String tradeNo, int money, final PayCallback<Object> callback) {
-        //防止重入
-        if (!mCanCallPay.compareAndSet(true, false)) {
-            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "pos pay not finished, can not enter!");
-            mPayInfo.clear();
-            mPayInfo.callback = callback;
-            mPayInfo.callback.onResult("支付冲突，当前有未完成支付，请重启POS！", mPayInfo);
-            return;
-        }
         mPayInfo.clear();
         mPayInfo.context = context;
         mPayInfo.money = money;
         mPayInfo.tradeNo = tradeNo;
         mPayInfo.callback = callback;
         mPayInfo.cashier = mCashier;
-        mPayInfo.canCallPay = mCanCallPay;
         mPayInfo.isUserCanceled = false;
 
         mCashierManagerHandler.obtainMessage(PayHandler.MSG_PAY_CREATE, mPayInfo).sendToTarget();
@@ -163,7 +149,6 @@ public class CashierManager {
     }
 
     public void onCancelChoicePayType() {
-        mCanCallPay.set(true);
         mPayInfo.context = null;
         mPayInfo.isUserCanceled = true;
         mPayInfo.callback.onResult("支付取消", mPayInfo);
@@ -219,7 +204,6 @@ public class CashierManager {
                         mPayInfo.context = null;//释放资源
                         mPayInfo.payResult = o;
                         mPayInfo.callback.onResult(error, mPayInfo);
-                        mPayInfo.canCallPay.set(true);
                         mPayInfo = null;
                     }
                 });

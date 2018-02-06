@@ -59,7 +59,6 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
 
     @Override
     public void onStart() {
-        mTradeManager.checkAndProcessPosStatus(mContext);
     }
 
     @Override

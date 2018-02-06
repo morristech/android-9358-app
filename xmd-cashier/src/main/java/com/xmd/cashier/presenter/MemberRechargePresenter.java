@@ -113,6 +113,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         mGetTradeNoSubscription = MemberManager.getInstance().fetchTradeNo(new Callback<GetTradeNoResult>() {
             @Override
             public void onSuccess(GetTradeNoResult o) {
+                mView.hideLoading();
                 doPosCashier();
             }
 
@@ -151,7 +152,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             @Override
             public void onError(String error) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付---失败：" + error);
-                mView.hideLoading();
                 mView.showError("支付失败：" + error);
             }
         });

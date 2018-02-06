@@ -32,7 +32,6 @@ import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import retrofit2.Call;
 import rx.Observable;
@@ -51,7 +50,6 @@ public class MemberManager {
     private MemberCardProcess mCardProcess;
     private MemberRechargeProcess mRechargeProcess;
     private Trade mTrade;
-    public AtomicBoolean mInPosPay = new AtomicBoolean(false);
 
     private MemberManager() {
         mPos = PosFactory.getCurrentCashier();
@@ -409,15 +407,10 @@ public class MemberManager {
 
     // 收银台支付
     public void posRecharge(Context context, final int money, final Callback<Void> callback) {
-        if (!mInPosPay.compareAndSet(false, true)) {
-            callback.onError("支付冲突，当前有未完成的支付，请重启POS！");
-            return;
-        }
         mTrade.newCashierTradeNo();
         CashierManager.getInstance().pay(context, mTrade.getPosTradeNo(), money, new PayCallback<Object>() {
             @Override
             public void onResult(String error, Object o) {
-                mInPosPay.set(false);
                 mTrade.posPayReturn = o;
                 if (error == null) {
                     mTrade.setOriginMoney(money);

@@ -236,15 +236,10 @@ public class TradeManager {
 
     // 收银台支付
     public void posPay(Context context, final int money, final Callback<Void> callback) {
-        if (!mInPosPay.compareAndSet(false, true)) {
-            callback.onError("支付冲突，当前有未完成的支付，请重启POS！");
-            return;
-        }
         mTrade.newCashierTradeNo();
         CashierManager.getInstance().pay(context, mTrade.getPosTradeNo(), money, new PayCallback<Object>() {
             @Override
             public void onResult(String error, Object o) {
-                mInPosPay.set(false);
                 mTrade.posPayReturn = o;
                 if (error == null) {
                     mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
@@ -1161,16 +1156,7 @@ public class TradeManager {
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
-            byte[] qrCodeBytes;
-            switch (mTrade.onlinePayInfo.payChannel) {
-                case AppConstants.PAY_CHANNEL_ALI:
-                    qrCodeBytes = getTempQrCode(mTrade.onlinePayInfo.payChannel);
-                    break;
-                case AppConstants.PAY_CHANNEL_WX:
-                default:
-                    qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
-                    break;
-            }
+            byte[] qrCodeBytes = getTempQrCode(mTrade.onlinePayInfo.payChannel);
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -1270,10 +1256,10 @@ public class TradeManager {
             byte[] qrCodeBytes;
             switch (mTrade.currentCashier) {
                 case AppConstants.CASHIER_TYPE_POS: //Pos:可能包含现金和银联
-                    qrCodeBytes = (mTrade.posPoints > 0) ? getTempQrCode(mTrade.getPosPayTypeChannel()) : getClubQRCodeSync();
+                    qrCodeBytes = getTempQrCode(mTrade.getPosPayTypeChannel());
                     break;
                 case AppConstants.CASHIER_TYPE_CASH:    //现金
-                    qrCodeBytes = (mTrade.posPoints > 0) ? getTempQrCode(AppConstants.PAY_CHANNEL_CASH) : getClubQRCodeSync();
+                    qrCodeBytes = getTempQrCode(AppConstants.PAY_CHANNEL_CASH);
                     break;
                 default:
                     qrCodeBytes = getClubQRCodeSync();
