@@ -140,7 +140,7 @@ public class CashierPresenter implements CashierContract.Presenter {
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "旺POS渠道支付---成功");
-                PosFactory.getCurrentCashier().textToSound("买单成功");
+                PosFactory.getCurrentCashier().speech("买单成功");
                 mView.showToast("支付成功！");
                 finishPosPay();
             }

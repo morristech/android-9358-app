@@ -33,11 +33,8 @@ import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
-import com.xmd.cashier.manager.UpdateManager;
 import com.xmd.cashier.manager.VerifyManager;
-import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
-import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -446,22 +443,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void onCreate() {
         EventBusSafeRegister.register(this);
         mView.showLoading();
-        if (CashierManager.getInstance().needCheckUpdate()) {
-            UpdateManager.getInstance().checkUpdate(mContext, CashierManager.getInstance().getAppCode(), AccountManager.getInstance().getUserId(), new Callback<Void>() {
-                @Override
-                public void onSuccess(Void o) {
-                    initPos();
-                }
-
-                @Override
-                public void onError(String error) {
-                    XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Update error:" + error);
-                    initPos();
-                }
-            });
-        } else {
-            initPos();
-        }
+        initPos();
         updateAssistCashier();
     }
 
@@ -472,10 +454,6 @@ public class MainPresenter implements MainContract.Presenter {
             public void onSuccess(Void o) {
                 mView.hideLoading();
                 mView.showToast("初始化支付环境成功！");
-
-                String identifierNo = PosImpl.getInstance().getPosIdentifierNo();
-                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付环境成功：" + identifierNo);
-                XmdNetwork.getInstance().setHeader("Device-Identifier", identifierNo);
             }
 
             @Override
@@ -530,9 +508,6 @@ public class MainPresenter implements MainContract.Presenter {
         }
         if (mGetOrderInfoSubscription != null) {
             mGetOrderInfoSubscription.unsubscribe();
-        }
-        if (CashierManager.getInstance().needCheckUpdate()) {
-            UpdateManager.getInstance().cancel();
         }
     }
 

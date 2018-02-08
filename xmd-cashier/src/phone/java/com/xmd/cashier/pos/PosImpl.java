@@ -12,6 +12,7 @@ import com.xmd.cashier.manager.PayCallback;
 
 /**
  * Created by heyangya on 16-10-10.
+ * 手机版本
  */
 
 public class PosImpl implements IPos {
@@ -29,7 +30,7 @@ public class PosImpl implements IPos {
 
     @Override
     public String getAppCode() {
-        return AppConstants.APP_CODE_HUI_POS;
+        return AppConstants.APP_CODE_PHONE_POS;
     }
 
     @Override
@@ -84,7 +85,6 @@ public class PosImpl implements IPos {
         return false;
     }
 
-
     @Override
     public void printBitmap(byte[] bitmap) {
 
@@ -110,7 +110,6 @@ public class PosImpl implements IPos {
 
     }
 
-    // left居左 right居右
     @Override
     public void printText(String left, String right) {
 
@@ -118,11 +117,6 @@ public class PosImpl implements IPos {
 
     @Override
     public void printBoldText(String left, String right) {
-
-    }
-
-    @Override
-    public void printBoldText(String left, String right, boolean highLight) {
 
     }
 
@@ -141,7 +135,6 @@ public class PosImpl implements IPos {
 
     }
 
-    // 分割线
     @Override
     public void printDivide() {
 
@@ -153,23 +146,20 @@ public class PosImpl implements IPos {
     }
 
     @Override
-    public String getPosIdentifierNo() {
-        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "DeviceId：" + DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext()));
-        return DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext());
+    public void speech(String text) {
+
     }
 
     @Override
-    public void textToSound(String text) {
-
+    public String getPosIdentifierNo() {
+        String deviceId = DeviceInfoUtils.getDeviceId(MainApplication.getInstance().getApplicationContext());
+        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "DeviceId：" + deviceId);
+        return deviceId;
     }
+
 
     @Override
     public String getMagneticReaderInfo() {
         return null;
-    }
-
-    @Override
-    public void setPrintListener(Callback<?> callback) {
-
     }
 }

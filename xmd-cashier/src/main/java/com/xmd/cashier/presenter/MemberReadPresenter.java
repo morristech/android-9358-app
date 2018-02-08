@@ -261,7 +261,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                 while (isRun) {
                     String readerResult = MemberManager.getInstance().getMagneticReaderResult();
                     if (!TextUtils.isEmpty(readerResult)) {
-                        PosFactory.getCurrentCashier().textToSound("读卡成功");
+                        PosFactory.getCurrentCashier().speech("读卡成功");
                         MagneticReaderEvent event = new MagneticReaderEvent();
                         event.setResult(readerResult);
                         EventBus.getDefault().post(event);
@@ -278,7 +278,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
     private NFCManager.NFCListener mNFCListener = new NFCManager.NFCListener() {
         @Override
         public void onReceiveDataOffline(String id) {
-            PosFactory.getCurrentCashier().textToSound("读卡成功");
+            PosFactory.getCurrentCashier().speech("读卡成功");
             mView.setInputContent(id);
             mNFCManager.clearNFCParams();
         }
@@ -304,7 +304,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
 
         mNFCManager = NFCManager.getInstance();
         mNFCManager.init(mContext);
-        PosFactory.getCurrentCashier().textToSound("请刷会员卡");
+        PosFactory.getCurrentCashier().speech("请刷会员卡");
 
         if (AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT.equals(mView.getReadType())) {
             mView.setInputContent(TradeManager.getInstance().getCurrentTrade().memberTempPhone);

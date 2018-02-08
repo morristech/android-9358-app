@@ -68,10 +68,10 @@ public class PayTypeChoiceListAdapter extends RecyclerView.Adapter<PayTypeChoice
                 payType = AppConstants.PAY_TYPE_CASH;
                 break;
             case 1:
-                payType = AppConstants.PAY_TYPE_CARD;
+                payType = AppConstants.PAY_TYPE_UNION;
                 break;
             case 2:
-                payType = AppConstants.PAY_TYPE_WECHART;
+                payType = AppConstants.PAY_TYPE_WECHAT;
                 break;
             case 3:
                 payType = AppConstants.PAY_TYPE_ALIPAY;

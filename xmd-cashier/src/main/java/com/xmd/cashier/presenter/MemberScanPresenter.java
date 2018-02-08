@@ -74,7 +74,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
             public void onCallbackSuccess(MemberRecordResult result) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---成功：" + MemberManager.getInstance().getRechargeOrderId());
                 success = true;
-                PosFactory.getCurrentCashier().textToSound("会员充值成功");
+                PosFactory.getCurrentCashier().speech("会员充值成功");
                 memberRecordInfo = result.getRespData();
                 resultDetailRecharge = true;
                 EventBus.getDefault().post(new RechargeFinishEvent());
@@ -196,7 +196,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                 mView.hideLoading();
                 mView.showSuccess();
                 success = true;
-                PosFactory.getCurrentCashier().textToSound("会员充值成功");
+                PosFactory.getCurrentCashier().speech("会员充值成功");
                 memberRecordInfo = result.getRespData();
                 EventBus.getDefault().post(new RechargeFinishEvent());
             }

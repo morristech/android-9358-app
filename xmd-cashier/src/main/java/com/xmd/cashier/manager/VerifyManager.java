@@ -594,11 +594,10 @@ public class VerifyManager {
     }
 
     /**********************************************************************************************/
-    public void printCheckInfoList(List<CheckInfo> list, boolean keep, Callback<?> callback) {
+    public void printCheckInfoList(List<CheckInfo> list, boolean keep) {
         if (list == null || list.isEmpty()) {
             return;
         }
-        mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -697,8 +696,7 @@ public class VerifyManager {
     }
 
     // 券
-    public void printCoupon(CouponInfo couponInfo, boolean keep, Callback<?> callback) {
-        mPos.setPrintListener(callback);
+    public void printCoupon(CouponInfo couponInfo, boolean keep) {
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -758,8 +756,7 @@ public class VerifyManager {
     }
 
     // 预约
-    public void printOrder(OrderInfo orderInfo, boolean keep, Callback<?> callback) {
-        mPos.setPrintListener(callback);
+    public void printOrder(OrderInfo orderInfo, boolean keep) {
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -795,8 +792,7 @@ public class VerifyManager {
     }
 
     // 奖品
-    public void printPrize(PrizeInfo prizeInfo, boolean keep, Callback<?> callback) {
-        mPos.setPrintListener(callback);
+    public void printPrize(PrizeInfo prizeInfo, boolean keep) {
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -833,8 +829,7 @@ public class VerifyManager {
     }
 
     // 会员请客
-    public void printTreat(TreatInfo treatInfo, boolean keep, Callback<?> callback) {
-        mPos.setPrintListener(callback);
+    public void printTreat(TreatInfo treatInfo, boolean keep) {
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();

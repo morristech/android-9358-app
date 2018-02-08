@@ -131,7 +131,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             @Override
             public void onSuccess(MemberRecordResult o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款发起会员支付---成功");
-                PosFactory.getCurrentCashier().textToSound("买单成功");
+                PosFactory.getCurrentCashier().speech("买单成功");
                 mView.hideLoading();
                 mView.showToast("会员支付成功，正在出票...");
                 TradeManager.getInstance().getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;

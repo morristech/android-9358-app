@@ -202,7 +202,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果---成功");
-                PosFactory.getCurrentCashier().textToSound("会员充值成功");
+                PosFactory.getCurrentCashier().speech("会员充值成功");
                 resultReportRecharge = true;
                 MemberRecordInfo record = result.getRespData();
                 MemberManager.getInstance().printMemberRecordInfoAsync(record, false);

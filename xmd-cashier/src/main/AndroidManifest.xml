@@ -150,7 +150,6 @@
             android:name="GETUI_MASTER_SECRET"
             android:value="${GETUI_MASTER_SECRET}" />
 
-        <!--           会员卡需求         -->
         <activity
             android:name=".activity.MemberNavigationActivity"
             android:launchMode="singleTask" />
@@ -212,7 +211,6 @@
             android:name=".activity.ItemStatisticsExplainActivity"
             android:launchMode="singleTask" />
 
-        <!-- 内网收银 -->
         <activity
             android:name=".activity.InnerSelectActivity"
             android:launchMode="singleTask" />

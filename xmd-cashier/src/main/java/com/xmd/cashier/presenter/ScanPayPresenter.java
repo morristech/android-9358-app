@@ -148,7 +148,7 @@ public class ScanPayPresenter implements Presenter {
                 if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
                     // 支付成功
                     resultGetOnlinePayDetail = true;
-                    PosFactory.getCurrentCashier().textToSound("买单成功");
+                    PosFactory.getCurrentCashier().speech("买单成功");
                     mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                     mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
                     mTradeManager.getCurrentTrade().onlinePayInfo = result.getRespData();

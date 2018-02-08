@@ -247,4 +247,12 @@ public class XmdPushManager {
             }
         }
     }
+
+    public void checkPushStatus() {
+        boolean isPushTurnedOn = com.igexin.sdk.PushManager.getInstance().isPushTurnedOn(context);
+        XLogger.i(TAG, "isPushTurnedOn = " + isPushTurnedOn);
+        if (!isPushTurnedOn) {
+            com.igexin.sdk.PushManager.getInstance().turnOnPush(context);
+        }
+    }
 }

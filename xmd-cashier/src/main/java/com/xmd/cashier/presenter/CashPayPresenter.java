@@ -66,7 +66,7 @@ public class CashPayPresenter implements CashPayContract.Presenter {
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款发起现金支付---成功");
-                PosFactory.getCurrentCashier().textToSound("买单成功");
+                PosFactory.getCurrentCashier().speech("买单成功");
                 mView.hideLoading();
                 mView.showCashSuccess();
                 finishCashPay();

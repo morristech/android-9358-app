@@ -55,6 +55,7 @@ import com.xmd.cashier.widget.CustomNotifyLayoutManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.m.notify.push.XmdPushManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -97,6 +98,7 @@ public class CustomService extends Service {
     private class PollingWifiStatusThread extends Thread {
         @Override
         public void run() {
+            XmdPushManager.getInstance().checkPushStatus();
             XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + MonitorManager.getInstance().getWifiStatus());
             MonitorManager.getInstance().startPollingWifiStatus(SystemClock.elapsedRealtime() + POLLING_WIFI_STATUS_INTERVAL);
         }
@@ -242,19 +244,7 @@ public class CustomService extends Service {
     private void textToSound(String text) {
         if (!TextUtils.isEmpty(text)) {
             XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "语音播放:" + text);
-            PosFactory.getCurrentCashier().textToSound(text);
-        }
-    }
-
-    // 点亮屏幕
-    private void wakeupScreen() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Wake up Screen");
-        PowerManager.WakeLock wakeLock;
-        PowerManager pm = (PowerManager) MainApplication.getInstance().getApplicationContext().getSystemService(POWER_SERVICE);
-        if (!pm.isScreenOn()) {
-            wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, "NOTIFY");
-            wakeLock.acquire();
-            wakeLock.release();
+            PosFactory.getCurrentCashier().speech(text);
         }
     }
 

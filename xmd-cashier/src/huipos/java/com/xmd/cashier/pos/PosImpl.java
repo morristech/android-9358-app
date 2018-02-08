@@ -39,6 +39,7 @@ import java.util.List;
 
 /**
  * Created by heyangya on 16-10-10.
+ * 盒子支付
  */
 
 public class PosImpl implements IPos {
@@ -132,10 +133,10 @@ public class PosImpl implements IPos {
     public void pay(final Context context, final String tradeNo, final int money, int payType, final PayCallback<Object> callback) {
         PayType posType = PayType.TYPE_CARD;
         switch (payType) {
-            case AppConstants.PAY_TYPE_CARD:
+            case AppConstants.PAY_TYPE_UNION:
                 posType = PayType.TYPE_CARD;
                 break;
-            case AppConstants.PAY_TYPE_WECHART:
+            case AppConstants.PAY_TYPE_WECHAT:
                 posType = PayType.TYPE_WEIPAY_QRCODE;
                 break;
             case AppConstants.PAY_TYPE_ALIPAY:
@@ -153,7 +154,6 @@ public class PosImpl implements IPos {
         try {
             //签名
             String sign = SignTool.getSign(Config.config, tradeNo, null, String.valueOf(money), parcelableMap.getMap());
-
             CashboxProxy.getInstance(context).startTrading(posType, String.valueOf(money),
                     tradeNo, transactionId, SignType.TYPE_MD5, sign, parcelableMap, new ITradeCallback() {
                         @Override
@@ -227,11 +227,11 @@ public class PosImpl implements IPos {
             ParcelableMap parcelableMap = (ParcelableMap) o;
             String payType = parcelableMap.get(ParcelableMap.PAY_TYPE);
             if (payType.equals(PayType.TYPE_WEIPAY_QRCODE.name())) {
-                return AppConstants.PAY_TYPE_WECHART;
+                return AppConstants.PAY_TYPE_WECHAT;
             } else if (payType.equals(PayType.TYPE_ALIPAY)) {
                 return AppConstants.PAY_TYPE_ALIPAY;
             } else if (payType.equals(PayType.TYPE_CARD)) {
-                return AppConstants.PAY_TYPE_CARD;
+                return AppConstants.PAY_TYPE_UNION;
             }
         }
         return AppConstants.PAY_TYPE_UNKNOWN;
@@ -322,22 +322,17 @@ public class PosImpl implements IPos {
 
     @Override
     public void printText(String left, String right) {
-        printText(left + right, GRAVITY_LEFT);
+        printText(left + right);
     }
 
     @Override
     public void printBoldText(String left, String right) {
-        printText(left + right, GRAVITY_LEFT);
-    }
-
-    @Override
-    public void printBoldText(String left, String right, boolean highLight) {
-        printText(left + right, GRAVITY_LEFT);
+        printText(left + right);
     }
 
     @Override
     public void printText(String left, String right, boolean highLight) {
-        printText(left, right);
+        printText(left + right);
     }
 
     @Override
@@ -352,25 +347,20 @@ public class PosImpl implements IPos {
     }
 
     @Override
-    public String getPosIdentifierNo() {
-        String boxSn = CashboxProxy.getBoxSn(MainApplication.getInstance().getApplicationContext());
-        XLogger.d("PosIdentifierNo:" + boxSn);
-        return boxSn;
+    public void speech(String text) {
+
     }
 
     @Override
-    public void textToSound(String text) {
-
+    public String getPosIdentifierNo() {
+        String boxSn = CashboxProxy.getBoxSn(MainApplication.getInstance().getApplicationContext());
+        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "BoxSn：" + boxSn);
+        return boxSn;
     }
 
     @Override
     public String getMagneticReaderInfo() {
         return null;
-    }
-
-    @Override
-    public void setPrintListener(Callback<?> callback) {
-
     }
 
     private void printerFlush() {

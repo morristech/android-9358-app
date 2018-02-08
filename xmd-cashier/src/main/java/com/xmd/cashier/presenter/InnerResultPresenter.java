@@ -42,7 +42,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
         mView.showStepView();
         switch (TradeManager.getInstance().getCurrentTrade().tradeStatus) {
             case AppConstants.TRADE_STATUS_SUCCESS:
-                PosFactory.getCurrentCashier().textToSound("支付完成");
+                PosFactory.getCurrentCashier().speech("支付完成");
                 mView.showSuccess();
                 break;
             case AppConstants.TRADE_STATUS_CANCEL:

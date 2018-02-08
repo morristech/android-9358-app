@@ -2,7 +2,6 @@ package com.xmd.cashier.presenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -20,7 +19,6 @@ import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
-import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.cashier.widget.VerifyDiscountDialog;
 
 import java.util.List;
@@ -257,9 +255,9 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        VerifyManager.getInstance().printCheckInfoList(infos, true, null);
+                        VerifyManager.getInstance().printCheckInfoList(infos, true);
                         if (SPManager.getInstance().getPrintClientSwitch()) {
-                            VerifyManager.getInstance().printCheckInfoList(infos, false, null);
+                            VerifyManager.getInstance().printCheckInfoList(infos, false);
                         }
                         subscriber.onNext(null);
                         subscriber.onCompleted();
@@ -268,58 +266,5 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
-
-    private void printStep(final List<CheckInfo> infos) {
-        mView.showLoading();
-        VerifyManager.getInstance().printCheckInfoList(infos, true, new Callback() {
-            @Override
-            public void onSuccess(Object o) {
-                mView.hideLoading();
-                new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否需要打印客户联小票?")
-                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                Observable
-                                        .create(new Observable.OnSubscribe<Void>() {
-                                            @Override
-                                            public void call(Subscriber<? super Void> subscriber) {
-                                                VerifyManager.getInstance().printCheckInfoList(infos, false, null);
-                                                subscriber.onNext(null);
-                                                subscriber.onCompleted();
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe();
-                                // 刷新列表
-                                resetList();
-                                onLoad();
-                            }
-                        })
-                        .setNegativeButton("完成核销", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                // 刷新列表
-                                resetList();
-                                onLoad();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showToast("打印异常:" + error);
-                // 刷新列表
-                resetList();
-                onLoad();
-            }
-        });
     }
 }

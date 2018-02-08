@@ -22,6 +22,10 @@ import java.util.Map;
  * Time: 15:20
  */
 public class WeiPosCashierSign {
+    public static final String PACKAGE_INVOKE_WANGPOS_CASHIER = "com.wangpos.by.cashier3";
+    public static final String PACKAGE_INVOIKE_WEIPASS = "cn.weipass.cashier";
+
+    public static final String InvokeCashier_APPID = "57b2d92f91b9b20394299efb";
     public static final String InvokeCashier_BPID = "57b2d818fa0bab6e91e24ae9";
     public static final String InvokeCashier_KEY = "OB4PHvGgRei6wh42d0UASmvNGZNQe07z";
 

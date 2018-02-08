@@ -431,9 +431,9 @@ public class InnerManager {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        printInnerRecordInfo(innerRecordInfo, retry, true, null);
+                        printInnerRecordInfo(innerRecordInfo, retry, true);
                         if (SPManager.getInstance().getPrintClientSwitch()) {
-                            printInnerRecordInfo(innerRecordInfo, retry, false, null);
+                            printInnerRecordInfo(innerRecordInfo, retry, false);
                         }
                         subscriber.onNext(null);
                         subscriber.onCompleted();
@@ -449,7 +449,7 @@ public class InnerManager {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        printInnerRecordInfo(innerRecordInfo, retry, keep, null);
+                        printInnerRecordInfo(innerRecordInfo, retry, keep);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -459,9 +459,8 @@ public class InnerManager {
                 .subscribe();
     }
 
-    public void printInnerRecordInfo(InnerRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
+    public void printInnerRecordInfo(InnerRecordInfo info, boolean retry, boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "打印内网订单");
-        mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();

@@ -5,14 +5,19 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.wangpos.by.cashier3.CashierHelper;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.PayCallback;
+import com.xmd.cashier.pos.bean.WanPosPayNewResult;
 import com.xmd.cashier.pos.bean.WanPosPayResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import cn.weipass.pos.sdk.BizServiceInvoker;
 import cn.weipass.pos.sdk.IPrint;
@@ -25,11 +30,12 @@ import cn.weipass.service.bizInvoke.RequestResult;
 
 /**
  * Created by heyangya on 16-9-6.
+ * 旺POS支付
  */
 
 public class PosImpl implements IPos {
     private static PosImpl mInstance;
-    private BizServiceInvoker mBizServiceInvoker;
+    private BizServiceInvoker mBizServiceInvoker;   //收银2支付服务
     private LatticePrinter mLatticePrinter;
     private MagneticReader mMagneticReader;
     private boolean isInit;
@@ -61,45 +67,6 @@ public class PosImpl implements IPos {
     }
 
     @Override
-    public void init(Context context, final Callback<?> callback) {
-        if (isInit) {
-            callback.onSuccess(null);
-            return;
-        }
-        try {
-            WeiposImpl.as().init(context, new Weipos.OnInitListener() {
-                @Override
-                public void onInitOk() {
-                    try {
-                        // 初始化服务调用
-                        mBizServiceInvoker = WeiposImpl.as().getService(BizServiceInvoker.class);
-
-                        initPrinter();  //初始化打印
-                        initMagneticReader();   //初始化磁条刷卡
-
-                        callback.onSuccess(null);
-                        isInit = true;
-                    } catch (Exception e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                }
-
-                @Override
-                public void onError(String s) {
-                    callback.onError(s);
-                }
-
-                @Override
-                public void onDestroy() {
-                    callback.onError("onDestroy");
-                }
-            });
-        } catch (Exception e) {
-            callback.onError(e.getLocalizedMessage());
-        }
-    }
-
-    @Override
     public boolean needChoicePayTypeByCaller() {
         return false;
     }
@@ -109,90 +76,194 @@ public class PosImpl implements IPos {
         return "cn.weipass.cashier";
     }
 
+    @Override
+    public void init(Context context, final Callback<?> callback) {
+        if (isInit) {
+            if (callback != null) {
+                callback.onSuccess(null);
+            }
+            return;
+        }
+        try {
+            WeiposImpl.as().init(context, new Weipos.OnInitListener() {
+                @Override
+                public void onInitOk() {
+                    try {
+                        mLatticePrinter = WeiposImpl.as().getService(LatticePrinter.class); //打印服务
+                        mMagneticReader = WeiposImpl.as().getService(MagneticReader.class); //磁条卡服务
+                        // NFC服务通过NFCManager管理
+                        if (callback != null) {
+                            callback.onSuccess(null);
+                        }
+                        isInit = true;
+                        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化成功");
+                    } catch (Exception e) {
+                        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败(服务初始化)：" + e.getLocalizedMessage());
+                        if (callback != null) {
+                            callback.onError(e.getLocalizedMessage());
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(String s) {
+                    XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：" + s);
+                    if (callback != null) {
+                        callback.onError(s);
+                    }
+                }
+
+                @Override
+                public void onDestroy() {
+                    XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：onDestroy");
+                    if (callback != null) {
+                        callback.onError("onDestroy");
+                    }
+                }
+            });
+        } catch (Exception e) {
+            XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：" + e.getLocalizedMessage());
+            if (callback != null) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        }
+    }
 
     @Override
     public void pay(Context context, String tradeNo, int money, int payType, final PayCallback<Object> callback) {
         final WanPosPayResult payResult = new WanPosPayResult();
         payResult.out_trade_no = tradeNo;
-        try {
-            RequestInvoke cashierReq = new RequestInvoke();
-            cashierReq.pkgName = context.getPackageName();
-            cashierReq.sdCode = "CASH002";// 收银服务的sdcode信息
-            cashierReq.bpId = WeiPosCashierSign.InvokeCashier_BPID;
-            cashierReq.launchType = BizServiceInvoker.LAUNCH_TYPE_ACTIVITY;
-            cashierReq.params = WeiPosCashierSign.sign(WeiPosCashierSign.InvokeCashier_BPID, WeiPosCashierSign.InvokeCashier_KEY, "POS",
-                    "10004", tradeNo, "水疗项目", null, "1", String.valueOf(money), context.getPackageName(), WeiposResultActivity.class.getName());
-            cashierReq.seqNo = "1";
-
-            // 设置结果回调
-            mBizServiceInvoker.setOnResponseListener(new BizServiceInvoker.OnResponseListener() {
+        if (Utils.checkWeiPosApp(context, WeiPosCashierSign.PACKAGE_INVOKE_WANGPOS_CASHIER)) {
+            // ***** 安装了旺收银 *****
+            HashMap<String, String> params = new HashMap<>();
+            params.put("app_id", WeiPosCashierSign.InvokeCashier_APPID);
+            params.put("out_trade_no", tradeNo);
+            params.put("body", "水疗项目");
+            params.put("pay_type", String.valueOf(1));
+            params.put("total_fee", String.valueOf(money));
+            params.put("notify_url", "http://apps.weipass.cn/pay/notify");
+//            params.put("activity_path", WeiposResultActivity.class.getName());
+            CashierHelper.consume(context, params, new CashierHelper.PayCallBack() {
                 @Override
-                public void onResponse(String s, String s1, byte[] bytes) {
-                    String payResultString = new String(bytes);
-                    XLogger.i("onResponse-->" + s + "," + s1 + "," + payResultString);
-                    boolean paySuccess = false;
-                    String errMsg = null;
+                public void success(String s) {
+                    XLogger.i("CashierInvoke on success -->" + s);
                     try {
-                        //错误代码:0表示成功，非0表示失败
-                        JSONObject jsonObject = new JSONObject(payResultString);
-                        paySuccess = jsonObject.getString("errCode").equals("0");
-                        //其他支付数据
-                        WanPosPayResult wanPosPayResult = new Gson().fromJson(new String(bytes), WanPosPayResult.class);
-                        payResult.errCode = wanPosPayResult.errCode;
-                        payResult.errMsg = wanPosPayResult.errMsg;
-                        payResult.out_trade_no = wanPosPayResult.out_trade_no;
-                        payResult.trade_status = wanPosPayResult.trade_status;
-                        payResult.cashier_trade_no = wanPosPayResult.cashier_trade_no;
-                        payResult.operator = wanPosPayResult.operator;
-                        payResult.pay_type = wanPosPayResult.pay_type;
-                        payResult.pay_info = wanPosPayResult.pay_info;
-                        payResult.buy_user_info = wanPosPayResult.buy_user_info;
-                        if (!TextUtils.isEmpty(wanPosPayResult.buy_user_info)) {
-                            payResult.mBuyUserInfo = new Gson().fromJson(wanPosPayResult.buy_user_info, WanPosPayResult.BuyUserInfo.class);
-                        }
-                        errMsg = wanPosPayResult.errMsg + "";//保证errMsg不为null
+                        WanPosPayNewResult<WanPosPayNewResult.RespData> wanPosPayNewResult = new Gson().fromJson(s, WanPosPayNewResult.class);
+                        WanPosPayNewResult.RespData respData = wanPosPayNewResult.data;
+                        payResult.out_trade_no = respData.out_trade_no;
+                        payResult.trade_status = respData.trade_status;
+                        payResult.cashier_trade_no = respData.cashier_trade_no;
+                        payResult.operator = respData.operator;
+                        payResult.pay_type = String.valueOf(respData.pay_type);
                     } catch (Exception e) {
-                        errMsg = "支付结果=" + payResult.toString();
-                        errMsg += ",错误原因=" + e.getLocalizedMessage();
-                    } finally {
-                        callback.onResult(paySuccess ? null : errMsg, payResult);
+                        e.printStackTrace();
                     }
+                    callback.onResult(null, null);
                 }
 
                 @Override
-                public void onFinishSubscribeService(boolean b, String s) {
-
+                public void failed(String s) {
+                    XLogger.i("CashierInvoke on failed -->" + s);
+                    try {
+                        WanPosPayNewResult wanPosPayNewResult = new Gson().fromJson(s, WanPosPayNewResult.class);
+                        callback.onResult(wanPosPayNewResult.errMsg, payResult);
+                    } catch (Exception e) {
+                        callback.onResult("解析数据异常", payResult);
+                    }
                 }
             });
-
-            RequestResult request = mBizServiceInvoker.request(cashierReq);
-            if (request != null) {
-                switch (request.result) {
-                    case BizServiceInvoker.REQ_SUCCESS: {
-                        break;
-                    }
-                    case BizServiceInvoker.REQ_ERR_INVAILD_PARAM: {
-                        callback.onResult("请求参数错误！", payResult);
-                        break;
-                    }
-                    case BizServiceInvoker.REQ_ERR_NO_BP: {
-                        callback.onResult("未知的合作伙伴！", payResult);
-                        break;
-                    }
-                    case BizServiceInvoker.REQ_ERR_NO_SERVICE: {
-                        callback.onResult("未找到合适的服务！", payResult);
-                        break;
-                    }
-                    case BizServiceInvoker.REQ_NONE: {
-                        callback.onResult("请求未知错误！", payResult);
-                        break;
-                    }
-                }
-            } else {
-                callback.onResult("Pos收银回调结果异常", payResult);
+        } else {
+            // ***** 未安装旺收银 *****
+            try {
+                mBizServiceInvoker = WeiposImpl.as().getService(BizServiceInvoker.class);
+            } catch (Exception e) {
+                XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付调用失败！");
             }
-        } catch (Exception e) {
-            callback.onResult("支付流程异常:" + e.getLocalizedMessage(), payResult);
+            if (mBizServiceInvoker == null) {
+                callback.onResult("发起支付调用失败", payResult);
+                return;
+            }
+
+            try {
+                RequestInvoke cashierReq = new RequestInvoke();
+                cashierReq.pkgName = context.getPackageName();
+                cashierReq.sdCode = "CASH002";// 收银服务的sdcode信息
+                cashierReq.bpId = WeiPosCashierSign.InvokeCashier_BPID;
+                cashierReq.launchType = BizServiceInvoker.LAUNCH_TYPE_ACTIVITY;
+                cashierReq.params = WeiPosCashierSign.sign(WeiPosCashierSign.InvokeCashier_BPID, WeiPosCashierSign.InvokeCashier_KEY, "POS",
+                        "10006", tradeNo, "水疗项目", null, "1", String.valueOf(money), context.getPackageName(), WeiposResultActivity.class.getName());
+                cashierReq.seqNo = "1";
+
+                // 设置结果回调
+                mBizServiceInvoker.setOnResponseListener(new BizServiceInvoker.OnResponseListener() {
+                    @Override
+                    public void onResponse(String s, String s1, byte[] bytes) {
+                        String payResultString = new String(bytes);
+                        XLogger.i("onResponse-->" + s + "," + s1 + "," + payResultString);
+                        boolean paySuccess = false;
+                        String errMsg = null;
+                        try {
+                            //错误代码:0表示成功，非0表示失败
+                            JSONObject jsonObject = new JSONObject(payResultString);
+                            paySuccess = jsonObject.getString("errCode").equals("0");
+                            //其他支付数据
+                            WanPosPayResult wanPosPayResult = new Gson().fromJson(new String(bytes), WanPosPayResult.class);
+                            payResult.errCode = wanPosPayResult.errCode;
+                            payResult.errMsg = wanPosPayResult.errMsg;
+                            payResult.out_trade_no = wanPosPayResult.out_trade_no;
+                            payResult.trade_status = wanPosPayResult.trade_status;
+                            payResult.cashier_trade_no = wanPosPayResult.cashier_trade_no;
+                            payResult.operator = wanPosPayResult.operator;
+                            payResult.pay_type = wanPosPayResult.pay_type;
+                            payResult.pay_info = wanPosPayResult.pay_info;
+                            payResult.buy_user_info = wanPosPayResult.buy_user_info;
+                            if (!TextUtils.isEmpty(wanPosPayResult.buy_user_info)) {
+                                payResult.mBuyUserInfo = new Gson().fromJson(wanPosPayResult.buy_user_info, WanPosPayResult.BuyUserInfo.class);
+                            }
+                            errMsg = wanPosPayResult.errMsg + "";//保证errMsg不为null
+                        } catch (Exception e) {
+                            errMsg = "支付结果=" + payResult.toString();
+                            errMsg += ",错误原因=" + e.getLocalizedMessage();
+                        } finally {
+                            callback.onResult(paySuccess ? null : errMsg, payResult);
+                        }
+                    }
+
+                    @Override
+                    public void onFinishSubscribeService(boolean b, String s) {
+                        XLogger.i("onFinishSubscribeService-->" + b + "," + s);
+                    }
+                });
+
+                RequestResult request = mBizServiceInvoker.request(cashierReq);
+                if (request != null) {
+                    switch (request.result) {
+                        case BizServiceInvoker.REQ_SUCCESS: {
+                            break;
+                        }
+                        case BizServiceInvoker.REQ_ERR_INVAILD_PARAM: {
+                            callback.onResult("请求参数错误！", payResult);
+                            break;
+                        }
+                        case BizServiceInvoker.REQ_ERR_NO_BP: {
+                            callback.onResult("未知的合作伙伴！", payResult);
+                            break;
+                        }
+                        case BizServiceInvoker.REQ_ERR_NO_SERVICE: {
+                            callback.onResult("未找到合适的服务！", payResult);
+                            break;
+                        }
+                        case BizServiceInvoker.REQ_NONE: {
+                            callback.onResult("请求未知错误！", payResult);
+                            break;
+                        }
+                    }
+                } else {
+                    callback.onResult("Pos收银回调结果异常", payResult);
+                }
+            } catch (Exception e) {
+                callback.onResult("支付流程异常:" + e.getLocalizedMessage(), payResult);
+            }
         }
     }
 
@@ -206,11 +277,12 @@ public class PosImpl implements IPos {
             case "1001":
                 return AppConstants.PAY_TYPE_CASH;
             case "1003":
-                return AppConstants.PAY_TYPE_WECHART;
+                return AppConstants.PAY_TYPE_WECHAT;
             case "1004":
                 return AppConstants.PAY_TYPE_ALIPAY;
             case "1006":
-                return AppConstants.PAY_TYPE_CARD;
+            case "1":
+                return AppConstants.PAY_TYPE_UNION;
             default:
                 return AppConstants.PAY_TYPE_UNKNOWN;
         }
@@ -317,8 +389,7 @@ public class PosImpl implements IPos {
         printBoldText(left, right, false);
     }
 
-    @Override
-    public void printBoldText(String left, String right, boolean highLight) {
+    private void printBoldText(String left, String right, boolean highLight) {
         if (mLatticePrinter != null) {
             String printText = left + getBlankBySize((highLight ? largeSize : mediumSize) - stringSize(left) - stringSize(right)) + right;
             mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, (highLight ? LatticePrinter.FontSize.LARGE : LatticePrinter.FontSize.MEDIUM), LatticePrinter.FontStyle.BOLD);
@@ -332,7 +403,6 @@ public class PosImpl implements IPos {
             mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, (highLight ? LatticePrinter.FontSize.LARGE : LatticePrinter.FontSize.MEDIUM), LatticePrinter.FontStyle.NORMAL);
         }
     }
-
 
     @Override
     public void printDivide() {
@@ -367,7 +437,7 @@ public class PosImpl implements IPos {
     }
 
     @Override
-    public void textToSound(String text) {
+    public void speech(String text) {
         WeiposImpl.as().speech(text);
     }
 
@@ -401,7 +471,7 @@ public class PosImpl implements IPos {
         return null;
     }
 
-    @Override
+    // 设置打印的监听
     public void setPrintListener(final Callback<?> callback) {
         if (mLatticePrinter != null) {
             if (callback != null) {
@@ -429,24 +499,6 @@ public class PosImpl implements IPos {
             } else {
                 mLatticePrinter.setOnEventListener(null);
             }
-        }
-    }
-
-
-    private void initPrinter() {
-        try {
-            // 设备可能没有打印机，open会抛异常
-            mLatticePrinter = WeiposImpl.as().getService(LatticePrinter.class);
-        } catch (Exception e2) {
-            XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "无法初始化打印机！");
-        }
-    }
-
-    private void initMagneticReader() {
-        try {
-            mMagneticReader = WeiposImpl.as().getService(MagneticReader.class);
-        } catch (Exception e) {
-            XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "无法初始化磁条读卡！");
         }
     }
 

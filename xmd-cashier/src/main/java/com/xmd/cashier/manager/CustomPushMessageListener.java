@@ -77,7 +77,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     NotifyManager.getInstance().notifyOrderRecordList();
                     break;
                 case AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY:   //内网订单支付
-                    PosFactory.getCurrentCashier().textToSound("您有一笔新结账订单待处理");
+                    PosFactory.getCurrentCashier().speech("您有一笔新结账订单待处理");
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());

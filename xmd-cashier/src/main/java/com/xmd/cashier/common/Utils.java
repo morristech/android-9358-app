@@ -3,6 +3,8 @@ package com.xmd.cashier.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -32,6 +34,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -201,9 +204,9 @@ public class Utils {
 
     public static String getPayTypeString(int payType) {
         switch (payType) {
-            case AppConstants.PAY_TYPE_CARD:
+            case AppConstants.PAY_TYPE_UNION:
                 return AppConstants.CASHIER_TYPE_UNION_TEXT;
-            case AppConstants.PAY_TYPE_WECHART:
+            case AppConstants.PAY_TYPE_WECHAT:
                 return AppConstants.CASHIER_TYPE_WX_TEXT;
             case AppConstants.PAY_TYPE_ALIPAY:
                 return AppConstants.CASHIER_TYPE_ALI_TEXT;
@@ -216,9 +219,9 @@ public class Utils {
 
     public static String getPayTypeChannel(int payType) {
         switch (payType) {
-            case AppConstants.PAY_TYPE_CARD:
+            case AppConstants.PAY_TYPE_UNION:
                 return AppConstants.PAY_CHANNEL_UNION;
-            case AppConstants.PAY_TYPE_WECHART:
+            case AppConstants.PAY_TYPE_WECHAT:
                 return AppConstants.PAY_CHANNEL_WX;
             case AppConstants.PAY_TYPE_ALIPAY:
                 return AppConstants.PAY_CHANNEL_ALI;
@@ -416,5 +419,16 @@ public class Utils {
                 return name.replaceAll("([\\s\\S]{1})[\\s\\S]*", "$1***");
             }
         }
+    }
+
+    public static boolean checkWeiPosApp(Context context, String packageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> infos = packageManager.getInstalledPackages(0);
+        for (PackageInfo packageInfo : infos) {
+            if (packageInfo.packageName.equalsIgnoreCase(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -57,8 +57,8 @@ public class AppConstants {
     public static final int PAY_TYPE_UNKNOWN = 0;
     public static final int PAY_TYPE_CASH = 1;
     public static final int PAY_TYPE_ALIPAY = 2;
-    public static final int PAY_TYPE_WECHART = 3;
-    public static final int PAY_TYPE_CARD = 4;
+    public static final int PAY_TYPE_WECHAT = 3;
+    public static final int PAY_TYPE_UNION = 4;
 
     public static final int DISCOUNT_TYPE_NONE = 0;
     public static final int DISCOUNT_TYPE_COUPON = 2;
@@ -84,8 +84,10 @@ public class AppConstants {
     public static final int TRADE_STATUS_SUCCESS = 1;
     public static final int TRADE_STATUS_CANCEL = 2;
 
+    // POS类型
     public static final String APP_CODE_WEI_POS = "100";
     public static final String APP_CODE_HUI_POS = "101";
+    public static final String APP_CODE_PHONE_POS = "102";
 
     public static final int APP_LIST_DEFAULT_PAGE = 1;
     public static final int APP_LIST_PAGE_SIZE = 20;
@@ -100,7 +102,7 @@ public class AppConstants {
     public static final Map<String, Integer> PAY_TYPE_FILTERS = new LinkedHashMap<String, Integer>() {{
         put("全部", PAY_TYPE_UNKNOWN);
         put("现金", PAY_TYPE_CASH);
-        put("银行卡", PAY_TYPE_CARD);
+        put("银行卡", PAY_TYPE_UNION);
     }};
 
     public static final Map<String, Integer> PAY_STATUS_FILTERS = new LinkedHashMap<String, Integer>() {{

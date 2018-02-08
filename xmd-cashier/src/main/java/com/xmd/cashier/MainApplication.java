@@ -26,7 +26,6 @@ import com.xmd.cashier.dal.db.DBManager;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
-import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.CustomPushMessageListener;
 import com.xmd.cashier.manager.DataReportManager;
@@ -78,17 +77,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         printBaseInfo();
 
         // 初始化旺POS服务
-        /*CashierManager.getInstance().init(getApplicationContext(), new Callback<Void>() {
-            @Override
-            public void onSuccess(Void o) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS服务初始化成功");
-            }
-
-            @Override
-            public void onError(String error) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS服务初始化失败：" + error);
-            }
-        });*/
+        CashierManager.getInstance().init(getApplicationContext(), null);
 
         LocalPersistenceManager.init(this);
         DBManager.init(this);
@@ -108,7 +97,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         // 初始化网络模块
         XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, SPManager.getInstance().getSpaServerAddress());
         XmdNetwork.getInstance().setDebug(true);
-//        XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+        XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
         XmdNetwork.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
             @Override
             public Request preProcess(Request request) {

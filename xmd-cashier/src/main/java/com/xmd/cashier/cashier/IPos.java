@@ -10,21 +10,24 @@ import com.xmd.cashier.manager.PayCallback;
  */
 
 public interface IPos {
+    int GRAVITY_LEFT = 0;
+    int GRAVITY_CENTER = 1;
+    int GRAVITY_RIGHT = 2;
 
-    String getAppCode(); //返回POS类型码
+    String getAppCode();    //返回POS类型码
 
-    boolean needCheckUpdate(); //需要检查升级信息
+    String getPosIdentifierNo();    //返回POS标识码
+
+    boolean needCheckUpdate();  //需要检查升级信息
+
+    boolean needChoicePayTypeByCaller();    //调用支付之前是否需要选择支付方式
+
+    //当前处于支付界面，但是由于某些原因支付界面的task被切换到后台，然后打开9358收银台时，需要确保交易结束，这时需要重新将支付task切换前台显示，此函数返回的package就是关联支付task的包名
+    String getPackageName();
 
     void init(Context context, Callback<?> callback);// 初始化
 
-    //调用支付之前是否需要选择支付方式
-    boolean needChoicePayTypeByCaller();
-
-    //当前处于支付界面，但是由于某些原因支付界面的task被切换到后台，然后打开9358收银台时，需要确保交易结束，这时
-    //需要重新将支付task切换前台显示，此函数返回的package就是关联支付task的包名
-    String getPackageName();
-
-    void pay(Context context, String tradeNo, int money, int payType, PayCallback<Object> callback);
+    void pay(Context context, String tradeNo, int money, int payType, PayCallback<Object> callback);//发起支付
 
     int getPayType(Object o);
 
@@ -36,47 +39,31 @@ public interface IPos {
 
     boolean isUserCancel(Object o);
 
-    void printBitmap(byte[] bitmap);
+    void printBitmap(byte[] bitmap);    //打印bitmap
 
-    // 默认居左
-    void printText(String text);
+    void printText(String text);    //文字居左
 
-    void printText(String text, boolean highLight);
+    void printText(String text, boolean highLight); //文字居左，可大字体
 
-    // 居右
-    void printRight(String text);
+    void printRight(String text);   //文字居右
 
-    void printRight(String text, boolean highLight);
+    void printRight(String text, boolean highLight);    //文字居右，可大字体
 
-    // 居中
-    void printCenter(String text);
+    void printCenter(String text);  //文字居中
 
-    void printCenter(String text, boolean highLight);
+    void printCenter(String text, boolean highLight);   //文字居中，可大字体
 
-    // 效果:left居左 right居右 huipos未实现
-    void printText(String left, String right);
+    void printText(String left, String right);  //文字分别居左居右
 
-    void printBoldText(String left, String right);
+    void printBoldText(String left, String right);  //文字分别居左居右，粗体
 
-    void printBoldText(String left, String right, boolean highLight);
+    void printText(String left, String right, boolean highLight);   //文字分别居左居右，可大字体
 
-    void printText(String left, String right, boolean highLight);
+    void printDivide();     //打印分隔线
 
-    // 效果:打印分隔线 huipos空行
-    void printDivide();
+    void printEnd();    //打印终止
 
-    void printEnd();
+    void speech(String text);   //播放语音
 
-    int GRAVITY_LEFT = 0;
-    int GRAVITY_CENTER = 1;
-    int GRAVITY_RIGHT = 2;
-
-    // 获取Pos标识:weipos返回en;huipos返回sn;
-    String getPosIdentifierNo();
-
-    void textToSound(String text);
-
-    String getMagneticReaderInfo();
-
-    void setPrintListener(Callback<?> callback);
+    String getMagneticReaderInfo(); //读取磁条信息
 }

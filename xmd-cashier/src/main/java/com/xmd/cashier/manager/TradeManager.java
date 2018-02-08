@@ -1,6 +1,5 @@
 package com.xmd.cashier.manager;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,7 +49,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -69,7 +67,6 @@ public class TradeManager {
     private static final String TAG = "TradeManager";
     private Trade mTrade;
     private IPos mPos;
-    public AtomicBoolean mInPosPay = new AtomicBoolean(false);
     private static TradeManager mInstance = new TradeManager();
 
     public static TradeManager getInstance() {
@@ -88,25 +85,6 @@ public class TradeManager {
     // 当前交易
     public Trade getCurrentTrade() {
         return mTrade;
-    }
-
-    //检查POS收银程序是否在支付，如果在支付则切换到POS机收银程序
-    public boolean checkAndProcessPosStatus(Context context) {
-        if (mInPosPay.get()) {
-            String packageName = CashierManager.getInstance().getCashierAppPackageName();
-            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> runningTaskInfoList = activityManager.getRunningTasks(Integer.MAX_VALUE);
-            if (runningTaskInfoList.size() > 0) {
-                for (ActivityManager.RunningTaskInfo taskInfo : runningTaskInfoList) {
-                    if (taskInfo.topActivity.getPackageName().equals(packageName)) {
-                        activityManager.moveTaskToFront(taskInfo.id, ActivityManager.MOVE_TASK_NO_USER_ACTION);
-                        return true;
-                    }
-                }
-            }
-            mInPosPay.set(false);
-        }
-        return false;
     }
 
     //汇报交易信息
@@ -271,18 +249,18 @@ public class TradeManager {
                         switch (mTrade.currentCashier) {
                             case AppConstants.CASHIER_TYPE_QRCODE:  //小摩豆买单支付
                                 if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
-                                    printOnlinePay(true, null);
+                                    printOnlinePay(true);
                                     if (SPManager.getInstance().getPrintClientSwitch()) {
-                                        printOnlinePay(false, null);
+                                        printOnlinePay(false);
                                     }
                                 }
                                 newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_MEMBER:  //会员支付
                                 if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
-                                    printMemberPay(true, null);
+                                    printMemberPay(true);
                                     if (SPManager.getInstance().getPrintClientSwitch()) {
-                                        printMemberPay(false, null);
+                                        printMemberPay(false);
                                     }
                                 }
                                 newTrade();
@@ -301,18 +279,18 @@ public class TradeManager {
                                 }
                                 reportTradeDataSync();   //汇报流水
                                 if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
-                                    printPosPay(true, null);
+                                    printPosPay(true);
                                     if (SPManager.getInstance().getPrintClientSwitch()) {
-                                        printPosPay(false, null);
+                                        printPosPay(false);
                                     }
                                 }
                                 newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_CASH:
                                 if (mTrade.tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
-                                    printPosPay(true, null);
+                                    printPosPay(true);
                                     if (SPManager.getInstance().getPrintClientSwitch()) {
-                                        printPosPay(false, null);
+                                        printPosPay(false);
                                     }
                                 }
                                 newTrade();
@@ -953,9 +931,8 @@ public class TradeManager {
 
     /*********************************************打印相关******************************************/
     // 会员消费
-    public void printMemberPay(boolean keep, Callback<?> callback) {
+    public void printMemberPay(boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印会员支付账单");
-        mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -1066,10 +1043,9 @@ public class TradeManager {
     }
 
     // 小摩豆买单
-    public void printOnlinePay(boolean keep, Callback<?> callback) {
+    public void printOnlinePay(boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印在线支付账单");
         List<TempUser> contacts = getTempContacts();
-        mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -1166,10 +1142,9 @@ public class TradeManager {
     }
 
     // Pos支付
-    public void printPosPay(boolean keep, Callback<?> callback) {
+    public void printPosPay(boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印旺POS支付或现金支付账单");
         List<TempUser> contacts = getTempContacts();
-        mPos.setPrintListener(callback);
         mPos.printCenter("小摩豆结帐单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
