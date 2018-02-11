@@ -59,10 +59,6 @@ public class RequestConstant {
     public static final String URL_GET_VERIFY_TYPE_LIST = SPA_SERVICE_BASE + "/v2/manager/checkinfo/type/list";     //获取核销码类型选择列表
 
     // ****************************************** POS在线买单 **************************************
-    public static final String URL_GET_XMD_ONLINE_ORDER_DETAIL = SPA_SERVICE_BASE + "/v2/manager/fastpay/order/detail";
-    public static final String URL_GET_XMD_ONLINE_SCAN_STATUS = SPA_SERVICE_BASE + "/v2/manager/order/id/status";
-    public static final String URL_GET_XMD_ONLINE_QRCODE_URL = SPA_SERVICE_BASE + "/v2/manager/fast_pay/url/get";
-    public static final String URL_DELETE_XMD_ONLINE_ORDER_ID = SPA_SERVICE_BASE + "/v2/manager/order/id/delete";
     public static final String URL_GET_DISCOUNT_COUPON_DETAIL = SPA_SERVICE_BASE + "/v2/user/fastpay/coupon/detail";    // 买单抵扣券详情
 
     // ****************************************** POS会员 **************************************
@@ -140,31 +136,12 @@ public class RequestConstant {
 
     public static final String KEY_TRADE_NO = "tradeNo";
 
-    public static final String KEY_ORIGIN_MONEY = "originMoney";
-
-    public static final String KEY_COUPON_LIST = "couponList";
-    public static final String KEY_COUPON_RESULT = "couponResult";
-    public static final String KEY_COUPON_MONEY = "couponMoney";
-
-    public static final String KEY_DISCOUNT_TYPE = "discountType";
-    public static final String KEY_COUPON_DISCOUNT_MONEY = "couponDiscountMoney";
-    public static final String KEY_USER_DISCOUNT_MONEY = "userDiscountMoney";
-
-    public static final String KEY_POS_PAY_OUT_TRADE_NO = "posPayOutTradeNo";
-    public static final String KEY_POS_PAY_INNER_TRADE_NO = "posPayInnerTradeNo";
-    public static final String KEY_POS_PAY_MONEY = "posPayMoney";
-    public static final String KEY_POS_PAY_TYPE = "posPayType";
-    public static final String KEY_POS_PAY_RESULT = "posPayResult";
-    public static final String KEY_POS_PAY_EXTRAINFO = "posPayExtraInfo";
-    public static final String KEY_POS_PAY_CERTIFICATE = "posPayCertificate";
-
     public static final String KEY_MEMBER_TOKEN = "memberToken";
     public static final String KEY_MEMBER_CAN_DISCOUNT = "canDiscount";
 
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_ORI_AMOUNT = "oriAmount";
 
-    public static final String KEY_PAY_DATE = "payDate";
     public static final String KEY_PAY_TYPE = "payType";
 
     public static final String KEY_APP_ID = "appId";
@@ -192,7 +169,6 @@ public class RequestConstant {
     public static final String KEY_SETTLE_YM = "settleYm";
     public static final String KEY_RECORD_ID = "recordId";
 
-    public static final String KEY_TOTAL = "total";
     public static final String KEY_DISCOUNT = "discount";
     public static final String KEY_COUNT = "count";
     public static final String KEY_BUSINESS_TYPE = "businessType";
@@ -205,13 +181,9 @@ public class RequestConstant {
     public static final String KEY_TECH_ID = "techId";
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_MEMBER_ID = "memberId";
-    public static final String KEY_BIZ_CATEGORY = "businessCategory";
-    public static final String KEY_TRADE_TYPE = "tradeType";
     public static final String KEY_PAY_CHANNEL = "payChannel";
     public static final String KEY_ORDER_AMOUNT = "orderAmount";
     public static final String KEY_DISCOUNT_AMOUNT = "discountAmount";
-
-    public static final String KEY_REPORT_TAG = "reportTag";
 
     public static final String KEY_TECH_NO_SEARCH = "noSearch";
     public static final String KEY_ROLE = "role";

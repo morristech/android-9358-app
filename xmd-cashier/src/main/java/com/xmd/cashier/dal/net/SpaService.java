@@ -576,28 +576,6 @@ public interface SpaService {
     @GET
     Call<ResponseBody> getClubQrcodeByWX(@Url String url);
 
-    // 现金收银汇报
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_REPORT_TRADE_DATA)
-    Observable<ReportTradeDataResult> reportCash(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                 @Field(RequestConstant.KEY_USER_ID) String userId,
-                                                 @Field(RequestConstant.KEY_CLUB_ID) String clubId,
-                                                 @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                                 @Field(RequestConstant.KEY_STATUS) String tradeStatus,
-                                                 @Field(RequestConstant.KEY_ORIGIN_MONEY) String originMoney,
-                                                 @Field(RequestConstant.KEY_COUPON_LIST) String couponList,
-                                                 @Field(RequestConstant.KEY_COUPON_RESULT) String couponResult,
-                                                 @Field(RequestConstant.KEY_COUPON_MONEY) String couponMoney,
-                                                 @Field(RequestConstant.KEY_DISCOUNT_TYPE) String discountType,
-                                                 @Field(RequestConstant.KEY_COUPON_DISCOUNT_MONEY) String couponDiscountMoney,
-                                                 @Field(RequestConstant.KEY_USER_DISCOUNT_MONEY) String userDiscountMoney,
-                                                 @Field(RequestConstant.KEY_PAY_DATE) String payDate,
-                                                 @Field(RequestConstant.KEY_POS_PAY_MONEY) String posPayMoney,
-                                                 @Field(RequestConstant.KEY_POS_PAY_TYPE) String posPayType,
-                                                 @Field(RequestConstant.KEY_POS_PAY_RESULT) String posPayResult,
-                                                 @Field(RequestConstant.KEY_REPORT_TAG) String reportTag,
-                                                 @Field(RequestConstant.KEY_SIGN) String sign);
-
     // 买单有礼
     @GET(RequestConstant.URL_GET_ONLINE_GIFT_ACTIVITY)
     Observable<GiftActivityResult> getGiftActivity(@Query(RequestConstant.KEY_TOKEN) String userToken,
