@@ -13,6 +13,7 @@ import com.xmd.cashier.contract.InnerModifyContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.event.InnerGenerateOrderEvent;
+import com.xmd.cashier.dal.event.TradeDoneEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
@@ -216,22 +217,23 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                             //核销金额已完成抵扣
                             XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单无需再支付金额");
                             trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                            UiNavigation.gotoInnerResultActivity(mContext);
-                            mView.finishSelf();
+                            EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
                         } else {
                             // 需要支付
                             switch (mTradeManager.getCurrentTrade().currentChannelType) {
-                                case AppConstants.PAY_CHANNEL_ALI:  //POS扫码
-                                case AppConstants.PAY_CHANNEL_WX:    //现金
-                                case AppConstants.PAY_CHANNEL_CASH:    //自定义记账
+                                case AppConstants.PAY_CHANNEL_ALI:
+                                case AppConstants.PAY_CHANNEL_WX:
+                                    UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                                    break;
                                 case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
-                                    UiNavigation.gotoInnerPaymentActivity(mContext);
-                                    mView.finishSelf();
+                                    UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
                                     break;
                                 case AppConstants.PAY_CHANNEL_UNION:     //银联
                                     posCashier();
                                     break;
+                                case AppConstants.PAY_CHANNEL_CASH:
                                 default:
+                                    UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
                                     break;
                             }
                         }
@@ -313,8 +315,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                 mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                 mTradeManager.getCurrentTrade().tradeStatusError = error;
-                UiNavigation.gotoInnerResultActivity(mContext);
-                mView.finishSelf();
+                EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
             }
         });
     }
@@ -361,8 +362,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                 resultCallBackBatch = true;
                 mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                UiNavigation.gotoInnerResultActivity(mContext);
-                mView.finishSelf();
+                EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
             }
 
             @Override
@@ -380,5 +380,13 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         mTradeManager.getCurrentTrade().memberInfo = info;
         mTradeManager.getCurrentTrade().memberId = String.valueOf(info.id);
         doCashier();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(TradeDoneEvent tradeDoneEvent) {
+        if (tradeDoneEvent.type == AppConstants.TRADE_TYPE_INNER) {
+            UiNavigation.gotoInnerResultActivity(mContext);
+            mView.finishSelf();
+        }
     }
 }

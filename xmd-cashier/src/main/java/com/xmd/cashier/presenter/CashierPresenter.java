@@ -208,7 +208,7 @@ public class CashierPresenter implements CashierContract.Presenter {
                         mView.hideLoading();
                         if (AppConstants.APP_REQUEST_YES.equals(o)) {
                             trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                            UiNavigation.gotoCashierResultActivity(mContext);
+                            EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_NORMAL));
                         } else {
                             switch (trade.currentChannelType) {
                                 case AppConstants.PAY_CHANNEL_WX:   //微信
@@ -262,7 +262,7 @@ public class CashierPresenter implements CashierContract.Presenter {
 
             @Override
             public void onError(String error) {
-                UiNavigation.gotoCashierResultActivity(mContext);
+                EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_NORMAL));
             }
         });
     }

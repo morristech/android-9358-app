@@ -21,7 +21,6 @@ import com.xmd.cashier.activity.InnerDetailActivity;
 import com.xmd.cashier.activity.InnerDiscountActivity;
 import com.xmd.cashier.activity.InnerMethodActivity;
 import com.xmd.cashier.activity.InnerModifyActivity;
-import com.xmd.cashier.activity.InnerPaymentActivity;
 import com.xmd.cashier.activity.InnerRecordActivity;
 import com.xmd.cashier.activity.InnerResultActivity;
 import com.xmd.cashier.activity.InnerSelectActivity;
@@ -332,11 +331,6 @@ public class UiNavigation {
     }
 
     //**********************************内网管理*************************************
-    public static void gotoInnerPaymentActivity(Context context) {
-        Intent intent = new Intent(context, InnerPaymentActivity.class);
-        context.startActivity(intent);
-    }
-
     public static void gotoInnerMethodActivity(Context context, String source, TradeRecordInfo info) {
         Intent intent = new Intent(context, InnerMethodActivity.class);
         intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, source);

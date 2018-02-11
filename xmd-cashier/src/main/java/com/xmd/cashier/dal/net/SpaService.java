@@ -32,7 +32,6 @@ import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PosPullResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
-import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.dal.net.response.StringResult;

@@ -218,9 +218,6 @@
             android:name=".activity.InnerRecordActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.InnerPaymentActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".activity.InnerResultActivity"
             android:launchMode="singleTask" />
         <activity
