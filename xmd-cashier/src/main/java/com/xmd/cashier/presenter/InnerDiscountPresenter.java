@@ -9,9 +9,9 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerDiscountContract;
 import com.xmd.cashier.dal.bean.CheckInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
-import com.xmd.cashier.dal.bean.OrderDiscountInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
@@ -60,7 +60,7 @@ public class InnerDiscountPresenter implements InnerDiscountContract.Presenter {
             mView.hideVerifyList();
         }
 
-        List<OrderDiscountInfo> verified = mTradeManager.getVerifiedList();
+        List<TradeDiscountInfo> verified = mTradeManager.getVerifiedList();
         if (verified != null && !verified.isEmpty()) {
             mView.showVerifiedLayout(verified);
         } else {
@@ -167,7 +167,6 @@ public class InnerDiscountPresenter implements InnerDiscountContract.Presenter {
             public void onSuccess(StringResult o) {
                 switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:
-                        TradeManager.getInstance().getCurrentTrade().memberTempPhone = number;
                         // 手机号
                         getList(number);
                         break;
@@ -203,9 +202,9 @@ public class InnerDiscountPresenter implements InnerDiscountContract.Presenter {
 
     private List<String> getVerifyTag() {
         List<String> temp = new ArrayList<>();
-        List<OrderDiscountInfo> verified = mTradeManager.getVerifiedList();
+        List<TradeDiscountInfo> verified = mTradeManager.getVerifiedList();
         if (verified != null && !verified.isEmpty()) {
-            for (OrderDiscountInfo orderDiscountInfo : verified) {
+            for (TradeDiscountInfo orderDiscountInfo : verified) {
                 temp.add(orderDiscountInfo.checkInfo.title);
             }
         }

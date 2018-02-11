@@ -8,8 +8,8 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerMethodContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
@@ -48,13 +48,15 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         int origin = trade.getOriginMoney();
         int reduction = trade.getWillReductionMoney();
-        int verify = TradeManager.getInstance().getDiscountAmount(trade.getCouponList());
+        int verify = mTradeManager.getDiscountAmount(trade.getCouponList());
         int already = trade.getAlreadyDiscountMoney();
         trade.setWillDiscountMoney(verify);
         trade.setAlreadyCutMoney(verify + reduction + already);
         if (origin < verify + reduction + already) {
+            trade.setNeedPayMoney(0);
             trade.setWillPayMoney(0);
         } else {
+            trade.setNeedPayMoney(origin - verify - reduction - already);
             trade.setWillPayMoney(origin - verify - reduction - already);
         }
         mView.showDiscountAmount(trade.getAlreadyCutMoney());
@@ -181,7 +183,7 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
             case AppConstants.INNER_METHOD_SOURCE_RECORD:   //如果是记录列表
             case AppConstants.INNER_METHOD_SOURCE_PUSH:     //如果是推送
             case AppConstants.INNER_METHOD_SOURCE_CONTINUE:
-                InnerRecordInfo recordInfo = mView.returnRecordInfo();
+                TradeRecordInfo recordInfo = mView.returnRecordInfo();
                 mView.showOrderList(recordInfo.details);    //显示列表
                 mView.setStatusLayout(false);               //隐藏设置项
                 break;

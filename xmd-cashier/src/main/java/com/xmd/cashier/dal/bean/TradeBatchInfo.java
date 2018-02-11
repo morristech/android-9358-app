@@ -4,7 +4,7 @@ package com.xmd.cashier.dal.bean;
  * Created by zr on 17-11-8.
  */
 
-public class InnerBatchInfo {
+public class TradeBatchInfo {
     public String batchNo;    //批量结账单号
     public int discountAmount;    //本次新增的优惠抵扣	单位为分
     public String payNo;             //部分支付订单No

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +21,14 @@ import java.util.List;
 
 public class OnlinePayDiscountAdapter extends RecyclerView.Adapter<OnlinePayDiscountAdapter.ViewHolder> {
     private Context mContext;
-    private List<OnlinePayInfo.OnlinePayDiscountInfo> mData = new ArrayList<>();
+    private List<TradeDiscountInfo> mData = new ArrayList<>();
     private CallBack mCallBack;
 
     public void setCallBack(CallBack callback) {
         mCallBack = callback;
     }
 
-    public void setData(List<OnlinePayInfo.OnlinePayDiscountInfo> list) {
+    public void setData(List<TradeDiscountInfo> list) {
         if (list != null) {
             mData.addAll(list);
             notifyDataSetChanged();
@@ -42,7 +42,7 @@ public class OnlinePayDiscountAdapter extends RecyclerView.Adapter<OnlinePayDisc
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final OnlinePayInfo.OnlinePayDiscountInfo info = mData.get(position);
+        final TradeDiscountInfo info = mData.get(position);
         if (info.type != null) {
             switch (info.type) {
                 case AppConstants.PAY_DISCOUNT_COUPON:
@@ -95,6 +95,6 @@ public class OnlinePayDiscountAdapter extends RecyclerView.Adapter<OnlinePayDisc
     }
 
     public interface CallBack {
-        void onItemClick(OnlinePayInfo.OnlinePayDiscountInfo info);
+        void onItemClick(TradeDiscountInfo info);
     }
 }

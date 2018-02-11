@@ -70,9 +70,9 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     }
 
     private boolean checkPaymentStatus() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单微信支付宝支付查询订单状态：" + RequestConstant.URL_CHECK_INNER_SUB_PAY_STATUS);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单微信支付宝支付查询订单状态：" + RequestConstant.URL_CHECK_PAY_STATUS);
         getPaymentStatus = XmdNetwork.getInstance().getService(SpaService.class)
-                .checkInnerSubPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId, mTradeManager.getCurrentTrade().subPayOrderId);
+                .checkPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId, mTradeManager.getCurrentTrade().payNo);
         XmdNetwork.getInstance().requestSync(getPaymentStatus, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
@@ -108,15 +108,12 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     @Override
     public void onCreate() {
         mTradeManager = TradeManager.getInstance();
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付方式:" + mTradeManager.getCurrentTrade().currentCashier);
-//        mView.setOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney()));
-//        mView.setDiscount(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()
-//                + mTradeManager.getCurrentTrade().getAlreadyDiscountMoney()
-//                + mTradeManager.getCurrentTrade().getWillReductionMoney()));
-        switch (mTradeManager.getCurrentTrade().currentCashier) {
-            case AppConstants.CASHIER_TYPE_QRCODE:
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付方式:" + mTradeManager.getCurrentTrade().currentChannelType);
+        switch (mTradeManager.getCurrentTrade().currentChannelType) {
+            case AppConstants.PAY_CHANNEL_WX:
+            case AppConstants.PAY_CHANNEL_ALI:
                 mView.initScanStub();
-                mView.setScanPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
+                mView.setScanPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
                 if (TextUtils.isEmpty(mTradeManager.getCurrentTrade().payUrl)) {
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单微信支付宝支付获取二维码失败");
                     mView.showToast("获取二维码失败");
@@ -139,19 +136,19 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
                 }
                 getPayGiftActivity();
                 break;
-            case AppConstants.CASHIER_TYPE_CASH:
-            case AppConstants.CASHIER_TYPE_MARK:
+            case AppConstants.PAY_CHANNEL_CASH:
+            case AppConstants.PAY_CHANNEL_OTHER:
                 mView.initMarkStub();
-                mView.setMarkPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
-                mView.setMarkName(mTradeManager.getCurrentTrade().currentCashierName);
-                mView.setMarkDesc(mTradeManager.getCurrentTrade().currentCashierMark);
+                mView.setMarkPaid("￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
+                mView.setMarkName(mTradeManager.getCurrentTrade().currentChannelName);
+                mView.setMarkDesc(mTradeManager.getCurrentTrade().currentChannelMark);
                 break;
-            case AppConstants.CASHIER_TYPE_MEMBER:
+            case AppConstants.PAY_CHANNEL_ACCOUNT:
                 mView.initMemberStub();
                 mView.setMemberInfo(mTradeManager.getCurrentTrade().memberInfo);
-                mView.setMemberOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getRealPayMoney()));
-                int payMoney = (int) (mTradeManager.getCurrentTrade().getRealPayMoney() * (mTradeManager.getCurrentTrade().memberInfo.discount / 1000.0f)); //计算折扣
-                int discountMoney = (int) (mTradeManager.getCurrentTrade().getRealPayMoney() * (1000 - mTradeManager.getCurrentTrade().memberInfo.discount) / 1000.0f);
+                mView.setMemberOrigin(Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
+                int payMoney = (int) (mTradeManager.getCurrentTrade().getWillPayMoney() * (mTradeManager.getCurrentTrade().memberInfo.discount / 1000.0f)); //计算折扣
+                int discountMoney = (int) (mTradeManager.getCurrentTrade().getWillPayMoney() * (1000 - mTradeManager.getCurrentTrade().memberInfo.discount) / 1000.0f);
                 mView.setMemberDiscount("-" + Utils.moneyToStringEx(discountMoney));
                 mView.setMemberPaid(Utils.moneyToStringEx(payMoney));
                 mView.setConfirmEnable(mTradeManager.getCurrentTrade().memberInfo.amount >= payMoney);
@@ -232,7 +229,8 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
                     public void onClick(DialogInterface dialog, int which) {
                         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单选择退出交易");
                         dialog.dismiss();
-                        trade.tradeStatus = AppConstants.TRADE_STATUS_CANCEL;
+                        trade.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                        trade.tradeStatusError = "已取消交易";
                         UiNavigation.gotoInnerResultActivity(mContext);
                         mView.finishSelf();
                     }
@@ -242,13 +240,12 @@ public class InnerPaymentPresenter implements InnerPaymentContract.Presenter {
     }
 
     private void doCallBack() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付标记支付结果：" + RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付标记支付结果：" + RequestConstant.URL_CALLBACK_BATCH_ORDER);
         mView.showLoading();
         if (mDoPayCallBackSubscription != null) {
             mDoPayCallBackSubscription.unsubscribe();
         }
-        Trade trade = mTradeManager.getCurrentTrade();
-        mDoPayCallBackSubscription = mTradeManager.callbackInnerBatch(trade.payOrderId, trade.subPayOrderId, String.valueOf(trade.getRealPayMoney()), trade.currentCashierType, trade.memberId, null, new Callback<BaseBean>() {
+        mDoPayCallBackSubscription = mTradeManager.callbackBatchOrder(new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付标记支付结果---成功");

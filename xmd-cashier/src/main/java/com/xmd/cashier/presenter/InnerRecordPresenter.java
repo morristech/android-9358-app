@@ -7,13 +7,13 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerRecordContract;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.InnerRecordListResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
-import com.xmd.cashier.manager.InnerManager;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -159,14 +159,14 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
     }
 
     @Override
-    public void onDetail(InnerRecordInfo info) {
+    public void onDetail(TradeRecordInfo info) {
         mView.showLoading();
         if (mGetInnerHoleBatchSubscription != null) {
             mGetInnerHoleBatchSubscription.unsubscribe();
         }
-        mGetInnerHoleBatchSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(info.id, new Callback<InnerRecordInfo>() {
+        mGetInnerHoleBatchSubscription = TradeManager.getInstance().getHoleBatchDetail(info.id, new Callback<TradeRecordInfo>() {
             @Override
-            public void onSuccess(InnerRecordInfo o) {
+            public void onSuccess(TradeRecordInfo o) {
                 mView.hideLoading();
                 UiNavigation.gotoInnerDetailActivity(mContext, AppConstants.INNER_DETAIL_SOURCE_RECORD, o);
             }
@@ -180,16 +180,16 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
     }
 
     @Override
-    public void onPay(InnerRecordInfo info) {
+    public void onPay(TradeRecordInfo info) {
         mView.showLoading();
         if (mGetInnerHoleBatchSubscription != null) {
             mGetInnerHoleBatchSubscription.unsubscribe();
         }
-        mGetInnerHoleBatchSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(info.id, new Callback<InnerRecordInfo>() {
+        mGetInnerHoleBatchSubscription = TradeManager.getInstance().getHoleBatchDetail(info.id, new Callback<TradeRecordInfo>() {
             @Override
-            public void onSuccess(InnerRecordInfo o) {
+            public void onSuccess(TradeRecordInfo o) {
                 mView.hideLoading();
-                InnerManager.getInstance().initTradeByRecord(o);
+                TradeManager.getInstance().initTradeByRecord(o);
                 if (o.paidAmount > 0) {
                     UiNavigation.gotoInnerModifyActivity(mContext);
                 } else {
@@ -206,16 +206,16 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
     }
 
     @Override
-    public void printClient(InnerRecordInfo info) {
+    public void printClient(TradeRecordInfo info) {
         mView.showLoading();
         if (mGetInnerHoleBatchSubscription != null) {
             mGetInnerHoleBatchSubscription.unsubscribe();
         }
-        mGetInnerHoleBatchSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(info.id, new Callback<InnerRecordInfo>() {
+        mGetInnerHoleBatchSubscription = TradeManager.getInstance().getHoleBatchDetail(info.id, new Callback<TradeRecordInfo>() {
             @Override
-            public void onSuccess(InnerRecordInfo o) {
+            public void onSuccess(TradeRecordInfo o) {
                 mView.hideLoading();
-                InnerManager.getInstance().printInnerRecordInfoAsync(o, true, false);
+                TradeManager.getInstance().printTradeRecordInfoAsync(o, true, false);
             }
 
             @Override
@@ -227,16 +227,16 @@ public class InnerRecordPresenter implements InnerRecordContract.Presenter {
     }
 
     @Override
-    public void printClub(InnerRecordInfo info) {
+    public void printClub(TradeRecordInfo info) {
         mView.showLoading();
         if (mGetInnerHoleBatchSubscription != null) {
             mGetInnerHoleBatchSubscription.unsubscribe();
         }
-        mGetInnerHoleBatchSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(info.id, new Callback<InnerRecordInfo>() {
+        mGetInnerHoleBatchSubscription = TradeManager.getInstance().getHoleBatchDetail(info.id, new Callback<TradeRecordInfo>() {
             @Override
-            public void onSuccess(InnerRecordInfo o) {
+            public void onSuccess(TradeRecordInfo o) {
                 mView.hideLoading();
-                InnerManager.getInstance().printInnerRecordInfoAsync(o, true, true);
+                TradeManager.getInstance().printTradeRecordInfoAsync(o, true, true);
             }
 
             @Override

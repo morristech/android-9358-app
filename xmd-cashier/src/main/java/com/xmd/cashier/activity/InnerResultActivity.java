@@ -46,6 +46,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         mPresenter.onCreate();
     }
 

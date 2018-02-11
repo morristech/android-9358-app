@@ -5,7 +5,7 @@ package com.xmd.cashier.dal.bean;
  * 支付方式
  */
 
-public class InnerChannelInfo {
+public class TradeChannelInfo {
     public String clubId;
     public long createTime;
     public boolean custom;      //是否为自定义

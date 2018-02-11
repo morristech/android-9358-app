@@ -7,7 +7,7 @@ import java.util.List;
  * Created by zr on 17-7-26.
  */
 
-public class PayCouponInfo implements Serializable{
+public class PayCouponInfo implements Serializable {
     public String actContent;    //券使用说明
     public String actDescription;    //券描述
     public String actId;    //券id
@@ -33,7 +33,7 @@ public class PayCouponInfo implements Serializable{
     public String useTypeName;//券来源名称
     public List<ServiceItem> items;
 
-    public class ServiceItem implements Serializable{
+    public class ServiceItem implements Serializable {
         public String categoryId;//分类id
         public String categoryName;//	分类名称
         public String clubId;

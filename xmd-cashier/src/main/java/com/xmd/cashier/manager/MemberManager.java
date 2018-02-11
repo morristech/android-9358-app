@@ -19,6 +19,7 @@ import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
+import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
 import com.xmd.cashier.dal.net.response.MemberListResult;
@@ -372,23 +373,9 @@ public class MemberManager {
 
     // POS支付获取TradeNo
     public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
-        int amount = 0;
-        switch (getAmountType()) {
-            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                PackagePlanItem info = mRechargeProcess.getPackageInfo();
-                if (info != null) {
-                    amount = info.amount;
-                }
-                break;
-            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
-                amount = mRechargeProcess.getAmount();
-                break;
-            default:
-                break;
-        }
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号：" + RequestConstant.URL_GET_TRADE_NO);
         Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTradeNo(AccountManager.getInstance().getToken(), amount, null, RequestConstant.DEFAULT_SIGN_VALUE);
+                .getTradeNo(AccountManager.getInstance().getToken(), RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
             @Override
             public void onCallbackSuccess(GetTradeNoResult result) {
@@ -411,44 +398,34 @@ public class MemberManager {
         CashierManager.getInstance().pay(context, mTrade.getPosTradeNo(), money, new PayCallback<Object>() {
             @Override
             public void onResult(String error, Object o) {
-                mTrade.posPayReturn = o;
                 if (error == null) {
-                    mTrade.setOriginMoney(money);
-                    mTrade.tradeTime = DateUtils.doDate2String(new Date());
-                    mTrade.posMoney = money;
-                    mTrade.posPayResult = AppConstants.PAY_RESULT_SUCCESS;
-                    mTrade.posPayTypeString = Utils.getPayTypeString(CashierManager.getInstance().getPayType(o));
-                    mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                     callback.onSuccess(null);
                 } else {
-                    if (CashierManager.getInstance().isUserCancel(o)) {
-                        mTrade.posPayResult = AppConstants.PAY_RESULT_CANCEL;
-                    } else {
-                        mTrade.posPayResult = AppConstants.PAY_RESULT_ERROR;
-                    }
                     callback.onError(error);
                 }
             }
         });
     }
 
-    public void reportTrade() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值订单旺POS渠道支付进行汇报PosPayDeal");
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        DataReportManager.getInstance().reportData(MemberManager.getInstance().getTrade(), AppConstants.REPORT_DATA_BIZ_MEMBER);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+    // 获取会员信息: 扫码
+    public Subscription fetchMemberInfo(final String memberToken, final Callback<MemberInfo> callback) {
+        Observable<GetMemberInfo> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getMemberInfo(AccountManager.getInstance().getToken(), memberToken, RequestConstant.DEFAULT_SIGN_VALUE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetMemberInfo>() {
+            @Override
+            public void onCallbackSuccess(GetMemberInfo result) {
+                callback.onSuccess(result.getRespData());
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
-    // 获取会员信息
+
+    // 获取会员信息: code
     public Subscription requestMemberInfo(String code, final Callback<MemberInfo> callback) {
         Observable<MemberListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getMemberInfo(AccountManager.getInstance().getToken(), code);

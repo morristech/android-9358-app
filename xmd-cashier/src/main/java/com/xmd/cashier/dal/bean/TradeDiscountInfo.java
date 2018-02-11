@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by zr on 17-11-9.
  */
 
-public class OrderDiscountInfo implements Serializable {
+public class TradeDiscountInfo implements Serializable {
     public int amount;    //抵扣金额
     public String bizName;    //抵扣名称
     public long id;    //抵扣项ID
@@ -14,5 +14,5 @@ public class OrderDiscountInfo implements Serializable {
     public String type;    //优惠项类型:paid_order-预约;coupon-用券;member-会员;reduction-直减优惠
     public String verifyCode;    //核销码
 
-    public OrderDiscountCheckInfo checkInfo;
+    public TradeDiscountCheckInfo checkInfo;
 }

@@ -14,7 +14,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerDetailContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.presenter.InnerDetailPresenter;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
 
@@ -36,7 +36,7 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
 
     private InnerDetailContract.Presenter mPresenter;
 
-    private InnerRecordInfo mRecordInfo;
+    private TradeRecordInfo mRecordInfo;
     private String mSource;
 
     private TextView mOriginAmount;
@@ -52,7 +52,7 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inner_detail);
         mSource = getIntent().getStringExtra(AppConstants.EXTRA_INNER_DETAIL_SOURCE);
-        mRecordInfo = (InnerRecordInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL);
+        mRecordInfo = (TradeRecordInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL);
         mPresenter = new InnerDetailPresenter(this, this);
         initView();
         mPresenter.onCreate();
@@ -124,7 +124,7 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
     }
 
     @Override
-    public InnerRecordInfo returnRecordInfo() {
+    public TradeRecordInfo returnRecordInfo() {
         return mRecordInfo;
     }
 
@@ -139,7 +139,7 @@ public class InnerDetailActivity extends BaseActivity implements InnerDetailCont
     }
 
     @Override
-    public void showAmount(InnerRecordInfo recordInfo) {
+    public void showAmount(TradeRecordInfo recordInfo) {
         // 订单金额
         mOriginAmount.setText("￥" + Utils.moneyToStringEx(recordInfo.originalAmount));
         // 优惠金额

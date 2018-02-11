@@ -27,6 +27,7 @@ import com.xmd.cashier.dal.net.response.InnerTechListResult;
 import com.xmd.cashier.dal.net.response.InnerUnpaidResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.InnerManager;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -312,7 +313,7 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
             mView.showToast("请选择结账订单...");
             return;
         }
-        InnerManager.getInstance().initTradeBySelect();
+        TradeManager.getInstance().initTradeBySelect();
         UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_NORMAL, null);
         mView.showEnterAnim();
     }

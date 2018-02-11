@@ -7,9 +7,9 @@ import com.xmd.cashier.BaseView;
  * Created by zr on 17-8-17.
  */
 
-public interface CashPayContract {
+public interface TradeMarkPayContract {
     interface Presenter extends BasePresenter {
-        void onCashPay();
+        void onMarkPay();
 
         void onNavigationBack();
     }
@@ -17,14 +17,10 @@ public interface CashPayContract {
     interface View extends BaseView<Presenter> {
         void showAmount(String amount);
 
-        void enableCashBtn();
+        void showChannelName(String name);
 
-        void disableCashBtn();
+        void showChannelDesc(String desc);
 
-        void showCashBtn();
-
-        void showCashSuccess();
-
-        int getAmount();
+        int getType();
     }
 }

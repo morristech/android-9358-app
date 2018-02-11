@@ -8,7 +8,7 @@ import com.xmd.cashier.dal.bean.MemberInfo;
  * Created by zr on 17-7-22.
  */
 
-public interface MemberCashierContract {
+public interface TradeMemberPayContract {
     interface Presenter extends BasePresenter {
         void onMemberPay();
 
@@ -25,5 +25,7 @@ public interface MemberCashierContract {
         void showDiscountAmount(String discount);
 
         void showNeedAmount(String need);
+
+        int getType();
     }
 }

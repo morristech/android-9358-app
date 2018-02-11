@@ -21,8 +21,9 @@ import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.widget.CircleImageView;
 
@@ -38,7 +39,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int TYPE_ONLINE_PAY_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
-    private List<OnlinePayInfo> mData = new ArrayList<>();
+    private List<TradeRecordInfo> mData = new ArrayList<>();
     private Context mContext;
     private OnlinePayCallBack mCallBack;
 
@@ -47,16 +48,16 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public interface OnlinePayCallBack {
         void onLoadMore();
 
-        void onPrintClient(OnlinePayInfo info);
+        void onPrintClient(TradeRecordInfo info);
 
-        void onPrintClub(OnlinePayInfo info);
+        void onPrintClub(TradeRecordInfo info);
 
-        void onConfirm(OnlinePayInfo info, int position);
+        void onConfirm(TradeRecordInfo info, int position);
 
-        void onException(OnlinePayInfo info, int position);
+        void onException(TradeRecordInfo info, int position);
 
         // 查看券详情
-        void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info);
+        void onDetail(TradeDiscountInfo info);
 
         // 查看拆分支付详情
         void onPayDetail(List<PayRecordInfo> payRecordInfos);
@@ -74,7 +75,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mData.clear();
     }
 
-    public void setData(List<OnlinePayInfo> data) {
+    public void setData(List<TradeRecordInfo> data) {
         this.mData.addAll(data);
     }
 
@@ -138,7 +139,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     break;
             }
         } else {
-            final OnlinePayInfo info = mData.get(position);
+            final TradeRecordInfo info = mData.get(position);
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             switch (info.status) {
                 case AppConstants.ONLINE_PAY_STATUS_PAID:
@@ -274,7 +275,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             OnlinePayDiscountAdapter discountAdapter = new OnlinePayDiscountAdapter();
             discountAdapter.setCallBack(new OnlinePayDiscountAdapter.CallBack() {
                 @Override
-                public void onItemClick(OnlinePayInfo.OnlinePayDiscountInfo info) {
+                public void onItemClick(TradeDiscountInfo info) {
                     mCallBack.onDetail(info);
                 }
             });

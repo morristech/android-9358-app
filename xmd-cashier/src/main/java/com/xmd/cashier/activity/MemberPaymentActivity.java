@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.contract.MemberScanContract;
+import com.xmd.cashier.contract.MemberPaymentContract;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
-import com.xmd.cashier.presenter.MemberScanPresenter;
+import com.xmd.cashier.presenter.MemberPaymentPresenter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -24,8 +24,8 @@ import org.greenrobot.eventbus.ThreadMode;
  * 微信 支付宝 现金 收款
  */
 
-public class MemberScanActivity extends BaseActivity implements MemberScanContract.View {
-    private MemberScanContract.Presenter mPresenter;
+public class MemberPaymentActivity extends BaseActivity implements MemberPaymentContract.View {
+    private MemberPaymentContract.Presenter mPresenter;
 
     private TextView mScanContentText;
     private TextView mScanDescText;
@@ -42,9 +42,9 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member_scan);
+        setContentView(R.layout.activity_member_payment);
         mCashierMethod = getIntent().getStringExtra(AppConstants.EXTRA_MEMBER_CASHIER_METHOD);
-        mPresenter = new MemberScanPresenter(this, this);
+        mPresenter = new MemberPaymentPresenter(this, this);
         initView();
         mPresenter.onCreate();
     }
@@ -87,7 +87,7 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     }
 
     @Override
-    public void setPresenter(MemberScanContract.Presenter presenter) {
+    public void setPresenter(MemberPaymentContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

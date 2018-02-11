@@ -9,34 +9,19 @@ import com.xmd.cashier.BaseView;
 
 public interface CashierContract {
     interface Presenter extends BasePresenter {
+        void onChannel();
+
         void onClickSetCouponInfo();
 
-        void onDiscountMoneyChanged();
-
         void onOriginMoneyChanged();
-
-        void onClickPosPay();
-
-        void onClickMemberPay();
-
-        void onClickCashPay();
-
-        void onClickXMDOnlinePay();
-
-        void doCashier();
-
-        boolean checkInput();
     }
 
     interface View extends BaseView<CashierContract.Presenter> {
-
         void setOriginMoney(int value);
 
         void setDiscountMoney(int value);
 
         int getOriginMoney();
-
-        int getDiscountMoney();
 
         void setFinallyMoney(String value);
 

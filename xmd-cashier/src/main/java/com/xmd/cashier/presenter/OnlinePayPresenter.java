@@ -7,8 +7,8 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OnlinePayContract;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
@@ -163,12 +163,12 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     }
 
     @Override
-    public void print(OnlinePayInfo info, boolean retry, boolean keep) {
+    public void print(TradeRecordInfo info, boolean retry, boolean keep) {
         NotifyManager.getInstance().printOnlinePayRecordAsync(info, retry, keep);
     }
 
     @Override
-    public void pass(final OnlinePayInfo info, final int position) {
+    public void pass(final TradeRecordInfo info, final int position) {
         // 确认
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
@@ -203,7 +203,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     }
 
     @Override
-    public void unpass(final OnlinePayInfo info, final int position) {
+    public void unpass(final TradeRecordInfo info, final int position) {
         // 请到前台
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {

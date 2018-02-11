@@ -1,6 +1,6 @@
 package com.xmd.cashier.dal.net.response;
 
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.m.network.BaseBean;
 
 /**
@@ -8,6 +8,6 @@ import com.xmd.m.network.BaseBean;
  * Pos买单详情
  */
 
-public class OnlinePayDetailResult extends BaseBean<OnlinePayInfo> {
+public class OnlinePayDetailResult extends BaseBean<TradeRecordInfo> {
 
 }

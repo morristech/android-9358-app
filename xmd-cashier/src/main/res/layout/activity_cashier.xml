@@ -71,6 +71,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:enabled="false"
             android:text="0" />
 
         <Button
@@ -93,7 +94,6 @@
             android:layout_toRightOf="@id/btn_coupon"
             android:clickable="true"
             android:gravity="end|center"
-            android:onClick="onClickTriggerCouponMoney"
             android:text="@string/cashier_money_tag"
             android:textSize="@dimen/head_font_size" />
 
@@ -135,9 +135,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignBaseline="@id/tv_finally_money"
-            android:layout_gravity="bottom"
             android:layout_toLeftOf="@id/tv_finally_money"
+            android:gravity="center"
             android:text="@string/cashier_money_tag"
             android:textSize="@dimen/head_font_size" />
     </RelativeLayout>

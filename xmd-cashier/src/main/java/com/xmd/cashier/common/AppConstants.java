@@ -82,7 +82,7 @@ public class AppConstants {
     public static final String PAID_ORDER_OP_EXPIRE = "expire";
 
     public static final int TRADE_STATUS_SUCCESS = 1;
-    public static final int TRADE_STATUS_CANCEL = 2;
+    public static final int TRADE_STATUS_ERROR = 2;
 
     // POS类型
     public static final String APP_CODE_WEI_POS = "100";
@@ -192,6 +192,7 @@ public class AppConstants {
     public static final String EXTRA_COUPON_CODE = "coupon_code";
     public static final String EXTRA_GIFT_ACTIVITY_INFO = "gift_act";
     public static final String EXTRA_BIZ_TYPE = "biz_type";
+    public static final String EXTRA_TRADE_TYPE = "trade_type";
 
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
@@ -216,6 +217,10 @@ public class AppConstants {
     public static final String PUSH_TAG_CLUB_ORDER_TO_PAY = "club_order_to_pay";
     public static final String PUSH_TAG_FAST_PAY_SUCCESS = "fast_pay_success";
     public static final String PUSH_TAG_UPLOAD_LOG = "upload_log";  //上传日志
+
+    public static final int TRADE_TYPE_NORMAL = 1;  //普通补收款
+    public static final int TRADE_TYPE_INNER = 2;   //内网支付
+    public static final int TRADE_TYPE_RECHARGE = 3;    //会员充值
 
     public static final String PAY_CHANNEL_WX = "wx";
     public static final String PAY_CHANNEL_ALI = "ali";

@@ -8,27 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
-import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.CashierContract;
-import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.presenter.CashierPresenter;
-import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CustomKeyboardView;
 import com.xmd.cashier.widget.CustomMoneyEditText;
 import com.xmd.cashier.widget.OnMyKeyboardCallback;
 
-import org.greenrobot.eventbus.Subscribe;
-
 /**
  * Created by zr on 17-4-13.
  * 收银页面
- * from MainActivity
  */
 
 public class CashierActivity extends BaseActivity implements CashierContract.View {
-    private static final String TAG = "CashierPresenter";
     private CashierContract.Presenter mPresenter;
     private CustomMoneyEditText mOriginCustomMoneyEditText;
     private CustomMoneyEditText mCouponCustomMoneyEditText;
@@ -57,41 +49,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
         mKeyboardView.setOnKeyboardActionListener(new OnMyKeyboardCallback(this, new OnMyKeyboardCallback.Callback() {
             @Override
             public boolean onKeyEnter() {
-                if (mPresenter.checkInput()) {
-                    ActionSheetDialog dialog = new ActionSheetDialog(CashierActivity.this);
-                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_ACCOUNT_TEXT, AppConstants.CASHIER_TYPE_CASH_TEXT, AppConstants.CASHIER_TYPE_UNION_TEXT});
-                    dialog.setCancelText("取消");
-                    dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
-                        @Override
-                        public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
-                            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收银支付方式：" + item);
-                            switch (item) {
-                                case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
-                                    mPresenter.onClickXMDOnlinePay();
-                                    break;
-                                case AppConstants.CASHIER_TYPE_UNION_TEXT:
-                                    mPresenter.onClickPosPay();
-                                    break;
-                                case AppConstants.CASHIER_TYPE_ACCOUNT_TEXT:
-                                    mPresenter.onClickMemberPay();
-                                    break;
-                                case AppConstants.CASHIER_TYPE_CASH_TEXT:
-                                    mPresenter.onClickCashPay();
-                                    break;
-                                default:
-                                    break;
-                            }
-                            dialog.dismiss();
-                        }
-
-                        @Override
-                        public void onCancelItemClick(ActionSheetDialog dialog) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.setCanceledOnTouchOutside(true);
-                    dialog.show();
-                }
+                mPresenter.onChannel();
                 return true;
             }
         }));
@@ -119,23 +77,6 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
 
             }
         });
-
-        mCouponCustomMoneyEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mPresenter.onDiscountMoneyChanged();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -143,13 +84,14 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
         super.onStart();
         mPresenter.onStart();
         mOriginCustomMoneyEditText.moveCursorToEnd();
-        mCouponCustomMoneyEditText.moveCursorToEnd();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
     }
 
     @Override
@@ -183,11 +125,6 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
     }
 
     @Override
-    public int getDiscountMoney() {
-        return mCouponCustomMoneyEditText.getMoney();
-    }
-
-    @Override
     public void setFinallyMoney(String value) {
         mFinallyMoneyTextView.setText(value);
     }
@@ -197,17 +134,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
         mSetCouponInfoButton.setText(text);
     }
 
-    public void onClickTriggerCouponMoney(View view) {
-        mCouponCustomMoneyEditText.requestFocus();
-    }
-
     public void onClickTriggerOriginMoney(View view) {
         mOriginCustomMoneyEditText.requestFocus();
-    }
-
-    // 会员支付时:扫码或者查询到的会员信息
-    @Subscribe
-    public void onEvent(MemberInfo info) {
-        mPresenter.doCashier();
     }
 }

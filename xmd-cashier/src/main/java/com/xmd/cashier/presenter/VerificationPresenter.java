@@ -16,6 +16,7 @@ import com.xmd.cashier.contract.VerificationContract;
 import com.xmd.cashier.dal.bean.CheckInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
+import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.TreatInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
@@ -175,24 +176,26 @@ public class VerificationPresenter implements VerificationContract.Presenter {
 
     @Override
     public void onNavigationBack() {
-        calculatorVerificationMoney();
+        updateWillDiscountMoney();
         mView.finishSelf();
     }
 
     @Override
     public void onClickOk() {
-        calculatorVerificationMoney();
+        updateWillDiscountMoney();
         mView.finishSelf();
+    }
+
+    private void updateWillDiscountMoney() {
+        Trade trade = mTradeManager.getCurrentTrade();
+        trade.setWillDiscountMoney(mTradeManager.getDiscountAmount(trade.getCouponList()));
+        trade.setVerificationCount(mTradeManager.getDiscountCount(trade.getCouponList()));
     }
 
     @Override
     public void onClickCleanAll() {
         mTradeManager.cleanVerificationList();
         mView.showVerificationData(mTradeManager.getVerificationList());
-    }
-
-    private void calculatorVerificationMoney() {
-        mTradeManager.calculateVerificationValue();
     }
 
     private void searchNumber(String number) {
@@ -214,7 +217,6 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             public void onSuccess(StringResult o) {
                 switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:
-                        TradeManager.getInstance().getCurrentTrade().memberTempPhone = number;
                         // 手机号
                         getList(number);
                         break;

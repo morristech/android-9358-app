@@ -9,5 +9,5 @@ import java.util.List;
  * Created by zr on 17-11-8.
  */
 
-public class InnerTechListResult extends BaseBean<List<InnerTechInfo>>{
+public class InnerTechListResult extends BaseBean<List<InnerTechInfo>> {
 }

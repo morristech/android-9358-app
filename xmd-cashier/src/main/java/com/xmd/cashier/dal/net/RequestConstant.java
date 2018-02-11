@@ -94,21 +94,23 @@ public class RequestConstant {
 
     // ****************************************** 内网收银 **************************************
     public static final String URL_GET_INNER_SWITCH = SPA_SERVICE_BASE + "/v2/manager/settings/switch/get";// 获取内网开关
-    public static final String URL_GET_PAY_CHANNEL_LIST = SPA_SERVICE_BASE + "/v2/manager/pay/channel/list/valid";      // 获取会所设置的有效支付方式
 
     public static final String URL_GET_ROOM_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/room/simple/select/list";   //获取使用中的房间列表
     public static final String URL_GET_HAND_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/select/list";               //获取手牌列表
     public static final String URL_GET_TECHNICIAN_LIST = SPA_SERVICE_BASE + "/v1/manager/club/employee/group/tech/list";     //获取技师列表                                                                                       //获取会所技师列表
     public static final String URL_GET_INNER_ORDER_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/normal/list";    //根据房间,技师,手牌查询订单列表
 
-    // 收银结账部分
-    public static final String URL_GET_INNER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/list";   //获取合并支付列表
-
-    public static final String URL_GENERATE_INNER_BATCH_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/save";   //保存结账单
-    public static final String URL_CALLBACK_INNER_BATCH_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/success/save";    //支付回调
-    public static final String URL_GET_INNER_BATCH_HOLE = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/detail";  //根据订单PayOrderId查询详情
+    public static final String URL_GET_INNER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/list";   //获取内网支付列表
     public static final String URL_GET_INNER_UNPAID_COUNT = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/unpaid/count";      //查询当前内网订单未支付的数量
-    public static final String URL_CHECK_INNER_SUB_PAY_STATUS = SPA_SERVICE_BASE + "/v2/manager/native/order/pay_record/status/get";
+
+
+    // 收银重构
+    public static final String URL_GET_PAY_CHANNEL_LIST = SPA_SERVICE_BASE + "/v2/manager/pay/channel/list/valid";      // 获取会所设置的有效支付方式
+    public static final String URL_GENERATE_BATCH_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/save";   //生成订单(内网+补收款)
+    public static final String URL_CALLBACK_BATCH_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/success/save";    //支付标记(内网+补收款)
+    public static final String URL_GET_BATCH_HOLE_DETAIL = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/detail";  //查询订单详情(内网+补收款)
+    public static final String URL_CHECK_PAY_STATUS = SPA_SERVICE_BASE + "/v2/manager/native/order/pay_record/status/get";    // 查询订单支付状态(内网+补收款) 扫码支付
+    public static final String URL_CHECK_SCAN_STATUS = SPA_SERVICE_BASE + "/v2/manager/order/id/status";       // 查询订单扫码状态(内网+补收款) 扫码支付
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -160,6 +162,7 @@ public class RequestConstant {
     public static final String KEY_MEMBER_CAN_DISCOUNT = "canDiscount";
 
     public static final String KEY_AMOUNT = "amount";
+    public static final String KEY_ORI_AMOUNT = "oriAmount";
 
     public static final String KEY_PAY_DATE = "payDate";
     public static final String KEY_PAY_TYPE = "payType";

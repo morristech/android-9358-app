@@ -22,8 +22,8 @@ import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
-import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.MemberManager;
+import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.InputPasswordDialog;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -46,19 +46,23 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
     private Subscription mGetTradeNoSubscription;
 
+    private MemberManager mMemberManager;
+
     public MemberRechargePresenter(Context context, MemberRechargeContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
+        mMemberManager = MemberManager.getInstance();
     }
 
     @Override
     public void onCreate() {
-        mView.showMemberInfo(MemberManager.getInstance().getRechargeMemberInfo());
+        mMemberManager.newTrade();
+        mView.showMemberInfo(mMemberManager.getRechargeMemberInfo());
         clearAmount();
         clearAmountGive();
         clearPackage();
-        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
+        mMemberManager.setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
         loadPlanData();
     }
 
@@ -110,7 +114,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             mGetTradeNoSubscription.unsubscribe();
         }
         mView.showLoading();
-        mGetTradeNoSubscription = MemberManager.getInstance().fetchTradeNo(new Callback<GetTradeNoResult>() {
+        mGetTradeNoSubscription = mMemberManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
             @Override
             public void onSuccess(GetTradeNoResult o) {
                 mView.hideLoading();
@@ -128,12 +132,12 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     // POS支付
     private void doPosCashier() {
         int amount = 0;
-        switch (MemberManager.getInstance().getAmountType()) {
+        switch (mMemberManager.getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
-                amount = MemberManager.getInstance().getAmount();
+                amount = mMemberManager.getAmount();
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                PackagePlanItem info = MemberManager.getInstance().getPackageInfo();
+                PackagePlanItem info = mMemberManager.getPackageInfo();
                 if (info != null) {
                     amount = info.amount;
                 }
@@ -142,7 +146,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                 break;
         }
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付");
-        MemberManager.getInstance().posRecharge(mContext, amount, new Callback<Void>() {
+        mMemberManager.posRecharge(mContext, amount, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付---成功");
@@ -159,7 +163,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
     private void doReportRecharge() {
         // 支付成功:汇报交易流水&&汇报充值
-        MemberManager.getInstance().reportTrade();
         startReportRecharge();
     }
 
@@ -194,9 +197,9 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果：" + RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE);
         callReportRecharge = XmdNetwork.getInstance().getService(SpaService.class)
                 .reportMemberRecharge(AccountManager.getInstance().getToken(),
-                        MemberManager.getInstance().getRechargeOrderId(),
-                        Utils.getPayTypeChannel(CashierManager.getInstance().getPayType(MemberManager.getInstance().getTrade().posPayReturn)),
-                        MemberManager.getInstance().getTrade().tradeNo,
+                        mMemberManager.getRechargeOrderId(),
+                        mMemberManager.getTrade().currentChannelType,
+                        mMemberManager.getTrade().tradeNo,
                         RequestConstant.DEFAULT_SIGN_VALUE);
         XmdNetwork.getInstance().requestSync(callReportRecharge, new NetworkSubscriber<MemberRecordResult>() {
             @Override
@@ -205,9 +208,9 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                 PosFactory.getCurrentCashier().speech("会员充值成功");
                 resultReportRecharge = true;
                 MemberRecordInfo record = result.getRespData();
-                MemberManager.getInstance().printMemberRecordInfoAsync(record, false);
-                MemberManager.getInstance().newTrade();
-                MemberManager.getInstance().newRechargeProcess();
+                mMemberManager.printMemberRecordInfoAsync(record, false);
+                mMemberManager.newTrade();
+                mMemberManager.newRechargeProcess();
                 mView.finishSelf();
             }
 
@@ -222,38 +225,38 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
     // 扫码支付
     private void onRechargeScan() {
-        UiNavigation.gotoMemberScanActivity(mContext, AppConstants.MEMBER_CASHIER_METHOD_SCAN);
+        UiNavigation.gotoMemberPaymentActivity(mContext, AppConstants.MEMBER_CASHIER_METHOD_SCAN);
     }
 
     // 现金支付
     private void onRechargeCash() {
-        UiNavigation.gotoMemberScanActivity(mContext, AppConstants.MEMBER_CASHIER_METHOD_CASH);
+        UiNavigation.gotoMemberPaymentActivity(mContext, AppConstants.MEMBER_CASHIER_METHOD_CASH);
     }
 
-    @Override
-    public void onRecharge(int type) {
-        switch (type) {
-            case AppConstants.CASHIER_TYPE_POS: //Pos银联
-            case AppConstants.CASHIER_TYPE_QRCODE:  // 扫码买单
-                doRechargeRequest(type, null);
+    private void onRecharge() {
+        switch (mMemberManager.getTrade().currentChannelType) {
+            case AppConstants.PAY_CHANNEL_WX: //Pos银联
+            case AppConstants.PAY_CHANNEL_ALI:
+            case AppConstants.PAY_CHANNEL_UNION:  // 扫码买单
+                doRechargeRequest(null);
                 break;
-            case AppConstants.CASHIER_TYPE_CASH:    // 现金支付
-                if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getVerificationSwitch())) {
+            case AppConstants.PAY_CHANNEL_CASH:    // 现金支付
+                if (!AppConstants.APP_REQUEST_NO.equals(mMemberManager.getVerificationSwitch())) {
                     // 需要输入收银员密码
-                    doInputPassword(type);
+                    doInputPassword();
                 } else {
                     // 无需校验密码
-                    doRechargeRequest(type, null);
+                    doRechargeRequest(null);
                 }
                 break;
-            case AppConstants.CASHIER_TYPE_ERROR:   // 其他
+            case AppConstants.PAY_CHANNEL_OTHER:   // 其他
             default:
                 mView.showToast("充值流程异常...");
                 break;
         }
     }
 
-    private void doInputPassword(final int type) {
+    private void doInputPassword() {
         final InputPasswordDialog dialog = new InputPasswordDialog(mContext);
         dialog.show();
         dialog.setCancelable(false);
@@ -271,12 +274,12 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                     return;
                 }
                 dialog.dismiss();
-                doRechargeRequest(type, password);
+                doRechargeRequest(password);
             }
         });
     }
 
-    private void doRechargeRequest(final int type, String password) {
+    private void doRechargeRequest(String password) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
             return;
@@ -285,18 +288,19 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             mRechargeByScanSubscription.unsubscribe();
         }
         mView.showLoading();
-        mRechargeByScanSubscription = MemberManager.getInstance().requestRecharge(password, new Callback<MemberUrlResult>() {
+        mRechargeByScanSubscription = mMemberManager.requestRecharge(password, new Callback<MemberUrlResult>() {
             @Override
             public void onSuccess(MemberUrlResult o) {
                 mView.hideLoading();
-                switch (type) {
-                    case AppConstants.CASHIER_TYPE_POS: //Pos支付
+                switch (mMemberManager.getTrade().currentChannelType) {
+                    case AppConstants.PAY_CHANNEL_UNION: //Pos支付
                         onRechargePos();
                         break;
-                    case AppConstants.CASHIER_TYPE_QRCODE:  //扫码支付
+                    case AppConstants.PAY_CHANNEL_WX:  //扫码支付
+                    case AppConstants.PAY_CHANNEL_ALI:
                         onRechargeScan();
                         break;
-                    case AppConstants.CASHIER_TYPE_CASH:    //现金支付
+                    case AppConstants.PAY_CHANNEL_CASH:    //现金支付
                         onRechargeCash();
                         break;
                     default:
@@ -320,84 +324,123 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     @Override
     public void onTechSelect(TechInfo info) {
         mView.showTechInfo(info);
-        MemberManager.getInstance().setRechargeTechInfo(info);
+        mMemberManager.setRechargeTechInfo(info);
     }
 
     @Override
     public void onTechDelete() {
         mView.deleteTechInfo();
-        MemberManager.getInstance().setRechargeTechInfo(new TechInfo());
+        mMemberManager.setRechargeTechInfo(new TechInfo());
     }
 
     @Override
     public void onAmountSet(String amount) {
         // 设置金额
         if (TextUtils.isEmpty(amount)) {
-            MemberManager.getInstance().setAmount(0);
+            mMemberManager.setAmount(0);
         } else {
             // 以分为单位
-            MemberManager.getInstance().setAmount(Utils.stringToMoney(amount));
+            mMemberManager.setAmount(Utils.stringToMoney(amount));
         }
-        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
+        mMemberManager.setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
     }
 
     @Override
     public void onAmountGiveSet(String amountGive) {
         if (TextUtils.isEmpty(amountGive)) {
-            MemberManager.getInstance().setAmountGive(0);
+            mMemberManager.setAmountGive(0);
         } else {
-            MemberManager.getInstance().setAmountGive(Utils.stringToMoney(amountGive));
+            mMemberManager.setAmountGive(Utils.stringToMoney(amountGive));
         }
-        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
+        mMemberManager.setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
     }
 
     @Override
     public void clearAmount() {
-        MemberManager.getInstance().setAmount(0);
+        mMemberManager.setAmount(0);
         mView.clearAmount();
     }
 
     @Override
     public void clearAmountGive() {
-        MemberManager.getInstance().setAmountGive(0);
+        mMemberManager.setAmountGive(0);
         mView.clearAmountGive();
     }
 
     @Override
     public void onPackageSet(PackagePlanItem item) {
         // 设置套餐
-        MemberManager.getInstance().setPackageInfo(item);
-        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE);
+        mMemberManager.setPackageInfo(item);
+        mMemberManager.setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE);
     }
 
     @Override
     public void clearPackage() {
-        MemberManager.getInstance().setPackageInfo(null);
+        mMemberManager.setPackageInfo(null);
         mView.clearPackage();
     }
 
     @Override
     public void onConfirm() {
-        switch (MemberManager.getInstance().getAmountType()) {
+        switch (mMemberManager.getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
                 mView.showError("请选择充值内容!");
                 return;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
                 // 充值金额
-                if (MemberManager.getInstance().getAmount() <= 0) {
+                if (mMemberManager.getAmount() <= 0) {
                     mView.showError("请输入充值金额!");
                     return;
                 }
-                mView.showDialog();
+                showDialog();
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
                 // 充值套餐
-                if (MemberManager.getInstance().getPackageInfo() == null) {
+                if (mMemberManager.getPackageInfo() == null) {
                     mView.showError("请添加充值套餐!");
                     return;
                 }
-                mView.showDialog();
+                showDialog();
                 break;
         }
+    }
+
+    private void showDialog() {
+        ActionSheetDialog dialog = new ActionSheetDialog(mContext);
+        dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_WX_TEXT, AppConstants.CASHIER_TYPE_ALI_TEXT, AppConstants.CASHIER_TYPE_UNION_TEXT, AppConstants.CASHIER_TYPE_CASH_TEXT,});
+        dialog.setCancelText("取消");
+        dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
+            @Override
+            public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值选择支付方式：" + item);
+                String type = AppConstants.PAY_CHANNEL_OTHER;
+                switch (item) {
+                    case AppConstants.CASHIER_TYPE_WX_TEXT:
+                        type = AppConstants.PAY_CHANNEL_WX;
+                        break;
+                    case AppConstants.CASHIER_TYPE_ALI_TEXT:
+                        type = AppConstants.PAY_CHANNEL_ALI;
+                        break;
+                    case AppConstants.CASHIER_TYPE_UNION_TEXT:
+                        type = AppConstants.PAY_CHANNEL_UNION;
+                        break;
+                    case AppConstants.CASHIER_TYPE_CASH_TEXT:
+                        type = AppConstants.PAY_CHANNEL_CASH;
+                        break;
+                    default:
+                        break;
+                }
+                mMemberManager.getTrade().currentChannelType = type;
+                onRecharge();
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelItemClick(ActionSheetDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
     }
 }

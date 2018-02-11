@@ -3,7 +3,7 @@ package com.xmd.cashier.contract;
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public interface InnerMethodContract {
 
         String returnSource();
 
-        InnerRecordInfo returnRecordInfo();
+        TradeRecordInfo returnRecordInfo();
 
         void showEnterAnim();
 

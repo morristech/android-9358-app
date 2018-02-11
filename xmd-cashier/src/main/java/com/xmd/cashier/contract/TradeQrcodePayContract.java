@@ -9,32 +9,26 @@ import com.xmd.cashier.BaseView;
  * Created by zr on 17-5-12.
  */
 
-public interface ScanPayContract {
+public interface TradeQrcodePayContract {
     interface Presenter extends BasePresenter {
-        void onCancel();
-
-        void getQrcode();
-
         void onGiftActivity();
+
+        void onKeyEventBack();
     }
 
     interface View extends BaseView<Presenter> {
-        void setOrigin(String origin);
-
-        void setDiscount(String discount);
-
-        void setPaid(String paid);
+        void setAmount(String amount);
 
         void setQRCode(Bitmap bitmap);
 
         void updateScanStatus();
-
-        void showQrLoading();
 
         void showQrError(String error);
 
         void showQrSuccess();
 
         void showGiftActivity();
+
+        int getType();
     }
 }

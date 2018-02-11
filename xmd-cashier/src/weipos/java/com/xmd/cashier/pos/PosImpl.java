@@ -158,7 +158,7 @@ public class PosImpl implements IPos {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    callback.onResult(null, null);
+                    callback.onResult(null, payResult);
                 }
 
                 @Override
@@ -280,8 +280,8 @@ public class PosImpl implements IPos {
                 return AppConstants.PAY_TYPE_WECHAT;
             case "1004":
                 return AppConstants.PAY_TYPE_ALIPAY;
-            case "1006":
-            case "1":
+            case "1006"://收银2
+            case "1":   //旺收银
                 return AppConstants.PAY_TYPE_UNION;
             default:
                 return AppConstants.PAY_TYPE_UNKNOWN;

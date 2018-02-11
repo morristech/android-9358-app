@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <Button
+        android:id="@+id/btn_mark_confirm"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@drawable/state_btn_oval"
+        android:text="已收款"
+        android:textColor="@color/colorWhite"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_mark_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:textSize="@dimen/medium_font_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_mark_channel_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_mark_confirm"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/small_font_size" />
+
+    <TextView
+        android:id="@+id/tv_mark_channel_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_mark_channel_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/small_padding"
+        android:drawableLeft="@drawable/ic_set_version"
+        android:drawablePadding="@dimen/activity_little_margin"
+        android:textSize="@dimen/font_size_16"
+        android:visibility="gone" />
+</RelativeLayout>

@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.event.InnerPushEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.sp.SPManager;
@@ -52,7 +51,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
             case AppConstants.PUSH_TAG_FASTPAY_PRINT:
                 // 在线买单
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "On XmdPushMessage：" + AppConstants.PUSH_TAG_FASTPAY_PRINT);
-                OnlinePayInfo onlinePayInfo = new Gson().fromJson(message.getData(), OnlinePayInfo.class);
+                TradeRecordInfo onlinePayInfo = new Gson().fromJson(message.getData(), TradeRecordInfo.class);
                 NotifyManager.getInstance().printOnlinePayRecordAsync(onlinePayInfo, false);
                 break;
             default:
@@ -81,9 +80,9 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());
-                    InnerManager.getInstance().getInnerHoleBatchSubscription(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<InnerRecordInfo>() {
+                    TradeManager.getInstance().getHoleBatchDetail(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<TradeRecordInfo>() {
                         @Override
-                        public void onSuccess(InnerRecordInfo o) {
+                        public void onSuccess(TradeRecordInfo o) {
                             XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---成功");
                             EventBus.getDefault().post(o);
                         }
@@ -98,11 +97,11 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage：" + message);
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情");
                     EventBus.getDefault().post(new InnerPushEvent());
-                    InnerManager.getInstance().getInnerHoleBatchSubscription(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<InnerRecordInfo>() {
+                    TradeManager.getInstance().getHoleBatchDetail(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<TradeRecordInfo>() {
                         @Override
-                        public void onSuccess(InnerRecordInfo o) {
+                        public void onSuccess(TradeRecordInfo o) {
                             XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---成功");
-                            InnerManager.getInstance().printInnerRecordInfoAsync(o, false);
+                            TradeManager.getInstance().printTradeRecordInfoAsync(o, false);
                         }
 
                         @Override

@@ -5,11 +5,11 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.iboxpay.cashbox.minisdk.model.Config;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.xmd.m.network.OkHttpUtil;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
+import com.xmd.m.network.OkHttpUtil;
 
 import java.util.Map;
 import java.util.TreeMap;

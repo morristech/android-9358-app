@@ -17,7 +17,7 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerModifyContract;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.presenter.InnerModifyPresenter;
 import com.xmd.cashier.widget.CustomKeyboardView;
@@ -74,7 +74,7 @@ public class InnerModifyActivity extends BaseActivity implements InnerModifyCont
     }
 
     public void onClickInnerDetail(View view) {
-        InnerRecordInfo info = TradeManager.getInstance().getCurrentTrade().innerRecordInfo;
+        TradeRecordInfo info = TradeManager.getInstance().getCurrentTrade().innerRecordInfo;
         UiNavigation.gotoInnerDetailActivity(this, AppConstants.INNER_DETAIL_SOURCE_OTHER, info);
     }
 

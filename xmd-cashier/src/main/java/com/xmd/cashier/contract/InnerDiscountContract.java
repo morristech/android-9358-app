@@ -2,7 +2,7 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
-import com.xmd.cashier.dal.bean.OrderDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface InnerDiscountContract {
 
         void onReductionChange();
 
-        void onVerifySelect(VerificationItem item,int position);
+        void onVerifySelect(VerificationItem item, int position);
 
         void onVerifyClick(VerificationItem item, int position);
 
@@ -47,7 +47,7 @@ public interface InnerDiscountContract {
 
         void updateVerifyItem(int position);
 
-        void showVerifiedLayout(List<OrderDiscountInfo> list);
+        void showVerifiedLayout(List<TradeDiscountInfo> list);
 
         void hideVerifiedLayout();
 

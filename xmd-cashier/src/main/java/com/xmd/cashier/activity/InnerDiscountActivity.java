@@ -20,7 +20,7 @@ import com.xmd.cashier.adapter.InnerVerifiedListAdapter;
 import com.xmd.cashier.adapter.TagAdapter;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerDiscountContract;
-import com.xmd.cashier.dal.bean.OrderDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.presenter.InnerDiscountPresenter;
 import com.xmd.cashier.widget.CustomEditText;
@@ -318,7 +318,7 @@ public class InnerDiscountActivity extends BaseActivity implements InnerDiscount
     }
 
     @Override
-    public void showVerifiedLayout(List<OrderDiscountInfo> list) {
+    public void showVerifiedLayout(List<TradeDiscountInfo> list) {
         mVerifiedTitle.setVisibility(View.VISIBLE);
         String title = "已核销券(" + list.size() + ")张";
         mVerifiedTitleDesc.setText(Utils.changeColor(title, getResources().getColor(R.color.colorAccent), 5, title.length() - 2));

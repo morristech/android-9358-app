@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by zr on 17-4-24.
  */
 
-public class SettleRecordInfo implements Serializable{
+public class SettleRecordInfo implements Serializable {
     public String operatorName;
     public String operatorId;
     public String createTime;   //创建时间

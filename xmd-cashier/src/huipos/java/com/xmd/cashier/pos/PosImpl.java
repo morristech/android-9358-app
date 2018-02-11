@@ -69,7 +69,9 @@ public class PosImpl implements IPos {
     public void init(final Context context, final Callback<?> callback) {
         if (mIsInited) {
             XLogger.i("pos env already been init!");
-            callback.onSuccess(null);
+            if (callback != null) {
+                callback.onSuccess(null);
+            }
             return;
         }
         final Context applicationContext = context.getApplicationContext();
@@ -88,7 +90,9 @@ public class PosImpl implements IPos {
                     ThreadPoolManager.postToUI(new Runnable() {
                         @Override
                         public void run() {
-                            callback.onSuccess(null);
+                            if (callback != null) {
+                                callback.onSuccess(null);
+                            }
                         }
                     });
                 }
@@ -99,7 +103,9 @@ public class PosImpl implements IPos {
                     ThreadPoolManager.postToUI(new Runnable() {
                         @Override
                         public void run() {
-                            callback.onError(errorMsg.getErrorCode() + "," + errorMsg.getErrorMsg());
+                            if (callback != null) {
+                                callback.onError(errorMsg.getErrorCode() + "," + errorMsg.getErrorMsg());
+                            }
                         }
                     });
                 }
@@ -109,7 +115,9 @@ public class PosImpl implements IPos {
             ThreadPoolManager.postToUI(new Runnable() {
                 @Override
                 public void run() {
-                    callback.onError(e.getLocalizedMessage());
+                    if (callback != null) {
+                        callback.onError(e.getLocalizedMessage());
+                    }
                 }
             });
         }

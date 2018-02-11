@@ -17,7 +17,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerMethodContract;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.event.InnerGenerateOrderEvent;
 import com.xmd.cashier.dal.event.InnerUpdateOrderEvent;
 import com.xmd.cashier.manager.InnerManager;
@@ -48,7 +48,7 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     private InnerOrderAdapter mAdapter;
 
     private String mSource;
-    private InnerRecordInfo mRecordInfo;
+    private TradeRecordInfo mRecordInfo;
 
     private StepView mStepView;
 
@@ -76,7 +76,7 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
 
     private void processExtraData() {
         mSource = getIntent().getStringExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE);
-        mRecordInfo = (InnerRecordInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL);
+        mRecordInfo = (TradeRecordInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL);
         mAdapter = new InnerOrderAdapter(this, AppConstants.INNER_METHOD_SOURCE_NORMAL.equals(mSource));
         mAdapter.setCallBack(new InnerOrderAdapter.ItemCallBack() {
             @Override
@@ -172,7 +172,7 @@ public class InnerMethodActivity extends BaseActivity implements InnerMethodCont
     }
 
     @Override
-    public InnerRecordInfo returnRecordInfo() {
+    public TradeRecordInfo returnRecordInfo() {
         return mRecordInfo;
     }
 

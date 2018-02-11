@@ -38,9 +38,9 @@ import com.xmd.cashier.adapter.OrderRecordNotifyAdapter;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayCouponResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
@@ -48,9 +48,9 @@ import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
-import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.manager.NotifyManager;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomNotifyLayoutManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
@@ -356,7 +356,7 @@ public class CustomService extends Service {
     }
 
     // 显示在线买单弹框
-    public void showOnlinePayNotify(List<OnlinePayInfo> list) {
+    public void showOnlinePayNotify(List<TradeRecordInfo> list) {
         if (isShow) {
             XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单弹框提醒: 当前已有弹框显示");
             return;
@@ -372,7 +372,7 @@ public class CustomService extends Service {
         adapter.setData(list);
         adapter.setCallBack(new OnlinePayNotifyAdapter.OnlinePayNotifyCallBack() {
             @Override
-            public void onPass(final OnlinePayInfo info, final int position) {
+            public void onPass(final TradeRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单确认:" + info.id);
                 NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseBean>() {
@@ -407,7 +407,7 @@ public class CustomService extends Service {
             }
 
             @Override
-            public void onUnpass(final OnlinePayInfo info, final int position) {
+            public void onUnpass(final TradeRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单请到前台:" + info.id);
                 NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseBean>() {
@@ -458,7 +458,7 @@ public class CustomService extends Service {
             }
 
             @Override
-            public void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info, final int position) {
+            public void onDetail(TradeDiscountInfo info, final int position) {
                 adapter.setLoadingStatus(position);
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单查看优惠详情:" + info.verifyCode);
                 Observable<OnlinePayCouponResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
@@ -490,7 +490,7 @@ public class CustomService extends Service {
     }
 
     // 显示内网订单弹框
-    public void showInnerOrderNotify(final InnerRecordInfo recordInfo) {
+    public void showInnerOrderNotify(final TradeRecordInfo recordInfo) {
         if (isShow) {
             XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单弹框提醒：当前已有弹框显示 " + recordInfo.payId);
             return;
@@ -525,7 +525,7 @@ public class CustomService extends Service {
             public void onClick(View v) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "选择支付内网订单：" + recordInfo.payId);
                 hide();
-                InnerManager.getInstance().initTradeByRecord(recordInfo);
+                TradeManager.getInstance().initTradeByRecord(recordInfo);
                 if (recordInfo.paidAmount > 0) {
                     Intent intent = new Intent(MainApplication.getInstance().getApplicationContext(), InnerModifyActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
@@ -553,7 +553,7 @@ public class CustomService extends Service {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(InnerRecordInfo innerRecordInfo) {
+    public void onEvent(TradeRecordInfo innerRecordInfo) {
         showInnerOrderNotify(innerRecordInfo);
     }
 

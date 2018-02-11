@@ -12,10 +12,9 @@ import com.xmd.cashier.activity.AccountStatisticsSettingActivity;
 import com.xmd.cashier.activity.BillDetailActivity;
 import com.xmd.cashier.activity.BillRecordActivity;
 import com.xmd.cashier.activity.BillSearchActivity;
-import com.xmd.cashier.activity.CashPayActivity;
 import com.xmd.cashier.activity.CashierActivity;
+import com.xmd.cashier.activity.CashierResultActivity;
 import com.xmd.cashier.activity.ConfigurationActivity;
-import com.xmd.cashier.activity.ConfirmActivity;
 import com.xmd.cashier.activity.DiscountCouponActivity;
 import com.xmd.cashier.activity.GiftActActivity;
 import com.xmd.cashier.activity.InnerDetailActivity;
@@ -35,24 +34,24 @@ import com.xmd.cashier.activity.MainActivity;
 import com.xmd.cashier.activity.McardInfoActivity;
 import com.xmd.cashier.activity.McardPhoneActivity;
 import com.xmd.cashier.activity.McardSuccessActivity;
-import com.xmd.cashier.activity.MemberCashierActivity;
 import com.xmd.cashier.activity.MemberNavigationActivity;
+import com.xmd.cashier.activity.MemberPaymentActivity;
 import com.xmd.cashier.activity.MemberReadActivity;
 import com.xmd.cashier.activity.MemberRechargeActivity;
 import com.xmd.cashier.activity.MemberRecordActivity;
-import com.xmd.cashier.activity.MemberScanActivity;
 import com.xmd.cashier.activity.OnlinePayActivity;
 import com.xmd.cashier.activity.OrderRecordActivity;
 import com.xmd.cashier.activity.PayRecordActivity;
 import com.xmd.cashier.activity.PayTypeChoiceActivity;
 import com.xmd.cashier.activity.RecordNavigationActivity;
-import com.xmd.cashier.activity.ScanPayActivity;
-import com.xmd.cashier.activity.ScanPayResultActivity;
 import com.xmd.cashier.activity.SettingActivity;
 import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
 import com.xmd.cashier.activity.TechnicianActivity;
+import com.xmd.cashier.activity.TradeMarkPayActivity;
+import com.xmd.cashier.activity.TradeMemberPayActivity;
+import com.xmd.cashier.activity.TradeQrcodePayActivity;
 import com.xmd.cashier.activity.VerificationActivity;
 import com.xmd.cashier.activity.VerifyCheckInfoActivity;
 import com.xmd.cashier.activity.VerifyCommonActivity;
@@ -66,12 +65,11 @@ import com.xmd.cashier.dal.bean.BillInfo;
 import com.xmd.cashier.dal.bean.CommonVerifyInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.GiftActivityInfo;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
 import com.xmd.cashier.dal.bean.SettleRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -96,21 +94,6 @@ public class UiNavigation {
 
     public static void gotoLoginActivity(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void gotoConfirmActivity(Context context, String showMessage) {
-        Intent intent = new Intent(context, ConfirmActivity.class);
-        intent.putExtra(ConfirmActivity.EXTRA_MESSAGE, showMessage);
-        context.startActivity(intent);
-    }
-
-    public static void gotoConfirmActivity(Context context) {
-        gotoConfirmActivity(context, null);
-    }
-
-    public static void gotoMemberCashierActivity(Context context) {
-        Intent intent = new Intent(context, MemberCashierActivity.class);
         context.startActivity(intent);
     }
 
@@ -187,12 +170,7 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    // 收银
-    public static void gotoCashierActivity(Context context) {
-        Intent intent = new Intent(context, CashierActivity.class);
-        context.startActivity(intent);
-    }
-
+    // --- 结算 ---
     public static void gotoSettleCurrentActivity(Context context) {
         Intent intent = new Intent(context, SettleCurrentActivity.class);
         context.startActivity(intent);
@@ -209,11 +187,6 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoRecordNavigationActivity(Context context) {
-        Intent intent = new Intent(context, RecordNavigationActivity.class);
-        context.startActivity(intent);
-    }
-
     // 核销记录
     public static void gotoVerifyRecordActivity(Context context) {
         Intent intent = new Intent(context, VerifyRecordActivity.class);
@@ -227,22 +200,53 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    // 在线买单扫码
-    public static void gotoScanPayActivity(Context context) {
-        Intent intent = new Intent(context, ScanPayActivity.class);
+    // 扫码买单
+    public static void gotoTradeQrcodePayActivity(Context context, int type) {
+        Intent intent = new Intent(context, TradeQrcodePayActivity.class);
+        intent.putExtra(AppConstants.EXTRA_TRADE_TYPE, type);
         context.startActivity(intent);
     }
 
-    // 在线买单结果
-    public static void gotoScanPayResultActivity(Context context, OnlinePayInfo info) {
-        Intent intent = new Intent(context, ScanPayResultActivity.class);
-        intent.putExtra(AppConstants.EXTRA_ONLINE_PAY_INFO, info);
+    // 记账买单
+    public static void gotoTradeMarkPayActivity(Context context, int type) {
+        Intent intent = new Intent(context, TradeMarkPayActivity.class);
+        intent.putExtra(AppConstants.EXTRA_TRADE_TYPE, type);
+        context.startActivity(intent);
+    }
+
+    // 会员买单
+    public static void gotoTradeMemberPayActivity(Context context, int type) {
+        Intent intent = new Intent(context, TradeMemberPayActivity.class);
+        intent.putExtra(AppConstants.EXTRA_TRADE_TYPE, type);
+        context.startActivity(intent);
+    }
+
+    // 补收银
+    public static void gotoCashierActivity(Context context) {
+        Intent intent = new Intent(context, CashierActivity.class);
+        context.startActivity(intent);
+    }
+
+    // 补收银支付结果
+    public static void gotoCashierResultActivity(Context context) {
+        Intent intent = new Intent(context, CashierResultActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoRecordNavigationActivity(Context context) {
+        Intent intent = new Intent(context, RecordNavigationActivity.class);
         context.startActivity(intent);
     }
 
     // 系统设置
     public static void gotoSettingActivity(Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
+        context.startActivity(intent);
+    }
+
+    // 配置信息
+    public static void gotoConfigurationActivity(Context context) {
+        Intent intent = new Intent(context, ConfigurationActivity.class);
         context.startActivity(intent);
     }
 
@@ -284,8 +288,8 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoMemberScanActivity(Context context, String channel) {
-        Intent intent = new Intent(context, MemberScanActivity.class);
+    public static void gotoMemberPaymentActivity(Context context, String channel) {
+        Intent intent = new Intent(context, MemberPaymentActivity.class);
         intent.putExtra(AppConstants.EXTRA_MEMBER_CASHIER_METHOD, channel);
         context.startActivity(intent);
     }
@@ -298,17 +302,6 @@ public class UiNavigation {
     public static void gotoDiscountCouponActivity(Context context, String code) {
         Intent intent = new Intent(context, DiscountCouponActivity.class);
         intent.putExtra(AppConstants.EXTRA_COUPON_CODE, code);
-        context.startActivity(intent);
-    }
-
-    public static void gotoConfigurationActivity(Context context) {
-        Intent intent = new Intent(context, ConfigurationActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void gotoCashPayActivity(Context context, int amount) {
-        Intent intent = new Intent(context, CashPayActivity.class);
-        intent.putExtra(AppConstants.EXTRA_CASH_AMOUNT, amount);
         context.startActivity(intent);
     }
 
@@ -344,7 +337,7 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoInnerMethodActivity(Context context, String source, InnerRecordInfo info) {
+    public static void gotoInnerMethodActivity(Context context, String source, TradeRecordInfo info) {
         Intent intent = new Intent(context, InnerMethodActivity.class);
         intent.putExtra(AppConstants.EXTRA_INNER_METHOD_SOURCE, source);
         intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, info);
@@ -372,7 +365,7 @@ public class UiNavigation {
         context.startActivity(intent);
     }
 
-    public static void gotoInnerDetailActivity(Context context, String source, InnerRecordInfo record) {
+    public static void gotoInnerDetailActivity(Context context, String source, TradeRecordInfo record) {
         Intent intent = new Intent(context, InnerDetailActivity.class);
         intent.putExtra(AppConstants.EXTRA_INNER_DETAIL_SOURCE, source);
         intent.putExtra(AppConstants.EXTRA_INNER_RECORD_DETAIL, record);

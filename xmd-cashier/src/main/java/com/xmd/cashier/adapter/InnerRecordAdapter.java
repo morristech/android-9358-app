@@ -16,7 +16,7 @@ import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_INNER_RECORD_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
-    private List<InnerRecordInfo> mData = new ArrayList<>();
+    private List<TradeRecordInfo> mData = new ArrayList<>();
     private Context mContext;
     private InnerRecordCallBack mCallBack;
 
@@ -39,13 +39,13 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface InnerRecordCallBack {
         void onLoadMore();
 
-        void onItemDetail(InnerRecordInfo info);
+        void onItemDetail(TradeRecordInfo info);
 
-        void onItemPrintClient(InnerRecordInfo info);
+        void onItemPrintClient(TradeRecordInfo info);
 
-        void onItemPrintClub(InnerRecordInfo info);
+        void onItemPrintClub(TradeRecordInfo info);
 
-        void onItemPay(InnerRecordInfo info);
+        void onItemPay(TradeRecordInfo info);
     }
 
     @IntDef({AppConstants.FOOTER_STATUS_SUCCESS, AppConstants.FOOTER_STATUS_ERROR, AppConstants.FOOTER_STATUS_NO_NETWORK, AppConstants.FOOTER_STATUS_NONE, AppConstants.FOOTER_STATUS_LOADING})
@@ -60,7 +60,7 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.mData.clear();
     }
 
-    public void setData(List<InnerRecordInfo> data) {
+    public void setData(List<TradeRecordInfo> data) {
         this.mData.addAll(data);
     }
 
@@ -125,7 +125,7 @@ public class InnerRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         } else {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            final InnerRecordInfo info = mData.get(position);
+            final TradeRecordInfo info = mData.get(position);
             itemViewHolder.mTimeText.setText(info.createTime);
             itemViewHolder.mAmountText.setText("￥" + Utils.moneyToStringEx(info.originalAmount));
             switch (info.status) {

@@ -40,7 +40,9 @@ public class PosImpl implements IPos {
 
     @Override
     public void init(Context context, Callback<?> callback) {
-        callback.onSuccess(null);
+        if (callback != null) {
+            callback.onSuccess(null);
+        }
     }
 
     @Override

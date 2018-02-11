@@ -15,8 +15,6 @@ public interface MemberRechargeContract {
     interface Presenter extends BasePresenter {
         void loadPlanData();
 
-        void onRecharge(int type);
-
         void onTechClick();
 
         void onTechSelect(TechInfo info);
@@ -57,7 +55,5 @@ public interface MemberRechargeContract {
         void clearAmount();
 
         void clearPackage();
-
-        void showDialog();
     }
 }

@@ -10,7 +10,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.contract.MemberScanContract;
+import com.xmd.cashier.contract.MemberPaymentContract;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
@@ -32,10 +32,10 @@ import rx.Subscription;
  * Created by zr on 17-7-11.
  */
 
-public class MemberScanPresenter implements MemberScanContract.Presenter {
+public class MemberPaymentPresenter implements MemberPaymentContract.Presenter {
     private static final String TAG = "MemberScanPresenter";
     private Context mContext;
-    private MemberScanContract.View mView;
+    private MemberPaymentContract.View mView;
     private MemberRecordInfo memberRecordInfo;
     private boolean success = false;
 
@@ -89,7 +89,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
         return resultDetailRecharge;
     }
 
-    public MemberScanPresenter(Context context, MemberScanContract.View view) {
+    public MemberPaymentPresenter(Context context, MemberPaymentContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
@@ -187,7 +187,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
         }
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值现金支付：" + RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE);
         Observable<MemberRecordResult> reportCash = XmdNetwork.getInstance().getService(SpaService.class)
-                .doMemberRecharge(AccountManager.getInstance().getToken(), MemberManager.getInstance().getRechargeOrderId(), AppConstants.PAY_CHANNEL_CASH, null, RequestConstant.DEFAULT_SIGN_VALUE);
+                .doMemberRecharge(AccountManager.getInstance().getToken(), MemberManager.getInstance().getRechargeOrderId(), MemberManager.getInstance().getTrade().currentChannelType, null, RequestConstant.DEFAULT_SIGN_VALUE);
         mRechargeByCashSubscription = XmdNetwork.getInstance().request(reportCash, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {

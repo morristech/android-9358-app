@@ -2,8 +2,8 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public interface OnlinePayContract {
 
         void loadMore();
 
-        void print(OnlinePayInfo info, boolean retry, boolean keep);
+        void print(TradeRecordInfo info, boolean retry, boolean keep);
 
-        void pass(OnlinePayInfo info, int position);
+        void pass(TradeRecordInfo info, int position);
 
-        void unpass(OnlinePayInfo info, int position);
+        void unpass(TradeRecordInfo info, int position);
 
         void setFilter(String filter);
 
@@ -37,7 +37,7 @@ public interface OnlinePayContract {
 
         void clearData();
 
-        void showData(List<OnlinePayInfo> list);
+        void showData(List<TradeRecordInfo> list);
 
         void showRefreshIng();
 

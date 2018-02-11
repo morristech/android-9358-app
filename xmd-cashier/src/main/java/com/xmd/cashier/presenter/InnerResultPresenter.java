@@ -8,7 +8,7 @@ import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.event.InnerFinishEvent;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.InnerManager;
@@ -29,7 +29,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     private InnerResultContract.View mView;
 
     private Subscription mGetBatchOrderSubscription;
-    private InnerRecordInfo mRecordInfo;
+    private TradeRecordInfo mRecordInfo;
 
     public InnerResultPresenter(Context context, InnerResultContract.View view) {
         mContext = context;
@@ -45,7 +45,6 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
                 PosFactory.getCurrentCashier().speech("支付完成");
                 mView.showSuccess();
                 break;
-            case AppConstants.TRADE_STATUS_CANCEL:
             default:
                 mView.showCancel();
                 break;
@@ -58,9 +57,9 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
         if (mGetBatchOrderSubscription != null) {
             mGetBatchOrderSubscription.unsubscribe();
         }
-        mGetBatchOrderSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<InnerRecordInfo>() {
+        mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
             @Override
-            public void onSuccess(InnerRecordInfo o) {
+            public void onSuccess(TradeRecordInfo o) {
                 mRecordInfo = o;
                 int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
@@ -101,9 +100,9 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             if (mGetBatchOrderSubscription != null) {
                 mGetBatchOrderSubscription.unsubscribe();
             }
-            mGetBatchOrderSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<InnerRecordInfo>() {
+            mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
                 @Override
-                public void onSuccess(InnerRecordInfo o) {
+                public void onSuccess(TradeRecordInfo o) {
                     mView.hideLoading();
                     mRecordInfo = o;
                     UiNavigation.gotoInnerDetailActivity(mContext, AppConstants.INNER_DETAIL_SOURCE_OTHER, mRecordInfo);
@@ -130,7 +129,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     public void onContinue() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成后继续收款");
         InnerManager.getInstance().clearInnerOrderInfos();
-        InnerManager.getInstance().initTradeByRecord(mRecordInfo);
+        TradeManager.getInstance().initTradeByRecord(mRecordInfo);
         mView.finishSelf();
         EventBus.getDefault().post(new InnerFinishEvent());
         if (mRecordInfo.paidAmount > 0) {
@@ -147,9 +146,9 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             if (mGetBatchOrderSubscription != null) {
                 mGetBatchOrderSubscription.unsubscribe();
             }
-            mGetBatchOrderSubscription = InnerManager.getInstance().getInnerHoleBatchSubscription(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<InnerRecordInfo>() {
+            mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
                 @Override
-                public void onSuccess(InnerRecordInfo o) {
+                public void onSuccess(TradeRecordInfo o) {
                     mView.hideLoading();
                     mRecordInfo = o;
                     printNormal();
@@ -171,7 +170,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
     private void printNormal() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果自动打印小票");
-        InnerManager.getInstance().printInnerRecordInfoAsync(mRecordInfo, false);
+        TradeManager.getInstance().printTradeRecordInfoAsync(mRecordInfo, false);
     }
 
     @Override

@@ -20,7 +20,6 @@ import com.xmd.cashier.dal.net.response.MemberCardResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.NFCManager;
-import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.InputTelephoneDialog;
 import com.xmd.m.network.BaseBean;
 
@@ -122,7 +121,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
         }
         mView.showLoading();
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据二维码获取会员信息：" + RequestConstant.URL_MEMBER_INFO + " (" + memberToken + ") ");
-        mGetMemberInfoByScanSubscription = TradeManager.getInstance().fetchMemberInfo(memberToken, new Callback<MemberInfo>() {
+        mGetMemberInfoByScanSubscription = MemberManager.getInstance().fetchMemberInfo(memberToken, new Callback<MemberInfo>() {
             @Override
             public void onSuccess(MemberInfo o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "根据二维码获取会员信息---成功");
@@ -158,9 +157,6 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                     switch (readType) {
                         case AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT:
                             // 消费
-                            TradeManager.getInstance().getCurrentTrade().memberInfo = o;
-                            TradeManager.getInstance().getCurrentTrade().memberPayMethod = AppConstants.MEMBER_PAY_METHOD_CODE;
-                            TradeManager.getInstance().getCurrentTrade().memberId = String.valueOf(o.id);
                             EventBus.getDefault().post(o);
                             mView.finishSelf();
                             break;
@@ -305,10 +301,6 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
         mNFCManager = NFCManager.getInstance();
         mNFCManager.init(mContext);
         PosFactory.getCurrentCashier().speech("请刷会员卡");
-
-        if (AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT.equals(mView.getReadType())) {
-            mView.setInputContent(TradeManager.getInstance().getCurrentTrade().memberTempPhone);
-        }
     }
 
     @Override

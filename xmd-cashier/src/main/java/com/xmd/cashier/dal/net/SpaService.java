@@ -9,9 +9,6 @@ import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
-import com.xmd.cashier.dal.net.response.InnerBatchHoleResult;
-import com.xmd.cashier.dal.net.response.InnerBatchResult;
-import com.xmd.cashier.dal.net.response.InnerChannelListResult;
 import com.xmd.cashier.dal.net.response.InnerHandListResult;
 import com.xmd.cashier.dal.net.response.InnerOrderListResult;
 import com.xmd.cashier.dal.net.response.InnerRecordListResult;
@@ -30,9 +27,7 @@ import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.OnlinePayCouponResult;
-import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
-import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PosPullResult;
@@ -42,6 +37,9 @@ import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.TechListResult;
+import com.xmd.cashier.dal.net.response.TradeBatchHoleResult;
+import com.xmd.cashier.dal.net.response.TradeBatchResult;
+import com.xmd.cashier.dal.net.response.TradeChannelListResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
@@ -113,22 +111,6 @@ public interface SpaService {
     @GET(RequestConstant.URL_USER_CHECK_INFO_LIST)
     Observable<CheckInfoListResult> getCheckInfoList(@Path(RequestConstant.KEY_NUMBER) String number,
                                                      @Query(RequestConstant.KEY_TOKEN) String userToken);
-
-    /**
-     * 获取订单号
-     *
-     * @param userToken
-     * @param originMoney
-     * @param couponList
-     * @param requestSign
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TRADE_NO)
-    Observable<GetTradeNoResult> getTradeNo(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_ORIGIN_MONEY) int originMoney,
-                                            @Field(RequestConstant.KEY_COUPON_LIST) String couponList,
-                                            @Field(RequestConstant.KEY_SIGN) String requestSign);
 
     /**
      * 获取会员信息
@@ -493,30 +475,6 @@ public interface SpaService {
     Observable<VerifyRecordDetailResult> getVerifyRecordDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                                @Query(RequestConstant.KEY_RECORD_ID) String recordId);
 
-
-    /******************************************** Pos在线买单 **************************************/
-    //查询买单扫码状态
-    @GET(RequestConstant.URL_GET_XMD_ONLINE_SCAN_STATUS)
-    Call<StringResult> getXMDOnlineScanStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                              @Query(RequestConstant.KEY_ORDER_ID) String orderId);
-
-    //获取Pos在线买单详情
-    @GET(RequestConstant.URL_GET_XMD_ONLINE_ORDER_DETAIL)
-    Call<OnlinePayDetailResult> getXMDOnlinePayDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                      @Query(RequestConstant.KEY_ORDER_ID) String orderId);
-
-    //扫码买单二维码URL
-    @GET(RequestConstant.URL_GET_XMD_ONLINE_QRCODE_URL)
-    Observable<OnlinePayUrlResult> getXMDOnlineQrcodeUrl(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                         @Query(RequestConstant.KEY_TOTAL) String total,
-                                                         @Query(RequestConstant.KEY_DISCOUNT) String discount);
-
-    // 取消买单
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_DELETE_XMD_ONLINE_ORDER_ID)
-    Observable<BaseBean> deleteXMDOnlineOrderId(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                @Field(RequestConstant.KEY_ORDER_ID) String orderId);
-
     /******************************************************POS会员**********************************************************/
     // 会员设置信息获取
     @GET(RequestConstant.URL_GET_MEMBER_SETTING_CONFIG)
@@ -567,17 +525,6 @@ public interface SpaService {
                                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                                            @Field(RequestConstant.KEY_TYPE) String type,
                                                            @Field(RequestConstant.KEY_USER_NAME) String userName);
-
-    // 会员支付
-    @GET(RequestConstant.URL_REQUEST_MEMBER_PAYMENT)
-    Observable<MemberRecordResult> requestMemberPayment(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                        @Query(RequestConstant.KEY_AMOUNT) String amount,
-                                                        @Query(RequestConstant.KEY_BIZ_CATEGORY) String category,
-                                                        @Query(RequestConstant.KEY_DESCRIPTION) String description,
-                                                        @Query(RequestConstant.KEY_MEMBER_ID) String memberId,
-                                                        @Query(RequestConstant.KEY_TRADE_NO) String tradeNO,
-                                                        @Query(RequestConstant.KEY_TRADE_TYPE) String tradeType,
-                                                        @Query(RequestConstant.KEY_PASSWORD) String password);
 
     // 获取会所技师列表
     @GET(RequestConstant.URL_GET_CLUB_TECH_LIST)
@@ -683,10 +630,6 @@ public interface SpaService {
     Call<InnerSwitchResult> getInnerSwitch(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                            @Query(RequestConstant.KEY_CODE) String code);
 
-    //获取支付方式
-    @GET(RequestConstant.URL_GET_PAY_CHANNEL_LIST)
-    Call<InnerChannelListResult> getInnerChannelList(@Query(RequestConstant.KEY_TOKEN) String userToken);
-
     //获取房间列表
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ROOM_LIST)
@@ -699,6 +642,7 @@ public interface SpaService {
     Observable<InnerHandListResult> getHandList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                 @Field(RequestConstant.KEY_USER_IDENTIFY) String userIdentify);
 
+    // 获取技师列表
     @GET(RequestConstant.URL_GET_TECHNICIAN_LIST)
     Observable<InnerTechListResult> getTechnicianList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                       @Query(RequestConstant.KEY_TECH_NO_SEARCH) String noSearch,
@@ -711,56 +655,76 @@ public interface SpaService {
                                                        @Query(RequestConstant.KEY_EMP_ID) String empId,
                                                        @Query(RequestConstant.KEY_ROOM_ID) String roomId);
 
-    //获取支付列表
+    //获取内网支付列表
     @GET(RequestConstant.URL_GET_INNER_RECORD_LIST)
     Observable<InnerRecordListResult> getInnerRecordList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                          @Query(RequestConstant.KEY_PAGE_START) String page,
                                                          @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
-
-    //生成结账
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GENERATE_INNER_BATCH_ORDER)
-    Observable<InnerBatchResult> generateInnerBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                         @Field(RequestConstant.KEY_BATCH_NO) String batchNo,
-                                                         @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
-                                                         @Field(RequestConstant.KEY_ORDER_IDS) String orderIds,
-                                                         @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
-                                                         @Field(RequestConstant.KEY_VERIFY_CODES) String verifyCodes,
-                                                         @Field(RequestConstant.KEY_REDUCTION_AMOUNT) String reductionAmount,
-                                                         @Field(RequestConstant.KEY_AMOUNT) String amount);
-
-    //买单回调
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER)
-    Observable<BaseBean> callbackInnerBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                 @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
-                                                 @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
-                                                 @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                                 @Field(RequestConstant.KEY_PAY_NO) String payNo,
-                                                 @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                                 @Field(RequestConstant.KEY_AMOUNT) String amount);
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_CALLBACK_INNER_BATCH_ORDER)
-    Call<BaseBean> callbackInnerBatchOrderSync(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                               @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
-                                               @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
-                                               @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                               @Field(RequestConstant.KEY_PAY_NO) String payNo,
-                                               @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                               @Field(RequestConstant.KEY_AMOUNT) String amount);
-
-    @GET(RequestConstant.URL_GET_INNER_BATCH_HOLE)
-    Observable<InnerBatchHoleResult> getInnerHoleBatch(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                       @Query(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId);
-
+    //获取内网未支付数量
     @GET(RequestConstant.URL_GET_INNER_UNPAID_COUNT)
     Observable<InnerUnpaidResult> getInnerUnpaid(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
-    @GET(RequestConstant.URL_CHECK_INNER_SUB_PAY_STATUS)
-    Call<StringResult> checkInnerSubPayStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                              @Query(RequestConstant.KEY_ORDER_ID) String orderId,
-                                              @Query(RequestConstant.KEY_PAY_NO) String payNo);
+
+    // -------------------------------收银重构-------------------------------
+    // 生成交易流水号
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TRADE_NO)
+    Observable<GetTradeNoResult> getTradeNo(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Field(RequestConstant.KEY_SIGN) String requestSign);
+
+    //生成交易记录
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GENERATE_BATCH_ORDER)
+    Observable<TradeBatchResult> generateBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                    @Field(RequestConstant.KEY_BATCH_NO) String batchNo,
+                                                    @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                    @Field(RequestConstant.KEY_ORDER_IDS) String orderIds,
+                                                    @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                    @Field(RequestConstant.KEY_VERIFY_CODES) String verifyCodes,
+                                                    @Field(RequestConstant.KEY_REDUCTION_AMOUNT) String reductionAmount,
+                                                    @Field(RequestConstant.KEY_ORI_AMOUNT) String oriAmount,
+                                                    @Field(RequestConstant.KEY_AMOUNT) String amount);
+
+    //买单回调确认支付
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CALLBACK_BATCH_ORDER)
+    Observable<BaseBean> callbackBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                            @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                            @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                            @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                            @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                            @Field(RequestConstant.KEY_AMOUNT) String amount);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CALLBACK_BATCH_ORDER)
+    Call<BaseBean> callbackBatchOrderSync(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                          @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                          @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                          @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                          @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                          @Field(RequestConstant.KEY_AMOUNT) String amount);
+
+    //查询订单详情
+    @GET(RequestConstant.URL_GET_BATCH_HOLE_DETAIL)
+    Observable<TradeBatchHoleResult> getHoleBatchDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                        @Query(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId);
+
+    //查询订单支付状态
+    @GET(RequestConstant.URL_CHECK_PAY_STATUS)
+    Call<StringResult> checkPayStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                      @Query(RequestConstant.KEY_ORDER_ID) String orderId,
+                                      @Query(RequestConstant.KEY_PAY_NO) String payNo);
+
+    //查询订单扫码状态
+    @GET(RequestConstant.URL_CHECK_SCAN_STATUS)
+    Call<StringResult> checkScanStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                       @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+
+    //获取支付方式
+    @GET(RequestConstant.URL_GET_PAY_CHANNEL_LIST)
+    Observable<TradeChannelListResult> getPayChannelList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }
 

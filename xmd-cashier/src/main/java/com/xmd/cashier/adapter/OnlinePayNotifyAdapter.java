@@ -18,8 +18,9 @@ import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.PayCouponInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotifyAdapter.ViewHolder> {
     private int tempCount;
-    private List<OnlinePayInfo> mData = new ArrayList<>();
+    private List<TradeRecordInfo> mData = new ArrayList<>();
     private Context mContext;
     private OnlinePayNotifyCallBack mCallBack;
 
@@ -38,7 +39,7 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
         mContext = MainApplication.getInstance().getApplicationContext();
     }
 
-    public void setData(List<OnlinePayInfo> list) {
+    public void setData(List<TradeRecordInfo> list) {
         tempCount = list.size();
         mData.addAll(list);
     }
@@ -59,7 +60,7 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final OnlinePayInfo info = mData.get(position);
+        final TradeRecordInfo info = mData.get(position);
         switch (info.status) {
             case AppConstants.STATUS_DETAIL:
                 PayCouponInfo payCouponInfo = info.payCouponInfo;
@@ -148,7 +149,7 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
                 OnlinePayDiscountAdapter discountAdapter = new OnlinePayDiscountAdapter();
                 discountAdapter.setCallBack(new OnlinePayDiscountAdapter.CallBack() {
                     @Override
-                    public void onItemClick(OnlinePayInfo.OnlinePayDiscountInfo info) {
+                    public void onItemClick(TradeDiscountInfo info) {
                         mCallBack.onDetail(info, position);
                     }
                 });
@@ -284,14 +285,14 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
     }
 
     public interface OnlinePayNotifyCallBack {
-        void onPass(OnlinePayInfo info, int position);
+        void onPass(TradeRecordInfo info, int position);
 
-        void onUnpass(OnlinePayInfo info, int position);
+        void onUnpass(TradeRecordInfo info, int position);
 
         void onClose(int position);
 
         void onReturn(int position);
 
-        void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info, int position);
+        void onDetail(TradeDiscountInfo info, int position);
     }
 }

@@ -2,7 +2,7 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.util.List;
 
@@ -16,19 +16,19 @@ public interface InnerRecordContract {
 
         void loadMore();
 
-        void onDetail(InnerRecordInfo info);
+        void onDetail(TradeRecordInfo info);
 
-        void onPay(InnerRecordInfo info);
+        void onPay(TradeRecordInfo info);
 
-        void printClient(InnerRecordInfo info);
+        void printClient(TradeRecordInfo info);
 
-        void printClub(InnerRecordInfo info);
+        void printClub(TradeRecordInfo info);
     }
 
     interface View extends BaseView<Presenter> {
         void clearData();
 
-        void showData(List<InnerRecordInfo> list);
+        void showData(List<TradeRecordInfo> list);
 
         void showRefreshIng();
 

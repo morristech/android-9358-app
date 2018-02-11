@@ -5,8 +5,9 @@ import android.content.Context;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerDetailContract;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.manager.InnerManager;
+import com.xmd.cashier.manager.TradeManager;
 
 /**
  * Created by zr on 17-11-7.
@@ -34,7 +35,7 @@ public class InnerDetailPresenter implements InnerDetailContract.Presenter {
                 break;
         }
 
-        InnerRecordInfo info = mView.returnRecordInfo();
+        TradeRecordInfo info = mView.returnRecordInfo();
         if (info != null) {
             mView.showAmount(info);
             if (info.details != null && !info.details.isEmpty()) {
@@ -72,14 +73,14 @@ public class InnerDetailPresenter implements InnerDetailContract.Presenter {
 
     @Override
     public void onDetailPrint() {
-        InnerRecordInfo recordInfo = mView.returnRecordInfo();
-        InnerManager.getInstance().printInnerRecordInfoAsync(recordInfo, true);
+        TradeRecordInfo recordInfo = mView.returnRecordInfo();
+        TradeManager.getInstance().printTradeRecordInfoAsync(recordInfo, true);
     }
 
     @Override
     public void onDetailPay() {
-        InnerRecordInfo recordInfo = mView.returnRecordInfo();
-        InnerManager.getInstance().initTradeByRecord(recordInfo);
+        TradeRecordInfo recordInfo = mView.returnRecordInfo();
+        TradeManager.getInstance().initTradeByRecord(recordInfo);
         if (recordInfo.paidAmount > 0) {
             UiNavigation.gotoInnerModifyActivity(mContext);
         } else {

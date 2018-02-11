@@ -13,9 +13,10 @@ import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
@@ -171,7 +172,7 @@ public class NotifyManager {
                         int size = result.getRespData().size();
                         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理在线买单---成功:" + size);
                         SPManager.getInstance().setFastPayPushTag(size);
-                        for (OnlinePayInfo info : result.getRespData()) {
+                        for (TradeRecordInfo info : result.getRespData()) {
                             info.tempNo = result.getRespData().indexOf(info) + 1;
                         }
                         EventBus.getDefault().post(result);
@@ -299,7 +300,7 @@ public class NotifyManager {
     }
 
     // ******************************  打印在线买单记录  ********************************
-    public void printOnlinePayRecordAsync(final OnlinePayInfo onlinePayInfo, final boolean retry) {
+    public void printOnlinePayRecordAsync(final TradeRecordInfo onlinePayInfo, final boolean retry) {
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
@@ -317,7 +318,7 @@ public class NotifyManager {
                 .subscribe();
     }
 
-    public void printOnlinePayRecordAsync(final OnlinePayInfo onlinePayInfo, final boolean retry, final boolean keep) {
+    public void printOnlinePayRecordAsync(final TradeRecordInfo onlinePayInfo, final boolean retry, final boolean keep) {
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
@@ -332,7 +333,7 @@ public class NotifyManager {
                 .subscribe();
     }
 
-    public void printOnlinePayRecord(OnlinePayInfo info, boolean retry, boolean keep) {
+    public void printOnlinePayRecord(TradeRecordInfo info, boolean retry, boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印在线买单记录");
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
@@ -343,7 +344,7 @@ public class NotifyManager {
         mPos.printDivide();
         mPos.printText("订单金额：", "￥ " + Utils.moneyToStringEx(info.originalAmount));
         if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
-            for (OnlinePayInfo.OnlinePayDiscountInfo discountInfo : info.orderDiscountList) {
+            for (TradeDiscountInfo discountInfo : info.orderDiscountList) {
                 if (discountInfo.type != null) {
                     switch (discountInfo.type) {
                         case AppConstants.PAY_DISCOUNT_COUPON:

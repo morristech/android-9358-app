@@ -15,7 +15,6 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.BillDetailContract;
 import com.xmd.cashier.dal.bean.BillInfo;
-import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.presenter.BillDetailPresenter;
 import com.xmd.cashier.widget.ArrayPopupWindow;
 

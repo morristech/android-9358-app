@@ -3,7 +3,7 @@ package com.xmd.cashier.contract;
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ public interface InnerDetailContract {
     }
 
     interface View extends BaseView<Presenter> {
-        InnerRecordInfo returnRecordInfo();
+        TradeRecordInfo returnRecordInfo();
 
         String returnSource();
 
         void showRecordDetail(List<InnerOrderInfo> list);
 
-        void showAmount(InnerRecordInfo recordInfo);
+        void showAmount(TradeRecordInfo recordInfo);
 
         void showAmount(int amount);
 

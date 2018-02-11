@@ -21,8 +21,9 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.OnlinePayAdapter;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.OnlinePayContract;
-import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.presenter.OnlinePayPresenter;
 import com.xmd.cashier.widget.ArrayPopupWindow;
 import com.xmd.cashier.widget.CustomLoadingLayout;
@@ -118,29 +119,29 @@ public class OnlinePayActivity extends BaseActivity implements OnlinePayContract
             }
 
             @Override
-            public void onPrintClient(OnlinePayInfo info) {
+            public void onPrintClient(TradeRecordInfo info) {
                 mPresenter.print(info, true, false);
             }
 
             @Override
-            public void onPrintClub(OnlinePayInfo info) {
+            public void onPrintClub(TradeRecordInfo info) {
                 mPresenter.print(info, true, true);
             }
 
             @Override
-            public void onConfirm(OnlinePayInfo info, int position) {
+            public void onConfirm(TradeRecordInfo info, int position) {
                 // 确认买单
                 mPresenter.pass(info, position);
             }
 
             @Override
-            public void onException(OnlinePayInfo info, int position) {
+            public void onException(TradeRecordInfo info, int position) {
                 // 请到前台
                 mPresenter.unpass(info, position);
             }
 
             @Override
-            public void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info) {
+            public void onDetail(TradeDiscountInfo info) {
                 mPresenter.detail(info.verifyCode);
             }
 
@@ -254,7 +255,7 @@ public class OnlinePayActivity extends BaseActivity implements OnlinePayContract
     }
 
     @Override
-    public void showData(List<OnlinePayInfo> list) {
+    public void showData(List<TradeRecordInfo> list) {
         mAdapter.setData(list);
         mAdapter.notifyDataSetChanged();
     }

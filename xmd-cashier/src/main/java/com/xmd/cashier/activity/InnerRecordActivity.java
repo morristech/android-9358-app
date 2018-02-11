@@ -13,7 +13,7 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.InnerRecordAdapter;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.InnerRecordContract;
-import com.xmd.cashier.dal.bean.InnerRecordInfo;
+import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.presenter.InnerRecordPresenter;
 import com.xmd.cashier.widget.CustomLoadingLayout;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
@@ -88,22 +88,22 @@ public class InnerRecordActivity extends BaseActivity implements InnerRecordCont
             }
 
             @Override
-            public void onItemDetail(InnerRecordInfo info) {
+            public void onItemDetail(TradeRecordInfo info) {
                 mPresenter.onDetail(info);
             }
 
             @Override
-            public void onItemPrintClient(InnerRecordInfo info) {
+            public void onItemPrintClient(TradeRecordInfo info) {
                 mPresenter.printClient(info);
             }
 
             @Override
-            public void onItemPrintClub(InnerRecordInfo info) {
+            public void onItemPrintClub(TradeRecordInfo info) {
                 mPresenter.printClub(info);
             }
 
             @Override
-            public void onItemPay(InnerRecordInfo info) {
+            public void onItemPay(TradeRecordInfo info) {
                 mPresenter.onPay(info);
             }
         });
@@ -159,7 +159,7 @@ public class InnerRecordActivity extends BaseActivity implements InnerRecordCont
     }
 
     @Override
-    public void showData(List<InnerRecordInfo> list) {
+    public void showData(List<TradeRecordInfo> list) {
         mAdapter.setData(list);
         mAdapter.notifyDataSetChanged();
     }

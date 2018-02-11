@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.OrderDiscountCheckInfo;
-import com.xmd.cashier.dal.bean.OrderDiscountInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountCheckInfo;
+import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,13 @@ import java.util.List;
 
 public class InnerVerifiedListAdapter extends RecyclerView.Adapter<InnerVerifiedListAdapter.ViewHolder> {
     private Context mContext;
-    private List<OrderDiscountInfo> mData = new ArrayList<>();
+    private List<TradeDiscountInfo> mData = new ArrayList<>();
 
     public InnerVerifiedListAdapter(Context context) {
         mContext = context;
     }
 
-    public void setData(List<OrderDiscountInfo> list) {
+    public void setData(List<TradeDiscountInfo> list) {
         mData = list;
     }
 
@@ -39,8 +39,8 @@ public class InnerVerifiedListAdapter extends RecyclerView.Adapter<InnerVerified
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        OrderDiscountInfo orderDiscountInfo = mData.get(position);
-        OrderDiscountCheckInfo orderDiscountCheckInfo = orderDiscountInfo.checkInfo;
+        TradeDiscountInfo orderDiscountInfo = mData.get(position);
+        TradeDiscountCheckInfo orderDiscountCheckInfo = orderDiscountInfo.checkInfo;
         holder.mSelect.setImageResource(R.drawable.ic_discount_verified);
         holder.mName.setText(orderDiscountCheckInfo.title);
         holder.mMoney.setText(Utils.moneyToString(orderDiscountCheckInfo.amount));

@@ -28,11 +28,11 @@ import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.CustomPushMessageListener;
-import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.manager.NotifyManager;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
@@ -70,7 +70,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             e.printStackTrace();
         }
 
-        // XLogger.init(0, null);
         XLogger.init(5, getFilesDir().getPath() + File.separator + "logs"); // /data/data/com.xmd.cashier/files
         XLogger.setWriteFileLevel(XLogger.LEVEL_INFO);
         XLogger.setGloableTag("9358");
@@ -88,8 +87,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);
         ThreadPoolManager.init(this);
-
-        DataReportManager.getInstance().startMonitor();
 
         Set<String> functions = new HashSet<>();
         XmdApp.getInstance().init(this, SPManager.getInstance().getSpaServerAddress(), functions);
@@ -121,10 +118,11 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
             MemberManager.getInstance().startGetMemberSetting();
             InnerManager.getInstance().startGetInnerSwitch();
-            InnerManager.getInstance().startGetInnerChannel();
             InnerManager.getInstance().getClubWorkTime();
             NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
             NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
+
+            TradeManager.getInstance().getPayChannelList(null);
         }
 
         // 开启服务
@@ -138,7 +136,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "APP VERSION CODE: " + Utils.getAppVersionCode());
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "APP VERSION NAME: " + Utils.getAppVersionName());
     }
-
 
     @Override
     public void onExitApplication() {

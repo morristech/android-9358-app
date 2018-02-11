@@ -21,7 +21,7 @@
         android:focusableInTouchMode="true"
         android:paddingLeft="@dimen/activity_normal_margin">
 
-        <com.xmd.cashier.widget.CustomCouponNumberEditText
+        <com.xmd.cashier.widget.CustomTradeNoText
             android:id="@+id/edt_number"
             android:layout_width="0dp"
             android:layout_height="match_parent"

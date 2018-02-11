@@ -1,7 +1,5 @@
 package com.xmd.cashier.dal.bean;
 
-import com.xmd.cashier.common.AppConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,78 +11,47 @@ public class Trade {
     public Trade() {
         couponList = new ArrayList<>();
         verifiedList = new ArrayList<>();
-        discountType = AppConstants.DISCOUNT_TYPE_COUPON;
     }
 
-    public int currentCashier;  //当前收银方式标记
-    public String currentCashierName;   //当前收银方式名称
-    public String currentCashierType;
-    public String currentCashierMark;   //当前收银方式备注
-    public boolean isClient;    //用来控制打印是否要打印客户联小票
+    public int tradeStatus; //交易结果
+    public String tradeStatusError; //交易失败描述
 
-    //订单信息
-    public String tradeNo;  //订单号
-    public int tradeStatus; //订单状态
-    public String tradeTime;    //交易时间
+    public String currentChannelName;   //当前收银方式名称
+    public String currentChannelType;   //当前收银方式标记
+    public String currentChannelMark;   //当前收银方式备注
 
-    private int discountType;   //0:无; 1:用户手动输入; 2:核销;
-    private int userDiscountMoney;  //用户手动输入的抵扣金额
-    private int couponDiscountMoney;    //核销抵扣金额=各种券+预付费订单+朋友请客
+    public String memberId;     //会员ID
+    public MemberInfo memberInfo;   //会员信息
 
-    private int originMoney;    //原始消费金额        |内网
-    private int willDiscountMoney;  //本次预计优惠金额    |内网
-    private int willPayMoney;   //当前应该支付的金额      |内网
+    public String tradeNo;  //POS交易订单号
+    public String batchNo;  //批量结账单号
+    public String payOrderId;   //支付订单ID
+    public String payNo;    //当次支付号
+    public String payUrl;   //当次支付URL
 
-    /**
-     * 体验券|点钟券|折扣券|现金券|付费预约|请客
-     **/
-    private List<VerificationItem> couponList;//当前核销列表
-    private int verificationCount;  //将要核销的优惠券数量
-    private int verificationMoney;  //将要核销的金额
-    private int verificationSuccessfulMoney;//核销成功的金额
-    private int verificationNoUseTreatMoney;//核销成功后，没有使用的请客金额
+    private List<VerificationItem> couponList;  //当前核销列表
+    private List<TradeDiscountInfo> verifiedList;   //已核销列表
 
-    /**
-     * 会员支付
-     **/
-    public String memberId; //会员ID      |内网
+    private int originMoney;    //原始消费金额
 
-    public String memberPayMethod;  // 支付方式：接口 或者 二维码memberToken
-    public MemberInfo memberInfo;   // 会员支付时的会员信息
-    public String memberToken;  //会员二维码token
-    public MemberRecordInfo memberRecordInfo;   //会员支付信息
-    public String memberTempPhone;  //临时手机号
-
-    /**
-     * 扫码在线买单
-     */
-    public OnlinePayInfo onlinePayInfo;
-
-    /**
-     * 收银台支付
-     **/
-    private String posTradeNo; //收银台订单号
-    public String posPayTypeString; //收银台支付方式
-    public String posPayTypeChannel;
-    public int posMoney; //收银台支付金额
-    public int posPayResult; //收银台支付结果
-    public Object posPayReturn;//收银台支付返回
-    public int posPoints;//收银台收银获得积分
-
-    /**
-     * 内网
-     */
-    public InnerRecordInfo innerRecordInfo;
-    public String batchNo;      //批次号
-    public String payOrderId;   //订单编号
-    public String subPayOrderId;    //订单部分支付ID
-    public String payUrl;
-    private List<OrderDiscountInfo> verifiedList;
     private int willReductionMoney;     // 直接减免的金额
+
+    private int willDiscountMoney;      // 此次核销的金额
     private int alreadyDiscountMoney;   // 已经核销的金额
-    private int alreadyCutMoney;        // 已经优惠减免的金额
+    private int verificationCount;      // 将要核销的优惠券数量
+
+    private int alreadyCutMoney;        // 优惠减免的金额 = 已经核销的金额 + 此次核销的金额 + 直接减免的金额
+
     private int alreadyPayMoney;        // 已经支付的金额
-    private int realPayMoney;           // 部分支付的金额
+
+    private int willPayMoney;       // 此次支付的金额
+
+    private int needPayMoney;       // 需要支付的金额
+
+    private String posTradeNo;      //收银台订单号
+    public String posPayCashierNo;  //POS支付返回的CashierNo
+
+    public TradeRecordInfo innerRecordInfo;
 
     public int getAlreadyCutMoney() {
         return alreadyCutMoney;
@@ -92,14 +59,6 @@ public class Trade {
 
     public void setAlreadyCutMoney(int money) {
         alreadyCutMoney = money;
-    }
-
-    public int getRealPayMoney() {
-        return realPayMoney;
-    }
-
-    public void setRealPayMoney(int money) {
-        realPayMoney = money;
     }
 
     public void setAlreadyPayMoney(int money) {
@@ -118,11 +77,11 @@ public class Trade {
         return alreadyDiscountMoney;
     }
 
-    public List<OrderDiscountInfo> getVerifiedList() {
+    public List<TradeDiscountInfo> getVerifiedList() {
         return verifiedList;
     }
 
-    public void setVerifiedList(List<OrderDiscountInfo> list) {
+    public void setVerifiedList(List<TradeDiscountInfo> list) {
         verifiedList = list;
     }
 
@@ -142,16 +101,14 @@ public class Trade {
         willPayMoney = money;
     }
 
-    // 需要支付的金额
     public int getNeedPayMoney() {
-        int needPayMoney = originMoney - willDiscountMoney;
-        if (needPayMoney < 0) {
-            needPayMoney = 0;
-        }
         return needPayMoney;
     }
 
-    // 初始消费金额
+    public void setNeedPayMoney(int money) {
+        needPayMoney = money;
+    }
+
     public int getOriginMoney() {
         return originMoney;
     }
@@ -160,40 +117,12 @@ public class Trade {
         this.originMoney = originMoney;
     }
 
-    // 预计减免的金额
     public int getWillDiscountMoney() {
         return willDiscountMoney;
     }
 
     public void setWillDiscountMoney(int willDiscountMoney) {
         this.willDiscountMoney = willDiscountMoney;
-    }
-
-    // 减免类型
-    public int getDiscountType() {
-        return discountType;
-    }
-
-    public void setDiscountType(int discountType) {
-        this.discountType = discountType;
-    }
-
-    // 手动减免金额
-    public int getUserDiscountMoney() {
-        return userDiscountMoney;
-    }
-
-    public void setUserDiscountMoney(int userDiscountMoney) {
-        this.userDiscountMoney = userDiscountMoney;
-    }
-
-    // 核销减免金额
-    public void setCouponDiscountMoney(int couponDiscountMoney) {
-        this.couponDiscountMoney = couponDiscountMoney;
-    }
-
-    public int getCouponDiscountMoney() {
-        return couponDiscountMoney;
     }
 
     // 核销列表
@@ -214,50 +143,11 @@ public class Trade {
         this.verificationCount = verificationCount;
     }
 
-    // 预计核销金额
-    public int getVerificationMoney() {
-        return verificationMoney;
-    }
-
-    public void setVerificationMoney(int verificationMoney) {
-        this.verificationMoney = verificationMoney;
-    }
-
-    // 核销成功金额
-    public int getVerificationSuccessfulMoney() {
-        return verificationSuccessfulMoney;
-    }
-
-    public void setVerificationSuccessfulMoney(int verificationSuccessfulMoney) {
-        this.verificationSuccessfulMoney = verificationSuccessfulMoney;
-    }
-
-    // 请客未使用金额
-    public int getVerificationNoUseTreatMoney() {
-        return verificationNoUseTreatMoney;
-    }
-
-    public void setVerificationNoUseTreatMoney(int verificationNoUseTreatMoney) {
-        this.verificationNoUseTreatMoney = verificationNoUseTreatMoney;
-    }
-
     public synchronized String getPosTradeNo() {
         if (posTradeNo == null) {
             newCashierTradeNo();
         }
         return posTradeNo;
-    }
-
-    public int getPosMoney() {
-        return posMoney;
-    }
-
-    public String getPosPayTypeString() {
-        return posPayTypeString;
-    }
-
-    public String getPosPayTypeChannel() {
-        return posPayTypeChannel;
     }
 
     //生成新的订单号给收银APP使用

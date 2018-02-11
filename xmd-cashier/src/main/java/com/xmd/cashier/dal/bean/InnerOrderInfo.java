@@ -8,7 +8,7 @@ import java.util.List;
  * 内网订单对象
  */
 
-public class InnerOrderInfo implements Serializable{
+public class InnerOrderInfo implements Serializable {
     public int amount;    //账单价格,单位为分
     public String batchNo;
     public String businessNo;    //帐单编号

@@ -9,7 +9,7 @@ import com.xmd.cashier.BaseView;
  * Created by zr on 17-7-11.
  */
 
-public interface MemberScanContract {
+public interface MemberPaymentContract {
     interface Presenter extends BasePresenter {
         void rechargeByCash();
 

@@ -44,7 +44,7 @@ public class CommonVerifyInfo implements Serializable {
         public String title;
     }
 
-    public class ExtraMemberInfo implements Serializable{
+    public class ExtraMemberInfo implements Serializable {
         public String cardNo;
         public String memberTypeName;
         public String memberName;

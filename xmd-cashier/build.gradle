@@ -134,6 +134,7 @@ dependencies {
     weiposCompile files('libs/CashierInvoke_v1.4_201708281915.jar')
     huiposCompile files('libs/huipos_cashbox_minisdk.jar')
     huiposCompile files('libs/huipos_print.jar')
-    compile 'com.getui:sdk:2.10.2.0'
+
+    compile 'com.getui:sdk:2.11.1.0'
     compile 'org.greenrobot:greendao:3.2.2'
 }

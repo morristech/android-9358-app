@@ -1,5 +1,6 @@
 package com.xmd.cashier.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,18 +9,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.cashier.R;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.contract.MemberCashierContract;
+import com.xmd.cashier.contract.TradeMemberPayContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
-import com.xmd.cashier.presenter.MemberCashierPresenter;
+import com.xmd.cashier.presenter.TradeMemberPayPresenter;
 import com.xmd.cashier.widget.CircleImageView;
 
 /**
  * Created by zr on 17-7-22.
  */
 
-public class MemberCashierActivity extends BaseActivity implements MemberCashierContract.View {
-    public MemberCashierContract.Presenter mPresenter;
+public class TradeMemberPayActivity extends BaseActivity implements TradeMemberPayContract.View {
+    public TradeMemberPayContract.Presenter mPresenter;
 
     private CircleImageView mMemberAvatar;
     private TextView mMemberName;
@@ -36,17 +38,27 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
 
     private Button mMemberPayBtn;
 
+    private int mTradeType;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member_cashier);
-        mPresenter = new MemberCashierPresenter(this, this);
+        setContentView(R.layout.activity_trade_member_pay);
+        mTradeType = getIntent().getIntExtra(AppConstants.EXTRA_TRADE_TYPE, 0);
+        mPresenter = new TradeMemberPayPresenter(this, this);
         initView();
         mPresenter.onCreate();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mTradeType = getIntent().getIntExtra(AppConstants.EXTRA_TRADE_TYPE, 0);
+        mPresenter.onCreate();
+    }
+
     private void initView() {
-        showToolbar(R.id.toolbar, "会员消费");
+        showToolbar(R.id.toolbar, "支付");
         mMemberAvatar = (CircleImageView) findViewById(R.id.img_member_avatar);
         mMemberName = (TextView) findViewById(R.id.tv_member_name);
         mMemberLevel = (TextView) findViewById(R.id.tv_member_level);
@@ -103,6 +115,11 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
     }
 
     @Override
+    public int getType() {
+        return mTradeType;
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         mPresenter.onStart();
@@ -111,17 +128,19 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
     }
 
     @Override
     public boolean onKeyEventBack() {
         mPresenter.onNavigationBack();
-        return super.onKeyEventBack();
+        return true;
     }
 
     @Override
-    public void setPresenter(MemberCashierContract.Presenter presenter) {
+    public void setPresenter(TradeMemberPayContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

@@ -8,5 +8,5 @@ import com.xmd.m.network.BaseBean;
  */
 
 public class CommonVerifyResult extends BaseBean<CommonVerifyInfo> {
-    
+
 }

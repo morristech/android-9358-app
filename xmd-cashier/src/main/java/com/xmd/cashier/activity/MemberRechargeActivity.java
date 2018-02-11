@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.MemberPlanAdapter;
 import com.xmd.cashier.common.AppConstants;
@@ -29,7 +28,6 @@ import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.presenter.MemberRechargePresenter;
-import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CircleImageView;
 import com.xmd.cashier.widget.ClearableEditText;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
@@ -304,45 +302,6 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     @Override
     public void clearPackage() {
         mAdapter.setSelectedPosition(-1);
-    }
-
-    @Override
-    public void showDialog() {
-        ActionSheetDialog dialog = new ActionSheetDialog(MemberRechargeActivity.this);
-        dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_CASH_TEXT, AppConstants.CASHIER_TYPE_UNION_TEXT});
-        dialog.setCancelText("取消");
-        dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
-            @Override
-            public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值选择支付方式：" + item);
-                int type = AppConstants.CASHIER_TYPE_ERROR;
-                switch (item) {
-                    case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
-                        // 扫码支付
-                        type = AppConstants.CASHIER_TYPE_QRCODE;
-                        break;
-                    case AppConstants.CASHIER_TYPE_UNION_TEXT:
-                        // POS刷卡或者现金
-                        type = AppConstants.CASHIER_TYPE_POS;
-                        break;
-                    case AppConstants.CASHIER_TYPE_CASH_TEXT:
-                        // 现金支付
-                        type = AppConstants.CASHIER_TYPE_CASH;
-                        break;
-                    default:
-                        break;
-                }
-                mPresenter.onRecharge(type);
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onCancelItemClick(ActionSheetDialog dialog) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

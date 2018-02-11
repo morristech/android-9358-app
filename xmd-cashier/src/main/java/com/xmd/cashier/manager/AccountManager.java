@@ -160,10 +160,11 @@ public class AccountManager {
                             EventBus.getDefault().postSticky(new EventLogin(getToken(), user));
                             MemberManager.getInstance().startGetMemberSetting();
                             InnerManager.getInstance().startGetInnerSwitch();
-                            InnerManager.getInstance().startGetInnerChannel();
                             InnerManager.getInstance().getClubWorkTime();
                             NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
                             NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
+
+                            TradeManager.getInstance().getPayChannelList(null);
                         }
 
                         @Override
@@ -206,7 +207,6 @@ public class AccountManager {
         EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
         MemberManager.getInstance().stopGetMemberSetting();
         InnerManager.getInstance().stopGetInnerSwitch();
-        InnerManager.getInstance().stopGetInnerChannel();
         InnerManager.getInstance().resetClubWorkTime();
 
         XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出操作：" + RequestConstant.URL_LOGOUT);

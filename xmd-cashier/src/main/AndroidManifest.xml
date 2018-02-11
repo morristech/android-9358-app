@@ -59,9 +59,6 @@
             android:name=".activity.VerificationActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.ConfirmActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".activity.PayTypeChoiceActivity"
             android:launchMode="singleTask" />
 
@@ -132,14 +129,14 @@
             android:name=".activity.VerifyRecordDetailActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.CashPayActivity"
+            android:name=".activity.TradeMarkPayActivity"
             android:launchMode="singleTask" />
 
         <activity
-            android:name=".activity.ScanPayActivity"
+            android:name=".activity.TradeQrcodePayActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.ScanPayResultActivity"
+            android:name=".activity.CashierResultActivity"
             android:launchMode="singleTask" />
 
         <activity
@@ -159,7 +156,7 @@
             android:launchMode="singleTask" />
 
         <activity
-            android:name=".activity.MemberScanActivity"
+            android:name=".activity.MemberPaymentActivity"
             android:launchMode="singleTask" />
 
         <activity
@@ -185,7 +182,7 @@
             android:name=".activity.McardSuccessActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.MemberCashierActivity"
+            android:name=".activity.TradeMemberPayActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.DiscountCouponActivity"
