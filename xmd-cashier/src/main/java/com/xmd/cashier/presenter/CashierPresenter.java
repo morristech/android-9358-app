@@ -325,7 +325,6 @@ public class CashierPresenter implements CashierContract.Presenter {
             finallyMoney = 0;
         }
         trade.setWillPayMoney(finallyMoney);
-        trade.setNeedPayMoney(finallyMoney);
         mView.setFinallyMoney(Utils.moneyToString(finallyMoney));
     }
 

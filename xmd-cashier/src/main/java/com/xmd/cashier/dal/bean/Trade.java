@@ -46,8 +46,6 @@ public class Trade {
 
     private int willPayMoney;       // 此次支付的金额
 
-    private int needPayMoney;       // 需要支付的金额
-
     private String posTradeNo;      //收银台订单号
     public String posPayCashierNo;  //POS支付返回的CashierNo
 
@@ -99,14 +97,6 @@ public class Trade {
 
     public void setWillPayMoney(int money) {
         willPayMoney = money;
-    }
-
-    public int getNeedPayMoney() {
-        return needPayMoney;
-    }
-
-    public void setNeedPayMoney(int money) {
-        needPayMoney = money;
     }
 
     public int getOriginMoney() {

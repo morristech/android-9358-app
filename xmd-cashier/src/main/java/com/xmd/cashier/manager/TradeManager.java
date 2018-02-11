@@ -99,7 +99,6 @@ public class TradeManager {
         formatVerifiedList(recordInfo.orderDiscountList);
         mTrade.setVerifiedList(recordInfo.orderDiscountList);
         mTrade.setOriginMoney(recordInfo.originalAmount);    // 订单金额
-        mTrade.setNeedPayMoney(recordInfo.payAmount);
         mTrade.setWillPayMoney(recordInfo.payAmount);        // 实付金额
     }
 
@@ -469,8 +468,7 @@ public class TradeManager {
                     mTrade.payUrl = tradeBatchInfo.payUrl;
                     mTrade.setOriginMoney(tradeBatchInfo.oriAmount);
                     mTrade.setWillDiscountMoney(tradeBatchInfo.discountAmount);
-                    mTrade.setWillPayMoney(tradeBatchInfo.oriAmount - tradeBatchInfo.discountAmount);
-                    mTrade.setNeedPayMoney(tradeBatchInfo.oriAmount - tradeBatchInfo.discountAmount);
+                    mTrade.setWillPayMoney(tradeBatchInfo.payAmount);
                     callback.onSuccess(tradeBatchInfo.status);
                 } else {
                     callback.onError("数据异常，请联系系统管理员");

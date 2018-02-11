@@ -53,10 +53,8 @@ public class InnerMethodPresenter implements InnerMethodContract.Presenter {
         trade.setWillDiscountMoney(verify);
         trade.setAlreadyCutMoney(verify + reduction + already);
         if (origin < verify + reduction + already) {
-            trade.setNeedPayMoney(0);
             trade.setWillPayMoney(0);
         } else {
-            trade.setNeedPayMoney(origin - verify - reduction - already);
             trade.setWillPayMoney(origin - verify - reduction - already);
         }
         mView.showDiscountAmount(trade.getAlreadyCutMoney());

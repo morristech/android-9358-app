@@ -31,7 +31,7 @@ public class PayTypeChoicePresenter implements PayTypeChoiceContract.Presenter {
 
     @Override
     public void onStart() {
-        mView.showNeedPayMoney(Utils.moneyToStringEx(TradeManager.getInstance().getCurrentTrade().getNeedPayMoney()));
+        mView.showNeedPayMoney(Utils.moneyToStringEx(TradeManager.getInstance().getCurrentTrade().getWillPayMoney()));
         mView.showPayType(mPayType);
         mView.setPayButtonEnable(false);
     }
