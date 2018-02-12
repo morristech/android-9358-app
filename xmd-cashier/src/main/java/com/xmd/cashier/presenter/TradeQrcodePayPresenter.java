@@ -21,9 +21,12 @@ import com.xmd.cashier.dal.event.TradeDoneEvent;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
 import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
+import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -44,6 +47,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     private GiftActivityInfo mGiftActivityInfo;
     private Subscription mGetGiftActivitySubscription;
+    private Subscription mActiveAuthCodePaySubscription;
 
     private TradeManager mTradeManager;
 
@@ -56,11 +60,9 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onCreate() {
-        PosFactory.getCurrentCashier().speech("请扫描屏幕中二维码");
         Trade trade = mTradeManager.getCurrentTrade();
         mView.setAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(trade.getWillPayMoney())));
         getGiftActivity();  //买单活动
-
         if (TextUtils.isEmpty(trade.payUrl)) {
             mView.showQrError("获取二维码失败");
         } else {
@@ -75,12 +77,33 @@ public class TradeQrcodePayPresenter implements Presenter {
             } else {
                 mView.showQrSuccess();
                 mView.setQRCode(bitmap);
-                // 轮询扫码状态
-                startGetScanStatus();
-                // 轮询支付状态
-                startGetPayStatus();
             }
         }
+
+        String priority = SPManager.getInstance().getOnlinePayPriority();
+        mView.showView(priority);
+        switch (priority) {
+            case AppConstants.ONLINE_PAY_PRIORITY_AUTH:
+                initAuth();
+                break;
+            case AppConstants.ONLINE_PAY_PRIORITY_BITMAP:
+                initBitmap();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void initBitmap() {
+        PosFactory.getCurrentCashier().speech("请扫描屏幕中二维码");
+        // 轮询扫码状态
+        startGetScanStatus();
+        // 轮询支付状态
+        startGetPayStatus();
+    }
+
+    private void initAuth() {
+
     }
 
     @Override
@@ -95,6 +118,56 @@ public class TradeQrcodePayPresenter implements Presenter {
         if (mGetGiftActivitySubscription != null) {
             mGetGiftActivitySubscription.unsubscribe();
         }
+        if (mActiveAuthCodePaySubscription != null) {
+            mActiveAuthCodePaySubscription.unsubscribe();
+        }
+    }
+
+    // **************** 二维码授权支付 ****************
+    @Override
+    public void authPay(String authCode) {
+        mView.showLoading();
+        if (mActiveAuthCodePaySubscription != null) {
+            mActiveAuthCodePaySubscription.unsubscribe();
+        }
+        mActiveAuthCodePaySubscription = mTradeManager.activeAuthPay(
+                mTradeManager.getCurrentTrade().getWillPayMoney(),
+                authCode,
+                mTradeManager.getCurrentTrade().payOrderId,
+                mTradeManager.getCurrentTrade().payNo,
+                new Callback<BaseBean>() {
+                    @Override
+                    public void onSuccess(BaseBean o) {
+                        mView.hideLoading();
+                        PosFactory.getCurrentCashier().speech("支付成功");
+                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        mView.finishSelf();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        mView.hideLoading();
+                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                        mTradeManager.getCurrentTrade().tradeStatusError = error;
+                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        mView.finishSelf();
+                    }
+                });
+    }
+
+    @Override
+    public void onAuthClick() {
+        // 选择主扫
+        stopGetPayStatus();
+        stopGetScanStatus();
+    }
+
+    @Override
+    public void onBitmapClick() {
+        // 选择被扫
+        startGetPayStatus();
+        startGetScanStatus();
     }
 
     // ****************************************轮询扫码状态******************************************
@@ -103,12 +176,14 @@ public class TradeQrcodePayPresenter implements Presenter {
     private boolean resultScanStatus = false;
 
     private void startGetScanStatus() {
-        mRetryScanStatus = new RetryPool.RetryRunnable(AppConstants.DEFAULT_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
-            @Override
-            public boolean run() {
-                return getScanStatus();
-            }
-        });
+        if (mRetryScanStatus == null) {
+            mRetryScanStatus = new RetryPool.RetryRunnable(AppConstants.DEFAULT_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+                @Override
+                public boolean run() {
+                    return getScanStatus();
+                }
+            });
+        }
         RetryPool.getInstance().postWork(mRetryScanStatus);
     }
 
@@ -150,12 +225,14 @@ public class TradeQrcodePayPresenter implements Presenter {
     private boolean resultPayStatus = false;
 
     private void startGetPayStatus() {
-        mRetryPayStatus = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
-            @Override
-            public boolean run() {
-                return getPayStatus();
-            }
-        });
+        if (mRetryPayStatus == null) {
+            mRetryPayStatus = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+                @Override
+                public boolean run() {
+                    return getPayStatus();
+                }
+            });
+        }
         RetryPool.getInstance().postWork(mRetryPayStatus);
     }
 

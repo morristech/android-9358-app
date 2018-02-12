@@ -30,9 +30,12 @@
 
         <TextView
             android:id="@+id/tv_status_error"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_little_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:gravity="center"
             android:textColor="@color/colorPink"
             android:textSize="@dimen/font_size_14" />
 

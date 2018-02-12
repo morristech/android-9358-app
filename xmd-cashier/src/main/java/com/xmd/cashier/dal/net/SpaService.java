@@ -703,5 +703,13 @@ public interface SpaService {
     //获取支付方式
     @GET(RequestConstant.URL_GET_PAY_CHANNEL_LIST)
     Observable<TradeChannelListResult> getPayChannelList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_AUTH_CODE_ACTIVE)
+    Observable<BaseBean> activeAuthPay(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                       @Field(RequestConstant.KEY_AMOUNT) String amount,
+                                       @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                       @Field(RequestConstant.KEY_AUTH_CODE) String authCode,
+                                       @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId);
 }
 

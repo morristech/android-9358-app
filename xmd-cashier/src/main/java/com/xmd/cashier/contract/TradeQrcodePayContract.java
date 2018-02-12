@@ -14,6 +14,12 @@ public interface TradeQrcodePayContract {
         void onGiftActivity();
 
         void onKeyEventBack();
+
+        void authPay(String code);
+
+        void onAuthClick();
+
+        void onBitmapClick();
     }
 
     interface View extends BaseView<Presenter> {
@@ -30,5 +36,7 @@ public interface TradeQrcodePayContract {
         void showGiftActivity();
 
         int getType();
+
+        void showView(String priority);
     }
 }

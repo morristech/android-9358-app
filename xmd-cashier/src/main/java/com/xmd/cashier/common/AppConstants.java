@@ -322,4 +322,7 @@ public class AppConstants {
     public final static String LOG_BIZ_ACCOUNT_MANAGER = "[账号系统]";
     public final static String LOG_BIZ_LOCAL_CONFIG = "[本地配置]";
     public final static String LOG_BIZ_MAIN_VERIFY = "[首页核销]";
+
+    public final static String ONLINE_PAY_PRIORITY_AUTH = "auth";
+    public final static String ONLINE_PAY_PRIORITY_BITMAP = "bitmap";
 }

@@ -214,8 +214,74 @@
 
             <View
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_little_margin"
+                android:background="@color/colorDivide" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_small_margin"
+                    android:text="扫码收款方式设置"
+                    android:textSize="@dimen/medium_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(切换首选收款方式)"
+                    android:textSize="@dimen/font_size_14" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/colorDivide" />
+
+            <RadioGroup
+                android:id="@+id/rg_online_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rb_auth"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_normal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:text="主动扫码"
+                    android:textSize="@dimen/font_size_16" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/colorDivide" />
+
+                <RadioButton
+                    android:id="@+id/rb_bitmap"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_normal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:text="收款二维码"
+                    android:textSize="@dimen/font_size_16" />
+            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

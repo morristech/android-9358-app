@@ -807,4 +807,21 @@ public class TradeManager {
         });
         return clubQrcodeBytes;
     }
+
+    // 二维码授权支付
+    public Subscription activeAuthPay(int amount, String authCode, String payOrderId, String payNo, final Callback<BaseBean> callback) {
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .activeAuthPay(AccountManager.getInstance().getToken(), String.valueOf(amount), payNo, authCode, payOrderId);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
+    }
 }

@@ -23,4 +23,6 @@ public class SPConstants {
     public static String STATISTICS_FIRST_SETTING = "074f1a261d36515cd2117f812ed2852a"; //是否设置过时间
 
     public static String LAST_UPLOAD_TIME = "81b4446f2465af17a01c611e8b636622";     //最近一次上传日志的时间
+
+    public static String ONLINE_PAY_PRIORITY = "5f67ebf1b442b35c391dc504b7365a11";    //微信支付宝支付优先级: auth | bitmap
 }

@@ -163,4 +163,12 @@ public class SPManager {
     public void setLastUploadTime(String time) {
         mSharedPreferences.edit().putString(SPConstants.LAST_UPLOAD_TIME, time).apply();
     }
+
+    public String getOnlinePayPriority() {
+        return mSharedPreferences.getString(SPConstants.ONLINE_PAY_PRIORITY, AppConstants.ONLINE_PAY_PRIORITY_AUTH);
+    }
+
+    public void setOnlinePayPriority(String priority) {
+        mSharedPreferences.edit().putString(SPConstants.ONLINE_PAY_PRIORITY, priority).apply();
+    }
 }
