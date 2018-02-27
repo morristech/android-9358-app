@@ -93,15 +93,17 @@ public class CashierResultActivity extends BaseActivity implements CashierResult
     @Override
     public void showStatus(int status) {
         switch (status) {
-            // TODO 设置mStatusImage
             case AppConstants.TRADE_STATUS_SUCCESS:
                 mStatusText.setText("交易成功");
+                mStatusImage.setImageResource(R.drawable.ic_scan_ok);
                 break;
             case AppConstants.TRADE_STATUS_ERROR:
                 mStatusText.setText("交易失败");
+                mStatusImage.setImageResource(R.drawable.ic_off);
                 break;
             default:
                 mStatusText.setText("交易状态未知");
+                mStatusImage.setImageResource(R.drawable.ic_off);
                 break;
         }
     }
