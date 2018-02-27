@@ -3,6 +3,8 @@ package com.xmd.cashier.pos;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.cashier.BuildConfig;
+import com.xmd.cashier.dal.net.RequestConstant;
 
 import org.json.JSONObject;
 
@@ -51,7 +53,7 @@ public class WeiPosCashierSign {
         dataMap.put("fee_type", feeType);
         dataMap.put("total_fee", totalFee);
         dataMap.put("input_charset", inputCharset);
-        dataMap.put("notify_url", "http://apps.weipass.cn/pay/notify");
+        dataMap.put("notify_url", BuildConfig.WANG_POS_NOTIFY_HOST + RequestConstant.WANG_POS_NOTIFY_URL);
         dataMap.put("package", packageName);
         dataMap.put("classpath", classPath);
 

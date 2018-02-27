@@ -6,9 +6,11 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.wangpos.by.cashier3.CashierHelper;
+import com.xmd.cashier.BuildConfig;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.PayCallback;
 import com.xmd.cashier.pos.bean.WanPosPayNewResult;
@@ -141,7 +143,7 @@ public class PosImpl implements IPos {
             params.put("body", "水疗项目");
             params.put("pay_type", String.valueOf(1));
             params.put("total_fee", String.valueOf(money));
-            params.put("notify_url", "http://apps.weipass.cn/pay/notify");
+            params.put("notify_url", BuildConfig.WANG_POS_NOTIFY_HOST + RequestConstant.WANG_POS_NOTIFY_URL);
 //            params.put("activity_path", WeiposResultActivity.class.getName());
             CashierHelper.consume(context, params, new CashierHelper.PayCallBack() {
                 @Override

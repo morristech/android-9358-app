@@ -110,6 +110,9 @@ public class RequestConstant {
 
     public static final String URL_AUTH_CODE_ACTIVE = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/auth_pay/save";   //威付通主扫支付
 
+    // 旺POS回调URL
+    public static final String WANG_POS_NOTIFY_URL = SPA_SERVICE_BASE + "/v2/wangpos/pay/paid_success";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
