@@ -121,8 +121,8 @@ public class OkHttpUtil {
                     XLogger.i(TAG, "<---"
                             + " (" + tookMs + "ms) " +
                             "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
-                            + response.request().method() + "-RESPONSE:" + response.toString()
-                            + "\n" + responseToString(response));
+                            + response.request().method() + "-RESPONSE:" + response.toString());
+//                            + "\n" + responseToString(response));
                 }
 
                 return response;
