@@ -169,3 +169,6 @@
 
 -dontwarn com.xmd.m.network.**
 -keep class com.xmd.m.network.** {*;}
+
+-dontwarn com.wangpos.by.cashier3.**
+-keep class com.wangpos.by.cashier3.** {*;}
