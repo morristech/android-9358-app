@@ -46,7 +46,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
                 mView.showSuccess();
                 break;
             default:
-                mView.showCancel();
+                mView.showCancel(TradeManager.getInstance().getCurrentTrade().tradeStatusError);
                 break;
         }
         getOrder();

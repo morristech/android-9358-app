@@ -3,6 +3,7 @@ package com.xmd.cashier.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,7 +31,9 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     private Button mDetailBtn;
     private Button mOtherBtn;
     private Button mContinueBtn;
+    private Button mCancelBtn;
     private TextView mStatusDesc;
+    private TextView mStatusErrorDesc;
 
     private StepView mStepView;
 
@@ -59,7 +62,9 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mDetailBtn = (Button) findViewById(R.id.btn_view_order);
         mOtherBtn = (Button) findViewById(R.id.btn_view_other);
         mContinueBtn = (Button) findViewById(R.id.btn_view_continue);
+        mCancelBtn = (Button) findViewById(R.id.btn_view_cancel);
         mStatusDesc = (TextView) findViewById(R.id.tv_order_status_desc);
+        mStatusErrorDesc = (TextView) findViewById(R.id.tv_order_status_error);
         mDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +83,13 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
             @Override
             public void onClick(View v) {
                 mPresenter.onContinue();
+            }
+        });
+
+        mCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onClose();
             }
         });
     }
@@ -109,16 +121,23 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     }
 
     @Override
-    public void showCancel() {
+    public void showCancel(String error) {
         mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_gray);
         mStatusImg.setVisibility(View.GONE);
         mStatusText.setText("支付失败");
         mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
+        if (TextUtils.isEmpty(error)) {
+            mStatusErrorDesc.setVisibility(View.INVISIBLE);
+        } else {
+            mStatusErrorDesc.setVisibility(View.VISIBLE);
+            mStatusErrorDesc.setText(error);
+        }
     }
 
     @Override
     public void showDone(String desc) {
         mStatusDesc.setText(desc);
+        mCancelBtn.setVisibility(View.GONE);
         mContinueBtn.setVisibility(View.GONE);
         mDetailBtn.setVisibility(View.VISIBLE);
         mOtherBtn.setVisibility(View.VISIBLE);
@@ -127,6 +146,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     @Override
     public void showContinue(String desc) {
         mStatusDesc.setText(Utils.changeColor(desc, ResourceUtils.getColor(R.color.colorAccent), 7, desc.length()));
+        mCancelBtn.setVisibility(View.VISIBLE);
         mContinueBtn.setVisibility(View.VISIBLE);
         mDetailBtn.setVisibility(View.GONE);
         mOtherBtn.setVisibility(View.GONE);

@@ -49,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="确认收银"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 
@@ -61,6 +60,15 @@
             android:textColor="@color/colorText"
             android:textSize="@dimen/font_size_16" />
 
+        <TextView
+            android:id="@+id/tv_order_status_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_little_margin"
+            android:gravity="center"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/font_size_14" />
+
     </LinearLayout>
 
     <View
@@ -70,7 +78,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/colorWhite"
         android:orientation="horizontal"
         android:padding="@dimen/activity_normal_margin">
@@ -78,7 +86,7 @@
         <Button
             android:id="@+id/btn_view_order"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:background="@drawable/state_btn_negative"
@@ -90,7 +98,7 @@
         <Button
             android:id="@+id/btn_view_other"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/state_btn_normal"
             android:text="完成"
@@ -99,9 +107,21 @@
             android:visibility="gone" />
 
         <Button
+            android:id="@+id/btn_view_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@drawable/state_btn_normal"
+            android:text="取消交易"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16"
+            android:visibility="gone" />
+
+        <Button
             android:id="@+id/btn_view_continue"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:background="@drawable/state_btn_normal"
             android:text="继续收款"
             android:textColor="@color/colorWhite"

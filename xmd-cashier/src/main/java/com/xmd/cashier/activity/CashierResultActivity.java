@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.CashierResultContract;
@@ -31,7 +32,7 @@ public class CashierResultActivity extends BaseActivity implements CashierResult
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan_pay_result);
+        setContentView(R.layout.activity_cashier_result);
         mPresenter = new CashierResultPresenter(this, this);
         initView();
         mPresenter.onCreate();
@@ -114,14 +115,22 @@ public class CashierResultActivity extends BaseActivity implements CashierResult
             mStatusErrorText.setVisibility(View.GONE);
         } else {
             mStatusErrorText.setVisibility(View.VISIBLE);
+            mStatusErrorText.setTextColor(ResourceUtils.getColor(R.color.colorRed));
             mStatusErrorText.setText(error);
         }
+    }
+
+    @Override
+    public void showStatusSuccess(String desc) {
+        mStatusErrorText.setVisibility(View.VISIBLE);
+        mStatusErrorText.setTextColor(ResourceUtils.getColor(R.color.colorText2));
+        mStatusErrorText.setText(desc);
     }
 
     @Override
     public void showPrint() {
         mPayPrintBtn.setVisibility(View.VISIBLE);
         mErrorText.setVisibility(View.VISIBLE);
-        mErrorText.setText("如果未自动打印小票，可手动点击打印!");
+        mErrorText.setText("如果未自动打印小票，可手动点击打印");
     }
 }

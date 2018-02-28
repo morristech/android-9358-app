@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.RetryPool;
@@ -51,11 +52,23 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     private TradeManager mTradeManager;
 
+    private Handler mHandler;
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            PosFactory.getCurrentCashier().speech("请扫描客户支付二维码");
+            mHandler.postDelayed(mRunnable, 15 * 1000);
+        }
+    };
+
+
     public TradeQrcodePayPresenter(Context context, TradeQrcodePayContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
         mTradeManager = TradeManager.getInstance();
+        mHandler = new Handler();
     }
 
     @Override
@@ -103,7 +116,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     }
 
     private void initAuth() {
-
+        mHandler.post(mRunnable);
     }
 
     @Override
@@ -126,6 +139,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     // **************** 二维码授权支付 ****************
     @Override
     public void authPay(String authCode) {
+        mHandler.removeCallbacks(mRunnable);
         mView.showLoading();
         if (mActiveAuthCodePaySubscription != null) {
             mActiveAuthCodePaySubscription.unsubscribe();
@@ -161,6 +175,7 @@ public class TradeQrcodePayPresenter implements Presenter {
         // 选择主扫
         stopGetPayStatus();
         stopGetScanStatus();
+        mHandler.post(mRunnable);
     }
 
     @Override
@@ -168,6 +183,7 @@ public class TradeQrcodePayPresenter implements Presenter {
         // 选择被扫
         startGetPayStatus();
         startGetScanStatus();
+        mHandler.removeCallbacks(mRunnable);
     }
 
     // ****************************************轮询扫码状态******************************************

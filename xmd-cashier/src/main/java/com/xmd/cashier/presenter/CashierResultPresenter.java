@@ -2,6 +2,8 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
+import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashierResultContract;
 import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.manager.Callback;
@@ -33,7 +35,16 @@ public class CashierResultPresenter implements CashierResultContract.Presenter {
     @Override
     public void onCreate() {
         mView.showStatus(mTradeManager.getCurrentTrade().tradeStatus);
-        mView.showStatusError(mTradeManager.getCurrentTrade().tradeStatusError);
+        switch (mTradeManager.getCurrentTrade().tradeStatus) {
+            case AppConstants.TRADE_STATUS_SUCCESS:
+                mView.showStatusSuccess("收款金额：￥" + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney()));
+                break;
+            case AppConstants.TRADE_STATUS_ERROR:
+                mView.showStatusError(mTradeManager.getCurrentTrade().tradeStatusError);
+                break;
+            default:
+                break;
+        }
         getTradeDetail();
     }
 

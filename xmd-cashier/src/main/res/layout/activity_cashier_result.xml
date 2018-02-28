@@ -33,9 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_little_margin"
+            android:gravity="center"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:gravity="center"
             android:textColor="@color/colorPink"
             android:textSize="@dimen/font_size_14" />
 
@@ -83,7 +83,7 @@
             android:layout_weight="1"
             android:background="@drawable/state_btn_green_dark"
             android:gravity="center"
-            android:text="确认"
+            android:text="完成"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/small_font_size" />
 

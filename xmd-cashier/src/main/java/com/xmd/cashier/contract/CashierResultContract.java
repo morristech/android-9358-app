@@ -19,6 +19,8 @@ public interface CashierResultContract {
 
         void showStatusError(String error);
 
+        void showStatusSuccess(String desc);
+
         void showPrint();
     }
 }
