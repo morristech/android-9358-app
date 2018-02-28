@@ -1,19 +1,12 @@
 package com.xmd.cashier.dal.net;
 
-import com.google.gson.Gson;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.MD5Utils;
-import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
-import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.m.network.NetworkSubscriber;
-import com.xmd.m.network.OkHttpUtil;
 
 import java.util.Iterator;
 import java.util.TreeMap;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by heyangya on 16-9-22.
@@ -60,33 +53,5 @@ public class SpaOkHttp {
         }
         result += RequestConstant.CLIENT_SECRET;
         return MD5Utils.MD5(result);
-    }
-
-    public static void reportTradeDataSync(FormBody formBody, final com.xmd.cashier.manager.Callback<ReportTradeDataResult> callback) {
-        Request request = new Request.Builder()
-                .url(SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_REPORT_TRADE_DATA)
-                .post(formBody)
-                .build();
-        final NetworkSubscriber<ReportTradeDataResult> networkCallback = new NetworkSubscriber<ReportTradeDataResult>() {
-            @Override
-            public void onCallbackSuccess(ReportTradeDataResult result) {
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        };
-
-        try {
-            Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
-            String body = response.body().string();
-            XLogger.i("Data report response：" + body);
-            ReportTradeDataResult result = new Gson().fromJson(body, ReportTradeDataResult.class);
-            networkCallback.onNext(result);
-        } catch (Exception e) {
-            networkCallback.onError(e);
-        }
     }
 }

@@ -415,6 +415,20 @@ public class TradeManager {
             public void onCallbackSuccess(TradeChannelListResult result) {
                 if (result != null && result.getRespData() != null && !result.getRespData().isEmpty()) {
                     tradeChannelInfos.addAll(result.getRespData());
+
+                    Iterator<TradeChannelInfo> iterator = tradeChannelInfos.iterator();
+                    while (iterator.hasNext()) {
+                        TradeChannelInfo current = iterator.next();
+                        if (AppConstants.PAY_CHANNEL_WX.equals(current.type) || AppConstants.PAY_CHANNEL_ALI.equals(current.type)) {
+                            iterator.remove();
+                        }
+                    }
+
+                    TradeChannelInfo qrcodeChannel = new TradeChannelInfo();
+                    qrcodeChannel.name = AppConstants.CASHIER_TYPE_QRCODE_TEXT;
+                    qrcodeChannel.type = AppConstants.PAY_CHANNEL_QRCODE;
+                    tradeChannelInfos.add(0, qrcodeChannel);
+
                     if (callback != null) {
                         callback.onSuccess(result);
                     }

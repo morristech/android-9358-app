@@ -140,6 +140,7 @@ public class CashierPresenter implements CashierContract.Presenter {
                             mView.showError("会所未开通会员功能!");
                         }
                         break;
+                    case AppConstants.PAY_CHANNEL_QRCODE:
                     case AppConstants.PAY_CHANNEL_WX:   //微信
                     case AppConstants.PAY_CHANNEL_ALI:  //支付宝
                     case AppConstants.PAY_CHANNEL_CASH: //现金
@@ -211,6 +212,7 @@ public class CashierPresenter implements CashierContract.Presenter {
                             EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_NORMAL));
                         } else {
                             switch (trade.currentChannelType) {
+                                case AppConstants.PAY_CHANNEL_QRCODE:
                                 case AppConstants.PAY_CHANNEL_WX:   //微信
                                 case AppConstants.PAY_CHANNEL_ALI:  //支付宝
                                     UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);

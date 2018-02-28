@@ -176,6 +176,7 @@ public class AppConstants {
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
 
+    public static final String CASHIER_TYPE_QRCODE_TEXT = "扫码收款";
     public static final String CASHIER_TYPE_ACCOUNT_TEXT = "会员支付";
     public static final String CASHIER_TYPE_CASH_TEXT = "现金支付";
     public static final String CASHIER_TYPE_WX_TEXT = "微信支付";
@@ -200,6 +201,7 @@ public class AppConstants {
     public static final int TRADE_TYPE_INNER = 2;   //内网支付
     public static final int TRADE_TYPE_RECHARGE = 3;    //会员充值
 
+    public static final String PAY_CHANNEL_QRCODE = "qrcode";
     public static final String PAY_CHANNEL_WX = "wx";
     public static final String PAY_CHANNEL_ALI = "ali";
     public static final String PAY_CHANNEL_UNION = "union";

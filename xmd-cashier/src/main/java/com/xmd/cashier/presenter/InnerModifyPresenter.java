@@ -173,6 +173,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                             mView.showError("会所会员功能未开通!");
                         }
                         break;
+                    case AppConstants.PAY_CHANNEL_QRCODE:
                     case AppConstants.PAY_CHANNEL_WX:   //微信支付
                     case AppConstants.PAY_CHANNEL_ALI:  //支付宝
                     case AppConstants.PAY_CHANNEL_CASH: //现金
@@ -221,6 +222,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                         } else {
                             // 需要支付
                             switch (mTradeManager.getCurrentTrade().currentChannelType) {
+                                case AppConstants.PAY_CHANNEL_QRCODE:
                                 case AppConstants.PAY_CHANNEL_ALI:
                                 case AppConstants.PAY_CHANNEL_WX:
                                     UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_INNER);

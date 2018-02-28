@@ -217,21 +217,6 @@ public class Utils {
         }
     }
 
-    public static String getPayTypeChannel(int payType) {
-        switch (payType) {
-            case AppConstants.PAY_TYPE_UNION:
-                return AppConstants.PAY_CHANNEL_UNION;
-            case AppConstants.PAY_TYPE_WECHAT:
-                return AppConstants.PAY_CHANNEL_WX;
-            case AppConstants.PAY_TYPE_ALIPAY:
-                return AppConstants.PAY_CHANNEL_ALI;
-            case AppConstants.PAY_TYPE_CASH:
-                return AppConstants.PAY_CHANNEL_CASH;
-            default:
-                return AppConstants.PAY_CHANNEL_OTHER;
-        }
-    }
-
     public static String getPayStatusString(int status) {
         switch (status) {
             case AppConstants.PAY_STATUS_SUCCESS:
