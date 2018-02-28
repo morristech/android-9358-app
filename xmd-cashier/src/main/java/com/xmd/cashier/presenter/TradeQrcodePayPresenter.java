@@ -126,6 +126,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onDestroy() {
+        mHandler.removeCallbacks(mRunnable);
         stopGetScanStatus();
         stopGetPayStatus();
         if (mGetGiftActivitySubscription != null) {
@@ -329,6 +330,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        mHandler.removeCallbacks(mRunnable);
                         stopGetPayStatus();
                         stopGetScanStatus();
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
