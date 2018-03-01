@@ -116,7 +116,7 @@
             android:text="取消交易"
             android:textColor="@color/colorText2"
             android:textSize="@dimen/font_size_16"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_view_continue"
