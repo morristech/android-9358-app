@@ -13,6 +13,7 @@ import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.CashierResultContract;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.presenter.CashierResultPresenter;
 
 /**
@@ -46,6 +47,7 @@ public class CashierResultActivity extends BaseActivity implements CashierResult
     }
 
     private void initView() {
+        showToolbar(R.id.toolbar, TradeManager.getInstance().getCurrentTrade().currentChannelName, TOOL_BAR_NAV_NONE);
         mStatusText = (TextView) findViewById(R.id.tv_status);
         mStatusImage = (ImageView) findViewById(R.id.img_status);
         mErrorText = (TextView) findViewById(R.id.tv_error);

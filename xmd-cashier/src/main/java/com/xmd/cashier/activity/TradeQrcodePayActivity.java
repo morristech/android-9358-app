@@ -101,7 +101,7 @@ public class TradeQrcodePayActivity extends BaseActivity implements TradeQrcodeP
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, "支付");
+        showToolbar(R.id.toolbar, "扫码收款");
 
         mAuthText = (TextView) findViewById(R.id.tv_auth_pay);
         mBitmapText = (TextView) findViewById(R.id.tv_bitmap_pay);

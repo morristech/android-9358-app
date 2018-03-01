@@ -15,6 +15,7 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.presenter.InnerResultPresenter;
 import com.xmd.cashier.widget.StepView;
 
@@ -54,7 +55,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, "收银");
+        showToolbar(R.id.toolbar, TradeManager.getInstance().getCurrentTrade().currentChannelName);
         mStepView = (StepView) findViewById(R.id.sv_step_result);
         mStatusLayout = (LinearLayout) findViewById(R.id.layout_order_status);
         mStatusImg = (ImageView) findViewById(R.id.img_order_status);

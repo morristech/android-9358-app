@@ -81,7 +81,7 @@ public class InnerSelectActivity extends BaseActivity implements InnerSelectCont
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, "收银");
+        showToolbar(R.id.toolbar, R.string.cashier_title);
 
         mStepView = (StepView) findViewById(R.id.sv_step_select);
         mRecordImg = (ImageView) findViewById(R.id.img_record);

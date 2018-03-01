@@ -79,7 +79,7 @@ public class InnerModifyActivity extends BaseActivity implements InnerModifyCont
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, "收银");
+        showToolbar(R.id.toolbar, R.string.cashier_title);
         mOriginAmount = (TextView) findViewById(R.id.tv_origin_amount);
         mDiscountAmount = (TextView) findViewById(R.id.tv_discount_amount);
         mAlreadyPayAmount = (TextView) findViewById(R.id.tv_already_pay_amount);
