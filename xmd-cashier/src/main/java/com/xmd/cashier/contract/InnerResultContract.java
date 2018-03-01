@@ -23,7 +23,7 @@ public interface InnerResultContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showSuccess();
+        void showSuccess(String desc);
 
         void showCancel(String error);
 

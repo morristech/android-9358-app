@@ -114,11 +114,14 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     }
 
     @Override
-    public void showSuccess() {
+    public void showSuccess(String desc) {
         mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_green);
         mStatusImg.setVisibility(View.VISIBLE);
         mStatusText.setText("支付成功");
         mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorWhite));
+        mStatusErrorDesc.setVisibility(View.VISIBLE);
+        mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorText2));
+        mStatusErrorDesc.setText(desc);
     }
 
     @Override
@@ -131,6 +134,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
             mStatusErrorDesc.setVisibility(View.INVISIBLE);
         } else {
             mStatusErrorDesc.setVisibility(View.VISIBLE);
+            mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorRed));
             mStatusErrorDesc.setText(error);
         }
     }

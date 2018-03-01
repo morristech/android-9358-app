@@ -43,7 +43,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
         switch (TradeManager.getInstance().getCurrentTrade().tradeStatus) {
             case AppConstants.TRADE_STATUS_SUCCESS:
                 PosFactory.getCurrentCashier().speech("支付完成");
-                mView.showSuccess();
+                mView.showSuccess("收款金额：￥" + Utils.moneyToStringEx(TradeManager.getInstance().getCurrentTrade().getWillPayMoney()));
                 break;
             default:
                 mView.showCancel(TradeManager.getInstance().getCurrentTrade().tradeStatusError);
