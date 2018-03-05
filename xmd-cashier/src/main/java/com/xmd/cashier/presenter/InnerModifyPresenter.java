@@ -99,6 +99,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         if (mTradeManager.getTradeChannelInfos() != null && !mTradeManager.getTradeChannelInfos().isEmpty()) {
             showMethod();
         } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银获取会所支付方式：" + RequestConstant.URL_GET_PAY_CHANNEL_LIST);
             mView.showLoading();
             if (mGetTradeChannelSubscription != null) {
                 mGetTradeChannelSubscription.unsubscribe();
@@ -106,12 +107,14 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             mGetTradeChannelSubscription = mTradeManager.getPayChannelList(new Callback<TradeChannelListResult>() {
                 @Override
                 public void onSuccess(TradeChannelListResult o) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银获取会所支付方式---成功");
                     mView.hideLoading();
                     showMethod();
                 }
 
                 @Override
                 public void onError(String error) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银获取会所支付---失败：" + error);
                     mView.hideLoading();
                     mView.showToast("获取支付方式失败：" + error);
                 }
@@ -212,6 +215,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                 new Callback<String>() {
                     @Override
                     public void onSuccess(String o) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付请求---成功：" + o);
                         mView.hideLoading();
                         EventBus.getDefault().post(new InnerGenerateOrderEvent());
                         if (AppConstants.APP_REQUEST_YES.equals(o)) {
@@ -252,14 +256,14 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(final DialogInterface dialog, int which) {
-                                            XLogger.i(TAG, "订单锁定时,继续支付");
+                                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,继续支付");
                                             dialog.dismiss();
                                         }
                                     })
                                     .setPositiveButton("去支付", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            XLogger.i(TAG, "订单锁定时,访问订单列表");
+                                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,访问订单列表");
                                             dialog.dismiss();
                                             EventBus.getDefault().post(new InnerGenerateOrderEvent());
                                             UiNavigation.gotoInnerRecordActivity(mContext);
@@ -282,7 +286,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             mPosTradeNoSubscription.unsubscribe();
         }
         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单生成交易号：" + RequestConstant.URL_GET_TRADE_NO);
-        mPosTradeNoSubscription = mTradeManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
+        mPosTradeNoSubscription = mTradeManager.getTradeNo(new Callback<GetTradeNoResult>() {
             @Override
             public void onSuccess(GetTradeNoResult o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单生成交易号---成功：" + mTradeManager.getCurrentTrade().tradeNo);

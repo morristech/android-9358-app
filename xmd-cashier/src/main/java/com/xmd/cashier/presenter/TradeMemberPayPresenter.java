@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
@@ -68,12 +69,14 @@ public class TradeMemberPayPresenter implements TradeMemberPayContract.Presenter
             return;
         }
         mView.showLoading();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "交易订单会员支付");
         if (mMemberPaySubscription != null) {
             mMemberPaySubscription.unsubscribe();
         }
         mMemberPaySubscription = mTradeManager.callbackBatchOrder(new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "交易订单会员支付---成功");
                 mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                 PosFactory.getCurrentCashier().speech("支付成功");
@@ -83,6 +86,7 @@ public class TradeMemberPayPresenter implements TradeMemberPayContract.Presenter
 
             @Override
             public void onError(String error) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "交易订单会员支付---失败：" + error);
                 mView.hideLoading();
                 mView.showToast("支付失败:" + error);
             }
@@ -96,12 +100,14 @@ public class TradeMemberPayPresenter implements TradeMemberPayContract.Presenter
                 .setPositiveButton("继续交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择继续交易");
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("退出交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择退出交易");
                         dialog.dismiss();
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                         mTradeManager.getCurrentTrade().tradeStatusError = "已取消交易";

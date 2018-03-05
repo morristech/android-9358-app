@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
@@ -38,6 +39,7 @@ import rx.Subscription;
  */
 
 public class VerificationPresenter implements VerificationContract.Presenter {
+    private final static String TAG = "VerificationPresenter";
     private Context mContext;
 
     private Subscription mGetVerifyListSubscription;
@@ -117,6 +119,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             }
 
             // 需要解析二维码结果：为json需要解析，否则长度>=12的为核销码，其他为无效二维码
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销二维码扫码结果：" + result);
             if (Utils.checkJson(result)) {
                 //Json解析
                 try {
@@ -208,6 +211,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
     }
 
     private void getVerifyType(final String number) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销查询核销码类型：" + number);
         if (mGetVerifyTypeSubscription != null) {
             mGetVerifyTypeSubscription.unsubscribe();
         }
@@ -251,6 +255,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
     }
 
     private void getList(String phoneNumber) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销查询核销列表：" + phoneNumber);
         if (mGetVerifyListSubscription != null) {
             mGetVerifyListSubscription.unsubscribe();
         }
@@ -315,6 +320,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
     }
 
     private void getCoupon(String couponNo, final String type) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销查询优惠券：" + couponNo);
         if (mGetVerifyCouponSubscription != null) {
             mGetVerifyCouponSubscription.unsubscribe();
         }
@@ -344,6 +350,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
     }
 
     private void getOrder(String orderNo, final String type) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销查询付费预约：" + orderNo);
         if (mGetVerifyOrderSubscription != null) {
             mGetVerifyOrderSubscription.unsubscribe();
         }
@@ -371,6 +378,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
     }
 
     private void getTreat(String treatNo, final String type) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销查询会员请客：" + treatNo);
         if (mGetVerifyTreatSubscription != null) {
             mGetVerifyTreatSubscription.unsubscribe();
         }

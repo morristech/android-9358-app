@@ -94,15 +94,19 @@ public class TradeQrcodePayPresenter implements Presenter {
         }
 
         String priority = SPManager.getInstance().getOnlinePayPriority();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "扫码支付：");
         mView.showView(priority);
         switch (priority) {
             case AppConstants.ONLINE_PAY_PRIORITY_AUTH:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "扫码支付：主扫用户支付二维码");
                 initAuth();
                 break;
             case AppConstants.ONLINE_PAY_PRIORITY_BITMAP:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "扫码支付：二维码展示被扫");
                 initBitmap();
                 break;
             default:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "扫码支付：unknown");
                 break;
         }
     }
@@ -140,6 +144,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     // **************** 二维码授权支付 ****************
     @Override
     public void authPay(String authCode) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付：" + authCode);
         mHandler.removeCallbacks(mRunnable);
         mView.showLoading();
         if (mActiveAuthCodePaySubscription != null) {
@@ -153,6 +158,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                 new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---成功");
                         mView.hideLoading();
                         PosFactory.getCurrentCashier().speech("支付成功");
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
@@ -162,6 +168,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
                     @Override
                     public void onError(String error) {
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权---失败：" + error);
                         mView.hideLoading();
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                         mTradeManager.getCurrentTrade().tradeStatusError = error;
@@ -173,7 +180,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onAuthClick() {
-        // 选择主扫
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择主扫");
         stopGetPayStatus();
         stopGetScanStatus();
         mHandler.post(mRunnable);
@@ -181,7 +188,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onBitmapClick() {
-        // 选择被扫
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择被扫");
         startGetPayStatus();
         startGetScanStatus();
         mHandler.removeCallbacks(mRunnable);
@@ -215,11 +222,13 @@ public class TradeQrcodePayPresenter implements Presenter {
     }
 
     private boolean getScanStatus() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态：" + mTradeManager.getCurrentTrade().payOrderId);
         getScanStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .checkScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId);
         XmdNetwork.getInstance().requestSync(getScanStatusCall, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---成功：" + result.getRespData());
                 if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
                     resultScanStatus = true;
                     EventBus.getDefault().post(new QRScanStatusEvent());
@@ -230,6 +239,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---失败：" + e.getLocalizedMessage());
                 resultScanStatus = false;
             }
         });
@@ -264,11 +274,13 @@ public class TradeQrcodePayPresenter implements Presenter {
     }
 
     private boolean getPayStatus() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态：" + mTradeManager.getCurrentTrade().payOrderId);
         getPayStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .checkPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId, mTradeManager.getCurrentTrade().payNo);
         XmdNetwork.getInstance().requestSync(getPayStatusCall, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---成功：" + result.getRespData());
                 if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
                     resultPayStatus = true;
                     mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
@@ -282,6 +294,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---失败：" + e.getLocalizedMessage());
                 resultPayStatus = false;
             }
         });
@@ -306,7 +319,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e("获取买单有礼活动失败:" + e.getLocalizedMessage());
+                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "获取买单有礼活动失败:" + e.getLocalizedMessage());
             }
         });
     }
@@ -323,12 +336,14 @@ public class TradeQrcodePayPresenter implements Presenter {
                 .setPositiveButton("继续交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择继续交易");
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("退出交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择退出交易");
                         dialog.dismiss();
                         mHandler.removeCallbacks(mRunnable);
                         stopGetPayStatus();

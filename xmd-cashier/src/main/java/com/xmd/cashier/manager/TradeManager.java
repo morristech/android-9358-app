@@ -147,44 +147,6 @@ public class TradeManager {
         return amount;
     }
 
-    /*******************************************支付相关********************************************/
-    // 生成订单号:可用来生成交易流水POS_PAY_DEAL
-    public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
-        Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTradeNo(AccountManager.getInstance().getToken(), RequestConstant.DEFAULT_SIGN_VALUE);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
-            @Override
-            public void onCallbackSuccess(GetTradeNoResult result) {
-                mTrade.tradeNo = result.getRespData();
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
-    // 收银台支付
-    public void posPay(Context context, final Callback<Void> callback) {
-        mTrade.newCashierTradeNo();
-        CashierManager.getInstance().pay(context, mTrade.getPosTradeNo(), mTrade.getWillPayMoney(), new PayCallback<Object>() {
-            @Override
-            public void onResult(String error, Object o) {
-                if (error == null) {
-                    mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                    mTrade.posPayCashierNo = CashierManager.getInstance().getTradeNo(o);
-                    callback.onSuccess(null);
-                } else {
-                    mTrade.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
-                    mTrade.tradeStatusError = error;
-                    callback.onError(error);
-                }
-            }
-        });
-    }
-
     /*********************************************核销相关******************************************/
     // 判断输入核销码类型: 同VerifyManager
     // 根据手机号获取可核销的 券+付费预约
@@ -466,6 +428,25 @@ public class TradeManager {
         });
     }
 
+    // 收银台支付
+    public void posPay(Context context, final Callback<Void> callback) {
+        mTrade.newCashierTradeNo();
+        CashierManager.getInstance().pay(context, mTrade.getPosTradeNo(), mTrade.getWillPayMoney(), new PayCallback<Object>() {
+            @Override
+            public void onResult(String error, Object o) {
+                if (error == null) {
+                    mTrade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    mTrade.posPayCashierNo = CashierManager.getInstance().getTradeNo(o);
+                    callback.onSuccess(null);
+                } else {
+                    mTrade.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                    mTrade.tradeStatusError = error;
+                    callback.onError(error);
+                }
+            }
+        });
+    }
+
     // 生成交易记录
     public Subscription generateBatchOrder(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, String reductionAmount, String oriAmount, String realAmount, final Callback<String> callback) {
         Observable<TradeBatchResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
@@ -565,7 +546,7 @@ public class TradeManager {
     }
 
     public void printTradeRecordInfo(TradeRecordInfo info, boolean retry, boolean keep) {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "打印内网订单");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "打印订单详情");
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
@@ -720,7 +701,7 @@ public class TradeManager {
             public void onCallbackSuccess(StringResult result) {
                 String content = result.getRespData();
                 if (!TextUtils.isEmpty(content)) {
-                    XLogger.i(TAG, "getTradeQrcodeBytes content:" + content);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes content:" + content);
                     try {
                         Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
                         if (bitmap != null) {
@@ -728,23 +709,23 @@ public class TradeManager {
                             if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
                                 tradeQrcodeBytes = bos.toByteArray();
                             } else {
-                                XLogger.i(TAG, "getTradeQrcodeBytes--bitmap compress failed");
+                                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--bitmap compress failed");
                             }
                             bitmap.recycle();
                         } else {
-                            XLogger.i(TAG, "getTradeQrcodeBytes--Qrcode encode failed");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--Qrcode encode failed");
                         }
                     } catch (WriterException e) {
-                        XLogger.i(TAG, "getTradeQrcodeBytes--Qrcode encode exception:" + e.getLocalizedMessage());
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--Qrcode encode exception:" + e.getLocalizedMessage());
                     }
                 } else {
-                    XLogger.i(TAG, "getTradeQrcodeBytes--request success && isEmpty");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--request success && isEmpty");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i(TAG, "getTradeQrcodeBytes--request error:" + e.getLocalizedMessage());
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--request error:" + e.getLocalizedMessage());
             }
         });
 
@@ -771,7 +752,7 @@ public class TradeManager {
             public void onCallbackSuccess(StringResult result) {
                 String content = result.getRespData();
                 if (!TextUtils.isEmpty(content)) {
-                    XLogger.i(TAG, "getClubQRCodeSync content:" + content);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeSync content:" + content);
                 }
                 Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(content);
                 XmdNetwork.getInstance().requestSync(callGetBytes, new Subscriber<ResponseBody>() {
@@ -782,7 +763,7 @@ public class TradeManager {
 
                     @Override
                     public void onError(Throwable e) {
-                        XLogger.i(TAG, "getClubQRCodeBytes error:" + e.getLocalizedMessage());
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes error:" + e.getLocalizedMessage());
                     }
 
                     @Override
@@ -801,14 +782,14 @@ public class TradeManager {
                                     cc.data = clubQrcodeBytes;
                                     LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
                                 } else {
-                                    XLogger.i(TAG, "getClubQRCodeBytes : bitmap.compress failed!");
+                                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes : bitmap.compress failed!");
                                 }
                                 bitmap.recycle();
                             } else {
-                                XLogger.i(TAG, "getClubQRCodeBytes : can not get qrcode !");
+                                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes : can not get qrcode !");
                             }
                         } catch (IOException e) {
-                            XLogger.i(TAG, "getClubQRCodeBytes exception:" + e.getLocalizedMessage());
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes exception:" + e.getLocalizedMessage());
                         }
                     }
                 });
@@ -816,7 +797,7 @@ public class TradeManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i("getClubQRCodeURL error:" + e.getLocalizedMessage());
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeURL error:" + e.getLocalizedMessage());
             }
         });
         return clubQrcodeBytes;

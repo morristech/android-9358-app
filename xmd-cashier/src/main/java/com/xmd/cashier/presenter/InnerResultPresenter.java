@@ -42,10 +42,12 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
         mView.showStepView();
         switch (TradeManager.getInstance().getCurrentTrade().tradeStatus) {
             case AppConstants.TRADE_STATUS_SUCCESS:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：成功");
                 PosFactory.getCurrentCashier().speech("支付完成");
                 mView.showSuccess("收款金额：￥" + Utils.moneyToStringEx(TradeManager.getInstance().getCurrentTrade().getWillPayMoney()));
                 break;
             default:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：失败取消或其他");
                 mView.showCancel(TradeManager.getInstance().getCurrentTrade().tradeStatusError);
                 break;
         }
@@ -53,7 +55,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     }
 
     private void getOrder() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情");
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情：" + TradeManager.getInstance().getCurrentTrade().payOrderId);
         if (mGetBatchOrderSubscription != null) {
             mGetBatchOrderSubscription.unsubscribe();
         }
@@ -62,7 +64,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             public void onSuccess(TradeRecordInfo o) {
                 mRecordInfo = o;
                 int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
-                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
                         "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
                 if (leftAmount <= 0) {
                     printNormal();
@@ -74,7 +76,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
             @Override
             public void onError(String error) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付成功获取订单详情---失败:" + error);
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---失败:" + error);
                 mRecordInfo = null;
                 mView.showToast(error);
             }
@@ -96,6 +98,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     @Override
     public void onDetail() {
         if (mRecordInfo == null) {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果手动获取详情");
             mView.showLoading();
             if (mGetBatchOrderSubscription != null) {
                 mGetBatchOrderSubscription.unsubscribe();
@@ -142,6 +145,7 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     @Override
     public void onPrint() {
         if (mRecordInfo == null) {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果手动尝试打印");
             mView.showLoading();
             if (mGetBatchOrderSubscription != null) {
                 mGetBatchOrderSubscription.unsubscribe();

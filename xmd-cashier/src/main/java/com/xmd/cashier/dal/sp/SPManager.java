@@ -169,6 +169,7 @@ public class SPManager {
     }
 
     public void setOnlinePayPriority(String priority) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "设置扫码支付 :" + priority);
         mSharedPreferences.edit().putString(SPConstants.ONLINE_PAY_PRIORITY, priority).apply();
     }
 }

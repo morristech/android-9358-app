@@ -320,6 +320,7 @@ public class AppConstants {
 
     public final static String LOG_BIZ_NATIVE_CASHIER = "[内网收银]";
     public final static String LOG_BIZ_NORMAL_CASHIER = "[补收款收银]";
+    public final static String LOG_BIZ_TRADE_PAYMENT = "[交易支付]";
     public final static String LOG_BIZ_MEMBER_MANAGER = "[会员管理]";
     public final static String LOG_BIZ_ACCOUNT_MANAGER = "[账号系统]";
     public final static String LOG_BIZ_LOCAL_CONFIG = "[本地配置]";
