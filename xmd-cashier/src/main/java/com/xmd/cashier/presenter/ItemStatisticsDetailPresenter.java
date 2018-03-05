@@ -194,6 +194,9 @@ public class ItemStatisticsDetailPresenter implements ItemStatisticsDetailContra
     @Override
     public void loadData() {
         mView.showLoading();
+        if (mGetItemStatisticsSubscription != null) {
+            mGetItemStatisticsSubscription.unsubscribe();
+        }
         Observable<ItemStatisticsResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getItemStatistics(AccountManager.getInstance().getToken(), mStartTime, mEndTime);
         mGetItemStatisticsSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<ItemStatisticsResult>() {

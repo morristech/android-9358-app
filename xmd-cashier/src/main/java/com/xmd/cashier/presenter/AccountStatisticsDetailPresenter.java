@@ -210,6 +210,9 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
     @Override
     public void pullData() {
         mView.showLoading();
+        if (mPullPosSubscription != null) {
+            mPullPosSubscription.unsubscribe();
+        }
         Observable<PosPullResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .posPullResult(AccountManager.getInstance().getToken());
         mPullPosSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<PosPullResult>() {
@@ -241,6 +244,10 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
     @Override
     public void loadData() {
         mView.showLoading();
+        mView.initDataLoading();
+        if (mGetStatisticsSubscription != null) {
+            mGetStatisticsSubscription.unsubscribe();
+        }
         Observable<AccountStatisticsResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getAccountStatistics(AccountManager.getInstance().getToken(), mStartDate, mEndDate, mStartTime, mEndTime);
         mGetStatisticsSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<AccountStatisticsResult>() {

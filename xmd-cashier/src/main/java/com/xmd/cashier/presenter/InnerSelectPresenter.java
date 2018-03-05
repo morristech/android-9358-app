@@ -473,6 +473,9 @@ public class InnerSelectPresenter implements InnerSelectContract.Presenter {
 
     private void getInnerUnpaidCount() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "获取内网未支付订单数量：" + RequestConstant.URL_GET_INNER_UNPAID_COUNT);
+        if (mGetInnerUnpaidSubscription != null) {
+            mGetInnerUnpaidSubscription.unsubscribe();
+        }
         Observable<InnerUnpaidResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getInnerUnpaid(AccountManager.getInstance().getToken());
         mGetInnerUnpaidSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<InnerUnpaidResult>() {

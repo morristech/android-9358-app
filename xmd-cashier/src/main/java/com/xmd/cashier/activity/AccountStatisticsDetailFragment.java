@@ -503,6 +503,12 @@ public class AccountStatisticsDetailFragment extends Fragment implements Account
     }
 
     @Override
+    public void initDataLoading() {
+        mDataStub.setVisibility(View.GONE);
+        mErrorStub.setVisibility(View.GONE);
+    }
+
+    @Override
     public void setDataNormal(OnlineAccountStatisticInfo online, OfflineAccountStatisticInfo offline) {
         mDataNormalLayout.setVisibility(View.VISIBLE);
         mDataErrorLayout.setVisibility(View.GONE);

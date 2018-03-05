@@ -83,6 +83,8 @@ public interface AccountStatisticsDetailContract {
 
         void initDataLayout();
 
+        void initDataLoading();
+
         void setDataNormal(OnlineAccountStatisticInfo online, OfflineAccountStatisticInfo offline);
 
         void setDataError(String error);
