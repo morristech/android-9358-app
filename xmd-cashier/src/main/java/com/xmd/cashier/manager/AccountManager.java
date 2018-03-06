@@ -60,6 +60,8 @@ public class AccountManager {
         mUser.loginName = loginResult.loginName;
         mUser.token = loginResult.token;
         mUser.userName = loginResult.name;
+        mUser.clubId = loginResult.clubId;
+        mUser.clubName = loginResult.clubName;
         mUser.clubIconUrl = loginResult.avatarUrl;
         mUser.userId = loginResult.userId;
         LocalPersistenceManager.writeUser(mUser);

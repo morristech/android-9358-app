@@ -21,6 +21,9 @@ public class LoginResult extends BaseBean {
     public String emchatPassword;
     public String roles;
 
+    public String clubId;
+    public String clubName;
+
     @Override
     public String toString() {
         return "LoginResult{" +
@@ -35,6 +38,8 @@ public class LoginResult extends BaseBean {
                 ", inviteCode='" + inviteCode + '\'' +
                 ", emchatId='" + emchatId + '\'' +
                 ", emchatPassword='" + emchatPassword + '\'' +
+                ", clubId='" + clubId + '\'' +
+                ", clubName='" + clubName + '\'' +
                 '}';
     }
 }
