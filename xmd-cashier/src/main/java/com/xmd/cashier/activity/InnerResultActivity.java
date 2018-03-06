@@ -176,6 +176,17 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     }
 
     @Override
+    public void showInit() {
+        mErrorNotice.setVisibility(View.INVISIBLE);
+        mStatusDesc.setVisibility(View.INVISIBLE);
+        mStatusDesc.setText("");
+        mCancelBtn.setVisibility(View.GONE);
+        mContinueBtn.setVisibility(View.GONE);
+        mDetailBtn.setVisibility(View.GONE);
+        mOtherBtn.setVisibility(View.GONE);
+    }
+
+    @Override
     public boolean onKeyEventBack() {
         mPresenter.onEventBack();
         return true;

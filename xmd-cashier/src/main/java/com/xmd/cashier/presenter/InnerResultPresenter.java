@@ -40,6 +40,8 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     @Override
     public void onCreate() {
         mView.showStepView();
+        mView.showInit();
+        mRecordInfo = null;
         switch (TradeManager.getInstance().getCurrentTrade().tradeStatus) {
             case AppConstants.TRADE_STATUS_SUCCESS:
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：成功");
@@ -77,7 +79,6 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             @Override
             public void onError(String error) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---失败:" + error);
-                mRecordInfo = null;
                 mView.showToast(error);
                 mView.showNotice();
             }

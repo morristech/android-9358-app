@@ -33,6 +33,8 @@ public interface InnerResultContract {
 
         void showNotice();
 
+        void showInit();
+
         void showEnterAnim();
 
         void showExitAnim();
