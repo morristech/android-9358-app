@@ -31,6 +31,8 @@ public interface InnerResultContract {
 
         void showContinue(String desc);
 
+        void showNotice();
+
         void showEnterAnim();
 
         void showExitAnim();

@@ -35,6 +35,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     private Button mCancelBtn;
     private TextView mStatusDesc;
     private TextView mStatusErrorDesc;
+    private TextView mErrorNotice;
 
     private StepView mStepView;
 
@@ -66,6 +67,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mCancelBtn = (Button) findViewById(R.id.btn_view_cancel);
         mStatusDesc = (TextView) findViewById(R.id.tv_order_status_desc);
         mStatusErrorDesc = (TextView) findViewById(R.id.tv_order_status_error);
+        mErrorNotice = (TextView) findViewById(R.id.tv_error_notice);
         mDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +134,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
         if (TextUtils.isEmpty(error)) {
             mStatusErrorDesc.setVisibility(View.INVISIBLE);
+            mStatusErrorDesc.setText("");
         } else {
             mStatusErrorDesc.setVisibility(View.VISIBLE);
             mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorRed));
@@ -141,18 +144,33 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
 
     @Override
     public void showDone(String desc) {
+        mStatusDesc.setVisibility(View.VISIBLE);
         mStatusDesc.setText(desc);
         mCancelBtn.setVisibility(View.GONE);
         mContinueBtn.setVisibility(View.GONE);
         mDetailBtn.setVisibility(View.VISIBLE);
         mOtherBtn.setVisibility(View.VISIBLE);
+        mErrorNotice.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void showContinue(String desc) {
+        mStatusDesc.setVisibility(View.VISIBLE);
         mStatusDesc.setText(Utils.changeColor(desc, ResourceUtils.getColor(R.color.colorAccent), 7, desc.length()));
         mCancelBtn.setVisibility(View.VISIBLE);
         mContinueBtn.setVisibility(View.VISIBLE);
+        mDetailBtn.setVisibility(View.GONE);
+        mOtherBtn.setVisibility(View.GONE);
+        mErrorNotice.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showNotice() {
+        mErrorNotice.setVisibility(View.VISIBLE);
+        mStatusDesc.setVisibility(View.INVISIBLE);
+        mStatusDesc.setText("");
+        mCancelBtn.setVisibility(View.GONE);
+        mContinueBtn.setVisibility(View.GONE);
         mDetailBtn.setVisibility(View.GONE);
         mOtherBtn.setVisibility(View.GONE);
     }

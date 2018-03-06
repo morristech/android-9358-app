@@ -68,6 +68,7 @@ public class CashierResultPresenter implements CashierResultContract.Presenter {
                 if (mInfo.payAmount <= mInfo.paidAmount) {
                     mTradeManager.printTradeRecordInfoAsync(mInfo, false);
                 }
+                mView.showConfirm();
             }
 
             @Override

@@ -131,8 +131,16 @@ public class CashierResultActivity extends BaseActivity implements CashierResult
 
     @Override
     public void showPrint() {
+        mPayConfirmBtn.setVisibility(View.VISIBLE);
         mPayPrintBtn.setVisibility(View.VISIBLE);
         mErrorText.setVisibility(View.VISIBLE);
         mErrorText.setText("如果未自动打印小票，可手动点击打印");
+    }
+
+    @Override
+    public void showConfirm() {
+        mPayConfirmBtn.setVisibility(View.VISIBLE);
+        mPayPrintBtn.setVisibility(View.GONE);
+        mErrorText.setVisibility(View.GONE);
     }
 }

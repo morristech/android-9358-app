@@ -22,5 +22,7 @@ public interface CashierResultContract {
         void showStatusSuccess(String desc);
 
         void showPrint();
+
+        void showConfirm();
     }
 }
