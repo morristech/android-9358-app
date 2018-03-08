@@ -121,16 +121,16 @@ public class SettleManager {
                 mPos.printRight("收款人员：" + contentInfo.operatorName);
                 if (contentInfo.businessList != null && !contentInfo.businessList.isEmpty()) {
                     for (SettleBusinessInfo businessInfo : contentInfo.businessList) {
-                        mPos.printText(businessInfo.businessName + " (" + businessInfo.count + "笔)", String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(businessInfo.amount)));
+                        mPos.printText(businessInfo.businessName + " (" + businessInfo.count + "笔)", (businessInfo.amount < 0 ? "-" : "") + String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(Math.abs(businessInfo.amount))));
                         if (businessInfo.detailList != null && !businessInfo.detailList.isEmpty()) {
                             for (SettleDetailInfo detailInfo : businessInfo.detailList) {
-                                mPos.printText("    " + detailInfo.name + " (" + detailInfo.count + "笔)", String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(detailInfo.amount)));
+                                mPos.printText("    " + detailInfo.name + " (" + detailInfo.count + "笔)", (detailInfo.amount < 0 ? "-" : "") + String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(Math.abs(detailInfo.amount))));
                             }
                         }
                         if (businessInfo.remarkList != null && !businessInfo.remarkList.isEmpty()) {
                             mPos.printText("    备注");
                             for (SettleDetailInfo detailInfo : businessInfo.remarkList) {
-                                mPos.printText("    " + detailInfo.name + " (" + detailInfo.count + "笔)", String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(detailInfo.amount)));
+                                mPos.printText("    " + detailInfo.name + " (" + detailInfo.count + "笔)", (detailInfo.amount < 0 ? "-" : "") + String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(Math.abs(detailInfo.amount))));
                             }
                         }
                     }

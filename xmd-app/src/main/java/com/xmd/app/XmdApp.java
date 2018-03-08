@@ -90,7 +90,7 @@ public class XmdApp {
     /**
      * 登出事件 ，清除token
      */
-    @Subscribe(sticky = true, priority = -1)
+    @Subscribe(sticky = true, priority = -5)
     public void onLogout(EventLogout eventLogout) {
         XLogger.i("event logout");
         XmdNetwork.getInstance().setToken(null);

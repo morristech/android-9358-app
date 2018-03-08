@@ -23,7 +23,6 @@ import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponQRCodeScanResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
-import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -32,7 +31,6 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
-import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 
@@ -53,15 +51,12 @@ public class MainPresenter implements MainContract.Presenter {
     private Context mContext;
     private MainContract.View mView;
 
-    private Subscription mLogoutSubscription;
     private Subscription mGetVerifyTypeSubscription;    //查询核销类型
     private Subscription mGetOrderInfoSubscription;     //预约订单
     private Subscription mGetNormalCouponInfoSubscription;  //券
     private Subscription mGetServiceCouponInfoSubscription; //项目券
     private Subscription mGetPrizeInfoSubscription; //奖品
     private Subscription mGetCommonVerifySubscription;  //通用核销+请客
-
-    private TradeManager mTradeManager = TradeManager.getInstance();
 
     public MainPresenter(Context context, MainContract.View view) {
         mContext = context;
@@ -93,26 +88,9 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onClickLogout() {
-        // 退出登录
-        VerifyManager.getInstance().clearVerifyList();
-        if (mLogoutSubscription != null) {
-            mLogoutSubscription.unsubscribe();
-        }
-        mTradeManager.newTrade();
-        MemberManager.getInstance().newRechargeProcess();
-        MemberManager.getInstance().newCardProcess();
-        MemberManager.getInstance().newTrade();
+        AccountManager.getInstance().logout();
         UiNavigation.gotoLoginActivity(mContext);
         mView.finishSelf();
-        mLogoutSubscription = AccountManager.getInstance().logout(new Callback<LogoutResult>() {
-            @Override
-            public void onSuccess(LogoutResult o) {
-            }
-
-            @Override
-            public void onError(String error) {
-            }
-        });
     }
 
     @Override
@@ -488,9 +466,6 @@ public class MainPresenter implements MainContract.Presenter {
     public void onDestroy() {
         EventBusSafeRegister.unregister(this);
         mView.hideLoading();
-        if (mLogoutSubscription != null) {
-            mLogoutSubscription.unsubscribe();
-        }
         if (mGetVerifyTypeSubscription != null) {
             mGetVerifyTypeSubscription.unsubscribe();
         }

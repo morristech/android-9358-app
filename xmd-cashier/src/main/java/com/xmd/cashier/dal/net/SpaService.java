@@ -85,8 +85,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_LOGOUT)
-    Observable<LogoutResult> logout(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+    Call<LogoutResult> logout(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     /**
      * 获取会所信息

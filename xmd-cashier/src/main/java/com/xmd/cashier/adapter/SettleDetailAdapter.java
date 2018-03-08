@@ -43,7 +43,7 @@ public class SettleDetailAdapter extends RecyclerView.Adapter<SettleDetailAdapte
         SettleDetailInfo detailInfo = mData.get(position);
         holder.mName.setText(detailInfo.name);
         holder.mCount.setText("(" + detailInfo.count + "笔)");
-        holder.mAmount.setText(String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(detailInfo.amount)));
+        holder.mAmount.setText((detailInfo.amount < 0 ? "-" : "") + String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(Math.abs(detailInfo.amount))));
     }
 
     @Override

@@ -45,7 +45,7 @@ public class SettleBusinessAdapter extends RecyclerView.Adapter<SettleBusinessAd
         SettleBusinessInfo businessInfo = mData.get(position);
         holder.mTotalName.setText(businessInfo.businessName);
         holder.mTotalCount.setText("(" + businessInfo.count + "笔)");
-        holder.mTotalAmount.setText(String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(businessInfo.amount)));
+        holder.mTotalAmount.setText((businessInfo.amount < 0 ? "-" : "") + String.format(ResourceUtils.getString(R.string.cashier_money), Utils.moneyToStringEx(Math.abs(businessInfo.amount))));
         if (businessInfo.detailList != null && !businessInfo.detailList.isEmpty()) {
             holder.mTotalList.setVisibility(View.VISIBLE);
             SettleDetailAdapter detailAdapter = new SettleDetailAdapter(mContext);

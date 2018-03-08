@@ -3,7 +3,9 @@ package com.xmd.cashier.manager;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.common.AppConstants;
@@ -22,10 +24,13 @@ import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.push.XmdPushManager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
+import retrofit2.Call;
 import retrofit2.HttpException;
 import rx.Observable;
 import rx.Subscriber;
@@ -42,6 +47,7 @@ public class AccountManager {
     private User mUser;
 
     private AccountManager() {
+        EventBusSafeRegister.register(this);
         mUser = LocalPersistenceManager.readUser();
         if (mUser == null) {
             mUser = new User();
@@ -201,36 +207,48 @@ public class AccountManager {
         });
     }
 
-    public Subscription logout(final Callback<LogoutResult> callback) {
+    public void logout() {
+        // 退出登录
+        LocalPersistenceManager.clearClubQrcodeBytes(getClubId()); //清除二维码
+
+        XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
+
+        VerifyManager.getInstance().clearVerifyList();
+
+        TradeManager.getInstance().newTrade();
+
+        MemberManager.getInstance().newRechargeProcess();
+        MemberManager.getInstance().newCardProcess();
+        MemberManager.getInstance().newTrade();
+        MemberManager.getInstance().stopGetMemberSetting();
+
         NotifyManager.getInstance().stopRepeatOnlinePay();
         NotifyManager.getInstance().stopRepeatOrderRecord();
-        XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
-        EventBus.getDefault().removeStickyEvent(EventLogin.class);
-        EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
-        MemberManager.getInstance().stopGetMemberSetting();
+
         InnerManager.getInstance().stopGetInnerSwitch();
         InnerManager.getInstance().resetClubWorkTime();
 
-        XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出操作：" + RequestConstant.URL_LOGOUT);
-        Observable<LogoutResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .logout(getToken(), AppConstants.SESSION_TYPE);
-        Subscription subscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<LogoutResult>() {
-            @Override
-            public void onCallbackSuccess(LogoutResult result) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出---成功");
-                callback.onSuccess(result);
-            }
+        EventBus.getDefault().removeStickyEvent(EventLogin.class);
+        EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
 
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出---失败：" + e.getLocalizedMessage());
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-
-        LocalPersistenceManager.clearClubQrcodeBytes(getClubId()); //清除二维码
         cleanUserInfo(); //清除用户信息
         XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "Already Logout ~~ ");
-        return subscription;
+    }
+
+    @Subscribe(priority = -1)
+    public void onEvent(EventLogout eventLogout) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出操作：" + RequestConstant.URL_LOGOUT);
+        final Call<LogoutResult> logoutCall = XmdNetwork.getInstance().getService(SpaService.class)
+                .logout(getToken(), AppConstants.SESSION_TYPE);
+        ThreadPoolManager.run(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    logoutCall.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
