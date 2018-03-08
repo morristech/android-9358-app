@@ -2,12 +2,14 @@ package com.xmd.technician.model;
 
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.m.network.EventTokenExpired;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.permission.event.EventRequestSyncPermission;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
@@ -17,9 +19,11 @@ import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.SpaService;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -32,8 +36,11 @@ import com.xmd.technician.msgctrl.RxBus;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
 
 /**
  * Created by heyangya on 16-12-20.
@@ -424,10 +431,26 @@ public class LoginTechnician {
     public void logout() {
         String token = getToken();
         String userId = getUserId();
-        cleanWhenLogout();
         //发送登出事件
         EventBus.getDefault().postSticky(new EventLogout(token, userId));
         RxBus.getInstance().post(new EventLogout(token, userId));
+        cleanWhenLogout();
+    }
+
+    @Subscribe(priority = -1)
+    public void onLogout(EventLogout eventLogout) {
+        Call<LogoutResult> call = XmdNetwork.getInstance().getService(SpaService.class)
+                .logout(eventLogout.getToken(), RequestConstant.SESSION_TYPE);
+        ThreadPoolManager.run(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    call.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 

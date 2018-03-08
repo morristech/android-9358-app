@@ -86,7 +86,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                 BuildConfig.SERVER_SDCM105,
                 BuildConfig.SERVER_SDCM104,
                 BuildConfig.SERVER_SDCM103,
-                BuildConfig.SERVER_SDCM100
+                BuildConfig.SERVER_SDCM100,
+                "192.168.2.45:9880"
         };
         final int[] selectedId = {0};
         String currentServer = SPManager.getInstance().getSpaServerAddress();

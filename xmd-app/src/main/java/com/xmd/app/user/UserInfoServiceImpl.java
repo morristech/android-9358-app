@@ -203,7 +203,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         saveCurrentUser(eventLogin.getUser());
     }
 
-    @Subscribe(sticky = true, priority = -1)
+    @Subscribe(sticky = true, priority = -10)
     public void onLogout(EventLogout eventLogout) {
         XLogger.i(TAG, "<===user logout");
         currentToken = null;
