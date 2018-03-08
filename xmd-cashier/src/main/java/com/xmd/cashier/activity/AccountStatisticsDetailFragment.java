@@ -514,22 +514,29 @@ public class AccountStatisticsDetailFragment extends Fragment implements Account
         mDataErrorLayout.setVisibility(View.GONE);
         mPresenter.setStyle();
 
+        int markListAmount = 0;
+        if (offline.nativeList != null && !offline.nativeList.isEmpty()) {
+            for (OfflineAccountStatisticInfo.OfflineNativeInfo info : offline.nativeList) {
+                markListAmount += info.amount;
+            }
+            mSettleAdapter.setData(offline.nativeList);
+            mMoneyAdapter.setData(offline.nativeList);
+        } else {
+            mSettleNativeList.removeAllViews();
+            mMoneyNativeList.removeAllViews();
+        }
+
         mSettleTotal.setText(mPresenter.formatAmount(online.totalSettleAmount));
         mSettleWX.setText(mPresenter.formatAmount(online.totalWx));
         mSettleAli.setText(mPresenter.formatAmount(online.totalAli));
         mSettleUnion.setText(mPresenter.formatAmount(online.totalUnion));
 
-        mOtherTotal.setText(mPresenter.formatAmount(offline.totalRecharge + offline.cashPos));
+        mOtherTotal.setText(mPresenter.formatAmount(offline.totalRecharge + offline.cashPos + markListAmount));
         mOtherWX.setText(mPresenter.formatAmount(offline.wxMember));
         mOtherAli.setText(mPresenter.formatAmount(offline.aliMember));
         mOtherUnion.setText(mPresenter.formatAmount(offline.unionMember));
         mOtherCash.setText(mPresenter.formatAmount(offline.cashMember + offline.cashPos));
         mOtherElse.setText(mPresenter.formatAmount(offline.otherMember));
-        if (offline.nativeList != null) {
-            mSettleAdapter.setData(offline.nativeList);
-        } else {
-            mSettleNativeList.removeAllViews();
-        }
 
         mTotalAmount.setText(mPresenter.formatAmount(online.totalAmount));
         mInternalDiscount.setText("-￥" + Utils.moneyToStringEx(Math.abs(online.totalDiscount)));
@@ -551,10 +558,10 @@ public class AccountStatisticsDetailFragment extends Fragment implements Account
         mItemPackage.setText(mPresenter.formatAmount(online.itemPackage));
         mPosSettle.setText(mPresenter.formatAmount(online.totalUnion));
         mPosSettleUnion.setText(mPresenter.formatAmount(online.totalUnion));
-        mOtherAmount.setText(mPresenter.formatAmount(offline.cashPos + offline.totalRecharge + offline.totalDiscount + offline.totalRefund));
+        mOtherAmount.setText(mPresenter.formatAmount(offline.cashPos + offline.totalRecharge + offline.totalDiscount + offline.totalRefund + markListAmount));
         mOtherInternalDiscount.setText("-￥" + Utils.moneyToStringEx(Math.abs(offline.totalDiscount)));
         mOtherInternalRefund.setText("-￥" + Utils.moneyToStringEx(Math.abs(offline.totalRefund)));
-        mOtherPos.setText(mPresenter.formatAmount(offline.cashPos));
+        mOtherPos.setText(mPresenter.formatAmount(offline.cashPos + markListAmount));
         mOtherPosCash.setText(mPresenter.formatAmount(offline.cashPos));
         mOtherMemberRecharge.setText(mPresenter.formatAmount(offline.totalRecharge));
         mOtherMemberRechargeWX.setText(mPresenter.formatAmount(offline.wxMember));
@@ -562,11 +569,6 @@ public class AccountStatisticsDetailFragment extends Fragment implements Account
         mOtherMemberRechargeUnion.setText(mPresenter.formatAmount(offline.unionMember));
         mOtherMemberRechargeCash.setText(mPresenter.formatAmount(offline.cashMember));
         mOtherMemberRechargeElse.setText(mPresenter.formatAmount(offline.otherMember));
-        if (offline.nativeList != null) {
-            mMoneyAdapter.setData(offline.nativeList);
-        } else {
-            mMoneyNativeList.removeAllViews();
-        }
     }
 
     @Override
