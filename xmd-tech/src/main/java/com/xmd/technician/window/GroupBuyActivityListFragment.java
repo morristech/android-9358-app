@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xmd.app.Constants;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.GroupBuyBean;
+import com.xmd.technician.event.MarketingShareUmengStatisticsEvent;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.GroupBuyListResult;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -18,6 +20,8 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,8 +104,8 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
     public void onShareClicked(GroupBuyBean bean) {
         super.onShareClicked(bean);
         ShareController.doShare(bean.itemImageUrl, bean.shareUrl,bean.name, getDescribeMessage(bean),
-                 RequestConstant.KEY_GROUP_BUY, bean.itemId);
-
+                 RequestConstant.KEY_GROUP_BUY, bean.id);
+        EventBus.getDefault().post(new MarketingShareUmengStatisticsEvent(Constants.UMENG_STATISTICS_SHARE_GROUP_BUY));
     }
 
     //扫码分享
@@ -115,7 +119,7 @@ public class GroupBuyActivityListFragment extends BaseListFragment<GroupBuyBean>
         params.put(Constant.PARAM_SHARE_TITLE, bean.name);
         params.put(Constant.PARAM_SHARE_DESCRIPTION, getDescribeMessage(bean));
         params.put(Constant.PARAM_SHARE_TYPE, RequestConstant.KEY_GROUP_BUY);
-        params.put(Constant.PARAM_ACT_ID, bean.itemId);
+        params.put(Constant.PARAM_ACT_ID, bean.id);
         params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "拼团活动");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }

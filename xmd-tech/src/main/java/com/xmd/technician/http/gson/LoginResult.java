@@ -19,6 +19,7 @@ public class LoginResult extends BaseResult {
     public String spareTechId;
     public String clubId;
     public String clubName;
+    public String IMPlatform; //"tencent" 聊天消息类型，为腾讯IM
 
     public Object respData;
 }

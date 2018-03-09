@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.WindowManager;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -214,5 +215,9 @@ public class Utils {
         int d1 = value / 100;
         int d2 = value % 100;
         return String.format(Locale.CHINA, "%d.%02d", d1, d2);
+    }
+
+    public static void ShowErrorMessageToast(String errorMessage){
+        XToast.show(errorMessage);
     }
 }

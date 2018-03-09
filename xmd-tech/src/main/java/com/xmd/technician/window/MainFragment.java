@@ -1065,9 +1065,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.main_send_coupon:
                 ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
+
                 break;
             case R.id.main_get_comment:
                 CommentListActivity.startCommentListActivity(getActivity(), false, mTech.getUserId());
+
                 break;
             case R.id.pay_notify_header:
                 startActivity(new Intent(getActivity(), OnlinePayNotifyActivity.class));

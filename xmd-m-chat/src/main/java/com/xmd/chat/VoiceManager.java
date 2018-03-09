@@ -4,12 +4,11 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.text.format.Time;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.util.PathUtil;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.XmdApp;
@@ -17,8 +16,6 @@ import com.xmd.app.XmdApp;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-
-import retrofit2.http.Field;
 
 /**
  * Created by mo on 17-7-8.
@@ -139,10 +136,15 @@ public class VoiceManager {
         mediaRecorder.setAudioChannels(1);
         mediaRecorder.setAudioSamplingRate(8000);
         mediaRecorder.setAudioEncodingBitRate(64);
-        voiceFileName = getVoiceFileName(EMClient.getInstance().getCurrentUser());
-        recordFile = PathUtil.getInstance().getVideoPath() + "/" + voiceFileName;
-        file = new File(recordFile);
-        mediaRecorder.setOutputFile(file.getAbsolutePath());
+        //    voiceFileName = getVoiceFileName(EMClient.getInstance().getCurrentUser());
+       // voiceFileName = getVoiceCacheFilePath();
+      //      recordFile = PathUtil.getInstance().getVideoPath() + "/" + voiceFileName;
+      //  recordFile = XmdPathUtil.getInstance().getVideoPath() + "/" + voiceFileName;
+      //  file = new File(recordFile);
+        recordFile = getVoiceCacheFilePath();
+     //   file = new File(recordFile);
+
+        mediaRecorder.setOutputFile(recordFile);
         try {
             mediaRecorder.prepare();
             mediaRecorder.start();
@@ -151,6 +153,20 @@ public class VoiceManager {
         } catch (IOException e) {
             XLogger.e("record failed:" + e.getMessage());
             XToast.show("无法录音:" + e.getMessage());
+        }
+        return false;
+    }
+
+    private String getVoiceCacheFilePath() {
+        File cacheDir = !isExternalStorageWritable() ? XmdApp.getInstance().getContext().getFilesDir() : XmdApp.getInstance().getContext().getExternalCacheDir();
+
+        return cacheDir.getAbsolutePath() + "/tempAudio";
+    }
+
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
         }
         return false;
     }

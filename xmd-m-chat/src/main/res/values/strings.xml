@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Chat</string>
     <string name="salary_title">工资</string>
+    <string name="chat_up_finger">向上滑动取消发送</string>
+    <string name="net_work_error">网络异常</string>
+    <string name="once_card_single">品质服务，畅快享受</string>
+    <string name="once_card_mix">特惠套餐，超越期待</string>
+    <string name="once_card_credit">会员积分超值兑换～</string>
+    <string name="time_limit_marketing">春宵一刻值千金</string>
+    <string name="one_yuan_marketing">我和你只有一块钱的距离</string>
+    <string name="luck_wheel_marketing">那一世转山转水，只为相见</string>
+    <string name="invitation_marketing">邀请好友赢豪礼～</string>
+    <string name="club_journal">有美女、有福利，你就是我的VIP</string>
+    <string name="has_revoke_message">你撤回一条消息</string>
+    <string name="invite_gift_message">邀请好友赢好礼～</string>
+    <string name="location_message">位置信息</string>
+    <string name="image_message">【图片】</string>
+    <string name="coupon_tip_message">领取了您的优惠券</string>
+    <string name="paid_coupon_tip_message">购买了您的点钟券</string>
+    <string name="order_message">订单</string>
+    <string name="order_request_message">选项目、约技师，\n线上预约，方便快捷</string>
+    <string name="request_reward_message">万水千山总是情\n打赏两个行不行</string>
 </resources>

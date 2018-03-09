@@ -1,30 +1,36 @@
 package com.xmd.chat.message;
 
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
-import com.shidou.commonlibrary.util.DateUtils;
-import com.xmd.app.EmojiManager;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMImageElem;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMSoundElem;
 import com.xmd.app.user.User;
-import com.xmd.chat.ChatMessageManager;
-
-import java.util.Calendar;
+import com.xmd.chat.xmdchat.ImMessageParseManager;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
+import com.xmd.chat.xmdchat.contract.XmdChatMessageInterface;
+import com.xmd.chat.xmdchat.messagebean.ImageMessageBean;
+import com.xmd.chat.xmdchat.messagebean.VoiceMessageBean;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.EmChatMessagePresent;
+import com.xmd.chat.xmdchat.present.ImChatMessageManagerPresent;
+import com.xmd.chat.xmdchat.present.ImChatMessagePresent;
 
 /**
  * Created by heyangya on 17-6-5.
  * 基本聊天消息
  */
 
-public class ChatMessage {
-    private static final String TAG = "ChatMessage";
-
-
+public class ChatMessage<T> {
+    public static final String TAG = "ChatMessage";
     /**
      * 原始数据类型:
      * TXT,IMAGE,VIDEO,LOCATION,VOICE,FILE,CMD
@@ -32,12 +38,12 @@ public class ChatMessage {
      */
     public static final String MSG_TYPE_ORIGIN_TXT = "TXT";
     public static final String MSG_TYPE_ORIGIN_IMAGE = "IMAGE";
-    public static final String MSG_TYPE_ORIGIN_VIDEO = "VIDEO";
-    public static final String MSG_TYPE_ORIGIN_LOCATION = "LOCATION";
     public static final String MSG_TYPE_ORIGIN_VOICE = "VOICE";
-    public static final String MSG_TYPE_ORIGIN_FILE = "FILE";
     public static final String MSG_TYPE_ORIGIN_CMD = "CMD";
     public static final String MSG_TYPE_TIP = "tip"; //提示消息
+    public static final String MSG_TYPE_ORIGIN_VIDEO = "VIDEO";
+    public static final String MSG_TYPE_ORIGIN_LOCATION = "LOCATION";
+    public static final String MSG_TYPE_ORIGIN_FILE = "FILE";
 
     public static final String MSG_TYPE_CLUB_LOCATION = "clubLocation"; //位置消息
     public static final String MSG_TYPE_ORDER_START = "order_start";
@@ -66,51 +72,58 @@ public class ChatMessage {
 
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
+    public static final String REVERT_MSG = "revert_msg"; //撤回消息
 
 
     public static final String ATTRIBUTE_MESSAGE_TYPE = "msgType";
-    private static final String ATTRIBUTE_TAG = "xmd_tag";
+    public static final String ATTRIBUTE_TAG = "tag";
 
-    private static final String ATTRIBUTE_USER_ROLES = "userRoles";
-    private static final String ATTRIBUTE_USER_ID = "userId";
-    private static final String ATTRIBUTE_USER_NAME = "name";
-    private static final String ATTRIBUTE_USER_AVATAR = "header";
-    private static final String ATTRIBUTE_USER_AVATAR_ID = "avatar";
-    private static final String ATTRIBUTE_TIME = "time";
+    public static final String ATTRIBUTE_USER_ROLES = "userRoles";
+    public static final String ATTRIBUTE_USER_ID = "userId";
+    public static final String ATTRIBUTE_USER_NAME = "name";
+    public static final String ATTRIBUTE_USER_AVATAR = "header";
+    public static final String ATTRIBUTE_USER_AVATAR_ID = "avatar";
+    public static final String ATTRIBUTE_TIME = "time";
 
-    private static final String ATTRIBUTE_SERIAL_NO = "no";
-    private static final String ATTRIBUTE_TECH_ID = "techId";
-    private static final String ATTRIBUTE_CLUB_ID = "clubId";
-    private static final String ATTRIBUTE_CLUB_NAME = "clubName";
+    public static final String ATTRIBUTE_SERIAL_NO = "no";
+    public static final String ATTRIBUTE_TECH_ID = "techId";
+    public static final String ATTRIBUTE_CLUB_ID = "clubId";
+    public static final String ATTRIBUTE_CLUB_NAME = "clubName";
 
 
     //内部是否已处理此消息
-    private static final String ATTR_INNER_PROCESSED = "inner_processed";
-
+    public static final String ATTR_INNER_PROCESSED = "inner_processed";
     //预约消息
-    private EMMessage emMessage;
+    public T message;
+    public XmdChatMessageInterface mInterface;
 
-    private Spannable contentText; //缓存emoji格式化后的数据
-    protected String formatTime; //缓存格式化后的时间
-    protected String relativeTime;
-
-
-    public ChatMessage(EMMessage emMessage) {
-        this.emMessage = emMessage;
-        setTime(String.valueOf(emMessage.getMsgTime()));
+    public ChatMessage(T message) {
+        this.message = message;
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            mInterface = new EmChatMessagePresent((EMMessage) message);
+        } else {
+            mInterface = new ImChatMessagePresent((TIMMessage) message);
+        }
+        setTime(String.valueOf(mInterface.getMsgTime()));
     }
 
     public String getMsgType() {
-        return getMsgType(emMessage);
+        return getMsgType(message);
     }
 
     public void setMsgType(String msgType) {
-        setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
+        mInterface.setMsgType(msgType);
     }
 
-    public static String getMsgType(EMMessage emMessage) {
-        String msgType = getSafeStringAttribute(emMessage, ATTRIBUTE_MESSAGE_TYPE);
-        return TextUtils.isEmpty(msgType) ? emMessage.getType().name() : msgType;
+
+    public static <T> String getMsgType(T message) {
+        if (message instanceof EMMessage) {
+            String msgType = getSafeStringAttribute((EMMessage) message, ATTRIBUTE_MESSAGE_TYPE);
+            return TextUtils.isEmpty(msgType) ? ((EMMessage) message).getType().name() : msgType;
+        } else {
+            return ImMessageParseManager.getInstance().getMessageType((TIMMessage) message);
+        }
+
     }
 
     //设置用户信息，发送时设置
@@ -120,7 +133,6 @@ public class ChatMessage {
         setUserName(user.getName());
         setUserAvatar(user.getAvatar());
         setUserAvatarId(user.getAvatarId());
-
         setClubId(user.getClubId());
         setClubName(user.getClubName());
         setTechNo(user.getTechNo());
@@ -132,68 +144,67 @@ public class ChatMessage {
     }
 
     public void addTag(String tag) {
-        setAttr(ATTRIBUTE_TAG, TextUtils.isEmpty(getTag()) ? tag : getTag() + "," + tag);
+        mInterface.addTag(tag);
     }
 
     public void clearTag() {
-        setAttr(ATTRIBUTE_TAG, "");
+        mInterface.clearTag();
     }
 
     public String getToChatId() {
-        return emMessage.getTo();
+        return mInterface.getToChatId();
     }
 
     public String getFromChatId() {
-        return emMessage.getFrom();
+        return mInterface.getFromChatId();
     }
 
-
     public String getUserId() {
-        return getSafeStringAttribute(ATTRIBUTE_USER_ID);
+        return mInterface.getUserId();
     }
 
     public void setUserId(String userId) {
-        setAttr(ATTRIBUTE_USER_ID, userId);
+        mInterface.setUserId(userId);
     }
 
     public String getUserRoles() {
-        return getSafeStringAttribute(ATTRIBUTE_USER_ROLES);
+        return mInterface.getUserRoles();
     }
 
     public void setUserRoles(String userRoles) {
-        setAttr(ATTRIBUTE_USER_ROLES, userRoles);
+        mInterface.setUserRoles(userRoles);
     }
 
     public String getUserName() {
-        return getSafeStringAttribute(ATTRIBUTE_USER_NAME);
+        return mInterface.getUserName();
     }
 
     public void setUserName(String userName) {
-        setAttr(ATTRIBUTE_USER_NAME, userName);
+        mInterface.setUserName(userName);
     }
 
     public String getUserAvatar() {
-        return getSafeStringAttribute(ATTRIBUTE_USER_AVATAR);
+        return mInterface.getUserAvatar();
     }
 
     public void setUserAvatar(String userAvatar) {
-        setAttr(ATTRIBUTE_USER_AVATAR, userAvatar);
+        mInterface.setUserAvatar(userAvatar);
     }
 
     public String getUserAvatarId() {
-        return getSafeStringAttribute(ATTRIBUTE_USER_AVATAR_ID);
+        return mInterface.getUserAvatarId();
     }
 
     public void setUserAvatarId(String userAvatarId) {
-        setAttr(ATTRIBUTE_USER_AVATAR_ID, userAvatarId);
+        mInterface.setUserAvatarId(userAvatarId);
     }
 
     public String getTime() {
-        return getSafeStringAttribute(ATTRIBUTE_TIME);
+        return mInterface.getTime();
     }
 
     public void setTime(String time) {
-        setAttr(ATTRIBUTE_TIME, time);
+        mInterface.setTime(time);
     }
 
     public String getTechId() {
@@ -201,90 +212,48 @@ public class ChatMessage {
     }
 
     public void setTechId(String techId) {
-        setAttr(ATTRIBUTE_TECH_ID, techId);
+        mInterface.setTechId(techId);
     }
 
     public String getTechNo() {
-        return getSafeStringAttribute(ATTRIBUTE_SERIAL_NO);
+        return mInterface.getTechNo();
     }
 
     public void setTechNo(String techNo) {
-        setAttr(ATTRIBUTE_SERIAL_NO, techNo);
+        mInterface.setTechNo(techNo);
     }
 
     public String getClubId() {
-        return getSafeStringAttribute(ATTRIBUTE_CLUB_ID);
+        return mInterface.getClubId();
     }
 
     public void setClubId(String clubId) {
-        setAttr(ATTRIBUTE_CLUB_ID, clubId);
+        mInterface.setClubId(clubId);
     }
 
     public String getClubName() {
-        return getSafeStringAttribute(ATTRIBUTE_CLUB_NAME);
+        return mInterface.getClubName();
     }
 
     public void setClubName(String clubName) {
-        setAttr(ATTRIBUTE_CLUB_NAME, clubName);
+        mInterface.setClubName(clubName);
     }
 
-
-    protected void setAttr(String key, String value) {
-        emMessage.setAttribute(key, value);
-    }
-
-    protected void setAttr(String attrKey, Long attr) {
-        emMessage.setAttribute(attrKey, attr);
-    }
-
-    protected void setAttr(String attrKey, Integer attr) {
-        emMessage.setAttribute(attrKey, attr);
-    }
-
-    protected void setAttr(String attrKey, Boolean attr) {
-        emMessage.setAttribute(attrKey, attr);
-    }
-
-    public EMMessage getEmMessage() {
-        return emMessage;
-    }
-
-    public void setEmMessage(EMMessage emMessage) {
-        this.emMessage = emMessage;
-    }
 
     public CharSequence getContentText() {
-        if (contentText == null) {
-            if (emMessage.getType().equals(EMMessage.Type.TXT)) {
-                String message = ((EMTextMessageBody) emMessage.getBody()).getMessage();
-                if (getAttrType().equals(MSG_TYPE_COUPON_TIP)) {
-                    String couponMessage = String.format("%s领取了您的\"%s\"", getUserName(), message);
-                    contentText = EmojiManager.getInstance().format(couponMessage);
-                } else if (getAttrType().equals(MSG_TYPE_PAID_COUPON_TIP)) {
-                    String[] msg = message.split("&");
-                    String couponTitle = "";
-                    if (msg.length > 0) {
-                        couponTitle = msg[0];
-                    }
-                    String paidType = String.format("%s购买了您 ＂%s＂点钟券", getUserName(), couponTitle);
-                    contentText = EmojiManager.getInstance().format(paidType);
-                } else {
-                    contentText = EmojiManager.getInstance().format(message);
-                }
+        return mInterface.getContentText();
+    }
 
-            } else {
-                contentText = new SpannableString("[" + emMessage.getType().name() + "]");
-            }
-        }
-        return contentText;
+    public T getMessage() {
+        return message;
+    }
+
+    public void setMessage(T message) {
+        this.message = message;
     }
 
     public String getOriginContentText() {
-        if (emMessage.getType().equals(EMMessage.Type.TXT)) {
-            return ((EMTextMessageBody) emMessage.getBody()).getMessage();
-        } else {
-            return "[" + emMessage.getType().name() + "]";
-        }
+        return mInterface.getOriginContentText();
     }
 
     public boolean isCustomerService() {
@@ -292,80 +261,128 @@ public class ChatMessage {
     }
 
     public boolean isReceivedMessage() {
-        return emMessage.direct().equals(EMMessage.Direct.RECEIVE);
+        return mInterface.isReceivedMessage();
     }
 
     public String getRemoteChatId() {
-        if (getEmMessage().direct() == EMMessage.Direct.RECEIVE) {
-            return getFromChatId();
-        } else {
-            return getToChatId();
-        }
+        return mInterface.getRemoteChatId();
     }
 
     public String getFormatTime() {
-        if (formatTime == null) {
-            long msgTime = emMessage.getMsgTime();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(msgTime);
-            Calendar now = Calendar.getInstance();
-            if (now.get(Calendar.YEAR) > calendar.get(Calendar.YEAR)
-                    || now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)) {
-                formatTime = DateUtils.doLong2String(msgTime);
-            } else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
-                formatTime = DateUtils.doLong2String(msgTime, "昨天 HH:mm");
-            } else {
-                formatTime = DateUtils.doLong2String(msgTime, "HH:mm");
-            }
-
-        }
-        return formatTime;
+        return mInterface.getFormatTime();
     }
 
     public String getChatRelativeTime() {
-        if (relativeTime == null) {
-            long msgTime = emMessage.getMsgTime();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(msgTime);
-            int relativeHour = calendar.get(Calendar.HOUR_OF_DAY);
-            Calendar now = Calendar.getInstance();
-            String timeDistinguish = "";
-            if (0 <= relativeHour && relativeHour < 6) {
-                timeDistinguish = "凌晨";
-            } else if (6 <= relativeHour && relativeHour < 12) {
-                timeDistinguish = "早上";
-            } else if (12 <= relativeHour && relativeHour < 13) {
-                timeDistinguish = "中午";
-            } else if (12 <= relativeHour && relativeHour < 18) {
-                timeDistinguish = "下午";
-            } else if (18 <= relativeHour && relativeHour < 24) {
-                timeDistinguish = "晚上";
-            }
-            if (now.get(Calendar.YEAR) > calendar.get(Calendar.YEAR)
-                    || now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)) {
-                relativeTime = DateUtils.doLong2RelativeString(msgTime);
-            } else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
-                relativeTime = DateUtils.doLong2String(msgTime, "昨天 " + timeDistinguish + "hh:mm");
-            } else {
-                relativeTime = DateUtils.doLong2String(msgTime, timeDistinguish + "hh:mm");
-            }
-
-        }
-        return relativeTime;
+        return mInterface.getChatRelativeTime();
     }
 
     public String getSafeStringAttribute(String key) {
-        return getSafeStringAttribute(emMessage, key);
+        return mInterface.getSafeStringAttribute(key);
     }
 
     public Integer getSafeIntegerAttribute(String key) {
-        return getSafeIntegerAttribute(emMessage, key);
+       return mInterface.getSafeIntegerAttribute(key);
     }
 
     public Long getSafeLongAttribute(String key) {
-        return getSafeLongAttribute(emMessage, key);
+        return mInterface.getSafeLongAttribute(key);
     }
 
+    public String getAttrType() {
+        return mInterface.getAttrType();
+    }
+
+    public void setAttr(String key, String value) {
+        mInterface.setAttr(key, value);
+    }
+
+
+    protected void setAttr(String attrKey, Long attr) {
+        mInterface.setAttr(attrKey, attr);
+    }
+
+    protected void setAttr(String attrKey, Integer attr) {
+        mInterface.setAttr(attrKey, attr);
+    }
+
+    protected void setAttr(String attrKey, Boolean attr) {
+        mInterface.setAttr(attrKey, attr);
+    }
+
+    public String getInnerProcessed() {
+        return getSafeStringAttribute(ATTR_INNER_PROCESSED);
+    }
+
+    public void setInnerProcessed(String processedDesc) {
+        mInterface.setInnerProcessed(processedDesc);
+    }
+
+    public EMConversation getEMConversation() {
+        return EMClient.getInstance().chatManager().getConversation(getRemoteChatId());
+    }
+
+    public TIMConversation geIMConversation() {
+        return TIMManager.getInstance().getConversation(TIMConversationType.C2C, getRemoteChatId());
+    }
+
+    public long getMessageTime() {
+        return mInterface.getMsgTime();
+    }
+
+    public static ChatMessage createTextMessage(String remoteChatId, String text) {
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            EMMessage emMessage = EMMessage.createTxtSendMessage(text, remoteChatId);
+            if (emMessage == null) {
+                return null;
+            }
+            return new ChatMessage(emMessage);
+        } else {
+            TIMMessage message = new TIMMessage();
+            return new ChatMessage(message);
+        }
+
+    }
+
+    public static ChatMessage createImageMessage(String remoteChatId, String imagePath,String tag) {
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            EMMessage emMessage = EMMessage.createImageSendMessage(imagePath, true, remoteChatId);
+            if (emMessage == null) {
+                return null;
+            }
+            return new ChatMessage(emMessage);
+        } else {
+            ImageMessageBean imageBean = new ImageMessageBean();
+            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(imageBean, XmdMessageType.IMAGE_TYPE,tag,null);
+            TIMImageElem elem = new TIMImageElem();
+            elem.setPath(imagePath);
+            if(message.addElement(elem) != 0){
+                XLogger.d("tag","addElement fail");
+            }
+            return new ChatMessage(message);
+        }
+
+    }
+
+    public static ChatMessage createVoiceSendMessage(String remoteChatId, String audioPath, int length) {
+        if(XmdChatModel.getInstance().chatModelIsEm()){
+            EMMessage emMessage = EMMessage.createVoiceSendMessage(audioPath, length, remoteChatId);
+            if (emMessage == null) {
+                return null;
+            }
+            return new ChatMessage(emMessage);
+        }else {
+            VoiceMessageBean bean = new VoiceMessageBean();
+            bean.setPath(audioPath);
+            bean.setDuration(length);
+            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean,XmdMessageType.VOICE_TYPE,null,null);
+            TIMSoundElem elem = new TIMSoundElem();
+            elem.setPath(audioPath);
+            elem.setDuration(length);
+            message.addElement(elem);
+            return new ChatMessage(message);
+        }
+
+    }
 
     public static String getSafeStringAttribute(EMMessage emMessage, String key) {
         if (emMessage == null || TextUtils.isEmpty(key)) {
@@ -379,13 +396,6 @@ public class ChatMessage {
         }
     }
 
-    public String getAttrType() {
-        String attrType = getSafeStringAttribute(TipChatMessage.ATTR_TIP_TYPE);
-        if (attrType == null) {
-            attrType = "";
-        }
-        return attrType;
-    }
 
     public static Integer getSafeIntegerAttribute(EMMessage emMessage, String key) {
         try {
@@ -403,19 +413,6 @@ public class ChatMessage {
         }
     }
 
-    public String getInnerProcessed() {
-        return getSafeStringAttribute(ATTR_INNER_PROCESSED);
-    }
-
-    public void setInnerProcessed(String processedDesc) {
-        setAttr(ATTR_INNER_PROCESSED, processedDesc);
-        ChatMessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
-    }
-
-    public EMConversation getConversation() {
-        return EMClient.getInstance().chatManager().getConversation(getRemoteChatId());
-    }
-
     public static String getMsgTypeText(String msgType) {
         switch (msgType) {
             case ChatMessage.MSG_TYPE_ORDER_START:
@@ -430,30 +427,5 @@ public class ChatMessage {
                 return "预约成功";
         }
         return msgType;
-    }
-
-
-    public static ChatMessage createTextMessage(String remoteChatId, String text) {
-        EMMessage emMessage = EMMessage.createTxtSendMessage(text, remoteChatId);
-        if (emMessage == null) {
-            return null;
-        }
-        return new ChatMessage(emMessage);
-    }
-
-    public static ChatMessage createImageMessage(String remoteChatId, String imagePath) {
-        EMMessage emMessage = EMMessage.createImageSendMessage(imagePath, true, remoteChatId);
-        if (emMessage == null) {
-            return null;
-        }
-        return new ChatMessage(emMessage);
-    }
-
-    public static ChatMessage createVoiceSendMessage(String remoteChatId, String audioPath, int length) {
-        EMMessage emMessage = EMMessage.createVoiceSendMessage(audioPath, length, remoteChatId);
-        if (emMessage == null) {
-            return null;
-        }
-        return new ChatMessage(emMessage);
     }
 }

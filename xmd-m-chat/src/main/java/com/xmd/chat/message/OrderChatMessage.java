@@ -1,9 +1,22 @@
 package com.xmd.chat.message;
 
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.imsdk.TIMCustomElem;
+import com.tencent.imsdk.TIMMessage;
+import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
+import com.xmd.chat.ChatAccountManager;
+import com.xmd.chat.xmdchat.ImMessageParseManager;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
+import com.xmd.chat.xmdchat.messagebean.OrderAppointmentMessageBean;
+import com.xmd.chat.xmdchat.messagebean.TextMessageBean;
+import com.xmd.chat.xmdchat.messagebean.XmdChatMessageBaseBean;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.ImChatMessageManagerPresent;
 
 import java.util.Date;
 
@@ -12,7 +25,7 @@ import java.util.Date;
  * 预约消息
  */
 
-public class OrderChatMessage extends ChatMessage {
+public class OrderChatMessage<T> extends ChatMessage {
     private final static String ATTR_ORDER_TYPE = "orderAppointType"; //预约类型,电话，免费，订金，全额
     private final static String ATTR_ORDER_CUSTOMER_ID = "orderCustomerId";
     private final static String ATTR_ORDER_CUSTOMER_PHONE = "orderCustomerPhone"; //客户手机
@@ -29,8 +42,8 @@ public class OrderChatMessage extends ChatMessage {
     private final static String ATTR_ORDER_PAY_MONEY = "orderPayMoney";////支付金额，单位为分 Integer
 
 
-    public OrderChatMessage(EMMessage emMessage) {
-        super(emMessage);
+    public OrderChatMessage(T message) {
+        super(message);
     }
 
     public static OrderChatMessage create(String remoteChatId, String msgType) {
@@ -41,14 +54,24 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public static OrderChatMessage createRequestOrderMessage(String remoteChatId) {
-        EMMessage emMessage = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", remoteChatId);
-        OrderChatMessage orderChatMessage = new OrderChatMessage(emMessage);
-        orderChatMessage.setMsgType(ChatMessage.MSG_TYPE_ORDER_REQUEST);
-        return orderChatMessage;
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            EMMessage emMessage = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", remoteChatId);
+            OrderChatMessage orderChatMessage = new OrderChatMessage(emMessage);
+            orderChatMessage.setMsgType(ChatMessage.MSG_TYPE_ORDER_REQUEST);
+            return orderChatMessage;
+        } else {
+            TextMessageBean bean = new TextMessageBean();
+            bean.setContent("选项目、约技师，\n线上预约，方便快捷～");
+            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.ORDER_REQUEST_TYPE, null, null);
+            OrderChatMessage orderChatMessage = new OrderChatMessage(message);
+            return orderChatMessage;
+        }
+
     }
 
     public String getCustomerName() {
-        return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_NAME);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_CUSTOMER_NAME) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_CUSTOMER_NAME);
     }
 
     public void setCustomerName(String customerName) {
@@ -56,7 +79,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getCustomerId() {
-        return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_ID);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_CUSTOMER_ID) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_CUSTOMER_ID);
     }
 
     public void setCustomerId(String customerId) {
@@ -64,7 +88,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getCustomerPhone() {
-        return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_PHONE);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_CUSTOMER_PHONE) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_CUSTOMER_PHONE);
     }
 
     public void setCustomerPhone(String customerPhone) {
@@ -72,7 +97,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getOrderTechId() {
-        return getSafeStringAttribute(ATTR_ORDER_TECH_ID);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_TECH_ID) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_TECH_ID);
     }
 
     public void setOrderTechId(String orderTechId) {
@@ -80,7 +106,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getOrderTechName() {
-        return getSafeStringAttribute(ATTR_ORDER_TECH_NAME);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_TECH_NAME) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_TECH_NAME);
     }
 
     public void setOrderTechName(String orderTechName) {
@@ -88,7 +115,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getOrderTechAvatar() {
-        return getSafeStringAttribute(ATTR_ORDER_TECH_AVATAR);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_TECH_AVATAR) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_TECH_AVATAR);
     }
 
     public void setOrderTechAvatar(String orderTechAvatar) {
@@ -96,7 +124,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getOrderServiceId() {
-        return getSafeStringAttribute(ATTR_ORDER_SERVICE_ID);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_SERVICE_ID) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_SERVICE_ID);
     }
 
     public void setOrderServiceId(String orderServiceId) {
@@ -104,7 +133,8 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public String getOrderServiceName() {
-        return getSafeStringAttribute(ATTR_ORDER_SERVICE_NAME);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeStringAttribute(ATTR_ORDER_SERVICE_NAME) :
+                ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_SERVICE_NAME);
     }
 
     public void setOrderServiceName(String orderServiceName) {
@@ -112,27 +142,36 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderServicePrice() {
-        return getSafeIntegerAttribute(ATTR_ORDER_SERVICE_PRICE);
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeIntegerAttribute(ATTR_ORDER_SERVICE_PRICE) :
+                Integer.parseInt(ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_SERVICE_PRICE));
+
+    }
+
+
+    public Long getOrderServiceTime() {
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeLongAttribute(ATTR_ORDER_SERVICE_TIME) :
+                Long.parseLong(ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_SERVICE_TIME));
+    }
+
+    public Integer getOrderServiceDuration() {
+        return XmdChatModel.getInstance().chatModelIsEm() ? getSafeIntegerAttribute(ATTR_ORDER_SERVICE_DURATION) :
+                Integer.parseInt(ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_SERVICE_DURATION));
     }
 
     public void setOrderServicePrice(Integer orderServicePrice) {
         setAttr(ATTR_ORDER_SERVICE_PRICE, orderServicePrice);
     }
 
-    public Long getOrderServiceTime() {
-        return getSafeLongAttribute(ATTR_ORDER_SERVICE_TIME);
-    }
-
     public void setOrderServiceTime(Long orderServiceTime) {
         setAttr(ATTR_ORDER_SERVICE_TIME, orderServiceTime);
     }
 
-    public Integer getOrderServiceDuration() {
-        return getSafeIntegerAttribute(ATTR_ORDER_SERVICE_DURATION);
-    }
-
     public void setOrderServiceDuration(Integer orderServiceDuration) {
         setAttr(ATTR_ORDER_SERVICE_DURATION, orderServiceDuration);
+    }
+
+    public void setOrderPayMoney(Integer orderPayMoney) {
+        setAttr(ATTR_ORDER_PAY_MONEY, orderPayMoney);
     }
 
     public String getOrderId() {
@@ -144,11 +183,16 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderPayMoney() {
-        return getSafeIntegerAttribute(ATTR_ORDER_PAY_MONEY);
-    }
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            return getSafeIntegerAttribute(ATTR_ORDER_PAY_MONEY);
+        } else {
+            if (ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_PAY_MONEY) != null) {
+                return Integer.parseInt(ImMessageParseManager.getInstance().parseToAppointmentInfo((TIMMessage) message, ATTR_ORDER_PAY_MONEY));
+            } else {
+                return null;
+            }
 
-    public void setOrderPayMoney(Integer orderPayMoney) {
-        setAttr(ATTR_ORDER_PAY_MONEY, orderPayMoney);
+        }
     }
 
 
@@ -194,6 +238,8 @@ public class OrderChatMessage extends ChatMessage {
             setOrderPayMoney(data.getFontMoney());
         }
 
+
+
         //设置生成的订单ID
         if (data.getSubmitOrderId() != null) {
             setOrderId(data.getSubmitOrderId());
@@ -238,15 +284,79 @@ public class OrderChatMessage extends ChatMessage {
         if (getOrderId() != null) {
             data.setSubmitOrderId(getOrderId());
         }
+
         return data;
     }
 
     public static OrderChatMessage create(String toChatId, String msgType, AppointmentData data) {
-        OrderChatMessage msg = OrderChatMessage.create(toChatId, msgType);
-        if (data != null) {
-            msg.setOrderData(data);
+        OrderChatMessage msg = null;
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            msg = OrderChatMessage.create(toChatId, msgType);
+            if (data != null) {
+                msg.setOrderData(data);
+            }
+        } else {
+            OrderAppointmentMessageBean orderAppointmentMessageBean = new OrderAppointmentMessageBean();
+//            OrderMessageBean orderMessageBean = wrapOrderMessageData(data);
+//            orderAppointmentMessageBean.setOrderMessageBean(orderMessageBean);
+            if (data.getCustomerId() != null) {
+                orderAppointmentMessageBean.setOrderCustomerId(data.getCustomerId());
+            }
+            if (data.getCustomerName() != null) {
+                orderAppointmentMessageBean.setOrderCustomerName(data.getCustomerName());
+            }
+            if (data.getCustomerPhone() != null) {
+                orderAppointmentMessageBean.setOrderCustomerPhone(data.getCustomerPhone());
+            }
+            if (data.getTechnician() != null) {
+                orderAppointmentMessageBean.setOrderTechId(data.getTechnician().getId());
+                orderAppointmentMessageBean.setOrderTechName(data.getTechnician().getName());
+                orderAppointmentMessageBean.setOrderTechAvatar(data.getTechnician().getAvatarUrl());
+            }
+            if (data.getServiceItem() != null) {
+                orderAppointmentMessageBean.setOrderServiceId(data.getServiceItem().getId());
+                orderAppointmentMessageBean.setOrderServiceDuration(Integer.parseInt(data.getServiceItem().getDuration()));
+            }
+
+            if (data.getServiceItem() != null) {
+                orderAppointmentMessageBean.setOrderServiceName(data.getServiceItem().getName());
+            }
+
+            if (data.getAppointmentTime() != null) {
+                orderAppointmentMessageBean.setOrderServiceTime(data.getAppointmentTime().getTime());
+            }
+            if(data.getServiceItem() != null){
+                orderAppointmentMessageBean.setOrderServicePrice(data.getServiceItem().getPrice());
+            }
+            orderAppointmentMessageBean.setOrderId(data.getSubmitOrderId());
+            orderAppointmentMessageBean.setOrderPayMoney(data.getFontMoney());
+            TIMMessage message = wrapMessage(orderAppointmentMessageBean, msgType);
+            msg = new OrderChatMessage(message);
+            if (data != null) {
+                msg.setOrderData(data);
+            }
         }
+
         return msg;
+    }
+
+    public static TIMMessage wrapMessage(Object data, String messageType) {
+        User user = ChatAccountManager.getInstance().getUser();
+        if (user == null) {
+            XToast.show("无法发送消息，没有用户信息");
+            return null;
+        }
+        TIMMessage message = new TIMMessage();
+        TIMCustomElem elem = new TIMCustomElem();
+        final XmdChatMessageBaseBean<Object> xmdChatMessageBaseBean = new XmdChatMessageBaseBean<>();
+        xmdChatMessageBaseBean.setUserId(user.getUserId());
+        xmdChatMessageBaseBean.setType(messageType);
+        xmdChatMessageBaseBean.setData(data);
+        Gson gson = new Gson();
+        String obj = gson.toJson(xmdChatMessageBaseBean);
+        elem.setData(obj.getBytes());
+        message.addElement(elem);
+        return message;
     }
 
     public static boolean isFreeAppointment(AppointmentData data, OrderChatMessage msg) {

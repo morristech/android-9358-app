@@ -6,10 +6,13 @@ import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CreditGiftChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
+import com.xmd.chat.message.EmptyChatMessage;
 import com.xmd.chat.message.NewOrderChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
 import com.xmd.chat.message.TipChatMessage;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -20,7 +23,7 @@ public class ChatMessageFactory {
     /**
      * EMMessage => ChatMessage
      */
-    public static ChatMessage create(EMMessage message) {
+    public static <T> ChatMessage createMessage(T message) {
         String msgType = ChatMessage.getMsgType(message);
         switch (msgType) {
             case ChatMessage.MSG_TYPE_CLUB_LOCATION:
@@ -37,11 +40,13 @@ public class ChatMessageFactory {
             case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
             case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
             case ChatMessage.MSG_TYPE_INVITE_GIFT_TYPE:
+            case XmdMessageType.REQUEST_REWARD_TYPE:
                 return new ShareChatMessage(message);
             case ChatMessage.MSG_TYPE_COUPON_TIP:
             case ChatMessage.MSG_TYPE_PAID_COUPON_TIP:
-                return TipChatMessage.create(message, msgType);
+                return XmdChatModel.getInstance().chatModelIsEm() ? TipChatMessage.create((EMMessage) message, msgType) : new TipChatMessage<>(message);
             case ChatMessage.MSG_TYPE_TIP:
+            case ChatMessage.MSG_TYPE_REWARD:
                 return new TipChatMessage(message);
             case ChatMessage.MSG_TYPE_COUPON:
             case ChatMessage.MSG_TYPE_PAID_COUPON:
@@ -52,8 +57,12 @@ public class ChatMessageFactory {
                 return new NewOrderChatMessage(message);
             case ChatMessage.MSG_TYPE_DICE_GAME:
                 return new DiceGameChatMessage(message);
+            case ChatMessage.REVERT_MSG:
+                return new EmptyChatMessage<>(message);
             default:
                 return new ChatMessage(message);
         }
     }
+
+
 }

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.Pageable;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
@@ -94,9 +93,7 @@ public class ConversationListFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         setTitle(getArguments().getString(ARG_TITLE));
-
         mAdapter = new CommonRecyclerViewAdapter<>();
         mAdapter.setFooter(R.layout.list_item_load_more, BR.data, this);
         mBinding.recyclerView.setAdapter(mAdapter);
@@ -120,7 +117,6 @@ public class ConversationListFragment extends BaseFragment {
                 reloadConversation(true);
             }
         });
-
         loadData(null);
         EventBusSafeRegister.register(this);
         mBinding.setData(this);
@@ -177,10 +173,11 @@ public class ConversationListFragment extends BaseFragment {
                     @Override
                     public void onResponse(final Pageable<ConversationViewModel> result, Throwable error) {
                         if (error != null) {
+                            isLoading.set(false);
+                            mBinding.refreshLayout.setRefreshing(false);
                             XToast.show("数据加载失败：" + error.getMessage());
                             return;
                         }
-                        XLogger.d("loadConversationList:" + result);
                         ThreadPoolManager.postToUI(new Runnable() {
                             @Override
                             public void run() {
@@ -210,7 +207,6 @@ public class ConversationListFragment extends BaseFragment {
         }
         ConversationViewModel data = conversationManager.getConversationData(chatMessage.getRemoteChatId());
         if (data == null) {
-            //new conversation,refresh all list
             loadData(null);
         } else {
             data.setLastMessage(chatMessage);
@@ -222,7 +218,6 @@ public class ConversationListFragment extends BaseFragment {
                 mAdapter.getDataList().remove(fromPosition);
                 mAdapter.getDataList().add(0, data);
             }
-
             if (fromPosition > 0) {
                 mAdapter.notifyItemMoved(fromPosition, 0);
             }
@@ -231,8 +226,7 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void onReceiveNewMessages(EventNewMessages messages) {
-
-        for (EMMessage message : messages.getList()) {
+        for (Object message : messages.getList()) {
             processMessageReceiveOrSend(new ChatMessage(message));
         }
     }
@@ -297,8 +291,8 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void userInfoChangedEvent(UserInfoChangedEvent event) {
-        if(!TextUtils.isEmpty(event.userHeadUrl)){
-            Glide.with(getActivity()).load(event.userHeadUrl).transform(new GlideCircleTransform(getActivity())).error(R.drawable.img_default_avatar).into( mBinding.circleAvatar);
+        if (!TextUtils.isEmpty(event.userHeadUrl)) {
+            Glide.with(getActivity()).load(event.userHeadUrl).transform(new GlideCircleTransform(getActivity())).error(R.drawable.img_default_avatar).into(mBinding.circleAvatar);
         }
     }
 }

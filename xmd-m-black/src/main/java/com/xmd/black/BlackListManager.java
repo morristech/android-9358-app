@@ -71,6 +71,7 @@ public class BlackListManager {
         });
     }
 
+    //根据环信Id 判断用户是否在黑名单中
     public void judgeInCustomerBlackList(String chatId) {
         DataManager.getInstance().judgeInCustomerBlackList(chatId, new NetworkSubscriber<InUserBlacklistResult>() {
             @Override

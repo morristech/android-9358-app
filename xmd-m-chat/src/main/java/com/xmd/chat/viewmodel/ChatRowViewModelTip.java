@@ -4,12 +4,13 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
-import android.text.method.LinkMovementMethod;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTipBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -18,7 +19,7 @@ import com.xmd.chat.message.TipChatMessage;
 
 /**
  * Created by mo on 17-7-1.
- * 位置消息
+ * 提示性消息
  */
 
 public class ChatRowViewModelTip extends ChatRowViewModel {
@@ -36,9 +37,9 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
     public ViewDataBinding onBindView(View view) {
         ChatRowTipBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
-        if (((TipChatMessage) chatMessage).needSetMovementMethod()) {
-            ((TextView) view.findViewById(R.id.tipView)).setMovementMethod(LinkMovementMethod.getInstance());
-        }
+//        if (((TipChatMessage) chatMessage).needSetMovementMethod()) {
+//            ((TextView) view.findViewById(R.id.tipView)).setMovementMethod(LinkMovementMethod.getInstance());
+//        }
         return binding;
     }
 
@@ -53,15 +54,26 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
     }
 
     public CharSequence getTip() {
-        return ((TipChatMessage) chatMessage).getTip();
+        XLogger.i(">>>","getTip撤回消息");
+        if(chatMessage instanceof TipChatMessage){
+            return TextUtils.isEmpty(((TipChatMessage) chatMessage).getTip()) ? ResourceUtils.getString(R.string.has_revoke_message) : ((TipChatMessage) chatMessage).getTip();
+        }else{
+            return ResourceUtils.getString(R.string.has_revoke_message);
+        }
+
     }
 
     public Drawable getTipIcon(Context context) {
-        int id = ((TipChatMessage) chatMessage).getIconResourcesId();
-        if (id <= 0) {
+        if(chatMessage instanceof TipChatMessage){
+            int id = ((TipChatMessage) chatMessage).getIconResourcesId();
+            if (id <= 0) {
+                return null;
+            } else {
+                return context.getResources().getDrawable(id);
+            }
+        }else {
             return null;
-        } else {
-            return context.getResources().getDrawable(id);
         }
+
     }
 }

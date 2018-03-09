@@ -1,7 +1,12 @@
 package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
+import com.tencent.imsdk.TIMMessage;
 import com.xmd.app.user.User;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
+import com.xmd.chat.xmdchat.messagebean.ClubLocationMessageBean;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.ImChatMessageManagerPresent;
 
 /**
  * Created by mo on 17-7-7.
@@ -27,7 +32,7 @@ import com.xmd.app.user.User;
  * }
  */
 
-public class CustomLocationMessage extends ChatMessage {
+public class CustomLocationMessage<T> extends ChatMessage {
 
     private static final String ATTR_LAT = "lat";
     private static final String ATTR_LNG = "lng";
@@ -36,19 +41,31 @@ public class CustomLocationMessage extends ChatMessage {
     private static final String ATTR_STATIC_MAP_W = "staticMapWidth";
     private static final String ATTR_STATIC_MAP_H = "staticMapHeight";
 
-    public CustomLocationMessage(EMMessage emMessage) {
-        super(emMessage);
+    public CustomLocationMessage(T message) {
+       super(message);
     }
 
     public static CustomLocationMessage create(User remoteUser, double latitude, double longitude, String address, String map) {
-        EMMessage emMessage = EMMessage.createTxtSendMessage(address, remoteUser.getChatId());
-        CustomLocationMessage message = new CustomLocationMessage(emMessage);
-        message.setMsgType(MSG_TYPE_CLUB_LOCATION);
-        message.setAttr(ATTR_LAT, String.valueOf(latitude));
-        message.setAttr(ATTR_LNG, String.valueOf(longitude));
-        message.setAttr(ATTR_ADDRESS, address);
-        message.setAttr(ATTR_STATIC_MAP, map);
-        return message;
+        if(XmdChatModel.getInstance().chatModelIsEm()){
+            EMMessage emMessage = EMMessage.createTxtSendMessage(address, remoteUser.getChatId());
+            CustomLocationMessage message = new CustomLocationMessage(emMessage);
+            message.setMsgType(MSG_TYPE_CLUB_LOCATION);
+            message.setAttr(ATTR_LAT, String.valueOf(latitude));
+            message.setAttr(ATTR_LNG, String.valueOf(longitude));
+            message.setAttr(ATTR_ADDRESS, address);
+            message.setAttr(ATTR_STATIC_MAP, map);
+            return message;
+        }else {
+            ClubLocationMessageBean bean = new ClubLocationMessageBean();
+            bean.setAddress(address);
+            bean.setLat(String.valueOf(latitude));
+            bean.setLng(String.valueOf(longitude));
+            bean.setStaticMap(String.valueOf(map));
+            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.CLUB_LOCATION_TYPE,null,null);
+            CustomLocationMessage locationMessage = new CustomLocationMessage(message);
+            return locationMessage;
+        }
+
     }
 
     public String getAddress() {

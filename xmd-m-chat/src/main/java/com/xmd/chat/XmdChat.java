@@ -4,16 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMOptions;
-import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.chat.event.EventStartChatActivity;
-import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.ChatFastReplySettingActivity;
+import com.xmd.chat.xmdchat.contract.XmdChatInterface;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.EmXmdChatPresent;
+import com.xmd.chat.xmdchat.present.ImXmdChatPresent;
 import com.xmd.m.network.EventTokenExpired;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -26,47 +26,36 @@ import org.greenrobot.eventbus.Subscribe;
 public class XmdChat {
     public final static String TAG = "XmdChat";
     private static final XmdChat ourInstance = new XmdChat();
-
     public static XmdChat getInstance() {
         return ourInstance;
     }
-
+    private XmdChatInterface mInterface;
     private XmdChat() {
+        if(XmdChatModel.getInstance().chatModelIsEm()){
+            mInterface = new EmXmdChatPresent();
+        }else {
+            mInterface = new ImXmdChatPresent();
+        }
     }
 
     private Context context;
     private MenuFactory menuFactory;
 
-
     public void init(Context context, String appKey, boolean debug, MenuFactory menuFactory) {
-        XLogger.i("--聊天系统初始化--debug=" + debug + "--appKey=" + appKey);
-
-        if (!DiskCacheManager.isInit()) {
-            throw new RuntimeException("dependency DiskCacheManager, but not init");
-        }
-
+        XLogger.i(">>>","xmdChat init");
         context = context.getApplicationContext();
         this.context = context;
-
-        EMOptions options = new EMOptions();
-        options.setAppKey(appKey);
-        EMClient.getInstance().init(context, options);
-        EMClient.getInstance().setDebugMode(debug);
-
+        mInterface.init(context,appKey,debug,menuFactory);
         loadConversation();
-
-        ChatAccountManager.getInstance().init();
+        ChatAccountManager.getInstance().init(context);
         ConversationManager.getInstance().init();
         ChatMessageManager.getInstance().init();
         setMenuFactory(menuFactory);
-
-
         EventBusSafeRegister.register(this);
     }
 
     public void loadConversation() {
-        EMClient.getInstance().chatManager().loadAllConversations();
-        EMClient.getInstance().groupManager().loadAllGroups();
+       mInterface.loadConversation();
     }
 
     public MenuFactory getMenuFactory() {
@@ -79,10 +68,7 @@ public class XmdChat {
 
     @Subscribe
     public void onStartChat(EventStartChatActivity event) {
-        Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(ChatActivity.EXTRA_CHAT_ID, event.getRemoteChatId());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+       mInterface.onStartChat(event);
     }
 
     public Context getContext() {
@@ -90,11 +76,11 @@ public class XmdChat {
     }
 
     public int getTotalUnreadCount() {
-        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+        return mInterface.getTotalUnreadCount();
     }
 
     public boolean isOnline() {
-        return EMClient.getInstance().isConnected();
+        return mInterface.isOnline();
     }
 
     public SharedPreferences getSp() {
@@ -111,7 +97,6 @@ public class XmdChat {
     public void onLogin(EventLogin eventLogin) {
         ChatAccountManager.getInstance().login(eventLogin);
         ChatSettingManager.getInstance().loadClubLocation(true, null);
-     //   ChatSettingManager.getInstance().loadDiceExpireTime();
         ChatSettingManager.getInstance().loadFastReply(null);
     }
 

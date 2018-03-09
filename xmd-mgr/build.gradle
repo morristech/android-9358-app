@@ -31,11 +31,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    packagingOptions{
+        exclude  'com/qq/jce/wup'
+    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
+    }
+    dexOptions{
+        javaMaxHeapSize "4096M"
     }
 
     defaultConfig {

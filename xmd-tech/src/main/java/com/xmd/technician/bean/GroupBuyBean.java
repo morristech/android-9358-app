@@ -25,7 +25,7 @@ public class GroupBuyBean {
      * itemImageUrl : http://sdcm103.stonebean.com:8489/s/group00/M00/01/53/oIYBAFo6BhSAOkhfAAAj_WELkbk43.jpeg?st=MkpWvD3Msos7EqTSTb9ykA&e=1517645159
      */
 
-    public int id;
+    public String id;
     public String name;
     public long startTime;
     public long endTime;

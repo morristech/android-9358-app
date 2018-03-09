@@ -329,7 +329,6 @@ public class AppointmentActivity extends BaseActivity
                     hideLoading();
                     XToast.show("创建预约成功！");
                     EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, mData));
-
                     finish();
                 }
 

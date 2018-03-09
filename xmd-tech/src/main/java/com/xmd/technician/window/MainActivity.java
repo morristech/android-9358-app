@@ -1,10 +1,12 @@
 package com.xmd.technician.window;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -21,8 +23,12 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.black.event.ToBlackCustomerInfoDetailActivityEvent;
 import com.xmd.chat.XmdChat;
+import com.xmd.chat.event.EventForceOffline;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.event.EventTotalUnreadCount;
+import com.xmd.chat.event.EventUserSigExpired;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.ImChatAccountManagerPresent;
 import com.xmd.contact.ContactFragment;
 import com.xmd.contact.event.SayHiSuccessEvent;
 import com.xmd.contact.event.SayHiToChatEvent;
@@ -347,12 +353,47 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         Intent intent = new Intent(this, TechUserCenterActivity.class);
         startActivityForResult(intent, REQUEST_CODE_EDIT_TECH_INFO);
     }
+    @Subscribe
+    public void forceOfflineEvent(EventForceOffline offlineEvent){
+        new AlertDialog.Builder(MainActivity.this, com.xmd.chat.R.style.AppTheme_AlertDialog)
+                .setMessage("账号在别处登录，确认退出")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LoginTechnician.getInstance().logout();
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+    @Subscribe
+    public void userSigExpiredEvent(EventUserSigExpired sigExpiredEvent){
+        new AlertDialog.Builder(MainActivity.this, com.xmd.chat.R.style.AppTheme_AlertDialog)
+                .setMessage("账号签名过期，请重新登录")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LoginTechnician.getInstance().logout();
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
 
     // 打招呼
     private void sayHello(String emChatId, int position) {
-        if (!EMClient.getInstance().isConnected()) {
-            showToast("当前已经离线，请重新登录!");
-            return;
+        if(XmdChatModel.getInstance().chatModelIsEm()){
+            if (!EMClient.getInstance().isConnected()) {
+                showToast("当前已经离线，请重新登录!");
+                return;
+            }
+        }else{
+            if(!ImChatAccountManagerPresent.getInstance().userIsOnline()){
+                showToast("当前聊天已经离线，请重新登录!");
+                return;
+            }
         }
         HelloSettingManager.getInstance().sendHelloTemplate(emChatId, new Callback<SayHiResult>() {
             @Override

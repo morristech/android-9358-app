@@ -42,15 +42,13 @@
                 android:text="@{data.name}"
                 android:textSize="@dimen/fontSubheading"/>
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:bufferType="spannable"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{data.message}"
-                />
+                android:text="@{data.message}"/>
 
         </LinearLayout>
 

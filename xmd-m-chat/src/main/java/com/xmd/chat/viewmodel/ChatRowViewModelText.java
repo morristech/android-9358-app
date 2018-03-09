@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTextBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -20,6 +22,8 @@ import com.xmd.chat.message.ChatMessage;
  */
 
 public class ChatRowViewModelText extends ChatRowViewModel {
+    ChatRowTextBinding binding;
+
     public ChatRowViewModelText(ChatMessage chatMessage) {
         super(chatMessage);
     }
@@ -31,8 +35,11 @@ public class ChatRowViewModelText extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
+            return null;
+        }
         ((FrameLayout.LayoutParams) view.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
-        ChatRowTextBinding binding = DataBindingUtil.getBinding(view);
+        binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;
     }

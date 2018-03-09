@@ -15,7 +15,6 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ChatMessageManager;
-import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameResult;
@@ -103,11 +102,11 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
     }
 
     public String checkTimeout() {
-        if (message.getEmMessage().getMsgTime() + ChatSettingManager.getInstance().getDiceExpireTime() < System.currentTimeMillis()) {
-            message.setInnerProcessed("已超时");
-            return "已超时";
-        }
-        return null;
+//        if (message.getEmMessage().getMsgTime() + ChatSettingManager.getInstance().getDiceExpireTime() < System.currentTimeMillis()) {
+//            message.setInnerProcessed("已超时");
+//            return "已超时";
+//        }
+       return null;
     }
 
     public String getStatus() {

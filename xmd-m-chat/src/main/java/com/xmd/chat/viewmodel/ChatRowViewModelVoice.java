@@ -13,12 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMVoiceMessageBody;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMSoundElem;
 import com.xmd.chat.R;
 import com.xmd.chat.VoiceManager;
 import com.xmd.chat.databinding.ChatRowVoiceBinding;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.xmdchat.XmdFileUtil;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
 
 import java.io.File;
 import java.util.Locale;
@@ -76,9 +83,19 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
     }
 
     public String voiceLength() {
-        if (length == -1) {
-            EMVoiceMessageBody body = (EMVoiceMessageBody) getChatMessage().getEmMessage().getBody();
-            length = body.getLength();
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            if (length == -1) {
+                EMVoiceMessageBody body = (EMVoiceMessageBody) ((EMMessage) (getChatMessage().getMessage())).getBody();
+                length = body.getLength();
+            }
+        } else {
+            TIMSoundElem soundElem;
+            if (((TIMMessage) chatMessage.getMessage()).getElement(1) instanceof TIMSoundElem) {
+                soundElem = (TIMSoundElem) ((TIMMessage) chatMessage.getMessage()).getElement(1);
+            } else {
+                soundElem = (TIMSoundElem) ((TIMMessage) chatMessage.getMessage()).getElement(0);
+            }
+            length = (int) soundElem.getDuration();
         }
         return String.format(Locale.getDefault(), "%d\"", length);
     }
@@ -115,36 +132,92 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
             VoiceManager.getInstance().stopPlayVoice();
             return;
         }
-        EMVoiceMessageBody body = (EMVoiceMessageBody) getChatMessage().getEmMessage().getBody();
-        String url = body.getLocalUrl();
-        File file = new File(url);
-        if (!file.exists() || file.length() == 0) {
-            XToast.show("无法播放，文件不存在");
-            return;
+
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            EMVoiceMessageBody body = (EMVoiceMessageBody)((EMMessage)getChatMessage().getMessage()).getBody();
+            String url = body.getLocalUrl();
+            File file = new File(url);
+            if (!file.exists() || file.length() == 0) {
+                XToast.show("无法播放，文件不存在");
+                return;
+            }
+            playing = true;
+            binding.setData(ChatRowViewModelVoice.this);
+            binding.executePendingBindings();
+            VoiceManager.getInstance().startPlayVoice(body.getLocalUrl(), new VoiceManager.OnPlayListener() {
+                @Override
+                public void onPlay() {
+
+                }
+
+                @Override
+                public void onStop() {
+                    playing = false;
+                    binding.setData(ChatRowViewModelVoice.this);
+                    binding.executePendingBindings();
+                }
+
+                @Override
+                public void onError(String error) {
+                    playing = false;
+                    binding.setData(ChatRowViewModelVoice.this);
+                    binding.executePendingBindings();
+                    XToast.show("播放失败：" + error);
+                }
+            });
+
+        } else {
+            final File tempAudio = XmdFileUtil.getTempFile(XmdFileUtil.FileType.AUDIO);
+            TIMSoundElem soundElem;
+            if (((TIMMessage) chatMessage.getMessage()).getElement(1) instanceof TIMSoundElem) {
+                soundElem = ((TIMSoundElem) ((TIMMessage) chatMessage.getMessage()).getElement(1));
+            } else {
+                soundElem = ((TIMSoundElem) ((TIMMessage) chatMessage.getMessage()).getElement(0));
+            }
+            soundElem.getSoundToFile(tempAudio.getAbsolutePath(), new TIMCallBack() {
+                @Override
+                public void onError(int i, String s) {
+                    XLogger.e(">>>","语音获取失败...");
+                    XToast.show("error:"+"errorCode:"+i+"errorMessage:"+s);
+                }
+
+                @Override
+                public void onSuccess() {
+                    File file = new File(tempAudio.getAbsolutePath());
+                    if (!file.exists() || file.length() == 0) {
+                        XToast.show("无法播放，文件不存在");
+                        return;
+                    }
+                    playing = true;
+                    binding.setData(ChatRowViewModelVoice.this);
+                    binding.executePendingBindings();
+                    VoiceManager.getInstance().startPlayVoice(tempAudio.getAbsolutePath(), new VoiceManager.OnPlayListener() {
+                        @Override
+                        public void onPlay() {
+
+                        }
+
+                        @Override
+                        public void onStop() {
+                            playing = false;
+                            binding.setData(ChatRowViewModelVoice.this);
+                            binding.executePendingBindings();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            playing = false;
+                            binding.setData(ChatRowViewModelVoice.this);
+                            binding.executePendingBindings();
+                            XToast.show("播放失败：" + error);
+                        }
+                    });
+                }
+            });
+
         }
-        playing = true;
-        binding.setData(ChatRowViewModelVoice.this);
-        binding.executePendingBindings();
-        VoiceManager.getInstance().startPlayVoice(body.getLocalUrl(), new VoiceManager.OnPlayListener() {
-            @Override
-            public void onPlay() {
 
-            }
 
-            @Override
-            public void onStop() {
-                playing = false;
-                binding.setData(ChatRowViewModelVoice.this);
-                binding.executePendingBindings();
-            }
 
-            @Override
-            public void onError(String error) {
-                playing = false;
-                binding.setData(ChatRowViewModelVoice.this);
-                binding.executePendingBindings();
-                XToast.show("播放失败：" + error);
-            }
-        });
     }
 }

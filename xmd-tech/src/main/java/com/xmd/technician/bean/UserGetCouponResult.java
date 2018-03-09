@@ -15,11 +15,15 @@ public class UserGetCouponResult extends BaseResult {
     public String content;
     public String actId;
     public String techCode;
+    public String couponType;
+    public String limitTime;
 
-    public UserGetCouponResult(String content, String actId, String techCode) {
+    public UserGetCouponResult(String content, String actId, String techCode, String couponType, String limitTime) {
         this.content = content;
         this.actId = actId;
         this.techCode = techCode;
+        this.couponType = couponType;
+        this.limitTime = limitTime;
     }
 
     public static class RespDataBean {

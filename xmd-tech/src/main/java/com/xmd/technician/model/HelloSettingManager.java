@@ -7,10 +7,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.imsdk.TIMMessage;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
+import com.xmd.chat.xmdchat.messagebean.TextMessageBean;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.ImChatMessageManagerPresent;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -168,16 +173,32 @@ public class HelloSettingManager {
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<SayHiResult>>() {
             @Override
             public void onCallbackSuccess(BaseBean<SayHiResult> result) {
-                // 招呼文本
-                ChatMessage chatMessage = ChatMessage.createTextMessage(user.getChatId(), templateContentText.replace("[客户昵称]", user.getName()));
-                chatMessage.addTag(ChatMessage.MSG_TAG_HELLO);
-                ChatMessageManager.getInstance().sendMessage(chatMessage);
-                if (!TextUtils.isEmpty(templateImageCachePath)) {
-                    // 招呼图片
-                    ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath);
-                    imgMessage.addTag(ChatMessage.MSG_TAG_HELLO);
-                    ChatMessageManager.getInstance().sendMessage(imgMessage);
+                //打招呼：环信打招呼和腾讯打招呼
+                if(XmdChatModel.getInstance().chatModelIsEm()){
+                    ChatMessage chatMessage = ChatMessage.createTextMessage(user.getChatId(), templateContentText.replace("[客户昵称]", user.getName()));
+                    chatMessage.addTag(ChatMessage.MSG_TAG_HELLO);
+                    ChatMessageManager.getInstance().sendMessage(chatMessage);
+                    if (!TextUtils.isEmpty(templateImageCachePath)) {
+                        // 招呼图片
+                        ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath,null);
+                        imgMessage.addTag(ChatMessage.MSG_TAG_HELLO);
+                        ChatMessageManager.getInstance().sendMessage(imgMessage);
+                    }
+                }else{
+                    ImChatMessageManagerPresent.getInstance().setCurrentChatId(user.getChatId());
+                    TextMessageBean bean = new TextMessageBean();
+                    bean.setContent(templateContentText.replace("[客户昵称]", user.getName()));
+                    TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.TEXT_TYPE, ChatMessage.MSG_TAG_HELLO, null);
+                    ChatMessage chatMessage = new ChatMessage(message);
+                    ChatMessageManager.getInstance().sendMessage(chatMessage);
+                    if(!TextUtils.isEmpty(templateImageCachePath)){
+                        //打招呼图片
+                        ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath,ChatMessage.MSG_TAG_HELLO);
+                        ChatMessageManager.getInstance().sendMessage(imgMessage);
+                    }
+
                 }
+
                 callback.onResponse(result.getRespData(), null);
             }
 

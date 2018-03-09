@@ -1,7 +1,5 @@
 package com.xmd.chat.message;
 
-import com.hyphenate.chat.EMMessage;
-
 /**
  * Created by mo on 17-7-14.
  * 用户预约后发此消息
@@ -9,13 +7,15 @@ import com.hyphenate.chat.EMMessage;
  * msg :  "<span>发起预约</span><br>到店时间：<b>"+arriveTime+"</b><br>"+"预约项目：<b>"+(orderItem || "到店选择" )+"</b>"; //消息数据
  */
 
-public class NewOrderChatMessage extends ChatMessage {
+public class NewOrderChatMessage<T> extends ChatMessage {
     private final static String ATTR_ORDER_ID = "orderId";
+    private final static String ATTR_APPOINT_TIME = "appointTime";
+    private final static String ATTR_SERVICE_ITEM_NAME = "serviceItemName";
 
-    private String itemName;
-    private String arriveTime;
+    private String serviceItemName;
+    private String appointTime;
 
-    public NewOrderChatMessage(EMMessage emMessage) {
+    public NewOrderChatMessage(T emMessage) {
         super(emMessage);
 //        String content = super.getOriginContentText().toString();
 //        String msg[] = content.split("<b>|</b>");
@@ -32,10 +32,10 @@ public class NewOrderChatMessage extends ChatMessage {
     }
 
     public String getItemName() {
-        return itemName;
+        return getSafeStringAttribute(ATTR_SERVICE_ITEM_NAME);
     }
 
     public String getArriveTime() {
-        return arriveTime;
+        return getSafeStringAttribute(ATTR_APPOINT_TIME);
     }
 }

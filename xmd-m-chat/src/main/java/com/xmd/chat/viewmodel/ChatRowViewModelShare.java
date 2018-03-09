@@ -14,6 +14,7 @@ import com.xmd.chat.beans.OnceCard;
 import com.xmd.chat.databinding.ChatRowShareBinding;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
 
 
 /**
@@ -85,7 +86,7 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
     }
 
     public CharSequence name() {
-        if (chatMessage.getSafeStringAttribute(ChatMessage.ATTRIBUTE_MESSAGE_TYPE).equals(ChatMessage.MSG_TYPE_INVITE_GIFT_TYPE)) {
+        if (chatMessage.getMsgType().equals(XmdMessageType.INVITE_GIFT_TYPE)) {
             return "邀请有礼";
         } else {
             return ((ShareChatMessage) chatMessage).getActName();

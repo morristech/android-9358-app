@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.crazyman.library.PermissionTool;
 import com.xmd.app.XmdActivityManager;
+import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.technician.AppConfig;
@@ -154,6 +155,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                         mNeedRestartApp = true;
                     }
                     SharedPreferenceHelper.setDevelopMode(!SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com"));
+                    XmdApp.getInstance().setDevelopMode(!SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com"));
                     if (mNeedRestartApp) {
                         new AlertDialogBuilder(LoginActivity.this).setMessage("切换运行环境，需要重新打开应用")
                                 .setCancelable(false)

@@ -23,6 +23,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_ID = "8E44F0089B076E18A718EB9CA3D94674"; //userId
     private static final String KEY_EMCHAT_ID = "F211BBAA010D00B863BE64B3F5EFD983";//emchatId
     private static final String KEY_EMCHAT_PASSWORD = "7660E9BC2D136134F0FBC2856ABFDDAD";//emchatPassword
+    private static final String KEY_XMD_CHAT_MODEL = "F211BBAA010D20B863BE64B3F5EFD983";//chatModel
     private static final String KEY_USER_AVATAR = "DC03806303F221B804777E64B24B654C";//avatarUrl
     private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
     private static final String KEY_USER_CLUB_ID = "7660E9BC2D136134F0FBC2856A803DC";//clubID
@@ -148,6 +149,16 @@ public class SharedPreferenceHelper {
     public static void setEMchatPassword(String emchatPassword) {
         mSettingPreference.edit().putString(KEY_EMCHAT_PASSWORD, emchatPassword).apply();
     }
+
+    public static String getXmdChatModel(){
+        return mSettingPreference.getString(KEY_XMD_CHAT_MODEL,"");
+    }
+
+    public static void SetXmdChatModel(String chatModel){
+        mSettingPreference.edit().putString(KEY_XMD_CHAT_MODEL,chatModel).apply();
+    }
+
+
 
     public static String getUserAvatar() {
         return mSettingPreference.getString(KEY_USER_AVATAR, "");

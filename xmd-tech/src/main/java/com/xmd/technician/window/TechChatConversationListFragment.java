@@ -45,7 +45,6 @@ public class TechChatConversationListFragment extends ConversationListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initToolBarCustomerService();
-
     }
 
 

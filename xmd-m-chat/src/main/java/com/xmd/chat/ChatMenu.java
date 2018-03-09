@@ -77,7 +77,7 @@ public class ChatMenu {
         this.subMenuList = subMenuList;
     }
 
-    public List<Fragment> getSubMenyList(){
+    public List<Fragment> getSubMenuList(){
         return subMenuList;
     }
 }

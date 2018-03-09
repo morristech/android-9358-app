@@ -43,6 +43,9 @@ public abstract class MultiCheckDialog extends Dialog implements CompoundButton.
 
     public MultiCheckDialog(Context context, int theme, String dayRange) {
         this(context, theme);
+        if (dayRange == null) {
+            return;
+        }
         for (int i = 0; i < checked.length; i++) {
             checked[i] = (dayRange.contains(Integer.toString(i))) ? true : false;
         }

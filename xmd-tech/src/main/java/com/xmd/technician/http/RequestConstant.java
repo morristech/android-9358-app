@@ -379,6 +379,8 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
     public static final String KEY_USER_TECH_CODE = "techCode";
     public static final String KEY_USER_CODE = "userCode";
+    public static final String KEY_COUPON_TYPE_NAME = "type_name";
+    public static final String KEY_COUPON_LIMIT_TIME = "limit_time";
 
     public static final String KEY_START_DATE = "startDate";
     public static final String KEY_END_DATE = "endDate";

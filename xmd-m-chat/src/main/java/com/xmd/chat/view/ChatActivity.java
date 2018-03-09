@@ -33,6 +33,13 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMValueCallBack;
+import com.tencent.imsdk.ext.message.TIMConversationExt;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.ExCommonRecyclerViewAdapter;
@@ -63,12 +70,17 @@ import com.xmd.chat.event.EventReplayDiceGame;
 import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
+import com.xmd.chat.xmdchat.contract.XmdChatActivityInterface;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.EmChatActivityPresent;
+import com.xmd.chat.xmdchat.present.ImChatActivityPresent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,6 +88,7 @@ import java.util.List;
  */
 
 public class ChatActivity extends BaseActivity {
+
     public static final String EXTRA_CHAT_ID = "extra_chat_id";
 
     private ChatActivityBinding mBinding;
@@ -83,7 +96,7 @@ public class ChatActivity extends BaseActivity {
     private List<ChatRowViewModel> mDataList = new ArrayList<>();
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
-    private User mRemoteUser;
+    private User mRemoteUser; //对方信息
 
     private final int PAGE_SIZE = 20;
 
@@ -104,6 +117,7 @@ public class ChatActivity extends BaseActivity {
 
     private AudioManager audioManager;
     private String chatId;
+    private XmdChatActivityInterface mInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +130,12 @@ public class ChatActivity extends BaseActivity {
             return;
         }
         BlackListManager.getInstance().judgeInCustomerBlackList(chatId);
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            mInterface = new EmChatActivityPresent();
+        } else {
+            mInterface = new ImChatActivityPresent();
+        }
         ConversationManager.getInstance().markAllMessagesRead(chatId);
-
         mBinding.recyclerView.setOnSizeChangedListener(new ChatRecyclerView.OnSizeChangedListener() {
             @Override
             public void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -146,8 +164,6 @@ public class ChatActivity extends BaseActivity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
         }
-
-
         layoutManager = new LinearLayoutManager(this);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.setAdapter(mAdapter);
@@ -173,7 +189,13 @@ public class ChatActivity extends BaseActivity {
                     @Override
                     public void onRefresh() {
                         if (mAdapter.getDataList().size() > 0) {
-                            loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                            if (XmdChatModel.getInstance().chatModelIsEm()) {
+                                loadData(((EMMessage) mAdapter.getDataList().get(0).getChatMessage().getMessage()).getMsgId());
+                            } else {
+                                //加载IM会话
+                                //    isAddMore = true;
+                                loadData(null);
+                            }
                         }
                         mBinding.refreshLayout.setRefreshing(false);
                     }
@@ -193,7 +215,7 @@ public class ChatActivity extends BaseActivity {
         ChatMessageManager.getInstance().setCurrentChatId(null);
     }
 
-    private EMConversation getConversation() {
+    private EMConversation getEMConversation() {
         return EMClient.getInstance().chatManager().getConversation(mRemoteUser.getChatId());
     }
 
@@ -220,39 +242,81 @@ public class ChatActivity extends BaseActivity {
     }
 
     //加载聊天记录
-    private void loadData(String msgId) {
-        EMConversation conversation = getConversation();
-        if (conversation == null || conversation.getAllMsgCount() == 0) {
+    private void loadData(final String msgId) {
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            EMConversation conversation = getEMConversation();
+            if (conversation == null || conversation.getAllMsgCount() == 0) {
+                mAdapter.setData(BR.data, mDataList);
+                mAdapter.notifyDataSetChanged();
+                return;
+            }
+
+            List<ChatRowViewModel> newDataList = new ArrayList<>();
+            List<EMMessage> messageList = conversation.loadMoreMsgFromDB(msgId, PAGE_SIZE);
+            if (msgId != null && messageList.size() == 0) {
+                XToast.show("没有更多消息了");
+                return;
+            }
+            ChatRowViewModel beforeData = null;
+            for (EMMessage message : messageList) {
+                ChatMessage chatMessage = ChatMessageFactory.createMessage(message);
+                ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+                setShowTime(beforeData, data);
+                beforeData = data;
+                newDataList.add(data);
+            }
+            if (mDataList.size() > 0 && newDataList.size() > 0) {
+                beforeData = newDataList.get(newDataList.size() - 1);
+                ChatRowViewModel current = mDataList.get(0);
+                setShowTime(beforeData, current);
+            }
+            mDataList.addAll(0, newDataList);
             mAdapter.setData(BR.data, mDataList);
             mAdapter.notifyDataSetChanged();
-            return;
-        }
+            mBinding.recyclerView.scrollToPosition(newDataList.size() - 1);
+        } else {
+            if (mInterface.conversationIsEmpty(mRemoteUser)) {
+                mAdapter.setData(BR.data, mDataList);
+                mAdapter.notifyDataSetChanged();
+                return;
+            }
 
-        List<ChatRowViewModel> newDataList = new ArrayList<>();
-        List<EMMessage> messageList = conversation.loadMoreMsgFromDB(msgId, PAGE_SIZE);
-        if (msgId != null && messageList.size() == 0) {
-            XToast.show("没有更多消息了");
-            return;
-        }
-        ChatRowViewModel beforeData = null;
-        for (EMMessage message : messageList) {
-            ChatMessage chatMessage = ChatMessageFactory.create(message);
-            ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
-            setShowTime(beforeData, data);
-            beforeData = data;
-            newDataList.add(data);
-        }
-        if (mDataList.size() > 0 && newDataList.size() > 0) {
-            beforeData = newDataList.get(newDataList.size() - 1);
-            ChatRowViewModel current = mDataList.get(0);
-            setShowTime(beforeData, current);
-        }
-        mDataList.addAll(0, newDataList);
-        mAdapter.setData(BR.data, mDataList);
-        mAdapter.notifyDataSetChanged();
-        mBinding.recyclerView.scrollToPosition(newDataList.size() - 1);
+            TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, mRemoteUser.getChatId());
+            final TIMConversationExt timConversationExt = new TIMConversationExt(conversation);
+            timConversationExt.getMessage(PAGE_SIZE, mDataList.size() > 0 ? (TIMMessage) mDataList.get(0).getChatMessage().getMessage() : null, new TIMValueCallBack<List<TIMMessage>>() {
+                @Override
+                public void onError(int i, String s) {
+                    XToast.show("获取会话列表失败:" + s);
+                }
 
-
+                @Override
+                public void onSuccess(List<TIMMessage> timMessages) {
+                    if (mDataList.size() > 0 && timMessages.size() == 0) {
+                        XToast.show("没有更多消息了");
+                        return;
+                    }
+                    ChatRowViewModel beforeData = null;
+                    List<ChatRowViewModel> newDateList = new ArrayList<>();
+                    Collections.reverse(timMessages);
+                    for (TIMMessage message : timMessages) {
+                        ChatMessage<TIMMessage> chatMessage = ChatMessageFactory.createMessage(message);
+                        ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+                        setShowTime(beforeData, data);
+                        beforeData = data;
+                        newDateList.add(data);
+                    }
+                    if (mDataList.size() > 0 && newDateList.size() > 0) {
+                        beforeData = newDateList.get(newDateList.size() - 1);
+                        ChatRowViewModel current = mDataList.get(0);
+                        setShowTime(beforeData, current);
+                    }
+                    mDataList.addAll(0, newDateList);
+                    mAdapter.setData(BR.data, mDataList);
+                    mAdapter.notifyDataSetChanged();
+                    mBinding.recyclerView.scrollToPosition(newDateList.size() - 1);
+                }
+            });
+        }
     }
 
     //聊天消息展示
@@ -283,7 +347,7 @@ public class ChatActivity extends BaseActivity {
 
         @Override
         public void onDataUnBinding(ViewDataBinding binding, int position) {
-//            ChatRowViewModel data = getDataList().create(position);
+//            ChatRowViewModel data = getDataList().get(position);
 //            data.onUnbindView();
         }
     };
@@ -324,37 +388,55 @@ public class ChatActivity extends BaseActivity {
 
     //处理撤回消息
     @Subscribe
-    public void onRevokeMessage(EventRevokeMessage event) {
+    public void onRevokeMessage(final EventRevokeMessage event) {
         ChatMessage revokeMsg = event.getChatRowViewModel().getChatMessage();
-        long originMsgTime = revokeMsg.getEmMessage().getMsgTime();
+        long originMsgTime = revokeMsg.getMessageTime();
         if (System.currentTimeMillis() - originMsgTime > ChatConstants.REVOKE_LIMIT_TIME) {
             XToast.show("发送时间超过" + ChatConstants.REVOKE_LIMIT_TIME / 1000 / 60 + "分钟的消息不能被撤回");
             return;
         }
-        //移除原来消息
         int index = mDataList.indexOf(event.getChatRowViewModel());
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            String msgId = ((EMMessage) revokeMsg.getMessage()).getMsgId();
+            getEMConversation().removeMessage(msgId);
+            removeMessageFromUi(event.getChatRowViewModel());
+            //发送撤回命令
+            ChatMessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
+            //增加提示信息
+            ChatMessage chatMessage = ChatMessageManager.getInstance().sendTipMessageWithoutUpdateUI(getEMConversation(), mRemoteUser, "你撤回了一条消息");
+            ((EMMessage) chatMessage.getMessage()).setMsgTime(((EMMessage) revokeMsg.getMessage()).getMsgTime());
+            insertNewChatMessageToUi(index, chatMessage);
+        } else {
+            final TIMMessage message = (TIMMessage) event.getChatRowViewModel().getChatMessage().getMessage();
+            TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, mRemoteUser.getChatId());
+            TIMConversationExt timConversationExt = new TIMConversationExt(conversation);
+            timConversationExt.revokeMessage(message, new TIMCallBack() {
+                @Override
+                public void onError(int i, String s) {
+                    XLogger.e(">>>", "撤回消息失败");
+                }
 
-        String msgId = revokeMsg.getEmMessage().getMsgId();
-        getConversation().removeMessage(msgId);
-        removeMessageFromUi(event.getChatRowViewModel());
-        //发送撤回命令
-        ChatMessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
-        //增加提示信息
-        ChatMessage chatMessage = ChatMessageManager.getInstance().sendTipMessageWithoutUpdateUI(getConversation(), mRemoteUser, "你撤回了一条消息");
-        chatMessage.getEmMessage().setMsgTime(revokeMsg.getEmMessage().getMsgTime());
-        insertNewChatMessageToUi(index, chatMessage);
+                @Override
+                public void onSuccess() {
+                    String messageId = String.valueOf(message.getMsgUniqueId());
+                    ChatMessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), messageId);
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
     }
 
     //中转预约消息
     @Subscribe
     public void onAppointmentMessage(AppointmentEvent event) {
+        XLogger.i(">>>", "中转预约消息");
         XmdChat.getInstance().getMenuFactory().processAppointmentEvent(event);
     }
 
     @Subscribe
     public void inCustomerBlackList(InCustomerBlackListEvent event) {
         ChatSettingManager.getInstance().judgeInCustomerBlack(chatId, event.isInCustomerBlackList);
-
     }
 
     /**
@@ -364,6 +446,7 @@ public class ChatActivity extends BaseActivity {
      * @param current 当前气泡
      */
     private void setShowTime(ChatRowViewModel before, ChatRowViewModel current) {
+        //       current.showTime.set(true);
         if (before == null) {
             current.showTime.set(true);
             return;
@@ -460,7 +543,7 @@ public class ChatActivity extends BaseActivity {
 
     //显示子菜单
     public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
-        if (chatMenu.getSubMenyList().get(0) instanceof SubmenuEmojiFragment) {
+        if (chatMenu.getSubMenuList().get(0) instanceof SubmenuEmojiFragment) {
             EventBus.getDefault().post(new ChatUmengStatisticsEvent(Constants.UMENG_STATISTICS_EMOJI_CLICK));
         }
 
@@ -588,11 +671,10 @@ public class ChatActivity extends BaseActivity {
 
     //按下录音键
     private void onVoiceButtonDown(MotionEvent event) {
-        XLogger.d("onVoiceButtonDown");
         if (voiceRecording.get()) {
             return;
         }
-
+        mBinding.voiceView.showRecording();
         if (VoiceManager.getInstance().startRecord()) {
             voiceRecording.set(true);
             mBinding.inputVoice.setBackgroundResource(R.drawable.shape_r4_solid_green);
@@ -601,7 +683,7 @@ public class ChatActivity extends BaseActivity {
 
     //放到录音键
     private void onVoiceButtonUp(MotionEvent event) {
-        XLogger.d("onVoiceButtonUp");
+        mBinding.voiceView.release();
         if (!voiceRecording.get()) {
             return;
         }
@@ -623,6 +705,7 @@ public class ChatActivity extends BaseActivity {
         if (event.getY() < -50) {
             XLogger.d("取消发送，y=" + event.getY());
             file.delete();
+            return;
         }
         ChatMessageManager.getInstance().sendVoiceMessage(mRemoteUser, path, duration);
     }

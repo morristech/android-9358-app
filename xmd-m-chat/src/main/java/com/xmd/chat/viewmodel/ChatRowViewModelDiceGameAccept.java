@@ -9,12 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hyphenate.EMCallBack;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
-import com.xmd.chat.ChatAccountManager;
-import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameResult;
@@ -92,38 +88,38 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<DiceGameResult>>() {
             @Override
             public void onCallbackSuccess(BaseBean<DiceGameResult> result) {
-                XLogger.d("refuse result:" + result.getRespData());
-                inProcess.set(false);
-                message.setInnerProcessed(DiceGameChatMessage.getStatusText(result.getRespData().getStatus()));
-                binding.setData(ChatRowViewModelDiceGameAccept.this);
-                binding.executePendingBindings();
-
-                //发送拒绝消息
-                if (DiceGameChatMessage.STATUS_REJECT.equals(result.getRespData().getStatus())) {
-                    final DiceGameChatMessage refuseMessage = DiceGameChatMessage.createMessage(
-                            DiceGameChatMessage.STATUS_REJECT,
-                            ChatAccountManager.getInstance().getChatId(),
-                            message.getRemoteChatId(),
-                            message.getGameId(),
-                            Integer.parseInt(message.getCredit()));
-                    refuseMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            ChatMessageManager.getInstance().removeMessage(refuseMessage);
-                        }
-
-                        @Override
-                        public void onError(int i, String s) {
-                            ChatMessageManager.getInstance().removeMessage(refuseMessage);
-                        }
-
-                        @Override
-                        public void onProgress(int i, String s) {
-
-                        }
-                    });
-                    ChatMessageManager.getInstance().sendMessage(refuseMessage, false);
-                }
+//                XLogger.d("refuse result:" + result.getRespData());
+//                inProcess.set(false);
+//                message.setInnerProcessed(DiceGameChatMessage.getStatusText(result.getRespData().getStatus()));
+//                binding.setData(ChatRowViewModelDiceGameAccept.this);
+//                binding.executePendingBindings();
+//
+//                //发送拒绝消息
+//                if (DiceGameChatMessage.STATUS_REJECT.equals(result.getRespData().getStatus())) {
+//                    final DiceGameChatMessage refuseMessage = DiceGameChatMessage.createMessage(
+//                            DiceGameChatMessage.STATUS_REJECT,
+//                            ChatAccountManager.getInstance().getChatId(),
+//                            message.getRemoteChatId(),
+//                            message.getGameId(),
+//                            Integer.parseInt(message.getCredit()));
+//                    refuseMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
+//                        @Override
+//                        public void onSuccess() {
+//                            ChatMessageManager.getInstance().removeMessage(refuseMessage);
+//                        }
+//
+//                        @Override
+//                        public void onError(int i, String s) {
+//                            ChatMessageManager.getInstance().removeMessage(refuseMessage);
+//                        }
+//
+//                        @Override
+//                        public void onProgress(int i, String s) {
+//
+//                        }
+//                    });
+//                    ChatMessageManager.getInstance().sendMessage(refuseMessage, false);
+//                }
             }
 
             @Override
@@ -140,72 +136,72 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
     }
 
     public void onClickAccept() {
-        if (inProcess.get()) {
-            return;
-        }
-        inProcess.set(true);
-        Observable<BaseBean<DiceGameResult>> observable = XmdNetwork.getInstance()
-                .getService(NetService.class)
-                .diceGamePlayOrCancel(message.getGameId(), DiceGameChatMessage.STATUS_ACCEPT);
-        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<DiceGameResult>>() {
-            @Override
-            public void onCallbackSuccess(BaseBean<DiceGameResult> result) {
-                XLogger.d("accept result:" + result.getRespData());
-                inProcess.set(false);
-                message.setInnerProcessed(DiceGameChatMessage.getStatusText(result.getRespData().getStatus()));
-                binding.setData(ChatRowViewModelDiceGameAccept.this);
-                binding.executePendingBindings();
-
-                //发送接受消息
-                if (DiceGameChatMessage.STATUS_ACCEPT.equals(result.getRespData().getStatus())) {
-                    final DiceGameChatMessage acceptMessage = DiceGameChatMessage.createMessage(
-                            DiceGameChatMessage.STATUS_ACCEPT,
-                            ChatAccountManager.getInstance().getChatId(),
-                            message.getRemoteChatId(),
-                            message.getGameId(),
-                            Integer.parseInt(message.getCredit()));
-                    acceptMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            ChatMessageManager.getInstance().removeMessage(acceptMessage);
-                        }
-
-                        @Override
-                        public void onError(int i, String s) {
-                            ChatMessageManager.getInstance().removeMessage(acceptMessage);
-                        }
-
-                        @Override
-                        public void onProgress(int i, String s) {
-
-                        }
-                    });
-                    ChatMessageManager.getInstance().sendMessage(acceptMessage, false);
-
-                    //发送游戏结果
-                    DiceGameChatMessage resultMessage = DiceGameChatMessage.createMessage(
-                            DiceGameChatMessage.STATUS_OVER,
-                            ChatAccountManager.getInstance().getChatId(),
-                            message.getRemoteChatId(),
-                            message.getGameId(),
-                            Integer.parseInt(message.getCredit()),
-                            result.getRespData().getSrcPoint(),
-                            result.getRespData().getDstPoint());
-                    ChatMessageManager.getInstance().sendMessage(resultMessage);
-                }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                inProcess.set(false);
-                XToast.show("接受失败：" + e.getMessage());
-                if (e.getMessage() != null && e.getMessage().contains("游戏已结束")) {
-                    message.setInnerProcessed("游戏已结束");
-                    binding.setData(ChatRowViewModelDiceGameAccept.this);
-                    binding.executePendingBindings();
-                }
-            }
-        });
+//        if (inProcess.get()) {
+//            return;
+//        }
+//        inProcess.set(true);
+//        Observable<BaseBean<DiceGameResult>> observable = XmdNetwork.getInstance()
+//                .getService(NetService.class)
+//                .diceGamePlayOrCancel(message.getGameId(), DiceGameChatMessage.STATUS_ACCEPT);
+//        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<DiceGameResult>>() {
+//            @Override
+//            public void onCallbackSuccess(BaseBean<DiceGameResult> result) {
+//                XLogger.d("accept result:" + result.getRespData());
+//                inProcess.set(false);
+//                message.setInnerProcessed(DiceGameChatMessage.getStatusText(result.getRespData().getStatus()));
+//                binding.setData(ChatRowViewModelDiceGameAccept.this);
+//                binding.executePendingBindings();
+//
+//                //发送接受消息
+//                if (DiceGameChatMessage.STATUS_ACCEPT.equals(result.getRespData().getStatus())) {
+//                    final DiceGameChatMessage acceptMessage = DiceGameChatMessage.createMessage(
+//                            DiceGameChatMessage.STATUS_ACCEPT,
+//                            ChatAccountManager.getInstance().getChatId(),
+//                            message.getRemoteChatId(),
+//                            message.getGameId(),
+//                            Integer.parseInt(message.getCredit()));
+//                    acceptMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
+//                        @Override
+//                        public void onSuccess() {
+//                            ChatMessageManager.getInstance().removeMessage(acceptMessage);
+//                        }
+//
+//                        @Override
+//                        public void onError(int i, String s) {
+//                            ChatMessageManager.getInstance().removeMessage(acceptMessage);
+//                        }
+//
+//                        @Override
+//                        public void onProgress(int i, String s) {
+//
+//                        }
+//                    });
+//                    ChatMessageManager.getInstance().sendMessage(acceptMessage, false);
+//
+//                    //发送游戏结果
+//                    DiceGameChatMessage resultMessage = DiceGameChatMessage.createMessage(
+//                            DiceGameChatMessage.STATUS_OVER,
+//                            ChatAccountManager.getInstance().getChatId(),
+//                            message.getRemoteChatId(),
+//                            message.getGameId(),
+//                            Integer.parseInt(message.getCredit()),
+//                            result.getRespData().getSrcPoint(),
+//                            result.getRespData().getDstPoint());
+//                    ChatMessageManager.getInstance().sendMessage(resultMessage);
+//                }
+//            }
+//
+//            @Override
+//            public void onCallbackError(Throwable e) {
+//                inProcess.set(false);
+//                XToast.show("接受失败：" + e.getMessage());
+//                if (e.getMessage() != null && e.getMessage().contains("游戏已结束")) {
+//                    message.setInnerProcessed("游戏已结束");
+//                    binding.setData(ChatRowViewModelDiceGameAccept.this);
+//                    binding.executePendingBindings();
+//                }
+//            }
+//        });
     }
 
     @Subscribe

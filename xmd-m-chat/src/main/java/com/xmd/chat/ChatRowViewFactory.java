@@ -4,9 +4,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hyphenate.chat.EMMessage;
-import com.shidou.commonlibrary.helper.XLogger;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
 import com.xmd.chat.viewmodel.ChatRowViewModelCoupon;
@@ -14,6 +14,7 @@ import com.xmd.chat.viewmodel.ChatRowViewModelCreditGift;
 import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameAccept;
 import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameInvite;
 import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameResult;
+import com.xmd.chat.viewmodel.ChatRowViewModelEmpty;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelNewOrder;
@@ -24,12 +25,14 @@ import com.xmd.chat.viewmodel.ChatRowViewModelShare;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
 import com.xmd.chat.viewmodel.ChatRowViewModelVoice;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
 
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_COUPON;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_CREDIT_GIFT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_ACCEPT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_INVITE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_RESULT;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_EMPTY;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_NEW_ORDER;
@@ -53,15 +56,20 @@ public class ChatRowViewFactory {
         int baseType;
         switch (chatMessage.getMsgType()) {
             case ChatMessage.MSG_TYPE_TIP:
+            case XmdMessageType.COUPON_TIP_TYPE:
+            case XmdMessageType.PAID_COUPON_TIP_TYPE:
                 baseType = CHAT_ROW_VIEW_TIP;
                 break;
             case ChatMessage.MSG_TYPE_ORIGIN_TXT:
+            case XmdMessageType.TEXT_TYPE:
                 baseType = CHAT_ROW_VIEW_TEXT;
                 break;
             case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
+            case XmdMessageType.IMAGE_TYPE:
                 baseType = CHAT_ROW_VIEW_IMAGE;
                 break;
             case ChatMessage.MSG_TYPE_ORIGIN_VOICE:
+            case XmdMessageType.VOICE_TYPE:
                 baseType = CHAT_ROW_VIEW_VOICE;
                 break;
             case ChatMessage.MSG_TYPE_CLUB_LOCATION:
@@ -96,39 +104,28 @@ public class ChatRowViewFactory {
                 baseType = CHAT_ROW_VIEW_NEW_ORDER;
                 break;
             case ChatMessage.MSG_TYPE_REQUEST_REWARD:
+            case XmdMessageType.REQUEST_REWARD_TYPE:
                 baseType = CHAT_ROW_VIEW_REWARD_REQUEST;
                 break;
             case ChatMessage.MSG_TYPE_REWARD:
                 baseType = CHAT_ROW_VIEW_REWARD;
                 break;
-            case ChatMessage.MSG_TYPE_DICE_GAME: {
-                String gameStatus = ((DiceGameChatMessage) chatMessage).getGameStatus();
-                switch (gameStatus) {
-                    case DiceGameChatMessage.STATUS_REQUEST:
-                        if (chatMessage.isReceivedMessage()) {
-                            baseType = CHAT_ROW_VIEW_DICE_GAME_ACCEPT; //收到游戏请求
-                        } else {
-                            baseType = CHAT_ROW_VIEW_DICE_GAME_INVITE; //发起游戏请求
-                        }
-                        break;
-                    case DiceGameChatMessage.STATUS_OVER:
-                        baseType = CHAT_ROW_VIEW_DICE_GAME_RESULT; //游戏结果
-                        break;
-                    case DiceGameChatMessage.STATUS_REJECT:
-                    case DiceGameChatMessage.STATUS_CANCEL:
-                        baseType = CHAT_ROW_VIEW_TIP;
-                        break;
-                    default:
-                        baseType = CHAT_ROW_VIEW_TEXT;
-                }
+            case ChatMessage.REVERT_MSG:
+                baseType = CHAT_ROW_VIEW_EMPTY;
                 break;
-            }
             default:
                 baseType = CHAT_ROW_VIEW_TEXT;
                 break;
         }
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status().equals(TIMMessageStatus.HasRevoked)) {
+            baseType = CHAT_ROW_VIEW_TIP;
+        }
+        if (chatMessage.getMessage() instanceof EMMessage) {
+            return ((EMMessage) chatMessage.getMessage()).direct() == EMMessage.Direct.RECEIVE ? receiveType(baseType) : sendType(baseType);
+        } else {
+            return ((TIMMessage) chatMessage.getMessage()).isSelf() ? sendType(baseType) : receiveType(baseType);
+        }
 
-        return chatMessage.getEmMessage().direct() == EMMessage.Direct.RECEIVE ? receiveType(baseType) : sendType(baseType);
     }
 
     public static int sendType(int baseType) {
@@ -154,6 +151,8 @@ public class ChatRowViewFactory {
             return R.layout.list_item_message_center;
         } else if (baseType == CHAT_ROW_VIEW_DICE_GAME_RESULT) {
             return R.layout.list_item_message_center;
+        }else if(baseType == CHAT_ROW_VIEW_EMPTY){
+            return R.layout.list_item_message_empty;
         }
         return isSendViewType(viewType) ? R.layout.list_item_message_send : R.layout.list_item_message_receive;
     }
@@ -192,6 +191,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelRewardRequest.createView(parent);
             case CHAT_ROW_VIEW_REWARD:
                 return ChatRowViewModelReward.createView(parent);
+            case CHAT_ROW_VIEW_EMPTY:
+                return ChatRowViewModelEmpty.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -232,8 +233,12 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelDiceGameAccept(message);
             case CHAT_ROW_VIEW_DICE_GAME_RESULT:
                 return new ChatRowViewModelDiceGameResult(message);
+            case CHAT_ROW_VIEW_EMPTY:
+                return new ChatRowViewModelEmpty(message);
             default:
                 return new ChatRowViewModelText(message);
         }
     }
+
+
 }

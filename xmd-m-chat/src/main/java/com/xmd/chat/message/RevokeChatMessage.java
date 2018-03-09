@@ -8,9 +8,9 @@ import com.hyphenate.chat.EMMessage;
  * 撤回消息
  */
 
-public class RevokeChatMessage extends ChatMessage {
-    public RevokeChatMessage(EMMessage emMessage) {
-        super(emMessage);
+public class RevokeChatMessage<T> extends ChatMessage {
+    public RevokeChatMessage(T message) {
+        super(message);
     }
 
     public static RevokeChatMessage create(String remoteChatId, String revokeMsgId) {

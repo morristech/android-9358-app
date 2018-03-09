@@ -35,6 +35,7 @@ public class ChatConstants {
     public static final int CHAT_ROW_VIEW_REWARD_REQUEST = 0x19; //求打赏
     public static final int CHAT_ROW_VIEW_REWARD = 0x20;//打赏
     public static final int CHAT_ROW_VIEW_TIP = 0x21;//提示
+    public static final int CHAT_ROW_VIEW_EMPTY = 0x22;//空消息
 
     public static final int CHAT_ROW_VIEW_TYPE_MAX = 0x200;
 

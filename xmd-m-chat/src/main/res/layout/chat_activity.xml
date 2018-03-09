@@ -3,13 +3,13 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
-        <import type="android.text.TextUtils" />
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="data"
-            type="com.xmd.chat.view.ChatActivity" />
+            type="com.xmd.chat.view.ChatActivity"/>
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_toolbar" />
+        <include layout="@layout/layout_toolbar"/>
 
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -35,16 +35,14 @@
                 <com.xmd.chat.view.ChatRecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"/>
+                <com.xmd.chat.view.VoiceSendingView
+                    android:id="@+id/voiceView"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/shape_r4_stoke_gray_solid_white"
-                    android:padding="32dp"
-                    android:text="上向滑动取消发送"
-                    android:visibility="@{data.voiceRecording?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{data.voiceRecording?View.VISIBLE:View.GONE}"/>
+
             </FrameLayout>
 
 
@@ -65,7 +63,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginRight="8dp"
                 android:onClick="@{()->data.onSwitchInputMode()}"
-                android:src="@{data.voiceInputMode?@drawable/input_keyboard:@drawable/input_voice}" />
+                android:src="@{data.voiceInputMode?@drawable/input_keyboard:@drawable/input_voice}"/>
 
             <TextView
                 android:id="@+id/inputVoice"
@@ -75,7 +73,7 @@
                 android:background="@drawable/shape_r4_stoke_gray"
                 android:gravity="center"
                 android:text="按住说话"
-                android:visibility="@{data.voiceInputMode?View.VISIBLE:View.GONE}" />
+                android:visibility="@{data.voiceInputMode?View.VISIBLE:View.GONE}"/>
 
             <EditText
                 android:id="@+id/sendEditText"
@@ -87,12 +85,12 @@
                 android:layout_weight="1"
                 android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
                 android:background="@drawable/shape_r4_stoke_gray_solid_white"
+                android:hint="在此输入..."
                 android:inputType="textMultiLine"
                 android:maxLines="5"
-                android:hint="在此输入..."
                 android:onTouch="@{(v,e)->data.onTouchEditText(v,e)}"
                 android:text="@{data.textMessageContent}"
-                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
+                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}"/>
 
             <Button
                 style="@style/AppTheme.Button.Main"
@@ -100,14 +98,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_margin="1dp"
-                android:paddingLeft="5dp"
                 android:drawableLeft="@drawable/fas"
                 android:enabled='@{!TextUtils.isEmpty(data.textMessageContent.get())}'
                 android:minHeight="32dp"
                 android:minWidth="65dp"
                 android:onClick="@{()->data.sendChatTextMessage()}"
+                android:paddingLeft="5dp"
                 android:text="发送"
-                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
+                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}"/>
         </LinearLayout>
 
         <!-- 菜单 -->
@@ -120,12 +118,12 @@
             android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorDivide" />
+            android:background="@color/colorDivide"/>
 
         <LinearLayout
             android:id="@+id/submenuLayout"
@@ -138,7 +136,7 @@
                 android:id="@+id/submenuContentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -151,7 +149,7 @@
                     android:layout_gravity="bottom"
                     android:background="@android:color/white"
                     android:gravity="bottom|end"
-                    android:padding="8dp" />
+                    android:padding="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -164,7 +162,7 @@
                     android:padding="8dp"
                     android:text="编辑快捷回复"
                     android:textColor="#1c79d8"
-                    android:visibility="@{data.showSubMenuFastReply?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{data.showSubMenuFastReply?View.VISIBLE:View.GONE}"/>
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

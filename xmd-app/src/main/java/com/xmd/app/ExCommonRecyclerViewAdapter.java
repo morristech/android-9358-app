@@ -43,9 +43,7 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         ViewDataBinding binding = holder.getBinding();
         Object data = mData.get(position);
-
         onDataBinding(binding, position);
-
         binding.setVariable(mDataBR, data);
         binding.executePendingBindings();
     }
@@ -53,7 +51,7 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
     @Override
     public void onViewRecycled(ViewHolder holder) {
         holder.getBinding().unbind();
-//        onDataUnBinding(holder.getBinding(), holder.getAdapterPosition());
+        onDataUnBinding(holder.getBinding(), holder.getAdapterPosition());
     }
 
     @Override

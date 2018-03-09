@@ -1,19 +1,17 @@
 package com.xmd.chat.message;
 
-import com.hyphenate.chat.EMMessage;
-
 /**
  * Created by mo on 17-7-14.
  * 积分礼物消息
  */
 
-public class CreditGiftChatMessage extends ChatMessage {
+public class CreditGiftChatMessage<T> extends ChatMessage {
     public String ATTR_GIFT_VALUE = "giftValue";
     public String ATTR_GIFT_NAME = "giftName";
     public String ATTR_GIFT_ID = "giftId";
 
-    public CreditGiftChatMessage(EMMessage emMessage) {
-        super(emMessage);
+    public CreditGiftChatMessage(T message) {
+        super(message);
     }
 
     public String getGiftId() {
@@ -25,6 +23,6 @@ public class CreditGiftChatMessage extends ChatMessage {
     }
 
     public int getGiftCredit() {
-        return getSafeIntegerAttribute(ATTR_GIFT_VALUE);
+       return getSafeIntegerAttribute(ATTR_GIFT_VALUE);
     }
 }

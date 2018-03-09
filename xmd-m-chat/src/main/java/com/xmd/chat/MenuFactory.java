@@ -14,10 +14,10 @@ import android.text.Editable;
 import android.view.View;
 
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
-import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
@@ -145,7 +145,7 @@ public class MenuFactory {
     }
 
     public List<Fragment> createFastReplySubMenu(String remoteChatId) {
-         FastReplySetting setting = ChatSettingManager.getInstance().getFastReplySetting();
+        FastReplySetting setting = ChatSettingManager.getInstance().getFastReplySetting();
         if (setting == null) {
             ChatSettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
                 @Override
@@ -220,6 +220,7 @@ public class MenuFactory {
     }
 
     //处理预约菜单事件
+
     public void processAppointmentEvent(AppointmentEvent event) {
         if (!TAG.equals(event.getTag())) {
             return;
@@ -236,13 +237,14 @@ public class MenuFactory {
                                     event.getData()));
                 } else {
                     //付费预约，先生成订单，然后发送确认消息
-                    EventBusSafeRegister.register(this);
+ //                   EventBusSafeRegister.register(this);
                     EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, event.getData()));
                 }
             } else {
                 isInSubmitAppointment = false;
             }
         } else if (event.getCmd() == AppointmentEvent.CMD_SUBMIT_RESULT) {
+            XLogger.i(">>>", "生成订单成功，发送预约消息");
             isInSubmitAppointment = false;
             if (event.getData().isSubmitSuccess()) {
                 //生成订单成功，发送确认消息

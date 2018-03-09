@@ -34,7 +34,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by mo on 17-7-1.
- * 文本消息
+ * 预约消息
  */
 
 public class ChatRowViewModelAppointment extends ChatRowViewModel {
@@ -117,6 +117,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         binding.setData(this);
         binding.executePendingBindings();
         orderChatMessage.setInnerProcessed(status);
+
         sendMessage(ChatMessage.MSG_TYPE_ORDER_REFUSE);
     }
 

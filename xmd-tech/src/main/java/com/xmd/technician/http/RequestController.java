@@ -1535,12 +1535,16 @@ public class RequestController extends AbstractController {
                 result.actId = params.get(RequestConstant.KEY_ACT_ID);
                 result.content = params.get(RequestConstant.KEY_COUPON_CONTENT);
                 result.techCode = params.get(RequestConstant.KEY_USER_TECH_CODE);
+                result.couponType = params.get(RequestConstant.KEY_COUPON_TYPE_NAME);
+                result.limitTime = params.get(RequestConstant.KEY_COUPON_LIMIT_TIME);
                 RxBus.getInstance().post(result);
             }
 
             @Override
             protected void postError(String errorMsg) {
-                UserGetCouponResult result = new UserGetCouponResult(params.get(RequestConstant.KEY_COUPON_CONTENT), params.get(RequestConstant.KEY_ACT_ID), params.get(RequestConstant.KEY_USER_TECH_CODE));
+                UserGetCouponResult result = new UserGetCouponResult(params.get(RequestConstant.KEY_COUPON_CONTENT),
+                        params.get(RequestConstant.KEY_ACT_ID), params.get(RequestConstant.KEY_USER_TECH_CODE), params.get(RequestConstant.KEY_COUPON_TYPE_NAME),
+                        params.get(RequestConstant.KEY_COUPON_LIMIT_TIME));
                 RxBus.getInstance().post(result);
             }
         });

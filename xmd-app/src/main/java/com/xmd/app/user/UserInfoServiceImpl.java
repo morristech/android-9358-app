@@ -69,9 +69,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     public User getUserByChatId(String chatId) {
         User user = chatIdMap.get(chatId);
         if (user == null) {
-            user = daoSession.getUserDao().queryBuilder()
-                    .where(UserDao.Properties.ChatId.eq(chatId))
-                    .unique();
+            List<User> users = daoSession.getUserDao().queryBuilder().where(UserDao.Properties.ChatId.eq(chatId)).list();
+            if(users.size()>0){
+              user = users.get(0);
+            }else {
+                user = daoSession.getUserDao().queryBuilder()
+                        .where(UserDao.Properties.ChatId.eq(chatId))
+                        .unique();
+            }
             if (user != null) {
                 chatIdMap.put(chatId, user);
                 XLogger.i("get user from db : " + user);
@@ -160,6 +165,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void loadUserInfoByUserIdFromServer(String userId, Callback<User> callback) {
+
         loadUserInfoFromServer(userId, "user", callback);
     }
 

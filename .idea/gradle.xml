@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Imsdk" />
             <option value="$PROJECT_DIR$/commonlibrary" />
             <option value="$PROJECT_DIR$/excelpanel" />
             <option value="$PROJECT_DIR$/image-crop" />

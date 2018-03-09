@@ -68,6 +68,9 @@ public class LoginTechnician {
     private String emchatId;
     private String emchatPassword;
 
+
+    private String chatModel;
+
     //技师信息
     private String techNo;
     private String clubInviteCode;
@@ -86,6 +89,7 @@ public class LoginTechnician {
     private String roles;
     private String customerService;//rest,working
     private String clubImageUrl;
+
     private LoginTechnician() {
 
         loginType = SharedPreferenceHelper.getLoginType();
@@ -101,6 +105,7 @@ public class LoginTechnician {
 
         emchatId = SharedPreferenceHelper.getEmchatId();
         emchatPassword = SharedPreferenceHelper.getEMchatPassword();
+        chatModel = SharedPreferenceHelper.getXmdChatModel();
 
         techNo = SharedPreferenceHelper.getTechNo();
         clubInviteCode = SharedPreferenceHelper.getClubInviteCode();
@@ -136,6 +141,7 @@ public class LoginTechnician {
         setDescription(null);
         setEmchatId(null);
         setEmchatPassword(null);
+
         setTechNo(null);
         setClubInviteCode(null);
         setInviteCode(null);
@@ -175,6 +181,9 @@ public class LoginTechnician {
 
     //登录成功后，保存数据
     public void onLoginResult(LoginResult loginResult) {
+        if (loginResult == null || loginResult.userId == null) {
+            return;
+        }
         if (!loginResult.userId.equals(getUserId())) {
             cleanAllDataWhenSwitchAccount();
         }
@@ -186,6 +195,7 @@ public class LoginTechnician {
         setEmchatPassword(loginResult.emchatPassword);
         setNickName(loginResult.name);
         setAvatarUrl(loginResult.avatarUrl);
+        setChatModel(loginResult.IMPlatform);
         if (!TextUtils.isEmpty(loginResult.roles)) {
             setRoles(loginResult.roles);
         }
@@ -215,6 +225,7 @@ public class LoginTechnician {
         setClubName(null);
         setUserId(null);
         setRoles(null);
+        setChatModel(null);
     }
 
     //获取技师信息,返回TechInfoResult
@@ -267,6 +278,7 @@ public class LoginTechnician {
         user.setAvatarId(getAvatarId());
         user.setChatId(getEmchatId());
         user.setChatPassword(getEmchatPassword());
+      //  user.setChatModel(getChatModel());
         user.setClubId(getClubId());
         user.setClubName(getClubName());
         user.setTechNo(getTechNo());
@@ -602,6 +614,16 @@ public class LoginTechnician {
         this.emchatPassword = emchatPassword;
         SharedPreferenceHelper.setEMchatPassword(emchatPassword);
     }
+
+    public String getChatModel() {
+        return chatModel;
+    }
+
+    public void setChatModel(String chatModel) {
+        this.chatModel = chatModel;
+        SharedPreferenceHelper.SetXmdChatModel(chatModel);
+    }
+
 
     public String getClubId() {
         return clubId;

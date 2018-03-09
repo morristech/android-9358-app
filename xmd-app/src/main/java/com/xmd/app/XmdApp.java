@@ -125,4 +125,13 @@ public class XmdApp {
         }
         return appFirstStart;
     }
+
+    public boolean isDevelopMode() {
+        return getSp().getBoolean(SpConstants.KEY_DEV_MODE, false);
+    }
+
+    public void setDevelopMode(boolean debugMode) {
+        getSp().edit().putBoolean(SpConstants.KEY_DEV_MODE, debugMode).apply();
+    }
+
 }

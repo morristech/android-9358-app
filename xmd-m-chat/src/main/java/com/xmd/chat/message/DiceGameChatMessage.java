@@ -11,7 +11,7 @@ import com.xmd.chat.ChatAccountManager;
  * 骰子游戏
  */
 
-public class DiceGameChatMessage extends TipChatMessage {
+public class DiceGameChatMessage<T> extends TipChatMessage {
 
     /*
     msgType : “diceGame”,//消息类型
@@ -30,8 +30,8 @@ public class DiceGameChatMessage extends TipChatMessage {
     private Integer myPoint;
     private Integer remotePoint;
 
-    public DiceGameChatMessage(EMMessage emMessage) {
-        super(emMessage);
+    public DiceGameChatMessage(T message) {
+        super(message);
     }
 
     public String getGameStatus() {

@@ -15,6 +15,7 @@ import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowNewOrderBinding;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.NewOrderChatMessage;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -24,7 +25,7 @@ import rx.Observable;
 
 /**
  * Created by mo on 17-7-1.
- * 新订单消息
+ * 新订单消息 未处理接受、拒绝
  */
 
 public class ChatRowViewModelNewOrder extends ChatRowViewModel {
@@ -55,11 +56,25 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
     }
 
     public CharSequence getMessage() {
-        return chatMessage.getContentText();
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            return chatMessage.getContentText();
+        } else {
+            StringBuilder builder = new StringBuilder();
+            builder.append("发起预约\n");
+            builder.append(String.format("到店时间： %s\n", orderChatMessage.getArriveTime()));
+            builder.append(String.format("预约项目： %s\n", orderChatMessage.getItemName()));
+            return builder;
+        }
+
     }
 
     public String getInnerProcessed() {
-        return chatMessage.getInnerProcessed();
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
+            return chatMessage.getInnerProcessed();
+        } else {
+            return "";
+        }
+
     }
 
     //拒绝订单

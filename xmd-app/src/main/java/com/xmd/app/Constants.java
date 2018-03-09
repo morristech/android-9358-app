@@ -91,6 +91,8 @@ public class Constants {
     public static final String KEY_INVITATION_CLICK = "key_invitation_click";//邀请有礼
     public static final String KEY_SEND_CHAT_MESSAGE = "key_chat_message" ;//发送聊天
 
+    public static final String KEY_MARKETING_SHARE_GROUP_BUY = "key_group_buy";//发送团购分享
+
 
     public static final int UMENG_STATISTICS_HOME_BROWSE = 0x001;
     public static final int UMENG_STATISTICS_NEARBY_CLICK = 0x002;
@@ -133,6 +135,7 @@ public class Constants {
     public static final int UMENG_STATISTICS_BOOK_CANCEL = 0x0029;
     public static final int UMENG_STATISTICS_INVITATION = 0x0030;
     public static final int UMENG_STATISTICS_CHAT_MESSAGE = 0x0031;
+    public static final int UMENG_STATISTICS_SHARE_GROUP_BUY = 0x0032;
 
     // 金钱符号:¥(统一的:部分手机不适用)   ￥(随系统自体有所不同) Currency.getInstance(Locale.CHINA).getSymbol()
     public static final String MONEY_TAG = "¥";

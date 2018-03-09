@@ -138,7 +138,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                                 chatId,
                                 true,
                                 getShareText(couponInfo),
-                                couponInfo.actId, SharedPreferenceHelper.getUserInviteCode());
+                                couponInfo.actId, SharedPreferenceHelper.getUserInviteCode(),couponInfo.couponTypeName,couponInfo.useTimePeriod);
                     }
                 }
                 checkDeliverResult();
@@ -156,7 +156,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                     false,
                     result.respData.userActId,
                     getShareText(couponInfo),
-                    SharedPreferenceHelper.getUserInviteCode());
+                    SharedPreferenceHelper.getUserInviteCode(),null,null,null);
             ChatMessageManager.getInstance().sendMessage(chatMessage);
             successCount++;
         } else {

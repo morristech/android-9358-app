@@ -9,6 +9,7 @@ import com.xmd.black.event.EditOrAddCustomerStatisticsEvent;
 import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.contact.event.ContactUmengStatisticsEvent;
 import com.xmd.technician.event.MainPageStatistics;
+import com.xmd.technician.event.MarketingShareUmengStatisticsEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -192,6 +193,17 @@ public class UmengStatisticsManager {
                 MobclickAgent.onEvent(mContext, Constants.KEY_BOOK_SEND);
                 break;
         }
+    }
+
+    @Subscribe
+    public void marketingShareUmengStatisticsSubscribe(MarketingShareUmengStatisticsEvent event){
+        switch (event.index){
+            case Constants.UMENG_STATISTICS_SHARE_GROUP_BUY:
+                MobclickAgent.onEvent(mContext, Constants.KEY_MARKETING_SHARE_GROUP_BUY);
+                    break;
+
+        }
+
     }
 
 }

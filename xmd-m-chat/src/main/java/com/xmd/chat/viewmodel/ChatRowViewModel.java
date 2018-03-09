@@ -16,28 +16,21 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMMessage;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseViewModel;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ChatMessageManager;
-import com.xmd.chat.ChatSettingManager;
-import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.event.EventDeleteMessage;
 import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.m.network.BaseBean;
-import com.xmd.m.network.NetworkSubscriber;
-import com.xmd.m.network.XmdNetwork;
+import com.xmd.chat.xmdchat.contract.XmdChatRowViewModelInterface;
+import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.EmChatRowViewModelPresent;
+import com.xmd.chat.xmdchat.present.ImChatRowViewModelPresent;
 
 import org.greenrobot.eventbus.EventBus;
-
-import rx.Observable;
 
 /**
  * Created by mo on 17-6-30.
@@ -53,94 +46,19 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
     private int paddingWeight = 100;
     private int contentWeight = 0;
-
+    private XmdChatRowViewModelInterface viewModelInterface;
     public ChatRowViewModel(final ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
-        chatMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
-            @Override
-            public void onSuccess() {
-                progress.set(false);
-                error.set(false);
-                if(ChatMessage.MSG_TAG_HELLO.equals(chatMessage.getTag())){
-                    return;
-                }
-                String msgType =chatMessage.getMsgType();
-                //通知服务器有新的消息
-                Observable<BaseBean> observable = XmdNetwork.getInstance()
-                        .getService(NetService.class)
-                        .notifyServerChatMessage(
-                                ChatAccountManager.getInstance().getChatId(),
-                                ChatAccountManager.getInstance().getUserType(),
-                                chatMessage.getRemoteChatId(),
-                                UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
-                                chatMessage.getEmMessage().getMsgId(),
-                                msgType, chatMessage.getContentText().toString());
-                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        XLogger.d("notifyServerChatMessage success");
-                    }
-
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        XLogger.d("notifyServerChatMessage failed:" + e.getMessage());
-                    }
-                });
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                //当技师被用户拉入黑名单时不进行错误提示
-                switch (i) {
-                    case 201:
-                        ChatAccountManager.getInstance().loopLogin();
-                        progress.set(false);
-                        error.set(false);
-                        break;
-                    case 210:
-                        ChatSettingManager.getInstance().judgeInCustomerBlack(chatMessage.getToChatId(), true);
-                        chatMessage.getEmMessage().setStatus(EMMessage.Status.SUCCESS);
-                        progress.set(false);
-                        error.set(false);
-                        break;
-                    default:
-                        XToast.show("发送失败：" + s);
-                        progress.set(false);
-                        error.set(true);
-                        break;
-                }
-            }
-
-            @Override
-            public void onProgress(int i, String s) {
-                progress.set(true);
-            }
-        });
-
-        error.set(false);
-        progress.set(false);
-        EMMessage.Status status = chatMessage.getEmMessage().status();
-        switch (status) {
-            case SUCCESS:
-                error.set(false);
-                break;
-            case FAIL:
-                if (ChatSettingManager.getInstance().isInCustomerBlackList(chatMessage.getToChatId())) {
-                    error.set(false);
-                } else {
-                    error.set(true);
-                }
-
-                break;
-            case CREATE:
-            case INPROGRESS:
-                progress.set(true);
-                break;
+        if(XmdChatModel.getInstance().chatModelIsEm()){
+            viewModelInterface = new EmChatRowViewModelPresent();
+        }else{
+            viewModelInterface = new ImChatRowViewModelPresent();
         }
+        viewModelInterface.init(chatMessage,progress,error,showTime);
     }
 
     public long getTime() {
-        return chatMessage.getEmMessage().getMsgTime();
+        return viewModelInterface.getTime();
     }
 
     public Drawable getContentViewBackground(Context context) {
@@ -215,6 +133,7 @@ public abstract class ChatRowViewModel extends BaseViewModel {
             return true;
         } else if (i == R.id.menu_revoke) {
             //撤回
+           // onUnbindView();
             EventBus.getDefault().post(new EventRevokeMessage(this));
             return true;
         } else if (i == R.id.menu_copy) {
@@ -263,4 +182,6 @@ public abstract class ChatRowViewModel extends BaseViewModel {
     public static void bindWeight(View view, int weight) {
         ((LinearLayout.LayoutParams) view.getLayoutParams()).weight = weight;
     }
+
+
 }

@@ -20,7 +20,7 @@ import com.xmd.chat.message.CreditGiftChatMessage;
 
 /**
  * Created by mo on 17-7-1.
- * 文本消息
+ * 积分礼物
  */
 
 public class ChatRowViewModelCreditGift extends ChatRowViewModel {

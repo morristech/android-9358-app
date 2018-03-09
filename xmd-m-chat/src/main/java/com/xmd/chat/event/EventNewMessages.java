@@ -1,7 +1,5 @@
 package com.xmd.chat.event;
 
-import com.hyphenate.chat.EMMessage;
-
 import java.util.List;
 
 /**
@@ -9,18 +7,18 @@ import java.util.List;
  * 收到消息
  */
 
-public class EventNewMessages {
-    private List<EMMessage> list;
+public class EventNewMessages<T> {
+    private List<T> list;
 
-    public EventNewMessages(List<EMMessage> list) {
+    public EventNewMessages(List<T> list) {
         this.list = list;
     }
 
-    public List<EMMessage> getList() {
+    public List<T> getList() {
         return list;
     }
 
-    public void setList(List<EMMessage> list) {
+    public void setList(List<T> list) {
         this.list = list;
     }
 }
