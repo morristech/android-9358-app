@@ -9,8 +9,8 @@ import java.util.List;
  */
 
 public class InnerOrderItemInfo implements Serializable {
-    public long createTime;    //创建时间
-    public long endTime;        //预计结束时间
+    public String createTime;    //创建时间
+    public String endTime;        //预计结束时间
     public long id;    //账单项ID
     public int itemAmount;    //该项价格	单位为分
     public int itemCount;    //消费数量

@@ -83,7 +83,7 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     TradeManager.getInstance().getHoleBatchDetail(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<TradeRecordInfo>() {
                         @Override
                         public void onSuccess(TradeRecordInfo o) {
-                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---成功");
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_CLUB_ORDER_TO_PAY + ") 内网订单支付查询详情---成功:" + o.status);
                             EventBus.getDefault().post(o);
                         }
 
@@ -100,8 +100,11 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     TradeManager.getInstance().getHoleBatchDetail(jsonObject.getString(RequestConstant.KEY_PUSH_DATA), new Callback<TradeRecordInfo>() {
                         @Override
                         public void onSuccess(TradeRecordInfo o) {
-                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---成功");
-                            TradeManager.getInstance().printTradeRecordInfoAsync(o, false);
+                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "On RawMessage(" + AppConstants.PUSH_TAG_FAST_PAY_SUCCESS + ") 内网订单打印查询详情---成功:" + o.status);
+                            if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(o.status)) {
+                                // 当订单状态为确认状态时打印
+                                TradeManager.getInstance().printTradeRecordInfoAsync(o, false);
+                            }
                         }
 
                         @Override

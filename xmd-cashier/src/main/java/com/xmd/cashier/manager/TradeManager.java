@@ -692,7 +692,7 @@ public class TradeManager {
     // 交易二维码
     private byte[] tradeQrcodeBytes;
 
-    private byte[] getTradeQrcodeBytes(TradeRecordInfo tradeRecordInfo) {
+    public byte[] getTradeQrcodeBytes(TradeRecordInfo tradeRecordInfo) {
         tradeQrcodeBytes = null;
         Call<StringResult> tradeCodeCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .getTradeQrcode(AccountManager.getInstance().getToken(), tradeRecordInfo.id, tradeRecordInfo.payChannel, RequestConstant.DEFAULT_SIGN_VALUE);
