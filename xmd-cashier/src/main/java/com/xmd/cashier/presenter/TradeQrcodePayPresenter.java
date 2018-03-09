@@ -222,27 +222,33 @@ public class TradeQrcodePayPresenter implements Presenter {
     }
 
     private boolean getScanStatus() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态：" + mTradeManager.getCurrentTrade().payOrderId);
-        getScanStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
-                .checkScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId);
-        XmdNetwork.getInstance().requestSync(getScanStatusCall, new NetworkSubscriber<StringResult>() {
-            @Override
-            public void onCallbackSuccess(StringResult result) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---成功：" + result.getRespData());
-                if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
-                    resultScanStatus = true;
-                    EventBus.getDefault().post(new QRScanStatusEvent());
-                } else {
+        String payOrderId = mTradeManager.getCurrentTrade().payOrderId;
+        if (TextUtils.isEmpty(payOrderId)) {
+            XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---失败：缺少payOrderId参数");
+            resultScanStatus = true;
+        } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态：" + payOrderId);
+            getScanStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
+                    .checkScanStatus(AccountManager.getInstance().getToken(), payOrderId);
+            XmdNetwork.getInstance().requestSync(getScanStatusCall, new NetworkSubscriber<StringResult>() {
+                @Override
+                public void onCallbackSuccess(StringResult result) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---成功：" + result.getRespData());
+                    if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
+                        resultScanStatus = true;
+                        EventBus.getDefault().post(new QRScanStatusEvent());
+                    } else {
+                        resultScanStatus = false;
+                    }
+                }
+
+                @Override
+                public void onCallbackError(Throwable e) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---失败：" + e.getLocalizedMessage());
                     resultScanStatus = false;
                 }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询二维码扫描状态---失败：" + e.getLocalizedMessage());
-                resultScanStatus = false;
-            }
-        });
+            });
+        }
         return resultScanStatus;
     }
 
@@ -274,30 +280,40 @@ public class TradeQrcodePayPresenter implements Presenter {
     }
 
     private boolean getPayStatus() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态：" + mTradeManager.getCurrentTrade().payOrderId);
-        getPayStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
-                .checkPayStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().payOrderId, mTradeManager.getCurrentTrade().payNo);
-        XmdNetwork.getInstance().requestSync(getPayStatusCall, new NetworkSubscriber<StringResult>() {
-            @Override
-            public void onCallbackSuccess(StringResult result) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---成功：" + result.getRespData());
-                if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
-                    resultPayStatus = true;
-                    mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                    PosFactory.getCurrentCashier().speech("支付成功");
-                    EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
-                    mView.finishSelf();
-                } else {
+        String payOrderId = mTradeManager.getCurrentTrade().payOrderId;
+        if (TextUtils.isEmpty(payOrderId)) {
+            XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---失败：缺少payOrderId参数");
+            resultPayStatus = true;
+            mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+            mTradeManager.getCurrentTrade().tradeStatusError = "交易出现未知异常，缺少必要参数";
+            EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+            mView.finishSelf();
+        } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态：" + payOrderId);
+            getPayStatusCall = XmdNetwork.getInstance().getService(SpaService.class)
+                    .checkPayStatus(AccountManager.getInstance().getToken(), payOrderId, mTradeManager.getCurrentTrade().payNo);
+            XmdNetwork.getInstance().requestSync(getPayStatusCall, new NetworkSubscriber<StringResult>() {
+                @Override
+                public void onCallbackSuccess(StringResult result) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---成功：" + result.getRespData());
+                    if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
+                        resultPayStatus = true;
+                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                        PosFactory.getCurrentCashier().speech("支付成功");
+                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        mView.finishSelf();
+                    } else {
+                        resultPayStatus = false;
+                    }
+                }
+
+                @Override
+                public void onCallbackError(Throwable e) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---失败：" + e.getLocalizedMessage());
                     resultPayStatus = false;
                 }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态---失败：" + e.getLocalizedMessage());
-                resultPayStatus = false;
-            }
-        });
+            });
+        }
         return resultPayStatus;
     }
 

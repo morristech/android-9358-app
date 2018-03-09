@@ -18,7 +18,7 @@ public class InnerOrderItemInfo implements Serializable {
     public String itemName;    //项目名称
     public String itemType;    //项目类型	spa-水疗项目;goods-实物商品
     public String itemUnit;     //项目单位
-    public long modifyTime;    //修改时间
+    public String modifyTime;    //修改时间
     public long orderId;    //关联账单ID
     public int status;    //账单项状态
 
