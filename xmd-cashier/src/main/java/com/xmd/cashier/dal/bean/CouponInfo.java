@@ -125,17 +125,14 @@ public class CouponInfo implements Parcelable {
     //返回实际的减扣金额
     public int getReallyCouponMoney() {
         switch (couponType) {
-            case AppConstants.COUPON_TYPE_PAID:
-                // 点钟券:XX元抵扣XXX元
+            case AppConstants.COUPON_TYPE_PAID:// 点钟券:XX元抵扣XXX元
+            case AppConstants.COUPON_TYPE_SERVICE_ITEM:// 项目券
                 return consumeAmount;
-            case AppConstants.COUPON_TYPE_COUPON:
-                // 体验券
+            case AppConstants.COUPON_TYPE_COUPON:// 体验券
                 return consumeAmount - actAmount;
-            case AppConstants.COUPON_TYPE_CASH:
-                // 现金券
+            case AppConstants.COUPON_TYPE_CASH:// 现金券
                 return actAmount;
-            case AppConstants.COUPON_TYPE_DISCOUNT:
-                // 折扣券 actAmount为折扣比例
+            case AppConstants.COUPON_TYPE_DISCOUNT:// 折扣券 actAmount为折扣比例
                 double consume = ((double) originAmount) / 100000 * (100000 - actAmount);
                 return (int) Math.round(consume);
         }

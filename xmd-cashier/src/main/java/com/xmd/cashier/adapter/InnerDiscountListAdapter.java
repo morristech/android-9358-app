@@ -52,6 +52,7 @@ public class InnerDiscountListAdapter extends RecyclerView.Adapter<InnerDiscount
             case AppConstants.TYPE_CASH_COUPON:
             case AppConstants.TYPE_DISCOUNT_COUPON:
             case AppConstants.TYPE_PAID_COUPON:
+            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                 CouponInfo couponInfo = item.couponInfo;
                 holder.mName.setText(couponInfo.actTitle);
                 holder.mType.setText(couponInfo.couponTypeName);

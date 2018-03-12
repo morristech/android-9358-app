@@ -60,6 +60,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             case AppConstants.TYPE_CASH_COUPON:
             case AppConstants.TYPE_DISCOUNT_COUPON:
             case AppConstants.TYPE_PAID_COUPON:
+            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                 return AppConstants.VIEW_TYPE_COUPON;
             case AppConstants.TYPE_ORDER:
                 return AppConstants.VIEW_TYPE_ORDER;
@@ -119,6 +120,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
                 case AppConstants.TYPE_CASH_COUPON:
                 case AppConstants.TYPE_DISCOUNT_COUPON:
                 case AppConstants.TYPE_PAID_COUPON:
+                case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                     bindCouponInfo(item);
                     break;
                 case AppConstants.TYPE_ORDER:
@@ -170,7 +172,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             mName.setText(couponInfo.actTitle);
             mName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             mName.getPaint().setAntiAlias(true);
-            mType.setText(couponInfo.useTypeName);
+            mType.setText(couponInfo.couponTypeName);
             mInfo.setText(couponInfo.consumeMoneyDescription);
             mMoney.setText(Utils.moneyToString(couponInfo.getReallyCouponMoney()));
             mMoneyDesc.setVisibility(AppConstants.TYPE_DISCOUNT_COUPON.equals(info.type) ? View.VISIBLE : View.GONE);

@@ -217,6 +217,23 @@ public class TradeManager {
         });
     }
 
+    // 根据核销码获取项目券信息
+    public Subscription getVerifyServiceItem(String couponNo, final Callback<CouponResult> callback) {
+        Observable<CouponResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getServiceCouponInfo(AccountManager.getInstance().getToken(), couponNo);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<CouponResult>() {
+            @Override
+            public void onCallbackSuccess(CouponResult result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
+    }
+
     /********************************************其他功能********************************************/
     public List<TradeDiscountInfo> getVerifiedList() {
         return mTrade.getVerifiedList();
@@ -288,6 +305,7 @@ public class TradeManager {
                     case AppConstants.TYPE_CASH_COUPON:
                     case AppConstants.TYPE_PAID_COUPON:
                     case AppConstants.TYPE_DISCOUNT_COUPON:
+                    case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                         result.append(item.couponInfo.couponNo + ",");
                         break;
                     case AppConstants.TYPE_ORDER:
@@ -318,6 +336,7 @@ public class TradeManager {
                     case AppConstants.TYPE_CASH_COUPON:
                     case AppConstants.TYPE_PAID_COUPON:
                     case AppConstants.TYPE_DISCOUNT_COUPON:
+                    case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                         total += info.couponInfo.getReallyCouponMoney();
                         break;
                     case AppConstants.TYPE_ORDER:

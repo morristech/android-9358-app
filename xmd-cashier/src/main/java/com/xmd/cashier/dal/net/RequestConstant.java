@@ -18,7 +18,6 @@ public class RequestConstant {
     public static final String URL_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/financial/member/get";     // 获取会员账户信息
     public static final String URL_MEMBER_PAY = SPA_SERVICE_BASE + "/v2/financial/member/pay/save"; // 会员付款二维码扫码支付
 
-    public static final String URL_REPORT_TRADE_DATA = SPA_SERVICE_BASE + "/v2/manager/payreport/save"; // 汇报保存支付流水
     public static final String URL_GET_TRADE_NO = SPA_SERVICE_BASE + "/v2/manager/pospaydeal/tradeno";  // 订单编号生成
     public static final String URL_TRADE_QR_CODE = SPA_SERVICE_BASE + "/v1/wx/pos/order_qrcode";        // 送积分微信二维码
     public static final String URL_GET_BILL_LIST = SPA_SERVICE_BASE + "/v2/manager/pos/deals";      // 交易流水
@@ -98,7 +97,6 @@ public class RequestConstant {
 
     public static final String URL_GET_INNER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/list";   //获取内网支付列表
     public static final String URL_GET_INNER_UNPAID_COUNT = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/unpaid/count";      //查询当前内网订单未支付的数量
-
 
     // 收银重构
     public static final String URL_GET_PAY_CHANNEL_LIST = SPA_SERVICE_BASE + "/v2/manager/pay/channel/list/valid";      // 获取会所设置的有效支付方式

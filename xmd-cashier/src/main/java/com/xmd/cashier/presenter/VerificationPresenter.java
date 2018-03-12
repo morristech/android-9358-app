@@ -46,6 +46,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
     private Subscription mGetVerifyCouponSubscription;
     private Subscription mGetVerifyOrderSubscription;
     private Subscription mGetVerifyTreatSubscription;
+    private Subscription mGetVerifyServiceItemSubscription;
     private Subscription mGetVerifyTypeSubscription;
 
     private VerificationContract.View mView;
@@ -90,6 +91,9 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         }
         if (mGetVerifyTypeSubscription != null) {
             mGetVerifyTypeSubscription.unsubscribe();
+        }
+        if (mGetVerifyServiceItemSubscription != null) {
+            mGetVerifyServiceItemSubscription.unsubscribe();
         }
     }
 
@@ -167,6 +171,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             case AppConstants.TYPE_CASH_COUPON:
             case AppConstants.TYPE_PAID_COUPON:
             case AppConstants.TYPE_DISCOUNT_COUPON:
+            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                 UiNavigation.gotoVerifyCouponActivity(mContext, item.couponInfo, false);
                 break;
             case AppConstants.TYPE_ORDER:
@@ -228,7 +233,6 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                     case AppConstants.TYPE_CASH_COUPON: //现金券
                     case AppConstants.TYPE_DISCOUNT_COUPON: //折扣券
                     case AppConstants.TYPE_PAID_COUPON:     //点钟券
-                        // 收银券类型不包括礼品券&项目券
                         getCoupon(number, o.getRespData());
                         break;
                     case AppConstants.TYPE_ORDER:
@@ -239,7 +243,11 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                         // 请客
                         getTreat(number, o.getRespData());
                         break;
-                    default:
+                    case AppConstants.TYPE_SERVICE_ITEM_COUPON:
+                        // 项目券
+                        getServiceItem(number, o.getRespData());
+                        break;
+                    default:    // 收银不处理礼品券
                         mView.hideLoadingView();
                         mView.showError("收银过程中暂不支持此类核销");
                         break;
@@ -276,6 +284,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                             case AppConstants.TYPE_CASH_COUPON: //现金券
                             case AppConstants.TYPE_DISCOUNT_COUPON: //折扣券
                             case AppConstants.TYPE_PAID_COUPON: //点钟券
+                            case AppConstants.TYPE_SERVICE_ITEM_COUPON://项目券
                                 if (info.getInfo() instanceof String) {
                                     info.setInfo(gson.fromJson((String) info.getInfo(), CouponInfo.class));
                                 } else {
@@ -302,7 +311,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                                 mTradeManager.addVerificationInfo(orderItem);
                                 break;
                             default:
-                                // 收银不处理:礼品券项目券
+                                // 收银不处理:礼品券
                                 break;
                         }
                     }
@@ -325,6 +334,36 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             mGetVerifyCouponSubscription.unsubscribe();
         }
         mGetVerifyCouponSubscription = mTradeManager.getVerifyCoupon(couponNo, new Callback<CouponResult>() {
+            @Override
+            public void onSuccess(CouponResult o) {
+                CouponInfo info = o.getRespData();
+                info.valid = true;
+                VerificationItem item = new VerificationItem();
+                item.code = info.couponNo;
+                item.type = type;
+                item.couponInfo = info;
+                item.selected = true;
+                mTradeManager.addVerificationInfo(item);
+
+                mView.hideLoadingView();
+                mView.hideKeyboard();
+                mView.showVerificationData(mTradeManager.getVerificationList());
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoadingView();
+                mView.showError(error);
+            }
+        });
+    }
+
+    private void getServiceItem(String couponNo, final String type) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款核销查询项目券：" + couponNo);
+        if (mGetVerifyServiceItemSubscription != null) {
+            mGetVerifyServiceItemSubscription.unsubscribe();
+        }
+        mGetVerifyServiceItemSubscription = mTradeManager.getVerifyServiceItem(couponNo, new Callback<CouponResult>() {
             @Override
             public void onSuccess(CouponResult o) {
                 CouponInfo info = o.getRespData();
