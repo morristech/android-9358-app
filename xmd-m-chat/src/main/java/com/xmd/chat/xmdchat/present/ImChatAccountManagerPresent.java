@@ -79,7 +79,6 @@ public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterfa
 
     @Override
     public void login(EventLogin eventLogin) {
-        XLogger.i(">>>","xmdChat login");
         token = eventLogin.getToken();
         loopLogin();
     }

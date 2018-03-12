@@ -2,7 +2,6 @@ package com.xmd.chat;
 
 import android.content.Context;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -36,7 +35,6 @@ public class ChatAccountManager {
     }
 
     public void init(Context context) {
-        XLogger.i(">>>","ChatAccountManager");
         mInterface.init(context);
     }
 

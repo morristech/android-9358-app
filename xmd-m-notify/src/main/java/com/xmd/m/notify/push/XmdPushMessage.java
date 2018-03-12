@@ -50,4 +50,14 @@ public class XmdPushMessage {
     public String getData() {
         return data;
     }
+
+
+    @Override
+    public String toString() {
+        return "XmdPushMessage{" +
+                "businessType='" + businessType + '\'' +
+                ", displayList=" + displayList +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }

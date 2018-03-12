@@ -22,7 +22,7 @@ import com.xmd.m.network.EventTokenExpired;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
- * 应当作为所有activity的祖先
+ * 应当作为所有activity的基类
  */
 
 public class BaseActivity extends AppCompatActivity {
@@ -83,7 +83,7 @@ public class BaseActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
             toolbarBack = (RelativeLayout) findViewById(R.id.rl_toolbar_back);
-            if(toolbarBack != null){
+            if (toolbarBack != null) {
                 toolbarBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -3,6 +3,7 @@ package com.xmd.chat.xmdchat.present;
 
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.util.AppUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
@@ -18,10 +19,12 @@ import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
 import com.tencent.imsdk.ext.message.TIMMessageRevokedListener;
 import com.tencent.imsdk.ext.message.TIMUserConfigMsgExt;
+import com.xmd.app.XmdApp;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.beans.Location;
@@ -72,7 +75,6 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
 
     @Override
     public void init(final UserInfoService userInfoService) {
-       // TIMManager.getInstance().getMessageListeners()
         TIMManager.getInstance().addMessageListener(new TIMMessageListener() {
             @Override
             public boolean onNewMessages(final List<TIMMessage> list) {
@@ -94,10 +96,10 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
                         EventBus.getDefault().post(new EventNewUiMessage(ChatRowViewFactory.createViewModel(chatMessage)));
                     }
 
-//                    if (AppUtils.isBackground(XmdApp.getInstance().getContext())) {
-//                        ChatMessageManager.vibrateAndPlayTone();
-//                        ChatMessageManager.displayNotification(chatMessage, currentChatId, user);
-//                    }
+                    if (AppUtils.isBackground(XmdApp.getInstance().getContext())) {
+                        ChatMessageManager.vibrateAndPlayTone();
+                        ChatMessageManager.displayNotification(chatMessage, currentChatId, user);
+                    }
 
                 }
                 EventBus.getDefault().post(new EventNewMessages(list));
