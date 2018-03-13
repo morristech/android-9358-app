@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
@@ -42,16 +41,16 @@ public class XmdChat {
     private MenuFactory menuFactory;
 
     public void init(Context context, String appKey, boolean debug, MenuFactory menuFactory) {
-        XLogger.i(">>>","xmdChat init");
+        EventBusSafeRegister.register(this);
         context = context.getApplicationContext();
         this.context = context;
         mInterface.init(context,appKey,debug,menuFactory);
-        loadConversation();
+      //  loadConversation();
         ChatAccountManager.getInstance().init(context);
         ConversationManager.getInstance().init();
         ChatMessageManager.getInstance().init();
         setMenuFactory(menuFactory);
-        EventBusSafeRegister.register(this);
+
     }
 
     public void loadConversation() {
@@ -95,7 +94,7 @@ public class XmdChat {
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
-        ChatAccountManager.getInstance().login(eventLogin);
+     //   ChatAccountManager.getInstance().login(eventLogin);
         ChatSettingManager.getInstance().loadClubLocation(true, null);
         ChatSettingManager.getInstance().loadFastReply(null);
     }

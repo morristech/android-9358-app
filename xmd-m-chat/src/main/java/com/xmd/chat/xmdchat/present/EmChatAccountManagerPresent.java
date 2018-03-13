@@ -65,6 +65,11 @@ public class EmChatAccountManagerPresent implements XmdChatAccountManagerInterfa
     }
 
     @Override
+    public void login() {
+
+    }
+
+    @Override
     public void logout() {
         XLogger.i(XmdChat.TAG, "logout=<");
         mHandler.removeCallbacksAndMessages(null);
@@ -127,12 +132,12 @@ public class EmChatAccountManagerPresent implements XmdChatAccountManagerInterfa
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                login();
+                loginEM();
             }
         }
     };
 
-    private void login() {
+    private void loginEM() {
         if (!isRunLogin) {
             return;
         }

@@ -14,6 +14,8 @@ public interface XmdChatAccountManagerInterface {
 
     void login(EventLogin eventLogin);
 
+    void login();
+
     void logout();
 
     void loopLogin();

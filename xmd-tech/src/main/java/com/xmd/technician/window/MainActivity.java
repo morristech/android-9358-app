@@ -120,7 +120,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
 
         EventBusSafeRegister.register(this);
-
+        ImChatAccountManagerPresent.getInstance().login();
         XmdChat.getInstance().loadConversation();
     }
 

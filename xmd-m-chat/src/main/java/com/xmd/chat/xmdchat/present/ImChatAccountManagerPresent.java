@@ -1,8 +1,6 @@
 package com.xmd.chat.xmdchat.present;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
@@ -17,8 +15,8 @@ import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.imsdk.TIMUserConfig;
 import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.ext.message.TIMUserConfigMsgExt;
-import com.xmd.app.CommonNetService;
 import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -30,9 +28,6 @@ import com.xmd.chat.event.EventForceOffline;
 import com.xmd.chat.event.EventUserSigExpired;
 import com.xmd.chat.xmdchat.constant.XmdChatConstant;
 import com.xmd.chat.xmdchat.contract.XmdChatAccountManagerInterface;
-import com.xmd.m.network.BaseBean;
-import com.xmd.m.network.NetworkSubscriber;
-import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,6 +35,7 @@ import java.util.List;
 
 /**
  * Created by Lhj on 18-1-24.
+ * 因某些未知原因，将腾讯的登录放在MainActivity 的 onCreate 方法里，不对Token进行校验
  */
 
 public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterface {
@@ -79,35 +75,50 @@ public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterfa
 
     @Override
     public void login(EventLogin eventLogin) {
+        if (userIsOnline()) {
+            XLogger.i(">>>", "用户在线");
+            return;
+        }
         token = eventLogin.getToken();
-        loopLogin();
+     //   loopLogin();
+     //   chatLogin();
+    }
+
+    @Override
+    public void login() {
+        chatLogin();
     }
 
     @Override
     public void logout() {
-        if (userIsOnline()) {
-            TIMManager.getInstance().logout(new TIMCallBack() {
-                @Override
-                public void onError(int i, String s) {
-                    XLogger.e("退出登录失败》" + i + "<fail>" + s);
-                }
+        //  if (userIsOnline()) {
+        TIMManager.getInstance().logout(new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+                XLogger.e("退出登录失败》" + i + "<fail>" + s);
+            }
 
-                @Override
-                public void onSuccess() {
-                    XLogger.i("IM logout success");
-                }
-            });
-        }
+            @Override
+            public void onSuccess() {
+                XLogger.i(">>>", "IM logout success");
+            }
+        });
+        //   }
     }
 
     @Override
     public void loopLogin() {
-        if (isRunLogin) {
-            return;
-        }
-        isRunLogin = true;
-        mHandler.sendEmptyMessage(1);
+
     }
+
+//    @Override
+//    public void loopLogin() {
+//        if (isRunLogin) {
+//            return;
+//        }
+//        isRunLogin = true;
+//        mHandler.sendEmptyMessage(1);
+//    }
 
     /**
      * 用户配置
@@ -159,57 +170,57 @@ public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterfa
         });
         //消息扩展用户配置
         userConfig = new TIMUserConfigMsgExt(userConfig)
-                //禁用消息存储
-                .enableStorage(false)
+                //开启本地本地消息存储
+                .enableStorage(true)
                 //开启消息已读回执
-                .enableReadReceipt(true);
+                .enableReadReceipt(false);
         userConfig = ImChatMessageManagerPresent.getInstance().init(userConfig);
         TIMManager.getInstance().setUserConfig(userConfig);
     }
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 1) {
-                ImChatLogin();
-            }
-        }
-    };
+//    private Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            if (msg.what == 1) {
+//                ImChatLogin();
+//            }
+//        }
+//    };
 
-    private void ImChatLogin() {
-        if (!isRunLogin) {
-            return;
-        }
-        User user = UserInfoServiceImpl.getInstance().getCurrentUser();
-        if (user == null) {
-            XToast.show("无法登录聊天账号，未找到用户信息");
-            XLogger.e("无法登录聊天账号，未找到用户信息");
-            return;
-        }
-        XLogger.i(XmdChat.TAG, "check token --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
-        rx.Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
-                .reportAlive(token, deviceId);
-        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-            @Override
-            public void onCallbackSuccess(BaseBean result) {
-                chatLogin();
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.e(e.getMessage());
-                Message message = new Message();
-                message.what = 1;
-                mHandler.sendMessageDelayed(message, 3000);
-            }
-        });
-    }
+//    private void ImChatLogin() {
+//        if (!isRunLogin) {
+//            return;
+//        }
+//        User user = UserInfoServiceImpl.getInstance().getCurrentUser();
+//        if (user == null) {
+//            XToast.show("无法登录聊天账号，未找到用户信息");
+//            XLogger.e("无法登录聊天账号，未找到用户信息");
+//            return;
+//        }
+//        XLogger.i(XmdChat.TAG, "check token --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
+//        rx.Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
+//                .reportAlive(token, deviceId);
+//        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+//            @Override
+//            public void onCallbackSuccess(BaseBean result) {
+//                chatLogin();
+//            }
+//
+//            @Override
+//            public void onCallbackError(Throwable e) {
+//                XLogger.e(e.getMessage());
+//                Message message = new Message();
+//                message.what = 1;
+//                mHandler.sendMessageDelayed(message, 3000);
+//            }
+//        });
+//    }
 
     private void chatLogin() {
-        if (!isRunLogin) {
-            return;
-        }
-        User user = userInfoService.getCurrentUser();
+//        if (!isRunLogin || userIsOnline()) {
+//            return;
+//        }
+        final User user = userInfoService.getCurrentUser();
         XLogger.i(XmdChat.TAG, "chat login --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
         TIMManager.getInstance().login(user.getChatId(), user.getChatPassword(), new TIMCallBack() {
             @Override
@@ -217,27 +228,29 @@ public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterfa
                 XToast.show("腾讯云登录失败：" + i + ">" + s);
                 switch (i) {
                     case XmdChatConstant.error_code_offline:
-                        XLogger.i(">>>", "离线状态下被踢下");
+                       XLogger.i(">>>", "离线状态下被踢下");
+                        XLogger.i(">>>>","token:"+token);
+                        EventBus.getDefault().post(new EventLogout(token,user.getUserId()));
                         break;
                     case XmdChatConstant.error_code_network:
                         XToast.show(ResourceUtils.getString(R.string.net_work_error));
                         break;
                 }
-                if (!isRunLogin) {
-                    return;
-                }
-                Message message = new Message();
-                message.what = 1;
-                mHandler.sendMessageDelayed(message, 1000);
+//                if (!isRunLogin) {
+//                    return;
+//                }
+//                Message message = new Message();
+//                message.what = 1;
+//                mHandler.sendMessageDelayed(message, 3000);
             }
 
             @Override
             public void onSuccess() {
                 XToast.show("腾讯云登录成功");
-                if (!isRunLogin) {
-                    return;
-                }
-                isRunLogin = false;
+//                if (!isRunLogin) {
+//                    return;
+//                }
+//                isRunLogin = false;
                 XLogger.i(XmdChat.TAG, "login success!  ImChatId:" + userInfoService.getCurrentUser().getChatId());
                 EventBus.getDefault().post(new EventChatLoginSuccess());
             }
