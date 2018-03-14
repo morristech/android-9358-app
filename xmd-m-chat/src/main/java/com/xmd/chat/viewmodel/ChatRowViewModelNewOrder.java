@@ -5,10 +5,12 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
@@ -25,7 +27,7 @@ import rx.Observable;
 
 /**
  * Created by mo on 17-7-1.
- * 新订单消息 未处理接受、拒绝
+ * 新订单消息
  */
 
 public class ChatRowViewModelNewOrder extends ChatRowViewModel {
@@ -69,12 +71,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
     }
 
     public String getInnerProcessed() {
-        if (XmdChatModel.getInstance().chatModelIsEm()) {
-            return chatMessage.getInnerProcessed();
-        } else {
-            return "";
-        }
-
+        return TextUtils.isEmpty(chatMessage.getInnerProcessed()) ? null : chatMessage.getInnerProcessed();
     }
 
     //拒绝订单
