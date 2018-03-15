@@ -72,6 +72,7 @@ public class BillManager {
     }
 
     public void printBillRecord(BillInfo info, boolean keep) {
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
         mPos.printDivide();

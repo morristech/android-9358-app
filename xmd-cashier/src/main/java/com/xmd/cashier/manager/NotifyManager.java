@@ -246,6 +246,7 @@ public class NotifyManager {
 
     public void printOrderRecord(OrderRecordInfo info, boolean retry) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "打印预约订单记录");
+        mPos.setPrintListener();
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(预约订单)");
         if (retry) {
@@ -339,11 +340,18 @@ public class NotifyManager {
 
     public void printOnlinePayRecord(TradeRecordInfo info, boolean retry, boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "打印在线买单记录");
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();
         mPos.printText("商户名：" + AccountManager.getInstance().getClubName());
         mPos.printDivide();
+
+        if (!TextUtils.isEmpty(info.telephone)) {
+            mPos.printText("手机号：", (keep ? info.telephone : Utils.formatPhone(info.telephone)) + (TextUtils.isEmpty(info.userName) ? "" : "(" + Utils.formatName(info.userName, keep) + ")"));
+            mPos.printDivide();
+        }
+
         mPos.printText("消费详情", Utils.moneyToStringEx(info.originalAmount), true);
         if (info.details != null && !info.details.isEmpty()) {
             for (InnerOrderInfo orderInfo : info.details) {
@@ -411,6 +419,13 @@ public class NotifyManager {
         mPos.printDivide();
 
         mPos.printText("交易号：", info.payId);
+        if (!TextUtils.isEmpty(info.techName) || !TextUtils.isEmpty(info.techNo)) {
+            mPos.printText("服务技师：", (TextUtils.isEmpty(info.techName) ? "" : info.techName) + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]") + (TextUtils.isEmpty(info.otherTechNames) ? "" : "，" + info.otherTechNames));
+        } else {
+            if (!TextUtils.isEmpty(info.otherTechNames)) {
+                mPos.printText("服务技师：", info.otherTechNames);
+            }
+        }
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
 
         if (info.payRecordList != null && !info.payRecordList.isEmpty()) {

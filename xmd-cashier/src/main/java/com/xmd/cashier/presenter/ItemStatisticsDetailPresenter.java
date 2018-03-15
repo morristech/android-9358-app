@@ -333,6 +333,7 @@ public class ItemStatisticsDetailPresenter implements ItemStatisticsDetailContra
 
     @Override
     public void onPrint() {
+        mPos.setPrintListener();
         mPos.printCenter("经营项目汇总", true);
         mPos.printDivide();
         long amount = 0;

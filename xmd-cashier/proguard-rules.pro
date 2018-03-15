@@ -103,6 +103,9 @@
     public <fields>;
 }
 
+-keep public class com.xmd.cashier.R$*{
+    public static final int *;
+}
 
 #各类第三方库
 -dontwarn com.android.**

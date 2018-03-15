@@ -598,6 +598,7 @@ public class VerifyManager {
         if (list == null || list.isEmpty()) {
             return;
         }
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -693,6 +694,7 @@ public class VerifyManager {
 
     // 券
     public void printCoupon(CouponInfo couponInfo, boolean keep) {
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -750,6 +752,7 @@ public class VerifyManager {
 
     // 预约
     public void printOrder(OrderInfo orderInfo, boolean keep) {
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -786,6 +789,7 @@ public class VerifyManager {
 
     // 奖品
     public void printPrize(PrizeInfo prizeInfo, boolean keep) {
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -823,6 +827,7 @@ public class VerifyManager {
 
     // 会员请客
     public void printTreat(TreatInfo treatInfo, boolean keep) {
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter(keep ? "商户存根" : "客户联");
         mPos.printDivide();
@@ -859,6 +864,7 @@ public class VerifyManager {
 
     // 核销记录
     public void printRecord(VerifyRecordInfo recordInfo, boolean keep) {
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + "(补打小票)");
         mPos.printDivide();

@@ -63,6 +63,8 @@ public interface IPos {
 
     void printEnd();    //打印终止
 
+    void setPrintListener();
+
     void speech(String text);   //播放语音
 
     String getMagneticReaderInfo(); //读取磁条信息

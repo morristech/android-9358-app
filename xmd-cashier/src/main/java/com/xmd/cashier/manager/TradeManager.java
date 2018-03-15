@@ -566,6 +566,7 @@ public class TradeManager {
 
     public void printTradeRecordInfo(TradeRecordInfo info, boolean retry, boolean keep) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "打印订单详情");
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();

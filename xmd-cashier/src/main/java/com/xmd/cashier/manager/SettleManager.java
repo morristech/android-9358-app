@@ -107,6 +107,7 @@ public class SettleManager {
     }
 
     public void print(SettleSummaryResult.RespData data, boolean retry) {
+        mPos.setPrintListener();
         mPos.printCenter("交接班结算小票");
         if (retry) {
             mPos.printCenter("--补打小票--");

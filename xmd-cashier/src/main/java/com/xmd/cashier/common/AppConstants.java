@@ -328,4 +328,8 @@ public class AppConstants {
 
     public final static String ONLINE_PAY_PRIORITY_AUTH = "auth";
     public final static String ONLINE_PAY_PRIORITY_BITMAP = "bitmap";
+
+    public final static String UMENG_EVENT_PUSH_RECEIVE = "event_id_push_receive";
+    public final static String UMENG_EVENT_PUSH_REACT = "event_id_push_react";
+    public final static String UMENT_EVENT_PRINT_RESULT = "event_id_print_result";
 }

@@ -10,12 +10,14 @@ import com.xmd.cashier.BuildConfig;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
+import com.xmd.cashier.dal.event.EventPrintResult;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.PayCallback;
 import com.xmd.cashier.pos.bean.WanPosPayNewResult;
 import com.xmd.cashier.pos.bean.WanPosPayResult;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +38,7 @@ import cn.weipass.service.bizInvoke.RequestResult;
  */
 
 public class PosImpl implements IPos {
+    private static final String TAG = "PosImpl";
     private static PosImpl mInstance;
     private BizServiceInvoker mBizServiceInvoker;   //收银2支付服务
     private LatticePrinter mLatticePrinter;
@@ -98,7 +101,7 @@ public class PosImpl implements IPos {
                             callback.onSuccess(null);
                         }
                         isInit = true;
-                        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化成功");
+                        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化成功");
                     } catch (Exception e) {
                         XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败(服务初始化)：" + e.getLocalizedMessage());
                         if (callback != null) {
@@ -109,7 +112,7 @@ public class PosImpl implements IPos {
 
                 @Override
                 public void onError(String s) {
-                    XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：" + s);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：" + s);
                     if (callback != null) {
                         callback.onError(s);
                     }
@@ -117,14 +120,14 @@ public class PosImpl implements IPos {
 
                 @Override
                 public void onDestroy() {
-                    XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：onDestroy");
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：onDestroy");
                     if (callback != null) {
                         callback.onError("onDestroy");
                     }
                 }
             });
         } catch (Exception e) {
-            XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：" + e.getLocalizedMessage());
+            XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "旺POS初始化失败：" + e.getLocalizedMessage());
             if (callback != null) {
                 callback.onError(e.getLocalizedMessage());
             }
@@ -148,7 +151,7 @@ public class PosImpl implements IPos {
             CashierHelper.consume(context, params, new CashierHelper.PayCallBack() {
                 @Override
                 public void success(String s) {
-                    XLogger.i("CashierInvoke on success -->" + s);
+                    XLogger.i(TAG, "CashierInvoke on success -->" + s);
                     try {
                         WanPosPayNewResult<WanPosPayNewResult.RespData> wanPosPayNewResult = new Gson().fromJson(s, WanPosPayNewResult.class);
                         WanPosPayNewResult.RespData respData = wanPosPayNewResult.data;
@@ -165,7 +168,7 @@ public class PosImpl implements IPos {
 
                 @Override
                 public void failed(String s) {
-                    XLogger.i("CashierInvoke on failed -->" + s);
+                    XLogger.i(TAG, "CashierInvoke on failed -->" + s);
                     try {
                         WanPosPayNewResult wanPosPayNewResult = new Gson().fromJson(s, WanPosPayNewResult.class);
                         callback.onResult(wanPosPayNewResult.errMsg, payResult);
@@ -179,7 +182,7 @@ public class PosImpl implements IPos {
             try {
                 mBizServiceInvoker = WeiposImpl.as().getService(BizServiceInvoker.class);
             } catch (Exception e) {
-                XLogger.e(AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付调用失败！");
+                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "初始化支付调用失败！");
             }
             if (mBizServiceInvoker == null) {
                 callback.onResult("发起支付调用失败", payResult);
@@ -201,7 +204,7 @@ public class PosImpl implements IPos {
                     @Override
                     public void onResponse(String s, String s1, byte[] bytes) {
                         String payResultString = new String(bytes);
-                        XLogger.i("onResponse-->" + s + "," + s1 + "," + payResultString);
+                        XLogger.i(TAG, "onResponse-->" + s + "," + s1 + "," + payResultString);
                         boolean paySuccess = false;
                         String errMsg = null;
                         try {
@@ -233,7 +236,7 @@ public class PosImpl implements IPos {
 
                     @Override
                     public void onFinishSubscribeService(boolean b, String s) {
-                        XLogger.i("onFinishSubscribeService-->" + b + "," + s);
+                        XLogger.i(TAG, "onFinishSubscribeService-->" + b + "," + s);
                     }
                 });
 
@@ -428,7 +431,7 @@ public class PosImpl implements IPos {
     @Override
     public String getPosIdentifierNo() {
         String deviceInfo = WeiposImpl.as().getDeviceInfo();
-        XLogger.i(AppConstants.LOG_BIZ_LOCAL_CONFIG + "POS DEVICE INFO：" + deviceInfo);
+        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "POS DEVICE INFO：" + deviceInfo);
         try {
             JSONObject object = new JSONObject(deviceInfo);
             return object.getString("en").replace(" ", "");
@@ -474,33 +477,48 @@ public class PosImpl implements IPos {
     }
 
     // 设置打印的监听
-    public void setPrintListener(final Callback<?> callback) {
+    @Override
+    public void setPrintListener() {
         if (mLatticePrinter != null) {
-            if (callback != null) {
-                mLatticePrinter.setOnEventListener(new IPrint.OnEventListener() {
-                    @Override
-                    public void onEvent(int i, String s) {
-                        switch (i) {
-                            case IPrint.EVENT_CONNECTED:
-                                //连接打印机成功
-                            case IPrint.EVENT_STATE_OK:
-                                //打印机状态正常
-                                break;
-                            case IPrint.EVENT_OK:
-                                //打印完成结束
-                                callback.onSuccess(null);
-                                break;
-                            default:
-                                callback.onError(s);
-                                break;
-                        }
-                        // 打印回调处理完成后清空
-                        mLatticePrinter.setOnEventListener(null);
+            mLatticePrinter.setOnEventListener(new IPrint.OnEventListener() {
+                @Override
+                public void onEvent(int what, String info) {
+                    String message = "unknown";
+                    switch (what) {
+                        case IPrint.EVENT_CONNECT_FAILD:
+                            message = "连接打印机失败";
+                            break;
+                        case IPrint.EVENT_CONNECTED:
+                            message = "连接打印机成功";
+                            break;
+                        case IPrint.EVENT_PAPER_JAM:
+                            message = "打印机卡纸";
+                            break;
+                        case IPrint.EVENT_UNKNOW:
+                            message = "打印机未知错误";
+                            break;
+                        case IPrint.EVENT_STATE_OK:
+                            message = "打印机状态正常";
+                            break;
+                        case IPrint.EVENT_OK:
+                            message = "打印完成结束";
+                            break;
+                        case IPrint.EVENT_NO_PAPER:
+                            message = "打印机缺纸";
+                            break;
+                        case IPrint.EVENT_HIGH_TEMP:
+                            message = "打印机高温";
+                            break;
+                        case IPrint.EVENT_PRINT_FAILD:
+                            message = "打印失败";
+                            break;
+                        default:
+                            break;
                     }
-                });
-            } else {
-                mLatticePrinter.setOnEventListener(null);
-            }
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "打印结果：" + message);
+                    EventBus.getDefault().post(new EventPrintResult(message));
+                }
+            });
         }
     }
 

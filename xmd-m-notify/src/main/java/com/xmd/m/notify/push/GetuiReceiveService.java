@@ -11,6 +11,9 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.m.notify.XmdPushModule;
+import com.xmd.m.notify.event.EventPushReceive;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by heyangya on 17-4-24.
@@ -40,7 +43,7 @@ public class GetuiReceiveService extends GTIntentService {
             if (TextUtils.isEmpty(data)) {
                 return;
             }
-
+            EventBus.getDefault().post(new EventPushReceive());
             ThreadPoolManager.postToUI(new Runnable() {
                 @Override
                 public void run() {
@@ -49,7 +52,7 @@ public class GetuiReceiveService extends GTIntentService {
                         message = gson.fromJson(data, XmdPushMessage.class);
                         //显示
                         message.show();
-                        XToast.show("接收到推送消息："+message.toString());
+                        XToast.show("接收到推送消息：" + message.toString());
                     } catch (Exception e) {
                         XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
                     }

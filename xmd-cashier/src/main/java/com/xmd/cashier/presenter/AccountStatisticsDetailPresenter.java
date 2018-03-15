@@ -400,6 +400,7 @@ public class AccountStatisticsDetailPresenter implements AccountStatisticsDetail
 
     @Override
     public void onPrint(int bizType) {
+        mPos.setPrintListener();
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("对账单");
         mPos.printDivide();

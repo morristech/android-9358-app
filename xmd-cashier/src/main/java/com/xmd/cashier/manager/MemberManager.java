@@ -499,6 +499,7 @@ public class MemberManager {
 
     public void printMemberRecordInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "打印会员账户记录");
+        mPos.setPrintListener();
         mPos.printCenter("小摩豆结账单");
         mPos.printCenter((keep ? "商户存根" : "客户联") + (retry ? "(补打小票)" : ""));
         mPos.printDivide();

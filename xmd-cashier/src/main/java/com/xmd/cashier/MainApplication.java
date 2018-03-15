@@ -15,6 +15,7 @@ import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
@@ -33,6 +34,7 @@ import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.manager.TradeManager;
+import com.xmd.cashier.manager.UmengManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
@@ -84,8 +86,12 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         CrashHandler.getInstance().init(getApplicationContext(), this);
         XToast.init(getApplicationContext(), 0);
 
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
-        MobclickAgent.enableEncrypt(true);
+        // 友盟
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);   //场景设置
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);    //初始化
+        UMConfigure.setEncryptEnabled(true);    //设置日志加密
+        UmengManager.getInstance().init(this);
+
         ThreadPoolManager.init(this);
 
         Set<String> functions = new HashSet<>();
@@ -143,6 +149,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
 
     public void exitApplication() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "退出9358收银台!");
+        MobclickAgent.onKillProcess(this);
         synchronized (mActivityListObject) {
             for (int i = 0; i < mActivityList.size(); i++) {
                 BaseActivity activity = mActivityList.remove(i);

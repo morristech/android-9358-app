@@ -355,6 +355,11 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void setPrintListener() {
+
+    }
+
+    @Override
     public void speech(String text) {
 
     }
