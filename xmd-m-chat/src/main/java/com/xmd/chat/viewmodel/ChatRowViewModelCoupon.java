@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowCouponBinding;
 import com.xmd.chat.message.ChatMessage;

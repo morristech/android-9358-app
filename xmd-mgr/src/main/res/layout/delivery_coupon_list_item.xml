@@ -4,30 +4,25 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
-              android:layout_marginLeft="@dimen/inter_space"
->
+              android:layout_marginLeft="@dimen/inter_space">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-    >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_marginTop="@dimen/inter_space"
             android:background="@drawable/coupon_item_bg"
-            android:orientation="vertical"
-
-        >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.2"
-            >
+                android:layout_weight="1.2">
 
                 <TextView
                     android:id="@+id/tv_coupon_title"
@@ -47,10 +42,7 @@
                     android:layout_marginLeft="@dimen/small_padding"
                     android:layout_toRightOf="@+id/tv_coupon_title"
                     android:text="@string/coupon_code_item"
-                    android:textSize="@dimen/fontNormal"
-
-
-                />
+                    android:textSize="@dimen/fontNormal"/>
 
                 <TextView
                     android:id="@+id/tv_coupon_reward"
@@ -62,8 +54,7 @@
                     android:gravity="center"
                     android:paddingRight="@dimen/small_padding"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/fontBody"
-                />
+                    android:textSize="@dimen/fontBody"/>
 
             </RelativeLayout>
 

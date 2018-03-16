@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -115,7 +116,7 @@ public class PaidCouponDetailActivity extends BaseActivity {
     }
 
     private String generateQrCodeUrl() {
-        return SharedPreferenceHelper.getServerHost() + RequestConstant.URL_COUPON_SHARE_QR_CODE + "?token=" + SharedPreferenceHelper.getUserToken()
+        return SharedPreferenceHelper.getServerHost() + HttpRequestConstant.URL_COUPON_SHARE_QR_CODE + "?token=" + SharedPreferenceHelper.getUserToken()
                 + "&actId=" + mActId + "&sessionType=" + RequestConstant.SESSION_TYPE;
     }
 

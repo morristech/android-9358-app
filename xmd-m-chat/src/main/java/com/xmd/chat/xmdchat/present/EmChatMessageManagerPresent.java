@@ -24,7 +24,6 @@ import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventSendMessage;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.RevokeChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
@@ -79,7 +78,6 @@ public class EmChatMessageManagerPresent implements XmdChatMessageManagerInterfa
                                 EMClient.getInstance().chatManager().deleteConversation(chatId, true);
                                 continue;
                             }
-
                             //对于打赏消息特殊处理，需要插入一条提示消息
                             if (ChatMessage.MSG_TYPE_REWARD.equals(chatMessage.getMsgType())) {
                                 TipChatMessage tipChatMessage = TipChatMessage.create(
@@ -191,11 +189,18 @@ public class EmChatMessageManagerPresent implements XmdChatMessageManagerInterfa
         return null;
     }
 
+    //环信咱不能发送优惠券
     @Override
-    public void sendCouponMessage(String remoteChatId, boolean paid, String content, String actId, String inviteCode, String typeName, String timeLimit) {
-        CouponChatMessage chatMessage = CouponChatMessage.create(remoteChatId, paid, actId, content, inviteCode,null,null,null);
-        sendMessage(chatMessage);
+    public void sendCouponMessage(String remoteChatId, boolean isPaid, String actId, String techCode, String typeName, String couponName, String discountValue, String validPeriod) {
+//        CouponChatMessage chatMessage = CouponChatMessage.create(remoteChatId, isPaid, actId, content, inviteCode,null,null,null);
+//        sendMessage(chatMessage);
     }
+
+//    @Override
+//    public void sendCouponMessage(String remoteChatId, boolean paid, String content, String actId, String inviteCode, String typeName, String timeLimit) {
+//        CouponChatMessage chatMessage = CouponChatMessage.create(remoteChatId, paid, actId, content, inviteCode,null,null,null);
+//        sendMessage(chatMessage);
+//    }
 
     @Override
     public ChatMessage sendVoiceMessage(User remoteUser, String path, int length) {

@@ -24,8 +24,6 @@ import java.util.Map;
  */
 public class CommonUtils {
 
-
-
     public static void userGetCoupon(String actId, String channel, String emchatId, CouponInfo couponInfo) {
         Map<String, Object> params = new HashMap<>();
         params.put(RequestConstant.KEY_USER_COUPON_ACT_ID, actId);

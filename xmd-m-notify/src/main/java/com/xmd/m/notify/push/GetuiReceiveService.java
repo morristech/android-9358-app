@@ -9,7 +9,6 @@ import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.m.notify.event.EventPushReceive;
 
@@ -52,7 +51,6 @@ public class GetuiReceiveService extends GTIntentService {
                         message = gson.fromJson(data, XmdPushMessage.class);
                         //显示
                         message.show();
-                        XToast.show("接收到推送消息：" + message.toString());
                     } catch (Exception e) {
                         XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
                     }

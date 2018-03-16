@@ -1,6 +1,7 @@
 package com.xmd.contact.httprequest;
 
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.contact.bean.ClubEmployeeListResult;
 import com.xmd.contact.bean.ContactAllListResult;
 import com.xmd.contact.bean.ContactRecentListResult;
@@ -23,12 +24,12 @@ import rx.Observable;
 public interface NetService {
 
     // 获取会所附近客户数量
-    @GET(RequestConstant.URL_GET_NEARBY_CUS_COUNT)
+    @GET(HttpRequestConstant.URL_GET_NEARBY_CUS_COUNT)
     Observable<NearbyCusCountResult> getNearbyCusCount();
 
     //会所全部客户
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_CUSTOMER_USER_ALL_LIST)
+    @POST(HttpRequestConstant.URL_GET_TECH_CUSTOMER_USER_ALL_LIST)
     Observable<ContactAllListResult> getAllContactList(@Field(RequestConstant.KEY_PAGE) String page,
                                                        @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                                        @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
@@ -40,7 +41,7 @@ public interface NetService {
 
     //我的拓客
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST)
+    @POST(HttpRequestConstant.URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST)
     Observable<ContactRegisterListResult> getRegisterContactList(@Field(RequestConstant.KEY_PAGE) String page,
                                                                  @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                                                  @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
@@ -51,16 +52,16 @@ public interface NetService {
                                                                  @Field(RequestConstant.KEY_USER_NAME) String userName);
 
     //最近访客
-    @GET(RequestConstant.URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST)
+    @GET(HttpRequestConstant.URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST)
     Observable<ContactRecentListResult> getRecentContactList();
 
     //会所联系人
-    @GET(RequestConstant.URL_GET_CLUB_EMPLOYEE_LIST)
+    @GET(HttpRequestConstant.URL_GET_CLUB_EMPLOYEE_LIST)
     Observable<ClubEmployeeListResult> clubEmployeeList();
 
     //会所全部客户
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_MANAGER_CUSTOMER_USER_ALL_LIST)
+    @POST(HttpRequestConstant.URL_GET_MANAGER_CUSTOMER_USER_ALL_LIST)
     Observable<ManagerContactAllListResult> getManagerAllContactList(@Field(RequestConstant.KEY_PAGE) String page,
                                                                      @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                                                      @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
@@ -70,11 +71,11 @@ public interface NetService {
                                                                      @Field(RequestConstant.KEY_USER_GROUP) String userGroup,
                                                                      @Field(RequestConstant.KEY_USER_NAME) String userName);
 
-    @GET(RequestConstant.URL_GET_MANAGER_CUSTOMER_USER_RECENT_LIST)
+    @GET(HttpRequestConstant.URL_GET_MANAGER_CUSTOMER_USER_RECENT_LIST)
     Observable<ManagerContactRecentListResult> getManagerRecentContactList();
 
     //标签列表
-    @GET(RequestConstant.URL_GET_MANAGER_TAG_ALL_LIST)
+    @GET(HttpRequestConstant.URL_GET_MANAGER_TAG_ALL_LIST)
     Observable<TagListResult> getTagList();
 
 

@@ -31,7 +31,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -134,11 +133,8 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                     } else {
                         successCount++;
                         remainSendCount--;
-                        ChatMessageManager.getInstance().sendCouponMessage(
-                                chatId,
-                                true,
-                                getShareText(couponInfo),
-                                couponInfo.actId, SharedPreferenceHelper.getUserInviteCode(),couponInfo.couponTypeName,couponInfo.useTimePeriod);
+                        ChatMessageManager.getInstance().sendCouponMessage(chatId,true,couponInfo.actId,SharedPreferenceHelper.getUserInviteCode(),couponInfo.couponTypeName,
+                                couponInfo.useTypeName,null,couponInfo.couponPeriod);
                     }
                 }
                 checkDeliverResult();
@@ -168,14 +164,16 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
     private String getShareText(CouponInfo couponInfo) {
         switch (couponInfo.couponType) {
             case Constant.COUPON_TYPE_PAID:
-                return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
+              //  return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
+
             case Constant.COUPON_TYPE_DISCOUNT:
-                return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
+             //   return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
             case Constant.COUPON_TYPE_GIFT:
-                return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
+              //  return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
             default:
-                return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
+              //  return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
         }
+        return "1234";
     }
 
     public void checkDeliverResult() {

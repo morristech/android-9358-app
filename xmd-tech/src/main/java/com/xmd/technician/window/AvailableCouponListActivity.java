@@ -14,6 +14,7 @@ import com.xmd.chat.event.ChatUmengStatisticsEvent;
 import com.xmd.technician.Adapter.ChatCouponAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CouponType;
 import com.xmd.technician.bean.UserGetCouponResult;
@@ -182,8 +183,8 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
         remainSendCount--;
         if (result.respData != null) {
             //用户领取成功，那么发送环信消息
-            ChatMessageManager.getInstance().sendCouponMessage(chatId, false, result.content, result.actId,
-                    LoginTechnician.getInstance().getInviteCode(), result.couponType,result.limitTime);
+            ChatMessageManager.getInstance().sendCouponMessage(chatId, false, result.actId, SharedPreferenceHelper.getInviteCode(),
+                    result.useTypeName, result.actTitle, result.actValue, result.couponPeriod);
             successCount++;
         } else {
             failedCount++;
@@ -206,18 +207,17 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             for (CouponInfo couponInfo : mSelectedCouponInfo) {
                 mParams.clear();
                 if (!("paid").equals(couponInfo.couponType)) {
-                    userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId, couponInfo.useTypeName, couponInfo.useTimePeriod);
+                    userGetCoupon(getShareText(couponInfo), couponInfo.actId,LoginTechnician.getInstance().getInviteCode(),couponInfo.couponType,couponInfo.useTypeName,
+                            couponInfo.actTitle,String.valueOf(couponInfo.actValue),couponInfo.couponPeriod,couponInfo.couponPeriod);
                     mParams.put(RequestConstant.KEY_ACT_ID, couponInfo.actId);
                     mParams.put(RequestConstant.KEY_ACT_TYPE, RequestConstant.KEY_COUPON_REWARD);
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE, mParams);
+
                 } else {
                     successCount++;
                     remainSendCount--;
-                    ChatMessageManager.getInstance().sendCouponMessage(
-                            chatId,
-                            true,
-                            getShareText(couponInfo),
-                            couponInfo.actId, LoginTechnician.getInstance().getInviteCode(), couponInfo.useTypeName, couponInfo.useTimePeriod);
+                    ChatMessageManager.getInstance().sendCouponMessage(chatId, true, couponInfo.actId, SharedPreferenceHelper.getInviteCode(),
+                            couponInfo.useTypeName, couponInfo.actTitle, String.valueOf(couponInfo.actValue), couponInfo.couponPeriod);
                     mParams.put(RequestConstant.KEY_ACT_ID, couponInfo.actId);
                     mParams.put(RequestConstant.KEY_ACT_TYPE, RequestConstant.KEY_PAID_COUPON);
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SHARE_COUNT_UPDATE, mParams);
@@ -249,14 +249,19 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             finish();
         }
     }
-
-    public void userGetCoupon(String content, String actId, String channel, String emchatId, String typeName, String limitTime) {
+    private void userGetCoupon(String content, String actId, String techCode, String couponType, String useTypeName, String actTitle,
+                               String actValue, String couponPeriod, String limitTime) {
         Map<String, Object> params = new HashMap<>();
         params.put(RequestConstant.KEY_COUPON_CONTENT, content);
         params.put(RequestConstant.KEY_USER_COUPON_ACT_ID, actId);
-        params.put(RequestConstant.KEY_USER_COUPON_CHANEL, channel);
-        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, emchatId);
-        params.put(RequestConstant.KEY_COUPON_TYPE_NAME, typeName);
+        params.put(RequestConstant.KEY_USER_COUPON_CHANEL, "tech");
+        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, chatId);
+        params.put(RequestConstant.KEY_USER_TECH_CODE,techCode);
+        params.put(RequestConstant.KEY_COUPON_USE_TYPE_NAME, useTypeName);
+        params.put(RequestConstant.KEY_COUPON_TYPE,couponType);
+        params.put(RequestConstant.KEY_ACT_TITLE,actTitle);
+        params.put(RequestConstant.KEY_ACT_VALUE,actValue);
+        params.put(RequestConstant.KEY_COUPON_PERIOD,couponPeriod);
         params.put(RequestConstant.KEY_COUPON_LIMIT_TIME, limitTime);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON, params);
     }

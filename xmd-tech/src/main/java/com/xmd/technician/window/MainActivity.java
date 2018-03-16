@@ -389,11 +389,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 showToast("当前已经离线，请重新登录!");
                 return;
             }
-        }else{
-            if(!ImChatAccountManagerPresent.getInstance().userIsOnline()){
+        }else if(!ImChatAccountManagerPresent.getInstance().userIsOnline()){
                 showToast("当前聊天已经离线，请重新登录!");
                 return;
-            }
         }
         HelloSettingManager.getInstance().sendHelloTemplate(emChatId, new Callback<SayHiResult>() {
             @Override

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTipBinding;
@@ -40,6 +39,7 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
 //        if (((TipChatMessage) chatMessage).needSetMovementMethod()) {
 //            ((TextView) view.findViewById(R.id.tipView)).setMovementMethod(LinkMovementMethod.getInstance());
 //        }
+        binding.tipView.setText(getTip());
         return binding;
     }
 
@@ -53,14 +53,12 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
         return null;
     }
 
-    public CharSequence getTip() {
-        XLogger.i(">>>","getTip撤回消息");
+    public  CharSequence getTip() {
         if(chatMessage instanceof TipChatMessage){
-            return TextUtils.isEmpty(((TipChatMessage) chatMessage).getTip()) ? ResourceUtils.getString(R.string.has_revoke_message) : ((TipChatMessage) chatMessage).getTip();
+           return TextUtils.isEmpty(((TipChatMessage) chatMessage).getTip()) ? ResourceUtils.getString(R.string.has_revoke_message) : ((TipChatMessage) chatMessage).getTip();
         }else{
             return ResourceUtils.getString(R.string.has_revoke_message);
         }
-
     }
 
     public Drawable getTipIcon(Context context) {

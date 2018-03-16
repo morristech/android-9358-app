@@ -11,7 +11,7 @@
     <string name="luck_wheel_marketing">那一世转山转水，只为相见</string>
     <string name="invitation_marketing">邀请好友赢豪礼～</string>
     <string name="club_journal">有美女、有福利，你就是我的VIP</string>
-    <string name="has_revoke_message">你撤回一条消息</string>
+    <string name="has_revoke_message">撤回一条消息</string>
     <string name="invite_gift_message">邀请好友赢好礼～</string>
     <string name="location_message">位置信息</string>
     <string name="image_message">【图片】</string>
@@ -20,4 +20,5 @@
     <string name="order_message">订单</string>
     <string name="order_request_message">选项目、约技师，\n线上预约，方便快捷</string>
     <string name="request_reward_message">万水千山总是情\n打赏两个行不行</string>
+    <string name="request_paid_coupon">求点钟</string>
 </resources>

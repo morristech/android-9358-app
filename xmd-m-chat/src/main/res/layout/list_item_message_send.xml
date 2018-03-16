@@ -22,6 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginBottom="4dp"
+            android:textSize="13sp"
             android:visibility="@{data.showTime?View.VISIBLE:View.GONE}"
             app:time="@{data}" />
 

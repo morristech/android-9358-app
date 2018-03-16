@@ -183,3 +183,12 @@
 
 -dontwarn com.xmd.salary.**
 -keep class com.xmd.salary.** {*;}
+
+-keep class com.tencent.**{*;}
+-dontwarn com.tencent.**
+
+-keep class tencent.**{*;}
+-dontwarn tencent.**
+
+-keep class qalsdk.**{*;}
+-dontwarn qalsdk.**

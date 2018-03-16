@@ -192,12 +192,17 @@ public class UserInfoServiceImpl implements UserInfoService {
             @Override
             public void onCallbackSuccess(BaseBean<User> result) {
                 saveUser(result.getRespData());
-                callback.onResponse(result.getRespData(), null);
+                if (callback != null){
+                    callback.onResponse(result.getRespData(), null);
+                }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                callback.onResponse(null, e);
+                if (callback != null){
+                    callback.onResponse(null, e);
+                }
+
             }
         });
     }

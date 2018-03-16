@@ -132,8 +132,6 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                     .show();
             return true;
         } else if (i == R.id.menu_revoke) {
-            //撤回
-           // onUnbindView();
             EventBus.getDefault().post(new EventRevokeMessage(this));
             return true;
         } else if (i == R.id.menu_copy) {

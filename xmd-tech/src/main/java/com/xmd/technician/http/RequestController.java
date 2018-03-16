@@ -1532,20 +1532,23 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
-                result.actId = params.get(RequestConstant.KEY_ACT_ID);
                 result.content = params.get(RequestConstant.KEY_COUPON_CONTENT);
+                result.actId = params.get(RequestConstant.KEY_ACT_ID);
                 result.techCode = params.get(RequestConstant.KEY_USER_TECH_CODE);
-                result.couponType = params.get(RequestConstant.KEY_COUPON_TYPE_NAME);
+                result.couponType = params.get(RequestConstant.KEY_COUPON_USE_TYPE_NAME);
                 result.limitTime = params.get(RequestConstant.KEY_COUPON_LIMIT_TIME);
+                result.useTypeName = params.get(RequestConstant.KEY_COUPON_USE_TYPE_NAME);
+                result.actTitle = params.get(RequestConstant.KEY_ACT_TITLE);
+                result.couponPeriod = params.get(RequestConstant.KEY_COUPON_PERIOD);
                 RxBus.getInstance().post(result);
             }
 
             @Override
             protected void postError(String errorMsg) {
-                UserGetCouponResult result = new UserGetCouponResult(params.get(RequestConstant.KEY_COUPON_CONTENT),
-                        params.get(RequestConstant.KEY_ACT_ID), params.get(RequestConstant.KEY_USER_TECH_CODE), params.get(RequestConstant.KEY_COUPON_TYPE_NAME),
-                        params.get(RequestConstant.KEY_COUPON_LIMIT_TIME));
+                UserGetCouponResult result = new UserGetCouponResult();
+                result.respData = null;
                 RxBus.getInstance().post(result);
+
             }
         });
 

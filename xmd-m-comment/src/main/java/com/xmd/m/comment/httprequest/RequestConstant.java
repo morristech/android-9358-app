@@ -6,35 +6,6 @@ package com.xmd.m.comment.httprequest;
 
 public class RequestConstant {
 
-    public static final String BASE_URL = "/spa-manager/api";
-    public static final String URL_COMMENT_LIST = BASE_URL + "/v2/comment/list";
-    public static final String URL_COMMENT_TECH_LIST = BASE_URL + "/v2/manager/tech/base/list";
-    public static final String URL_USER_BAD_COMMENT_STATUS_UPDATE = BASE_URL + "/v2/manager/user/badcomment/status/update";
-    public static final String URL_CUSTOMER_USER_DETAIL = BASE_URL + "/v2/manager/user/detail";
-    public static final String URL_USER_CONSUME_LIST = BASE_URL + "/v2/manager/user/consume/list";
-    public static final String URL_USER_SHOP_LIST = BASE_URL + "/v2/manager/user/shop/list";
-    public static final String URL_USER_REWARD_LIST = BASE_URL + "/v2/manager/user/reward/list";
-
-    public static final String URL_TECH_CUSTOMER_DETAIL = BASE_URL + "/v2/tech/customer/detail";
-    public static final String URL_TECH_USER_CONSUME_LIST = BASE_URL + "/v2/tech/customer/consume/list";
-    public static final String URL_TECH_USER_SHOP_LIST = BASE_URL + "/v2/tech/customer/shop/list";
-    public static final String URL_TECH_USER_REWARD_LIST = BASE_URL + "/v2/tech/customer/reward/list";
-
-    //本店同事详情
-    public static final String URL_CLUB_COLLEAGUE_DETAIL = BASE_URL + "/v2/tech/colleague/detail";
-    // 查询同客户的联系限制
-    public static final String URL_GET_CONTACT_PERMISSION = BASE_URL + "/v2/tech/contact/permission/{id}";
-    //删除联系人
-    public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
-    //标签
-    public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
-    //修改备注
-    public static final String URL_EDIT_CUSTOMER = BASE_URL + "/v2/tech/customer/edit";
-
-    public static final String URL_DO_GROUP_USER_EDIT_GROUP = BASE_URL + "/v2/manager/group/user/editGroup";
-    // 近期是否打过招呼
-    public static final String URL_CHECK_HELLO_RECENTLY = BASE_URL + "/v2/tech/hello/{customerId}/status";
-
     public static final String KEY_COMMENT_TYPE = "commentType";
     public static final String KEY_END_DATE = "endDate";
     public static final String KEY_PAGE = "page";

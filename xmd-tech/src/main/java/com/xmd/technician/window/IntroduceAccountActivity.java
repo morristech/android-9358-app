@@ -19,11 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.google.zxing.Result;
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.file.provider.FileProvider7;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.DecodeImage;
-import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.widget.CustomWebView;
 
 import java.io.File;
@@ -63,7 +63,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         setTitle("提现说明");
         ll_layout = (LinearLayout) findViewById(R.id.ll_layout);
         mCustomWebView = new CustomWebView(this, this);
-        mIntroduceUrl = SharedPreferenceHelper.getServerHost() + RequestConstant.URL_INTRODUCE_BIND;
+        mIntroduceUrl = SharedPreferenceHelper.getServerHost() + HttpRequestConstant.URL_INTRODUCE_BIND;
         mCustomWebView.loadUrl(mIntroduceUrl);//加载页面
         mCustomWebView.setFocusable(true);
         mCustomWebView.setFocusableInTouchMode(true);

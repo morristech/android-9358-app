@@ -3,11 +3,11 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="data"
-            type="com.xmd.chat.viewmodel.ChatRowViewModelText" />
+            type="com.xmd.chat.viewmodel.ChatRowViewModelText"/>
     </data>
 
     <TextView
@@ -15,7 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:lineSpacingExtra="2dp"
         android:gravity="center_vertical"
         android:text="@{data.message}"
-    android:textSize="13sp"/>
+        android:textSize="16sp"/>
 </layout>

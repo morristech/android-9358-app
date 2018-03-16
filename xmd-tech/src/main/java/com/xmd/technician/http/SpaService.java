@@ -1,5 +1,6 @@
 package com.xmd.technician.http;
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.m.network.BaseBean;
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditAccountResult;
@@ -112,14 +113,14 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_LOGIN)
+    @POST(HttpRequestConstant.URL_LOGIN)
     Call<LoginResult> login(@Field(RequestConstant.KEY_USERNAME) String username,
                             @Field(RequestConstant.KEY_PASSWORD) String password,
                             @Field(RequestConstant.KEY_APP_VERSION) String appVersion,
                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_LOGIN_BY_TECH_NO)
+    @POST(HttpRequestConstant.URL_LOGIN_BY_TECH_NO)
     Call<LoginResult> loginByTechNo(@Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
                                     @Field(RequestConstant.KEY_TECH_No) String techNo,
                                     @Field(RequestConstant.KEY_PASSWORD) String password,
@@ -132,7 +133,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_LOGOUT)
+    @POST(HttpRequestConstant.URL_LOGOUT)
     Call<LogoutResult> logout(@Field(RequestConstant.KEY_TOKEN) String userToken,
                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
@@ -145,13 +146,13 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_FEEDBACK_CREATE)
+    @POST(HttpRequestConstant.URL_FEEDBACK_CREATE)
     Call<BaseResult> submitFeedback(@Field(RequestConstant.KEY_COMMENTS) String comments,
                                     @Field(RequestConstant.KEY_TOKEN) String userToken,
                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_REGISTER)
+    @POST(HttpRequestConstant.URL_REGISTER)
     Call<RegisterResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
                                   @Field(RequestConstant.KEY_PASSWORD) String passWord,
                                   @Field(RequestConstant.KEY_ICODE) String iCode,
@@ -162,36 +163,36 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_SPARE_TECH_ID) String techId,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
-    @GET(RequestConstant.URL_EDIT_INFO)
+    @GET(HttpRequestConstant.URL_EDIT_INFO)
     Call<TechEditResult> getTechEditInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                          @Query(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @Deprecated
-    @GET(RequestConstant.URL_CURRENT_INFO)
+    @GET(HttpRequestConstant.URL_CURRENT_INFO)
     Call<TechCurrentResult> getTechCurrentInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                @Query(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPDATE_TECH_INFO)
+    @POST(HttpRequestConstant.URL_UPDATE_TECH_INFO)
     Call<UpdateTechInfoResult> updateTechInfo(@Field(RequestConstant.KEY_USER) String user,
                                               @Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_PERSONAL_DATA)
+    @POST(HttpRequestConstant.URL_TECH_PERSONAL_DATA)
     Call<TechPersonalDataResult> getTechPersonalData(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                      @Field(RequestConstant.KEY_USER_TYPE) String userType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_MODIFY_PASSWORD)
+    @POST(HttpRequestConstant.URL_MODIFY_PASSWORD)
     Call<BaseResult> modifyPassword(@Field(RequestConstant.KEY_OLD_PASSWORD) String oldPassword,
                                     @Field(RequestConstant.KEY_NEW_PASSWORD) String newPassword,
                                     @Field(RequestConstant.KEY_TOKEN) String userToken,
                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_RESET_PASSWORD)
+    @POST(HttpRequestConstant.URL_RESET_PASSWORD)
     Call<BaseResult> resetPassword(@Field(RequestConstant.KEY_USERNAME) String username,
                                    @Field(RequestConstant.KEY_PASSWORD) String passWord,
                                    @Field(RequestConstant.KEY_ICODE) String iCode,
@@ -208,7 +209,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_MANAGE_ORDER)
+    @POST(HttpRequestConstant.URL_MANAGE_ORDER)
     Call<BaseResult> manageOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                  @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
@@ -216,19 +217,19 @@ public interface SpaService {
                                  @Field(RequestConstant.KEY_REASON) String reason);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_HIDE_ORDER)
+    @POST(HttpRequestConstant.URL_HIDE_ORDER)
     Call<BaseResult> hideOrder(@Field(RequestConstant.KEY_ORDER_ID) String orderId,
                                @Field(RequestConstant.KEY_TOKEN) String userToken,
                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ICODE)
+    @POST(HttpRequestConstant.URL_GET_ICODE)
     Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile,
                               @Field(RequestConstant.KEY_WHICH) String which,
                               @Field(RequestConstant.KEY_SIGN) String sign);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_JOIN_CLUB)
+    @POST(HttpRequestConstant.URL_JOIN_CLUB)
     Call<JoinClubResult> joinClub(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                   @Field(RequestConstant.KEY_INVITE_CODE) String inviteCode,
                                   @Field(RequestConstant.KEY_SPARE_TECH_ID) String techId,
@@ -236,18 +237,18 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_QUIT_CLUB)
+    @POST(HttpRequestConstant.URL_QUIT_CLUB)
     Call<QuitClubResult> quitClub(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                   @Field(RequestConstant.KEY_PASSWORD) String password,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_WORKTIME)
+    @POST(HttpRequestConstant.URL_GET_WORKTIME)
     Call<WorkTimeResult> getWorkTime(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPDATE_WORKTIME)
+    @POST(HttpRequestConstant.URL_UPDATE_WORKTIME)
     Call<BaseResult> updateWorkTime(@Field(RequestConstant.KEY_DAY_RANGE) String dayRange,
                                     @Field(RequestConstant.KEY_BEGIN_TIME) String beginTime,
                                     @Field(RequestConstant.KEY_END_TIME) String endTime,
@@ -257,53 +258,53 @@ public interface SpaService {
                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPLOAD_AVATAR)
+    @POST(HttpRequestConstant.URL_UPLOAD_AVATAR)
     Call<AvatarResult> uploadAvatar(@Field(RequestConstant.KEY_IMG_FILE) String imgFile,
                                     @Field(RequestConstant.KEY_TOKEN) String userToken,
                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPLOAD_ALBUM)
+    @POST(HttpRequestConstant.URL_UPLOAD_ALBUM)
     Call<AlbumResult> uploadAlbum(@Field(RequestConstant.KEY_IMG_FILE) String imgFile,
                                   @Field(RequestConstant.KEY_TOKEN) String userToken,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_DELETE_ALBUM)
+    @POST(HttpRequestConstant.URL_DELETE_ALBUM)
     Call<AlbumResult> deleteAlbum(@Field(RequestConstant.KEY_ID) String imgFile,
                                   @Field(RequestConstant.KEY_TOKEN) String userToken,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_SORT_ALBUM)
+    @POST(HttpRequestConstant.URL_SORT_ALBUM)
     Call<AlbumResult> sortAlbum(@Field(RequestConstant.KEY_IDS) String ids,
                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
                                 @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPDATE_WORK_STATUS)
+    @POST(HttpRequestConstant.URL_UPDATE_WORK_STATUS)
     Call<UpdateWorkStatusResult> updateWorkStatus(@Field(RequestConstant.KEY_STATUS) String status,
                                                   @Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_SERVICE_LIST)
+    @POST(HttpRequestConstant.URL_GET_SERVICE_LIST)
     Call<ServiceResult> getServiceList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPDATE_SERVICE_LIST)
+    @POST(HttpRequestConstant.URL_UPDATE_SERVICE_LIST)
     Call<BaseResult> updateServiceList(@Field(RequestConstant.KEY_IDS) String ids,
                                        @Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ACCOUNT_MONEY)
+    @POST(HttpRequestConstant.URL_GET_ACCOUNT_MONEY)
     Call<AccountMoneyResult> getAccountMoney(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_CONSUME_DETAIL)
+    @POST(HttpRequestConstant.URL_CONSUME_DETAIL)
     Call<ConsumeDetailResult> getConsumeDetail(@Field(RequestConstant.KEY_CONSUME_TYPE) String consumeType,
                                                @Field(RequestConstant.KEY_PAGE) String page,
                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
@@ -311,7 +312,7 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_COUPON_LIST)
+    @POST(HttpRequestConstant.URL_GET_COUPON_LIST)
     Call<CouponListResult> getCouponList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
@@ -321,7 +322,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_COUPON_INFO)
+    @POST(HttpRequestConstant.URL_GET_COUPON_INFO)
     Call<CouponInfoResult> getCouponInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                          @Field(RequestConstant.KEY_ACT_ID) String actId);
@@ -334,7 +335,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_PAID_COUPON_USER_DETAIL)
+    @POST(HttpRequestConstant.URL_PAID_COUPON_USER_DETAIL)
     Call<PaidCouponUserDetailResult> getPaidCouponUserDetail(
             @Field(RequestConstant.KEY_COUPON_STATUS) String couponStatus,
             @Field(RequestConstant.KEY_ACT_ID) String actId,
@@ -344,7 +345,7 @@ public interface SpaService {
             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_COUPON_SHARE_EVENT_COUNT)
+    @POST(HttpRequestConstant.URL_COUPON_SHARE_EVENT_COUNT)
     Call<BaseResult> doCouponShareEventCount(@Field(RequestConstant.KEY_ACT_ID) String actId,
                                              @Field(RequestConstant.KEY_USER_TYPE) String userType,
                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -360,7 +361,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GETUI_BIND_CLIENT_ID)
+    @POST(HttpRequestConstant.URL_GETUI_BIND_CLIENT_ID)
     Call<BaseResult> bindGetuiClientId(@Field(RequestConstant.KEY_TOKEN) String token,
                                        @Field(RequestConstant.KEY_USER_ID) String userId,
                                        @Field(RequestConstant.KEY_USER_TYPE) String userType,
@@ -375,21 +376,21 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GETUI_UNBIND_CLIENT_ID)
+    @POST(HttpRequestConstant.URL_GETUI_UNBIND_CLIENT_ID)
     Call<BaseResult> unbindGetuiClientId(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                          @Field(RequestConstant.KEY_TOKEN) String userToken,
                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                          @Field(RequestConstant.KEY_CLIENT_ID) String clientId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CUSTOMER_LIST)
+    @POST(HttpRequestConstant.URL_GET_CUSTOMER_LIST)
     Call<CustomerListResult> getCustomerList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
                                              @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CUSTOMER_INFO_DETAIL)
+    @POST(HttpRequestConstant.URL_GET_CUSTOMER_INFO_DETAIL)
     Call<CustomerDetailResult> getCustomerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                      @Field(RequestConstant.KEY_USER_ID) String userId,
                                                      @Field(RequestConstant.KEY_ID) String id,
@@ -397,13 +398,13 @@ public interface SpaService {
 
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_DELETE_CONTACT)
+    @POST(HttpRequestConstant.URL_DELETE_CONTACT)
     Call<BaseResult> doDeleteContact(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                      @Field(RequestConstant.KEY_ID) String id,
                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CREDIT_USER_RECORDS)
+    @POST(HttpRequestConstant.URL_GET_CREDIT_USER_RECORDS)
     Call<CreditAccountDetailResult> doGetUserRecordDetail(@Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                           @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                           @Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -413,13 +414,13 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CREDIT_SWITCH_STATUS)
+    @POST(HttpRequestConstant.URL_GET_CREDIT_SWITCH_STATUS)
     Call<CreditStatusResult> doGetCreditStatus(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CREDIT_USER_ACCOUNT)
+    @POST(HttpRequestConstant.URL_GET_CREDIT_USER_ACCOUNT)
     Call<CreditAccountResult> doGetCreditAccount(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                  @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -427,7 +428,7 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CREDIT_EXCHANGE_APPLY)
+    @POST(HttpRequestConstant.URL_GET_CREDIT_EXCHANGE_APPLY)
     Call<CreditExchangeResult> doExchangeCredit(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                 @Field(RequestConstant.KEY_UER_CREDIT_AMOUNT) String amount,
                                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -435,7 +436,7 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS)
+    @POST(HttpRequestConstant.URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS)
     Call<CreditApplicationsResult> getExchangeApplications(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                            @Field(RequestConstant.KEY_STATUS) String status,
@@ -444,7 +445,7 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GAME_DICE_SUBMIT)
+    @POST(HttpRequestConstant.URL_GAME_DICE_SUBMIT)
     Call<SendGameResult> doDiceGameSubmit(@Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                           @Field(RequestConstant.KEY_UER_CREDIT_AMOUNT) String amount,
                                           @Field(RequestConstant.KEY_GAME_USER_EMCHAT_ID) String emchatId,
@@ -454,7 +455,7 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GAME_DICE_ACCEPT_OR_REJECT)
+    @POST(HttpRequestConstant.URL_GAME_DICE_ACCEPT_OR_REJECT)
     Call<GameResult> doDiceGameAcceptOrReject(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                               @Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
@@ -463,14 +464,14 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_USER_SWITCHES)
+    @POST(HttpRequestConstant.URL_GET_USER_SWITCHES)
     Call<UserSwitchesResult> doGetUserSwitches(@Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                @Field(RequestConstant.KEY_TOKEN) String userToken
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_RECENTLY_VISITOR_LIST)
+    @POST(HttpRequestConstant.URL_GET_RECENTLY_VISITOR_LIST)
     Call<RecentlyVisitorResult> getRecentlyVisitorList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                        @Field(RequestConstant.KEY_TOKEN) String userToken,
                                                        @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
@@ -479,20 +480,20 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CREDIT_GIFT_LIST)
+    @POST(HttpRequestConstant.URL_GET_CREDIT_GIFT_LIST)
     Call<GiftListResult> getCreditGiftList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                            @Field(RequestConstant.KEY_TOKEN) String userToken
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_CUSTOMER_VIEW_VISIT)
+    @POST(HttpRequestConstant.URL_CUSTOMER_VIEW_VISIT)
     Call<VisitBean> doGetVisitView(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
                                    @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_SAVE_CONTACT_MARK_CHATTO_USER)
+    @POST(HttpRequestConstant.URL_SAVE_CONTACT_MARK_CHATTO_USER)
     Call<SaveChatUserResult> doSaveContact(@Field(RequestConstant.KEY_CURRENT_CHAT_ID) String currentChatId,
                                            @Field(RequestConstant.KEY_CURRENT_USER_TYPE) String currentUserType,
                                            @Field(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
@@ -510,7 +511,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_ADD_CUSTOMER)
+    @POST(HttpRequestConstant.URL_ADD_CUSTOMER)
     Call<BaseResult> addCustomer(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
                                  @Field(RequestConstant.KEY_PHONE_NUMBER) String phoneNum,
@@ -520,7 +521,7 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_ADD_CUSTOMER)
+    @POST(HttpRequestConstant.URL_ADD_CUSTOMER)
     Call<BaseResult> editCustomer(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                   @Field(RequestConstant.KEY_TOKEN) String userToken,
                                   @Field(RequestConstant.KEY_ID) String custtomerId,
@@ -531,11 +532,11 @@ public interface SpaService {
 
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_INFO)
+    @POST(HttpRequestConstant.URL_GET_TECH_INFO)
     Call<TechInfoResult> getTechInfo(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_STATISTICS_DATA)
+    @POST(HttpRequestConstant.URL_GET_TECH_STATISTICS_DATA)
     Call<TechStatisticsDataResult> getTechStatisticData(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     /**
@@ -547,7 +548,7 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_ORDER_LIST)
+    @POST(HttpRequestConstant.URL_GET_TECH_ORDER_LIST)
     Call<OrderListResult> getTechOrderList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                            @Field(RequestConstant.KEY_ORDER_STATUS) String orderStatus,
@@ -556,28 +557,28 @@ public interface SpaService {
                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_RANK_INDEX)
+    @POST(HttpRequestConstant.URL_GET_TECH_RANK_INDEX)
     Call<TechRankDataResult> getTechRankData(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_RECENT_DYNAMICS_LIST)
+    @POST(HttpRequestConstant.URL_GET_RECENT_DYNAMICS_LIST)
     Call<DynamicListResult> getDynamicList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                            @Field(RequestConstant.KEY_TECH_DYNAMIC_TYPE) String bizType,
                                            @Field(RequestConstant.KEY_PAGE) String page,
                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_ORDER_INNER_READ)
+    @POST(HttpRequestConstant.URL_ORDER_INNER_READ)
     Call<BaseResult> setOrderInnerRead(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_ORDER_ID) String orderId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_UNUSED_TECH_NO)
+    @POST(HttpRequestConstant.URL_GET_UNUSED_TECH_NO)
     Call<UnusedTechNoListResult> getUnusedTechNoList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                      @Field(RequestConstant.KEY_CLUB_CODE) String clubCode);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CLUB_USER_GET_COUPON)
+    @POST(HttpRequestConstant.URL_GET_CLUB_USER_GET_COUPON)
     Call<UserGetCouponResult> clubUserCoupon(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                              @Field(RequestConstant.KEY_USER_COUPON_ACT_ID) String actId,
                                              @Field(RequestConstant.KEY_USER_COUPON_CHANEL) String chanel,
@@ -587,7 +588,7 @@ public interface SpaService {
 
     //获取买单通知数据
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_PAY_NOTIFY_LIST)
+    @POST(HttpRequestConstant.URL_GET_PAY_NOTIFY_LIST)
     Call<GetPayNotifyListResult> getPayNotifyList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_START_DATE) String startDate,
                                                   @Field(RequestConstant.KEY_END_DATE) String endDate,
@@ -602,31 +603,31 @@ public interface SpaService {
      * @return
      */
     @FormUrlEncoded
-    @POST(RequestConstant.URL_CHECK_PAY_NOTIFY)
+    @POST(HttpRequestConstant.URL_CHECK_PAY_NOTIFY)
     Call<CheckPayNotifyResult> checkPayNotifyData(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_TYPE) String type);
 
     //营销—卡券列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CARD_SHARE_LIST_INFO)
+    @POST(HttpRequestConstant.URL_GET_CARD_SHARE_LIST_INFO)
     Call<CardShareListResult> cardShareList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                             @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
 
     //营销—活动列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ACTIVITY_LIST_INFO)
+    @POST(HttpRequestConstant.URL_GET_ACTIVITY_LIST_INFO)
     Call<ActivityListResult> activityList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                           @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
 
     //营销—宣传列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_PROPAGANDA_LIST_INFO)
+    @POST(HttpRequestConstant.URL_GET_PROPAGANDA_LIST_INFO)
     Call<PropagandaListResult> propagandaList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
 
     //次卡列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ONCE_CARD_LIST_DETAIL)
+    @POST(HttpRequestConstant.URL_GET_ONCE_CARD_LIST_DETAIL)
     Call<OnceCardResult> onceCardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                             @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                             @Field(RequestConstant.KEY_IS_SHARE) String isShare,
@@ -635,7 +636,7 @@ public interface SpaService {
 
     //券列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CARD_LIST_DETAIL)
+    @POST(HttpRequestConstant.URL_GET_CARD_LIST_DETAIL)
     Call<ShareCouponResult> cardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                            @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                            @Field(RequestConstant.KEY_COUPON_TYPE) String couponType,
@@ -644,7 +645,7 @@ public interface SpaService {
 
     //限时抢列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_SERVICE_ITEM_LIST)
+    @POST(HttpRequestConstant.URL_GET_SERVICE_ITEM_LIST)
     Call<LimitGrabResult> serviceItemListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                 @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                 @Field(RequestConstant.KEY_PAGE) String page,
@@ -652,18 +653,18 @@ public interface SpaService {
 
     //抽奖活动列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_REWARD_ACTIVITY_LIST)
+    @POST(HttpRequestConstant.URL_GET_REWARD_ACTIVITY_LIST)
     Call<RewardListResult> rewardActivityListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                     @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
     //邀请有礼
 
-    @GET(RequestConstant.URL_GET_INVITATION_REWARD_ACTIVITY_LIST)
+    @GET(HttpRequestConstant.URL_GET_INVITATION_REWARD_ACTIVITY_LIST)
     Call<InvitationRewardResult> invitationRewardListDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                             @Query(RequestConstant.KEY_USER_CLUB_ID) String clubId);
 
     //期刊列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CLUB_JOURNAL_LIST_DETAIL)
+    @POST(HttpRequestConstant.URL_GET_CLUB_JOURNAL_LIST_DETAIL)
     Call<JournalListResult> clubJournalListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                   @Field(RequestConstant.KEY_PAGE) String page,
@@ -671,7 +672,7 @@ public interface SpaService {
 
     //谁替我买单列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_PAY_FOR_ME_LIST)
+    @POST(HttpRequestConstant.URL_GET_PAY_FOR_ME_LIST)
     Call<PayForMeListResult> payForMeListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                 @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                 @Field(RequestConstant.KEY_PAGE) String page,
@@ -679,97 +680,97 @@ public interface SpaService {
 
     //期刊分享加1
     @FormUrlEncoded
-    @POST(RequestConstant.URL_DO_USER_JOURNAL_SHARE_COUNT)
+    @POST(HttpRequestConstant.URL_DO_USER_JOURNAL_SHARE_COUNT)
     Call<BaseResult> journalShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_JOURNAL_ID) String journalId);
 
     //技师账户列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_PROFILE_TECH_ACCOUNT_LIST)
+    @POST(HttpRequestConstant.URL_GET_PROFILE_TECH_ACCOUNT_LIST)
     Call<TechAccountListResult> techAccountList(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     //技师账户列表
-    @GET(RequestConstant.URL_ROLE_PERMISSION)
+    @GET(HttpRequestConstant.URL_ROLE_PERMISSION)
     Call<RolePermissionListResult> getRolePermissionList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                          @Query(RequestConstant.KEY_PLATFORM) String platform);
 
 
     // ------------------------------------------> 附近的人 <----------------------------------------
     // 查看会所位置
-    @GET(RequestConstant.URL_GET_CLUB_POSITION)
+    @GET(HttpRequestConstant.URL_GET_CLUB_POSITION)
     Call<ClubPositionResult> getClubPosition(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 获取会所附近客户数量
-    @GET(RequestConstant.URL_GET_NEARBY_CUS_COUNT)
+    @GET(HttpRequestConstant.URL_GET_NEARBY_CUS_COUNT)
     Call<NearbyCusCountResult> getNearbyCusCount(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 获取会所附近客户列表
-    @GET(RequestConstant.URL_GET_NEARBY_CUS_LIST)
+    @GET(HttpRequestConstant.URL_GET_NEARBY_CUS_LIST)
     Call<NearbyCusListResult> getNearbyCusList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                @Query(RequestConstant.KEY_PAGE) String page,
                                                @Query(RequestConstant.KEY_PAGE_SIZE) String page_size);
 
     // 获取剩余打招呼次数
-    @GET(RequestConstant.URL_GET_HELLO_LEFT_COUNT)
+    @GET(HttpRequestConstant.URL_GET_HELLO_LEFT_COUNT)
     Call<HelloLeftCountResult> getHelloLeftCount(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 获取招呼记录
-    @GET(RequestConstant.URL_GET_HELLO_RECORD_LIST)
+    @GET(HttpRequestConstant.URL_GET_HELLO_RECORD_LIST)
     Call<HelloRecordListResult> getHelloRecordList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                    @Query(RequestConstant.KEY_PAGE) String page,
                                                    @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     // 查询联系状态
-    @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
+    @GET(HttpRequestConstant.URL_GET_CONTACT_PERMISSION)
     Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_ID) String id,
                                                        @Query(RequestConstant.KEY_TOKEN) String userToken,
                                                        @Query(RequestConstant.KEY_CONTACT_ID_TYPE) String idType);
 
     // 获取打招呼内容
-    @GET(RequestConstant.URL_GET_HELLO_TEMPLATE)
+    @GET(HttpRequestConstant.URL_GET_HELLO_TEMPLATE)
     Call<HelloGetTemplateResult> getSetTemplate(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 获取最新回复列表
-    @GET(RequestConstant.URL_CHECK_HELLO_REPLY)
+    @GET(HttpRequestConstant.URL_CHECK_HELLO_REPLY)
     Call<HelloReplyResult> checkHelloReply(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 保存打招呼内容
     @FormUrlEncoded
-    @POST(RequestConstant.URL_SAVE_HELLO_TEMPLATE)
+    @POST(HttpRequestConstant.URL_SAVE_HELLO_TEMPLATE)
     Call<HelloSaveTemplateResult> saveSetTemplate(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_MSG_TYPE_TEXT) String text,
                                                   @Field(RequestConstant.KEY_TEMPLATE_IMAGE_ID) String imageId,
                                                   @Field(RequestConstant.KEY_HELLO_TEMPLATE_ID) String templateId);
 
     // 查询系统模版列表
-    @GET(RequestConstant.URL_GET_HELLO_TEMPLATE_LIST)
+    @GET(HttpRequestConstant.URL_GET_HELLO_TEMPLATE_LIST)
     Call<HelloSysTemplateResult> getSysTemplateList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 上传打招呼图片
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPLOAD_HELLO_TEMPLATE_IMAGE)
+    @POST(HttpRequestConstant.URL_UPLOAD_HELLO_TEMPLATE_IMAGE)
     Call<HelloUploadImgResult> uploadTemplateImg(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                  @Field(RequestConstant.KEY_IMG_FILE) String imgFile);
 
     // 查询角色列表
-    @GET(RequestConstant.URL_ROLE_LIST)
+    @GET(HttpRequestConstant.URL_ROLE_LIST)
     Call<RoleListResult> getRoleList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     //首页pK
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_PK_ACTIVITY_RANKING)
+    @POST(HttpRequestConstant.URL_GET_TECH_PK_ACTIVITY_RANKING)
     Call<TechPKRankingResult> techPKRanking(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     //pk列表pkActivityList
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_PK_ACTIVITY_LIST)
+    @POST(HttpRequestConstant.URL_GET_TECH_PK_ACTIVITY_LIST)
     Call<PKActivityListResult> pkActivityList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_PAGE) String page,
                                               @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     //pk队伍排行列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_PK_TEAM_RANKING_LIST)
+    @POST(HttpRequestConstant.URL_GET_PK_TEAM_RANKING_LIST)
     Call<PKTeamListResult> techPkTeamList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                           @Field(RequestConstant.KEY_PK_ACTIVITY_ID) String pkActivityId,
                                           @Field(RequestConstant.KEY_SORT_KEY) String sortKey,
@@ -780,7 +781,7 @@ public interface SpaService {
 
     //pk个人排行列表
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_PK_PERSONAL_RANKING_LIST)
+    @POST(HttpRequestConstant.URL_GET_PK_PERSONAL_RANKING_LIST)
     Call<PKPersonalListResult> techPkPersonalList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_PK_ACTIVITY_ID) String pkActivityId,
                                                   @Field(RequestConstant.KEY_SORT_KEY) String sortKey,
@@ -792,7 +793,7 @@ public interface SpaService {
 
 
     //技师排行榜
-    @GET(RequestConstant.URL_GET_PERSONAL_RANKING_LIST)
+    @GET(HttpRequestConstant.URL_GET_PERSONAL_RANKING_LIST)
     Call<TechRankingListResult> techPersonalRankingList(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                         @Query(RequestConstant.KEY_USER_TYPE) String userType,
                                                         @Query(RequestConstant.KEY_TECH_RANKING_SOR_TYPE) String type,
@@ -802,24 +803,24 @@ public interface SpaService {
                                                         @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_MARK_CHAT_TO_USER)
+    @POST(HttpRequestConstant.URL_GET_MARK_CHAT_TO_USER)
     Call<MarkChatToUserResult> markChatToUser(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_ID) String id,
                                               @Field(RequestConstant.KEY_MAP_SIZE) String size);
 
     //categoryList
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_CHAT_CATEGORY_LIST)
+    @POST(HttpRequestConstant.URL_GET_TECH_CHAT_CATEGORY_LIST)
     Call<CategoryListResult> categoryList(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_MARKETING_ITEM_LIST)
+    @POST(HttpRequestConstant.URL_GET_TECH_MARKETING_ITEM_LIST)
     Call<MarketingListResult> techMarketingList(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     // ------------------------------------------> 技师海报 <----------------------------------------
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_POSTER_SAVE)
+    @POST(HttpRequestConstant.URL_TECH_POSTER_SAVE)
     Call<SaveTechPosterResult> techPosterSave(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_POSTER_CLUB_NAME) String clubName,
                                               @Field(RequestConstant.KEY_POSTER_ID) String id,
@@ -831,38 +832,38 @@ public interface SpaService {
                                               @Field(RequestConstant.KEY_POSTER_TITLE) String title);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_POSTER_DELETE)
+    @POST(HttpRequestConstant.URL_TECH_POSTER_DELETE)
     Call<DeleteTechPosterResult> techPosterDelete(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_POSTER_ID) String id);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_POSTER_IMAGE_UPLOAD)
+    @POST(HttpRequestConstant.URL_TECH_POSTER_IMAGE_UPLOAD)
     Call<UploadTechPosterImageResult> techPosterImageUpload(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                             @Field(RequestConstant.KEY_POSTER_IMAGE_CATEGORY) String category,
                                                             @Field(RequestConstant.KEY_POSTER_IMAGE_IMG_FILE) String imgFile);
 
-    @GET(RequestConstant.URL_TECH_POSTER_LIST)
+    @GET(HttpRequestConstant.URL_TECH_POSTER_LIST)
     Call<TechPosterListResult> techPosterList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
-    @GET(RequestConstant.URL_TECH_POSTER_DETAIL)
+    @GET(HttpRequestConstant.URL_TECH_POSTER_DETAIL)
     Call<TechPosterDetailResult> techPosterDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Query(RequestConstant.KEY_POSTER_ID) String id);
 
     //修改申请信息
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_AUDIT_MODIFY)
+    @POST(HttpRequestConstant.URL_TECH_AUDIT_MODIFY)
     Call<AuditModifyResult> techAuditModify(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                             @Field(RequestConstant.KEY_ROLE_CODE) String roleCode,
                                             @Field(RequestConstant.KEY_SPARE_TECH_ID) String spareTechId);
     //取消加入会所申请
 
-    @GET(RequestConstant.URL_TECH_AUDIT_CANCEL)
+    @GET(HttpRequestConstant.URL_TECH_AUDIT_CANCEL)
     Call<AuditCancelResult> techAuditCancel(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                             @Query(RequestConstant.KEY_PASSWORD) String password);
 
     //被会所拒绝后确认
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_AUDIT_CONFIRM)
+    @POST(HttpRequestConstant.URL_TECH_AUDIT_CONFIRM)
     Call<AuditConfirmResult> techAuditConfirm(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
 
@@ -880,20 +881,20 @@ public interface SpaService {
     @GET("/spa-manager/api/v2/tech/club/position/invite/count")
     Observable<BaseBean<Integer>> getClubInviteCount(@Query("status") String status);
 
-    @GET(RequestConstant.URL_GET_TECH_ORDER_COUNT)
+    @GET(HttpRequestConstant.URL_GET_TECH_ORDER_COUNT)
     Call<OrderCountResult> getOrderCount(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                          @Query(RequestConstant.KEY_ORDER_STATUS) String orderStatus);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_SHARE_COUNT_UPDATE)
+    @POST(HttpRequestConstant.URL_TECH_SHARE_COUNT_UPDATE)
     Call<BaseResult> updateTechShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                           @Field(RequestConstant.KEY_ACT_ID) String actId,
                                           @Field(RequestConstant.KEY_ACT_TYPE) String type);
     //提现说明
-    @GET(RequestConstant.URL_TECH_WITHDRAW_RULE)
+    @GET(HttpRequestConstant.URL_TECH_WITHDRAW_RULE)
     Call<WithdrawRuleResult> getWithdrawRule(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                              @Query(RequestConstant.KEY_USER_CLUB_ID) String clubId);
     //拼团活动列表
-    @GET(RequestConstant.URL_GET_GROUP_BUY_ONLINE_LIST)
+    @GET(HttpRequestConstant.URL_GET_GROUP_BUY_ONLINE_LIST)
     Call<GroupBuyListResult> getGroupBuyList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }

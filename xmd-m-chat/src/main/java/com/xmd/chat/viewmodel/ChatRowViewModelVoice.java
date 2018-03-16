@@ -15,7 +15,6 @@ import android.widget.ImageView;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMVoiceMessageBody;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMMessage;
@@ -111,7 +110,7 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
                 if (data.receiveAnimationDrawable != null) {
                     data.receiveAnimationDrawable.stop();
                 }
-                imageView.setBackgroundResource(R.drawable.message_voice_receive);
+                imageView.setBackgroundResource(R.drawable.left_03);
             }
         } else {
             if (data.playing) {
@@ -122,7 +121,7 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
                 if (data.sendAnimationDrawable != null) {
                     data.sendAnimationDrawable.stop();
                 }
-                imageView.setBackgroundResource(R.drawable.message_voice_send_default);
+                imageView.setBackgroundResource(R.drawable.right_03);
             }
         }
     }
@@ -177,7 +176,6 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
             soundElem.getSoundToFile(tempAudio.getAbsolutePath(), new TIMCallBack() {
                 @Override
                 public void onError(int i, String s) {
-                    XLogger.e(">>>","语音获取失败...");
                     XToast.show("error:"+"errorCode:"+i+"errorMessage:"+s);
                 }
 

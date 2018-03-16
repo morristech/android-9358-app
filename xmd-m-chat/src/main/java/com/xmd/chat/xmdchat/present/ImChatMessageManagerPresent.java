@@ -22,11 +22,13 @@ import com.tencent.imsdk.ext.message.TIMUserConfigMsgExt;
 import com.xmd.app.XmdApp;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.ConversationManager;
+import com.xmd.chat.NetService;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventNewUiMessage;
@@ -43,10 +45,15 @@ import com.xmd.chat.xmdchat.contract.XmdChatMessageManagerInterface;
 import com.xmd.chat.xmdchat.messagebean.RevokeMessageBean;
 import com.xmd.chat.xmdchat.messagebean.TextMessageBean;
 import com.xmd.chat.xmdchat.messagebean.XmdChatMessageBaseBean;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by Lhj on 18-1-22.
@@ -59,7 +66,7 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
     private String currentChatId;
 
     private ImChatMessageManagerPresent() {
-        //
+
     }
 
     public static ImChatMessageManagerPresent getInstance() {
@@ -208,10 +215,11 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
     }
 
     @Override
-    public void sendCouponMessage(String remoteChatId, boolean paid, String content, String actId, String inviteCode, String typeName, String timeLimit) {
-        CouponChatMessage<TIMMessage> chatMessage = CouponChatMessage.create(remoteChatId, paid, actId, content, inviteCode, actId, typeName, timeLimit);
+    public void sendCouponMessage(String remoteChatId, boolean isPaid, String actId, String techCode, String typeName, String couponName, String discountValue, String validPeriod) {
+        CouponChatMessage<TIMMessage> chatMessage = CouponChatMessage.create(remoteChatId, isPaid, actId, techCode, typeName, couponName, discountValue, validPeriod);
         sendMessage(chatMessage);
     }
+
 
     @Override
     public ChatMessage sendVoiceMessage(User remoteUser, String path, int length) {
@@ -287,6 +295,29 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
             public void onSuccess(TIMMessage message) {
                 data.error.set(false);
                 data.progress.set(false);
+                ChatMessage chatMessage = new ChatMessage(message);
+                String msgType = chatMessage.getMsgType();
+                //通知服务器有新的消息
+                Observable<BaseBean> observable = XmdNetwork.getInstance()
+                        .getService(NetService.class)
+                        .notifyServerChatMessage(
+                                ChatAccountManager.getInstance().getChatId(),
+                                ChatAccountManager.getInstance().getUserType(),
+                                chatMessage.getRemoteChatId(),
+                                UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
+                                message.getMsgId(),
+                                msgType, chatMessage.getContentText().toString());
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        XLogger.d("notifyServerChatMessage success");
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XLogger.d("notifyServerChatMessage failed:" + e.getMessage());
+                    }
+                });
             }
         });
 
@@ -300,7 +331,7 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
 
     @Override
     public void saveMessage(ChatMessage chatMessage) {
-        XLogger.i(">>>", "此处应修改原有消息");
+
     }
 
     @Override
@@ -317,7 +348,6 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
             num += ext.getUnreadMessageNum();
         }
         return num;
-
     }
 
 }

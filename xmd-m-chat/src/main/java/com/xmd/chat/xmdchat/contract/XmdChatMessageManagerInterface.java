@@ -42,14 +42,15 @@ public interface XmdChatMessageManagerInterface<T> {
 
     /**
      * 发送优惠券消息
-     *
      * @param remoteChatId
-     * @param paid         是否为点钟券（需要支付）
-     * @param content
+     * @param isPaid
      * @param actId
-     * @param inviteCode
+     * @param techCode
+     * @param typeName
+     * @param couponName
+     * @param validPeriod
      */
-    void sendCouponMessage(String remoteChatId, boolean paid, String content, String actId, String inviteCode,String typeName,String timeLimit);
+    void sendCouponMessage(String remoteChatId, boolean isPaid, String actId, String techCode, String typeName, String couponName,String discountValue,String validPeriod);
 
     ChatMessage sendVoiceMessage(User remoteUser, String path, int length);
 

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.XmdActivityManager;
 import com.xmd.m.notify.push.XmdPushMessage;
 import com.xmd.m.notify.push.XmdPushMessageListener;

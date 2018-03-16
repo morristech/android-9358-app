@@ -17,7 +17,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
@@ -56,6 +55,9 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        if(!(DataBindingUtil.getBinding(view) instanceof  ChatRowImageBinding)){
+            return null;
+        }
         ChatRowImageBinding binding = DataBindingUtil.getBinding(view);
         int width = 0;
         int height = 0;
@@ -87,7 +89,7 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
 
     @Override
     public void onUnbindView() {
-        XLogger.i("???","解除绑定image");
+
     }
 
     public void onClickImage(View v) {
@@ -121,7 +123,6 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
             TIMImageElem imageElem = (TIMImageElem) message.getElement(1);
             TIMImage image = imageElem.getImageList().get(0);
             if (new File(imageElem.getPath()).exists()) {
-                XLogger.i(">>>","从本地加载...");
                 Glide.with(v.getContext()).load(imageElem.getPath()).into(imageView);
             } else {
                 Glide.with(v.getContext()).load(image.getUrl()).into(imageView);

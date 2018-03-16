@@ -1,5 +1,6 @@
 package com.xmd.permission;
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.m.network.BaseBean;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import rx.Observable;
  */
 
 public interface NetService {
-    @GET("/spa-manager/api/v2/menu/list")
+    @GET(HttpRequestConstant.URL_MENU_LIST)
     Observable<BaseBean<List<Permission>>> listRolePermission();
 
     /**
@@ -23,7 +24,7 @@ public interface NetService {
      * @param idType ID类型，可选，customer:客户ID，emchat:环信ID
      * @return
      */
-    @GET("/spa-manager/api/v2/tech/contact/permission/{id}")
+    @GET(HttpRequestConstant.URL_CONTACT_PERMISSION)
     Observable<BaseBean<ContactPermissionInfo>> getContactPermissionInfo(@Path("id") String id,
                                                                          @Query("idType") String idType);
 }

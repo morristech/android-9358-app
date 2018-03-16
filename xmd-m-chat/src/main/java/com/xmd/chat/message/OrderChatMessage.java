@@ -280,7 +280,10 @@ public class OrderChatMessage<T> extends ChatMessage {
         }
         if (getOrderPayMoney() != null) {
             data.setFontMoney(getOrderPayMoney());
+        }else {
+            data.setFontMoney(0);
         }
+
         if (getOrderId() != null) {
             data.setSubmitOrderId(getOrderId());
         }
@@ -297,8 +300,6 @@ public class OrderChatMessage<T> extends ChatMessage {
             }
         } else {
             OrderAppointmentMessageBean orderAppointmentMessageBean = new OrderAppointmentMessageBean();
-//            OrderMessageBean orderMessageBean = wrapOrderMessageData(data);
-//            orderAppointmentMessageBean.setOrderMessageBean(orderMessageBean);
             if (data.getCustomerId() != null) {
                 orderAppointmentMessageBean.setOrderCustomerId(data.getCustomerId());
             }

@@ -1,5 +1,6 @@
 package com.xmd.appointment;
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
@@ -26,7 +27,7 @@ public interface NetService {
      * @param status   技师状态	string	非必填,free-只查空闲
      * @param techName 技师名称	string	非必填
      */
-    @GET("/spa-manager/api/v2/tech/order/technician/list")
+    @GET(HttpRequestConstant.URL_ORDER_TECHNICIAN_LIST)
     Observable<TechnicianListResult> getTechnicianList(@Query("page") int page,
                                                        @Query("pageSize") int pageSize,
                                                        @Query("itemId") String itemId,
@@ -38,7 +39,7 @@ public interface NetService {
     /**
      * 获取项目列表
      */
-    @GET("/spa-manager/api/v2/tech/order/serviceItem/list")
+    @GET(HttpRequestConstant.URL_ORDER_SERVICE_ITEM_LIST)
     Observable<ServiceListResult> getServiceList();
 
     /**
@@ -47,7 +48,7 @@ public interface NetService {
      * @param techId 被预约技师ID	string	非必填
      * @param userId 预约用户ID	string	必填
      */
-    @GET("/spa-manager/api/v2/tech/order/edit")
+    @GET(HttpRequestConstant.URL_TECH_ORDER_EDIT)
     Observable<AppointmentSettingResult> getAppointmentExt(@Query("techId") String techId,
                                                            @Query("userId") String userId);
 
@@ -64,7 +65,7 @@ public interface NetService {
      * @param serviceDuration 项目时长
      * @return 订单ID
      */
-    @POST("/spa-manager/api/v2/tech/order/save")
+    @POST(HttpRequestConstant.URL_TECH_ORDER_SAVE)
     @FormUrlEncoded
     Observable<BaseBean> submitAppointment(
             @Field("orderId") String orderId,

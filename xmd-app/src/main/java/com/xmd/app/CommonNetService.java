@@ -1,6 +1,7 @@
 package com.xmd.app;
 
 import com.xmd.app.beans.UserCredit;
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.app.user.User;
 import com.xmd.m.network.BaseBean;
 
@@ -20,7 +21,7 @@ import rx.Observable;
  */
 
 public interface CommonNetService {
-    @POST("/spa-manager/api/v2/app/heartbeat")
+    @POST(HttpRequestConstant.URL_APP_HEART_BEAT)
     @FormUrlEncoded
     Observable<BaseBean> reportAlive(@Field("token") String token,
                                      @Field("deviceId") String deviceId);
@@ -28,7 +29,7 @@ public interface CommonNetService {
     /**
      * 获取用户基本信息和联系权限
      */
-    @GET("/spa-manager/api/v2/chat/userInfo/{id}")
+    @GET(HttpRequestConstant.URL_CHAT_USER_INFO)
     Observable<BaseBean<User>> getUserBaseInfo(@Path("id") String id,
                                                @Query("idType") String idType,
                                                @Query("getPermission") boolean getPermission);
@@ -36,7 +37,7 @@ public interface CommonNetService {
     /**
      * 获取用户积分
      */
-    @GET("/spa-manager/api/v2/credit/user/account")
+    @GET(HttpRequestConstant.URL_CREDIT_USER_ACCOUNT)
     Observable<BaseBean<List<UserCredit>>> getUserCredit(@Query("clubId") String clubId,
                                                          @Query("page") int page,
                                                          @Query("pageSize") int pageSize);

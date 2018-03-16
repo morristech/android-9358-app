@@ -35,6 +35,7 @@ public class XmdMessageType {
     public static final String TAG_CUSTOMER_SERVICE = "customer_service";
     public static final String TAG_HELLO = "tag_hello";
     public static final String REVERT_MSG_TYPE = "revert_msg";
+    public static final String NEW_ORDER_TYPE = "order";
 
     public static final String ORDER_TYPE_ORDER_ID = "orderId";
     public static final String ORDER_TYPE_ORDER_PAY_MONEY = "orderPayMoney";

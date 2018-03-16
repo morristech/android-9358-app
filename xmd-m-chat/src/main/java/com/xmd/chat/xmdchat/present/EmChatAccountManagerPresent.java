@@ -10,7 +10,6 @@ import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.CommonNetService;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.user.User;
@@ -19,13 +18,8 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.event.EventChatLoginSuccess;
 import com.xmd.chat.xmdchat.contract.XmdChatAccountManagerInterface;
-import com.xmd.m.network.BaseBean;
-import com.xmd.m.network.NetworkSubscriber;
-import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
-
-import rx.Observable;
 
 /**
  * Created by Lhj on 18-1-24.
@@ -148,21 +142,21 @@ public class EmChatAccountManagerPresent implements XmdChatAccountManagerInterfa
             return;
         }
         XLogger.i(XmdChat.TAG, "check token --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
-        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
-                .reportAlive(token, deviceId);
-        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-            @Override
-            public void onCallbackSuccess(BaseBean result) {
-                chatLogin();
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.e(e.getMessage());
-                Message message = new Message();
-                message.what = 1;
-                mHandler.sendMessageDelayed(message, 3000);
-            }
-        });
+//        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
+//                .reportAlive(token, deviceId);
+//        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+//            @Override
+//            public void onCallbackSuccess(BaseBean result) {
+//                chatLogin();
+//            }
+//
+//            @Override
+//            public void onCallbackError(Throwable e) {
+//                XLogger.e(e.getMessage());
+//                Message message = new Message();
+//                message.what = 1;
+//                mHandler.sendMessageDelayed(message, 3000);
+//            }
+//        });
     }
 }

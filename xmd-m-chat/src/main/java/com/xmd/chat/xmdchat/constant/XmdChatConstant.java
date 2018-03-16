@@ -20,4 +20,11 @@ public class XmdChatConstant {
     public static final String BASE_INDEX_TAG = "tag";
     public static final String BASE_INDEX_TIME = "time";
     public static final String BASE_INDEX_DATA = "data";
+    public static final String CHAT_KEY_TYPE_NAME = "typeName";
+    public static final String CHAT_KEY_COUPON_NAME = "couponName";
+    public static final String CHAT_KEY_VALID_PERIOD = "validPeriod";
+    public static final String CHAT_KEY_DICCOUNT_VALUE = "discountValue";
+
+    public static final String NEW_ORDER_STATUS_ACCEPT = "accept";
+    public static final String NEW_ORDER_STATUS_REFUSE = "refuse";
 }

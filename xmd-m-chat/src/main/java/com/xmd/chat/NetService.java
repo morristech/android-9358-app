@@ -1,5 +1,6 @@
 package com.xmd.chat;
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.chat.beans.CreditGift;
 import com.xmd.chat.beans.DiceGameRequestResult;
 import com.xmd.chat.beans.DiceGameResult;
@@ -30,28 +31,28 @@ public interface NetService {
     /**
      * 获取会所位置
      */
-    @GET("/spa-manager/api/v1/position/club")
+    @GET(HttpRequestConstant.URL_CHAT_POSITION_CLUB)
     Observable<BaseBean<Location>> getClubLocation();
 
     //电子期刊分享数据列表
-    @GET("/spa-manager/api/v1/techshare/journalListDetail")
+    @GET(HttpRequestConstant.URL_CHAT_JOURNAL_LIST)
     Observable<BaseBean<List<Journal>>> listShareJournal(@Query("clubId") String clubId,
                                                          @Query("page") String page,
                                                          @Query("pageSize") String pageSize);
 
     //次卡分享数据列表
-    @GET("/spa-manager/api/v2/club/item_card/activity/list")
+    @GET(HttpRequestConstant.URL_CHAT_ACTIVITY_LIST)
     Observable<BaseBean<ResultOnceCard>> listOnceCards(@Query("clubId") String clubId,
                                                        @Query("isShare") String isShare,
                                                        @Query("page") String page,
                                                        @Query("pageSize") String pageSize);
 
     //营销活动列表
-    @GET("/spa-manager/api/v2/tech/marketing_item/list")
+    @GET(HttpRequestConstant.URL_CHAT_MARKETING_ITEM_LIST)
     Observable<BaseBean<List<MarketingCategory>>> listMarketing();
 
     //积分礼物列表
-    @GET("/spa-manager/api/v2/credit/gift/list")
+    @GET(HttpRequestConstant.URL_CHAT_CREDIT_GIFT_LIST)
     Observable<BaseBean<List<CreditGift>>> listCreditGift();
 
     /**
@@ -59,7 +60,7 @@ public interface NetService {
      * id: 订单id
      */
     @FormUrlEncoded
-    @POST("/spa-manager/api/v2/tech/profile/order/manage")
+    @POST(HttpRequestConstant.URL_CHAT_ORDER_MANAGE)
     Observable<BaseBean> manageOrder(@Field("processType") String processType,
                                      @Field("id") String id);
 
@@ -74,7 +75,7 @@ public interface NetService {
      * @param msgType         消息类型  text, paid_coupon ..等等
      */
     @FormUrlEncoded
-    @POST("/spa-manager/api/v1/emchat/markchattouser")
+    @POST(HttpRequestConstant.URL_CHAT_MARK_CHAT_TO_USER)
     Observable<BaseBean> notifyServerChatMessage(@Field("currentChatId") String currentChatId,
                                                  @Field("currentUserType") String currentUserType,
                                                  @Field("friendChatId") String friendChatId,
@@ -84,17 +85,17 @@ public interface NetService {
                                                  @Field("msgContent") String msgContent);
 
     //获取快速回复
-    @GET("/spa-manager/api/v2/chat/setting/fastReply")
+    @GET(HttpRequestConstant.URL_CHAT_SETTING_FAST_REPLY)
     Observable<BaseBean<FastReplySetting>> getFastReplySetting();
 
     //保存快速回复
-    @POST("/spa-manager/api/v2/chat/setting/fastReply")
+    @POST(HttpRequestConstant.URL_CHAT_SETTING_FAST_REPLY)
     Observable<BaseBean> setFastReplySetting(@Body FastReplySetting setting);
 
     /**
      * 获取游戏设定
      */
-    @GET("/spa-manager/api/v2/credit/game/setting")
+    @GET(HttpRequestConstant.URL_CHAT_CREDIT_GAME_SETTING)
     Observable<BaseBean<DiceGameSetting>> getGameSetting();
 
     /**
@@ -105,7 +106,7 @@ public interface NetService {
      * @param amount   积分值
      */
     @FormUrlEncoded
-    @POST("/spa-manager/api/v2/credit/game/dice/submit")
+    @POST(HttpRequestConstant.URL_CHAT_GAME_DICE_SUBMIT)
     Observable<BaseBean<DiceGameRequestResult>> diceGameRequest(@Field("emchatId") String emchatId,
                                                                 @Field("clubId") String clubId,
                                                                 @Field("amount") int amount);
@@ -118,21 +119,21 @@ public interface NetService {
      * @return 游戏结果
      */
     @FormUrlEncoded
-    @POST("/spa-manager/api/v2/credit/game/dice/accept")
+    @POST(HttpRequestConstant.URL_CHAT_GAME_DICE_ACCEPT)
     Observable<BaseBean<DiceGameResult>> diceGamePlayOrCancel(@Field("gameId") String gameId,
                                                               @Field("status") String status);
 
     /**
      * 获取是否有在线的邀请有礼活动
      */
-    @GET("/spa-manager/api/v2/club/user/invite/enable")
+    @GET(HttpRequestConstant.URL_CHAT_INVITE_ENABLE)
     Observable<BaseBean> getInviteEnable(@Query("clubId") String clubId);
 
     /**
      * 统计技师分享数据
      */
     @FormUrlEncoded
-    @POST("/spa-manager/api/v2/tech/share/count/update")
+    @POST(HttpRequestConstant.URL_CHAT_SHARE_COUNT_UPDATE)
     Observable<BaseBean> updateTechShareCount(@Field("actId") String actId,
                                               @Field("type") String type);
 }

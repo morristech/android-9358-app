@@ -90,16 +90,11 @@ import java.util.List;
 public class ChatActivity extends BaseActivity {
 
     public static final String EXTRA_CHAT_ID = "extra_chat_id";
-
     private ChatActivityBinding mBinding;
-
     private List<ChatRowViewModel> mDataList = new ArrayList<>();
-
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
     private User mRemoteUser; //对方信息
-
     private final int PAGE_SIZE = 20;
-
     private ImageView mFocusMenuView;
 
     public ObservableField<String> textMessageContent = new ObservableField<>();
@@ -395,7 +390,7 @@ public class ChatActivity extends BaseActivity {
             XToast.show("发送时间超过" + ChatConstants.REVOKE_LIMIT_TIME / 1000 / 60 + "分钟的消息不能被撤回");
             return;
         }
-        int index = mDataList.indexOf(event.getChatRowViewModel());
+        final int index = mDataList.indexOf(event.getChatRowViewModel());
         if (XmdChatModel.getInstance().chatModelIsEm()) {
             String msgId = ((EMMessage) revokeMsg.getMessage()).getMsgId();
             getEMConversation().removeMessage(msgId);
@@ -407,20 +402,21 @@ public class ChatActivity extends BaseActivity {
             ((EMMessage) chatMessage.getMessage()).setMsgTime(((EMMessage) revokeMsg.getMessage()).getMsgTime());
             insertNewChatMessageToUi(index, chatMessage);
         } else {
+          //  removeMessageFromUi(event.getChatRowViewModel());
             final TIMMessage message = (TIMMessage) event.getChatRowViewModel().getChatMessage().getMessage();
             TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, mRemoteUser.getChatId());
             TIMConversationExt timConversationExt = new TIMConversationExt(conversation);
             timConversationExt.revokeMessage(message, new TIMCallBack() {
                 @Override
                 public void onError(int i, String s) {
-                    XLogger.e(">>>", "撤回消息失败");
+                    XToast.show("撤回消息失败");
                 }
 
                 @Override
                 public void onSuccess() {
                     String messageId = String.valueOf(message.getMsgUniqueId());
                     ChatMessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), messageId);
-                    mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyItemChanged(index);
                 }
             });
         }
@@ -446,7 +442,6 @@ public class ChatActivity extends BaseActivity {
      * @param current 当前气泡
      */
     private void setShowTime(ChatRowViewModel before, ChatRowViewModel current) {
-        //       current.showTime.set(true);
         if (before == null) {
             current.showTime.set(true);
             return;

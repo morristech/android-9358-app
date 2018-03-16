@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.Constants;
 import com.xmd.app.XmdApp;
@@ -24,13 +25,19 @@ import com.xmd.chat.xmdchat.contract.XmdChatMessageManagerInterface;
 import com.xmd.chat.xmdchat.model.XmdChatModel;
 import com.xmd.chat.xmdchat.present.EmChatMessageManagerPresent;
 import com.xmd.chat.xmdchat.present.ImChatMessageManagerPresent;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.m.notify.push.XmdPushMessage;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-6-28.
@@ -65,28 +72,26 @@ public class ChatMessageManager {
             }
 
         }
-
-
         //加载积分礼物
-//        Observable<BaseBean<List<CreditGift>>> observable = XmdNetwork.getInstance()
-//                .getService(NetService.class)
-//                .listCreditGift();
-//
-//        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<List<CreditGift>>>() {
-//            @Override
-//            public void onCallbackSuccess(BaseBean<List<CreditGift>> result) {
-//                XLogger.d("load credit gift list ok!");
-//                creditGiftMap.clear();
-//                for (CreditGift gift : result.getRespData()) {
-//                    creditGiftMap.put(gift.id, gift);
-//                }
-//            }
-//
-//            @Override
-//            public void onCallbackError(Throwable e) {
-//                XLogger.d("load credit list failed:" + e.getMessage());
-//            }
-//        });
+        Observable<BaseBean<List<CreditGift>>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .listCreditGift();
+
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<List<CreditGift>>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<List<CreditGift>> result) {
+                XLogger.d("load credit gift list ok!");
+                creditGiftMap.clear();
+                for (CreditGift gift : result.getRespData()) {
+                    creditGiftMap.put(gift.id, gift);
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.d("load credit list failed:" + e.getMessage());
+            }
+        });
     }
 
     //发送文本消息
@@ -135,15 +140,13 @@ public class ChatMessageManager {
      * 发送优惠券消息
      *
      * @param remoteChatId
-     * @param paid         是否为点钟券（需要支付）
-     * @param content
+     * @param isPaid        是否为点钟券（需要支付）
      * @param actId
-     * @param inviteCode
      * @param typeName     优惠券类型
-     * @param timeLimit    时间限制
+     * @param validPeriod    时间限制
      */
-    public void sendCouponMessage(String remoteChatId, boolean paid, String content, String actId, String inviteCode, String typeName, String timeLimit) {
-        managerInterface.sendCouponMessage(remoteChatId, paid, content, actId, inviteCode, typeName, timeLimit);
+    public void sendCouponMessage(String remoteChatId, boolean isPaid, String actId, String techCode, String typeName, String couponName,String discountValue,String validPeriod) {
+        managerInterface.sendCouponMessage(remoteChatId, isPaid,  actId, techCode, typeName, couponName,discountValue,validPeriod);
     }
 
     public ChatMessage sendVoiceMessage(User remoteUser, String path, int length) {

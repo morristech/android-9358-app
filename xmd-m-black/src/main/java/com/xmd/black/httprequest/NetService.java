@@ -1,6 +1,7 @@
 package com.xmd.black.httprequest;
 
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.black.bean.AddToBlacklistResult;
 import com.xmd.black.bean.BlackListResult;
 import com.xmd.black.bean.CreateCustomerResult;
@@ -25,36 +26,36 @@ import rx.Observable;
 public interface NetService {
 
 
-    @GET(RequestConstant.URL_IN_BLACKLIST)
+    @GET(HttpRequestConstant.URL_IN_BLACKLIST)
     Observable<InBlacklistResult> inBlacklist(@Query("friendId") String friendId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_ADD_TO_BLACKLIST)
+    @POST(HttpRequestConstant.URL_ADD_TO_BLACKLIST)
     Observable<AddToBlacklistResult> addToBlacklist(@Field("friendId") String friendId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_REMOVE_FROM_BLACKLIST)
+    @POST(HttpRequestConstant.URL_REMOVE_FROM_BLACKLIST)
     Observable<RemoveFromBlacklistResult> removeFromBlacklist(@Field("friendId") String friendId);
 
-    @GET(RequestConstant.URL_GET_TECH_BLACKLIST)
+    @GET(HttpRequestConstant.URL_GET_TECH_BLACKLIST)
     Observable<BlackListResult> getBlacklist(@Query("page") String page,
                                              @Query("pageSize") String pageSize);
 
-    @GET(RequestConstant.URL_IN_USER_BLACKLIST)
+    @GET(HttpRequestConstant.URL_IN_USER_BLACKLIST)
     Observable<InUserBlacklistResult> inUserBlacklist(@Query("friendChatId") String friendChatId);
 
-    @GET(RequestConstant.URL_GET_CONTACT_MARK)
+    @GET(HttpRequestConstant.URL_GET_CONTACT_MARK)
     Observable<MarkResult> getContactMark(@Query("tagType") String tagType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_ADD_CUSTOMER)
+    @POST(HttpRequestConstant.URL_ADD_CUSTOMER_CREATE)
     Observable<CreateCustomerResult> addCreateCustomer(@Field("noteName") String noteName,
                                                        @Field("phoneNum") String phoneNum,
                                                        @Field("impression") String impression,
                                                        @Field("remark") String remark);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_EDIT_CUSTOMER)
+    @POST(HttpRequestConstant.URL_EDIT_CUSTOMER)
     Observable<EditCustomerResult> addOrEditCustomer(@Field("userId") String userId,
                                                      @Field("id") String id,
                                                      @Field("phoneNum") String phoneNum,
@@ -63,7 +64,7 @@ public interface NetService {
                                                      @Field("impression") String impression);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_MANAGER_USER_EDIT)
+    @POST(HttpRequestConstant.URL_MANAGER_USER_EDIT)
     Observable<ManagerEditCustomerResult> managerEditCustomer(@Field("id") String id,
                                                               @Field("noteName") String noteName,
                                                               @Field("phoneNum") String phoneNum,

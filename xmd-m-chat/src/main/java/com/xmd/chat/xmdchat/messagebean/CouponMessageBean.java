@@ -9,8 +9,9 @@ public class CouponMessageBean {
     private String actId;
     private String techCode;
     private String typeName;
-    private String description;
-    private String timeLimit;
+    private String couponName;
+    private String discountValue;
+    private String validPeriod;
 
     public String getActId() {
         return actId;
@@ -20,20 +21,12 @@ public class CouponMessageBean {
         this.actId = actId;
     }
 
-    public String getTimeLimit() {
-        return timeLimit;
+    public String getTechCode() {
+        return techCode;
     }
 
-    public void setTimeLimit(String timeLimit) {
-        this.timeLimit = timeLimit;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTechCode(String techCode) {
+        this.techCode = techCode;
     }
 
     public String getTypeName() {
@@ -44,11 +37,30 @@ public class CouponMessageBean {
         this.typeName = typeName;
     }
 
-    public String getTechCode() {
-        return techCode;
+    public String getCouponName() {
+        return couponName;
     }
 
-    public void setTechCode(String techCode) {
-        this.techCode = techCode;
+    public void setCouponName(String couponName) {
+        this.couponName = couponName;
     }
+
+    public String getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(String discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public String getValidPeriod() {
+        return validPeriod;
+    }
+
+    public void setValidPeriod(String validPeriod) {
+        this.validPeriod = validPeriod;
+    }
+
+
+
 }

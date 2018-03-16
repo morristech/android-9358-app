@@ -15,6 +15,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="180dp"
+        android:background="@drawable/send_wrapper"
         android:orientation="vertical">
 
         <!--<com.shidou.commonlibrary.widget.XWebView-->
@@ -26,10 +27,9 @@
         <!--app:map="@{data}"/>-->
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="center"
-            app:map="@{data}"
-        />
+            android:layout_height="180dp"
+            android:scaleType="fitXY"
+            app:map="@{data}"/>
 
         <TextView
             android:layout_width="match_parent"

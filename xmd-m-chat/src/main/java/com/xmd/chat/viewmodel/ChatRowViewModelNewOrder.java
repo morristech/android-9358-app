@@ -10,14 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.imsdk.TIMMessage;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowNewOrderBinding;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.NewOrderChatMessage;
+import com.xmd.chat.xmdchat.constant.XmdChatConstant;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
+import com.xmd.chat.xmdchat.messagebean.NewOrderMessageBean;
 import com.xmd.chat.xmdchat.model.XmdChatModel;
+import com.xmd.chat.xmdchat.present.ImChatMessageManagerPresent;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -62,7 +66,14 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
             return chatMessage.getContentText();
         } else {
             StringBuilder builder = new StringBuilder();
-            builder.append("发起预约\n");
+            String orderStatus = orderChatMessage.getOrderStatus();
+            if (TextUtils.isEmpty(orderStatus)) {
+                builder.append("发起预约\n");
+            } else if (orderStatus.equals(XmdChatConstant.NEW_ORDER_STATUS_ACCEPT)) {
+                builder.append("接受预约\n");
+            } else {
+                builder.append("拒绝预约\n");
+            }
             builder.append(String.format("到店时间： %s\n", orderChatMessage.getArriveTime()));
             builder.append(String.format("预约项目： %s\n", orderChatMessage.getItemName()));
             return builder;
@@ -98,6 +109,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
                                 chatMessage.setInnerProcessed("已拒绝");
                                 binding.setData(ChatRowViewModelNewOrder.this);
                                 binding.executePendingBindings();
+                                handlerMessage(orderChatMessage.getArriveTime(), orderChatMessage.getOrderId(), orderChatMessage.getItemName(), XmdChatConstant.NEW_ORDER_STATUS_REFUSE);
                             }
 
                             @Override
@@ -133,6 +145,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
                 chatMessage.setInnerProcessed("已授受");
                 binding.setData(ChatRowViewModelNewOrder.this);
                 binding.executePendingBindings();
+                handlerMessage(orderChatMessage.getArriveTime(), orderChatMessage.getOrderId(), orderChatMessage.getItemName(), XmdChatConstant.NEW_ORDER_STATUS_ACCEPT);
             }
 
             @Override
@@ -146,5 +159,13 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
                 }
             }
         });
+    }
+
+    private void handlerMessage(String appointTime, String orderId, String serviceItemName, String orderStatus) {
+        NewOrderMessageBean bean = new NewOrderMessageBean(appointTime, orderId, serviceItemName, orderStatus);
+        TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.NEW_ORDER_TYPE, null, null);
+        NewOrderChatMessage chatMessage = new NewOrderChatMessage(message);
+        chatMessage.setInnerProcessed(orderStatus.equals(XmdChatConstant.NEW_ORDER_STATUS_ACCEPT) ? "已授受" : "已拒绝");
+        ImChatMessageManagerPresent.getInstance().sendMessage(chatMessage);
     }
 }

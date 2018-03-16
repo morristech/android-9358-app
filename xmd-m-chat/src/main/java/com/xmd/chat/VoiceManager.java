@@ -99,6 +99,7 @@ public class VoiceManager {
     //停止播放
     public void stopPlayVoice() {
         if (mediaPlayer != null) {
+         //   mediaRecorder.setOnErrorListener(null);
             mediaPlayer.stop();
             if (mOnPlayListener != null) {
                 mOnPlayListener.onStop();
@@ -126,24 +127,19 @@ public class VoiceManager {
      */
     public boolean startRecord() {
         file = null;
-        if (mediaRecorder == null) {
-            mediaRecorder = new MediaRecorder();
+        synchronized (this){
+            if (mediaRecorder == null) {
+                mediaRecorder = new MediaRecorder();
+            }
         }
         mediaRecorder.reset();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setAudioChannels(1);
-        mediaRecorder.setAudioSamplingRate(8000);
-        mediaRecorder.setAudioEncodingBitRate(64);
-        //    voiceFileName = getVoiceFileName(EMClient.getInstance().getCurrentUser());
-       // voiceFileName = getVoiceCacheFilePath();
-      //      recordFile = PathUtil.getInstance().getVideoPath() + "/" + voiceFileName;
-      //  recordFile = XmdPathUtil.getInstance().getVideoPath() + "/" + voiceFileName;
-      //  file = new File(recordFile);
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+//        mediaRecorder.setAudioChannels(1);
+//        mediaRecorder.setAudioSamplingRate(8000);
+//        mediaRecorder.setAudioEncodingBitRate(64);
         recordFile = getVoiceCacheFilePath();
-     //   file = new File(recordFile);
-
         mediaRecorder.setOutputFile(recordFile);
         try {
             mediaRecorder.prepare();
@@ -175,8 +171,13 @@ public class VoiceManager {
      * 停止录音
      */
     public void stopRecord() {
-        if (mediaRecorder != null) {
-            mediaRecorder.stop();
+        if (mediaRecorder != null ) {
+            try {
+                mediaRecorder.stop();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             recordTime = SystemClock.elapsedRealtime() - recordStartTime;
         }
     }

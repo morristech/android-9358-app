@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@drawable/message_voice_send_playing_1"
+        android:drawable="@drawable/right_01"
         android:duration="200" />
     <item
-        android:drawable="@drawable/message_voice_send_playing_2"
+        android:drawable="@drawable/right_02"
         android:duration="200" />
     <item
-        android:drawable="@drawable/message_voice_send_playing_3"
+        android:drawable="@drawable/right_03"
         android:duration="200" />
 </animation-list>

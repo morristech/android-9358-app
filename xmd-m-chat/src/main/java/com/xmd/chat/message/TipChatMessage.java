@@ -3,7 +3,7 @@ package com.xmd.chat.message;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMMessage;
-import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.chat.R;
 import com.xmd.chat.xmdchat.model.XmdChatModel;
 
@@ -38,7 +38,6 @@ public class TipChatMessage<T> extends ChatMessage {
     }
 
     public CharSequence getTip() {
-        XLogger.i(">>>","getTip>"+getAttrType());
         switch (getAttrType()) {
             case ChatMessage.MSG_TYPE_COUPON_TIP:
                 return XmdChatModel.getInstance().chatModelIsEm() ? super.getContentText() : String.format("领取了您的%s",getSafeStringAttribute("name"));
@@ -46,7 +45,7 @@ public class TipChatMessage<T> extends ChatMessage {
                 return XmdChatModel.getInstance().chatModelIsEm() ? super.getContentText().toString() : String.format("购买了您的%s",getSafeStringAttribute("name"));
             }
             case ChatMessage.REVERT_MSG:
-                return "撤回一条消息";
+                return ResourceUtils.getString(R.string.has_revoke_message);
 //            case TIP_TYPE_PLAY_DICE: {
 //                String msg = super.getOriginContentText();
 //                SpannableString s = new SpannableString(msg);
@@ -64,7 +63,7 @@ public class TipChatMessage<T> extends ChatMessage {
 //                return s;
 //            }
             default:
-                return super.getContentText();
+                return "";
         }
 
 

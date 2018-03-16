@@ -1,6 +1,7 @@
 package com.xmd.m.comment.httprequest;
 
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.m.comment.bean.ClubEmployeeDetailResult;
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.CommentListResult;
@@ -36,7 +37,7 @@ public interface NetService {
 
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_COMMENT_LIST)
+    @POST(HttpRequestConstant.URL_COMMENT_LIST)
     Observable<CommentListResult> getCommentList(@Field("page") String page,
                                                  @Field("pageSize") String pageSize,
                                                  @Field("startDate") String startDate,
@@ -49,84 +50,84 @@ public interface NetService {
                                                  @Field("returnStatus") String returnStatus,
                                                  @Field("status") String status);
 
-    @GET(RequestConstant.URL_COMMENT_TECH_LIST)
+    @GET(HttpRequestConstant.URL_COMMENT_TECH_LIST)
     Observable<TechListResult> getTechList();
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_USER_BAD_COMMENT_STATUS_UPDATE)
+    @POST(HttpRequestConstant.URL_USER_BAD_COMMENT_STATUS_UPDATE)
     Observable<CommentStatusResult> updateCommentStatus(
             @Field("commentId") String commentId,
             @Field("status") String status);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_CUSTOMER_USER_DETAIL)
+    @POST(HttpRequestConstant.URL_CUSTOMER_USER_DETAIL)
     Observable<ManagerUserDetailResult> getManagerUserDetail(
             @Field("userId") String userId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_USER_CONSUME_LIST)
+    @POST(HttpRequestConstant.URL_USER_CONSUME_LIST)
     Observable<ConsumeListResult> getConsumeList(@Field("page") String page,
                                                  @Field("pageSize") String pageSize,
                                                  @Field("userId") String userId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_USER_SHOP_LIST)
+    @POST(HttpRequestConstant.URL_USER_SHOP_LIST)
     Observable<VisitorListResult> getVisitorList(@Field("page") String page,
                                                  @Field("pageSize") String pageSize,
                                                  @Field("userId") String userId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_USER_REWARD_LIST)
+    @POST(HttpRequestConstant.URL_USER_REWARD_LIST)
     Observable<RewardListResult> getRewardList(@Field("page") String page,
                                                @Field("pageSize") String pageSize,
                                                @Field("userId") String userId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_CUSTOMER_DETAIL)
+    @POST(HttpRequestConstant.URL_TECH_CUSTOMER_DETAIL)
     Observable<TechUserDetailResult> getTechUserDetail(
             @Field("id") String id
     );
 
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_USER_CONSUME_LIST)
+    @POST(HttpRequestConstant.URL_TECH_USER_CONSUME_LIST)
     Observable<TechConsumeListResult> getTechConsumeList(@Field("page") String page,
                                                          @Field("pageSize") String pageSize,
                                                          @Field("userId") String userId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_USER_SHOP_LIST)
+    @POST(HttpRequestConstant.URL_TECH_USER_SHOP_LIST)
     Observable<TechVisitorListResult> getTechVisitorList(@Field("page") String page,
                                                          @Field("pageSize") String pageSize,
                                                          @Field("userId") String userId);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_USER_REWARD_LIST)
+    @POST(HttpRequestConstant.URL_TECH_USER_REWARD_LIST)
     Observable<TechRewardListResult> getTechRewardList(@Field("page") String page,
                                                        @Field("pageSize") String pageSize,
                                                        @Field("userId") String userId);
 
-    @GET(RequestConstant.URL_CLUB_COLLEAGUE_DETAIL)
+    @GET(HttpRequestConstant.URL_CLUB_COLLEAGUE_DETAIL)
     Observable<ClubEmployeeDetailResult> clubEmployeeDetail(@Query(RequestConstant.KEY_EMP_ID) String empId);
 
     // 查询联系状态
-    @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
+    @GET(HttpRequestConstant.URL_GET_CONTACT_PERMISSION)
     Observable<ContactPermissionResult> getContactPermission(@Path("id") String id,
                                                              @Query("idType") String idType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_DELETE_CONTACT)
+    @POST(HttpRequestConstant.URL_DELETE_CONTACT)
     Observable<DeleteCustomerResult> doDeleteContact(@Field("id") String id);
 
 
     //用户设置分组页面
     @FormUrlEncoded
-    @POST(RequestConstant.URL_DO_GROUP_USER_EDIT_GROUP)
+    @POST(HttpRequestConstant.URL_DO_GROUP_USER_EDIT_GROUP)
     Observable<UserEditGroupResult> userEditGroup(@Field(RequestConstant.KEY_USER_ID) String userId);
 
     @GET("/spa-manager/api/v2/comment/{commentId}")
     Observable<BaseBean<CommentBean>> getCommentDetail(@Path("commentId") String commentId);
     // 查询近期是否打过招呼
-    @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
+    @GET(HttpRequestConstant.URL_CHECK_HELLO_RECENTLY)
     Observable<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId);
 }

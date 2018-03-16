@@ -14,6 +14,7 @@ import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTextBinding;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.xmdchat.constant.XmdMessageType;
 
 
 /**
@@ -54,6 +55,11 @@ public class ChatRowViewModelText extends ChatRowViewModel {
     }
 
     public CharSequence getMessage() {
-        return chatMessage.getContentText();
+        if (chatMessage.getMsgType().equals(XmdMessageType.REWARD_TYPE)) {
+            return String.format("打赏: %s元", chatMessage.getContentText());
+        } else {
+            return chatMessage.getContentText();
+        }
+
     }
 }

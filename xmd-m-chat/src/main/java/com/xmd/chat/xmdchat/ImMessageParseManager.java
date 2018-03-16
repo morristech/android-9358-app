@@ -168,7 +168,7 @@ public class ImMessageParseManager {
                     content = orderBean.getOrderServicePrice();
                     break;
                 default:
-                    content = "订单解析：" + key;
+                    content = "";
                     break;
             }
         } catch (UnsupportedEncodingException e) {
@@ -181,7 +181,6 @@ public class ImMessageParseManager {
     public static CharSequence getContentByKey(byte[] data, String key) {
         try {
             String str = new String(data, "UTF-8");
-            XLogger.i(">>>","ImMessage>"+str);
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(str);
             JsonObject root = element.getAsJsonObject();
@@ -194,7 +193,7 @@ public class ImMessageParseManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "解析不到";
+        return "";
     }
 
     public static CharSequence getContentParse(byte[] data) {
@@ -203,6 +202,7 @@ public class ImMessageParseManager {
 
         try {
             String str = new String(data, "UTF-8");
+            XLogger.i(">>>","contentParse>"+str);
             Gson gson = new Gson();
             XmdChatMessageBaseBean messageBean = gson.fromJson(str, XmdChatMessageBaseBean.class);
             messageType = messageBean.getType();
@@ -218,7 +218,9 @@ public class ImMessageParseManager {
                 switch (messageType) {
                     case XmdMessageType.COUPON_TYPE:
                         CouponMessageBean couponBean = new Gson().fromJson(obj, CouponMessageBean.class);
-                        content = couponBean.getDescription();
+                        content = couponBean.getCouponName();
+                    case XmdMessageType.PAID_COUPON_TYPE:
+                        content = ResourceUtils.getString(R.string.request_paid_coupon);
                         break;
                     case XmdMessageType.REQUEST_REWARD_TYPE:
                         content = ResourceUtils.getString(R.string.request_reward_message);

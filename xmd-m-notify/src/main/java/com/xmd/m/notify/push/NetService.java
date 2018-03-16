@@ -1,5 +1,6 @@
 package com.xmd.m.notify.push;
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.m.network.BaseBean;
 
 import retrofit2.Call;
@@ -15,7 +16,7 @@ import rx.Observable;
 
 public interface NetService {
     @FormUrlEncoded
-    @POST("/spa-manager/api/v2/push/clientid")
+    @POST(HttpRequestConstant.URL_GETUI_BIND_CLIENT_ID)
     Call<BaseBean> bindGetuiClientId(@Field("token") String token,
                                      @Field("userId") String userId,
                                      @Field("userType") String userType,
@@ -26,7 +27,7 @@ public interface NetService {
 
     //解绑
     @FormUrlEncoded
-    @POST("/spa-manager/api/v2/push/unbind/clientid")
+    @POST(HttpRequestConstant.URL_GETUI_UNBIND_CLIENT_ID)
     Observable<BaseBean> unbindGetuiClientId(@Field("userType") String userType,
                                              @Field("clientId") String clientId,
                                              @Field("targetType") String targetType);   //对接新添加
