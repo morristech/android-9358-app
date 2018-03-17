@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
+import com.xmd.app.utils.Utils;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowCouponBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -35,6 +38,10 @@ public class ChatRowViewModelCoupon extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        view.getLayoutParams().width = ScreenUtils.getScreenWidth() * 4 / 9;
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
+            return null;
+        }
         ChatRowCouponBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;
@@ -50,7 +57,7 @@ public class ChatRowViewModelCoupon extends ChatRowViewModel {
     }
 
     public String getCouponDescription() {
-        return couponChatMessage.getCouponDescription();
+        return Utils.StrSubstring(8,couponChatMessage.getCouponDescription(),true);
     }
 
     public String getTimeLimit() {
@@ -64,4 +71,6 @@ public class ChatRowViewModelCoupon extends ChatRowViewModel {
         }
         return super.getContentViewBackground(context);
     }
+
+
 }

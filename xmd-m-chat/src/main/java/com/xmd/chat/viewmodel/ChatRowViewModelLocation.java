@@ -8,12 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowLocationBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -46,6 +45,9 @@ public class ChatRowViewModelLocation extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
+            return null;
+        }
         ChatRowLocationBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;

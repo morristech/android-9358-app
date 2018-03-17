@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
@@ -69,12 +71,16 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     public ObservableBoolean inProgress = new ObservableBoolean();
 
     public static View createView(ViewGroup parent) {
+
         ChatRowAppointmentBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_appointment, parent, false);
         return binding.getRoot();
     }
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
+            return null;
+        }
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;

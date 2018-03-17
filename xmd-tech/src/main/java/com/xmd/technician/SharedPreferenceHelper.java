@@ -3,6 +3,7 @@ package com.xmd.technician;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.xmd.app.constants.HttpRequestConstant;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
@@ -198,8 +199,8 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-        return "http://192.168.1.105:9880";
-       // return mSettingPreference.getString(KEY_SERVER_HOST, HttpRequestConstant.SERVER_HOST);
+       // return "http://192.168.1.100:9880";
+       return mSettingPreference.getString(KEY_SERVER_HOST, HttpRequestConstant.SERVER_HOST);
     }
 
     public static void setServerHost(String serverHost) {

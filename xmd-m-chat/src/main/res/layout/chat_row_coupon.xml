@@ -35,7 +35,7 @@
                 android:layout_marginLeft="8dp"
                 android:text="@{data.couponDescription}"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/fontCaption" />
+                android:textSize="15sp" />
         </LinearLayout>
 
         <TextView
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@{data.timeLimit}"
-            android:textSize="@dimen/fontCaption" />
+             android:textSize="12sp"/>
     </LinearLayout>
 
 </layout>

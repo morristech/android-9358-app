@@ -10,7 +10,6 @@ import android.widget.Button;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.event.EventStartChatActivity;
-import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
@@ -31,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -133,8 +133,8 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                     } else {
                         successCount++;
                         remainSendCount--;
-                        ChatMessageManager.getInstance().sendCouponMessage(chatId,true,couponInfo.actId,SharedPreferenceHelper.getUserInviteCode(),couponInfo.couponTypeName,
-                                couponInfo.useTypeName,null,couponInfo.couponPeriod);
+                        ChatMessageManager.getInstance().sendCouponMessage(chatId, true, couponInfo.actId, SharedPreferenceHelper.getUserInviteCode(), couponInfo.useTypeName,
+                                couponInfo.actTitle, String.valueOf(couponInfo.actValue), couponInfo.couponPeriod);
                     }
                 }
                 checkDeliverResult();
@@ -147,13 +147,15 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
         if (result.respData != null) {
             //用户领取成功，那么发送环信消息
             CouponInfo couponInfo = result.couponInfo;
-            CouponChatMessage chatMessage = CouponChatMessage.create(
-                    chatId,
-                    false,
-                    result.respData.userActId,
-                    getShareText(couponInfo),
-                    SharedPreferenceHelper.getUserInviteCode(),null,null,null);
-            ChatMessageManager.getInstance().sendMessage(chatMessage);
+//            CouponChatMessage chatMessage = CouponChatMessage.create(
+//                    chatId,
+//                    false,
+//                    result.respData.userActId,
+//                    getShareText(couponInfo),
+//                    SharedPreferenceHelper.getUserInviteCode(), null, null, null);
+//            ChatMessageManager.getInstance().sendMessage(chatMessage);
+            ChatMessageManager.getInstance().sendCouponMessage(chatId, false, couponInfo.actId, null, couponInfo.useTypeName,
+                    couponInfo.actTitle, String.valueOf(couponInfo.actValue), couponInfo.couponPeriod);
             successCount++;
         } else {
             failedCount++;
@@ -164,16 +166,15 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
     private String getShareText(CouponInfo couponInfo) {
         switch (couponInfo.couponType) {
             case Constant.COUPON_TYPE_PAID:
-              //  return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
-
+                return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
             case Constant.COUPON_TYPE_DISCOUNT:
-             //   return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
             case Constant.COUPON_TYPE_GIFT:
-              //  return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
             default:
-              //  return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
         }
-        return "1234";
+
     }
 
     public void checkDeliverResult() {

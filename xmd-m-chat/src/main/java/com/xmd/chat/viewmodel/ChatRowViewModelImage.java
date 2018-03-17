@@ -21,6 +21,7 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
 import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowImageBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -55,7 +56,7 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
-        if(!(DataBindingUtil.getBinding(view) instanceof  ChatRowImageBinding)){
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
             return null;
         }
         ChatRowImageBinding binding = DataBindingUtil.getBinding(view);

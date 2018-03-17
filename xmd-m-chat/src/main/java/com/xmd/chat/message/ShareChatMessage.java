@@ -32,7 +32,7 @@ public class ShareChatMessage<T> extends ChatMessage {
 
     public static ShareChatMessage createJournalMessage(String remoteChatId, String actId, String templateId, String actName) {
         if (XmdChatModel.getInstance().chatModelIsEm()) {
-            EMMessage emMessage = EMMessage.createTxtSendMessage(ResourceUtils.getString(R.string.club_journal), remoteChatId);
+            EMMessage emMessage = EMMessage.createTxtSendMessage(ResourceUtils.getString(R.string.club_journal_message), remoteChatId);
             ShareChatMessage message = new ShareChatMessage(emMessage);
             message.setMsgType(MSG_TYPE_JOURNAL);
             message.setAttr(ATTR_TEMPLATE_ID, templateId);
@@ -44,7 +44,6 @@ public class ShareChatMessage<T> extends ChatMessage {
             bean.setActId(actId);
             bean.setActName(actName);
             bean.setTemplateId(templateId);
-
             TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.JOURNAL_TYPE, null, null);
             ShareChatMessage shareChatMessage = new ShareChatMessage(message);
             return shareChatMessage;

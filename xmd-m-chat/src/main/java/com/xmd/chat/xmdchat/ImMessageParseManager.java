@@ -89,7 +89,7 @@ public class ImMessageParseManager {
 
     public static CharSequence getContent(TIMMessage message, String key) {
         if (message == null) {
-            XToast.show("消息未空，获取不到相关内容");
+            XToast.show("消息为空，获取不到相关内容");
             return null;
         } else if (!TextUtils.isEmpty(key) && key.equals(ChatMessage.ATTR_INNER_PROCESSED)) {
             TIMMessageExt ext = new TIMMessageExt(message);
@@ -218,7 +218,8 @@ public class ImMessageParseManager {
                 switch (messageType) {
                     case XmdMessageType.COUPON_TYPE:
                         CouponMessageBean couponBean = new Gson().fromJson(obj, CouponMessageBean.class);
-                        content = couponBean.getCouponName();
+                        content = couponBean.getTypeName();
+                        break;
                     case XmdMessageType.PAID_COUPON_TYPE:
                         content = ResourceUtils.getString(R.string.request_paid_coupon);
                         break;
@@ -241,7 +242,7 @@ public class ImMessageParseManager {
                         content = ResourceUtils.getString(R.string.luck_wheel_marketing);
                         break;
                     case XmdMessageType.JOURNAL_TYPE:
-                        content = ResourceUtils.getString(R.string.club_journal);
+                        content = ResourceUtils.getString(R.string.club_journal_message);
                         break;
                     case XmdMessageType.ITEM_CARD_TYPE:
                         String cardType = getContentByKey(data, "cardType").toString();

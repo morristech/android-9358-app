@@ -15,9 +15,11 @@ import android.widget.ImageView;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMVoiceMessageBody;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.tencent.imsdk.TIMSoundElem;
 import com.xmd.chat.R;
 import com.xmd.chat.VoiceManager;
@@ -55,9 +57,28 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
+            return null;
+        }
+        handlerViewWidth(view);
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;
+    }
+
+    private void handlerViewWidth(View view) {
+        int voiceLength = currentVoiceLength();
+        int width = 1;
+        if (voiceLength > 0 && voiceLength <= 10) {
+            width = 1;
+        } else if (voiceLength > 10 && voiceLength <= 30) {
+            width = 2;
+        } else if (voiceLength > 30 && voiceLength <= 45) {
+            width = 3;
+        } else {
+            width = 4;
+        }
+        view.getLayoutParams().width = ScreenUtils.getScreenWidth() * width / 7;
     }
 
     @Override
@@ -99,6 +120,17 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
         return String.format(Locale.getDefault(), "%d\"", length);
     }
 
+    public int currentVoiceLength() {
+        TIMSoundElem soundElem;
+        if (((TIMMessage) chatMessage.getMessage()).getElement(1) instanceof TIMSoundElem) {
+            soundElem = (TIMSoundElem) ((TIMMessage) chatMessage.getMessage()).getElement(1);
+        } else {
+            soundElem = (TIMSoundElem) ((TIMMessage) chatMessage.getMessage()).getElement(0);
+        }
+        length = (int) soundElem.getDuration();
+        return length;
+    }
+
     @BindingAdapter("voiceIcon")
     public static void bindVoiceIcon(ImageView imageView, ChatRowViewModelVoice data) {
         if (data.isReceiveMessage()) {
@@ -133,7 +165,7 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
         }
 
         if (XmdChatModel.getInstance().chatModelIsEm()) {
-            EMVoiceMessageBody body = (EMVoiceMessageBody)((EMMessage)getChatMessage().getMessage()).getBody();
+            EMVoiceMessageBody body = (EMVoiceMessageBody) ((EMMessage) getChatMessage().getMessage()).getBody();
             String url = body.getLocalUrl();
             File file = new File(url);
             if (!file.exists() || file.length() == 0) {
@@ -176,7 +208,7 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
             soundElem.getSoundToFile(tempAudio.getAbsolutePath(), new TIMCallBack() {
                 @Override
                 public void onError(int i, String s) {
-                    XToast.show("error:"+"errorCode:"+i+"errorMessage:"+s);
+                    XToast.show("error:" + "errorCode:" + i + "errorMessage:" + s);
                 }
 
                 @Override
@@ -214,7 +246,6 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
             });
 
         }
-
 
 
     }

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.OnceCard;
 import com.xmd.chat.databinding.ChatRowShareBinding;
@@ -34,6 +36,9 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        if (chatMessage.getMessage() instanceof TIMMessage && ((TIMMessage) chatMessage.getMessage()).status() == TIMMessageStatus.HasRevoked) {
+            return null;
+        }
         view.getLayoutParams().width = ScreenUtils.getScreenWidth() * 3 / 5;
         ChatRowShareBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);

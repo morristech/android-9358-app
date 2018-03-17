@@ -402,7 +402,7 @@ public class ChatActivity extends BaseActivity {
             ((EMMessage) chatMessage.getMessage()).setMsgTime(((EMMessage) revokeMsg.getMessage()).getMsgTime());
             insertNewChatMessageToUi(index, chatMessage);
         } else {
-          //  removeMessageFromUi(event.getChatRowViewModel());
+            //  removeMessageFromUi(event.getChatRowViewModel());
             final TIMMessage message = (TIMMessage) event.getChatRowViewModel().getChatMessage().getMessage();
             TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, mRemoteUser.getChatId());
             TIMConversationExt timConversationExt = new TIMConversationExt(conversation);

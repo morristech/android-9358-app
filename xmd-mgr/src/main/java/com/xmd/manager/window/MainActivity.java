@@ -19,6 +19,7 @@ import com.xmd.chat.XmdChat;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
+import com.xmd.chat.xmdchat.present.ImChatAccountManagerPresent;
 import com.xmd.contact.ContactFragment;
 import com.xmd.contact.event.ThanksToChatEvent;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
@@ -123,8 +124,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         processXmdDisplay(getIntent());
 
         EventBusSafeRegister.register(this);
-        XmdPushManager.getInstance().addListener(xmdPushMessageListener);
 
+        XmdPushManager.getInstance().addListener(xmdPushMessageListener);
+        ImChatAccountManagerPresent.getInstance().login();
         XmdChat.getInstance().loadConversation();
     }
 

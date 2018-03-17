@@ -55,40 +55,45 @@ public class CouponChatMessage<T> extends ChatMessage {
             CouponMessageBean bean = new CouponMessageBean();
             bean.setActId(actId);
             bean.setTechCode(techCode);
-            if(isPaid){
+            if (isPaid) {
                 bean.setDiscountValue(discountValue);
-            }else {
+            } else {
                 bean.setTypeName(typeName);
                 bean.setCouponName(couponName);
             }
             bean.setValidPeriod(validPeriod);
-            TIMMessage timMessage = ImChatMessageManagerPresent.wrapMessage(bean,isPaid ?XmdMessageType.PAID_COUPON_TYPE : XmdMessageType.COUPON_TYPE,null,null);
+            TIMMessage timMessage = ImChatMessageManagerPresent.wrapMessage(bean, isPaid ? XmdMessageType.PAID_COUPON_TYPE : XmdMessageType.COUPON_TYPE, null, null);
             CouponChatMessage chatMessage = new CouponChatMessage(timMessage);
             return chatMessage;
         }
     }
 
     public String getTypeText() {
-        if(TextUtils.isEmpty(ImMessageParseManager.getContent((TIMMessage) message, XmdChatConstant.CHAT_KEY_TYPE_NAME).toString())){
+        if (isPaidType()) {
             return ResourceUtils.getString(R.string.request_paid_coupon);
-        }else {
-            return ImMessageParseManager.getContent((TIMMessage) message,XmdChatConstant.CHAT_KEY_TYPE_NAME).toString();
+        } else {
+            return ImMessageParseManager.getContent((TIMMessage) message, XmdChatConstant.CHAT_KEY_TYPE_NAME).toString();
         }
     }
 
     public String getCouponDescription() {
-        if(TextUtils.isEmpty(ImMessageParseManager.getContent((TIMMessage) message,XmdChatConstant.CHAT_KEY_COUPON_NAME).toString())){
-            return String.format("立减%s元",String.valueOf(ImMessageParseManager.getContent((TIMMessage) message,XmdChatConstant.CHAT_KEY_DICCOUNT_VALUE).toString()));
-        }else
+        if (isPaidType()) {
+            return String.format("立减%s元", String.valueOf(ImMessageParseManager.getContent((TIMMessage) message, XmdChatConstant.CHAT_KEY_DICCOUNT_VALUE).toString()));
+        } else
 //        if(ImMessageParseManager.getContent((TIMMessage) message,XmdChatConstant.CHAT_KEY_COUPON_NAME).toString().equals("折扣券")){
 //
 //        }else
         {
-            return ImMessageParseManager.getContent((TIMMessage) message,XmdChatConstant.CHAT_KEY_COUPON_NAME).toString();
+            return ImMessageParseManager.getContent((TIMMessage) message, XmdChatConstant.CHAT_KEY_COUPON_NAME).toString();
         }
     }
 
     public String getTimeLimit() {
-        return ImMessageParseManager.getContent((TIMMessage) message,XmdChatConstant.CHAT_KEY_VALID_PERIOD).toString();
+        String timeLimit = ImMessageParseManager.getContent((TIMMessage) message, XmdChatConstant.CHAT_KEY_VALID_PERIOD).toString();
+        return isPaidType() ? timeLimit.substring(2) : timeLimit;
+    }
+
+    public boolean isPaidType() {
+        return TextUtils.isEmpty(ImMessageParseManager.getContent((TIMMessage) message, XmdChatConstant.CHAT_KEY_COUPON_NAME).toString());
     }
 }
