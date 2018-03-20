@@ -27,4 +27,5 @@ public class XmdChatConstant {
 
     public static final String NEW_ORDER_STATUS_ACCEPT = "accept";
     public static final String NEW_ORDER_STATUS_REFUSE = "refuse";
+    public static final String HELLO_MESSAGE_TAG = "hello";
 }

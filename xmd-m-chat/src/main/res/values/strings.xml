@@ -13,11 +13,12 @@
     <string name="club_journal_message">有美女、有福利，你就是我的VIP</string>
     <string name="has_revoke_message">撤回一条消息</string>
     <string name="invite_gift_message">邀请好友赢好礼～</string>
-    <string name="location_message">位置信息</string>
-    <string name="image_message">【图片】</string>
+    <string name="location_message">[位置]</string>
+    <string name="image_message">[图片]</string>
+    <string name="voice_message">[语音]</string>
     <string name="coupon_tip_message">领取了您的优惠券</string>
     <string name="paid_coupon_tip_message">购买了您的点钟券</string>
-    <string name="order_message">订单</string>
+    <string name="order_message">[订单]</string>
     <string name="order_request_message">选项目、约技师，\n线上预约，方便快捷~</string>
     <string name="request_reward_message">万水千山总是情\n打赏两个行不行</string>
     <string name="request_paid_coupon">求点钟</string>

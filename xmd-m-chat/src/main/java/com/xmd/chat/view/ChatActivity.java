@@ -102,6 +102,7 @@ public class ChatActivity extends BaseActivity {
     public ObservableBoolean voiceInputMode = new ObservableBoolean();
     public ObservableBoolean voiceRecording = new ObservableBoolean();
     public ObservableBoolean showSubMenuFastReply = new ObservableBoolean();
+    public ObservableBoolean showCancelView = new ObservableBoolean();
 
     private InputMethodManager mInputMethodManager;
     public static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
@@ -113,6 +114,8 @@ public class ChatActivity extends BaseActivity {
     private AudioManager audioManager;
     private String chatId;
     private XmdChatActivityInterface mInterface;
+    private float mCurPosY = 0;
+    private float mCurPosDown = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -659,10 +662,15 @@ public class ChatActivity extends BaseActivity {
                 case MotionEvent.ACTION_UP:
                     onVoiceButtonUp(event);
                     break;
+                case MotionEvent.ACTION_MOVE:
+                    onVoiceButtonMove(event);
+                    break;
             }
             return true;
         }
     };
+
+
 
     //按下录音键
     private void onVoiceButtonDown(MotionEvent event) {
@@ -674,11 +682,13 @@ public class ChatActivity extends BaseActivity {
             voiceRecording.set(true);
             mBinding.inputVoice.setBackgroundResource(R.drawable.shape_r4_solid_green);
         }
+        mCurPosDown = event.getY();
     }
 
     //放到录音键
     private void onVoiceButtonUp(MotionEvent event) {
         mBinding.voiceView.release();
+        showCancelView.set(false);
         if (!voiceRecording.get()) {
             return;
         }
@@ -697,12 +707,24 @@ public class ChatActivity extends BaseActivity {
             file.delete();
             return;
         }
-        if (event.getY() < -50) {
+        if (mCurPosY - mCurPosDown <0 && (Math.abs(mCurPosY - mCurPosDown) > 100)) {
             XLogger.d("取消发送，y=" + event.getY());
             file.delete();
             return;
         }
+
         ChatMessageManager.getInstance().sendVoiceMessage(mRemoteUser, path, duration);
+    }
+    //滑动监听
+    private void onVoiceButtonMove(MotionEvent event) {
+        mCurPosY = event.getY();
+        if(mCurPosY - mCurPosDown <0 && (Math.abs(mCurPosY - mCurPosDown) > 100)){
+            showCancelView.set(true);
+            voiceRecording.set(false);
+        }else {
+            showCancelView.set(false);
+            voiceRecording.set(true);
+        }
     }
 
     public void onClickEditFastReply() {

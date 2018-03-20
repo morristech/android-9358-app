@@ -41,6 +41,7 @@ public class ChatMessage<T> {
     public static final String MSG_TYPE_ORIGIN_VOICE = "VOICE";
     public static final String MSG_TYPE_ORIGIN_CMD = "CMD";
     public static final String MSG_TYPE_TIP = "tip"; //提示消息
+    public static final String MSG_TYPE_GROUP_IMAGE = "image2";
     public static final String MSG_TYPE_ORIGIN_VIDEO = "VIDEO";
     public static final String MSG_TYPE_ORIGIN_LOCATION = "LOCATION";
     public static final String MSG_TYPE_ORIGIN_FILE = "FILE";
@@ -244,6 +245,10 @@ public class ChatMessage<T> {
         return mInterface.getContentText();
     }
 
+    public CharSequence getLastMessageContentText() {
+        return mInterface.getLastMessageContent();
+    }
+
     public T getMessage() {
         return message;
     }
@@ -281,7 +286,7 @@ public class ChatMessage<T> {
     }
 
     public Integer getSafeIntegerAttribute(String key) {
-       return mInterface.getSafeIntegerAttribute(key);
+        return mInterface.getSafeIntegerAttribute(key);
     }
 
     public Long getSafeLongAttribute(String key) {
@@ -343,7 +348,7 @@ public class ChatMessage<T> {
 
     }
 
-    public static ChatMessage createImageMessage(String remoteChatId, String imagePath,String tag) {
+    public static ChatMessage createImageMessage(String remoteChatId, String imagePath, String tag) {
         if (XmdChatModel.getInstance().chatModelIsEm()) {
             EMMessage emMessage = EMMessage.createImageSendMessage(imagePath, true, remoteChatId);
             if (emMessage == null) {
@@ -352,11 +357,11 @@ public class ChatMessage<T> {
             return new ChatMessage(emMessage);
         } else {
             ImageMessageBean imageBean = new ImageMessageBean();
-            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(imageBean, XmdMessageType.IMAGE_TYPE,tag,null);
+            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(imageBean, XmdMessageType.IMAGE_TYPE, tag, null);
             TIMImageElem elem = new TIMImageElem();
             elem.setPath(imagePath);
-            if(message.addElement(elem) != 0){
-                XLogger.d("tag","addElement fail");
+            if (message.addElement(elem) != 0) {
+                XLogger.d("tag", "addElement fail");
             }
             return new ChatMessage(message);
         }
@@ -364,17 +369,17 @@ public class ChatMessage<T> {
     }
 
     public static ChatMessage createVoiceSendMessage(String remoteChatId, String audioPath, int length) {
-        if(XmdChatModel.getInstance().chatModelIsEm()){
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
             EMMessage emMessage = EMMessage.createVoiceSendMessage(audioPath, length, remoteChatId);
             if (emMessage == null) {
                 return null;
             }
             return new ChatMessage(emMessage);
-        }else {
+        } else {
             VoiceMessageBean bean = new VoiceMessageBean();
             bean.setPath(audioPath);
             bean.setDuration(length);
-            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean,XmdMessageType.VOICE_TYPE,null,null);
+            TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.VOICE_TYPE, null, null);
             TIMSoundElem elem = new TIMSoundElem();
             elem.setPath(audioPath);
             elem.setDuration(length);

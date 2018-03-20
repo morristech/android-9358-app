@@ -59,6 +59,14 @@ public class ImMessageParseManager {
     }
 
     /**
+     * 获取消息Tag
+     */
+
+    public String getMessageTag(TIMMessage message){
+        return getIndexByMessage(message,XmdChatConstant.BASE_INDEX_TAG);
+    }
+
+    /**
      * @param message
      * @param index
      * @return 根据key值获取内容
@@ -82,7 +90,7 @@ public class ImMessageParseManager {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-            indexInfo = XmdMessageType.TEXT_TYPE;
+            indexInfo = "";
         }
         return indexInfo;
     }
@@ -199,10 +207,9 @@ public class ImMessageParseManager {
     public static CharSequence getContentParse(byte[] data) {
         String content = "";
         String messageType = "";
-
         try {
             String str = new String(data, "UTF-8");
-            XLogger.i(">>>","contentParse>"+str);
+            XLogger.i(">>>", "contentParse>" + str);
             Gson gson = new Gson();
             XmdChatMessageBaseBean messageBean = gson.fromJson(str, XmdChatMessageBaseBean.class);
             messageType = messageBean.getType();
@@ -290,6 +297,107 @@ public class ImMessageParseManager {
             e.printStackTrace();
         }
 
+        return TextUtils.isEmpty(content) ? "" : content;
+    }
+
+    public static CharSequence getLastMessageContentParse(byte[] data) {
+        String content = "";
+        String messageType = "";
+        try {
+            String str = new String(data, "UTF-8");
+            XLogger.i(">>>", "lastMessageParse>" + str);
+            Gson gson = new Gson();
+            XmdChatMessageBaseBean messageBean = gson.fromJson(str, XmdChatMessageBaseBean.class);
+            messageType = messageBean.getType();
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(str);
+            JsonObject root = element.getAsJsonObject();
+            JsonObject obj = root.getAsJsonObject(XmdChatConstant.BASE_INDEX_DATA);
+            if (messageType.equals(XmdMessageType.TEXT_TYPE)) {
+                TextMessageBean textBean = new Gson().fromJson(obj, TextMessageBean.class);
+                content = textBean.getContent();
+                return EmojiManager.getInstance().format(content);
+            } else {
+                switch (messageType) {
+                    case XmdMessageType.COUPON_TYPE:
+                        CouponMessageBean couponBean = new Gson().fromJson(obj, CouponMessageBean.class);
+                        content = String.format("[%s]%s", couponBean.getTypeName(), couponBean.getCouponName());
+                        break;
+                    case XmdMessageType.PAID_COUPON_TYPE:
+                        content = "[求点钟]";
+                        break;
+                    case XmdMessageType.REQUEST_REWARD_TYPE:
+                        content = "[求打赏]";
+                        break;
+                    case XmdMessageType.ORDER_REQUEST_TYPE:
+                        content = "[求预约]";
+                        break;
+                    case XmdMessageType.INVITE_GIFT_TYPE:
+                        content = "[邀请有礼]";
+                        break;
+                    case XmdMessageType.CLUB_LOCATION_TYPE:
+                        content = ResourceUtils.getString(R.string.location_message);
+                        break;
+                    case XmdMessageType.TIME_LIMIT_TYPE:
+                        content = "[限时购]";
+                        break;
+                    case XmdMessageType.LUCKY_WHEEL_TYPE:
+                        content = "[大转盘]";
+                        break;
+                    case XmdMessageType.JOURNAL_TYPE:
+                        content = "[电子期刊]";
+                        break;
+                    case XmdMessageType.ITEM_CARD_TYPE:
+                        String cardType = getContentByKey(data, "cardType").toString();
+                        switch (cardType) {
+                            case OnceCard.CARD_TYPE_SINGLE:
+                                content = "[单项次卡]";
+                                break;
+                            case OnceCard.CARD_TYPE_MIX:
+                                content = "[混合套餐]";
+                                break;
+                            case OnceCard.CARD_TYPE_CREDIT:
+                                content = "[积分礼品]";
+                                break;
+                        }
+                        break;
+                    case XmdMessageType.IMAGE_TYPE:
+                        content = ResourceUtils.getString(R.string.image_message);
+                        break;
+                    case XmdMessageType.COUPON_TIP_TYPE:
+                        content = ResourceUtils.getString(R.string.coupon_tip_message);
+                        break;
+                    case XmdMessageType.PAID_COUPON_TIP_TYPE:
+                        content = ResourceUtils.getString(R.string.paid_coupon_tip_message);
+                        break;
+                    case XmdMessageType.ORDER_START_TYPE:
+                    case XmdMessageType.ORDER_REFUSE_TYPE:
+                    case XmdMessageType.ORDER_CONFIRM_TYPE:
+                    case XmdMessageType.ORDER_CANCEL_TYPE:
+                    case XmdMessageType.ORDER_SUCCESS_TYPE:
+                        content = ResourceUtils.getString(R.string.order_message);
+                        break;
+                    case XmdMessageType.REWARD_TYPE:
+                        RewardMessageBean rewardMessageBean = new Gson().fromJson(obj, RewardMessageBean.class);
+                        content = String.format("[打赏]金额%s元", rewardMessageBean.getAmount());
+                        break;
+                    case XmdMessageType.REVERT_MSG_TYPE:
+                        content = ResourceUtils.getString(R.string.has_revoke_message);
+                        break;
+                    case XmdMessageType.VOICE_TYPE:
+                        content = ResourceUtils.getString(R.string.voice_message);
+                        break;
+                    case XmdMessageType.CREDIT_GIFT_TYPE:
+                        content = "[积分礼品]";
+                        break;
+                    default:
+                        content = messageType;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return TextUtils.isEmpty(content) ? "" : content;
     }
 

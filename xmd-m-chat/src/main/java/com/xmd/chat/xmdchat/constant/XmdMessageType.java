@@ -9,6 +9,7 @@ public class XmdMessageType {
 
     public static final String TEXT_TYPE = "text";
     public static final String IMAGE_TYPE = "image";
+    public static final String GROUP_IMAGE_TYPE = "image2";
     public static final String VOICE_TYPE = "voice";
     public static final String CLUB_LOCATION_TYPE = "clubLocation";
     public static final String ORDER_START_TYPE = "order_start";

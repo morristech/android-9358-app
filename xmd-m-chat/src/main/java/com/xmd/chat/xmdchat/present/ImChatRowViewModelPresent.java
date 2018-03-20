@@ -1,10 +1,13 @@
 package com.xmd.chat.xmdchat.present;
 
 import android.databinding.ObservableBoolean;
+import android.text.TextUtils;
 
 import com.tencent.imsdk.TIMMessage;
 import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.xmdchat.ImMessageParseManager;
+import com.xmd.chat.xmdchat.constant.XmdChatConstant;
 import com.xmd.chat.xmdchat.contract.XmdChatRowViewModelInterface;
 
 /**
@@ -19,19 +22,23 @@ public class ImChatRowViewModelPresent implements XmdChatRowViewModelInterface {
         this.mMessage = message;
         error.set(false);
         progress.set(false);
-        switch (mMessage.getMessage().status()){
+        error.set(false);
+
+        if (!TextUtils.isEmpty(ImMessageParseManager.getInstance().getMessageTag((TIMMessage) message.getMessage())) &&
+                ChatMessage.MSG_TAG_HELLO.equals(XmdChatConstant.HELLO_MESSAGE_TAG)) {
+            return;
+        }
+        switch (mMessage.getMessage().status()) {
             case HasRevoked:
                 progress.set(false);
                 error.set(false);
                 return;
-                //break;
             case SendSucc:
                 progress.set(false);
                 error.set(false);
-                if(message.getTag() != null && ChatMessage.MSG_TAG_HELLO.equals(message.getTag())){
+                if (message.getTag() != null && ChatMessage.MSG_TAG_HELLO.equals(message.getTag())) {
                     return;
                 }
-
                 break;
             case Sending:
                 progress.set(true);
@@ -40,7 +47,7 @@ public class ImChatRowViewModelPresent implements XmdChatRowViewModelInterface {
             case SendFail:
                 progress.set(false);
                 error.set(true);
-                if(ChatSettingManager.getInstance().isInCustomerBlackList(message.getToChatId())){
+                if (ChatSettingManager.getInstance().isInCustomerBlackList(message.getToChatId())) {
                     error.set(false);
                 }
                 break;
@@ -50,6 +57,6 @@ public class ImChatRowViewModelPresent implements XmdChatRowViewModelInterface {
 
     @Override
     public long getTime() {
-        return mMessage.getMessage().timestamp()*1000;
+        return mMessage.getMessage().timestamp() * 1000;
     }
 }

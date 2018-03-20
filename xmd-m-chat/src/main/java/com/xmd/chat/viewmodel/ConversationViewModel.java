@@ -104,7 +104,7 @@ public class ConversationViewModel<T> {
     }
 
     public CharSequence getMessage() {
-        return lastMessage.getContentText();
+       return lastMessage.getLastMessageContentText();
     }
 
     public long getTime() {

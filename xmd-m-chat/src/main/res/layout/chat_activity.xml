@@ -42,6 +42,11 @@
                     android:layout_height="130dp"
                     android:layout_gravity="center"
                     android:visibility="@{data.voiceRecording?View.VISIBLE:View.GONE}"/>
+                <ImageView android:layout_width="132dp"
+                           android:layout_height="132dp"
+                           android:layout_gravity="center"
+                           android:src="@drawable/voice_cancel"
+                           android:visibility="@{data.showCancelView?View.VISIBLE : View.GONE}"/>
 
             </FrameLayout>
 

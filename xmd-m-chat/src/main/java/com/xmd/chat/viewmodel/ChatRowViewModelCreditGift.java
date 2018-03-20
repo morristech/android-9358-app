@@ -1,8 +1,10 @@
 package com.xmd.chat.viewmodel;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,15 @@ public class ChatRowViewModelCreditGift extends ChatRowViewModel {
 
     public int getCredit() {
         return giftChatMessage.getGiftCredit();
+    }
+
+    public String getGiftName(){
+        return giftChatMessage.getGiftName();
+    }
+
+    @Override
+    public Drawable getContentViewBackground(Context context) {
+        return null;
     }
 
     @BindingAdapter("giftImage")

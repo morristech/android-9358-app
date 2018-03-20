@@ -44,6 +44,7 @@ public class ChatRowViewModelCoupon extends ChatRowViewModel {
         }
         ChatRowCouponBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        binding.couponType.setBackgroundResource(getTypeText().equals("求点钟") ? R.drawable.message_paid : R.drawable.message_coupon);
         return binding;
     }
 
@@ -57,7 +58,7 @@ public class ChatRowViewModelCoupon extends ChatRowViewModel {
     }
 
     public String getCouponDescription() {
-        return Utils.StrSubstring(8,couponChatMessage.getCouponDescription(),true);
+        return Utils.StrSubstring(8, couponChatMessage.getCouponDescription(), true);
     }
 
     public String getTimeLimit() {

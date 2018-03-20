@@ -69,10 +69,15 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
             height = body.getHeight();
         } else {
             TIMMessage timMessage = (TIMMessage) chatMessage.getMessage();
-            TIMImageElem elem = (TIMImageElem) timMessage.getElement(1);
-            List<TIMImage> timImage = elem.getImageList();
-            height = (int) timImage.get(1).getHeight();
-            width = (int) timImage.get(1).getWidth();
+            if(timMessage.getElement(1) instanceof TIMImageElem){
+                TIMImageElem elem = (TIMImageElem) timMessage.getElement(1);
+                List<TIMImage> timImage = elem.getImageList();
+                height = (int) timImage.get(1).getHeight();
+                width = (int) timImage.get(1).getWidth();
+            }else{
+                return null;
+            }
+
         }
         if (width > height && width > maxWidth) {
             lp.height = maxWidth * height / width;
@@ -163,6 +168,10 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
                 }
             }
         } else {
+            if(data == null || data.chatMessage == null){
+                Glide.with(imageView.getContext()).load(R.drawable.chat_default_image).into(imageView);
+                return;
+            }
             TIMMessage message = (TIMMessage) data.chatMessage.getMessage();
             TIMImageElem imageElem = (TIMImageElem) message.getElement(1);
             TIMImage image = imageElem.getImageList().get(1);

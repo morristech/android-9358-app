@@ -1,8 +1,10 @@
 package com.xmd.chat.viewmodel;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +90,13 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
 
     public CharSequence content() {
         return chatMessage.getContentText();
+    }
+
+    @Override
+    public Drawable getContentViewBackground(Context context) {
+        return chatMessage.isReceivedMessage() ?
+                context.getResources().getDrawable(R.drawable.receive_wrapper)
+                : context.getResources().getDrawable(R.drawable.send_wrapper_white);
     }
 
     public CharSequence name() {

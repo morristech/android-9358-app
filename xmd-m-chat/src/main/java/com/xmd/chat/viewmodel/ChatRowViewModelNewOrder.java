@@ -142,7 +142,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
             @Override
             public void onCallbackSuccess(BaseBean result) {
                 inProcess.set(false);
-                chatMessage.setInnerProcessed("已授受");
+                chatMessage.setInnerProcessed("已接受");
                 binding.setData(ChatRowViewModelNewOrder.this);
                 binding.executePendingBindings();
                 handlerMessage(orderChatMessage.getArriveTime(), orderChatMessage.getOrderId(), orderChatMessage.getItemName(), XmdChatConstant.NEW_ORDER_STATUS_ACCEPT);
@@ -165,7 +165,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
         NewOrderMessageBean bean = new NewOrderMessageBean(appointTime, orderId, serviceItemName, orderStatus);
         TIMMessage message = ImChatMessageManagerPresent.wrapMessage(bean, XmdMessageType.NEW_ORDER_TYPE, null, null);
         NewOrderChatMessage chatMessage = new NewOrderChatMessage(message);
-        chatMessage.setInnerProcessed(orderStatus.equals(XmdChatConstant.NEW_ORDER_STATUS_ACCEPT) ? "已授受" : "已拒绝");
+        chatMessage.setInnerProcessed(orderStatus.equals(XmdChatConstant.NEW_ORDER_STATUS_ACCEPT) ? "已接受" : "已拒绝");
         ImChatMessageManagerPresent.getInstance().sendMessage(chatMessage);
     }
 }

@@ -215,6 +215,11 @@ public class EmChatMessagePresent implements XmdChatMessageInterface<EMMessage> 
     }
 
     @Override
+    public CharSequence getLastMessageContent() {
+        return getContentText();
+    }
+
+    @Override
     public String getOriginContentText() {
         if (emMessage.getType().equals(EMMessage.Type.TXT)) {
             return ((EMTextMessageBody) emMessage.getBody()).getMessage();

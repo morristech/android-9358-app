@@ -90,7 +90,7 @@ public class VoiceManager {
                 }
             });
             mediaPlayer.prepareAsync();
-        } catch (IOException e) {
+        } catch (Exception e) {
             mOnPlayListener.onError("无法播放：" + e.getMessage());
             mOnPlayListener = null;
         }

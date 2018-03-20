@@ -10,6 +10,8 @@ import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.DateUtil;
+import com.xmd.app.utils.ResourceUtils;
+import com.xmd.chat.R;
 import com.xmd.chat.xmdchat.ImMessageParseManager;
 import com.xmd.chat.xmdchat.constant.XmdChatConstant;
 import com.xmd.chat.xmdchat.contract.XmdChatMessageInterface;
@@ -180,15 +182,28 @@ public class ImChatMessagePresent implements XmdChatMessageInterface<TIMMessage>
     public CharSequence getContentText() {
         TIMCustomElem elem;
         if (mMessage.status() == TIMMessageStatus.HasRevoked) {
-            return "撤回一条消息";
+            return ResourceUtils.getString(R.string.has_revoke_message);
         }
         if (mMessage.getElement(0) instanceof TIMCustomElem) {
             elem = (TIMCustomElem) mMessage.getElement(0);
         } else {
             elem = (TIMCustomElem) mMessage.getElement(1);
         }
-
         return ImMessageParseManager.getInstance().getContentParse(elem.getData());
+    }
+
+    @Override
+    public CharSequence getLastMessageContent() {
+        TIMCustomElem customElem;
+        if(mMessage.status() == TIMMessageStatus.HasRevoked){
+            return ResourceUtils.getString(R.string.has_revoke_message);
+        }
+        if(mMessage.getElement(0) instanceof TIMCustomElem){
+            customElem = (TIMCustomElem) mMessage.getElement(0);
+        }else {
+            customElem = (TIMCustomElem) mMessage.getElement(1);
+        }
+        return ImMessageParseManager.getInstance().getLastMessageContentParse(customElem.getData());
     }
 
     @Override
@@ -213,10 +228,11 @@ public class ImChatMessagePresent implements XmdChatMessageInterface<TIMMessage>
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(msgTime);
             Calendar now = Calendar.getInstance();
-            if (now.get(Calendar.YEAR) > calendar.get(Calendar.YEAR)
-                    || now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)) {
-                formatTime = DateUtils.doLong2String(msgTime);
-            } else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
+            if (now.get(Calendar.YEAR) > calendar.get(Calendar.YEAR)){
+                formatTime = DateUtils.longToDate(msgTime);
+            }else if(now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)){
+                formatTime = DateUtil.longToDate(msgTime).substring(5);
+            }else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
                 formatTime = DateUtils.doLong2String(msgTime, "昨天 HH:mm");
             } else {
                 formatTime = DateUtils.doLong2String(msgTime, "HH:mm");

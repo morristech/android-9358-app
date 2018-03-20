@@ -15,6 +15,7 @@ import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameAccept;
 import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameInvite;
 import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameResult;
 import com.xmd.chat.viewmodel.ChatRowViewModelEmpty;
+import com.xmd.chat.viewmodel.ChatRowViewModelGroupImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelNewOrder;
@@ -33,6 +34,7 @@ import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_ACCEPT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_INVITE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_RESULT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_EMPTY;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_GROUP_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_NEW_ORDER;
@@ -112,6 +114,9 @@ public class ChatRowViewFactory {
                 break;
             case ChatMessage.REVERT_MSG:
                 baseType = CHAT_ROW_VIEW_EMPTY;
+                break;
+            case ChatMessage.MSG_TYPE_GROUP_IMAGE:
+                baseType = CHAT_ROW_VIEW_GROUP_IMAGE;
                 break;
             default:
                 baseType = CHAT_ROW_VIEW_TEXT;
@@ -193,6 +198,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelReward.createView(parent);
             case CHAT_ROW_VIEW_EMPTY:
                 return ChatRowViewModelEmpty.createView(parent);
+            case CHAT_ROW_VIEW_GROUP_IMAGE:
+                return ChatRowViewModelGroupImage.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -235,6 +242,8 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelDiceGameResult(message);
             case CHAT_ROW_VIEW_EMPTY:
                 return new ChatRowViewModelEmpty(message);
+            case CHAT_ROW_VIEW_GROUP_IMAGE:
+                return new ChatRowViewModelGroupImage(message);
             default:
                 return new ChatRowViewModelText(message);
         }

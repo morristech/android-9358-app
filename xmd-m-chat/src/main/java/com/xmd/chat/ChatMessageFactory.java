@@ -7,6 +7,7 @@ import com.xmd.chat.message.CreditGiftChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.chat.message.EmptyChatMessage;
+import com.xmd.chat.message.GroupImageMessage;
 import com.xmd.chat.message.NewOrderChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
@@ -59,6 +60,8 @@ public class ChatMessageFactory {
                 return new DiceGameChatMessage(message);
             case ChatMessage.REVERT_MSG:
                 return new EmptyChatMessage<>(message);
+            case ChatMessage.MSG_TYPE_GROUP_IMAGE:
+                return new GroupImageMessage<>(message);
             default:
                 return new ChatMessage(message);
         }

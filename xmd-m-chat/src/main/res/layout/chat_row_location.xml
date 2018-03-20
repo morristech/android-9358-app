@@ -17,14 +17,6 @@
         android:layout_height="180dp"
         android:background="@drawable/send_wrapper"
         android:orientation="vertical">
-
-        <!--<com.shidou.commonlibrary.widget.XWebView-->
-        <!--android:id="@+id/webView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="180dp"-->
-        <!--android:scrollbars="none"-->
-        <!--android:background="#AAaaFF"-->
-        <!--app:map="@{data}"/>-->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="180dp"

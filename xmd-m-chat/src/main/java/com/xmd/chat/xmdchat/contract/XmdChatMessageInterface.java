@@ -64,6 +64,8 @@ public interface XmdChatMessageInterface<T> {
 
     CharSequence getContentText();
 
+    CharSequence getLastMessageContent();
+
     String getOriginContentText();
 
     boolean isCustomerService();
