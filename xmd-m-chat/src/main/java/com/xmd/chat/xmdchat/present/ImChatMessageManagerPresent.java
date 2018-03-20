@@ -260,6 +260,29 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
                         EventBus.getDefault().post(new EventNewUiMessage(data));
                     }
                 }
+                ChatMessage chatMessage = new ChatMessage(message);
+                String msgType = chatMessage.getMsgType();
+                //通知服务器有新的消息
+                Observable<BaseBean> observable = XmdNetwork.getInstance()
+                        .getService(NetService.class)
+                        .notifyServerChatMessage(
+                                ChatAccountManager.getInstance().getChatId(),
+                                ChatAccountManager.getInstance().getUserType(),
+                                chatMessage.getRemoteChatId(),
+                                UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
+                                message.getMsgId(),
+                                msgType, chatMessage.getContentText().toString());
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        XLogger.d("notifyServerChatMessage success");
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XLogger.d("notifyServerChatMessage failed:" + e.getMessage());
+                    }
+                });
             }
         });
         if (show) {
@@ -294,29 +317,7 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
             public void onSuccess(TIMMessage message) {
                 data.error.set(false);
                 data.progress.set(false);
-                ChatMessage chatMessage = new ChatMessage(message);
-                String msgType = chatMessage.getMsgType();
-                //通知服务器有新的消息
-                Observable<BaseBean> observable = XmdNetwork.getInstance()
-                        .getService(NetService.class)
-                        .notifyServerChatMessage(
-                                ChatAccountManager.getInstance().getChatId(),
-                                ChatAccountManager.getInstance().getUserType(),
-                                chatMessage.getRemoteChatId(),
-                                UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
-                                message.getMsgId(),
-                                msgType, chatMessage.getContentText().toString());
-                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        XLogger.d("notifyServerChatMessage success");
-                    }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        XLogger.d("notifyServerChatMessage failed:" + e.getMessage());
-                    }
-                });
             }
         });
 
