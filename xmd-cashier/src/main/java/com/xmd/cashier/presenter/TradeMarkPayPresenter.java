@@ -9,8 +9,11 @@ import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.TradeMarkPayContract;
+import com.xmd.cashier.dal.event.RechargeDoneEvent;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
+import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.Callback;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.BaseBean;
@@ -28,20 +31,53 @@ public class TradeMarkPayPresenter implements TradeMarkPayContract.Presenter {
     private Context mContext;
     private TradeMarkPayContract.View mView;
     private Subscription mMarkPaySubscription;
+    private Subscription mMarkRechargeSubscription;
     private TradeManager mTradeManager;
+    private MemberManager mMemberManager;
 
     public TradeMarkPayPresenter(Context context, TradeMarkPayContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
         mTradeManager = TradeManager.getInstance();
+        mMemberManager = MemberManager.getInstance();
     }
 
     @Override
     public void onCreate() {
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                showCashierInfo();
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                showRechargeInfo();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void showCashierInfo() {
         mView.showAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillPayMoney())));
         mView.showChannelName(mTradeManager.getCurrentTrade().currentChannelName);
         mView.showChannelDesc(mTradeManager.getCurrentTrade().currentChannelMark);
+    }
+
+    private void showRechargeInfo() {
+        switch (mMemberManager.getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:    // 充值金额
+                mView.showAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(mMemberManager.getAmount())));
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:  // 充值套餐
+                mView.showAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(mMemberManager.getPackageInfo().amount)));
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
+            default:
+                break;
+        }
+        mView.showChannelName(mMemberManager.currentChannelName);
+        mView.showChannelDesc(mMemberManager.currentChannelMark);
     }
 
     @Override
@@ -54,10 +90,27 @@ public class TradeMarkPayPresenter implements TradeMarkPayContract.Presenter {
         if (mMarkPaySubscription != null) {
             mMarkPaySubscription.unsubscribe();
         }
+        if (mMarkRechargeSubscription != null) {
+            mMarkRechargeSubscription.unsubscribe();
+        }
     }
 
     @Override
-    public void onMarkPay() {
+    public void onMark() {
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                markPay();
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                markRecharge();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void markPay() {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
             return;
@@ -87,6 +140,37 @@ public class TradeMarkPayPresenter implements TradeMarkPayContract.Presenter {
         });
     }
 
+    private void markRecharge() {
+        if (!Utils.isNetworkEnabled(mContext)) {
+            mView.showError(mContext.getString(R.string.network_disabled));
+            return;
+        }
+        mView.showLoading();
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "会员充值记账支付");
+        if (mMarkRechargeSubscription != null) {
+            mMarkRechargeSubscription.unsubscribe();
+        }
+        mMarkRechargeSubscription = mMemberManager.callbackRechargeOrder(mMemberManager.getRechargeOrderId(), mMemberManager.currentChannelType, new Callback<MemberRecordResult>() {
+            @Override
+            public void onSuccess(MemberRecordResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值记账支付---成功");
+                PosFactory.getCurrentCashier().speech("充值成功");
+                mView.hideLoading();
+                mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                mMemberManager.recordInfo = o.getRespData();
+                EventBus.getDefault().post(new RechargeDoneEvent());
+                mView.finishSelf();
+            }
+
+            @Override
+            public void onError(String error) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值记账支付---失败：" + error);
+                mView.hideLoading();
+                mView.showToast("充值失败：" + error);
+            }
+        });
+    }
+
     @Override
     public void onNavigationBack() {
         new CustomAlertDialogBuilder(mContext)
@@ -103,9 +187,21 @@ public class TradeMarkPayPresenter implements TradeMarkPayContract.Presenter {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择退出交易");
-                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
-                        mTradeManager.getCurrentTrade().tradeStatusError = "已取消交易";
-                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        switch (mView.getType()) {
+                            case AppConstants.TRADE_TYPE_NORMAL:
+                            case AppConstants.TRADE_TYPE_INNER:
+                                mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                                mTradeManager.getCurrentTrade().tradeStatusError = "已取消交易";
+                                EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                                break;
+                            case AppConstants.TRADE_TYPE_RECHARGE:
+                                mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                                mMemberManager.tradeStatusError = "已取消充值";
+                                EventBus.getDefault().post(new RechargeDoneEvent());
+                                break;
+                            default:
+                                break;
+                        }
                         mView.finishSelf();
                     }
                 })

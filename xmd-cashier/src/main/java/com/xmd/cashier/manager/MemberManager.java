@@ -10,19 +10,17 @@ import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.MemberCardProcess;
 import com.xmd.cashier.dal.bean.MemberInfo;
-import com.xmd.cashier.dal.bean.MemberRechargeProcess;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
-import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.bean.TradeChannelInfo;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
-import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
 import com.xmd.cashier.dal.net.response.MemberListResult;
+import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -48,23 +46,9 @@ import rx.schedulers.Schedulers;
 public class MemberManager {
     private static final String TAG = "MemberManager";
     private IPos mPos;
-    private MemberCardProcess mCardProcess;
-    private MemberRechargeProcess mRechargeProcess;
-    private Trade mTrade;
 
     private MemberManager() {
         mPos = PosFactory.getCurrentCashier();
-        mCardProcess = new MemberCardProcess();
-        mRechargeProcess = new MemberRechargeProcess();
-        mTrade = new Trade();
-    }
-
-    public void newTrade() {
-        mTrade = new Trade();
-    }
-
-    public Trade getTrade() {
-        return mTrade;
     }
 
     private static MemberManager mInstance = new MemberManager();
@@ -78,7 +62,7 @@ public class MemberManager {
         return mPos.getMagneticReaderInfo();
     }
 
-    // 会所会员配置
+    // ————————————————————————会所会员配置——————————————————————————
     private int mCardMode = 2;  //默认只发电子卡
     private String mRechargeMode = null;    //默认不支持Pos充值
     private String mMemberSwitch = AppConstants.APP_REQUEST_NO; //默认会员功能关闭
@@ -155,54 +139,54 @@ public class MemberManager {
         return resultMemberSetting;
     }
 
-    //----------------开卡-------------------
-    // 退出登录/完成一次开卡后
+    // ————————————————————————开卡——————————————————————————
+    private MemberInfo cardMemberInfo;
+
     public void newCardProcess() {
-        mCardProcess = new MemberCardProcess();
+        cardMemberInfo = new MemberInfo();
     }
 
     public void setPhone(String phone) {
-        mCardProcess.getMemberInfo().phoneNum = phone;
+        this.cardMemberInfo.phoneNum = phone;
     }
 
     public String getPhone() {
-        return mCardProcess.getMemberInfo().phoneNum;
+        return cardMemberInfo.phoneNum;
     }
 
     public void setName(String name) {
-        mCardProcess.getMemberInfo().name = name;
+        this.cardMemberInfo.name = name;
     }
 
     public String getName() {
-        return mCardProcess.getMemberInfo().name;
+        return cardMemberInfo.name;
     }
 
     public void setBirth(String birth) {
-        mCardProcess.getMemberInfo().birth = birth;
+        this.cardMemberInfo.birth = birth;
     }
 
     public void setGender(String gender) {
-        mCardProcess.getMemberInfo().gender = gender;
+        this.cardMemberInfo.gender = gender;
     }
 
     public void setCardNo(String cardNo) {
-        mCardProcess.getMemberInfo().cardNo = cardNo;
+        this.cardMemberInfo.cardNo = cardNo;
     }
 
     public void setCardMemberInfo(MemberInfo info) {
-        mCardProcess.setMemberInfo(info);
+        this.cardMemberInfo = info;
     }
 
     public MemberInfo getCardMemberInfo() {
-        return mCardProcess.getMemberInfo();
+        return cardMemberInfo;
     }
 
     // 开卡
     public Subscription requestCard(final Callback<MemberCardResult> callback) {
-        MemberInfo info = mCardProcess.getMemberInfo();
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员开卡发起请求：" + RequestConstant.URL_REQUEST_MEMBER_CARD);
         Observable<MemberCardResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .cardMemberInfo(AccountManager.getInstance().getToken(), info.birth, info.gender, info.cardNo, info.phoneNum, info.name);
+                .cardMemberInfo(AccountManager.getInstance().getToken(), cardMemberInfo.birth, cardMemberInfo.gender, cardMemberInfo.cardNo, cardMemberInfo.phoneNum, cardMemberInfo.name);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberCardResult>() {
             @Override
             public void onCallbackSuccess(MemberCardResult result) {
@@ -247,89 +231,157 @@ public class MemberManager {
         });
     }
 
-    //----------------充值-------------------    // 退出登录/完成一次充值后
+    // ————————————————————————充值——————————————————————————
+    public int tradeStatus; //充值交易结果
+    public String tradeStatusError; //充值交易失败描述
+
+    public String currentChannelName;
+    public String currentChannelType;
+    public String currentChannelMark;
+
+    private String memberId;  // 会员ID
+    private MemberInfo memberInfo;  // 会员实例
+
+    // 充值指定套餐
+    private PackagePlanItem packageInfo;
+    // 充值指定金额
+    private int amount;     //充
+    private int amountGive; //送
+
+    private String rechargeAmountType;
+    private String payUrl;  // 充值订单二维码URL
+    private TechInfo techInfo;  // 营销人员ID
+    private String orderId; // 充值订单ID
+
+    private String tradeNo; // 银联支付时支付号
+    private String posTradeNo;      //收银台订单号
+
+    public MemberRecordInfo recordInfo;
+
     public void newRechargeProcess() {
-        mRechargeProcess = new MemberRechargeProcess();
+        tradeStatus = 0;
+        tradeStatusError = null;
+        currentChannelName = null;
+        currentChannelType = null;
+        currentChannelMark = null;
+        memberId = null;
+        memberInfo = new MemberInfo();
+        packageInfo = new PackagePlanItem();
+        amount = 0;
+        amountGive = 0;
+        rechargeAmountType = null;
+        payUrl = null;
+        techInfo = new TechInfo();
+        orderId = null;
+        tradeNo = null;
+        posTradeNo = null;
+        recordInfo = null;
+    }
+
+    public synchronized String getPosTradeNo() {
+        if (posTradeNo == null) {
+            newCashierTradeNo();
+        }
+        return posTradeNo;
+    }
+
+    //生成新的订单号给收银APP使用
+    public void newCashierTradeNo() {
+        int seed = 0;
+        if (posTradeNo != null) {
+            seed = Integer.parseInt(posTradeNo.subSequence(posTradeNo.length() - 4, posTradeNo.length()).toString());
+            seed++;
+        }
+        posTradeNo = String.format("%s%04d", tradeNo, seed);
+    }
+
+    public void setCurrentChannel(TradeChannelInfo info) {
+        currentChannelName = info.name;
+        currentChannelMark = info.mark;
+        currentChannelType = info.type;
     }
 
     public void setRechargeTechInfo(TechInfo info) {
-        mRechargeProcess.setTechInfo(info);
+        this.techInfo = info;
     }
 
     public void setRechargeMemberInfo(MemberInfo memberInfo) {
-        mRechargeProcess.setMemberInfo(memberInfo);
+        this.memberInfo = memberInfo;
     }
 
     public MemberInfo getRechargeMemberInfo() {
-        return mRechargeProcess.getMemberInfo();
+        return memberInfo;
     }
 
-    public void setMemberId(long memberId) {
-        mRechargeProcess.setMemberId(memberId);
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public void setPackageInfo(PackagePlanItem info) {
-        mRechargeProcess.setPackageInfo(info);
+        packageInfo = info;
     }
 
     public PackagePlanItem getPackageInfo() {
-        return mRechargeProcess.getPackageInfo();
+        return packageInfo;
     }
 
     public void setAmount(int amount) {
-        mRechargeProcess.setAmount(amount);
+        this.amount = amount;
     }
 
     public void setAmountGive(int amountGive) {
-        mRechargeProcess.setAmountGive(amountGive);
+        this.amountGive = amountGive;
     }
 
     public int getAmount() {
-        return mRechargeProcess.getAmount();
+        return amount;
     }
 
     public int getAmountGive() {
-        return mRechargeProcess.getAmountGive();
+        return amountGive;
     }
 
     public String getRechargeUrl() {
-        return mRechargeProcess.getPayUrl();
+        return payUrl;
     }
 
     public String getRechargeOrderId() {
-        return mRechargeProcess.getOrderId();
+        return orderId;
     }
 
     public void setAmountType(String type) {
-        mRechargeProcess.setRechargeAmountType(type);
+        this.rechargeAmountType = type;
     }
 
     public String getAmountType() {
-        return mRechargeProcess.getRechargeAmountType();
+        return rechargeAmountType;
+    }
+
+    public String getTradeNo() {
+        return tradeNo;
     }
 
     // 生成充值请求
     public Subscription requestRecharge(String password, final Callback<MemberUrlResult> callback) {
-        int amount = 0;
-        int amountGive = 0;
+        int amountValue = 0;
+        int amountGiveValue = 0;
         String description = "充值";
         String packageId = null;
         switch (getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                PackagePlanItem info = mRechargeProcess.getPackageInfo();
-                if (info != null) {
-                    amount = info.amount;
-                    description = "套餐" + info.name;
-                    packageId = String.valueOf(info.id);
+                if (packageInfo != null) {
+                    amountValue = packageInfo.amount;
+                    description = "套餐" + packageInfo.name;
+                    packageId = String.valueOf(packageInfo.id);
                 }
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
-                amount = mRechargeProcess.getAmount();
-                amountGive = mRechargeProcess.getAmountGive();
-                if (amountGive > 0) {
-                    description = "充" + Utils.moneyToStringEx(amount) + "送" + Utils.moneyToStringEx(amountGive);
+                amountValue = amount;
+                amountGiveValue = amountGive;
+                if (amountGiveValue > 0) {
+                    description = "充" + Utils.moneyToStringEx(amountValue) + "送" + Utils.moneyToStringEx(amountGiveValue);
                 } else {
-                    description = "指定金额" + Utils.moneyToStringEx(amount) + "元";
+                    description = "指定金额" + Utils.moneyToStringEx(amountValue) + "元";
                 }
                 packageId = null;
                 break;
@@ -339,22 +391,22 @@ public class MemberManager {
         XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值发起充值请求：" + RequestConstant.URL_REQUEST_MEMBER_RECHARGE);
         Observable<MemberUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .rechargeMemberInfo(AccountManager.getInstance().getToken(),
-                        String.valueOf(amount),
-                        String.valueOf(mRechargeProcess.getAmountGive()),
+                        String.valueOf(amountValue),
+                        String.valueOf(amountGiveValue),
                         description,
-                        String.valueOf(mRechargeProcess.getMemberId()),
+                        memberId,
                         packageId,
-                        mRechargeProcess.getTechInfo().id,
+                        techInfo.id,
                         password,
+                        AppConstants.PAY_CHANNEL_QRCODE.equals(currentChannelType) ? null : currentChannelType,
                         RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberUrlResult>() {
             @Override
             public void onCallbackSuccess(MemberUrlResult result) {
                 if (result != null && result.getRespData() != null) {
-                    String orderId = result.getRespData().orderId;
-                    String payUrl = result.getRespData().payUrl;
-                    mRechargeProcess.setOrderId(orderId);
-                    mRechargeProcess.setPayUrl(payUrl);
+                    orderId = result.getRespData().orderId;
+                    payUrl = result.getRespData().payUrl;
+                    tradeNo = result.getRespData().tradeNo;
                     XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值发起充值请求---成功：[" + orderId + "]" + payUrl);
                     callback.onSuccess(result);
                 } else {
@@ -371,31 +423,10 @@ public class MemberManager {
         });
     }
 
-    // POS支付获取TradeNo
-    public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号：" + RequestConstant.URL_GET_TRADE_NO);
-        Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTradeNo(AccountManager.getInstance().getToken(), RequestConstant.DEFAULT_SIGN_VALUE);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
-            @Override
-            public void onCallbackSuccess(GetTradeNoResult result) {
-                mTrade.tradeNo = result.getRespData();
-                callback.onSuccess(result);
-                XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号---成功：" + mTrade.tradeNo);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值生成交易号---失败：" + e.getLocalizedMessage());
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
     // 收银台支付
     public void posRecharge(Context context, final int money, final Callback<Void> callback) {
-        mTrade.newCashierTradeNo();
-        CashierManager.getInstance().pay(context, mTrade.getPosTradeNo(), money, new PayCallback<Object>() {
+        newCashierTradeNo();
+        CashierManager.getInstance().pay(context, getPosTradeNo(), money, new PayCallback<Object>() {
             @Override
             public void onResult(String error, Object o) {
                 if (error == null) {
@@ -583,12 +614,45 @@ public class MemberManager {
                 break;
         }
         if (!keep) {
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
             }
             mPos.printCenter("微信扫码，选技师、抢优惠");
         }
         mPos.printEnd();
+    }
+
+
+    public Subscription activeAuthPay(String authCode, String orderId, final Callback<MemberRecordResult> callback) {
+        Observable<MemberRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .doAuthCodeRecharge(AccountManager.getInstance().getToken(), orderId, authCode, RequestConstant.DEFAULT_SIGN_VALUE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
+            @Override
+            public void onCallbackSuccess(MemberRecordResult result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
+    }
+
+    public Subscription callbackRechargeOrder(String orderId, String payChannel, final Callback<MemberRecordResult> callback) {
+        Observable<MemberRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .doMemberRecharge(AccountManager.getInstance().getToken(), orderId, payChannel, null, RequestConstant.DEFAULT_SIGN_VALUE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
+            @Override
+            public void onCallbackSuccess(MemberRecordResult result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 }

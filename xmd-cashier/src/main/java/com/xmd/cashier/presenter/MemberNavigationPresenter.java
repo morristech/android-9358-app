@@ -53,6 +53,7 @@ public class MemberNavigationPresenter implements MemberNavigationContract.Prese
     @Override
     public void onCard() {
         // 跳转开卡
+        MemberManager.getInstance().newCardProcess();
         UiNavigation.gotoMcardPhoneActivity(mContext);
         mView.showEnterAnim();
     }

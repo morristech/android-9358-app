@@ -147,6 +147,6 @@ public class Trade {
             seed = Integer.parseInt(posTradeNo.subSequence(posTradeNo.length() - 4, posTradeNo.length()).toString());
             seed++;
         }
-        posTradeNo = String.format("%s%04d", tradeNo, seed);
+        posTradeNo = String.format("%s%04d", payNo, seed);
     }
 }

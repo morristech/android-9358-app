@@ -34,7 +34,6 @@ import com.xmd.cashier.activity.McardInfoActivity;
 import com.xmd.cashier.activity.McardPhoneActivity;
 import com.xmd.cashier.activity.McardSuccessActivity;
 import com.xmd.cashier.activity.MemberNavigationActivity;
-import com.xmd.cashier.activity.MemberPaymentActivity;
 import com.xmd.cashier.activity.MemberReadActivity;
 import com.xmd.cashier.activity.MemberRechargeActivity;
 import com.xmd.cashier.activity.MemberRecordActivity;
@@ -284,12 +283,6 @@ public class UiNavigation {
 
     public static void gotoMcardSuccessActivity(Context context) {
         Intent intent = new Intent(context, McardSuccessActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void gotoMemberPaymentActivity(Context context, String channel) {
-        Intent intent = new Intent(context, MemberPaymentActivity.class);
-        intent.putExtra(AppConstants.EXTRA_MEMBER_CASHIER_METHOD, channel);
         context.startActivity(intent);
     }
 

@@ -54,7 +54,7 @@ public class TradeMarkPayActivity extends BaseActivity implements TradeMarkPayCo
         mMarkConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.onMarkPay();
+                mPresenter.onMark();
             }
         });
     }

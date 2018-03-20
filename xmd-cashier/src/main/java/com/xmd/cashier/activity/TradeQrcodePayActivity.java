@@ -83,20 +83,21 @@ public class TradeQrcodePayActivity extends BaseActivity implements TradeQrcodeP
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade_qrcode_pay);
-        mTradeType = getIntent().getIntExtra(AppConstants.EXTRA_TRADE_TYPE, 0);
+        inactivityTimer = new InactivityTimer(this);
+        CameraManager.init(getApplication());
         mPresenter = new TradeQrcodePayPresenter(this, this);
         initView();
-        mPresenter.onCreate();
 
-        CameraManager.init(getApplication());
+        mTradeType = getIntent().getIntExtra(AppConstants.EXTRA_TRADE_TYPE, 0);
         hasSurface = false;
-        inactivityTimer = new InactivityTimer(this);
+        mPresenter.onCreate();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         mTradeType = getIntent().getIntExtra(AppConstants.EXTRA_TRADE_TYPE, 0);
+        hasSurface = false;
         mPresenter.onCreate();
     }
 

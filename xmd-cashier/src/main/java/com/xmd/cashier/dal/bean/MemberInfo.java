@@ -11,7 +11,7 @@ public class MemberInfo implements Serializable {
     public int amount;
     public int freezeAmount;
     public String accountId;
-    public long id;
+    public String id;
     public String cardNo;
     public int memberTypeId;
     public String memberTypeName;

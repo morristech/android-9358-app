@@ -25,7 +25,7 @@ import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
-import com.xmd.cashier.dal.event.RechargeFinishEvent;
+import com.xmd.cashier.dal.event.RechargeDoneEvent;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.presenter.MemberRechargePresenter;
 import com.xmd.cashier.widget.CircleImageView;
@@ -42,7 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 
 public class MemberRechargeActivity extends BaseActivity implements MemberRechargeContract.View {
-    private static final String TAG = "MemberRechargePresenter";
     private MemberRechargeContract.Presenter mPresenter;
 
     private TextView mMemberName;
@@ -305,8 +304,8 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RechargeFinishEvent event) {
-        finishSelf();
+    public void onEvent(RechargeDoneEvent event) {
+        mPresenter.onRechargeDone();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

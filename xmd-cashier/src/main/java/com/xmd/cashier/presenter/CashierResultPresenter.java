@@ -75,7 +75,11 @@ public class CashierResultPresenter implements CashierResultContract.Presenter {
             public void onError(String error) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情---失败：" + error);
                 mView.hideLoading();
-                mView.showPrint();
+                if (mTradeManager.getCurrentTrade().tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                    mView.showPrint();
+                } else {
+                    mView.showConfirm();
+                }
             }
         });
     }

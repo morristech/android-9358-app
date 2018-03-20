@@ -683,7 +683,7 @@ public class VerifyManager {
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {    //客户联
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -741,7 +741,7 @@ public class VerifyManager {
         mPos.printText("收款人员：", AccountManager.getInstance().getUser().loginName + "(" + AccountManager.getInstance().getUser().userName + ")");
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {    //客户联
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -778,7 +778,7 @@ public class VerifyManager {
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
 
         if (!keep) {    //客户联
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -816,7 +816,7 @@ public class VerifyManager {
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
 
         if (!keep) {    //客户联
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -853,7 +853,7 @@ public class VerifyManager {
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
 
         if (!keep) {    //客户联
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -980,7 +980,7 @@ public class VerifyManager {
         mPos.printText("收款人员：", recordInfo.operatorName);
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");

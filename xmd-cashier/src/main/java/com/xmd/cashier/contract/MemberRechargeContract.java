@@ -34,6 +34,8 @@ public interface MemberRechargeContract {
         void clearPackage();
 
         void onConfirm();
+
+        void onRechargeDone();
     }
 
     interface View extends BaseView<Presenter> {

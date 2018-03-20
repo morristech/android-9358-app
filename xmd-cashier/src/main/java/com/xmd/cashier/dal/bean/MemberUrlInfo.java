@@ -9,4 +9,5 @@ import java.io.Serializable;
 public class MemberUrlInfo implements Serializable {
     public String orderId;
     public String payUrl;
+    public String tradeNo;
 }

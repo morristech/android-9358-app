@@ -162,6 +162,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                             break;
                         case AppConstants.MEMBER_BUSINESS_TYPE_RECHARGE:
                             // 充值
+                            MemberManager.getInstance().newRechargeProcess();
                             MemberManager.getInstance().setRechargeMemberInfo(o);
                             MemberManager.getInstance().setMemberId(o.id);
                             UiNavigation.gotoMemberRechargeActivity(mContext);
@@ -201,7 +202,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                     return;
                 }
                 dialog.dismiss();
-                updateMemberInfo(String.valueOf(info.id), telephone);
+                updateMemberInfo(info.id, telephone);
             }
         });
     }

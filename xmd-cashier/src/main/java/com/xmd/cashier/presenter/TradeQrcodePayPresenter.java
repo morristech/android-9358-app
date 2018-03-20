@@ -18,13 +18,17 @@ import com.xmd.cashier.contract.TradeQrcodePayContract.Presenter;
 import com.xmd.cashier.dal.bean.GiftActivityInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.event.QRScanStatusEvent;
+import com.xmd.cashier.dal.event.RechargeDoneEvent;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
+import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.m.network.BaseBean;
@@ -49,8 +53,10 @@ public class TradeQrcodePayPresenter implements Presenter {
     private GiftActivityInfo mGiftActivityInfo;
     private Subscription mGetGiftActivitySubscription;
     private Subscription mActiveAuthCodePaySubscription;
+    private Subscription mActiveAuthCodeRechargeSubscription;
 
     private TradeManager mTradeManager;
+    private MemberManager mMemberManager;
 
     private Handler mHandler;
 
@@ -62,35 +68,27 @@ public class TradeQrcodePayPresenter implements Presenter {
         }
     };
 
-
     public TradeQrcodePayPresenter(Context context, TradeQrcodePayContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
         mTradeManager = TradeManager.getInstance();
+        mMemberManager = MemberManager.getInstance();
         mHandler = new Handler();
     }
 
     @Override
     public void onCreate() {
-        Trade trade = mTradeManager.getCurrentTrade();
-        mView.setAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(trade.getWillPayMoney())));
-        getGiftActivity();  //买单活动
-        if (TextUtils.isEmpty(trade.payUrl)) {
-            mView.showQrError("获取二维码失败");
-        } else {
-            Bitmap bitmap;
-            try {
-                bitmap = Utils.getQRBitmap(trade.payUrl);
-            } catch (Exception e) {
-                bitmap = null;
-            }
-            if (bitmap == null) {
-                mView.showQrError("二维码解析失败");
-            } else {
-                mView.showQrSuccess();
-                mView.setQRCode(bitmap);
-            }
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                showCashierQrcode();
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                showRechargeQrcode();
+                break;
+            default:
+                break;
         }
 
         String priority = SPManager.getInstance().getOnlinePayPriority();
@@ -111,12 +109,72 @@ public class TradeQrcodePayPresenter implements Presenter {
         }
     }
 
+    private void showCashierQrcode() {
+        Trade trade = mTradeManager.getCurrentTrade();
+        mView.setAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(trade.getWillPayMoney())));
+        getGiftActivity();  //买单活动
+        if (TextUtils.isEmpty(trade.payUrl)) {
+            mView.showQrError("获取二维码失败");
+        } else {
+            Bitmap bitmap;
+            try {
+                bitmap = Utils.getQRBitmap(trade.payUrl);
+            } catch (Exception e) {
+                bitmap = null;
+            }
+            if (bitmap == null) {
+                mView.showQrError("二维码解析失败");
+            } else {
+                mView.showQrSuccess();
+                mView.setQRCode(bitmap);
+            }
+        }
+    }
+
+    private void showRechargeQrcode() {
+        switch (mMemberManager.getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:    // 充值金额
+                mView.setAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(mMemberManager.getAmount())));
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:  // 充值套餐
+                mView.setAmount(String.format(mContext.getResources().getString(R.string.cashier_money), Utils.moneyToStringEx(mMemberManager.getPackageInfo().amount)));
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
+            default:
+                break;
+        }
+        if (TextUtils.isEmpty(mMemberManager.getRechargeUrl())) {
+            mView.showQrError("获取二维码失败");
+        } else {
+            Bitmap bitmap;
+            try {
+                bitmap = Utils.getQRBitmap(mMemberManager.getRechargeUrl());
+            } catch (Exception e) {
+                bitmap = null;
+            }
+            if (bitmap == null) {
+                mView.showQrError("二维码解析失败");
+            } else {
+                mView.showQrSuccess();
+                mView.setQRCode(bitmap);
+            }
+        }
+    }
+
     private void initBitmap() {
         PosFactory.getCurrentCashier().speech("请扫描屏幕中二维码");
-        // 轮询扫码状态
-        startGetScanStatus();
-        // 轮询支付状态
-        startGetPayStatus();
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                startGetScanStatus();// 轮询扫码状态
+                startGetPayStatus();// 轮询支付状态
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                startDetailRecharge();
+                break;
+            default:
+                break;
+        }
     }
 
     private void initAuth() {
@@ -133,17 +191,66 @@ public class TradeQrcodePayPresenter implements Presenter {
         mHandler.removeCallbacks(mRunnable);
         stopGetScanStatus();
         stopGetPayStatus();
+        stopDetailRecharge();
         if (mGetGiftActivitySubscription != null) {
             mGetGiftActivitySubscription.unsubscribe();
         }
         if (mActiveAuthCodePaySubscription != null) {
             mActiveAuthCodePaySubscription.unsubscribe();
         }
+        if (mActiveAuthCodeRechargeSubscription != null) {
+            mActiveAuthCodeRechargeSubscription.unsubscribe();
+        }
     }
 
     // **************** 二维码授权支付 ****************
     @Override
     public void authPay(String authCode) {
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                cashierAuthPay(authCode);
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                rechargeAuthPay(authCode);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void rechargeAuthPay(String authCode) {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值：" + authCode);
+        mHandler.removeCallbacks(mRunnable);
+        mView.showLoading();
+        if (mActiveAuthCodeRechargeSubscription != null) {
+            mActiveAuthCodeRechargeSubscription.unsubscribe();
+        }
+        mActiveAuthCodeRechargeSubscription = mMemberManager.activeAuthPay(authCode, mMemberManager.getRechargeOrderId(), new Callback<MemberRecordResult>() {
+            @Override
+            public void onSuccess(MemberRecordResult o) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---成功");
+                mView.hideLoading();
+                PosFactory.getCurrentCashier().speech("充值成功");
+                mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                mMemberManager.recordInfo = o.getRespData();
+                EventBus.getDefault().post(new RechargeDoneEvent());
+                mView.finishSelf();
+            }
+
+            @Override
+            public void onError(String error) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---失败：" + error);
+                mView.hideLoading();
+                mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                mMemberManager.tradeStatusError = error;
+                EventBus.getDefault().post(new RechargeDoneEvent());
+                mView.finishSelf();
+            }
+        });
+    }
+
+    private void cashierAuthPay(String authCode) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付：" + authCode);
         mHandler.removeCallbacks(mRunnable);
         mView.showLoading();
@@ -168,7 +275,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
                     @Override
                     public void onError(String error) {
-                        XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权---失败：" + error);
+                        XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---失败：" + error);
                         mView.hideLoading();
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                         mTradeManager.getCurrentTrade().tradeStatusError = error;
@@ -181,16 +288,39 @@ public class TradeQrcodePayPresenter implements Presenter {
     @Override
     public void onAuthClick() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择主扫");
-        stopGetPayStatus();
-        stopGetScanStatus();
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                stopGetPayStatus();
+                stopGetScanStatus();
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                stopDetailRecharge();
+                break;
+            default:
+                stopGetPayStatus();
+                stopGetScanStatus();
+                stopDetailRecharge();
+                break;
+        }
         mHandler.post(mRunnable);
     }
 
     @Override
     public void onBitmapClick() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择被扫");
-        startGetPayStatus();
-        startGetScanStatus();
+        switch (mView.getType()) {
+            case AppConstants.TRADE_TYPE_NORMAL:
+            case AppConstants.TRADE_TYPE_INNER:
+                startGetPayStatus();
+                startGetScanStatus();
+                break;
+            case AppConstants.TRADE_TYPE_RECHARGE:
+                startDetailRecharge();
+                break;
+            default:
+                break;
+        }
         mHandler.removeCallbacks(mRunnable);
     }
 
@@ -364,13 +494,86 @@ public class TradeQrcodePayPresenter implements Presenter {
                         mHandler.removeCallbacks(mRunnable);
                         stopGetPayStatus();
                         stopGetScanStatus();
-                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
-                        mTradeManager.getCurrentTrade().tradeStatusError = "已取消交易";
-                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        stopDetailRecharge();
+                        switch (mView.getType()) {
+                            case AppConstants.TRADE_TYPE_NORMAL:
+                            case AppConstants.TRADE_TYPE_INNER:
+                                mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                                mTradeManager.getCurrentTrade().tradeStatusError = "已取消交易";
+                                EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                                break;
+                            case AppConstants.TRADE_TYPE_RECHARGE:
+                                mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                                mMemberManager.tradeStatusError = "已取消充值";
+                                EventBus.getDefault().post(new RechargeDoneEvent());
+                                break;
+                            default:
+                                break;
+                        }
                         mView.finishSelf();
                     }
                 })
                 .create()
                 .show();
+    }
+
+
+    // ---------------------轮询充值详情------------------------------
+    private Call<MemberRecordResult> callDetailRecharge;
+    private RetryPool.RetryRunnable mRetryDetailRecharge;
+    private boolean resultDetailRecharge = false;
+
+    public void startDetailRecharge() {
+        mRetryDetailRecharge = new RetryPool.RetryRunnable(AppConstants.DEFAULT_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+            @Override
+            public boolean run() {
+                return detailRechargeTrade();
+            }
+        });
+        RetryPool.getInstance().postWork(mRetryDetailRecharge);
+    }
+
+    public void stopDetailRecharge() {
+        if (callDetailRecharge != null && !callDetailRecharge.isCanceled()) {
+            callDetailRecharge.cancel();
+        }
+        if (mRetryDetailRecharge != null) {
+            RetryPool.getInstance().removeWork(mRetryDetailRecharge);
+            mRetryDetailRecharge = null;
+        }
+    }
+
+    private boolean detailRechargeTrade() {
+        final String rechargeOrderId = mMemberManager.getRechargeOrderId();
+        if (TextUtils.isEmpty(rechargeOrderId)) {
+            XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询会员充值订单详情---失败：缺少orderId参数");
+            resultDetailRecharge = true;
+            mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+            mMemberManager.tradeStatusError = "缺少orderId参数";
+            EventBus.getDefault().post(new RechargeDoneEvent());
+        } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情：" + RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL);
+            callDetailRecharge = XmdNetwork.getInstance().getService(SpaService.class)
+                    .detailMemberRecharge(AccountManager.getInstance().getToken(), rechargeOrderId);
+            XmdNetwork.getInstance().requestSync(callDetailRecharge, new NetworkSubscriber<MemberRecordResult>() {
+                @Override
+                public void onCallbackSuccess(MemberRecordResult result) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---成功：" + rechargeOrderId);
+                    PosFactory.getCurrentCashier().speech("充值成功");
+                    resultDetailRecharge = true;
+                    mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    mMemberManager.recordInfo = result.getRespData();
+                    EventBus.getDefault().post(new RechargeDoneEvent());
+                    mView.finishSelf();
+                }
+
+                @Override
+                public void onCallbackError(Throwable e) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---失败：" + e.getLocalizedMessage());
+                    resultDetailRecharge = false;
+                }
+            });
+        }
+        return resultDetailRecharge;
     }
 }

@@ -16,9 +16,7 @@ public class RequestConstant {
     public static final String URL_CLUB_WX_QRCODE = SPA_SERVICE_BASE + "/v1/wx/club/param_qrcode";  // 会所活动二维码参数
 
     public static final String URL_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/financial/member/get";     // 获取会员账户信息
-    public static final String URL_MEMBER_PAY = SPA_SERVICE_BASE + "/v2/financial/member/pay/save"; // 会员付款二维码扫码支付
 
-    public static final String URL_GET_TRADE_NO = SPA_SERVICE_BASE + "/v2/manager/pospaydeal/tradeno";  // 订单编号生成
     public static final String URL_TRADE_QR_CODE = SPA_SERVICE_BASE + "/v1/wx/pos/order_qrcode";        // 送积分微信二维码
     public static final String URL_GET_BILL_LIST = SPA_SERVICE_BASE + "/v2/manager/pos/deals";      // 交易流水
 
@@ -66,7 +64,6 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_TECH_LIST = SPA_SERVICE_BASE + "/v2/manager/member/tech/select/list";    //获取会所技师列表
     public static final String URL_GET_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/manager/member/select/list";         //根据手机或者卡号获取会员详情
     public static final String URL_GET_MEMBER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/member/order/list";      //获取会员账户记录列表
-    public static final String URL_REQUEST_MEMBER_PAYMENT = SPA_SERVICE_BASE + "/v2/manager/member/order/trade/save";      //会员支付
 
     public static final String URL_CHECK_MEMBER_CARD_PHONE = SPA_SERVICE_BASE + "/v2/manager/member/telephone/check";   //会员开卡:手机号校验
     public static final String URL_REQUEST_MEMBER_CARD = SPA_SERVICE_BASE + "/v2/manager/member/save";      //会员开卡
@@ -75,6 +72,7 @@ public class RequestConstant {
     public static final String URL_GET_MEMBER_RECHARGE_DETAIL = SPA_SERVICE_BASE + "/v2/manager/member/order/detail";              //会员充值:查询充值请求详情
     public static final String URL_REPORT_MEMBER_RECHARGE_TRADE = SPA_SERVICE_BASE + "/v2/manager/member/order/recharge/success";  //会员充值:汇报POS支付情况 需要签名
     public static final String URL_UPDATE_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/manager/member/update"; //更新会员信息
+    public static final String URL_AUTH_CODE_RECHARGE = SPA_SERVICE_BASE + "/v2/manager/member/order/recharge/auth_pay/save";   // 威付通主扫充值
 
     // ****************************************** 买单有礼 **************************************
     public static final String URL_GET_ONLINE_GIFT_ACTIVITY = SPA_SERVICE_BASE + "/v2/user/fastpay/package/online/act";
@@ -140,7 +138,6 @@ public class RequestConstant {
     public static final String KEY_TRADE_NO = "tradeNo";
 
     public static final String KEY_MEMBER_TOKEN = "memberToken";
-    public static final String KEY_MEMBER_CAN_DISCOUNT = "canDiscount";
 
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_ORI_AMOUNT = "oriAmount";

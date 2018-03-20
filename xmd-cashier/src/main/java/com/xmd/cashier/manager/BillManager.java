@@ -97,7 +97,7 @@ public class BillManager {
         mPos.printText("收款人员：", (TextUtils.isEmpty(info.payOperator) ? "匿名" : info.payOperator));
         mPos.printText("打印时间：", DateUtils.doDate2String(new Date()));
         if (!keep) {
-            byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getClubQRCodeSync();
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");

@@ -207,7 +207,6 @@ public class AppConstants {
     public static final String PAY_CHANNEL_UNION = "union";
     public static final String PAY_CHANNEL_CASH = "cash";
     public static final String PAY_CHANNEL_ACCOUNT = "account";
-    public static final String PAY_CHANNEL_OTHER = "other";
 
     public static final String PLATFORM_OFFLINE = "offline";
     public static final String PLATFORM_ONLINE = "online";

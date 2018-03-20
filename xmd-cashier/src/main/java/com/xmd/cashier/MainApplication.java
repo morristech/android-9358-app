@@ -28,12 +28,12 @@ import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.CashierManager;
+import com.xmd.cashier.manager.ChannelManager;
 import com.xmd.cashier.manager.CustomPushMessageListener;
 import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.manager.NotifyManager;
-import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.UmengManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
@@ -127,7 +127,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             InnerManager.getInstance().getClubWorkTime();
             NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
             NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
-            TradeManager.getInstance().getPayChannelList(null);
+            ChannelManager.getInstance().getPayChannelList(null);
         }
 
         // 开启服务

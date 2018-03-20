@@ -12,13 +12,14 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashierContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.bean.TradeChannelInfo;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
-import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.TradeChannelListResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
+import com.xmd.cashier.manager.ChannelManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
@@ -42,11 +43,11 @@ public class CashierPresenter implements CashierContract.Presenter {
     private Context mContext;
     private CashierContract.View mView;
 
-    private Subscription mGetPosTradeNoSubscription;
     private Subscription mGenerateBatchOrderSubscription;
     private Subscription mGetTradeChannelSubscription;
 
     private TradeManager mTradeManager;
+    private ChannelManager mChannelManager;
 
     public CashierPresenter(Context context, CashierContract.View view) {
         mContext = context;
@@ -57,6 +58,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     @Override
     public void onCreate() {
         EventBusSafeRegister.register(this);
+        mChannelManager = ChannelManager.getInstance();
         mTradeManager = TradeManager.getInstance();
         mTradeManager.newTrade();
     }
@@ -70,9 +72,6 @@ public class CashierPresenter implements CashierContract.Presenter {
     public void onDestroy() {
         EventBusSafeRegister.unregister(this);
         stopCallBackPos();
-        if (mGetPosTradeNoSubscription != null) {
-            mGetPosTradeNoSubscription.unsubscribe();
-        }
         if (mGetTradeChannelSubscription != null) {
             mGetTradeChannelSubscription.unsubscribe();
         }
@@ -96,7 +95,8 @@ public class CashierPresenter implements CashierContract.Presenter {
             return;
         }
 
-        if (mTradeManager.getTradeChannelInfos() != null && !mTradeManager.getTradeChannelInfos().isEmpty()) {
+        if (mChannelManager.getTradeChannelInfos() != null && !mChannelManager.getTradeChannelInfos().isEmpty()) {
+            mChannelManager.formatCashierChannel();
             showChannelSheet();
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取会所支付方式：" + RequestConstant.URL_GET_PAY_CHANNEL_LIST);
@@ -104,11 +104,12 @@ public class CashierPresenter implements CashierContract.Presenter {
             if (mGetTradeChannelSubscription != null) {
                 mGetTradeChannelSubscription.unsubscribe();
             }
-            mGetTradeChannelSubscription = mTradeManager.getPayChannelList(new Callback<TradeChannelListResult>() {
+            mGetTradeChannelSubscription = mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
                 @Override
                 public void onSuccess(TradeChannelListResult o) {
                     XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款获取会所支付方式---成功");
                     mView.hideLoading();
+                    mChannelManager.formatCashierChannel();
                     showChannelSheet();
                 }
 
@@ -125,32 +126,35 @@ public class CashierPresenter implements CashierContract.Presenter {
     // 选择支付方式
     private void showChannelSheet() {
         ActionSheetDialog dialog = new ActionSheetDialog(mContext);
-        dialog.setContents(mTradeManager.getTradeChannelTexts());
+        dialog.setContents(mChannelManager.getTradeChannelTexts());
         dialog.setCancelText("取消");
         dialog.setCanceledOnTouchOutside(true);
         dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
             @Override
             public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款选择支付方式：" + item);
-                mTradeManager.setCurrentChannel(item);
-                switch (mTradeManager.getCurrentTrade().currentChannelType) {
-                    case AppConstants.PAY_CHANNEL_UNION:    //银联
-                        getPosTradeNo();
-                        break;
-                    case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
-                        if (AppConstants.APP_REQUEST_YES.equals(MemberManager.getInstance().getMemberSwitch())) {
-                            UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
-                        } else {
-                            mView.showError("会所未开通会员功能!");
-                        }
-                        break;
-                    case AppConstants.PAY_CHANNEL_QRCODE:
-                    case AppConstants.PAY_CHANNEL_WX:   //微信
-                    case AppConstants.PAY_CHANNEL_ALI:  //支付宝
-                    case AppConstants.PAY_CHANNEL_CASH: //现金
-                    default:
-                        generateBatchOrder();
-                        break;
+                TradeChannelInfo channel = mChannelManager.getCurrentChannelByText(item);
+                if (channel == null) {
+                    mView.showError("选择支付方式出现未知异常");
+                } else {
+                    mTradeManager.setCurrentChannel(channel);
+                    switch (mTradeManager.getCurrentTrade().currentChannelType) {
+                        case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
+                            if (AppConstants.APP_REQUEST_YES.equals(MemberManager.getInstance().getMemberSwitch())) {
+                                UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
+                            } else {
+                                mView.showError("会所未开通会员功能!");
+                            }
+                            break;
+                        case AppConstants.PAY_CHANNEL_UNION:    //银联
+                        case AppConstants.PAY_CHANNEL_QRCODE:
+                        case AppConstants.PAY_CHANNEL_WX:   //微信
+                        case AppConstants.PAY_CHANNEL_ALI:  //支付宝
+                        case AppConstants.PAY_CHANNEL_CASH: //现金
+                        default:
+                            generateBatchOrder();
+                            break;
+                    }
                 }
                 dialog.dismiss();
             }
@@ -167,32 +171,8 @@ public class CashierPresenter implements CashierContract.Presenter {
     @Subscribe
     public void onEvent(MemberInfo info) {
         mTradeManager.getCurrentTrade().memberInfo = info;
-        mTradeManager.getCurrentTrade().memberId = String.valueOf(info.id);
+        mTradeManager.getCurrentTrade().memberId = info.id;
         generateBatchOrder();
-    }
-
-    // 银联支付:生成交易号
-    private void getPosTradeNo() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成交易流水号：" + RequestConstant.URL_GET_TRADE_NO);
-        mView.showLoading();
-        if (mGetPosTradeNoSubscription != null) {
-            mGetPosTradeNoSubscription.unsubscribe();
-        }
-        mGetPosTradeNoSubscription = mTradeManager.getTradeNo(new Callback<GetTradeNoResult>() {
-            @Override
-            public void onSuccess(GetTradeNoResult o) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成交易流水号---成功：" + mTradeManager.getCurrentTrade().tradeNo);
-                mView.hideLoading();
-                generateBatchOrder();
-            }
-
-            @Override
-            public void onError(String error) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成交易流水号---失败：" + error);
-                mView.hideLoading();
-                mView.showToast("生成交易流水号失败：" + error);
-            }
-        });
     }
 
     // 生成交易记录
@@ -206,12 +186,12 @@ public class CashierPresenter implements CashierContract.Presenter {
         mGenerateBatchOrderSubscription = mTradeManager.generateBatchOrder(
                 trade.batchNo,
                 trade.memberId,
-                trade.currentChannelType,
-                null,
+                AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
+                null,//订单数据
                 mTradeManager.formatVerifyCodes(trade.getCouponList()),
-                null,
+                null,//直减金额
                 String.valueOf(trade.getOriginMoney()),
-                null,
+                null,//拆分支付下实际支付金额
                 new Callback<String>() {
                     @Override
                     public void onSuccess(String o) {
@@ -314,10 +294,10 @@ public class CashierPresenter implements CashierContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         callbackPosCall = XmdNetwork.getInstance().getService(SpaService.class)
                 .callbackBatchOrderSync(AccountManager.getInstance().getToken(),
-                        trade.memberId,
+                        null,
                         trade.currentChannelType,
                         trade.payOrderId,
-                        trade.tradeNo,
+                        trade.payNo,
                         trade.posPayCashierNo,
                         String.valueOf(trade.getWillPayMoney()));
         XmdNetwork.getInstance().requestSync(callbackPosCall, new NetworkSubscriber<BaseBean>() {

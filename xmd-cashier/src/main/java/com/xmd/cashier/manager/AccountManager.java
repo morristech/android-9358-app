@@ -172,7 +172,7 @@ public class AccountManager {
                             NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
                             NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
 
-                            TradeManager.getInstance().getPayChannelList(null);
+                            ChannelManager.getInstance().getPayChannelList(null);
                         }
 
                         @Override
@@ -219,7 +219,6 @@ public class AccountManager {
 
         MemberManager.getInstance().newRechargeProcess();
         MemberManager.getInstance().newCardProcess();
-        MemberManager.getInstance().newTrade();
         MemberManager.getInstance().stopGetMemberSetting();
 
         NotifyManager.getInstance().stopRepeatOnlinePay();

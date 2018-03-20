@@ -1,21 +1,14 @@
 package com.xmd.cashier.manager;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.text.TextUtils;
 
-import com.google.zxing.WriterException;
-import com.google.zxing.client.android.MyQrEncoder;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.LocalPersistenceManager;
-import com.xmd.cashier.dal.bean.ClubQrcodeBytes;
 import com.xmd.cashier.dal.bean.InnerEmployeeInfo;
 import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerOrderItemInfo;
@@ -32,26 +25,18 @@ import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
-import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
-import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.TradeBatchHoleResult;
 import com.xmd.cashier.dal.net.response.TradeBatchResult;
-import com.xmd.cashier.dal.net.response.TradeChannelListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -361,92 +346,13 @@ public class TradeManager {
         return count;
     }
 
+    public void setCurrentChannel(TradeChannelInfo channel) {
+        mTrade.currentChannelName = channel.name;
+        mTrade.currentChannelType = channel.type;
+        mTrade.currentChannelMark = channel.mark;
+    }
+
     // ------------------------收银重构-------------------------
-    // 获取会所设置的支付方式
-    List<TradeChannelInfo> tradeChannelInfos = new ArrayList<>();
-
-    public List<TradeChannelInfo> getTradeChannelInfos() {
-        return tradeChannelInfos;
-    }
-
-    public List<String> getTradeChannelTexts() {
-        List<String> texts = new ArrayList<>();
-        for (TradeChannelInfo tradeChannelInfo : tradeChannelInfos) {
-            texts.add(tradeChannelInfo.name);
-        }
-        return texts;
-    }
-
-    public void setCurrentChannel(String text) {
-        for (TradeChannelInfo tradeChannelInfo : tradeChannelInfos) {
-            if (text.equals(tradeChannelInfo.name)) {
-                mTrade.currentChannelName = tradeChannelInfo.name;
-                mTrade.currentChannelType = tradeChannelInfo.type;
-                mTrade.currentChannelMark = tradeChannelInfo.mark;
-            }
-        }
-    }
-
-    public Subscription getPayChannelList(final Callback<TradeChannelListResult> callback) {
-        tradeChannelInfos.clear();
-        Observable<TradeChannelListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getPayChannelList(AccountManager.getInstance().getToken());
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeChannelListResult>() {
-            @Override
-            public void onCallbackSuccess(TradeChannelListResult result) {
-                if (result != null && result.getRespData() != null && !result.getRespData().isEmpty()) {
-                    tradeChannelInfos.addAll(result.getRespData());
-
-                    Iterator<TradeChannelInfo> iterator = tradeChannelInfos.iterator();
-                    while (iterator.hasNext()) {
-                        TradeChannelInfo current = iterator.next();
-                        if (AppConstants.PAY_CHANNEL_WX.equals(current.type) || AppConstants.PAY_CHANNEL_ALI.equals(current.type)) {
-                            iterator.remove();
-                        }
-                    }
-
-                    TradeChannelInfo qrcodeChannel = new TradeChannelInfo();
-                    qrcodeChannel.name = AppConstants.CASHIER_TYPE_QRCODE_TEXT;
-                    qrcodeChannel.type = AppConstants.PAY_CHANNEL_QRCODE;
-                    tradeChannelInfos.add(0, qrcodeChannel);
-
-                    if (callback != null) {
-                        callback.onSuccess(result);
-                    }
-                } else {
-                    if (callback != null) {
-                        callback.onError("会所未设置支付方式");
-                    }
-                }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                if (callback != null) {
-                    callback.onError(e.getLocalizedMessage());
-                }
-            }
-        });
-    }
-
-    // 生成交易流水号
-    public Subscription getTradeNo(final Callback<GetTradeNoResult> callback) {
-        Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTradeNo(AccountManager.getInstance().getToken(), RequestConstant.DEFAULT_SIGN_VALUE);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
-            @Override
-            public void onCallbackSuccess(GetTradeNoResult result) {
-                mTrade.tradeNo = result.getRespData();
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
     // 收银台支付
     public void posPay(Context context, final Callback<Void> callback) {
         mTrade.newCashierTradeNo();
@@ -500,7 +406,7 @@ public class TradeManager {
     public Subscription callbackBatchOrder(final Callback<BaseBean> callback) {
         Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .callbackBatchOrder(AccountManager.getInstance().getToken(),
-                        mTrade.memberId, mTrade.currentChannelType, mTrade.payOrderId, mTrade.payNo, mTrade.tradeNo, String.valueOf(mTrade.getWillPayMoney()));
+                        mTrade.memberId, mTrade.currentChannelType, mTrade.payOrderId, mTrade.payNo, null, String.valueOf(mTrade.getWillPayMoney()));
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {
@@ -700,7 +606,7 @@ public class TradeManager {
         }
 
         if (!keep) {
-            byte[] qrCodeBytes = getTradeQrcodeBytes(info);
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getTradeQrcodeBytes(info);
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");
@@ -709,124 +615,10 @@ public class TradeManager {
         mPos.printEnd();
     }
 
-    // 交易二维码
-    private byte[] tradeQrcodeBytes;
-
-    public byte[] getTradeQrcodeBytes(TradeRecordInfo tradeRecordInfo) {
-        tradeQrcodeBytes = null;
-        Call<StringResult> tradeCodeCall = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTradeQrcode(AccountManager.getInstance().getToken(), tradeRecordInfo.id, tradeRecordInfo.payChannel, RequestConstant.DEFAULT_SIGN_VALUE);
-        XmdNetwork.getInstance().requestSync(tradeCodeCall, new NetworkSubscriber<StringResult>() {
-            @Override
-            public void onCallbackSuccess(StringResult result) {
-                String content = result.getRespData();
-                if (!TextUtils.isEmpty(content)) {
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes content:" + content);
-                    try {
-                        Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
-                        if (bitmap != null) {
-                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
-                                tradeQrcodeBytes = bos.toByteArray();
-                            } else {
-                                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--bitmap compress failed");
-                            }
-                            bitmap.recycle();
-                        } else {
-                            XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--Qrcode encode failed");
-                        }
-                    } catch (WriterException e) {
-                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--Qrcode encode exception:" + e.getLocalizedMessage());
-                    }
-                } else {
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--request success && isEmpty");
-                }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getTradeQrcodeBytes--request error:" + e.getLocalizedMessage());
-            }
-        });
-
-        if (tradeQrcodeBytes == null) {
-            tradeQrcodeBytes = getClubQRCodeSync();
-        }
-        return tradeQrcodeBytes;
-    }
-
-    // 会所活动二维码
-    private byte[] clubQrcodeBytes;
-
-    public byte[] getClubQRCodeSync() {
-        final String clubId = AccountManager.getInstance().getClubId();
-        ClubQrcodeBytes c = LocalPersistenceManager.getClubQrcode(clubId);
-        if (c != null) {
-            clubQrcodeBytes = c.data;
-            return clubQrcodeBytes;
-        }
-
-        Call<StringResult> callGetUrl = XmdNetwork.getInstance().getService(SpaService.class).getClubWXQrcodeURL(AccountManager.getInstance().getClubId());
-        XmdNetwork.getInstance().requestSync(callGetUrl, new NetworkSubscriber<StringResult>() {
-            @Override
-            public void onCallbackSuccess(StringResult result) {
-                String content = result.getRespData();
-                if (!TextUtils.isEmpty(content)) {
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeSync content:" + content);
-                }
-                Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(content);
-                XmdNetwork.getInstance().requestSync(callGetBytes, new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes error:" + e.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        try {
-                            byte[] bitmapBytes = responseBody.bytes();
-                            if (bitmapBytes != null) {
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-                                Matrix matrix = new Matrix();
-                                matrix.postScale(240.f / bitmap.getWidth(), 240.f / bitmap.getHeight());
-                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
-                                    clubQrcodeBytes = bos.toByteArray();
-                                    ClubQrcodeBytes cc = new ClubQrcodeBytes();
-                                    cc.data = clubQrcodeBytes;
-                                    LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
-                                } else {
-                                    XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes : bitmap.compress failed!");
-                                }
-                                bitmap.recycle();
-                            } else {
-                                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes : can not get qrcode !");
-                            }
-                        } catch (IOException e) {
-                            XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeBytes exception:" + e.getLocalizedMessage());
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "getClubQRCodeURL error:" + e.getLocalizedMessage());
-            }
-        });
-        return clubQrcodeBytes;
-    }
-
     // 二维码授权支付
     public Subscription activeAuthPay(int amount, String authCode, String payOrderId, String payNo, final Callback<BaseBean> callback) {
         Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .activeAuthPay(AccountManager.getInstance().getToken(), String.valueOf(amount), payNo, authCode, payOrderId);
+                .activeAuthPay(AccountManager.getInstance().getToken(), String.valueOf(amount), payNo, authCode, payOrderId, RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {

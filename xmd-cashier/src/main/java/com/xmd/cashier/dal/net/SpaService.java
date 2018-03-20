@@ -7,7 +7,6 @@ import com.xmd.cashier.dal.net.response.ClubResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
-import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
 import com.xmd.cashier.dal.net.response.InnerHandListResult;
 import com.xmd.cashier.dal.net.response.InnerOrderListResult;
@@ -124,25 +123,6 @@ public interface SpaService {
     Observable<GetMemberInfo> getMemberInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                             @Field(RequestConstant.KEY_MEMBER_TOKEN) String memberToken,
                                             @Field(RequestConstant.KEY_SIGN) String requestSign);
-
-    /**
-     * 会员支付
-     *
-     * @param userToken
-     * @param memberToken
-     * @param tradeNo
-     * @param payMoney
-     * @param requestSign
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_MEMBER_PAY)
-    Observable<MemberRecordResult> memberPay(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                             @Field(RequestConstant.KEY_MEMBER_TOKEN) String memberToken,
-                                             @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                             @Field(RequestConstant.KEY_AMOUNT) int payMoney,
-                                             @Field(RequestConstant.KEY_MEMBER_CAN_DISCOUNT) String canDisCount,
-                                             @Field(RequestConstant.KEY_SIGN) String requestSign);
 
     /**
      * 获取交易流水记录
@@ -514,6 +494,7 @@ public interface SpaService {
                                                    @Field(RequestConstant.KEY_MEMBER_PACKAGE_ID) String packageId,
                                                    @Field(RequestConstant.KEY_TECH_ID) String techId,
                                                    @Field(RequestConstant.KEY_PASSWORD) String password,
+                                                   @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
                                                    @Field(RequestConstant.KEY_SIGN) String sign);
 
     // 获取会员账户记录
@@ -557,6 +538,14 @@ public interface SpaService {
     Observable<BaseBean> updateMemberInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                           @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                           @Field(RequestConstant.KEY_TELEPHONE) String telephone);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_AUTH_CODE_RECHARGE)
+    Observable<MemberRecordResult> doAuthCodeRecharge(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                      @Field(RequestConstant.KEY_ORDER_ID) String orderId,
+                                                      @Field(RequestConstant.KEY_AUTH_CODE) String authCode,
+                                                      @Field(RequestConstant.KEY_SIGN) String requestSign);
+
     /**************************************************************************************************************************/
     /**
      * 获取会所微信二维码
@@ -644,12 +633,6 @@ public interface SpaService {
 
 
     // -------------------------------收银重构-------------------------------
-    // 生成交易流水号
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TRADE_NO)
-    Observable<GetTradeNoResult> getTradeNo(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_SIGN) String requestSign);
-
     //生成交易记录
     @FormUrlEncoded
     @POST(RequestConstant.URL_GENERATE_BATCH_ORDER)
@@ -704,12 +687,14 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_PAY_CHANNEL_LIST)
     Observable<TradeChannelListResult> getPayChannelList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
+    //收银主扫
     @FormUrlEncoded
     @POST(RequestConstant.URL_AUTH_CODE_ACTIVE)
     Observable<BaseBean> activeAuthPay(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_AMOUNT) String amount,
                                        @Field(RequestConstant.KEY_PAY_NO) String payNo,
                                        @Field(RequestConstant.KEY_AUTH_CODE) String authCode,
-                                       @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId);
+                                       @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                       @Field(RequestConstant.KEY_SIGN) String requestSign);
 }
 

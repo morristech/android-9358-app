@@ -444,7 +444,7 @@ public class NotifyManager {
         }
 
         if (!keep) {
-            byte[] qrCodeBytes = TradeManager.getInstance().getTradeQrcodeBytes(info);
+            byte[] qrCodeBytes = QrcodeManager.getInstance().getTradeQrcodeBytes(info);
             if (qrCodeBytes != null) {
                 mPos.printBitmap(qrCodeBytes);
                 mPos.printCenter("微信扫码，选技师、抢优惠");

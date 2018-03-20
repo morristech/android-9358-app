@@ -9,7 +9,7 @@ import com.xmd.cashier.BaseView;
 
 public interface TradeMarkPayContract {
     interface Presenter extends BasePresenter {
-        void onMarkPay();
+        void onMark();
 
         void onNavigationBack();
     }
