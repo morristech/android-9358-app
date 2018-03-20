@@ -60,9 +60,7 @@ public class ConversationListFragment extends BaseFragment {
     public ObservableField<String> showError = new ObservableField<>();
 
     private List<ConversationViewModel> conversationViewModelList = new ArrayList<>();
-
     private ConversationManager conversationManager = ConversationManager.getInstance();
-
     protected static final String ARG_TITLE = "title";
 
     private boolean paused;
@@ -70,7 +68,6 @@ public class ConversationListFragment extends BaseFragment {
     private int page = 0;
     private final static int PAGE_SIZE = 10;
     private boolean hasMoreData;
-
     private LinearLayoutManager layoutManager;
 
     public static ConversationListFragment newInstance(String title) {

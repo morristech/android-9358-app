@@ -78,7 +78,7 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
         } else {
             width = 4;
         }
-        view.getLayoutParams().width = ScreenUtils.getScreenWidth() * width / 7;
+        view.getLayoutParams().width = ScreenUtils.getScreenWidth() * width / 6;
     }
 
     @Override

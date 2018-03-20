@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         XmdPushManager.getInstance().addListener(xmdPushMessageListener);
         ImChatAccountManagerPresent.getInstance().login();
-        XmdChat.getInstance().loadConversation();
+
     }
 
     @Override

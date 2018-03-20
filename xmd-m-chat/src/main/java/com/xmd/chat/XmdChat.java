@@ -45,7 +45,6 @@ public class XmdChat {
         context = context.getApplicationContext();
         this.context = context;
         mInterface.init(context,appKey,debug,menuFactory);
-      //  loadConversation();
         ChatAccountManager.getInstance().init(context);
         ConversationManager.getInstance().init();
         ChatMessageManager.getInstance().init();
@@ -94,7 +93,6 @@ public class XmdChat {
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
-     //   ChatAccountManager.getInstance().login(eventLogin);
         ChatSettingManager.getInstance().loadClubLocation(true, null);
         ChatSettingManager.getInstance().loadFastReply(null);
     }

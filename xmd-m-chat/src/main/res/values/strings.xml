@@ -22,4 +22,5 @@
     <string name="order_request_message">选项目、约技师，\n线上预约，方便快捷~</string>
     <string name="request_reward_message">万水千山总是情\n打赏两个行不行</string>
     <string name="request_paid_coupon">求点钟</string>
+    <string name="credit_gift_message">[积分礼品]</string>
 </resources>

@@ -96,7 +96,7 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
             final TIMConversation conversation = conversion.getConversation();
             if (!TextUtils.isEmpty(conversion.getChatId()) && conversation != null) {
                 final User user = userInfoService.getUserByChatId(conversion.getChatId());
-                if (forceLoadUserInfo || user == null) {
+                if (forceLoadUserInfo || user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
                     XLogger.d("load user " + conversion.getChatId() + " from server");
                     userInfoService.loadUserInfoByChatIdFromServer(conversion.getChatId(), new Callback<User>() {
                         @Override
@@ -109,7 +109,6 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
                                     result = user;
                                 }
                             }
-
                             onLoadFinish(error != null, result, conversation, callback, pageable);
                         }
                     });
@@ -118,46 +117,21 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
                     onLoadFinish(false, user, conversation, callback, pageable);
                 }
             }
-//            if (!TextUtils.isEmpty(conversion.getChatId()) && conversation != null) {
-//                final User user = userInfoService.getUserByChatId(conversion.getChatId());
-//                if (forceLoadUserInfo || user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
-//                    XLogger.d("load user " + conversion.getChatId() + " from server");
-//                    userInfoService.loadUserInfoByChatIdFromServer(conversion.getChatId(), new Callback<User>() {
-//                        @Override
-//                        public void onResponse(User result, Throwable error) {
-//                            if (error != null) {
-//                                XLogger.e(XmdChat.TAG, " not found user by chatId:" + conversion.getChatId());
-//                                if (forceLoadUserInfo && user != null && user.getContactPermission() != null) {
-//                                    XLogger.i("load user info from server failed, use cache instead!");
-//                                    error = null;
-//                                    result = user;
-//                                }
-//                            }
-//                            onLoadFinish(error != null, result, conversation, callback, pageable);
-//                        }
-//                    });
-//                } else {
-//                    XLogger.d("load user " + conversion.getChatId() + " from cache");
-//                    onLoadFinish(false, user, conversation, callback, pageable);
-//                }
-//            }
         }
     }
 
     private void onLoadFinish(boolean error, User user, TIMConversation conversation,
                               Callback<Pageable<ConversationViewModel>> callback,
                               Pageable<ConversationViewModel> pageable) {
-       if (!error) {
-//            //判断用户是否跟技师有聊天权限，无聊天权限则会在在列表被删除
-//            if (user.getContactPermission() == null||!user.getContactPermission().isEchat()) {
-//                TIMManagerExt.getInstance().deleteConversationAndLocalMsgs(TIMConversationType.C2C, user.getChatId());
-//                XLogger.i(XmdChat.TAG, "delete conversation:" + user.getChatId());
-//            } else {
-//                ConversationViewModel data = new ConversationViewModel(user, conversation);
-//                pageable.getData().add(data);
-//            }
-            ConversationViewModel data = new ConversationViewModel(user, conversation);
-            pageable.getData().add(data);
+        if (!error) {
+            //判断用户是否跟技师有聊天权限，无聊天权限则会在在列表被删除
+            if (user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
+                TIMManagerExt.getInstance().deleteConversationAndLocalMsgs(TIMConversationType.C2C, user.getChatId());
+                XLogger.i(XmdChat.TAG, "delete conversation:" + user.getChatId());
+            } else {
+                ConversationViewModel data = new ConversationViewModel(user, conversation);
+                pageable.getData().add(data);
+            }
         }
         loadCount--;
         if (loadCount == 0) {

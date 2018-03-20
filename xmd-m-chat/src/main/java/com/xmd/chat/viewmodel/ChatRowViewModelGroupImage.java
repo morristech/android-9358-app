@@ -13,15 +13,14 @@ import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowGroupImageBinding;
-import com.xmd.chat.databinding.ChatRowLocationBinding;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.message.CustomLocationMessage;
+import com.xmd.chat.message.GroupImageMessage;
 
 
 /**
  * Created by mo on 17-7-1.
  * 17-10-27,将webView 该为imageView
- * 位置消息
+ * 图片
  */
 
 public class ChatRowViewModelGroupImage extends ChatRowViewModel {
@@ -31,7 +30,7 @@ public class ChatRowViewModelGroupImage extends ChatRowViewModel {
     }
 
     public static View createView(ViewGroup parent) {
-        ChatRowLocationBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_group_image, parent, false);
+        ChatRowGroupImageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_group_image, parent, false);
         return binding.getRoot();
     }
 
@@ -53,8 +52,8 @@ public class ChatRowViewModelGroupImage extends ChatRowViewModel {
 
     @BindingAdapter("groupImage")
     public static void bindMap(ImageView locationView, ChatRowViewModelGroupImage data) {
-        CustomLocationMessage locationMessage = (CustomLocationMessage) data.getChatMessage();
-        Glide.with(locationView.getContext()).load(locationMessage.getMapUrl()).into(locationView);
+        GroupImageMessage locationMessage = (GroupImageMessage) data.getChatMessage();
+        Glide.with(locationView.getContext()).load(locationMessage.getImageUrl()).into(locationView);
     }
 
 

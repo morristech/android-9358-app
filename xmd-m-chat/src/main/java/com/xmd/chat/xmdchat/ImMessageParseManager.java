@@ -14,6 +14,7 @@ import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.chat.R;
+import com.xmd.chat.XmdChat;
 import com.xmd.chat.beans.OnceCard;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.xmdchat.constant.XmdChatConstant;
@@ -79,8 +80,10 @@ public class ImMessageParseManager {
         TIMCustomElem elem;
         if (message.getElement(0) instanceof TIMCustomElem) {
             elem = (TIMCustomElem) message.getElement(0);
-        } else {
+        } else if(message.getElementCount() > 1 && message.getElement(1) instanceof TIMCustomElem){
             elem = (TIMCustomElem) message.getElement(1);
+        }else{
+            return indexInfo;
         }
         try {
             String str = new String(elem.getData(), "UTF-8");
@@ -88,6 +91,7 @@ public class ImMessageParseManager {
             indexInfo = jsonObject.getString(index);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+
         } catch (JSONException e) {
             e.printStackTrace();
             indexInfo = "";
@@ -104,11 +108,14 @@ public class ImMessageParseManager {
             return ext.getCustomStr();
         }
         TIMCustomElem elem;
-        if (message.getElement(0) instanceof TIMCustomElem) {
+        if (message.getElement(0) instanceof TIMCustomElem ) {
             elem = (TIMCustomElem) message.getElement(0);
-        } else {
+        } else if(message.getElementCount() > 1 && message.getElement(1) instanceof TIMCustomElem){
             elem = (TIMCustomElem) message.getElement(1);
+        }else{
+            return TextUtils.isEmpty(key)?"":key;
         }
+
         if (TextUtils.isEmpty(key)) {
             return getContentParse(elem.getData());
         } else if (key.equals(XmdChatConstant.BASE_INDEX_TAG)) {
@@ -209,7 +216,7 @@ public class ImMessageParseManager {
         String messageType = "";
         try {
             String str = new String(data, "UTF-8");
-            XLogger.i(">>>", "contentParse>" + str);
+            XLogger.i(XmdChat.TAG, "contentParse>" + str);
             Gson gson = new Gson();
             XmdChatMessageBaseBean messageBean = gson.fromJson(str, XmdChatMessageBaseBean.class);
             messageType = messageBean.getType();
@@ -305,7 +312,6 @@ public class ImMessageParseManager {
         String messageType = "";
         try {
             String str = new String(data, "UTF-8");
-            XLogger.i(">>>", "lastMessageParse>" + str);
             Gson gson = new Gson();
             XmdChatMessageBaseBean messageBean = gson.fromJson(str, XmdChatMessageBaseBean.class);
             messageType = messageBean.getType();
@@ -388,7 +394,7 @@ public class ImMessageParseManager {
                         content = ResourceUtils.getString(R.string.voice_message);
                         break;
                     case XmdMessageType.CREDIT_GIFT_TYPE:
-                        content = "[积分礼品]";
+                        content = ResourceUtils.getString(R.string.credit_gift_message);
                         break;
                     default:
                         content = messageType;

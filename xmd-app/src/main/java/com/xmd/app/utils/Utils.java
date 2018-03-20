@@ -3,6 +3,7 @@ package com.xmd.app.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -219,5 +220,15 @@ public class Utils {
 
     public static void ShowErrorMessageToast(String errorMessage){
         XToast.show(errorMessage);
+    }
+
+    public static boolean isApkDebugable(Context context) {
+        try {
+            ApplicationInfo info= context.getApplicationInfo();
+            return (info.flags&ApplicationInfo.FLAG_DEBUGGABLE)!=0;
+        } catch (Exception e) {
+
+        }
+        return false;
     }
 }

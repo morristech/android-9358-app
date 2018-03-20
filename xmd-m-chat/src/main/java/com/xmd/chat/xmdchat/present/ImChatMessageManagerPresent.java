@@ -144,7 +144,6 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
             XToast.show("无法发送消息，没有用户信息");
             return null;
         }
-
         TIMMessage message = new TIMMessage();
         TIMCustomElem elem = new TIMCustomElem();
         final XmdChatMessageBaseBean<Object> xmdChatMessageBaseBean = new XmdChatMessageBaseBean<>();

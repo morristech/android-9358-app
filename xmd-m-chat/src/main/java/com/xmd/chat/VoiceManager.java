@@ -70,7 +70,9 @@ public class VoiceManager {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    mOnPlayListener.onError("无法播放：what=" + what + ",extra=" + extra);
+                    if(mOnPlayListener != null){
+                        mOnPlayListener.onError("无法播放：what=" + what + ",extra=" + extra);
+                    }
                     mOnPlayListener = null;
                     return true;
                 }
@@ -78,7 +80,9 @@ public class VoiceManager {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    mOnPlayListener.onStop();
+                    if(mOnPlayListener != null){
+                        mOnPlayListener.onStop();
+                    }
                     mOnPlayListener = null;
                 }
             });
@@ -99,7 +103,6 @@ public class VoiceManager {
     //停止播放
     public void stopPlayVoice() {
         if (mediaPlayer != null) {
-         //   mediaRecorder.setOnErrorListener(null);
             mediaPlayer.stop();
             if (mOnPlayListener != null) {
                 mOnPlayListener.onStop();
