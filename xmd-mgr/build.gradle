@@ -69,8 +69,8 @@ android {
         // 3.8.8 : contacts optimization
         // 3.9.2 ：房间管理，座位开单，优惠券优化，买单收银，技师工资
         // 3.9.6 ：bug修复，pk分组添加限时抢排行
-        versionCode 69
-        versionName "3.9.7"
+        versionCode 70
+        versionName "3.9.8"
 
         multiDexEnabled true
 

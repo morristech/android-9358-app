@@ -41,8 +41,8 @@ android {
         //1.9.6 修复bug
         //1.9.6 新增分享邀请有礼
         //1.9.12 增加拼团活动分享
-        versionCode 71
-        versionName "1.9.13"
+        versionCode 72
+        versionName "1.9.14"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
