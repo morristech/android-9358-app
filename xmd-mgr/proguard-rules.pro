@@ -137,6 +137,9 @@
 -dontwarn com.android.**
 -keep class com.android.**{*;}
 
+-dontwarn  android.**
+-keep class android.** {*;}
+
 -dontwarn app.dinus.com.**
 -keep class app.dinus.com.**{*;}
 #permissions

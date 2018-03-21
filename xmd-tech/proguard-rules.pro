@@ -36,7 +36,11 @@
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
 
--keep class android.app.** {*;}
+-dontwarn  com.android.**
+-keep class com.android.** {*;}
+
+-dontwarn  android.**
+-keep class android.** {*;}
 
 -keepattributes LineNumberTable,SourceFile
 
@@ -192,3 +196,6 @@
 
 -keep class qalsdk.**{*;}
 -dontwarn qalsdk.**
+
+-keep class com.qq.**{*;}
+-dontwarn com.qq.**

@@ -21,7 +21,6 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
-import com.xmd.app.utils.Utils;
 import com.xmd.chat.R;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.event.EventChatLoginSuccess;
@@ -63,11 +62,13 @@ public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterfa
 
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, boolean debug) {
         TIMSdkConfig config;
-        if (Utils.isApkDebugable(context)) {
+        if (debug) {
+            XLogger.i("init tencent account use debug setting");
             config = new TIMSdkConfig(XmdChatConstant.SDK_APP_ID_DEBUG);
         } else {
+            XLogger.i("init tencent account use product setting");
             config = new TIMSdkConfig(XmdChatConstant.SDK_APP_ID_RELEASE);
         }
         config.setLogLevel(TIMLogLevel.DEBUG);

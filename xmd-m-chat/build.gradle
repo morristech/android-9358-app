@@ -21,12 +21,12 @@ android {
                 GETUI_MASTER_SECRET : "---",
         ]
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+//    buildTypes {
+//        release {
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
 
     sourceSets {
         main {
@@ -37,6 +37,8 @@ android {
     dataBinding {
         enabled = true
     }
+
+    useLibrary 'org.apache.http.legacy'
 }
 
 repositories {

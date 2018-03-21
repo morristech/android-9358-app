@@ -33,7 +33,7 @@ public class EmChatAccountManagerPresent implements XmdChatAccountManagerInterfa
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, boolean debug) {
         deviceId = DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext());
         EMClient.getInstance().addConnectionListener(new EMConnectionListener() {
             @Override

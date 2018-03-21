@@ -35,7 +35,6 @@ import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.umengstatistics.UmengStatisticsManager;
@@ -81,102 +80,98 @@ public class TechApplication extends MultiDexApplication {
         super.onCreate();
         String processName = getProcessName(this, android.os.Process.myPid());
         Logger.v("Process Name : " + processName);
-        if (Utils.isNotEmpty(processName)) {
-            if (processName.contains(":pushservice")) {
-                Logger.v("getui process Start !");
-            } else {
-                Logger.v("CurrentUser initialize !");
+        if (getApplicationContext().getPackageName().equals(processName)) {
+            Logger.v("CurrentUser initialize !");
 
-                appContext = getApplicationContext();
-                debug = BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("dev");
+            appContext = getApplicationContext();
+            debug = BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("dev");
 
-                WindowManager windowManager = (WindowManager) appContext.getSystemService(WINDOW_SERVICE);
-                ScreenUtils.initScreenSize(windowManager);
+            WindowManager windowManager = (WindowManager) appContext.getSystemService(WINDOW_SERVICE);
+            ScreenUtils.initScreenSize(windowManager);
 
-                //SP初始化
-                SharedPreferenceHelper.initialize();
-                //解析APP版本和渠道信息
-                parseAppVersion();
+            //SP初始化
+            SharedPreferenceHelper.initialize();
+            //解析APP版本和渠道信息
+            parseAppVersion();
 
-                //初始化日志
-                XLogger.init(7, null);
-                XLogger.setGloableTag("9358");
-                printMachineInfo();
+            //初始化日志
+            XLogger.init(7, null);
+            XLogger.setGloableTag("9358");
+            printMachineInfo();
 
-                //初始化磁盘缓存模块
-                try {
-                    DiskCacheManager.init(new File(getFilesDir() + File.separator + "diskCache"), (20 * 1024 * 1024));
-                } catch (IOException e) {
-                    XLogger.e("初始化磁盘缓存系统失败：" + e.getMessage());
+            //初始化磁盘缓存模块
+            try {
+                DiskCacheManager.init(new File(getFilesDir() + File.separator + "diskCache"), (20 * 1024 * 1024));
+            } catch (IOException e) {
+                XLogger.e("初始化磁盘缓存系统失败：" + e.getMessage());
+            }
+
+            //初始化网络库
+            XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
+            XmdNetwork.getInstance().setDebug(true);
+            XmdNetwork.getInstance().setToken(SharedPreferenceHelper.getUserToken()); //处理旧的toke数据
+
+            //初始化错误拦截器
+            CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {
+                @Override
+                public void onExitApplication() {
+                    XmdActivityManager.getInstance().exitApplication();
                 }
+            });
 
-                //初始化网络库
-                XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
-                XmdNetwork.getInstance().setDebug(true);
-                XmdNetwork.getInstance().setToken(SharedPreferenceHelper.getUserToken()); //处理旧的toke数据
+            //初始化界面辅助类
+            EmojiManager.getInstance().init(this);
+            XToast.init(this, -1);
+            FloatNotifyManager.getInstance().init(this);
 
-                //初始化错误拦截器
-                CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {
-                    @Override
-                    public void onExitApplication() {
-                        XmdActivityManager.getInstance().exitApplication();
-                    }
-                });
+            //打开友盟错误统计,可以和全局错误拦截器共存
+            MobclickAgent.setCatchUncaughtExceptions(true);
 
-                //初始化界面辅助类
-                EmojiManager.getInstance().init(this);
-                XToast.init(this, -1);
-                FloatNotifyManager.getInstance().init(this);
+            // 应用入口，禁止默认的页面统计方式
+            MobclickAgent.openActivityDurationTrack(true);
+            //定义后台回到前台统计时间间隔
+            MobclickAgent.setSessionContinueMillis(3000);
+            MobclickAgent.setDebugMode(false);
 
-                //打开友盟错误统计,可以和全局错误拦截器共存
-                MobclickAgent.setCatchUncaughtExceptions(true);
+            //初始化线程池
+            ThreadPoolManager.init(this);
+            UmengStatisticsManager.getStatisticsManagerInstance().init(appContext);
+            long start = System.currentTimeMillis();
 
-                // 应用入口，禁止默认的页面统计方式
-                MobclickAgent.openActivityDurationTrack(true);
-                //定义后台回到前台统计时间间隔
-                MobclickAgent.setSessionContinueMillis(3000);
-                MobclickAgent.setDebugMode(false);
+            //模块功能初始化
+            Set<String> functions = new HashSet<>();
+            functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
+            functions.add(XmdApp.FUNCTION_USER_INFO);
+            XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
+            XmdModuleAppointment.getInstance().init(this);
 
-                //初始化线程池
-                ThreadPoolManager.init(this);
-                UmengStatisticsManager.getStatisticsManagerInstance().init(appContext);
-                long start = System.currentTimeMillis();
+            AppConfig.initialize();
+            //初始化升级服务器
+            initUpdateServer();
 
-                //模块功能初始化
-                Set<String> functions = new HashSet<>();
-                functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
-                functions.add(XmdApp.FUNCTION_USER_INFO);
-                XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
-                XmdModuleAppointment.getInstance().init(this);
+            ThreadManager.initialize();
+            ControllerRegister.initialize();
 
-                AppConfig.initialize();
-                //初始化升级服务器
-                initUpdateServer();
+            //初始化消息推送
+            XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
 
-                ThreadManager.initialize();
-                ControllerRegister.initialize();
-
-                //初始化消息推送
-                XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
-
-                //初始化聊天模块
-                String chatAppKey = SharedPreferenceHelper.isDevelopMode() ? "xiaomodo#spatest" : "xiaomodo#spa";
-                XmdChat.getInstance().init(this, chatAppKey, debug, menuFactory);
+            //初始化聊天模块
+            String chatAppKey = SharedPreferenceHelper.isDevelopMode() ? "xiaomodo#spatest" : "xiaomodo#spa";
+            XmdChat.getInstance().init(this, chatAppKey, debug, menuFactory);
 
 //                DataRefreshService.start();
 //                HelloReplyService.start();
 
-                //初始化权限模块
-                BusinessPermissionManager.getInstance().init();
+            //初始化权限模块
+            BusinessPermissionManager.getInstance().init();
 
-                long end = System.currentTimeMillis();
-                Logger.v("Start cost : " + (end - start) + " ms");
+            long end = System.currentTimeMillis();
+            Logger.v("Start cost : " + (end - start) + " ms");
 
-                EventBusSafeRegister.register(this);
+            EventBusSafeRegister.register(this);
 
-                XmdComment.getInstance().init();
-                LoginTechnician.getInstance().checkAndLogin();
-            }
+            XmdComment.getInstance().init();
+            LoginTechnician.getInstance().checkAndLogin();
         }
     }
 

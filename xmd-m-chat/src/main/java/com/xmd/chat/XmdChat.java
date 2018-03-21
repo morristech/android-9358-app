@@ -45,7 +45,7 @@ public class XmdChat {
         context = context.getApplicationContext();
         this.context = context;
         mInterface.init(context,appKey,debug,menuFactory);
-        ChatAccountManager.getInstance().init(context);
+        ChatAccountManager.getInstance().init(context, debug);
         ConversationManager.getInstance().init();
         ChatMessageManager.getInstance().init();
         setMenuFactory(menuFactory);
