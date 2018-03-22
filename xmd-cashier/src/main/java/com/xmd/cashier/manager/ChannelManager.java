@@ -1,5 +1,6 @@
 package com.xmd.cashier.manager;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.TradeChannelInfo;
 import com.xmd.cashier.dal.net.SpaService;
@@ -20,6 +21,7 @@ import rx.Subscription;
  */
 
 public class ChannelManager {
+    private static final String TAG = "ChannelManager";
     private static ChannelManager mInstance = new ChannelManager();
 
     public static ChannelManager getInstance() {
@@ -80,6 +82,7 @@ public class ChannelManager {
             @Override
             public void onCallbackSuccess(TradeChannelListResult result) {
                 if (result != null && result.getRespData() != null && !result.getRespData().isEmpty()) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取会所支付方式---成功：RIGHT");
                     tradeChannelInfos.addAll(result.getRespData());
 
                     TradeChannelInfo qrcodeChannel = new TradeChannelInfo();
@@ -91,6 +94,7 @@ public class ChannelManager {
                         callback.onSuccess(result);
                     }
                 } else {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取会所支付方式---成功：EMPTY");
                     if (callback != null) {
                         callback.onError("会所未设置支付方式");
                     }
@@ -99,6 +103,7 @@ public class ChannelManager {
 
             @Override
             public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取会所支付方式---失败：" + e.getLocalizedMessage());
                 if (callback != null) {
                     callback.onError(e.getLocalizedMessage());
                 }
