@@ -34,8 +34,8 @@ public class ChatAccountManager {
         }
     }
 
-    public void init(Context context, boolean debug) {
-        mInterface.init(context, debug);
+    public void init(Context context, String appKey, boolean debug) {
+        mInterface.init(context, appKey, debug);
     }
 
     public void login(EventLogin eventLogin) {

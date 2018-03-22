@@ -24,6 +24,7 @@ import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
+import com.xmd.chat.xmdchat.constant.XmdChatConstant;
 import com.xmd.inner.NativeManager;
 import com.xmd.m.comment.XmdComment;
 import com.xmd.m.network.XmdNetwork;
@@ -123,7 +124,7 @@ public class ManagerApplication extends MultiDexApplication {
             XmdModuleAppointment.getInstance().init(this);
 
             //初始化聊天模块
-            String chatAppKey = SharedPreferenceHelper.isDevelopMode() ? "xiaomodo#spatest" : "xiaomodo#spa";
+            String chatAppKey = String.valueOf(BuildConfig.FLAVOR.equals("prd") ? XmdChatConstant.SDK_APP_ID_PRODUCTION : XmdChatConstant.SDK_APP_ID_DEV);
             XmdChat.getInstance().init(this, chatAppKey, debug, menuFactory);
 
             XmdPushModule.getInstance().init(this, "manager", UINavigation.xmdActionFactory, null);

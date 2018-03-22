@@ -66,7 +66,7 @@ public class ConversationListFragment extends BaseFragment {
     private boolean paused;
     private boolean needReload;
     private int page = 0;
-    private final static int PAGE_SIZE = 10;
+    private final static int PAGE_SIZE = 20;
     private boolean hasMoreData;
     private LinearLayoutManager layoutManager;
 

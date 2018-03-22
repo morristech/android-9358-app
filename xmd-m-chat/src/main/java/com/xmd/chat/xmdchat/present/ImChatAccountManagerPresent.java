@@ -62,16 +62,12 @@ public class ImChatAccountManagerPresent implements XmdChatAccountManagerInterfa
 
 
     @Override
-    public void init(Context context, boolean debug) {
-        TIMSdkConfig config;
+    public void init(Context context, String appKey, boolean debug) {
+        TIMSdkConfig config = new TIMSdkConfig(Integer.parseInt(appKey));
         if (debug) {
-            XLogger.i("init tencent account use debug setting");
-            config = new TIMSdkConfig(XmdChatConstant.SDK_APP_ID_DEBUG);
-        } else {
-            XLogger.i("init tencent account use product setting");
-            config = new TIMSdkConfig(XmdChatConstant.SDK_APP_ID_RELEASE);
+            config.setLogLevel(TIMLogLevel.DEBUG);
         }
-        config.setLogLevel(TIMLogLevel.DEBUG);
+
         //控制台日志是否打印
         config.enableLogPrint(true);
         //错误日志上报

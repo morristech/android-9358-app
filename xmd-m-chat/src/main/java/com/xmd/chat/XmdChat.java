@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
@@ -25,14 +26,17 @@ import org.greenrobot.eventbus.Subscribe;
 public class XmdChat {
     public final static String TAG = "XmdChat";
     private static final XmdChat ourInstance = new XmdChat();
+
     public static XmdChat getInstance() {
         return ourInstance;
     }
+
     private XmdChatInterface mInterface;
+
     private XmdChat() {
-        if(XmdChatModel.getInstance().chatModelIsEm()){
+        if (XmdChatModel.getInstance().chatModelIsEm()) {
             mInterface = new EmXmdChatPresent();
-        }else {
+        } else {
             mInterface = new ImXmdChatPresent();
         }
     }
@@ -41,11 +45,12 @@ public class XmdChat {
     private MenuFactory menuFactory;
 
     public void init(Context context, String appKey, boolean debug, MenuFactory menuFactory) {
+        XLogger.i("xmdchat init: appKey=" + appKey + ",debug=" + debug);
         EventBusSafeRegister.register(this);
         context = context.getApplicationContext();
         this.context = context;
-        mInterface.init(context,appKey,debug,menuFactory);
-        ChatAccountManager.getInstance().init(context, debug);
+        mInterface.init(context, appKey, debug, menuFactory);
+        ChatAccountManager.getInstance().init(context, appKey, debug);
         ConversationManager.getInstance().init();
         ChatMessageManager.getInstance().init();
         setMenuFactory(menuFactory);
@@ -53,7 +58,7 @@ public class XmdChat {
     }
 
     public void loadConversation() {
-       mInterface.loadConversation();
+        mInterface.loadConversation();
     }
 
     public MenuFactory getMenuFactory() {
@@ -66,7 +71,7 @@ public class XmdChat {
 
     @Subscribe
     public void onStartChat(EventStartChatActivity event) {
-       mInterface.onStartChat(event);
+        mInterface.onStartChat(event);
     }
 
     public Context getContext() {

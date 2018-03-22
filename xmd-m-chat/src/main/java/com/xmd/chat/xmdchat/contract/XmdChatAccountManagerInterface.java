@@ -10,7 +10,7 @@ import com.xmd.app.event.EventLogin;
 
 public interface XmdChatAccountManagerInterface {
 
-    void init(Context context, boolean debug);
+    void init(Context context, String appKey, boolean debug);
 
     void login(EventLogin eventLogin);
 

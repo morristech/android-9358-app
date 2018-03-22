@@ -8,9 +8,9 @@ public class XmdChatConstant {
 
     public static final int ACCOUNT_TYPE = 21719;
 
-    public static final int SDK_APP_ID_DEBUG = 1400063117;
+    public static final int SDK_APP_ID_DEV = 1400063117;
 
-    public static final int SDK_APP_ID_RELEASE = 1400063194;
+    public static final int SDK_APP_ID_PRODUCTION = 1400063194;
 
     public static final int error_code_offline = 6208;//离线状态下被其他终端踢下线
 
