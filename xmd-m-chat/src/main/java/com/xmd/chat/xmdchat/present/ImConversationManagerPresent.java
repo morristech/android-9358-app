@@ -89,7 +89,7 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
                 loadIndex++;
                 continue;
             }
-            if (loadIndex > (page + 1) * pageSize) {
+            if (loadIndex >= (page + 1) * pageSize) {
                 break;
             }
             loadIndex++;
@@ -116,6 +116,9 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
                     XLogger.d("load user " + conversion.getChatId() + " from cache");
                     onLoadFinish(false, user, conversation, callback, pageable);
                 }
+            } else {
+                onLoadFinish(false, null, conversation, callback, pageable);
+                XLogger.e("conversion.getChatId()=" + conversion.getChatId() + ",conversation=" + conversation);
             }
         }
     }
@@ -125,7 +128,7 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
                               Pageable<ConversationViewModel> pageable) {
         if (!error) {
             //判断用户是否跟技师有聊天权限，无聊天权限则会在在列表被删除
-            if (user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
+            if (user != null && user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
                 TIMManagerExt.getInstance().deleteConversationAndLocalMsgs(TIMConversationType.C2C, user.getChatId());
                 XLogger.i(XmdChat.TAG, "delete conversation:" + user.getChatId());
             } else {

@@ -2,6 +2,7 @@ package com.xmd.chat;
 
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.Pageable;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.viewmodel.ConversationViewModel;
 import com.xmd.chat.xmdchat.contract.XmdConversationManagerInterface;
 import com.xmd.chat.xmdchat.model.XmdChatModel;
@@ -39,7 +40,12 @@ public class ConversationManager {
 
     //加载会话列表
     public void loadConversationList(final boolean forceLoadUserInfo, final Callback<Pageable<ConversationViewModel>> callback, int page, int pageSize) {
-        mInterface.loadConversationList(forceLoadUserInfo, callback, page, pageSize);
+        try {
+            mInterface.loadConversationList(forceLoadUserInfo, callback, page, pageSize);
+        } catch (Exception e) {
+            XLogger.e("loadConversationList error:" + e.getMessage());
+            callback.onResponse(new Pageable<ConversationViewModel>(), e);
+        }
     }
 
     //获取会话数据
