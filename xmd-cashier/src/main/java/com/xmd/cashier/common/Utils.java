@@ -31,6 +31,8 @@ import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by heyangya on 16-8-22.
@@ -415,5 +419,44 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static void zipFiles(String folderPath, String filePath, ZipOutputStream zipOut) throws Exception {
+        if (zipOut == null) {
+            return;
+        }
+
+        File file = new File(folderPath + filePath);
+
+        //判断是不是文件
+        if (file.isFile()) {
+            ZipEntry zipEntry = new ZipEntry(filePath);
+            FileInputStream inputStream = new FileInputStream(file);
+            zipOut.putNextEntry(zipEntry);
+
+            int len;
+            byte[] buffer = new byte[4096];
+
+            while ((len = inputStream.read(buffer)) != -1) {
+                zipOut.write(buffer, 0, len);
+            }
+
+            zipOut.closeEntry();
+        } else {
+            //文件夹的方式,获取文件夹下的子文件
+            String fileList[] = file.list();
+
+            //如果没有子文件, 则添加进去即可
+            if (fileList.length <= 0) {
+                ZipEntry zipEntry = new ZipEntry(filePath + File.separator);
+                zipOut.putNextEntry(zipEntry);
+                zipOut.closeEntry();
+            }
+
+            //如果有子文件, 遍历子文件
+            for (int i = 0; i < fileList.length; i++) {
+                zipFiles(folderPath, filePath + File.separator + fileList[i], zipOut);
+            }
+        }
     }
 }

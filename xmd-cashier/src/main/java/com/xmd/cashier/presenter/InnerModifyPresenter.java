@@ -107,7 +107,6 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             mGetTradeChannelSubscription = mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
                 @Override
                 public void onSuccess(TradeChannelListResult o) {
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银获取会所支付方式---成功");
                     mView.hideLoading();
                     mChannelManager.formatCashierChannel();
                     showMethod();
@@ -115,7 +114,6 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
                 @Override
                 public void onError(String error) {
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银获取会所支付---失败：" + error);
                     mView.hideLoading();
                     mView.showToast("获取支付方式失败：" + error);
                 }

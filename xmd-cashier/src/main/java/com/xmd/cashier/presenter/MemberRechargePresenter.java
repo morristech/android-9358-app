@@ -246,7 +246,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             mGetRechargeChannelSubscription = mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
                 @Override
                 public void onSuccess(TradeChannelListResult o) {
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "会员充值获取会所支付方式---成功");
                     mView.hideLoading();
                     mChannelManager.formatRechargeChannel();
                     showDialog();
@@ -254,7 +253,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
                 @Override
                 public void onError(String error) {
-                    XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "会员充值获取会所支付方式---失败：" + error);
                     mView.hideLoading();
                     mView.showToast("获取支付方式失败：" + error);
                 }

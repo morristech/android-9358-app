@@ -25,6 +25,8 @@ import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.zip.ZipOutputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -126,6 +128,8 @@ public class MonitorManager {
 
     private MultipartBody.Part prepareFilePart(String targetDate, String partName) {
         File sendFile = null;
+        File zipFile = null;
+        ZipOutputStream outZip = null;
         try {
             sendFile = new File(Environment.getExternalStorageDirectory() + File.separator + "cashier.log");    // /mnt/sdcard/cashier.log
             if (sendFile.exists()) {
@@ -137,13 +141,34 @@ public class MonitorManager {
             } else {
                 XLogger.copyLogsToFile(sendFile, targetDate);
             }
+
+            zipFile = new File(Environment.getExternalStorageDirectory() + File.separator + "cashier.zip");
+            if (zipFile.exists()) {
+                zipFile.delete();
+            }
+            zipFile.createNewFile();
+
+            outZip = new ZipOutputStream(new FileOutputStream(zipFile));
+            Utils.zipFiles(sendFile.getParent() + File.separator, sendFile.getName(), outZip);
+
+            // 为file建立RequestBody实例
+            RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), zipFile);
+            // MultipartBody.Part借助文件名完成最终的上传
+            return MultipartBody.Part.createFormData(partName, zipFile.getName(), requestFile);
         } catch (Exception ignore) {
-            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "copyLogsToFile exception");
+            ignore.printStackTrace();
+            XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "generate zip file exception");
+            return null;
+        } finally {
+            if (outZip != null) {
+                try {
+                    outZip.finish();
+                    outZip.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        // 为file建立RequestBody实例
-        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), sendFile);
-        // MultipartBody.Part借助文件名完成最终的上传
-        return MultipartBody.Part.createFormData(partName, sendFile.getName(), requestFile);
     }
 
     // 上传日志

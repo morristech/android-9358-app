@@ -127,6 +127,12 @@ public class CustomPushMessageListener implements XmdPushMessageListener {
                     EventBus.getDefault().post(new EventPushReact(AppConstants.PUSH_TAG_UPLOAD_LOG));
                     MonitorManager.getInstance().pullLogFile(jsonObject.getString(RequestConstant.KEY_EN), jsonObject.getString(RequestConstant.KEY_DATE));
                     break;
+                case AppConstants.PUSH_TAG_UPDATE_PAY_CHANNEL:  //更新支付方式
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "On RawMessage：" + message);
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "On RawMessage(" + AppConstants.PUSH_TAG_UPDATE_PAY_CHANNEL + ") 更新会所支付方式");
+                    EventBus.getDefault().post(new EventPushReact(AppConstants.PUSH_TAG_UPDATE_PAY_CHANNEL));
+                    ChannelManager.getInstance().getPayChannelList(null);
+                    break;
                 default:
                     break;
             }

@@ -196,6 +196,7 @@ public class AppConstants {
     public static final String PUSH_TAG_CLUB_ORDER_TO_PAY = "club_order_to_pay";
     public static final String PUSH_TAG_FAST_PAY_SUCCESS = "fast_pay_success";
     public static final String PUSH_TAG_UPLOAD_LOG = "upload_log";  //上传日志
+    public static final String PUSH_TAG_UPDATE_PAY_CHANNEL = "update_pay_channel";    //更新支付方式
 
     public static final int TRADE_TYPE_NORMAL = 1;  //普通补收款
     public static final int TRADE_TYPE_INNER = 2;   //内网支付
@@ -211,10 +212,6 @@ public class AppConstants {
     public static final String PLATFORM_OFFLINE = "offline";
     public static final String PLATFORM_ONLINE = "online";
     public static final String PLATFORM_CASHIER = "cashier";
-
-    public static final String EXTRA_MEMBER_CASHIER_METHOD = "member_cashier_method";
-    public static final String MEMBER_CASHIER_METHOD_SCAN = "scan";
-    public static final String MEMBER_CASHIER_METHOD_CASH = "cash";
 
     public static final String EXTRA_MEMBER_BUSINESS_TYPE = "member_read_type";
     public static final String MEMBER_BUSINESS_TYPE_RECHARGE = "recharge";

@@ -60,11 +60,19 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     private Handler mHandler;
 
-    private Runnable mRunnable = new Runnable() {
+    private Runnable mWaitScanRunnable = new Runnable() {
         @Override
         public void run() {
             PosFactory.getCurrentCashier().speech("请扫描客户支付二维码");
-            mHandler.postDelayed(mRunnable, 15 * 1000);
+            mHandler.postDelayed(mWaitScanRunnable, 15 * 1000);
+        }
+    };
+
+    private Runnable mWaitPayRunnable = new Runnable() {
+        @Override
+        public void run() {
+            PosFactory.getCurrentCashier().speech("扫码成功，等待客户完成支付");
+            mHandler.postDelayed(mWaitPayRunnable, 10 * 1000);
         }
     };
 
@@ -79,6 +87,10 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onCreate() {
+        mHandler.removeCallbacksAndMessages(null);
+        stopDetailRecharge();
+        stopGetScanStatus();
+        stopGetPayStatus();
         switch (mView.getType()) {
             case AppConstants.TRADE_TYPE_NORMAL:
             case AppConstants.TRADE_TYPE_INNER:
@@ -178,7 +190,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     }
 
     private void initAuth() {
-        mHandler.post(mRunnable);
+        mHandler.post(mWaitScanRunnable);
     }
 
     @Override
@@ -188,7 +200,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onDestroy() {
-        mHandler.removeCallbacks(mRunnable);
+        mHandler.removeCallbacksAndMessages(null);
         stopGetScanStatus();
         stopGetPayStatus();
         stopDetailRecharge();
@@ -221,7 +233,8 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     private void rechargeAuthPay(String authCode) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值：" + authCode);
-        mHandler.removeCallbacks(mRunnable);
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.postDelayed(mWaitPayRunnable, 5 * 1000);
         mView.showLoading();
         if (mActiveAuthCodeRechargeSubscription != null) {
             mActiveAuthCodeRechargeSubscription.unsubscribe();
@@ -242,6 +255,7 @@ public class TradeQrcodePayPresenter implements Presenter {
             public void onError(String error) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---失败：" + error);
                 mView.hideLoading();
+                PosFactory.getCurrentCashier().speech("收款失败");
                 mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                 mMemberManager.tradeStatusError = error;
                 EventBus.getDefault().post(new RechargeDoneEvent());
@@ -252,7 +266,8 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     private void cashierAuthPay(String authCode) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付：" + authCode);
-        mHandler.removeCallbacks(mRunnable);
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.postDelayed(mWaitPayRunnable, 5 * 1000);
         mView.showLoading();
         if (mActiveAuthCodePaySubscription != null) {
             mActiveAuthCodePaySubscription.unsubscribe();
@@ -277,6 +292,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                     public void onError(String error) {
                         XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---失败：" + error);
                         mView.hideLoading();
+                        PosFactory.getCurrentCashier().speech("收款失败");
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                         mTradeManager.getCurrentTrade().tradeStatusError = error;
                         EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
@@ -303,7 +319,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                 stopDetailRecharge();
                 break;
         }
-        mHandler.post(mRunnable);
+        mHandler.post(mWaitScanRunnable);
     }
 
     @Override
@@ -321,7 +337,7 @@ public class TradeQrcodePayPresenter implements Presenter {
             default:
                 break;
         }
-        mHandler.removeCallbacks(mRunnable);
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     // ****************************************轮询扫码状态******************************************
@@ -416,7 +432,6 @@ public class TradeQrcodePayPresenter implements Presenter {
             resultPayStatus = true;
             mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
             mTradeManager.getCurrentTrade().tradeStatusError = "交易出现未知异常，缺少必要参数";
-            EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
             mView.finishSelf();
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单支付状态：" + payOrderId);
@@ -491,7 +506,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                     public void onClick(DialogInterface dialog, int which) {
                         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择退出交易");
                         dialog.dismiss();
-                        mHandler.removeCallbacks(mRunnable);
+                        mHandler.removeCallbacksAndMessages(null);
                         stopGetPayStatus();
                         stopGetScanStatus();
                         stopDetailRecharge();
@@ -551,6 +566,7 @@ public class TradeQrcodePayPresenter implements Presenter {
             mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
             mMemberManager.tradeStatusError = "缺少orderId参数";
             EventBus.getDefault().post(new RechargeDoneEvent());
+            mView.finishSelf();
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情：" + RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL);
             callDetailRecharge = XmdNetwork.getInstance().getService(SpaService.class)
