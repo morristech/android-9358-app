@@ -204,3 +204,15 @@
 }
 
 -keep class com.xmd.**.beans.** { *; }
+
+-keep class com.tencent.**{*;}
+-dontwarn com.tencent.**
+
+-keep class tencent.**{*;}
+-dontwarn tencent.**
+
+-keep class qalsdk.**{*;}
+-dontwarn qalsdk.**
+
+-keep class com.qq.**{*;}
+-dontwarn com.qq.**
