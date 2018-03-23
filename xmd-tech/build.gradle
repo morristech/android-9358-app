@@ -42,7 +42,7 @@ android {
         //1.9.6 新增分享邀请有礼
         //1.9.12 增加拼团活动分享
         versionCode 72
-        versionName "1.9.14"
+        versionName "2.0.0"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
