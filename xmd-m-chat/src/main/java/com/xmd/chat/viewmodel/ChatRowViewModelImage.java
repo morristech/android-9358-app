@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
@@ -69,12 +70,21 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
             height = body.getHeight();
         } else {
             TIMMessage timMessage = (TIMMessage) chatMessage.getMessage();
-            if(timMessage.getElement(1) instanceof TIMImageElem){
+            if (timMessage.getElement(1) instanceof TIMImageElem) {
                 TIMImageElem elem = (TIMImageElem) timMessage.getElement(1);
                 List<TIMImage> timImage = elem.getImageList();
-                height = (int) timImage.get(1).getHeight();
-                width = (int) timImage.get(1).getWidth();
-            }else{
+                if (timImage.size() >= 2) {
+                    height = (int) timImage.get(1).getHeight();
+                    width = (int) timImage.get(1).getWidth();
+                } else if (timImage.size() == 1) {
+                    height = (int) timImage.get(0).getHeight();
+                    width = (int) timImage.get(0).getWidth();
+                } else {
+                    XLogger.e("imageList.size is 0!");
+                    width = maxWidth;
+                    height = maxHeight;
+                }
+            } else {
                 return null;
             }
 
@@ -127,7 +137,11 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
         } else {
             TIMMessage message = (TIMMessage) chatMessage.getMessage();
             TIMImageElem imageElem = (TIMImageElem) message.getElement(1);
-            TIMImage image = imageElem.getImageList().get(0);
+            List<TIMImage> imageList = imageElem.getImageList();
+            if (imageList.size() == 0) {
+                return;
+            }
+            TIMImage image = imageList.get(0);
             if (new File(imageElem.getPath()).exists()) {
                 Glide.with(v.getContext()).load(imageElem.getPath()).into(imageView);
             } else {
@@ -168,14 +182,19 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
                 }
             }
         } else {
-            if(data == null || data.chatMessage == null){
+            if (data == null || data.chatMessage == null) {
                 Glide.with(imageView.getContext()).load(R.drawable.chat_default_image).into(imageView);
                 return;
             }
             TIMMessage message = (TIMMessage) data.chatMessage.getMessage();
             TIMImageElem imageElem = (TIMImageElem) message.getElement(1);
-            TIMImage image = imageElem.getImageList().get(1);
-            Glide.with(imageView.getContext()).load(image.getUrl()).into(imageView);
+            List<TIMImage> imageList = imageElem.getImageList();
+            if (imageList.size() > 1) {
+                TIMImage image = imageList.get(1);
+                Glide.with(imageView.getContext()).load(image.getUrl()).into(imageView);
+            } else {
+                XLogger.e("imageList.size is 0!");
+            }
         }
 
     }
