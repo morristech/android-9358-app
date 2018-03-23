@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.ext.message.TIMConversationExt;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
@@ -21,7 +21,8 @@ import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.view.ChatActivity;
-import com.xmd.chat.xmdchat.model.XmdChatModel;
+
+import java.util.List;
 
 
 /**
@@ -40,9 +41,11 @@ public class ConversationViewModel<T> {
         if (conversation instanceof EMConversation) {
             this.lastMessage = ChatMessageFactory.createMessage(((EMConversation) conversation).getLastMessage());
         } else {
-            this.lastMessage = ChatMessageFactory.createMessage(new TIMConversationExt((TIMConversation) conversation).getLastMsgs(1).get(0));
+            List<TIMMessage> lastMessageList = new TIMConversationExt((TIMConversation) conversation).getLastMsgs(1);
+            if (lastMessageList.size() > 0) {
+                this.lastMessage = ChatMessageFactory.createMessage(lastMessageList.get(0));
+            }
         }
-
     }
 
     @BindingAdapter("avatar")
@@ -100,19 +103,29 @@ public class ConversationViewModel<T> {
     }
 
     public String getFormatTime() {
+        if (lastMessage == null) {
+            return "";
+        }
         return lastMessage.getFormatTime();
     }
 
     public CharSequence getMessage() {
-       return lastMessage.getLastMessageContentText();
+        if (lastMessage == null) {
+            return "";
+        }
+        return lastMessage.getLastMessageContentText();
     }
 
     public long getTime() {
-        if (XmdChatModel.getInstance().chatModelIsEm()) {
-            return ((EMMessage) (lastMessage.getMessage())).getMsgTime();
-        } else {
-            return new TIMConversationExt((TIMConversation) conversation).getLastMsgs(1).get(0).getMsg().time();
+        if (lastMessage == null) {
+            return 0;
         }
+        return lastMessage.getMessageTime();
+//        if (XmdChatModel.getInstance().chatModelIsEm()) {
+//            return ((EMMessage) (lastMessage.getMessage())).getMsgTime();
+//        } else {
+//            return new TIMConversationExt((TIMConversation) conversation).getLastMsgs(1).get(0).getMsg().time();
+//        }
     }
 
     public int getUnReadMsgCount() {

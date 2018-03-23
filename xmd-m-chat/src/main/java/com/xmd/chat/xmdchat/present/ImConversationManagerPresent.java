@@ -226,8 +226,16 @@ public class ImConversationManagerPresent implements XmdConversationManagerInter
                 if (o2 == null) {
                     return 1;
                 }
-                TIMMessage last1 = new TIMConversationExt(o1.getConversation()).getLastMsgs(1).get(0);
-                TIMMessage last2 = new TIMConversationExt(o2.getConversation()).getLastMsgs(1).get(0);
+                List<TIMMessage> tl1 = new TIMConversationExt(o1.getConversation()).getLastMsgs(1);
+                List<TIMMessage> tl2 = new TIMConversationExt(o2.getConversation()).getLastMsgs(1);
+                if (tl1.size() == 0) {
+                    return -1;
+                }
+                if (tl2.size() == 0) {
+                    return 1;
+                }
+                TIMMessage last1 = tl1.get(0);
+                TIMMessage last2 = tl2.get(0);
                 if (last1 == null) {
                     return -1;
                 }

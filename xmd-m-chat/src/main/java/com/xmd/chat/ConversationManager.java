@@ -43,7 +43,7 @@ public class ConversationManager {
         try {
             mInterface.loadConversationList(forceLoadUserInfo, callback, page, pageSize);
         } catch (Exception e) {
-            XLogger.e("loadConversationList error:" + e.getMessage());
+            XLogger.e("loadConversationList error:", "", e);
             callback.onResponse(new Pageable<ConversationViewModel>(), e);
         }
     }
