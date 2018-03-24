@@ -12,6 +12,7 @@ import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageListener;
+import com.tencent.imsdk.TIMMessageOfflinePushSettings;
 import com.tencent.imsdk.TIMUserConfig;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.message.TIMConversationExt;
@@ -239,7 +240,22 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
         chatMessage.setUser(user);
         final ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
         mConversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, currentChatId);
-        mConversation.sendMessage((TIMMessage) chatMessage.getMessage(), new TIMValueCallBack<TIMMessage>() {
+        TIMMessage timMessage = (TIMMessage) chatMessage.getMessage();
+
+        TIMMessageOfflinePushSettings settings = new TIMMessageOfflinePushSettings();
+        settings.setEnabled(true);
+        String desc = chatMessage.getContentText() != null ? chatMessage.getContentText().toString() : "";
+        settings.setDescr(desc);
+
+        TIMMessageOfflinePushSettings.IOSSettings iosSettings = new TIMMessageOfflinePushSettings.IOSSettings();
+        iosSettings.setBadgeEnabled(true);
+        settings.setIosSettings(iosSettings);
+
+        TIMMessageOfflinePushSettings.AndroidSettings androidSettings = new TIMMessageOfflinePushSettings.AndroidSettings();
+        androidSettings.setTitle(desc);
+
+        timMessage.setOfflinePushSettings(settings);
+        mConversation.sendMessage(timMessage, new TIMValueCallBack<TIMMessage>() {
             @Override
             public void onError(int i, String s) {
                 data.error.set(true);
