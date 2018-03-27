@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 import android.view.WindowManager;
 
@@ -65,7 +66,8 @@ public class ManagerApplication extends MultiDexApplication {
             parseAppVersion();
 
             //初始化日志
-            XLogger.init(7, getFilesDir().getPath() + File.separator + "logs");
+            String logFileDirPath = Environment.getExternalStorageDirectory() + "/spa-logs";
+            XLogger.init(7, logFileDirPath);
             XLogger.setGloableTag("9358");
             XLogger.setLogcat(debug);
             printMachineInfo();
