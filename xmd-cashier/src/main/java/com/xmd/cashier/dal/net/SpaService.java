@@ -38,6 +38,7 @@ import com.xmd.cashier.dal.net.response.TechListResult;
 import com.xmd.cashier.dal.net.response.TradeBatchHoleResult;
 import com.xmd.cashier.dal.net.response.TradeBatchResult;
 import com.xmd.cashier.dal.net.response.TradeChannelListResult;
+import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
@@ -696,5 +697,11 @@ public interface SpaService {
                                        @Field(RequestConstant.KEY_AUTH_CODE) String authCode,
                                        @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
                                        @Field(RequestConstant.KEY_SIGN) String requestSign);
+
+    // 整合扫码状态/支付状态/订单详情
+    @GET(RequestConstant.URL_CHECK_ORDER)
+    Call<TradeOrderInfoResult> checkHoleOrder(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Query(RequestConstant.KEY_ORDER_ID) String orderId,
+                                              @Query(RequestConstant.KEY_PAY_NO) String payNo);
 }
 

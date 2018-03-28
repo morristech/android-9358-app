@@ -16,6 +16,7 @@ android {
     def SERVER_SDCM104 = "\"192.168.1.104:9880\""
     def SERVER_SDCM105 = "\"192.168.1.105:9880\""
     def SERVER_PUBLIC = "\"spa.93wifi.com\""
+    def SERVER_TEST = "\"test.xiaomodo.com\""
 
     defaultConfig {
         applicationId "com.xmd.cashier"
@@ -29,6 +30,7 @@ android {
         buildConfigField "String", "SERVER_SDCM104", SERVER_SDCM104
         buildConfigField "String", "SERVER_SDCM105", SERVER_SDCM105
         buildConfigField "String", "SERVER_PUBLIC", SERVER_PUBLIC
+        buildConfigField "String", "SERVER_TEST", SERVER_TEST
 
         ndk {
             abiFilters "armeabi", "armeabi-v7a"

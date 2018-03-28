@@ -54,34 +54,42 @@ public class CashierResultPresenter implements CashierResultContract.Presenter {
     }
 
     private void getTradeDetail() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情：" + mTradeManager.getCurrentTrade().payOrderId);
-        if (mGetTradeDetailSubscription != null) {
-            mGetTradeDetailSubscription.unsubscribe();
-        }
-        mGetTradeDetailSubscription = mTradeManager.getHoleBatchDetail(mTradeManager.getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
-            @Override
-            public void onSuccess(TradeRecordInfo o) {
-                XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情---成功：" + "[status = " + o.status + "]" +
-                        "[payAmount = " + o.payAmount + "][paidAmount = " + o.paidAmount + "][leftAmount = " + (o.payAmount - o.paidAmount) + "]");
-                mView.hideLoading();
-                mInfo = o;
-                if (mInfo.payAmount <= mInfo.paidAmount) {
-                    mTradeManager.printTradeRecordInfoAsync(mInfo, false);
-                }
-                mView.showConfirm();
+        if (mTradeManager.getCurrentTrade().resultOrderInfo != null) {
+            mInfo = mTradeManager.getCurrentTrade().resultOrderInfo;
+            if (mInfo.payAmount <= mInfo.paidAmount) {
+                mTradeManager.printTradeRecordInfoAsync(mInfo, false);
             }
-
-            @Override
-            public void onError(String error) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情---失败：" + error);
-                mView.hideLoading();
-                if (mTradeManager.getCurrentTrade().tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
-                    mView.showPrint();
-                } else {
+            mView.showConfirm();
+        } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情：" + mTradeManager.getCurrentTrade().payOrderId);
+            if (mGetTradeDetailSubscription != null) {
+                mGetTradeDetailSubscription.unsubscribe();
+            }
+            mGetTradeDetailSubscription = mTradeManager.getHoleBatchDetail(mTradeManager.getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
+                @Override
+                public void onSuccess(TradeRecordInfo o) {
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情---成功：" + "[status = " + o.status + "]" +
+                            "[payAmount = " + o.payAmount + "][paidAmount = " + o.paidAmount + "][leftAmount = " + (o.payAmount - o.paidAmount) + "]");
+                    mView.hideLoading();
+                    mInfo = o;
+                    if (mInfo.payAmount <= mInfo.paidAmount) {
+                        mTradeManager.printTradeRecordInfoAsync(mInfo, false);
+                    }
                     mView.showConfirm();
                 }
-            }
-        });
+
+                @Override
+                public void onError(String error) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款交易完成获取交易详情---失败：" + error);
+                    mView.hideLoading();
+                    if (mTradeManager.getCurrentTrade().tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                        mView.showPrint();
+                    } else {
+                        mView.showConfirm();
+                    }
+                }
+            });
+        }
     }
 
     @Override

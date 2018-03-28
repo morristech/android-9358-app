@@ -15,6 +15,7 @@ import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.bean.TradeChannelInfo;
+import com.xmd.cashier.dal.net.AuthPayRetrofit;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
@@ -625,7 +626,7 @@ public class MemberManager {
 
 
     public Subscription activeAuthPay(String authCode, String orderId, final Callback<MemberRecordResult> callback) {
-        Observable<MemberRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+        Observable<MemberRecordResult> observable = AuthPayRetrofit.getService()
                 .doAuthCodeRecharge(AccountManager.getInstance().getToken(), orderId, authCode, RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
             @Override

@@ -20,6 +20,7 @@ import com.xmd.cashier.dal.bean.TradeDiscountCheckInfo;
 import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
+import com.xmd.cashier.dal.net.AuthPayRetrofit;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
@@ -617,7 +618,7 @@ public class TradeManager {
 
     // 二维码授权支付
     public Subscription activeAuthPay(int amount, String authCode, String payOrderId, String payNo, final Callback<BaseBean> callback) {
-        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+        Observable<BaseBean> observable = AuthPayRetrofit.getService()
                 .activeAuthPay(AccountManager.getInstance().getToken(), String.valueOf(amount), payNo, authCode, payOrderId, RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
             @Override

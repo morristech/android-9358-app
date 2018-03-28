@@ -11,6 +11,7 @@ public class Trade {
     public Trade() {
         couponList = new ArrayList<>();
         verifiedList = new ArrayList<>();
+        resultOrderInfo = null;
     }
 
     public int tradeStatus; //交易结果
@@ -50,6 +51,7 @@ public class Trade {
     public String posPayCashierNo;  //POS支付返回的CashierNo
 
     public TradeRecordInfo innerRecordInfo;
+    public TradeRecordInfo resultOrderInfo;
 
     public int getAlreadyCutMoney() {
         return alreadyCutMoney;

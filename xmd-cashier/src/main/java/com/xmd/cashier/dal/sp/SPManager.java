@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.BuildConfig;
 import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.dal.net.AuthPayRetrofit;
 import com.xmd.m.network.XmdNetwork;
 
 /**
@@ -36,6 +37,7 @@ public class SPManager {
     public void setSpaServerAddress(String address) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Set server to " + address);
         XmdNetwork.getInstance().changeServer("http://" + address);
+        AuthPayRetrofit.setBaseUrl("http://" + address);
         mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
 

@@ -57,32 +57,45 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     }
 
     private void getOrder() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情：" + TradeManager.getInstance().getCurrentTrade().payOrderId);
-        if (mGetBatchOrderSubscription != null) {
-            mGetBatchOrderSubscription.unsubscribe();
-        }
-        mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
-            @Override
-            public void onSuccess(TradeRecordInfo o) {
-                mRecordInfo = o;
-                int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
-                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
-                        "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
-                if (leftAmount <= 0) {
-                    printNormal();
-                    mView.showDone("全部应付金额已支付成功");
-                } else {
-                    mView.showContinue("剩余待支付金额￥" + Utils.moneyToStringEx(leftAmount));
+        if (TradeManager.getInstance().getCurrentTrade().resultOrderInfo != null) {
+            mRecordInfo = TradeManager.getInstance().getCurrentTrade().resultOrderInfo;
+            int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
+                    "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
+            if (leftAmount <= 0) {
+                printNormal();
+                mView.showDone("全部应付金额已支付成功");
+            } else {
+                mView.showContinue("剩余待支付金额￥" + Utils.moneyToStringEx(leftAmount));
+            }
+        } else {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情：" + TradeManager.getInstance().getCurrentTrade().payOrderId);
+            if (mGetBatchOrderSubscription != null) {
+                mGetBatchOrderSubscription.unsubscribe();
+            }
+            mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
+                @Override
+                public void onSuccess(TradeRecordInfo o) {
+                    mRecordInfo = o;
+                    int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
+                            "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
+                    if (leftAmount <= 0) {
+                        printNormal();
+                        mView.showDone("全部应付金额已支付成功");
+                    } else {
+                        mView.showContinue("剩余待支付金额￥" + Utils.moneyToStringEx(leftAmount));
+                    }
                 }
-            }
 
-            @Override
-            public void onError(String error) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---失败:" + error);
-                mView.showToast(error);
-                mView.showNotice();
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---失败:" + error);
+                    mView.showToast(error);
+                    mView.showNotice();
+                }
+            });
+        }
     }
 
     @Override

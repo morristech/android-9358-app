@@ -24,6 +24,8 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.db.DBManager;
+import com.xmd.cashier.dal.net.AuthPayRetrofit;
+import com.xmd.cashier.dal.net.CustomOkHttpUtil;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
@@ -108,6 +110,19 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             }
         });
 
+        // 主扫接口网络请求初始化
+        CustomOkHttpUtil.init(this.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 40000, 20000, 20000);
+        CustomOkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
+        AuthPayRetrofit.setBaseUrl(SPManager.getInstance().getSpaServerAddress());
+        CustomOkHttpUtil.getInstance().setLog(true);
+        CustomOkHttpUtil.getInstance().setCommonHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+        CustomOkHttpUtil.getInstance().setRequestPreprocess(new CustomOkHttpUtil.RequestPreprocess() {
+            @Override
+            public Request preProcess(Request request) {
+                return SpaOkHttp.checkAndSign(request);
+            }
+        });
+
         // 初始化推送
         XmdPushManager.getInstance().init(this, "pos", CustomPushMessageListener.getInstance());
 
@@ -119,6 +134,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         if (AccountManager.getInstance().isLogin()) {
             SPManager.getInstance().initPushTagCount();
             XmdNetwork.getInstance().setHeader("Club-Id", AccountManager.getInstance().getClubId());
+            CustomOkHttpUtil.getInstance().setCommonHeader("Club-Id", AccountManager.getInstance().getClubId());
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
