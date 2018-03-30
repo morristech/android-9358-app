@@ -48,7 +48,6 @@ public class BillManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                e.printStackTrace();
                 callback.onError(e.getLocalizedMessage());
             }
         });

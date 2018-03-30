@@ -11,10 +11,10 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.TradeMemberPayContract;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
+import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
-import com.xmd.m.network.BaseBean;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -73,12 +73,13 @@ public class TradeMemberPayPresenter implements TradeMemberPayContract.Presenter
         if (mMemberPaySubscription != null) {
             mMemberPaySubscription.unsubscribe();
         }
-        mMemberPaySubscription = mTradeManager.callbackBatchOrder(new Callback<BaseBean>() {
+        mMemberPaySubscription = mTradeManager.callbackBatchOrder(new Callback<TradeOrderInfoResult>() {
             @Override
-            public void onSuccess(BaseBean o) {
+            public void onSuccess(TradeOrderInfoResult o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "交易订单会员支付---成功");
                 mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                mTradeManager.getCurrentTrade().resultOrderInfo = o.getRespData().orderDetail;
                 PosFactory.getCurrentCashier().speech("支付成功");
                 EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
                 mView.finishSelf();

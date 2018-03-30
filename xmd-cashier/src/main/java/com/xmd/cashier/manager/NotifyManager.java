@@ -71,7 +71,6 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                e.printStackTrace();
                 callback.onError(e.getLocalizedMessage());
             }
         });
@@ -189,7 +188,6 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                e.printStackTrace();
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理在线买单---失败:" + e.getLocalizedMessage());
             }
         });
@@ -222,7 +220,6 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                e.printStackTrace();
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "获取未处理预约订单---失败:" + e.getLocalizedMessage());
             }
         });

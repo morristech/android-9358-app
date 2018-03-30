@@ -540,13 +540,6 @@ public interface SpaService {
                                           @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                           @Field(RequestConstant.KEY_TELEPHONE) String telephone);
 
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_AUTH_CODE_RECHARGE)
-    Observable<MemberRecordResult> doAuthCodeRecharge(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                      @Field(RequestConstant.KEY_ORDER_ID) String orderId,
-                                                      @Field(RequestConstant.KEY_AUTH_CODE) String authCode,
-                                                      @Field(RequestConstant.KEY_SIGN) String requestSign);
-
     /**************************************************************************************************************************/
     /**
      * 获取会所微信二维码
@@ -647,27 +640,6 @@ public interface SpaService {
                                                     @Field(RequestConstant.KEY_ORI_AMOUNT) String oriAmount,
                                                     @Field(RequestConstant.KEY_AMOUNT) String amount);
 
-    //买单回调确认支付
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_CALLBACK_BATCH_ORDER)
-    Observable<BaseBean> callbackBatchOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
-                                            @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
-                                            @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                            @Field(RequestConstant.KEY_PAY_NO) String payNo,
-                                            @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                            @Field(RequestConstant.KEY_AMOUNT) String amount);
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_CALLBACK_BATCH_ORDER)
-    Call<BaseBean> callbackBatchOrderSync(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                          @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
-                                          @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
-                                          @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                          @Field(RequestConstant.KEY_PAY_NO) String payNo,
-                                          @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                          @Field(RequestConstant.KEY_AMOUNT) String amount);
-
     //查询订单详情
     @GET(RequestConstant.URL_GET_BATCH_HOLE_DETAIL)
     Observable<TradeBatchHoleResult> getHoleBatchDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
@@ -688,20 +660,32 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_PAY_CHANNEL_LIST)
     Observable<TradeChannelListResult> getPayChannelList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
-    //收银主扫
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_AUTH_CODE_ACTIVE)
-    Observable<BaseBean> activeAuthPay(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                       @Field(RequestConstant.KEY_AMOUNT) String amount,
-                                       @Field(RequestConstant.KEY_PAY_NO) String payNo,
-                                       @Field(RequestConstant.KEY_AUTH_CODE) String authCode,
-                                       @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
-                                       @Field(RequestConstant.KEY_SIGN) String requestSign);
 
     // 整合扫码状态/支付状态/订单详情
     @GET(RequestConstant.URL_CHECK_ORDER)
     Call<TradeOrderInfoResult> checkHoleOrder(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                               @Query(RequestConstant.KEY_ORDER_ID) String orderId,
                                               @Query(RequestConstant.KEY_PAY_NO) String payNo);
+
+    // 整合支付标记状态/订单详情 GET|POST
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CALLBACK_ORDER)
+    Observable<TradeOrderInfoResult> callbackHoleOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                       @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                       @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                                       @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                                       @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                                       @Field(RequestConstant.KEY_AMOUNT) String amount);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CALLBACK_ORDER)
+    Call<TradeOrderInfoResult> callbackHoleOrderSync(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                     @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                     @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                     @Field(RequestConstant.KEY_PAY_ORDER_ID) String payOrderId,
+                                                     @Field(RequestConstant.KEY_PAY_NO) String payNo,
+                                                     @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                                     @Field(RequestConstant.KEY_AMOUNT) String amount);
 }
 

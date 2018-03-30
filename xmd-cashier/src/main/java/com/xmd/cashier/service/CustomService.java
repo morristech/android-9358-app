@@ -471,7 +471,6 @@ public class CustomService extends Service {
 
                     @Override
                     public void onCallbackError(Throwable e) {
-                        e.printStackTrace();
                         XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单查看优惠详情---失败:" + e.getLocalizedMessage());
                         XToast.show("查看详情失败:" + e.getLocalizedMessage());
                         adapter.setNormalStatus(position);

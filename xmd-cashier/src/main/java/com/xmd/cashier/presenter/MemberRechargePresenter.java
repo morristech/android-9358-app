@@ -49,7 +49,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
     private Subscription mGetMemberPlanSubscription;
     private Subscription mRechargeByScanSubscription;
-    private Subscription mGetRechargeChannelSubscription;
 
     private MemberManager mMemberManager;
     private ChannelManager mChannelManager;
@@ -85,9 +84,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         }
         if (mRechargeByScanSubscription != null) {
             mRechargeByScanSubscription.unsubscribe();
-        }
-        if (mGetRechargeChannelSubscription != null) {
-            mGetRechargeChannelSubscription.unsubscribe();
         }
     }
 
@@ -235,19 +231,14 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     // 获取会所支付方式
     private void onChannel() {
         if (mChannelManager.getTradeChannelInfos() != null && !mChannelManager.getTradeChannelInfos().isEmpty()) {
-            mChannelManager.formatRechargeChannel();
             showDialog();
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "会员充值获取会所支付方式：" + RequestConstant.URL_GET_PAY_CHANNEL_LIST);
             mView.showLoading();
-            if (mGetRechargeChannelSubscription != null) {
-                mGetRechargeChannelSubscription.unsubscribe();
-            }
-            mGetRechargeChannelSubscription = mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
+            mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
                 @Override
                 public void onSuccess(TradeChannelListResult o) {
                     mView.hideLoading();
-                    mChannelManager.formatRechargeChannel();
                     showDialog();
                 }
 
@@ -263,7 +254,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     // 支付方式选项
     private void showDialog() {
         ActionSheetDialog dialog = new ActionSheetDialog(mContext);
-        dialog.setContents(mChannelManager.getTradeChannelTexts());
+        dialog.setContents(mChannelManager.getRechargeChannelTexts());
         dialog.setCancelText("取消");
         dialog.setCanceledOnTouchOutside(true);
         dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
@@ -417,7 +408,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     private boolean resultReportRecharge = false;
 
     public void startReportRecharge() {
-        mRetryReportRecharge = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryReportRecharge = new RetryPool.RetryRunnable(1000, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return reportRechargeTrade();

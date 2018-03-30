@@ -109,6 +109,8 @@ public class RequestConstant {
     // 旺POS回调URL
     public static final String WANG_POS_NOTIFY_URL = SPA_SERVICE_BASE + "/v2/wangpos/pay/paid_success";
 
+    // 订单标记详情接口整合
+    public static final String URL_CALLBACK_ORDER = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/success/save/detail";
     // 订单详情接口整合
     public static final String URL_CHECK_ORDER = SPA_SERVICE_BASE + "/v2/manager/order/id/info";
 

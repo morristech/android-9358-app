@@ -9,7 +9,6 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import rx.Observable;
@@ -23,6 +22,7 @@ import rx.Subscription;
 public class ChannelManager {
     private static final String TAG = "ChannelManager";
     private static ChannelManager mInstance = new ChannelManager();
+    private Subscription mGetPayChannelSubscription;
 
     public static ChannelManager getInstance() {
         return mInstance;
@@ -36,10 +36,22 @@ public class ChannelManager {
         return tradeChannelInfos;
     }
 
-    public List<String> getTradeChannelTexts() {
+    public List<String> getCashierChannelTexts() {
         List<String> texts = new ArrayList<>();
         for (TradeChannelInfo tradeChannelInfo : tradeChannelInfos) {
-            texts.add(tradeChannelInfo.name);
+            if (!AppConstants.PAY_CHANNEL_WX.equals(tradeChannelInfo.type) && !AppConstants.PAY_CHANNEL_ALI.equals(tradeChannelInfo.type)) {
+                texts.add(tradeChannelInfo.name);
+            }
+        }
+        return texts;
+    }
+
+    public List<String> getRechargeChannelTexts() {
+        List<String> texts = new ArrayList<>();
+        for (TradeChannelInfo tradeChannelInfo : tradeChannelInfos) {
+            if (!AppConstants.PAY_CHANNEL_WX.equals(tradeChannelInfo.type) && !AppConstants.PAY_CHANNEL_ALI.equals(tradeChannelInfo.type) && !AppConstants.PAY_CHANNEL_ACCOUNT.equals(tradeChannelInfo.type)) {
+                texts.add(tradeChannelInfo.name);
+            }
         }
         return texts;
     }
@@ -54,31 +66,12 @@ public class ChannelManager {
         return info;
     }
 
-    public void formatCashierChannel() {
-        Iterator<TradeChannelInfo> iterator = tradeChannelInfos.iterator();
-        while (iterator.hasNext()) {
-            TradeChannelInfo current = iterator.next();
-            if (AppConstants.PAY_CHANNEL_WX.equals(current.type) || AppConstants.PAY_CHANNEL_ALI.equals(current.type)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public void formatRechargeChannel() {
-        Iterator<TradeChannelInfo> iterator = tradeChannelInfos.iterator();
-        while (iterator.hasNext()) {
-            TradeChannelInfo current = iterator.next();
-            if (AppConstants.PAY_CHANNEL_WX.equals(current.type) || AppConstants.PAY_CHANNEL_ALI.equals(current.type) || AppConstants.PAY_CHANNEL_ACCOUNT.equals(current.type)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public Subscription getPayChannelList(final Callback<TradeChannelListResult> callback) {
+    public void getPayChannelList(final Callback<TradeChannelListResult> callback) {
+        cancelPayChannelSubscription();
         tradeChannelInfos.clear();
         Observable<TradeChannelListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .getPayChannelList(AccountManager.getInstance().getToken());
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeChannelListResult>() {
+        mGetPayChannelSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeChannelListResult>() {
             @Override
             public void onCallbackSuccess(TradeChannelListResult result) {
                 if (result != null && result.getRespData() != null && !result.getRespData().isEmpty()) {
@@ -109,5 +102,12 @@ public class ChannelManager {
                 }
             }
         });
+    }
+
+    public void cancelPayChannelSubscription() {
+        if (mGetPayChannelSubscription != null) {
+            mGetPayChannelSubscription.unsubscribe();
+            mGetPayChannelSubscription = null;
+        }
     }
 }

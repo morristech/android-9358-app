@@ -29,6 +29,7 @@ import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.TradeBatchHoleResult;
 import com.xmd.cashier.dal.net.response.TradeBatchResult;
+import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
@@ -404,13 +405,13 @@ public class TradeManager {
     }
 
     // 买单回调确认支付
-    public Subscription callbackBatchOrder(final Callback<BaseBean> callback) {
-        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .callbackBatchOrder(AccountManager.getInstance().getToken(),
+    public Subscription callbackBatchOrder(final Callback<TradeOrderInfoResult> callback) {
+        Observable<TradeOrderInfoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .callbackHoleOrder(AccountManager.getInstance().getToken(),
                         mTrade.memberId, mTrade.currentChannelType, mTrade.payOrderId, mTrade.payNo, null, String.valueOf(mTrade.getWillPayMoney()));
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeOrderInfoResult>() {
             @Override
-            public void onCallbackSuccess(BaseBean result) {
+            public void onCallbackSuccess(TradeOrderInfoResult result) {
                 callback.onSuccess(result);
             }
 

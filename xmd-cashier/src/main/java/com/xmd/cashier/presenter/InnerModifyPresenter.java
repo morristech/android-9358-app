@@ -18,6 +18,7 @@ import com.xmd.cashier.dal.event.TradeDoneEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.TradeChannelListResult;
+import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.ChannelManager;
@@ -26,7 +27,6 @@ import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
-import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -50,7 +50,6 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     private ChannelManager mChannelManager;
 
     private Subscription mGenerateBatchSubscription;
-    private Subscription mGetTradeChannelSubscription;
 
     public InnerModifyPresenter(Context context, InnerModifyContract.View view) {
         mContext = context;
@@ -77,9 +76,6 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         if (mGenerateBatchSubscription != null) {
             mGenerateBatchSubscription.unsubscribe();
         }
-        if (mGetTradeChannelSubscription != null) {
-            mGetTradeChannelSubscription.unsubscribe();
-        }
     }
 
     @Override
@@ -96,19 +92,14 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             return;
         }*/
         if (mChannelManager.getTradeChannelInfos() != null && !mChannelManager.getTradeChannelInfos().isEmpty()) {
-            mChannelManager.formatCashierChannel();
             showMethod();
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银获取会所支付方式：" + RequestConstant.URL_GET_PAY_CHANNEL_LIST);
             mView.showLoading();
-            if (mGetTradeChannelSubscription != null) {
-                mGetTradeChannelSubscription.unsubscribe();
-            }
-            mGetTradeChannelSubscription = mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
+            mChannelManager.getPayChannelList(new Callback<TradeChannelListResult>() {
                 @Override
                 public void onSuccess(TradeChannelListResult o) {
                     mView.hideLoading();
-                    mChannelManager.formatCashierChannel();
                     showMethod();
                 }
 
@@ -156,7 +147,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
 
     private void showMethod() {
         ActionSheetDialog dialog = new ActionSheetDialog(mContext);
-        dialog.setContents(mChannelManager.getTradeChannelTexts());
+        dialog.setContents(mChannelManager.getCashierChannelTexts());
         dialog.setCancelText("取消");
         dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
             @Override
@@ -295,21 +286,18 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             @Override
             public void onError(String error) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付---失败:" + error);
-                mView.hideLoading();
-                mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
-                mTradeManager.getCurrentTrade().tradeStatusError = error;
                 EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
             }
         });
     }
 
     // 汇报内网支付
-    private Call<BaseBean> callbackBatchCall;
+    private Call<TradeOrderInfoResult> callbackBatchCall;
     private RetryPool.RetryRunnable mRetryCallBackBatch;
     private boolean resultCallBackBatch = false;
 
     public void startCallBackBatch() {
-        mRetryCallBackBatch = new RetryPool.RetryRunnable(AppConstants.TINNY_INTERVAL, 1.0f, new RetryPool.RetryExecutor() {
+        mRetryCallBackBatch = new RetryPool.RetryRunnable(1000, 1.0f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return callbackBatch();
@@ -331,20 +319,20 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     private boolean callbackBatch() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果：" + RequestConstant.URL_CALLBACK_BATCH_ORDER);
         callbackBatchCall = XmdNetwork.getInstance().getService(SpaService.class)
-                .callbackBatchOrderSync(AccountManager.getInstance().getToken(),
+                .callbackHoleOrderSync(AccountManager.getInstance().getToken(),
                         null,
                         mTradeManager.getCurrentTrade().currentChannelType,
                         mTradeManager.getCurrentTrade().payOrderId,
                         mTradeManager.getCurrentTrade().payNo,
                         mTradeManager.getCurrentTrade().posPayCashierNo,
                         String.valueOf(mTradeManager.getCurrentTrade().getWillPayMoney()));
-        XmdNetwork.getInstance().requestSync(callbackBatchCall, new NetworkSubscriber<BaseBean>() {
+        XmdNetwork.getInstance().requestSync(callbackBatchCall, new NetworkSubscriber<TradeOrderInfoResult>() {
             @Override
-            public void onCallbackSuccess(BaseBean result) {
+            public void onCallbackSuccess(TradeOrderInfoResult result) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果---成功");
                 resultCallBackBatch = true;
-                mView.hideLoading();
                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                mTradeManager.getCurrentTrade().resultOrderInfo = result.getRespData().orderDetail;
                 EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
             }
 
@@ -369,6 +357,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     public void onEvent(TradeDoneEvent tradeDoneEvent) {
         if (tradeDoneEvent.type == AppConstants.TRADE_TYPE_INNER) {
             UiNavigation.gotoInnerResultActivity(mContext);
+            stopCallBackBatch();
             mView.finishSelf();
         }
     }

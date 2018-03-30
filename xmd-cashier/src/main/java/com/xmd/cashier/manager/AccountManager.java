@@ -27,9 +27,11 @@ import com.xmd.m.notify.push.XmdPushManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import retrofit2.Call;
 import retrofit2.HttpException;
@@ -136,18 +138,24 @@ public class AccountManager {
 
             @Override
             public void onError(Throwable e) {
+                XLogger.e("Network error:" + e.getMessage());
+                e.printStackTrace();
                 if (e instanceof HttpException) {
                     HttpException httpException = (HttpException) e;
                     if (httpException.code() == RequestConstant.RESP_TOKEN_EXPIRED) {
                         EventBus.getDefault().post(new EventTokenExpired("会话已过期"));
                     }
                     callback.onError("会话已过期，请重新登录");
-                } else if (e instanceof SocketTimeoutException) {
-                    callback.onError("服务器请求超时");
-                } else if (e instanceof ConnectException) {
-                    callback.onError("服务器请求错误");
-                } else {
-                    callback.onError(e.getMessage());
+                } else if (e instanceof SocketTimeoutException) {   //超时
+                    callback.onError("服务器请求超时，请检查网络后重新登录");
+                } else if (e instanceof ConnectException) { //服务器拒绝等
+                    callback.onError("服务器连接异常，请重新登录");
+                } else if (e instanceof UnknownHostException) { //无法解析主机地址等
+                    callback.onError("无法连接服务器，请检查网络后重新登录");
+                } else if (e instanceof EOFException) { //网络异常等
+                    callback.onError("网络请求异常，请检查网络后重新登录");
+                } else {    //其他异常情况
+                    callback.onError("服务器请求异常，请重新登录");
                 }
             }
 
@@ -247,6 +255,7 @@ public class AccountManager {
                 try {
                     logoutCall.execute();
                 } catch (IOException e) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_ACCOUNT_MANAGER + "收银员登出操作异常：" + e.getLocalizedMessage());
                     e.printStackTrace();
                 }
             }
