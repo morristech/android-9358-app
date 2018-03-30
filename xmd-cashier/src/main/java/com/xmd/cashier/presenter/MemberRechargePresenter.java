@@ -177,6 +177,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
     @Override
     public void onRechargeDone() {
+        mView.hideLoading();
         switch (mMemberManager.tradeStatus) {
             case AppConstants.TRADE_STATUS_SUCCESS:
                 mMemberManager.printMemberRecordInfoAsync(mMemberManager.recordInfo, false);
@@ -387,6 +388,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付---成功");
+                mView.showLoading();
                 startReportRecharge();
             }
 

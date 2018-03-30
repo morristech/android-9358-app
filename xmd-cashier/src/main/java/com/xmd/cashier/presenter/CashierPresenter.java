@@ -242,6 +242,7 @@ public class CashierPresenter implements CashierContract.Presenter {
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款订单旺POS渠道支付---成功");
+                mView.showLoading();
                 startCallBackPos();
             }
 
@@ -335,6 +336,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(TradeDoneEvent tradeDoneEvent) {
         if (tradeDoneEvent.type == AppConstants.TRADE_TYPE_NORMAL) {
+            mView.hideLoading();
             stopCallBackPos();
             UiNavigation.gotoCashierResultActivity(mContext);
         }

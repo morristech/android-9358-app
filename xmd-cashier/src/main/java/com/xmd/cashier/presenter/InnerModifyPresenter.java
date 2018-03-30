@@ -279,7 +279,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             @Override
             public void onSuccess(Void o) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付---成功");
-                mView.showToast("支付成功！");
+                mView.showLoading();
                 startCallBackBatch();
             }
 
@@ -356,6 +356,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(TradeDoneEvent tradeDoneEvent) {
         if (tradeDoneEvent.type == AppConstants.TRADE_TYPE_INNER) {
+            mView.hideLoading();
             UiNavigation.gotoInnerResultActivity(mContext);
             stopCallBackBatch();
             mView.finishSelf();
