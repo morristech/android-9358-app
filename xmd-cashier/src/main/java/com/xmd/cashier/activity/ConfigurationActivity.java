@@ -16,20 +16,20 @@ import com.xmd.cashier.adapter.ConfigurationAdapter;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.ConfigEntry;
+import com.xmd.cashier.dal.event.UploadDoneEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MonitorManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.cashier.widget.CustomRecycleViewDecoration;
-import com.xmd.m.network.BaseBean;
 import com.xmd.m.notify.push.XmdPushManager;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.Subscription;
 
 /**
  * Created by zr on 17-7-31.
@@ -41,7 +41,6 @@ public class ConfigurationActivity extends BaseActivity {
     private Button mUploadBtn;
     private List<ConfigEntry> mData = new ArrayList<>();
     private ConfigurationAdapter mAdapter;
-    private Subscription mUploadLogSubscription;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,29 +97,17 @@ public class ConfigurationActivity extends BaseActivity {
     private void uploadLog() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志：" + RequestConstant.URL_APP_UPLOAD_LOG);
         showLoading();
-        if (mUploadLogSubscription != null) {
-            mUploadLogSubscription.unsubscribe();
-        }
-        mUploadLogSubscription = MonitorManager.getInstance().uploadLogFile(null, new Callback<BaseBean>() {
-            @Override
-            public void onSuccess(BaseBean o) {
-                hideLoading();
-                XToast.show("上传成功");
-            }
-
-            @Override
-            public void onError(String error) {
-                hideLoading();
-                XToast.show(error);
-            }
-        });
+        MonitorManager.getInstance().uploadLogFile(null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mUploadLogSubscription != null) {
-            mUploadLogSubscription.unsubscribe();
-        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UploadDoneEvent uploadDoneEvent) {
+        hideLoading();
+        showToast(uploadDoneEvent.getDesc());
     }
 }

@@ -17,21 +17,29 @@ import com.xmd.app.utils.DateUtil;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
+import com.xmd.cashier.dal.bean.CheckInfo;
+import com.xmd.cashier.dal.event.UploadDoneEvent;
 import com.xmd.cashier.dal.net.UploadRetrofit;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import rx.Subscription;
+import retrofit2.Call;
+import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -172,29 +180,35 @@ public class MonitorManager {
     }
 
     // 上传日志
-    public Subscription uploadLogFile(String targetDate, final Callback<BaseBean> callback) {
-        return UploadRetrofit.getService().uploadLog(prepareFilePart(targetDate, "9358cashier"))
+    public void uploadLogFile(final String targetDate) {
+        Observable
+                .create(new Observable.OnSubscribe<List<CheckInfo>>() {
+                    @Override
+                    public void call(Subscriber<? super List<CheckInfo>> subscriber) {
+                        MultipartBody.Part part = prepareFilePart(targetDate, "9358cashier");
+                        Call<BaseBean> uploadCall = UploadRetrofit.getService().uploadLog(part);
+                        XmdNetwork.getInstance().requestSync(uploadCall, new NetworkSubscriber<BaseBean>() {
+                            @Override
+                            public void onCallbackSuccess(BaseBean result) {
+                                XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---成功");
+                                SPManager.getInstance().setLastUploadTime(DateUtil.getCurrentTime() + " (success) ");
+                                EventBus.getDefault().post(new UploadDoneEvent("日志上传成功"));
+                            }
+
+                            @Override
+                            public void onCallbackError(Throwable e) {
+                                XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---失败：" + e.getLocalizedMessage());
+                                SPManager.getInstance().setLastUploadTime(DateUtil.getCurrentTime() + " (" + e.getLocalizedMessage() + ") ");
+                                EventBus.getDefault().post(new UploadDoneEvent("上传日志失败：" + e.getLocalizedMessage()));
+                            }
+                        });
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---成功");
-                        SPManager.getInstance().setLastUploadTime(DateUtil.getCurrentTime() + " (success) ");
-                        if (callback != null) {
-                            callback.onSuccess(result);
-                        }
-                    }
-
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "上传日志---失败：" + e.getLocalizedMessage());
-                        SPManager.getInstance().setLastUploadTime(DateUtil.getCurrentTime() + " (" + e.getLocalizedMessage() + ") ");
-                        if (callback != null) {
-                            callback.onError(e.getLocalizedMessage());
-                        }
-                    }
-                });
+                .subscribe();
     }
 
     // 拉取日志
@@ -207,13 +221,13 @@ public class MonitorManager {
                     XLogger.e(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "当前网络非Wifi网络");
                     return;
                 }
-                uploadLogFile(null, null);
+                uploadLogFile(null);
             } else {
                 // 指定时间日期
                 if (AppConstants.EXTRA_ALL.equals(date)) {
-                    uploadLogFile(null, null);  //全部
+                    uploadLogFile(null);  //全部
                 } else {
-                    uploadLogFile(date, null);  //具体日期
+                    uploadLogFile(date);  //具体日期
                 }
             }
         } else {
