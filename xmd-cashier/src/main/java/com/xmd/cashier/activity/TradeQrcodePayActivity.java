@@ -26,6 +26,7 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.TradeQrcodePayContract;
 import com.xmd.cashier.dal.event.QRScanStatusEvent;
+import com.xmd.cashier.dal.event.TradeQrcodeCloseEvent;
 import com.xmd.cashier.presenter.TradeQrcodePayPresenter;
 import com.xmd.cashier.widget.zxing.CameraManager;
 import com.xmd.cashier.widget.zxing.CaptureActivityHandler;
@@ -302,6 +303,11 @@ public class TradeQrcodePayActivity extends BaseActivity implements TradeQrcodeP
     public void onEvent(QRScanStatusEvent qrScanStatusEvent) {
         // 主线程更新扫码状态
         updateScanStatus();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(TradeQrcodeCloseEvent tradeQrcodeCloseEvent) {
+        finishSelf();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

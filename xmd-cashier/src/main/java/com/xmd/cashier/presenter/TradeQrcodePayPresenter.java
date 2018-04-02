@@ -20,6 +20,7 @@ import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.event.QRScanStatusEvent;
 import com.xmd.cashier.dal.event.RechargeDoneEvent;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
+import com.xmd.cashier.dal.event.TradeQrcodeCloseEvent;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
@@ -49,6 +50,8 @@ public class TradeQrcodePayPresenter implements Presenter {
     private static final String TAG = "TradeQrcodePayPresenter";
     private Context mContext;
     private TradeQrcodePayContract.View mView;
+
+    private int mTradeType;
 
     private GiftActivityInfo mGiftActivityInfo;
     private Subscription mGetGiftActivitySubscription;
@@ -87,10 +90,11 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     @Override
     public void onCreate() {
+        mTradeType = mView.getType();
         mHandler.removeCallbacksAndMessages(null);
         stopDetailRecharge();
         stopTradeOrder();
-        switch (mView.getType()) {
+        switch (mTradeType) {
             case AppConstants.TRADE_TYPE_NORMAL:
             case AppConstants.TRADE_TYPE_INNER:
                 showCashierQrcode();
@@ -174,7 +178,7 @@ public class TradeQrcodePayPresenter implements Presenter {
 
     private void initBitmap() {
         PosFactory.getCurrentCashier().speech("请扫描屏幕中二维码");
-        switch (mView.getType()) {
+        switch (mTradeType) {
             case AppConstants.TRADE_TYPE_NORMAL:
             case AppConstants.TRADE_TYPE_INNER:
                 startTradeOrder();
@@ -215,7 +219,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     // **************** 二维码授权支付 ****************
     @Override
     public void authPay(String authCode) {
-        switch (mView.getType()) {
+        switch (mTradeType) {
             case AppConstants.TRADE_TYPE_NORMAL:
             case AppConstants.TRADE_TYPE_INNER:
                 cashierAuthPay(authCode);
@@ -281,7 +285,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                         mView.hideLoading();
                         PosFactory.getCurrentCashier().speech("支付成功");
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
                         mView.finishSelf();
                     }
 
@@ -292,7 +296,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                         PosFactory.getCurrentCashier().speech("收款失败");
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                         mTradeManager.getCurrentTrade().tradeStatusError = error;
-                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                        EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
                         mView.finishSelf();
                     }
                 });
@@ -301,7 +305,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     @Override
     public void onAuthClick() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择主扫");
-        switch (mView.getType()) {
+        switch (mTradeType) {
             case AppConstants.TRADE_TYPE_NORMAL:
             case AppConstants.TRADE_TYPE_INNER:
                 stopTradeOrder();
@@ -320,7 +324,7 @@ public class TradeQrcodePayPresenter implements Presenter {
     @Override
     public void onBitmapClick() {
         XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "选择被扫");
-        switch (mView.getType()) {
+        switch (mTradeType) {
             case AppConstants.TRADE_TYPE_NORMAL:
             case AppConstants.TRADE_TYPE_INNER:
                 startTradeOrder();
@@ -381,12 +385,12 @@ public class TradeQrcodePayPresenter implements Presenter {
                         mHandler.removeCallbacksAndMessages(null);
                         stopTradeOrder();
                         stopDetailRecharge();
-                        switch (mView.getType()) {
+                        switch (mTradeType) {
                             case AppConstants.TRADE_TYPE_NORMAL:
                             case AppConstants.TRADE_TYPE_INNER:
                                 mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
                                 mTradeManager.getCurrentTrade().tradeStatusError = "已取消交易";
-                                EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
+                                EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
                                 break;
                             case AppConstants.TRADE_TYPE_RECHARGE:
                                 mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
@@ -437,7 +441,7 @@ public class TradeQrcodePayPresenter implements Presenter {
             mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
             mMemberManager.tradeStatusError = "缺少orderId参数";
             EventBus.getDefault().post(new RechargeDoneEvent());
-            mView.finishSelf();
+            EventBus.getDefault().post(new TradeQrcodeCloseEvent());
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情：" + RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL);
             callDetailRecharge = XmdNetwork.getInstance().getService(SpaService.class)
@@ -451,7 +455,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                     mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                     mMemberManager.recordInfo = result.getRespData();
                     EventBus.getDefault().post(new RechargeDoneEvent());
-                    mView.finishSelf();
+                    EventBus.getDefault().post(new TradeQrcodeCloseEvent());
                 }
 
                 @Override
@@ -497,7 +501,7 @@ public class TradeQrcodePayPresenter implements Presenter {
             resultTradeOrder = true;
             mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
             mTradeManager.getCurrentTrade().tradeStatusError = "交易出现未知异常，缺少必要参数";
-            mView.finishSelf();
+            EventBus.getDefault().post(new TradeQrcodeCloseEvent());
         } else {
             XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单：" + orderId);
             callTradeOrder = XmdNetwork.getInstance().getService(SpaService.class)
@@ -518,8 +522,8 @@ public class TradeQrcodePayPresenter implements Presenter {
                         mTradeManager.getCurrentTrade().resultOrderInfo = result.getRespData().orderDetail;
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
                         PosFactory.getCurrentCashier().speech("支付成功");
-                        EventBus.getDefault().post(new TradeDoneEvent(mView.getType()));
-                        mView.finishSelf();
+                        EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
+                        EventBus.getDefault().post(new TradeQrcodeCloseEvent());
                     } else {
                         resultTradeOrder = false;
                     }
