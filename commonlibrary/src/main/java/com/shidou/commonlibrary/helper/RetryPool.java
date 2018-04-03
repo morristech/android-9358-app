@@ -97,7 +97,7 @@ public class RetryPool {
                 retryPool.postWorkDelay(this, currentRetryInterval);
             } else {
                 synchronized (lock) {
-                    futureMap.remove(this);
+                    futureMap.remove(this.getIndex());
                 }
             }
         }
@@ -121,13 +121,12 @@ public class RetryPool {
                 }
                 synchronized (mFutureMapLock) {
                     RetryRunnable retryRunnable = (RetryRunnable) msg.obj;
-                    retryRunnable.exit = false;
                     retryRunnable.setFutureMap(mFutureMapLock, mFutureMap);
                     Future future = mExecutorService.submit((RetryRunnable) msg.obj);
                     int index = ((RetryRunnable) msg.obj).getIndex();
                     mFutureMap.put(index, future);
                     mMessageMap.remove(index);
-                    XLogger.d("size:" + mFutureMap.size());
+//                    XLogger.d("size:" + mFutureMap.size());
                 }
             }
         };
@@ -139,7 +138,9 @@ public class RetryPool {
      * @param retryRunnable
      */
     public void postWork(RetryRunnable retryRunnable) {
+//        XLogger.i("postWork: " + retryRunnable);
         retryRunnable.retryPool = this;
+        retryRunnable.exit = false;
         Message msg = mHandler.obtainMessage(1, retryRunnable);
         synchronized (mFutureMapLock) {
             mMessageMap.put(retryRunnable.getIndex(), msg);
@@ -148,7 +149,9 @@ public class RetryPool {
     }
 
     public void postWorkDelay(RetryRunnable retryRunnable, long delay) {
+//        XLogger.i("postWorkDelay: " + retryRunnable);
         retryRunnable.retryPool = this;
+        retryRunnable.exit = false;
         Message msg = mHandler.obtainMessage(1, retryRunnable);
         synchronized (mFutureMapLock) {
             mMessageMap.put(retryRunnable.getIndex(), msg);
@@ -162,6 +165,7 @@ public class RetryPool {
      * @param retryRunnable
      */
     public void removeWork(RetryRunnable retryRunnable) {
+//        XLogger.i("remove Work: " + retryRunnable);
         retryRunnable.exit();
         synchronized (mFutureMapLock) {
             mMessageMap.remove(retryRunnable.getIndex());
