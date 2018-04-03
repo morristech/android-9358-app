@@ -172,7 +172,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mCancelBtn.setVisibility(View.GONE);
         mContinueBtn.setVisibility(View.GONE);
         mDetailBtn.setVisibility(View.GONE);
-        mOtherBtn.setVisibility(View.GONE);
+        mOtherBtn.setVisibility(View.VISIBLE);
     }
 
     @Override
