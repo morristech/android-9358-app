@@ -82,10 +82,15 @@ public class RetryPool {
 //            XLogger.v("", "----call runnable----" + runnable);
             currentRetryCount++;
             boolean continueRun = !exit;
-            try {
-                continueRun = continueRun && !runnable.run();
-            } catch (Exception e) {
-                XLogger.i("runnable exception...ignore");
+            if (continueRun) {
+                try {
+                    continueRun = !runnable.run();
+                } catch (Exception e) {
+                    XLogger.i("runnable exception...ignore");
+                }
+            }
+            synchronized (lock) {
+                continueRun = continueRun && !exit;
             }
             if (continueRun) {
                 currentRetryInterval = (long) (currentRetryInterval * baseRetryIntervalMulti);
@@ -98,7 +103,9 @@ public class RetryPool {
         }
 
         public void exit() {
-            this.exit = true;
+            synchronized (lock) {
+                this.exit = true;
+            }
         }
     }
 
