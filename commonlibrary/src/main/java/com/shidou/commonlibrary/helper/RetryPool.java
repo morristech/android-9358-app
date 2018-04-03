@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by heyangya on 16-3-21.
@@ -17,8 +18,8 @@ import java.util.concurrent.Future;
  */
 public class RetryPool {
     private Handler mHandler;
-    private Map<RetryRunnable, Future> mFutureMap = new HashMap<>();
-    private Map<RetryRunnable, Message> mMessageMap = new HashMap<>();
+    private Map<Integer, Future> mFutureMap = new HashMap<>();
+    private Map<Integer, Message> mMessageMap = new HashMap<>();
 
     private final Object mFutureMapLock = new Object();
     private ExecutorService mExecutorService = Executors.newCachedThreadPool();
@@ -37,18 +38,24 @@ public class RetryPool {
     }
 
     public static class RetryRunnable implements Runnable {
+        public static AtomicInteger INDEX = new AtomicInteger(0);
+        private final int index;
         private long currentRetryInterval; //当前重试间隔
         private float baseRetryIntervalMulti; //倍数，本次尝试间隔=(倍数^当前尝试次数)*基本尝试间隔;
         private RetryExecutor runnable;
         private RetryPool retryPool;
         private boolean exit;
         private Object lock;
-        private Map<RetryRunnable, Future> futureMap;
+        private Map<Integer, Future> futureMap;
 
         private int currentRetryCount;
 
         public int getCurrentRetryCount() {
             return currentRetryCount;
+        }
+
+        public int getIndex() {
+            return index;
         }
 
         /**
@@ -62,9 +69,10 @@ public class RetryPool {
             this.baseRetryIntervalMulti = multi;
             this.runnable = runnable;
             this.currentRetryInterval = baseInterval;
+            this.index = INDEX.incrementAndGet();
         }
 
-        public void setFutureMap(Object lock, Map<RetryRunnable, Future> futureMap) {
+        public void setFutureMap(Object lock, Map<Integer, Future> futureMap) {
             this.lock = lock;
             this.futureMap = futureMap;
         }
@@ -73,7 +81,13 @@ public class RetryPool {
         public void run() {
 //            XLogger.v("", "----call runnable----" + runnable);
             currentRetryCount++;
-            if (!exit && !runnable.run()) {
+            boolean continueRun = !exit;
+            try {
+                continueRun = continueRun && !runnable.run();
+            } catch (Exception e) {
+                XLogger.i("runnable exception...ignore");
+            }
+            if (continueRun) {
                 currentRetryInterval = (long) (currentRetryInterval * baseRetryIntervalMulti);
                 retryPool.postWorkDelay(this, currentRetryInterval);
             } else {
@@ -95,13 +109,17 @@ public class RetryPool {
         mHandler = new Handler(mHandlerThread.getLooper()) {
             @Override
             public void handleMessage(Message msg) {
+                if (msg.what != 1) {
+                    return;
+                }
                 synchronized (mFutureMapLock) {
                     RetryRunnable retryRunnable = (RetryRunnable) msg.obj;
                     retryRunnable.exit = false;
                     retryRunnable.setFutureMap(mFutureMapLock, mFutureMap);
                     Future future = mExecutorService.submit((RetryRunnable) msg.obj);
-                    mFutureMap.put((RetryRunnable) msg.obj, future);
-                    mMessageMap.remove(msg.obj);
+                    int index = ((RetryRunnable) msg.obj).getIndex();
+                    mFutureMap.put(index, future);
+                    mMessageMap.remove(index);
                     XLogger.d("size:" + mFutureMap.size());
                 }
             }
@@ -115,18 +133,18 @@ public class RetryPool {
      */
     public void postWork(RetryRunnable retryRunnable) {
         retryRunnable.retryPool = this;
-        Message msg = mHandler.obtainMessage(0, retryRunnable);
+        Message msg = mHandler.obtainMessage(1, retryRunnable);
         synchronized (mFutureMapLock) {
-            mMessageMap.put(retryRunnable, msg);
+            mMessageMap.put(retryRunnable.getIndex(), msg);
             msg.sendToTarget();
         }
     }
 
     public void postWorkDelay(RetryRunnable retryRunnable, long delay) {
         retryRunnable.retryPool = this;
-        Message msg = mHandler.obtainMessage(0, retryRunnable);
+        Message msg = mHandler.obtainMessage(1, retryRunnable);
         synchronized (mFutureMapLock) {
-            mMessageMap.put(retryRunnable, msg);
+            mMessageMap.put(retryRunnable.getIndex(), msg);
             mHandler.sendMessageDelayed(msg, delay);
         }
     }
@@ -139,11 +157,9 @@ public class RetryPool {
     public void removeWork(RetryRunnable retryRunnable) {
         retryRunnable.exit();
         synchronized (mFutureMapLock) {
-            Message msg = mMessageMap.remove(retryRunnable);
-            if (msg != null) {
-                mHandler.removeMessages(0, retryRunnable);
-            }
-            Future future = mFutureMap.remove(retryRunnable);
+            mMessageMap.remove(retryRunnable.getIndex());
+            mHandler.removeCallbacks(retryRunnable);
+            Future future = mFutureMap.remove(retryRunnable.getIndex());
             if (future != null) {
                 future.cancel(true);
             }
