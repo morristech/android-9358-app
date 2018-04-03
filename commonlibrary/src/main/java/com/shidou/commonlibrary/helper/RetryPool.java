@@ -44,7 +44,7 @@ public class RetryPool {
         private float baseRetryIntervalMulti; //倍数，本次尝试间隔=(倍数^当前尝试次数)*基本尝试间隔;
         private RetryExecutor runnable;
         private RetryPool retryPool;
-        private boolean exit;
+        private volatile boolean exit;
         private Object lock;
         private Map<Integer, Future> futureMap;
 
