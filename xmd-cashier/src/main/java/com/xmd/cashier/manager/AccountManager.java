@@ -142,10 +142,17 @@ public class AccountManager {
                 e.printStackTrace();
                 if (e instanceof HttpException) {
                     HttpException httpException = (HttpException) e;
-                    if (httpException.code() == RequestConstant.RESP_TOKEN_EXPIRED) {
+                    int exceptionCode =  httpException.code();
+                    if (exceptionCode == RequestConstant.RESP_TOKEN_EXPIRED) {
+                        callback.onError("会话已过期，请重新登录");
                         EventBus.getDefault().post(new EventTokenExpired("会话已过期"));
                     }
-                    callback.onError("会话已过期，请重新登录");
+                    else if (exceptionCode == RequestConstant.RESP_HTTP_BAD_GATEWAY){
+                        callback.onError("网络访问异常，请稍后重试（502）");
+                    }
+                    else {
+                        callback.onError("会话已过期，请重新登录");
+                    }
                 } else if (e instanceof SocketTimeoutException) {   //超时
                     callback.onError("服务器请求超时，请检查网络后重新登录");
                 } else if (e instanceof ConnectException) { //服务器拒绝等

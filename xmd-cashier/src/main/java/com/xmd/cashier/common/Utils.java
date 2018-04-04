@@ -198,6 +198,20 @@ public class Utils {
         return false;
     }
 
+    /**
+     * 获取网络类型
+     * @param context
+     */
+    public static String getNetworkType(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isAvailable()) {
+            return "broken";
+        }
+        String netWorkType = networkInfo.getTypeName();
+        return netWorkType;
+    }
+
     public static boolean isAboveKitkat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }

@@ -111,6 +111,15 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.POSAliveReportService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xmd.cashier.POSAliveReportService" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".activity.SettleCurrentActivity"
             android:launchMode="singleTask" />
