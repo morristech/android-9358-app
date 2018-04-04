@@ -110,15 +110,45 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
 
     @Override
     public void onContinue() {
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成后继续收款");
-        InnerManager.getInstance().clearInnerOrderInfos();
-        TradeManager.getInstance().initTradeByRecord(mRecordInfo);
-        mView.finishSelf();
-        EventBus.getDefault().post(new InnerFinishEvent());
-        if (mRecordInfo.paidAmount > 0) {
-            UiNavigation.gotoInnerModifyActivity(mContext);
+        if (mRecordInfo == null) {
+            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果手动获取详情");
+            mView.showLoading();
+            if (mGetBatchOrderSubscription != null) {
+                mGetBatchOrderSubscription.unsubscribe();
+            }
+            mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
+                @Override
+                public void onSuccess(TradeRecordInfo o) {
+                    mView.hideLoading();
+                    mRecordInfo = o;
+                    InnerManager.getInstance().clearInnerOrderInfos();
+                    TradeManager.getInstance().initTradeByRecord(mRecordInfo);
+                    mView.finishSelf();
+                    EventBus.getDefault().post(new InnerFinishEvent());
+                    if (mRecordInfo.paidAmount > 0) {
+                        UiNavigation.gotoInnerModifyActivity(mContext);
+                    } else {
+                        UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_CONTINUE, mRecordInfo);
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    mView.hideLoading();
+                    mView.showToast(error);
+                    mRecordInfo = null;
+                }
+            });
         } else {
-            UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_CONTINUE, mRecordInfo);
+            InnerManager.getInstance().clearInnerOrderInfos();
+            TradeManager.getInstance().initTradeByRecord(mRecordInfo);
+            mView.finishSelf();
+            EventBus.getDefault().post(new InnerFinishEvent());
+            if (mRecordInfo.paidAmount > 0) {
+                UiNavigation.gotoInnerModifyActivity(mContext);
+            } else {
+                UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_CONTINUE, mRecordInfo);
+            }
         }
     }
 

@@ -112,7 +112,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         });
 
         // 主扫接口网络请求初始化
-        CustomOkHttpUtil.init(this.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 40000, 20000, 20000);
+        CustomOkHttpUtil.init(this.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 40000, 40000, 40000);
         CustomOkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
         AuthPayRetrofit.setBaseUrl(SPManager.getInstance().getSpaServerAddress());
         CustomOkHttpUtil.getInstance().setLog(true);
