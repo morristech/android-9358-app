@@ -39,6 +39,7 @@ import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.manager.UmengManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
+import com.xmd.cashier.service.POSAliveReportService;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.push.XmdPushManager;
@@ -148,6 +149,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
 
         // 开启服务
         CustomService.start();
+        POSAliveReportService.start();
     }
 
     private void printBaseInfo() {

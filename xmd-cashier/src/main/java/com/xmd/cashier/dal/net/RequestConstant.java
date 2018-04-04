@@ -114,6 +114,9 @@ public class RequestConstant {
     // 订单详情接口整合
     public static final String URL_CHECK_ORDER = SPA_SERVICE_BASE + "/v2/manager/order/id/info";
 
+    // 心跳上报存活接口
+    public static final String URL_ALIVE_REPORT = SPA_SERVICE_BASE + "/v2/app/posHeartBeat";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -218,6 +221,7 @@ public class RequestConstant {
     /*********************************************************************************************/
     public static final int RESP_TOKEN_EXPIRED = 401;
     public static final int RESP_ERROR = 400;
+    public static final int RESP_HTTP_BAD_GATEWAY = 502;
 
     public static final String DEFAULT_SIGN_VALUE = "need_sign";
     public static final String CLIENT_SECRET = "SPA$@MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6";
