@@ -104,7 +104,7 @@ public class RequestConstant {
     public static final String URL_CHECK_PAY_STATUS = SPA_SERVICE_BASE + "/v2/manager/native/order/pay_record/status/get";    // 查询订单支付状态(内网+补收款) 扫码支付
     public static final String URL_CHECK_SCAN_STATUS = SPA_SERVICE_BASE + "/v2/manager/order/id/status";       // 查询订单扫码状态(内网+补收款) 扫码支付
 
-    public static final String URL_AUTH_CODE_ACTIVE = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/auth_pay/save";   //威付通主扫支付
+    public static final String URL_AUTH_CODE_ACTIVE = SPA_SERVICE_BASE + "/v2/manager/native/order/fast_pay/auth_pay/save/detail";   //威付通主扫支付
 
     // 旺POS回调URL
     public static final String WANG_POS_NOTIFY_URL = SPA_SERVICE_BASE + "/v2/wangpos/pay/paid_success";
