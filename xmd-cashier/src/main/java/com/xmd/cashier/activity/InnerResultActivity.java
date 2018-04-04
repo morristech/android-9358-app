@@ -3,7 +3,6 @@ package com.xmd.cashier.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.presenter.InnerResultPresenter;
@@ -33,9 +31,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     private Button mOtherBtn;
     private Button mContinueBtn;
     private Button mCancelBtn;
-    private TextView mStatusDesc;
     private TextView mStatusErrorDesc;
-    private TextView mErrorNotice;
 
     private StepView mStepView;
 
@@ -65,9 +61,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mOtherBtn = (Button) findViewById(R.id.btn_view_other);
         mContinueBtn = (Button) findViewById(R.id.btn_view_continue);
         mCancelBtn = (Button) findViewById(R.id.btn_view_cancel);
-        mStatusDesc = (TextView) findViewById(R.id.tv_order_status_desc);
         mStatusErrorDesc = (TextView) findViewById(R.id.tv_order_status_error);
-        mErrorNotice = (TextView) findViewById(R.id.tv_error_notice);
         mDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +110,7 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
     }
 
     @Override
-    public void showSuccess(String desc) {
+    public void statusSuccess(String desc) {
         mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_green);
         mStatusImg.setVisibility(View.VISIBLE);
         mStatusText.setText("支付成功");
@@ -124,66 +118,42 @@ public class InnerResultActivity extends BaseActivity implements InnerResultCont
         mStatusErrorDesc.setVisibility(View.VISIBLE);
         mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorText2));
         mStatusErrorDesc.setText(desc);
+        // 显示详情和完成
+        mDetailBtn.setVisibility(View.VISIBLE);
+        mOtherBtn.setVisibility(View.VISIBLE);
+        mDetailBtn.setVisibility(View.GONE);
+        mOtherBtn.setVisibility(View.GONE);
     }
 
     @Override
-    public void showCancel(String error) {
+    public void statusError(String error) {
         mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_gray);
         mStatusImg.setVisibility(View.GONE);
         mStatusText.setText("支付失败");
         mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
-        if (TextUtils.isEmpty(error)) {
-            mStatusErrorDesc.setVisibility(View.INVISIBLE);
-            mStatusErrorDesc.setText("");
-        } else {
-            mStatusErrorDesc.setVisibility(View.VISIBLE);
-            mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorRed));
-            mStatusErrorDesc.setText(error);
-        }
-    }
-
-    @Override
-    public void showDone(String desc) {
-        mStatusDesc.setVisibility(View.VISIBLE);
-        mStatusDesc.setText(desc);
-        mCancelBtn.setVisibility(View.GONE);
-        mContinueBtn.setVisibility(View.GONE);
-        mDetailBtn.setVisibility(View.VISIBLE);
-        mOtherBtn.setVisibility(View.VISIBLE);
-        mErrorNotice.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showContinue(String desc) {
-        mStatusDesc.setVisibility(View.VISIBLE);
-        mStatusDesc.setText(Utils.changeColor(desc, ResourceUtils.getColor(R.color.colorAccent), 7, desc.length()));
+        mStatusErrorDesc.setVisibility(View.VISIBLE);
+        mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorRed));
+        mStatusErrorDesc.setText(error);
+        // 显示取消和继续
+        mDetailBtn.setVisibility(View.GONE);
+        mOtherBtn.setVisibility(View.GONE);
         mCancelBtn.setVisibility(View.VISIBLE);
         mContinueBtn.setVisibility(View.VISIBLE);
-        mDetailBtn.setVisibility(View.GONE);
-        mOtherBtn.setVisibility(View.GONE);
-        mErrorNotice.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void showNotice() {
-        mErrorNotice.setVisibility(View.VISIBLE);
-        mStatusDesc.setVisibility(View.INVISIBLE);
-        mStatusDesc.setText("");
-        mCancelBtn.setVisibility(View.GONE);
-        mContinueBtn.setVisibility(View.GONE);
+    public void statusException() {
+        mStatusLayout.setBackgroundResource(R.drawable.ic_bg_circle_gray);
+        mStatusImg.setVisibility(View.GONE);
+        mStatusText.setText("网络异常");
+        mStatusText.setTextColor(ResourceUtils.getColor(R.color.colorAccent));
+        mStatusErrorDesc.setVisibility(View.VISIBLE);
+        mStatusErrorDesc.setTextColor(ResourceUtils.getColor(R.color.colorRed));
+        mStatusErrorDesc.setText("请前往小摩豆买单列表确认订单支付状态");
         mDetailBtn.setVisibility(View.GONE);
         mOtherBtn.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showInit() {
-        mErrorNotice.setVisibility(View.INVISIBLE);
-        mStatusDesc.setVisibility(View.INVISIBLE);
-        mStatusDesc.setText("");
         mCancelBtn.setVisibility(View.GONE);
         mContinueBtn.setVisibility(View.GONE);
-        mDetailBtn.setVisibility(View.GONE);
-        mOtherBtn.setVisibility(View.GONE);
     }
 
     @Override

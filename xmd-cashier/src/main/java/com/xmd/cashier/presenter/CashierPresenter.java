@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
@@ -24,6 +25,7 @@ import com.xmd.cashier.manager.ChannelManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
+import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -304,6 +306,10 @@ public class CashierPresenter implements CashierContract.Presenter {
             @Override
             public void onCallbackError(Throwable e) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款订单旺POS渠道支付结果汇报---失败：" + e.getLocalizedMessage());
+                if (e instanceof NetworkException) {
+                    // 属于网络请求异常(包括超时)的提醒
+                    XToast.show("网络状况不佳，正在努力加载...");
+                }
                 resultCallBackPos = false;
             }
         });

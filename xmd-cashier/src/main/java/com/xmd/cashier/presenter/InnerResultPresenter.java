@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.UiNavigation;
-import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerResultContract;
@@ -40,61 +39,27 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
     @Override
     public void onCreate() {
         mView.showStepView();
-        mView.showInit();
         mRecordInfo = null;
         switch (TradeManager.getInstance().getCurrentTrade().tradeStatus) {
             case AppConstants.TRADE_STATUS_SUCCESS:
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：成功");
-                PosFactory.getCurrentCashier().speech("支付完成");
-                mView.showSuccess("收款金额：￥" + Utils.moneyToStringEx(TradeManager.getInstance().getCurrentTrade().getWillPayMoney()));
+                mView.statusSuccess("收款金额：￥" + Utils.moneyToStringEx(TradeManager.getInstance().getCurrentTrade().getWillPayMoney()));
+                mRecordInfo = TradeManager.getInstance().getCurrentTrade().resultOrderInfo;
+                if (mRecordInfo != null) {
+                    printNormal();
+                }
+                break;
+            case AppConstants.TRADE_STATUS_ERROR:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：失败");
+                mView.statusError(TradeManager.getInstance().getCurrentTrade().tradeStatusError);
+                break;
+            case AppConstants.TRADE_STATUS_EXCEPTION:
+                XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：异常");
+                mView.statusException();
                 break;
             default:
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网收银交易状态：失败取消或其他");
-                mView.showCancel(TradeManager.getInstance().getCurrentTrade().tradeStatusError);
                 break;
-        }
-        getOrder();
-    }
-
-    private void getOrder() {
-        if (TradeManager.getInstance().getCurrentTrade().resultOrderInfo != null) {
-            mRecordInfo = TradeManager.getInstance().getCurrentTrade().resultOrderInfo;
-            int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
-            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
-                    "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
-            if (leftAmount <= 0) {
-                printNormal();
-                mView.showDone("全部应付金额已支付成功");
-            } else {
-                mView.showContinue("剩余待支付金额￥" + Utils.moneyToStringEx(leftAmount));
-            }
-        } else {
-            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情：" + TradeManager.getInstance().getCurrentTrade().payOrderId);
-            if (mGetBatchOrderSubscription != null) {
-                mGetBatchOrderSubscription.unsubscribe();
-            }
-            mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
-                @Override
-                public void onSuccess(TradeRecordInfo o) {
-                    mRecordInfo = o;
-                    int leftAmount = mRecordInfo.payAmount - mRecordInfo.paidAmount;
-                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---成功:" + "[status = " + mRecordInfo.status + "]" +
-                            "[payAmount = " + mRecordInfo.payAmount + "][paidAmount = " + mRecordInfo.paidAmount + "][leftAmount = " + leftAmount + "]");
-                    if (leftAmount <= 0) {
-                        printNormal();
-                        mView.showDone("全部应付金额已支付成功");
-                    } else {
-                        mView.showContinue("剩余待支付金额￥" + Utils.moneyToStringEx(leftAmount));
-                    }
-                }
-
-                @Override
-                public void onError(String error) {
-                    XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付完成获取订单详情---失败:" + error);
-                    mView.showToast(error);
-                    mView.showNotice();
-                }
-            });
         }
     }
 
@@ -154,36 +119,6 @@ public class InnerResultPresenter implements InnerResultContract.Presenter {
             UiNavigation.gotoInnerModifyActivity(mContext);
         } else {
             UiNavigation.gotoInnerMethodActivity(mContext, AppConstants.INNER_METHOD_SOURCE_CONTINUE, mRecordInfo);
-        }
-    }
-
-    @Override
-    public void onPrint() {
-        if (mRecordInfo == null) {
-            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单支付结果手动尝试打印");
-            mView.showLoading();
-            if (mGetBatchOrderSubscription != null) {
-                mGetBatchOrderSubscription.unsubscribe();
-            }
-            mGetBatchOrderSubscription = TradeManager.getInstance().getHoleBatchDetail(TradeManager.getInstance().getCurrentTrade().payOrderId, new Callback<TradeRecordInfo>() {
-                @Override
-                public void onSuccess(TradeRecordInfo o) {
-                    mView.hideLoading();
-                    mRecordInfo = o;
-                    printNormal();
-                    newInnerTrade();
-                }
-
-                @Override
-                public void onError(String error) {
-                    mView.hideLoading();
-                    mView.showToast(error);
-                    mRecordInfo = null;
-                }
-            });
-        } else {
-            printNormal();
-            newInnerTrade();
         }
     }
 

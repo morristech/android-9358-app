@@ -17,14 +17,12 @@
             android:id="@+id/img_status"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_margin="@dimen/activity_normal_margin"
-            android:src="@drawable/ic_scan_ok" />
+            android:layout_margin="@dimen/activity_normal_margin" />
 
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="支付成功"
             android:textColor="@color/colorText5"
             android:textSize="@dimen/head_font_size" />
 
@@ -41,18 +39,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:paddingBottom="@dimen/activity_small_margin"
-        android:paddingLeft="@dimen/activity_normal_margin"
-        android:paddingRight="@dimen/activity_normal_margin"
-        android:paddingTop="@dimen/activity_small_margin"
-        android:textSize="@dimen/font_size_14"
-        android:visibility="gone" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
@@ -66,19 +52,6 @@
         android:padding="@dimen/activity_normal_margin">
 
         <Button
-            android:id="@+id/btn_pay_print"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            android:background="@drawable/state_btn_gray"
-            android:gravity="center"
-            android:text="打印"
-            android:textColor="@color/colorText3"
-            android:textSize="@dimen/small_font_size"
-            android:visibility="gone" />
-
-        <Button
             android:id="@+id/btn_pay_confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -87,8 +60,7 @@
             android:gravity="center"
             android:text="完成"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/small_font_size"
-            android:visibility="gone" />
+            android:textSize="@dimen/small_font_size" />
 
     </LinearLayout>
 </LinearLayout>

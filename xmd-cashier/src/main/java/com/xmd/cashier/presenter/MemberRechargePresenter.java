@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.PosFactory;
@@ -29,6 +30,7 @@ import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 import com.xmd.cashier.widget.InputPasswordDialog;
+import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -187,9 +189,10 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             case AppConstants.TRADE_STATUS_ERROR:
                 mView.showError(mMemberManager.tradeStatusError);
                 break;
+            case AppConstants.TRADE_STATUS_EXCEPTION:
             default:
                 new CustomAlertDialogBuilder(mContext)
-                        .setMessage("充值交易状态未知，详情请查看会员账户列表！")
+                        .setMessage("充值过程出现异常，详情请查看会员账户列表！")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -451,6 +454,9 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             @Override
             public void onCallbackError(Throwable e) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果---失败：" + e.getLocalizedMessage());
+                if (e instanceof NetworkException) {
+                    XToast.show("网络状况不佳，正在努力加载...");
+                }
                 resultReportRecharge = false;
             }
         });

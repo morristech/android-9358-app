@@ -15,7 +15,6 @@ import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.bean.TradeChannelInfo;
-import com.xmd.cashier.dal.net.AuthPayRetrofit;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
@@ -622,23 +621,6 @@ public class MemberManager {
             mPos.printCenter("微信扫码，选技师、抢优惠");
         }
         mPos.printEnd();
-    }
-
-
-    public Subscription activeAuthPay(String authCode, String orderId, final Callback<MemberRecordResult> callback) {
-        Observable<MemberRecordResult> observable = AuthPayRetrofit.getService()
-                .doAuthCodeRecharge(AccountManager.getInstance().getToken(), orderId, authCode, RequestConstant.DEFAULT_SIGN_VALUE);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
-            @Override
-            public void onCallbackSuccess(MemberRecordResult result) {
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
     }
 
     public Subscription callbackRechargeOrder(String orderId, String payChannel, final Callback<MemberRecordResult> callback) {

@@ -15,25 +15,17 @@ public interface InnerResultContract {
 
         void onContinue();
 
-        void onPrint();
-
         void onClose();
 
         void onEventBack();
     }
 
     interface View extends BaseView<Presenter> {
-        void showSuccess(String desc);
+        void statusSuccess(String desc);
 
-        void showCancel(String error);
+        void statusError(String error);
 
-        void showDone(String desc);
-
-        void showContinue(String desc);
-
-        void showNotice();
-
-        void showInit();
+        void statusException();
 
         void showEnterAnim();
 

@@ -10,19 +10,13 @@ import com.xmd.cashier.BaseView;
 public interface CashierResultContract {
     interface Presenter extends BasePresenter {
         void onConfirm();
-
-        void onPrint();
     }
 
     interface View extends BaseView<Presenter> {
-        void showStatus(int status);
+        void statusSuccess(String desc);
 
-        void showStatusError(String error);
+        void statusError(String error);
 
-        void showStatusSuccess(String desc);
-
-        void showPrint();
-
-        void showConfirm();
+        void statusException();
     }
 }

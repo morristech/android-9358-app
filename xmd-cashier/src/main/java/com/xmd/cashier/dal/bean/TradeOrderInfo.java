@@ -6,6 +6,7 @@ package com.xmd.cashier.dal.bean;
 
 public class TradeOrderInfo {
     public String payOrderId;
+    public String billNo;
     public String scanStatus;
     public String payStatus;
     public TradeRecordInfo orderDetail;

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
@@ -27,6 +28,7 @@ import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -339,6 +341,9 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             @Override
             public void onCallbackError(Throwable e) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果---失败:" + e.getLocalizedMessage());
+                if (e instanceof NetworkException) {
+                    XToast.show("网络状况不佳，正在努力加载...");
+                }
                 resultCallBackBatch = false;
             }
         });

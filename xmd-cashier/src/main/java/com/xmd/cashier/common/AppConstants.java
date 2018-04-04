@@ -70,8 +70,9 @@ public class AppConstants {
     public static final String PAID_ORDER_OP_VERIFIED = "verified";
     public static final String PAID_ORDER_OP_EXPIRE = "expire";
 
-    public static final int TRADE_STATUS_SUCCESS = 1;
-    public static final int TRADE_STATUS_ERROR = 2;
+    public static final int TRADE_STATUS_SUCCESS = 1;//成功
+    public static final int TRADE_STATUS_ERROR = 2; //失败
+    public static final int TRADE_STATUS_EXCEPTION = 3;   //网络异常
 
     // POS类型
     public static final String APP_CODE_WEI_POS = "100";

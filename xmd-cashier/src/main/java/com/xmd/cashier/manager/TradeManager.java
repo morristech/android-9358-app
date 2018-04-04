@@ -20,8 +20,6 @@ import com.xmd.cashier.dal.bean.TradeDiscountCheckInfo;
 import com.xmd.cashier.dal.bean.TradeDiscountInfo;
 import com.xmd.cashier.dal.bean.TradeRecordInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
-import com.xmd.cashier.dal.net.AuthPayRetrofit;
-import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
@@ -31,7 +29,6 @@ import com.xmd.cashier.dal.net.response.TradeBatchHoleResult;
 import com.xmd.cashier.dal.net.response.TradeBatchResult;
 import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -615,22 +612,5 @@ public class TradeManager {
             }
         }
         mPos.printEnd();
-    }
-
-    // 二维码授权支付
-    public Subscription activeAuthPay(int amount, String authCode, String payOrderId, String payNo, final Callback<BaseBean> callback) {
-        Observable<BaseBean> observable = AuthPayRetrofit.getService()
-                .activeAuthPay(AccountManager.getInstance().getToken(), String.valueOf(amount), payNo, authCode, payOrderId, RequestConstant.DEFAULT_SIGN_VALUE);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-            @Override
-            public void onCallbackSuccess(BaseBean result) {
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
     }
 }

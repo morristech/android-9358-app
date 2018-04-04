@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.PosFactory;
@@ -21,6 +22,7 @@ import com.xmd.cashier.dal.event.QRScanStatusEvent;
 import com.xmd.cashier.dal.event.RechargeDoneEvent;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
 import com.xmd.cashier.dal.event.TradeQrcodeCloseEvent;
+import com.xmd.cashier.dal.net.AuthPayRetrofit;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GiftActivityResult;
@@ -28,11 +30,10 @@ import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
-import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
-import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -240,25 +241,35 @@ public class TradeQrcodePayPresenter implements Presenter {
         if (mActiveAuthCodeRechargeSubscription != null) {
             mActiveAuthCodeRechargeSubscription.unsubscribe();
         }
-        mActiveAuthCodeRechargeSubscription = mMemberManager.activeAuthPay(authCode, mMemberManager.getRechargeOrderId(), new Callback<MemberRecordResult>() {
+
+        Observable<MemberRecordResult> observable = AuthPayRetrofit.getService()
+                .doAuthCodeRecharge(AccountManager.getInstance().getToken(), mMemberManager.getRechargeOrderId(), authCode, RequestConstant.DEFAULT_SIGN_VALUE);
+        mActiveAuthCodeRechargeSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
             @Override
-            public void onSuccess(MemberRecordResult o) {
+            public void onCallbackSuccess(MemberRecordResult result) {
                 XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---成功");
                 mView.hideLoading();
                 PosFactory.getCurrentCashier().speech("充值成功");
                 mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                mMemberManager.recordInfo = o.getRespData();
+                mMemberManager.recordInfo = result.getRespData();
                 EventBus.getDefault().post(new RechargeDoneEvent());
                 mView.finishSelf();
             }
 
             @Override
-            public void onError(String error) {
-                XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---失败：" + error);
+            public void onCallbackError(Throwable e) {
                 mView.hideLoading();
-                PosFactory.getCurrentCashier().speech("收款失败");
-                mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
-                mMemberManager.tradeStatusError = error;
+                if (e instanceof NetworkException) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---异常：" + e.getMessage());
+                    PosFactory.getCurrentCashier().speech("收款出现异常");
+                    mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_EXCEPTION;
+                    mMemberManager.tradeStatusError = e.getMessage();
+                } else {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权会员充值---失败：" + e.getMessage());
+                    PosFactory.getCurrentCashier().speech("收款失败");
+                    mMemberManager.tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                    mMemberManager.tradeStatusError = e.getMessage();
+                }
                 EventBus.getDefault().post(new RechargeDoneEvent());
                 mView.finishSelf();
             }
@@ -273,33 +284,44 @@ public class TradeQrcodePayPresenter implements Presenter {
         if (mActiveAuthCodePaySubscription != null) {
             mActiveAuthCodePaySubscription.unsubscribe();
         }
-        mActiveAuthCodePaySubscription = mTradeManager.activeAuthPay(
-                mTradeManager.getCurrentTrade().getWillPayMoney(),
-                authCode,
-                mTradeManager.getCurrentTrade().payOrderId,
-                mTradeManager.getCurrentTrade().payNo,
-                new Callback<BaseBean>() {
-                    @Override
-                    public void onSuccess(BaseBean o) {
-                        XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---成功");
-                        mView.hideLoading();
-                        PosFactory.getCurrentCashier().speech("支付成功");
-                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                        EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
-                        mView.finishSelf();
-                    }
 
-                    @Override
-                    public void onError(String error) {
-                        XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---失败：" + error);
-                        mView.hideLoading();
-                        PosFactory.getCurrentCashier().speech("收款失败");
-                        mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
-                        mTradeManager.getCurrentTrade().tradeStatusError = error;
-                        EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
-                        mView.finishSelf();
-                    }
-                });
+        Observable<TradeOrderInfoResult> observable = AuthPayRetrofit.getService()
+                .activeAuthPay(AccountManager.getInstance().getToken(),
+                        String.valueOf(mTradeManager.getCurrentTrade().getWillPayMoney()),
+                        mTradeManager.getCurrentTrade().payNo,
+                        authCode,
+                        mTradeManager.getCurrentTrade().payOrderId,
+                        RequestConstant.DEFAULT_SIGN_VALUE);
+        mActiveAuthCodePaySubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeOrderInfoResult>() {
+            @Override
+            public void onCallbackSuccess(TradeOrderInfoResult result) {
+                XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---成功");
+                mView.hideLoading();
+                PosFactory.getCurrentCashier().speech("支付成功");
+                mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                mTradeManager.getCurrentTrade().resultOrderInfo = result.getRespData().orderDetail;
+                EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
+                mView.finishSelf();
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                mView.hideLoading();
+                if (e instanceof NetworkException) {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---异常：" + e.getMessage());
+                    PosFactory.getCurrentCashier().speech("支付出现异常");
+                    mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_EXCEPTION;
+                    mTradeManager.getCurrentTrade().tradeStatusError = e.getMessage();
+                } else {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "二维码授权支付---失败：" + e.getMessage());
+                    PosFactory.getCurrentCashier().speech("支付失败");
+                    mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_ERROR;
+                    mTradeManager.getCurrentTrade().tradeStatusError = e.getMessage();
+                }
+                EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
+                mView.finishSelf();
+            }
+        });
     }
 
     @Override
@@ -461,6 +483,9 @@ public class TradeQrcodePayPresenter implements Presenter {
                 @Override
                 public void onCallbackError(Throwable e) {
                     XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---失败：" + e.getLocalizedMessage());
+                    if (e instanceof NetworkException) {
+                        XToast.show("网络状况不佳，正在努力加载...");
+                    }
                     resultDetailRecharge = false;
                 }
             });
@@ -519,8 +544,8 @@ public class TradeQrcodePayPresenter implements Presenter {
 
                     if (AppConstants.APP_REQUEST_YES.equals(payStatus)) {
                         resultTradeOrder = true;
-                        mTradeManager.getCurrentTrade().resultOrderInfo = result.getRespData().orderDetail;
                         mTradeManager.getCurrentTrade().tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                        mTradeManager.getCurrentTrade().resultOrderInfo = result.getRespData().orderDetail;
                         PosFactory.getCurrentCashier().speech("支付成功");
                         EventBus.getDefault().post(new TradeDoneEvent(mTradeType));
                         EventBus.getDefault().post(new TradeQrcodeCloseEvent());
@@ -532,6 +557,9 @@ public class TradeQrcodePayPresenter implements Presenter {
                 @Override
                 public void onCallbackError(Throwable e) {
                     XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单---失败：" + e.getLocalizedMessage());
+                    if (e instanceof NetworkException) {
+                        XToast.show("网络状况不佳，正在努力加载...");
+                    }
                     resultTradeOrder = false;
                 }
             });
