@@ -26,6 +26,7 @@ import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.ChannelManager;
+import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
@@ -205,12 +206,12 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                 .generateBatchOrder(AccountManager.getInstance().getToken(),
                         trade.batchNo,
                         trade.memberId,
-                        null,
+                        InnerManager.getInstance().getOrderIds(),
                         AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
                         mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                        String.valueOf(trade.getWillReductionMoney()),
                         null,
-                        String.valueOf(trade.getOriginMoney()),
-                        null);
+                        String.valueOf(trade.getWillPayMoney()));
         mGenerateBatchSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
             @Override
             public void onCallbackSuccess(TradeBatchResult result) {
@@ -300,12 +301,12 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
                 .generateBatchOrder(AccountManager.getInstance().getToken(),
                         trade.batchNo,
                         trade.memberId,
-                        null,
+                        InnerManager.getInstance().getOrderIds(),
                         AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
                         mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                        String.valueOf(trade.getWillReductionMoney()),
                         null,
-                        String.valueOf(trade.getOriginMoney()),
-                        null);
+                        String.valueOf(trade.getWillPayMoney()));
         mGenerateBatchSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
             @Override
             public void onCallbackSuccess(TradeBatchResult result) {
