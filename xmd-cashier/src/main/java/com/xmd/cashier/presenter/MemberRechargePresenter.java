@@ -454,7 +454,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             @Override
             public void onCallbackError(Throwable e) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值旺Pos渠道支付成功后汇报支付结果---失败：" + e.getLocalizedMessage());
-                if (e instanceof NetworkException) {
+                if ((e instanceof NetworkException) && !e.getLocalizedMessage().equals("Canceled")) {
                     XToast.show("网络状况不佳，正在努力加载...");
                 }
                 resultReportRecharge = false;

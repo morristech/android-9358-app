@@ -483,7 +483,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                 @Override
                 public void onCallbackError(Throwable e) {
                     XLogger.e(TAG, AppConstants.LOG_BIZ_MEMBER_MANAGER + "会员充值查询微信支付宝支付详情---失败：" + e.getLocalizedMessage());
-                    if (e instanceof NetworkException) {
+                    if ((e instanceof NetworkException) && !e.getLocalizedMessage().equals("Canceled")) {
                         XToast.show("网络状况不佳，正在努力加载...");
                     }
                     resultDetailRecharge = false;
@@ -557,7 +557,7 @@ public class TradeQrcodePayPresenter implements Presenter {
                 @Override
                 public void onCallbackError(Throwable e) {
                     XLogger.i(TAG, AppConstants.LOG_BIZ_TRADE_PAYMENT + "查询订单---失败：" + e.getLocalizedMessage());
-                    if (e instanceof NetworkException) {
+                    if ((e instanceof NetworkException) && !e.getLocalizedMessage().equals("Canceled")) {
                         XToast.show("网络状况不佳，正在努力加载...");
                     }
                     resultTradeOrder = false;

@@ -13,10 +13,13 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashierContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.bean.TradeBatchInfo;
 import com.xmd.cashier.dal.bean.TradeChannelInfo;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
+import com.xmd.cashier.dal.net.GeneOrderRetrofit;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
+import com.xmd.cashier.dal.net.response.TradeBatchResult;
 import com.xmd.cashier.dal.net.response.TradeChannelListResult;
 import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.manager.AccountManager;
@@ -34,6 +37,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import retrofit2.Call;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -174,51 +178,125 @@ public class CashierPresenter implements CashierContract.Presenter {
         if (mGenerateBatchOrderSubscription != null) {
             mGenerateBatchOrderSubscription.unsubscribe();
         }
-        mGenerateBatchOrderSubscription = mTradeManager.generateBatchOrder(
-                trade.batchNo,
-                trade.memberId,
-                AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
-                null,//订单数据
-                mTradeManager.formatVerifyCodes(trade.getCouponList()),
-                null,//直减金额
-                String.valueOf(trade.getOriginMoney()),
-                null,//拆分支付下实际支付金额
-                new Callback<String>() {
-                    @Override
-                    public void onSuccess(String o) {
-                        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成订单交易---成功：" + o);
-                        mView.hideLoading();
-                        if (AppConstants.APP_REQUEST_YES.equals(o)) {
-                            trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                            EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_NORMAL));
-                        } else {
-                            switch (trade.currentChannelType) {
-                                case AppConstants.PAY_CHANNEL_QRCODE:
-                                case AppConstants.PAY_CHANNEL_WX:   //微信
-                                case AppConstants.PAY_CHANNEL_ALI:  //支付宝
-                                    UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
-                                    break;
-                                case AppConstants.PAY_CHANNEL_UNION:    //银联
-                                    posPay();
-                                    break;
-                                case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
-                                    UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
-                                    break;
-                                case AppConstants.PAY_CHANNEL_CASH: //现金
-                                default:
-                                    UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
-                                    break;
-                            }
-                        }
+        Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
+                .generateBatchOrder(AccountManager.getInstance().getToken(),
+                        trade.batchNo,
+                        trade.memberId,
+                        null,
+                        AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
+                        mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                        null,
+                        String.valueOf(trade.getOriginMoney()),
+                        null);
+        mGenerateBatchOrderSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
+            @Override
+            public void onCallbackSuccess(TradeBatchResult result) {
+                mView.hideLoading();
+                TradeBatchInfo tradeBatchInfo = result.getRespData();
+                trade.batchNo = tradeBatchInfo.batchNo;
+                trade.payNo = tradeBatchInfo.payNo;
+                trade.payOrderId = tradeBatchInfo.payOrderId;
+                trade.payUrl = tradeBatchInfo.payUrl;
+                trade.setOriginMoney(tradeBatchInfo.oriAmount);
+                trade.setWillDiscountMoney(tradeBatchInfo.discountAmount);
+                trade.setWillPayMoney(tradeBatchInfo.payAmount);
+                if (AppConstants.APP_REQUEST_YES.equals(tradeBatchInfo.status)) {
+                    trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_NORMAL));
+                } else {
+                    switch (trade.currentChannelType) {
+                        case AppConstants.PAY_CHANNEL_QRCODE:
+                        case AppConstants.PAY_CHANNEL_WX:   //微信
+                        case AppConstants.PAY_CHANNEL_ALI:  //支付宝
+                            UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
+                            break;
+                        case AppConstants.PAY_CHANNEL_UNION:    //银联
+                            posPay();
+                            break;
+                        case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
+                            UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
+                            break;
+                        case AppConstants.PAY_CHANNEL_CASH: //现金
+                        default:
+                            UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
+                            break;
                     }
+                }
+            }
 
-                    @Override
-                    public void onError(String error) {
-                        XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成订单交易---失败：" + error);
-                        mView.hideLoading();
-                        mView.showToast(error);
+            @Override
+            public void onCallbackError(Throwable e) {
+                if (e instanceof NetworkException) {
+                    mView.showToast("网络状况不佳，正在努力加载...");
+                    generateBatchOrderAgain();
+                } else {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成订单交易---失败：" + e.getMessage());
+                    mView.hideLoading();
+                    mView.showToast(e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void generateBatchOrderAgain() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成订单交易：" + RequestConstant.URL_GENERATE_BATCH_ORDER);
+        final Trade trade = mTradeManager.getCurrentTrade();
+        if (mGenerateBatchOrderSubscription != null) {
+            mGenerateBatchOrderSubscription.unsubscribe();
+        }
+        Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
+                .generateBatchOrder(AccountManager.getInstance().getToken(),
+                        trade.batchNo,
+                        trade.memberId,
+                        null,
+                        AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
+                        mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                        null,
+                        String.valueOf(trade.getOriginMoney()),
+                        null);
+        mGenerateBatchOrderSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
+            @Override
+            public void onCallbackSuccess(TradeBatchResult result) {
+                mView.hideLoading();
+                TradeBatchInfo tradeBatchInfo = result.getRespData();
+                trade.batchNo = tradeBatchInfo.batchNo;
+                trade.payNo = tradeBatchInfo.payNo;
+                trade.payOrderId = tradeBatchInfo.payOrderId;
+                trade.payUrl = tradeBatchInfo.payUrl;
+                trade.setOriginMoney(tradeBatchInfo.oriAmount);
+                trade.setWillDiscountMoney(tradeBatchInfo.discountAmount);
+                trade.setWillPayMoney(tradeBatchInfo.payAmount);
+                if (AppConstants.APP_REQUEST_YES.equals(tradeBatchInfo.status)) {
+                    trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_NORMAL));
+                } else {
+                    switch (trade.currentChannelType) {
+                        case AppConstants.PAY_CHANNEL_QRCODE:
+                        case AppConstants.PAY_CHANNEL_WX:   //微信
+                        case AppConstants.PAY_CHANNEL_ALI:  //支付宝
+                            UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
+                            break;
+                        case AppConstants.PAY_CHANNEL_UNION:    //银联
+                            posPay();
+                            break;
+                        case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
+                            UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
+                            break;
+                        case AppConstants.PAY_CHANNEL_CASH: //现金
+                        default:
+                            UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_NORMAL);
+                            break;
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款生成订单交易---失败：" + e.getMessage());
+                mView.hideLoading();
+                mView.showToast(e.getMessage());
+            }
+        });
     }
 
     @Override
@@ -306,7 +384,7 @@ public class CashierPresenter implements CashierContract.Presenter {
             @Override
             public void onCallbackError(Throwable e) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "补收款订单旺POS渠道支付结果汇报---失败：" + e.getLocalizedMessage());
-                if (e instanceof NetworkException) {
+                if ((e instanceof NetworkException) && !e.getLocalizedMessage().equals("Canceled")) {
                     // 属于网络请求异常(包括超时)的提醒
                     XToast.show("网络状况不佳，正在努力加载...");
                 }

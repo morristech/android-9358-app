@@ -12,7 +12,8 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.User;
-import com.xmd.cashier.dal.net.CustomOkHttpUtil;
+import com.xmd.cashier.dal.net.AuthPayOkHttpUtil;
+import com.xmd.cashier.dal.net.GeneOrderOkHttpUtil;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.ClubResult;
@@ -178,7 +179,8 @@ public class AccountManager {
 
                             SPManager.getInstance().initPushTagCount();
                             XmdNetwork.getInstance().setHeader("Club-Id", getClubId());
-                            CustomOkHttpUtil.getInstance().setCommonHeader("Club-Id", getClubId());
+                            AuthPayOkHttpUtil.getInstance().setCommonHeader("Club-Id", getClubId());
+                            GeneOrderOkHttpUtil.getInstance().setCommonHeader("Club-Id", getClubId());
                             XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);
                             com.xmd.app.user.User user = new com.xmd.app.user.User(getUserId());

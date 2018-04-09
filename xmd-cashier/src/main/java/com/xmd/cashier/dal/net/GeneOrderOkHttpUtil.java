@@ -33,15 +33,15 @@ import okio.BufferedSource;
  * 用来处理主扫支付的接口
  */
 
-public class CustomOkHttpUtil {
-    private static final String TAG = "CustomOkHttpUtil";
+public class GeneOrderOkHttpUtil {
+    private static final String TAG = "GeneOrderOkHttpUtil";
     private static long mConnectTimeout;
     private static long mReadTimeout;
     private static long mWriteTimeout;
     private static String mCacheDirectory;
     private static long mCacheSize;
 
-    private static CustomOkHttpUtil mInstance;
+    private static GeneOrderOkHttpUtil mInstance;
     private OkHttpClient.Builder mBuilder;
     private OkHttpClient mClient;
     private Map<String, String> mCommonHeader = new HashMap<>();
@@ -55,10 +55,10 @@ public class CustomOkHttpUtil {
         mConnectTimeout = connectTimeout;
         mReadTimeout = readTimeout;
         mWriteTimeout = writeTimeout;
-        mInstance = new CustomOkHttpUtil();
+        mInstance = new GeneOrderOkHttpUtil();
     }
 
-    public static CustomOkHttpUtil getInstance() {
+    public static GeneOrderOkHttpUtil getInstance() {
         return mInstance;
     }
 
@@ -85,7 +85,7 @@ public class CustomOkHttpUtil {
         return mClient;
     }
 
-    private CustomOkHttpUtil() {
+    private GeneOrderOkHttpUtil() {
         mBuilder = new OkHttpClient.Builder();
         if (mCacheDirectory != null && mCacheSize > 0) {
             mBuilder.cache(new Cache(new File(mCacheDirectory), mCacheSize));
@@ -122,8 +122,8 @@ public class CustomOkHttpUtil {
                     XLogger.i(TAG, "<---"
                             + " (" + tookMs + "ms) " +
                             "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
-                            + response.request().method() + "-RESPONSE:" + response.toString());
-//                            + "\n" + responseToString(response));
+                            + response.request().method() + "-RESPONSE:" + response.toString()
+                            + "\n" + responseToString(response));
                 }
 
                 return response;

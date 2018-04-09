@@ -13,17 +13,19 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.InnerModifyContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
+import com.xmd.cashier.dal.bean.TradeBatchInfo;
 import com.xmd.cashier.dal.bean.TradeChannelInfo;
 import com.xmd.cashier.dal.event.InnerGenerateOrderEvent;
 import com.xmd.cashier.dal.event.TradeDoneEvent;
+import com.xmd.cashier.dal.net.GeneOrderRetrofit;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
+import com.xmd.cashier.dal.net.response.TradeBatchResult;
 import com.xmd.cashier.dal.net.response.TradeChannelListResult;
 import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.ChannelManager;
-import com.xmd.cashier.manager.InnerManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.ActionSheetDialog;
@@ -37,6 +39,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import retrofit2.Call;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -192,86 +195,189 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
     }
 
     private void doCashier() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付请求：" + RequestConstant.URL_GENERATE_BATCH_ORDER);
+        final Trade trade = mTradeManager.getCurrentTrade();
         mView.showLoading();
         if (mGenerateBatchSubscription != null) {
             mGenerateBatchSubscription.unsubscribe();
         }
-        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付请求：" + RequestConstant.URL_GENERATE_BATCH_ORDER);
-        final Trade trade = mTradeManager.getCurrentTrade();
-        mGenerateBatchSubscription = mTradeManager.generateBatchOrder(
-                trade.batchNo,
-                trade.memberId,
-                AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
-                InnerManager.getInstance().getOrderIds(),
-                mTradeManager.formatVerifyCodes(trade.getCouponList()),
-                String.valueOf(trade.getWillReductionMoney()),
-                null,//交易金额
-                String.valueOf(trade.getWillPayMoney()),//拆分支付时支付金额
-                new Callback<String>() {
-                    @Override
-                    public void onSuccess(String o) {
-                        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付请求---成功：" + o);
-                        mView.hideLoading();
-                        EventBus.getDefault().post(new InnerGenerateOrderEvent());
-                        if (AppConstants.APP_REQUEST_YES.equals(o)) {
-                            //核销金额已完成抵扣
-                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单无需再支付金额");
-                            trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
-                            EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
-                        } else {
-                            // 需要支付
-                            switch (mTradeManager.getCurrentTrade().currentChannelType) {
-                                case AppConstants.PAY_CHANNEL_QRCODE:
-                                case AppConstants.PAY_CHANNEL_ALI:
-                                case AppConstants.PAY_CHANNEL_WX:
-                                    UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
-                                    break;
-                                case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
-                                    UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
-                                    break;
-                                case AppConstants.PAY_CHANNEL_UNION:     //银联
-                                    posCashier();
-                                    break;
-                                case AppConstants.PAY_CHANNEL_CASH:
-                                default:
-                                    UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
-                                    break;
-                            }
-                        }
+        Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
+                .generateBatchOrder(AccountManager.getInstance().getToken(),
+                        trade.batchNo,
+                        trade.memberId,
+                        null,
+                        AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
+                        mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                        null,
+                        String.valueOf(trade.getOriginMoney()),
+                        null);
+        mGenerateBatchSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
+            @Override
+            public void onCallbackSuccess(TradeBatchResult result) {
+                mView.hideLoading();
+                TradeBatchInfo tradeBatchInfo = result.getRespData();
+                trade.batchNo = tradeBatchInfo.batchNo;
+                trade.payNo = tradeBatchInfo.payNo;
+                trade.payOrderId = tradeBatchInfo.payOrderId;
+                trade.payUrl = tradeBatchInfo.payUrl;
+                trade.setOriginMoney(tradeBatchInfo.oriAmount);
+                trade.setWillDiscountMoney(tradeBatchInfo.discountAmount);
+                trade.setWillPayMoney(tradeBatchInfo.payAmount);
+                EventBus.getDefault().post(new InnerGenerateOrderEvent());
+                if (AppConstants.APP_REQUEST_YES.equals(tradeBatchInfo.status)) {
+                    //核销金额已完成抵扣
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单无需再支付金额");
+                    trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
+                } else {
+                    // 需要支付
+                    switch (mTradeManager.getCurrentTrade().currentChannelType) {
+                        case AppConstants.PAY_CHANNEL_QRCODE:
+                        case AppConstants.PAY_CHANNEL_ALI:
+                        case AppConstants.PAY_CHANNEL_WX:
+                            UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                            break;
+                        case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
+                            UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                            break;
+                        case AppConstants.PAY_CHANNEL_UNION:     //银联
+                            posCashier();
+                            break;
+                        case AppConstants.PAY_CHANNEL_CASH:
+                        default:
+                            UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                            break;
                     }
+                }
+            }
 
-                    @Override
-                    public void onError(String error) {
-                        XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付---失败:" + error);
-                        mView.hideLoading();
-                        // FIXME 如果后台描述修改,需要相应变更
-                        if (error.contains("订单已被支付锁定")) {
-                            new CustomAlertDialogBuilder(mContext)
-                                    .setMessage("支付订单已存在，请前往结账提醒列表完成支付")
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(final DialogInterface dialog, int which) {
-                                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,继续支付");
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setPositiveButton("去支付", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,访问订单列表");
-                                            dialog.dismiss();
-                                            EventBus.getDefault().post(new InnerGenerateOrderEvent());
-                                            UiNavigation.gotoInnerRecordActivity(mContext);
-                                            mView.finishSelf();
-                                        }
-                                    })
-                                    .create()
-                                    .show();
-                        } else {
-                            mView.showError(error);
-                        }
+            @Override
+            public void onCallbackError(Throwable e) {
+                if (e instanceof NetworkException) {
+                    mView.showToast("网络状况不佳，正在努力加载...");
+                    doCashierAgain();
+                } else {
+                    XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付---失败:" + e.getMessage());
+                    mView.hideLoading();
+                    // FIXME 如果后台描述修改,需要相应变更
+                    if (e.getMessage().contains("订单已被支付锁定")) {
+                        new CustomAlertDialogBuilder(mContext)
+                                .setMessage("支付订单已存在，请前往结账提醒列表完成支付")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(final DialogInterface dialog, int which) {
+                                        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,继续支付");
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("去支付", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,访问订单列表");
+                                        dialog.dismiss();
+                                        EventBus.getDefault().post(new InnerGenerateOrderEvent());
+                                        UiNavigation.gotoInnerRecordActivity(mContext);
+                                        mView.finishSelf();
+                                    }
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        mView.showError(e.getMessage());
                     }
-                });
+                }
+            }
+        });
+    }
+
+    private void doCashierAgain() {
+        XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付请求 again：" + RequestConstant.URL_GENERATE_BATCH_ORDER);
+        final Trade trade = mTradeManager.getCurrentTrade();
+        if (mGenerateBatchSubscription != null) {
+            mGenerateBatchSubscription.unsubscribe();
+        }
+        Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
+                .generateBatchOrder(AccountManager.getInstance().getToken(),
+                        trade.batchNo,
+                        trade.memberId,
+                        null,
+                        AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
+                        mTradeManager.formatVerifyCodes(trade.getCouponList()),
+                        null,
+                        String.valueOf(trade.getOriginMoney()),
+                        null);
+        mGenerateBatchSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
+            @Override
+            public void onCallbackSuccess(TradeBatchResult result) {
+                mView.hideLoading();
+                TradeBatchInfo tradeBatchInfo = result.getRespData();
+                trade.batchNo = tradeBatchInfo.batchNo;
+                trade.payNo = tradeBatchInfo.payNo;
+                trade.payOrderId = tradeBatchInfo.payOrderId;
+                trade.payUrl = tradeBatchInfo.payUrl;
+                trade.setOriginMoney(tradeBatchInfo.oriAmount);
+                trade.setWillDiscountMoney(tradeBatchInfo.discountAmount);
+                trade.setWillPayMoney(tradeBatchInfo.payAmount);
+                EventBus.getDefault().post(new InnerGenerateOrderEvent());
+                if (AppConstants.APP_REQUEST_YES.equals(tradeBatchInfo.status)) {
+                    //核销金额已完成抵扣
+                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单无需再支付金额");
+                    trade.tradeStatus = AppConstants.TRADE_STATUS_SUCCESS;
+                    EventBus.getDefault().post(new TradeDoneEvent(AppConstants.TRADE_TYPE_INNER));
+                } else {
+                    // 需要支付
+                    switch (mTradeManager.getCurrentTrade().currentChannelType) {
+                        case AppConstants.PAY_CHANNEL_QRCODE:
+                        case AppConstants.PAY_CHANNEL_ALI:
+                        case AppConstants.PAY_CHANNEL_WX:
+                            UiNavigation.gotoTradeQrcodePayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                            break;
+                        case AppConstants.PAY_CHANNEL_ACCOUNT:  //会员
+                            UiNavigation.gotoTradeMemberPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                            break;
+                        case AppConstants.PAY_CHANNEL_UNION:     //银联
+                            posCashier();
+                            break;
+                        case AppConstants.PAY_CHANNEL_CASH:
+                        default:
+                            UiNavigation.gotoTradeMarkPayActivity(mContext, AppConstants.TRADE_TYPE_INNER);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单发起支付---失败:" + e.getMessage());
+                mView.hideLoading();
+                // FIXME 如果后台描述修改,需要相应变更
+                if (e.getMessage().contains("订单已被支付锁定")) {
+                    new CustomAlertDialogBuilder(mContext)
+                            .setMessage("支付订单已存在，请前往结账提醒列表完成支付")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialog, int which) {
+                                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,继续支付");
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setPositiveButton("去支付", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    XLogger.i(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "订单锁定时,访问订单列表");
+                                    dialog.dismiss();
+                                    EventBus.getDefault().post(new InnerGenerateOrderEvent());
+                                    UiNavigation.gotoInnerRecordActivity(mContext);
+                                    mView.finishSelf();
+                                }
+                            })
+                            .create()
+                            .show();
+                } else {
+                    mView.showError(e.getMessage());
+                }
+            }
+        });
     }
 
     // 旺POS渠道支付
@@ -341,7 +447,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
             @Override
             public void onCallbackError(Throwable e) {
                 XLogger.e(TAG, AppConstants.LOG_BIZ_NATIVE_CASHIER + "内网订单旺POS渠道支付标记支付结果---失败:" + e.getLocalizedMessage());
-                if (e instanceof NetworkException) {
+                if ((e instanceof NetworkException) && !e.getLocalizedMessage().equals("Canceled")) {
                     XToast.show("网络状况不佳，正在努力加载...");
                 }
                 resultCallBackBatch = false;

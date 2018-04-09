@@ -14,7 +14,6 @@ import com.xmd.cashier.dal.bean.InnerOrderInfo;
 import com.xmd.cashier.dal.bean.InnerOrderItemInfo;
 import com.xmd.cashier.dal.bean.PayRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
-import com.xmd.cashier.dal.bean.TradeBatchInfo;
 import com.xmd.cashier.dal.bean.TradeChannelInfo;
 import com.xmd.cashier.dal.bean.TradeDiscountCheckInfo;
 import com.xmd.cashier.dal.bean.TradeDiscountInfo;
@@ -26,7 +25,6 @@ import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.TradeBatchHoleResult;
-import com.xmd.cashier.dal.net.response.TradeBatchResult;
 import com.xmd.cashier.dal.net.response.TradeOrderInfoResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.NetworkSubscriber;
@@ -367,36 +365,6 @@ public class TradeManager {
                     mTrade.tradeStatusError = error;
                     callback.onError(error);
                 }
-            }
-        });
-    }
-
-    // 生成交易记录
-    public Subscription generateBatchOrder(String batchNo, String memberId, String payChannel, String orderIds, String verifyCodes, String reductionAmount, String oriAmount, String realAmount, final Callback<String> callback) {
-        Observable<TradeBatchResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .generateBatchOrder(AccountManager.getInstance().getToken(),
-                        batchNo, memberId, orderIds, payChannel, verifyCodes, reductionAmount, oriAmount, realAmount);
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<TradeBatchResult>() {
-            @Override
-            public void onCallbackSuccess(TradeBatchResult result) {
-                if (result != null && result.getRespData() != null) {
-                    TradeBatchInfo tradeBatchInfo = result.getRespData();
-                    mTrade.batchNo = tradeBatchInfo.batchNo;
-                    mTrade.payNo = tradeBatchInfo.payNo;
-                    mTrade.payOrderId = tradeBatchInfo.payOrderId;
-                    mTrade.payUrl = tradeBatchInfo.payUrl;
-                    mTrade.setOriginMoney(tradeBatchInfo.oriAmount);
-                    mTrade.setWillDiscountMoney(tradeBatchInfo.discountAmount);
-                    mTrade.setWillPayMoney(tradeBatchInfo.payAmount);
-                    callback.onSuccess(tradeBatchInfo.status);
-                } else {
-                    callback.onError("数据异常，请联系系统管理员");
-                }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
             }
         });
     }

@@ -24,8 +24,10 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.db.DBManager;
+import com.xmd.cashier.dal.net.AuthPayOkHttpUtil;
 import com.xmd.cashier.dal.net.AuthPayRetrofit;
-import com.xmd.cashier.dal.net.CustomOkHttpUtil;
+import com.xmd.cashier.dal.net.GeneOrderOkHttpUtil;
+import com.xmd.cashier.dal.net.GeneOrderRetrofit;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
@@ -113,11 +115,24 @@ public class MainApplication extends Application implements CrashHandler.Callbac
 
         // 主扫接口网络请求初始化
         AuthPayRetrofit.clear();
-        CustomOkHttpUtil.init(this.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 40000, 40000, 40000);
-        CustomOkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
-        CustomOkHttpUtil.getInstance().setLog(true);
-        CustomOkHttpUtil.getInstance().setCommonHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
-        CustomOkHttpUtil.getInstance().setRequestPreprocess(new CustomOkHttpUtil.RequestPreprocess() {
+        AuthPayOkHttpUtil.init(this.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 40000, 40000, 40000);
+        AuthPayOkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
+        AuthPayOkHttpUtil.getInstance().setLog(true);
+        AuthPayOkHttpUtil.getInstance().setCommonHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+        AuthPayOkHttpUtil.getInstance().setRequestPreprocess(new AuthPayOkHttpUtil.RequestPreprocess() {
+            @Override
+            public Request preProcess(Request request) {
+                return SpaOkHttp.checkAndSign(request);
+            }
+        });
+
+        // 生成订单请求初始化
+        GeneOrderRetrofit.clear();
+        GeneOrderOkHttpUtil.init(this.getFilesDir() + File.separator + "xmd-network", 10 * 1024 * 1024, 10000, 10000, 10000);
+        GeneOrderOkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
+        GeneOrderOkHttpUtil.getInstance().setLog(true);
+        GeneOrderOkHttpUtil.getInstance().setCommonHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+        GeneOrderOkHttpUtil.getInstance().setRequestPreprocess(new GeneOrderOkHttpUtil.RequestPreprocess() {
             @Override
             public Request preProcess(Request request) {
                 return SpaOkHttp.checkAndSign(request);
@@ -135,7 +150,8 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         if (AccountManager.getInstance().isLogin()) {
             SPManager.getInstance().initPushTagCount();
             XmdNetwork.getInstance().setHeader("Club-Id", AccountManager.getInstance().getClubId());
-            CustomOkHttpUtil.getInstance().setCommonHeader("Club-Id", AccountManager.getInstance().getClubId());
+            AuthPayOkHttpUtil.getInstance().setCommonHeader("Club-Id", AccountManager.getInstance().getClubId());
+            GeneOrderOkHttpUtil.getInstance().setCommonHeader("Club-Id", AccountManager.getInstance().getClubId());
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
