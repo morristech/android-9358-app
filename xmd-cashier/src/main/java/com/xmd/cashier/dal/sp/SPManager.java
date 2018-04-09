@@ -37,7 +37,7 @@ public class SPManager {
     public void setSpaServerAddress(String address) {
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "Set server to " + address);
         XmdNetwork.getInstance().changeServer("http://" + address);
-        AuthPayRetrofit.setBaseUrl("http://" + address);
+        AuthPayRetrofit.clear();
         mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
 

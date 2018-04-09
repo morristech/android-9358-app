@@ -1,5 +1,7 @@
 package com.xmd.cashier.dal.net;
 
+import com.xmd.cashier.dal.sp.SPManager;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,12 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthPayRetrofit {
     private static AuthPayService authPayService;
-    private static String baseUrl;
 
     public static synchronized AuthPayService getService() {
         if (authPayService == null) {
             Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
+                    .baseUrl(SPManager.getInstance().getSpaServerAddress())
                     .client(CustomOkHttpUtil.getInstance().getClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create());
@@ -24,7 +25,7 @@ public class AuthPayRetrofit {
         return authPayService;
     }
 
-    public static void setBaseUrl(String baseUrl) {
-        AuthPayRetrofit.baseUrl = baseUrl;
+    public static void clear() {
+        authPayService = null;
     }
 }
