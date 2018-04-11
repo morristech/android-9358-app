@@ -17,10 +17,15 @@ import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.manager.AccountManager;
+import com.xmd.cashier.manager.CustomPushMessageListener;
+import com.xmd.cashier.manager.InnerManager;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.NotifyManager;
+import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.widget.CustomToolbar;
 import com.xmd.m.network.EventTokenExpired;
+import com.xmd.m.notify.push.XmdPushManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,11 +49,23 @@ public class BaseActivity extends AppCompatActivity {
     @Subscribe
     public void onEvent(EventTokenExpired event) {
         if (!(this instanceof LoginActivity)) {
-            // 关闭轮询
+            // token expire
+            XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
+            VerifyManager.getInstance().clearVerifyList();
+
+            TradeManager.getInstance().newTrade();
+
+            MemberManager.getInstance().newRechargeProcess();
+            MemberManager.getInstance().newCardProcess();
+            MemberManager.getInstance().stopGetMemberSetting();
+
             NotifyManager.getInstance().stopRepeatOrderRecord();
             NotifyManager.getInstance().stopRepeatOnlinePay();
+
+            InnerManager.getInstance().stopGetInnerSwitch();
+            InnerManager.getInstance().resetClubWorkTime();
+
             AccountManager.getInstance().cleanUserInfo();
-            VerifyManager.getInstance().clearVerifyList();
             showToast(getString(R.string.token_expired));
             UiNavigation.gotoLoginActivity(BaseActivity.this);
         }
