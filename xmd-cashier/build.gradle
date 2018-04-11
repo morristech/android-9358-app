@@ -11,9 +11,10 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
 
+    def SERVER_SDCM166 = "\"sdcm166.stonebean.com:9880\""
+    def SERVER_SDCM165 = "\"sdcm165.stonebean.com:9880\""
     def SERVER_SDCM100 = "\"192.168.1.100:9880\""
     def SERVER_SDCM103 = "\"192.168.1.103:9880\""
-    def SERVER_SDCM104 = "\"192.168.1.104:9880\""
     def SERVER_SDCM105 = "\"192.168.1.105:9880\""
     def SERVER_PUBLIC = "\"spa.93wifi.com\""
     def SERVER_TEST = "\"test.xiaomodo.com\""
@@ -25,9 +26,10 @@ android {
         versionCode 39
         versionName "1.4.18"
 
+        buildConfigField "String", "SERVER_SDCM166", SERVER_SDCM166
+        buildConfigField "String", "SERVER_SDCM165", SERVER_SDCM165
         buildConfigField "String", "SERVER_SDCM100", SERVER_SDCM100
         buildConfigField "String", "SERVER_SDCM103", SERVER_SDCM103
-        buildConfigField "String", "SERVER_SDCM104", SERVER_SDCM104
         buildConfigField "String", "SERVER_SDCM105", SERVER_SDCM105
         buildConfigField "String", "SERVER_PUBLIC", SERVER_PUBLIC
         buildConfigField "String", "SERVER_TEST", SERVER_TEST
