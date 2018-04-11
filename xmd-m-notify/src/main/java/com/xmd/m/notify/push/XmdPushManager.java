@@ -122,6 +122,7 @@ public class XmdPushManager {
     public void onTokenExpire(EventTokenExpired tokenExpired) {
         RetryPool.getInstance().removeWork(retryRunnable);
         binding = false;
+        bound = false;
         setUserId(null);
         setToken(null);
     }
