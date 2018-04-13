@@ -176,7 +176,9 @@ public class BillDetailActivity extends BaseActivity implements BillDetailContra
                 mRefundOperatorRow.setVisibility(View.VISIBLE);
                 mRefundMoneyText.setText(String.format(getString(R.string.cashier_money), Utils.moneyToStringEx(info.refundMoney)));
                 mRefundTradeNoText.setText(info.refundNo);
-                mRefundTime.setText(DateUtils.doLong2String(Long.parseLong(info.refundDate)));
+                if (!TextUtils.isEmpty(info.refundDate)) {
+                    mRefundTime.setText(DateUtils.doLong2String(Long.parseLong(info.refundDate)));
+                }
                 mRefundOperatorText.setText(TextUtils.isEmpty(info.refundOperator) ? "匿名" : info.refundOperator);
             }
         }

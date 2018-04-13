@@ -432,6 +432,9 @@ public class PosImpl implements IPos {
     public String getPosIdentifierNo() {
         String deviceInfo = WeiposImpl.as().getDeviceInfo();
         XLogger.i(TAG, AppConstants.LOG_BIZ_LOCAL_CONFIG + "POS DEVICE INFO：" + deviceInfo);
+        if (TextUtils.isEmpty(deviceInfo)) {
+            return null;
+        }
         try {
             JSONObject object = new JSONObject(deviceInfo);
             return object.getString("en").replace(" ", "");

@@ -3,6 +3,7 @@ package com.xmd.cashier.adapter;
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +122,11 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemHolder.mPayMoney.setText(String.format(mContext.getString(R.string.cashier_money), Utils.moneyToStringEx(info.memberPayMoney + info.posPayMoney)));
             itemHolder.mStatus.setText(Utils.getPayStatusString(info.status));
             itemHolder.mPayType.setText(Utils.getPayTypeString(info.posPayType));
-            itemHolder.mPayDate.setText(Utils.getCustomDateString(mContext, Long.parseLong(info.payDate)));
+            if (!TextUtils.isEmpty(info.payDate)) {
+                itemHolder.mPayDate.setText(Utils.getCustomDateString(mContext, Long.parseLong(info.payDate)));
+            } else {
+                itemHolder.mPayDate.setText("");
+            }
             itemHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

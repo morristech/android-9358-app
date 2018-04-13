@@ -63,6 +63,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * Created by zr on 17-5-4.
@@ -71,6 +72,13 @@ import rx.Observable;
 public class CustomService extends Service {
     public static final String ACTION = "com.xmd.cashier.CustomService";
     private static final String TAG = "CustomService";
+
+    private Subscription mOrderAcceptSubscription;
+    private Subscription mOrderRejectSubscription;
+
+    private Subscription mOnlinePayPassSubscription;
+    private Subscription mOnlinePayUnpassSubscription;
+    private Subscription mOnlinePayDetailSubscription;
 
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mWakeLock;
@@ -269,7 +277,10 @@ public class CustomService extends Service {
             public void onAccept(final OrderRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);    // 更新处理时的状态
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单接单:" + info.id);
-                NotifyManager.getInstance().acceptOrder(info.id, new Callback<BaseBean>() {
+                if (mOrderAcceptSubscription != null) {
+                    mOrderAcceptSubscription.unsubscribe();
+                }
+                mOrderAcceptSubscription = NotifyManager.getInstance().acceptOrder(info.id, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
                         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单接单---成功:" + info.id);
@@ -304,7 +315,10 @@ public class CustomService extends Service {
             public void onReject(final OrderRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);    // 更新处理时的状态
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单拒绝:" + info.id);
-                NotifyManager.getInstance().rejectOrder(info.id, new Callback<BaseBean>() {
+                if (mOrderRejectSubscription != null) {
+                    mOrderRejectSubscription.unsubscribe();
+                }
+                mOrderRejectSubscription = NotifyManager.getInstance().rejectOrder(info.id, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
                         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "预约订单拒绝---成功:" + info.id);
@@ -341,6 +355,12 @@ public class CustomService extends Service {
                 if (adapter.getItemCount() == 0) {
                     mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
                     hide();
+                    if (mOrderRejectSubscription != null) {
+                        mOrderRejectSubscription.unsubscribe();
+                    }
+                    if (mOrderAcceptSubscription != null) {
+                        mOrderAcceptSubscription.unsubscribe();
+                    }
                     NotifyManager.getInstance().startRepeatOrderRecord(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
                 }
             }
@@ -375,7 +395,10 @@ public class CustomService extends Service {
             public void onPass(final TradeRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单确认:" + info.id);
-                NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseBean>() {
+                if (mOnlinePayPassSubscription != null) {
+                    mOnlinePayPassSubscription.unsubscribe();
+                }
+                mOnlinePayPassSubscription = NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
                         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单确认---成功:" + info.id);
@@ -410,7 +433,10 @@ public class CustomService extends Service {
             public void onUnpass(final TradeRecordInfo info, final int position) {
                 adapter.setLoadingStatus(position);
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单请到前台:" + info.id);
-                NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseBean>() {
+                if (mOnlinePayUnpassSubscription != null) {
+                    mOnlinePayUnpassSubscription.unsubscribe();
+                }
+                mOnlinePayUnpassSubscription = NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean o) {
                         XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单请到前台---成功:" + info.id);
@@ -448,6 +474,15 @@ public class CustomService extends Service {
                 if (adapter.getItemCount() == 0) {
                     mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
                     hide();
+                    if (mOnlinePayPassSubscription != null) {
+                        mOnlinePayPassSubscription.unsubscribe();
+                    }
+                    if (mOnlinePayUnpassSubscription != null) {
+                        mOnlinePayUnpassSubscription.unsubscribe();
+                    }
+                    if (mOnlinePayDetailSubscription != null) {
+                        mOnlinePayDetailSubscription.unsubscribe();
+                    }
                     NotifyManager.getInstance().startRepeatOnlinePay(SystemClock.elapsedRealtime() + AppConstants.DEFAULT_INTERVAL);
                 }
             }
@@ -461,9 +496,12 @@ public class CustomService extends Service {
             public void onDetail(TradeDiscountInfo info, final int position) {
                 adapter.setLoadingStatus(position);
                 XLogger.i(TAG, AppConstants.LOG_BIZ_NORMAL_CASHIER + "在线买单查看优惠详情:" + info.verifyCode);
+                if (mOnlinePayDetailSubscription != null) {
+                    mOnlinePayDetailSubscription.unsubscribe();
+                }
                 Observable<OnlinePayCouponResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                         .getDiscountCoupon(AccountManager.getInstance().getToken(), info.verifyCode);
-                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayCouponResult>() {
+                mOnlinePayDetailSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayCouponResult>() {
                     @Override
                     public void onCallbackSuccess(OnlinePayCouponResult result) {
                         adapter.setDetailStatus(position, result.getRespData());
