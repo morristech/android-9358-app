@@ -5,9 +5,12 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.utils.ResourceUtils;
+import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
@@ -143,15 +146,13 @@ public class AccountManager {
                 e.printStackTrace();
                 if (e instanceof HttpException) {
                     HttpException httpException = (HttpException) e;
-                    int exceptionCode =  httpException.code();
+                    int exceptionCode = httpException.code();
                     if (exceptionCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                         callback.onError("会话已过期，请重新登录");
                         EventBus.getDefault().post(new EventTokenExpired("会话已过期"));
-                    }
-                    else if (exceptionCode == RequestConstant.RESP_HTTP_BAD_GATEWAY){
+                    } else if (exceptionCode == RequestConstant.RESP_HTTP_BAD_GATEWAY) {
                         callback.onError("网络访问异常，请稍后重试（502）");
-                    }
-                    else {
+                    } else {
                         callback.onError("会话已过期，请重新登录");
                     }
                 } else if (e instanceof SocketTimeoutException) {   //超时
@@ -269,5 +270,27 @@ public class AccountManager {
                 }
             }
         });
+    }
+
+    @Subscribe
+    public void onEvent(EventTokenExpired eventTokenExpired) {
+        // token expire
+        XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
+        VerifyManager.getInstance().clearVerifyList();
+
+        TradeManager.getInstance().newTrade();
+
+        MemberManager.getInstance().newRechargeProcess();
+        MemberManager.getInstance().newCardProcess();
+        MemberManager.getInstance().stopGetMemberSetting();
+
+        NotifyManager.getInstance().stopRepeatOrderRecord();
+        NotifyManager.getInstance().stopRepeatOnlinePay();
+
+        InnerManager.getInstance().stopGetInnerSwitch();
+        InnerManager.getInstance().resetClubWorkTime();
+
+        cleanUserInfo();
+        XToast.show(ResourceUtils.getString(R.string.token_expired));
     }
 }
