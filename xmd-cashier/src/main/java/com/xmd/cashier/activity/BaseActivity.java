@@ -49,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
     @Subscribe
     public void onEvent(EventTokenExpired event) {
         if (!(this instanceof LoginActivity)) {
+            // FIXME 可能会被触发多次，而且expire之后，页面未关闭(finish)，需要修改
             // token expire
             XmdPushManager.getInstance().removeListener(CustomPushMessageListener.getInstance());
             VerifyManager.getInstance().clearVerifyList();

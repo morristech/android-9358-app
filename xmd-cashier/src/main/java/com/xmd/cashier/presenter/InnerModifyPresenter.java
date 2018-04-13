@@ -205,7 +205,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
                 .generateBatchOrder(AccountManager.getInstance().getToken(),
                         trade.batchNo,
-                        trade.memberId,
+                        AppConstants.PAY_CHANNEL_ACCOUNT.equals(trade.currentChannelType) ? trade.memberId : null,
                         InnerManager.getInstance().getOrderIds(),
                         AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
                         mTradeManager.formatVerifyCodes(trade.getCouponList()),
@@ -300,7 +300,7 @@ public class InnerModifyPresenter implements InnerModifyContract.Presenter {
         Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
                 .generateBatchOrder(AccountManager.getInstance().getToken(),
                         trade.batchNo,
-                        trade.memberId,
+                        AppConstants.PAY_CHANNEL_ACCOUNT.equals(trade.currentChannelType) ? trade.memberId : null,
                         InnerManager.getInstance().getOrderIds(),
                         AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
                         mTradeManager.formatVerifyCodes(trade.getCouponList()),

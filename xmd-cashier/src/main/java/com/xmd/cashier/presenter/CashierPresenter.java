@@ -181,7 +181,7 @@ public class CashierPresenter implements CashierContract.Presenter {
         Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
                 .generateBatchOrder(AccountManager.getInstance().getToken(),
                         trade.batchNo,
-                        trade.memberId,
+                        AppConstants.PAY_CHANNEL_ACCOUNT.equals(trade.currentChannelType) ? trade.memberId : null,
                         null,
                         AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
                         mTradeManager.formatVerifyCodes(trade.getCouponList()),
@@ -247,7 +247,7 @@ public class CashierPresenter implements CashierContract.Presenter {
         Observable<TradeBatchResult> observable = GeneOrderRetrofit.getService()
                 .generateBatchOrder(AccountManager.getInstance().getToken(),
                         trade.batchNo,
-                        trade.memberId,
+                        AppConstants.PAY_CHANNEL_ACCOUNT.equals(trade.currentChannelType) ? trade.memberId : null,
                         null,
                         AppConstants.PAY_CHANNEL_QRCODE.equals(trade.currentChannelType) ? null : trade.currentChannelType,
                         mTradeManager.formatVerifyCodes(trade.getCouponList()),
