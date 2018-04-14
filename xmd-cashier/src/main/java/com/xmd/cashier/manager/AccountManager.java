@@ -178,11 +178,11 @@ public class AccountManager {
                             setClubInfo(o);
                             callback.onSuccess(loginResult);
 
+                            XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             SPManager.getInstance().initPushTagCount();
                             XmdNetwork.getInstance().setHeader("Club-Id", getClubId());
                             AuthPayOkHttpUtil.getInstance().setCommonHeader("Club-Id", getClubId());
                             GeneOrderOkHttpUtil.getInstance().setCommonHeader("Club-Id", getClubId());
-                            XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);
                             com.xmd.app.user.User user = new com.xmd.app.user.User(getUserId());
                             EventBus.getDefault().postSticky(new EventLogin(getToken(), user));

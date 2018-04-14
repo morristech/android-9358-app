@@ -140,7 +140,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         });
 
         // 初始化推送
-        XmdPushManager.getInstance().init(this, "pos", CustomPushMessageListener.getInstance());
+        XmdPushManager.getInstance().init(this, "pos", null);
 
         MonitorManager.getInstance().setManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE),
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE),
@@ -148,6 +148,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         MonitorManager.getInstance().startPollingWifiStatus(SystemClock.elapsedRealtime());
 
         if (AccountManager.getInstance().isLogin()) {
+            XmdPushManager.getInstance().addListener(CustomPushMessageListener.getInstance());
             SPManager.getInstance().initPushTagCount();
             XmdNetwork.getInstance().setHeader("Club-Id", AccountManager.getInstance().getClubId());
             AuthPayOkHttpUtil.getInstance().setCommonHeader("Club-Id", AccountManager.getInstance().getClubId());
