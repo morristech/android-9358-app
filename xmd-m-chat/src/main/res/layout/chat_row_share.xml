@@ -32,13 +32,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{data.name,default=nice}"
+                android:text="@{data.name}"
                 android:textSize="@dimen/fontSubheading" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{data.content,default=有美女}"
+                android:text="@{data.content}"
                 android:layout_marginTop="5dp"
                 android:textColor="#999999"
                 android:textSize="@dimen/fontCaption" />

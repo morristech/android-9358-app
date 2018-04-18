@@ -415,5 +415,11 @@
     <string name="withdraw_cash_rule_05">小摩豆</string>
     <string name="withdraw_cash_button_text">我知道了</string>
     <string name="group_buy_share_des">没有大动作，哪敢惊动你！  \n</string>
+    <string name="perfect_information">完善信息</string>
+    <string name="sex_selection">选择性别</string>
+    <string name="sir">先生</string>
+    <string name="lady">女士</string>
+    <string name="next_step">下一步</string>
+    <string name="filter_menu_all">全部</string>
     
 </resources>

@@ -64,7 +64,7 @@
                     android:minHeight="28dp"
                     android:minWidth="64dp"
                     android:onClick="@{()->data.onClickAdd()}"
-                    android:text="添加"
+                    android:text="@string/add"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:background="#80999999"
             android:padding="8dp"
-            android:text="拖拽可调整快捷回复顺序" />
+            android:text="@string/drag_sort" />
 
         <FrameLayout
             android:layout_width="match_parent"

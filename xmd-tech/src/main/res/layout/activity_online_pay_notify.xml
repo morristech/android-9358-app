@@ -36,7 +36,7 @@
                 android:drawablePadding="4dp"
                 android:drawableRight="@drawable/ic_record_filter"
                 android:onClick="onClickFilterMenu"
-                android:text="全部"
+                android:text="@string/filter_menu_all"
                 android:textColor="@color/white"
                 android:textSize="@dimen/fontSubheading"/>
         </android.support.v7.widget.Toolbar>
@@ -85,7 +85,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/common_v_margin"
                 android:onClick="onClickFilter"
-                android:text="确定"/>
+                android:text="@string/make_sure"/>
         </LinearLayout>
 
 

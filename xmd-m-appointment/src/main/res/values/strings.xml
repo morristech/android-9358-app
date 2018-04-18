@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">UserAppointment</string>
+    <string name="user_choice">到店选择</string>
+    <string name="submission_appointment">提交预约</string>
+    <string name="customer_confirmation">发回客户进行确认</string>
+    <string name="unit_element">元</string>
+    <string name="unit_minute">分钟</string>
 </resources>

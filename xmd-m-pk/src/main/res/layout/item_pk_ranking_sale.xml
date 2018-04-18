@@ -48,12 +48,12 @@
             <TextView
                 style="@style/main_fragment_layout_technician_pk_ranking_value_style"
                 android:text="@{item.name}"
-                tools:text="小二黑小队"/>
+                />
 
             <TextView
                 style="@style/main_fragment_layout_technician_pk_ranking_label_style"
                 android:text='@{String.format("%1.2f元", (float)item.statValue / 100f)}'
-                tools:text="289人"/>
+                />
 
 
         </LinearLayout>

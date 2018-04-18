@@ -120,13 +120,10 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
 
         if (groupPosition == 0) {
             convertView = View.inflate(mContext, R.layout.chat_coupon_cash_item, null);
-
         } else {
             convertView = View.inflate(mContext, R.layout.chat_coupon_favorable_item, null);
         }
         chatCouponViewHolder = new ViewChildViewHolder(convertView);
-
-
         if (couponInfo.selectedStatus == 0) {
             chatCouponViewHolder.mTextCheck.setSelected(false);
             chatCouponViewHolder.llView.setOnClickListener(v -> mInterface.onChildrenClickedListener(couponInfo, groupPosition, childPosition, true));
@@ -170,7 +167,6 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
                 chatCouponViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
             }
         }
-
         return convertView;
     }
 

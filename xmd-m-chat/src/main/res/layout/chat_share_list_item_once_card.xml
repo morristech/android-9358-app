@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text='@{data.name,default=泰式按摩}'
+                android:text='@{data.name}'
                 android:textSize="@dimen/fontSubheading" />
 
             <LinearLayout
@@ -44,26 +44,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="套餐："
+                    android:text="@string/set_meal"
                     android:textSize="@dimen/fontCaption" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{data.comboDescription,default=套餐买10送4}"
+                    android:text="@{data.comboDescription}"
                     android:textSize="@dimen/fontCaption" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{data.discountPrice,default=特卖价160元}"
+                android:text="@{data.discountPrice}"
                 android:textSize="@dimen/fontCaption" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{data.techRoyalty,default=提成1元}"
+                android:text="@{data.techRoyalty}"
                 android:textSize="@dimen/fontCaption"
                 android:textColor="@color/colorAccent" />
 

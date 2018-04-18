@@ -30,7 +30,7 @@
                 android:background="@drawable/shape_r4_solid_gray"
                 android:padding="2dp"
                 android:layout_gravity="center"
-                android:text='@{"收到礼物:"+data.giftName+"，获得"+data.credit+"积分",default=收到礼物获得800积分}'
+                android:text='@{data.giftName+ @string/get +data.credit + @string/gift_credit}'
                 android:textColor="@android:color/white"
                 android:textSize="13sp"/>
         </LinearLayout>

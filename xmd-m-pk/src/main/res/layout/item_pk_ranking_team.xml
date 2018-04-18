@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="排名"
+                    android:text="@string/ranking_detail"
                     android:textColor="@color/color_main_body"
                     android:textSize="13sp"/>
 
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="姓名"
+                    android:text="@string/user_name"
                     android:textColor="@color/color_main_body"
                     android:textSize="13sp"/>
 
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/inter_space"
-                        android:text="全部队伍"
+                        android:text="@string/all_teams"
                         android:textColor="@color/color_main_body"
                         android:textSize="13sp"/>
 
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
                     android:gravity="center"
-                    android:text="战绩"
+                    android:text="@string/tech_record"
                     android:textColor="@color/color_main_body"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -145,7 +145,7 @@
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
                     android:paddingTop="2dp"
-                    android:text="队长"
+                    android:text="@string/team_leader"
                     android:textColor="@color/white"
                     android:textSize="@dimen/fontRemark"
                     android:visibility='@{DetailBean.leader.equals("Y") ? View.VISIBLE : View.GONE}'/>
@@ -169,7 +169,7 @@
                     android:textSize="@dimen/fontTitle"
                     android:lines="1"
                     android:text="@{DetailBean.isTeam ? DetailBean.teamName : Utils.briefString(DetailBean.teamMember,4)}"
-                    tools:text="李佳绩"/>
+                    />
                 <TextView
                     android:id="@+id/tv_ranking_serialNo"
                     android:layout_width="match_parent"
@@ -195,7 +195,7 @@
                 android:textColor="#757575"
                 android:textSize="@dimen/fontBody"
                 android:text='@{DetailBean.isTeam ? String.format("%s队员",String.valueOf(DetailBean.memberCount)) : DetailBean.teamName}'
-                tools:text="#8队员"/>
+               />
 
             <LinearLayout android:layout_width="0dp"
                           android:layout_height="wrap_content"
@@ -225,7 +225,6 @@
                     android:paddingRight="@dimen/small_padding"
                     android:textColor="@color/color_main_btn"
                     android:textSize="@dimen/fontCaption"
-                    tools:text="157个"
                     app:memberNumber="@{DetailBean}"/>
 
             </LinearLayout>

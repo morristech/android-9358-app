@@ -44,9 +44,6 @@ dependencies {
     compile project(':permission-tool')
     compile project(':image-crop')
     compile project(':image-selector')
-
-
-
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

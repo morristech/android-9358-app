@@ -61,7 +61,7 @@
                 android:textColor="@color/white"
                 android:background="@drawable/chat_share_selector_bg"
                 android:onClick="@{()->data.onClick()}"
-                android:text='@{"分享"+(data.selectCount>0?"("+data.selectCount+")":"")}' />
+                android:text='@{(data.selectCount>0?"("+data.selectCount+")":"")}' />
         </android.support.v7.widget.Toolbar>
 
 
@@ -74,7 +74,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <!--这里动态增加列表-->
             </LinearLayout>
         </ScrollView>
 

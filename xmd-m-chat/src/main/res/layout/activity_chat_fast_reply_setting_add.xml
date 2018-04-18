@@ -67,7 +67,7 @@
                     android:minWidth="64dp"
                     android:enabled="@{data.words>0}"
                     android:onClick="@{()->data.onClickSave()}"
-                    android:text="保存"
+                    android:text="@string/save"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
@@ -87,7 +87,7 @@
                 android:afterTextChanged="@{(s)->data.onTextChanged(s)}"
                 android:background="@drawable/shape_r4_stoke_gray"
                 android:gravity="top|left"
-                android:hint="输入需要添加的快捷回复短语"
+                android:hint="@string/hint_text"
                 android:minLines="6"
                 android:padding="8dp"
                 android:maxLength="@{data.wordsLimit}" />

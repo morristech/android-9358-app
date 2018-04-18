@@ -27,6 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:gravity="center"
-            android:text='@{data.hasMoreData?"正在加载数据":"已加载全部数据"}' />
+            android:text='@{data.hasMoreData? @string/loading : @string/loading_finish}' />
     </LinearLayout>
 </layout>

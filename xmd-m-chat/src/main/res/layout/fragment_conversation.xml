@@ -85,7 +85,7 @@
                 android:afterTextChanged="@{(s)->data.onSearch(s)}"
                 android:background="@null"
                 android:focusableInTouchMode="true"
-                android:hint="搜索"
+                android:hint="@string/search"
                 android:maxLength="10"
                 android:maxLines="1" />
 

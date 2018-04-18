@@ -48,13 +48,13 @@
             <TextView
                 style="@style/main_fragment_layout_technician_pk_ranking_value_style"
                 android:text="@{item.name}"
-                tools:text="小二黑小队"/>
+                />
 
             <TextView
                 android:id="@+id/tv_pk_active_team_member"
                 style="@style/main_fragment_layout_technician_pk_ranking_label_style"
-                android:text='@{String.format("%s张",String.valueOf(item.statValue))}'
-                tools:text="289人"/>
+                android:text='@{String.valueOf(item.statValue) + @string/unit_sheet}'
+                />
 
 
         </LinearLayout>

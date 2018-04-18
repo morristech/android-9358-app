@@ -33,7 +33,7 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="@{data.oneYuanMark,default=限时抢}"
+                android:text="@{data.oneYuanMark}"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontCaption"
                 android:visibility="@{data.oneYuanMark==null?View.GONE:View.VISIBLE}" />
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{data.showText1,default=泰式按摩}"
+                    android:text="@{data.showText1}"
                     android:textSize="@dimen/fontSubheading" />
 
                 <TextView
@@ -66,7 +66,7 @@
                     android:background="@drawable/shape_r4_stoke_red"
                     android:gravity="center_vertical"
                     android:padding="2dp"
-                    android:text="限时用"
+                    android:text="@string/time_limit"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/fontSmall"
                     android:visibility="@{data.limitedUse?View.VISIBLE:View.GONE}" />
@@ -76,13 +76,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text='@{data.showText2,default=单价2元}' />
+                android:text='@{data.showText2}' />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text='@{data.showText3,default="已售:0/50"}'
+                android:text='@{data.showText3}'
                 android:textSize="@dimen/fontCaption" />
         </LinearLayout>
 

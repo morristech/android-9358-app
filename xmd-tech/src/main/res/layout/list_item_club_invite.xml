@@ -42,7 +42,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@{data.clubName,default=小摩豆会所}"
+                    android:text="@{data.clubName}"
                     android:textColor="#000000"
                     android:textSize="@dimen/fontSubheading"/>
             </LinearLayout>
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text='@{"["+data.serialNo+"]",default="[A008]"}'
+                    android:text='@{"["+data.serialNo+"]"}'
                     android:textColor="#ff8a00"/>
             </LinearLayout>
 
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text='@{data.positionName,default="技师"}'/>
+                    android:text='@{data.positionName}'/>
             </LinearLayout>
 
             <ImageView
@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="@{data.message,default=已拒绝}"
+                android:text="@{data.message}"
                 android:textColor="@color/color_main_title"
                 android:visibility="@{data.showOperateButton?View.GONE:View.VISIBLE}"/>
         </LinearLayout>

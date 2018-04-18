@@ -21,7 +21,7 @@ android {
 
     defaultConfig {//默认配置
         applicationId "com.xmd.technician" //应用程序包名
-        minSdkVersion 15 //支持的最低版本
+        minSdkVersion 15//支持的最低版本
         targetSdkVersion 25 //目标版本
         multiDexEnabled true
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
@@ -149,6 +149,7 @@ repositories {
 
 
 dependencies {
+
     //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':commonlibrary')
@@ -169,7 +170,7 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.2'
     compile project(':xmd-file-provider')
     compile project(':xmd-m-salary')
-    compile project(':xmd-m-pk')
+    //  compile project(':xmd-m-pk')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:cardview-v7:${rootProject.ext.supportLibraryVersion}"
@@ -191,15 +192,12 @@ dependencies {
     // for multidex
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.ms-square:expandableTextView:0.1.4'
-
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     testCompile 'junit:junit:4.12'
     androidTestCompile "com.android.support:support-annotations:${rootProject.ext.supportLibraryVersion}"
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
-
 }

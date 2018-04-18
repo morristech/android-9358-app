@@ -11,9 +11,6 @@ import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
 import com.xmd.chat.viewmodel.ChatRowViewModelCoupon;
 import com.xmd.chat.viewmodel.ChatRowViewModelCreditGift;
-import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameAccept;
-import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameInvite;
-import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameResult;
 import com.xmd.chat.viewmodel.ChatRowViewModelEmpty;
 import com.xmd.chat.viewmodel.ChatRowViewModelGroupImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
@@ -186,12 +183,6 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelCreditGift.createView(parent);
             case CHAT_ROW_VIEW_NEW_ORDER:
                 return ChatRowViewModelNewOrder.createView(parent);
-            case CHAT_ROW_VIEW_DICE_GAME_INVITE:
-                return ChatRowViewModelDiceGameInvite.createView(parent);
-            case CHAT_ROW_VIEW_DICE_GAME_ACCEPT:
-                return ChatRowViewModelDiceGameAccept.createView(parent);
-            case CHAT_ROW_VIEW_DICE_GAME_RESULT:
-                return ChatRowViewModelDiceGameResult.createView(parent);
             case CHAT_ROW_VIEW_REWARD_REQUEST:
                 return ChatRowViewModelRewardRequest.createView(parent);
             case CHAT_ROW_VIEW_REWARD:
@@ -234,12 +225,6 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelRewardRequest(message);
             case CHAT_ROW_VIEW_REWARD:
                 return new ChatRowViewModelReward(message);
-            case CHAT_ROW_VIEW_DICE_GAME_INVITE:
-                return new ChatRowViewModelDiceGameInvite(message);
-            case CHAT_ROW_VIEW_DICE_GAME_ACCEPT:
-                return new ChatRowViewModelDiceGameAccept(message);
-            case CHAT_ROW_VIEW_DICE_GAME_RESULT:
-                return new ChatRowViewModelDiceGameResult(message);
             case CHAT_ROW_VIEW_EMPTY:
                 return new ChatRowViewModelEmpty(message);
             case CHAT_ROW_VIEW_GROUP_IMAGE:

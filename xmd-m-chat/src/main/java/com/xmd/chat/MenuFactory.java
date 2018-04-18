@@ -5,10 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.view.View;
@@ -30,7 +27,6 @@ import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.RewardChatMessage;
 import com.xmd.chat.view.ChatActivity;
-import com.xmd.chat.view.DiceGameSettingFragment;
 import com.xmd.chat.view.ShareListActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
@@ -477,13 +473,13 @@ public class MenuFactory {
 //        }, null));
     }
 
-    public void playDiceGame(FragmentManager fm, String remoteUserId) {
-        FragmentTransaction ft = fm.beginTransaction();
-        Fragment prev = fm.findFragmentByTag("fragment_dice_game_setting");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        DialogFragment current = DiceGameSettingFragment.newInstance(remoteUserId);
-        current.show(ft, "fragment_dice_game_setting");
-    }
+//    public void playDiceGame(FragmentManager fm, String remoteUserId) {
+//        FragmentTransaction ft = fm.beginTransaction();
+//        Fragment prev = fm.findFragmentByTag("fragment_dice_game_setting");
+//        if (prev != null) {
+//            ft.remove(prev);
+//        }
+//        DialogFragment current = DiceGameSettingFragment.newInstance(remoteUserId);
+//        current.show(ft, "fragment_dice_game_setting");
+//    }
 }

@@ -27,7 +27,6 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:textColor="@android:color/white"
-            android:text="lalala德玛西亚"
             android:textSize="@dimen/fontSmall" />
     </FrameLayout>
 

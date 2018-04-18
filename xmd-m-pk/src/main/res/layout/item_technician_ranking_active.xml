@@ -89,7 +89,7 @@
             android:padding="@dimen/inter_space"
             android:text='@{String.format("%s至%s",item.startDate,item.endDate)}'
             android:textSize="@dimen/fontBody"
-            tools:text="2月10日-2月27日"/>
+            />
 
     </com.xmd.app.widget.BlockChildLinearLayout>
 

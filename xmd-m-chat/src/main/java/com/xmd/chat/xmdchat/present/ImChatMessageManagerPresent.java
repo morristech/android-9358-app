@@ -346,7 +346,6 @@ public class ImChatMessageManagerPresent implements XmdChatMessageManagerInterfa
             public void onSuccess(TIMMessage message) {
                 data.error.set(false);
                 data.progress.set(false);
-
             }
         });
 

@@ -381,7 +381,7 @@ public class ChatActivity extends BaseActivity {
 
     @Subscribe
     public void onReplayDice(EventReplayDiceGame event) {
-        XmdChat.getInstance().getMenuFactory().playDiceGame(getSupportFragmentManager(), mRemoteUser.getId());
+
     }
 
     //处理撤回消息

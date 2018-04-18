@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="排名"
+                    android:text="@string/ranking_detail"
                     android:textColor="@color/color_main_body"
                     android:textSize="13sp"/>
 
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="姓名"
+                    android:text="@string/user_name"
                     android:textColor="@color/color_main_body"
                     android:textSize="13sp"/>
 
@@ -69,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/inter_space"
-                        android:text="全部队伍"
+                        android:text="@string/all_teams"
                         android:textColor="@color/color_main_body"
                         android:textSize="13sp"/>
 
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
                     android:gravity="center"
-                    android:text="战绩"
+                    android:text="@string/tech_record"
                     android:textColor="@color/color_main_body"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -143,7 +143,7 @@
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
                     android:paddingTop="2dp"
-                    android:text="队长"
+                    android:text="@string/team_leader"
                     android:textColor="@color/white"
                     android:textSize="@dimen/fontRemark"
                     android:visibility="gone"/>
@@ -166,7 +166,7 @@
                     android:paddingLeft="@dimen/small_padding"
                     android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontTitle"
-                    tools:text="李佳绩"/>
+                    />
                 <TextView
                     android:id="@+id/tv_ranking_serialNo"
                     android:layout_width="match_parent"
@@ -176,7 +176,7 @@
                     android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontNormal"
                     android:visibility="gone"
-                    tools:text="[ 0021 ]"/>
+                    />
             </LinearLayout>
 
             <TextView
@@ -190,7 +190,7 @@
                 android:lines="1"
                 android:textColor="#757575"
                 android:textSize="@dimen/fontBody"
-                tools:text="#8队员"/>
+                />
 
             <LinearLayout android:layout_width="0dp"
                           android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                     android:textColor="@color/color_main_btn"
                     android:textSize="@dimen/fontCaption"
                     android:visibility="gone"
-                    tools:text="157个"/>
+                    />
 
                 <TextView
                     android:id="@+id/tv_ranking_member_number"
@@ -220,7 +220,7 @@
                     android:paddingRight="@dimen/small_padding"
                     android:textColor="@color/color_main_btn"
                     android:textSize="@dimen/fontCaption"
-                    tools:text="157个"/>
+                    />
 
             </LinearLayout>
 

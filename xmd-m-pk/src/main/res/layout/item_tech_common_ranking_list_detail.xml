@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:text="排名"/>
+                android:text="@string/ranking_detail"/>
             <View
                 style="@style/vertical_divider_line"/>
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
-                android:text="好评"/>
+                android:text="@string/good_job"/>
         </LinearLayout>
 
 
@@ -104,7 +104,7 @@
                     android:lines="1"
                     android:textColor="@color/color_main_title"
                     android:textSize="@dimen/fontTitle"
-                    tools:text="李佳绩"/>
+                   />
                 <TextView
                     android:id="@+id/tv_tech_serialNo"
                     android:layout_width="match_parent"
@@ -129,7 +129,7 @@
                 android:text='@{rankingBean.type.equals("userList") ? String.format("%s人",rankingBean.counts):String.format("%s个",rankingBean.counts)}'
                 android:textColor="@color/color_main_btn"
                 android:textSize="@dimen/fontTitle"
-                tools:text="157个"/>
+                />
 
         </LinearLayout>
         <View

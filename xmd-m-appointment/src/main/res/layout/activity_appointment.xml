@@ -114,7 +114,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text='@{data.serviceItem.name ?? "到店选择"}' />
+                                android:text='@{data.serviceItem.name ?? @string/user_choice }' />
                         </LinearLayout>
 
                         <LinearLayout
@@ -203,7 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:text='@{data.serviceItem==null?null:data.serviceItem.duration+"分钟"}'
+                        android:text='@{data.serviceItem==null?null:data.serviceItem.duration+ @string/unit_minute}'
                         android:visibility="@{data.serviceItem==null?View.GONE:View.VISIBLE}" />
 
                     <android.support.v7.widget.RecyclerView
@@ -298,7 +298,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{data.fontMoney/100+"元"}' />
+                        android:text='@{data.fontMoney/100+ @string/unit_element}' />
 
                     <TextView
                         android:layout_width="0dp"
@@ -332,7 +332,7 @@
                 android:layout_marginTop="8dp"
                 android:enabled="@{data.submitEnable}"
                 android:onClick="@{()->handler.onClickSubmit()}"
-                android:text='@{data.needSubmit?"提交预约":"发回客户进行确认"}' />
+                android:text='@{data.needSubmit? @string/submission_appointment: @string/customer_confirmation}' />
         </LinearLayout>
 
     </LinearLayout>

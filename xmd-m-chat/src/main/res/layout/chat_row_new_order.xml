@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="@{data.message,default=到店时间XXXXXXXXXXXXXXXX}" />
+            android:text="@{data.message}" />
 
         <TextView
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:onClick="@{(v)->data.onClickRefuseOrder(v)}"
                 android:padding="8dp"
-                android:text="拒绝"
+                android:text="@string/refuse_order"
                 android:textColor="#212121" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:gravity="center"
                 android:onClick="@{(v)->data.onClickAcceptOrder(v)}"
                 android:padding="8dp"
-                android:text="接受"
+                android:text="@string/accept_order"
                 android:textColor="#ff6666" />
         </LinearLayout>
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:padding="8dp"
-            android:text="处理中..."
+            android:text="@string/in_process"
             android:visibility="@{data.inProcess?View.VISIBLE:View.GONE}" />
 
         <TextView

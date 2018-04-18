@@ -77,7 +77,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_r4_stoke_gray"
                 android:gravity="center"
-                android:text="按住说话"
+                android:text="@string/down_and_say"
                 android:visibility="@{data.voiceInputMode?View.VISIBLE:View.GONE}"/>
 
             <EditText
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
                 android:background="@drawable/shape_r4_stoke_gray_solid_white"
-                android:hint="在此输入..."
+                android:hint="@string/hint_input_text"
                 android:inputType="textMultiLine"
                 android:maxLines="5"
                 android:onTouch="@{(v,e)->data.onTouchEditText(v,e)}"
@@ -109,11 +109,10 @@
                 android:minWidth="65dp"
                 android:onClick="@{()->data.sendChatTextMessage()}"
                 android:paddingLeft="5dp"
-                android:text="发送"
+                android:text="@string/send_text"
                 android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}"/>
         </LinearLayout>
 
-        <!-- 菜单 -->
         <LinearLayout
             android:id="@+id/menuLayout"
             android:layout_width="match_parent"
@@ -165,7 +164,7 @@
                     android:drawableRight="@drawable/double_arrow_right_blue"
                     android:onClick="@{()->data.onClickEditFastReply()}"
                     android:padding="8dp"
-                    android:text="编辑快捷回复"
+                    android:text="@string/edit_fast_reply"
                     android:textColor="#1c79d8"
                     android:visibility="@{data.showSubMenuFastReply?View.VISIBLE:View.GONE}"/>
             </FrameLayout>

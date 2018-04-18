@@ -27,7 +27,7 @@
             android:layout_height="@dimen/home_button_height"
             android:background="@null"
             android:gravity="center"
-            android:text="完善信息"
+            android:text="@string/perfect_information"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontTitle"/>
 
@@ -73,7 +73,7 @@
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
                     android:afterTextChanged="@{(s)->presenter.setNickName(s)}"
                     android:background="@android:color/transparent"
-                    android:hint="输入昵称"
+                    android:hint="@string/hint_input_nick_name"
                     android:inputType="text"
                     android:maxLength="11"
                     android:textColor="@color/color_main_body"
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:text="选择性别"/>
+                    android:text="@string/sex_selection"/>
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_vertical_margin"
                         android:onCheckedChanged="@{(v,c)->presenter.setGender(!c)}"
-                        android:text="先生"/>
+                        android:text="@string/sir"/>
 
                     <RadioButton
                         android:id="@+id/r2"
@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_vertical_margin"
                         android:checked="true"
-                        android:text="女士"/>
+                        android:text="@string/lady"/>
                 </RadioGroup>
             </LinearLayout>
 
@@ -138,7 +138,7 @@
                 android:enabled="@{presenter.mCanUpdate}"
                 android:gravity="center"
                 android:onClick="@{()->presenter.onClickFinish()}"
-                android:text="下一步"
+                android:text="@string/next_step"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontHead"/>
         </LinearLayout>
