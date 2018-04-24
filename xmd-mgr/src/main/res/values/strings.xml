@@ -597,4 +597,5 @@
     <string name="report_spa_title">足浴按摩</string>
     <string name="report_goods_title">实物商品</string>
     <string name="group_message_recommended_classification">推荐分类</string>
+    <string name="notification_manager_apply">为保障能及时收到消息，请开启通知栏权限</string>
 </resources>

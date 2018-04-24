@@ -25,6 +25,7 @@ import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.ResourceUtils;
+import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.app.widget.StarBar;
 import com.xmd.m.R;
@@ -207,7 +208,7 @@ public class CommentDetailActivity extends BaseActivity {
             llCommentVisitBtn.setVisibility(View.GONE);
         }
         Glide.with(this).load(mCommentBean.avatarUrl).error(ResourceUtils.getDrawable(R.drawable.img_default_avatar)).into(userHead);
-        userName.setText(TextUtils.isEmpty(mCommentBean.userName) ? "匿名用户" : mCommentBean.userName);
+        userName.setText(TextUtils.isEmpty(mCommentBean.userName) ? "匿名用户" : Utils.briefString(mCommentBean.userName,5));
         userPhone.setText(TextUtils.isEmpty(mCommentBean.phoneNum) ? "" : mCommentBean.phoneNum);
         userCommentTime.setText(DateUtils.doLong2String(mCommentBean.createdAt, DateUtils.DF_DEFAULT));
     }

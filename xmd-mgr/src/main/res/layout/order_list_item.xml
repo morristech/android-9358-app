@@ -86,6 +86,7 @@
                             android:layout_marginLeft="@dimen/small_space"
                             android:maxLines="1"
                             android:text="name"
+                            android:layout_marginTop="2dp"
                             android:textSize="12sp"
                             android:textColor="@color/value_color"/>
 
@@ -120,6 +121,7 @@
                             android:layout_marginLeft="@dimen/small_space"
                             android:maxLines="1"
                             android:text="Massage"
+                            android:layout_marginTop="2dp"
                             android:textSize="12sp"
                             android:ellipsize="end"
                             android:textColor="@color/value_color"/>
@@ -146,6 +148,7 @@
                             android:maxLines="1"
                             android:text="Massage"
                             android:textColor="@color/value_color"
+                            android:layout_marginTop="2dp"
                             android:textSize="12sp"/>
 
                         <TextView

@@ -355,34 +355,34 @@ public class XLogger {
     //清理日志
     private static void cleanLogs(String logDirPath, int keepDays) {
         File logDir = new File(logDirPath);
-        if (logDir.exists()) {
-            List<File> logFileList = Arrays.asList(logDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return filename.endsWith(LOG_FILE_ENDFIX);
-                }
-            }));
-            if (logFileList.size() > keepDays - 1) {
-                Collections.sort(logFileList, new Comparator<File>() {
-                    @Override
-                    public int compare(File lhs, File rhs) {
-                        return (int) (lhs.lastModified() - rhs.lastModified());
-                    }
-                });
-                long removeCount = logFileList.size() - keepDays;
-
-                List<File> removeList = new ArrayList<>();
-                for (int i = 0; i < removeCount; i++) {
-                    removeList.add(logFileList.get(i));
-                }
-                Iterator<File> iterator = removeList.iterator();
-                while (iterator.hasNext()) {
-                    File file = iterator.next();
-                    Log.d(TAG, "remove log file :" + file.getName());
-                    file.delete();
-                    iterator.remove();
-                }
-            }
-        }
+//        if (logDir.exists()) {
+//            List<File> logFileList = Arrays.asList(logDir.listFiles(new FilenameFilter() {
+//                @Override
+//                public boolean accept(File dir, String filename) {
+//                    return filename.endsWith(LOG_FILE_ENDFIX);
+//                }
+//            }));
+//            if (logFileList.size() > keepDays - 1) {
+//                Collections.sort(logFileList, new Comparator<File>() {
+//                    @Override
+//                    public int compare(File lhs, File rhs) {
+//                        return (int) (lhs.lastModified() - rhs.lastModified());
+//                    }
+//                });
+//                long removeCount = logFileList.size() - keepDays;
+//
+//                List<File> removeList = new ArrayList<>();
+//                for (int i = 0; i < removeCount; i++) {
+//                    removeList.add(logFileList.get(i));
+//                }
+//                Iterator<File> iterator = removeList.iterator();
+//                while (iterator.hasNext()) {
+//                    File file = iterator.next();
+//                    Log.d(TAG, "remove log file :" + file.getName());
+//                    file.delete();
+//                    iterator.remove();
+//                }
+//            }
+//        }
     }
 }

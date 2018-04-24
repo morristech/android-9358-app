@@ -1,7 +1,9 @@
 package com.xmd.manager.window;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.xmd.app.XmdActivityManager;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.utils.PermissionUtils;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.AppConfig;
@@ -133,6 +136,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.login)
     public void login() {
+
         String username = mEtUsername.getText().toString();
         if (Utils.isEmpty(username)) {
             ToastUtils.showToastShort(LoginActivity.this, ResourceUtils.getString(R.string.login_activity_hint_username_not_empty));
@@ -166,12 +170,26 @@ public class LoginActivity extends BaseActivity {
         params.put(RequestConstant.KEY_USERNAME, username);
         params.put(RequestConstant.KEY_PASSWORD, password);
         params.put(RequestConstant.KEY_APP_VERSION, "android." + AppConfig.getAppVersionNameAndCode());
-
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(this);
+        if (PermissionUtils.isNotificationEnabled(LoginActivity.this)) {
+            if (mLoadingDialog == null) {
+                mLoadingDialog = new LoadingDialog(this);
+            }
+            mLoadingDialog.show();
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+            builder.setTitle("提示：")
+                    .setMessage(ResourceUtils.getString(R.string.notification_manager_apply))
+                    .setNegativeButton("去设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            PermissionUtils.toSetting(LoginActivity.this);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
         }
-        mLoadingDialog.show();
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
+
     }
 
     @OnLongClick(R.id.tv_version)
@@ -195,7 +213,7 @@ public class LoginActivity extends BaseActivity {
 
             ManagerAccountManager.getInstance().onLogin();
 
-            if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles) ||Constant.CHAIN_MANAGER_ROLE.equals(loginResult.roles)) {
+            if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles) || Constant.CHAIN_MANAGER_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));
                 finish();
             } else {

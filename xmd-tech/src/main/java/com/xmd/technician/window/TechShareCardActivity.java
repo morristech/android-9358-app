@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.crazyman.library.PermissionTool;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -208,6 +210,10 @@ public class TechShareCardActivity extends BaseActivity {
 
     @OnClick(R.id.user_save_btn)
     public void saveUserCard() {
+        if (!PermissionTool.hasPermissions(TechShareCardActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+            PermissionTool.requestPermission(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new String[]{"需要访问存储器"}, 1);
+            return;
+        }
         String filePath = Environment.getExternalStorageDirectory() + "/" + ResourceUtils.getString(R.string.save_tech_card_path) + ".jpg";
         if (FileUtils.checkFileExist(filePath, false)) {
             XToast.show(ResourceUtils.getString(R.string.had_saved_tech_card));

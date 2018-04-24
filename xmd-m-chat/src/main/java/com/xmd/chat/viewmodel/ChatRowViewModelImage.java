@@ -114,7 +114,7 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
         }
         ImageView imageView = new ImageView(v.getContext());
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        AlertDialog dialog = new AlertDialog
+        final AlertDialog dialog = new AlertDialog
                 .Builder(v.getContext(), R.style.AppTheme_Dialog_Alert)
                 .setView(imageView)
                 .create();
@@ -148,7 +148,12 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
                 Glide.with(v.getContext()).load(image.getUrl()).into(imageView);
             }
         }
-
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     @BindingAdapter("image")

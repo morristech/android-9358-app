@@ -212,6 +212,6 @@ public class ReserveDataActivity extends BaseActivity {
         mStartTime = event.startTime;
         mEndTime = event.endTime;
         mStaffDataFragment.setDateChanged(event.startTime, event.endTime);
-        mSummaryDataFragment.onRefreshDate(event.startTime, event.endTime);
+        mSummaryDataFragment.onRefreshDate(event.startTime, event.endTime,false);
     }
 }

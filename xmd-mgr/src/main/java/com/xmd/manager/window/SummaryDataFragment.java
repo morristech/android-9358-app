@@ -87,8 +87,13 @@ public class SummaryDataFragment extends BaseFragment {
         mOrderManagerSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 result -> handlerOrderManagerResult(result)
         );
-        onRefreshDate(TextUtils.isEmpty(mStartTime) ? DateUtil.getFirstDayOfMonth() : mStartTime, TextUtils.isEmpty(mEndTime) ? DateUtil.getCurrentDate() : mEndTime);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        XLogger.i(">>>", "resume");
+        onRefreshDate(TextUtils.isEmpty(mStartTime) ? DateUtil.getFirstDayOfMonth() : mStartTime, TextUtils.isEmpty(mEndTime) ? DateUtil.getCurrentDate() : mEndTime,true);
     }
 
 
@@ -113,11 +118,11 @@ public class SummaryDataFragment extends BaseFragment {
         }
     }
 
-    public void onRefreshDate(String startDate, String endDate) {
+    public void onRefreshDate(String startDate, String endDate,boolean refresh) {
         mStartTime = startDate;
         mEndTime = endDate;
 
-        if (mSummaryDataMap.containsKey(mStartTime + mEndTime)) {
+        if (mSummaryDataMap.containsKey(mStartTime + mEndTime) && !refresh) {
             getDataSuccess(mSummaryDataMap.get(mStartTime + mEndTime));
         } else {
             ((ReserveDataActivity) getActivity()).showLoading("正在加载...", false);
@@ -167,7 +172,7 @@ public class SummaryDataFragment extends BaseFragment {
     }
 
     public void getDataSuccess(List<SummaryDataBean> mSummaryDate) {
-         mDataMap.clear();
+        mDataMap.clear();
         if (mSummaryDate == null || mSummaryDate.size() == 0) {
             return;
         }

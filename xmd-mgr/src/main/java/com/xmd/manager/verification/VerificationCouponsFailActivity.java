@@ -68,7 +68,7 @@ public class VerificationCouponsFailActivity extends BaseActivity implements Ver
         for (CheckInfo checkInfo : mFailedList) {
             checkInfo.setSelected(true);
         }
-        mSuccessCount = getIntent().getIntExtra(VERIFICATION_COUPONS_SUCCESS_TOTAL, 1);
+        mSuccessCount = getIntent().getIntExtra(VERIFICATION_COUPONS_SUCCESS_TOTAL, 0);
         showSuccessAndFailedCount(mSuccessCount, mFailedList.size());
         showSelectView(mSelectedCount);
         mCustomerCouponList.setLayoutManager(new LinearLayoutManager(this));

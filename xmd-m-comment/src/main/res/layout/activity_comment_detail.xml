@@ -36,10 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="14sp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@id/user_name"
             android:textColor="#616161"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="13137558109"/>
 
         <ImageView

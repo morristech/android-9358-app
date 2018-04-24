@@ -1,6 +1,9 @@
 package com.xmd.m.network;
 
+import android.net.NetworkInfo;
+
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.network.NetUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,15 +37,15 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
             }
             onCallbackError(new NetworkException("请求失败(" + httpException.code() + ")，请联系系统管理员"));
         } else if (e instanceof SocketTimeoutException) {   //超时
-            onCallbackError(new NetworkException("服务器请求超时，请检查网络后重试"));
+            onCallbackError(new NetworkException("无法连接服务器，请检查网络后重试"));
         } else if (e instanceof ConnectException) { //服务器拒绝等
-            onCallbackError(new NetworkException("服务器连接异常，请重试"));
+            onCallbackError(new NetworkException("无法连接服务器，请检查网络后重试"));
         } else if (e instanceof UnknownHostException) { //无法解析主机地址
             onCallbackError(new NetworkException("无法连接服务器，请检查网络后重试"));
         } else if (e instanceof EOFException) { //底层网络库异常等
             onCallbackError(new NetworkException("网络请求异常，请检查网络后重试"));
         } else {    //其他异常情况
-            onCallbackError(new NetworkException("服务器请求异常，请重试"));
+            onCallbackError(new NetworkException("无法连接服务器，请检查网络后重试"));
         }
     }
 

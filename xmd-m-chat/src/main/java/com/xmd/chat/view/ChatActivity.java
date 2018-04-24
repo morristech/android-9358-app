@@ -191,7 +191,6 @@ public class ChatActivity extends BaseActivity {
                                 loadData(((EMMessage) mAdapter.getDataList().get(0).getChatMessage().getMessage()).getMsgId());
                             } else {
                                 //加载IM会话
-                                //    isAddMore = true;
                                 loadData(null);
                             }
                         }
@@ -202,6 +201,19 @@ public class ChatActivity extends BaseActivity {
         });
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        mBinding.recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mBinding.sendEditText.setFocusable(true);
+                        mBinding.sendEditText.setFocusableInTouchMode(true);
+                        mBinding.sendEditText.requestFocus();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -671,7 +683,6 @@ public class ChatActivity extends BaseActivity {
     };
 
 
-
     //按下录音键
     private void onVoiceButtonDown(MotionEvent event) {
         if (voiceRecording.get()) {
@@ -707,7 +718,7 @@ public class ChatActivity extends BaseActivity {
             file.delete();
             return;
         }
-        if (mCurPosY - mCurPosDown <0 && (Math.abs(mCurPosY - mCurPosDown) > 100)) {
+        if (mCurPosY - mCurPosDown < 0 && (Math.abs(mCurPosY - mCurPosDown) > 100)) {
             XLogger.d("取消发送，y=" + event.getY());
             file.delete();
             return;
@@ -715,13 +726,14 @@ public class ChatActivity extends BaseActivity {
 
         ChatMessageManager.getInstance().sendVoiceMessage(mRemoteUser, path, duration);
     }
+
     //滑动监听
     private void onVoiceButtonMove(MotionEvent event) {
         mCurPosY = event.getY();
-        if(mCurPosY - mCurPosDown <0 && (Math.abs(mCurPosY - mCurPosDown) > 100)){
+        if (mCurPosY - mCurPosDown < 0 && (Math.abs(mCurPosY - mCurPosDown) > 100)) {
             showCancelView.set(true);
             voiceRecording.set(false);
-        }else {
+        } else {
             showCancelView.set(false);
             voiceRecording.set(true);
         }

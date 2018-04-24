@@ -210,7 +210,12 @@ public class SeatBillDataManager {
                     XToast.show("请输入完整订单信息");
                     return false;
                 }
+
                 for (NativeEmployeeBean employeeBean : itemBean.getEmployeeList()) {
+                    if (TextUtils.isEmpty(employeeBean.getEmployeeId())) {
+                        XToast.show("请输入完整订单信息");
+                       return false;
+                    }
                     employeeBean.setBellId(null);
                 }
 

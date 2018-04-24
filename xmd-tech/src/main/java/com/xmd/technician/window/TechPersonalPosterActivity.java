@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Adapter.TechPosterListAdapter;
 import com.xmd.technician.Constant;
@@ -208,6 +210,10 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             XToast.show(ResourceUtils.getString(R.string.qr_code_invalid_alter_message));
             return;
         }
+        if (!PermissionTool.hasPermissions(TechPersonalPosterActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+            PermissionTool.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, new String[]{"需要访问存储器"}, 1);
+            return;
+        }
         new RewardConfirmDialog(this, ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
                 DateUtil.getCurrentDate(mPosterBean.createTime + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
@@ -231,6 +237,10 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void posterShare(View view, View dismiss) {
+        if (!PermissionTool.hasPermissions(TechPersonalPosterActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+            PermissionTool.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, new String[]{"需要访问存储器"}, 1);
+            return;
+        }
         if ((mPosterBean.createTime + ONE_MONTH_DAY_MILLISECOND) < System.currentTimeMillis()) {
             XToast.show(ResourceUtils.getString(R.string.qr_code_invalid_alter_message));
             return;
