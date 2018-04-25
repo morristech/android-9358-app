@@ -151,14 +151,13 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putString(KEY_EMCHAT_PASSWORD, emchatPassword).apply();
     }
 
-    public static String getXmdChatModel(){
-        return mSettingPreference.getString(KEY_XMD_CHAT_MODEL,"");
+    public static String getXmdChatModel() {
+        return mSettingPreference.getString(KEY_XMD_CHAT_MODEL, "");
     }
 
-    public static void SetXmdChatModel(String chatModel){
-        mSettingPreference.edit().putString(KEY_XMD_CHAT_MODEL,chatModel).apply();
+    public static void SetXmdChatModel(String chatModel) {
+        mSettingPreference.edit().putString(KEY_XMD_CHAT_MODEL, chatModel).apply();
     }
-
 
 
     public static String getUserAvatar() {
@@ -199,8 +198,9 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-       // return "http://192.168.1.100:9880";
-       return mSettingPreference.getString(KEY_SERVER_HOST, HttpRequestConstant.SERVER_HOST);
+        // return "http://192.168.1.100:9880";
+        //  return "http://192.168.2.59:9090";
+        return mSettingPreference.getString(KEY_SERVER_HOST, HttpRequestConstant.SERVER_HOST);
     }
 
     public static void setServerHost(String serverHost) {

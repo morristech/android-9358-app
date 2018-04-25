@@ -56,7 +56,7 @@ public class OnlinePayNotifyActivity extends BaseActivity implements BaseFragmen
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        startTime = calendar.getTimeInMillis() - (29L * DateUtils.DAY_MILLIS_SECOND);
+        startTime = calendar.getTimeInMillis() - (30L * DateUtils.DAY_MILLIS_SECOND);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);

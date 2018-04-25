@@ -57,6 +57,7 @@ import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.clubinvite.ClubInviteActivity;
+import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
@@ -84,6 +85,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
+import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment;
 import com.xmd.technician.widget.CircleImageView;
@@ -98,6 +100,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -511,6 +514,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
             mPayNotifyFragment.loadData(true);
         }
+        HeartBeatTimer.getInstance().start(60, new Runnable() {
+            @Override
+            public void run() {
+                PayNotifyInfoManager.getInstance().checkNewPayNotify();
+            }
+        });
     }
 
     /**************************
@@ -1404,6 +1413,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        HeartBeatTimer.getInstance().shutdown();
     }
 
     public void doUpdateTechInfoSuccess() {
